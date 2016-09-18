@@ -1,0 +1,11 @@
+apocalypse_menu_first
+apocalypse_menu_second
+apocalypse_menu_third
+bg_mainmenu.dds
+wxp_loadscreen_dawn_of_war
+
+-- Main Menu
+apocalypse_front_end
+
+-- Army Painter
+fe_dark_crusade_background

@@ -1,0 +1,2089 @@
+Screen =  
+{
+	TooltipWidgets =  
+	{
+		type = "Group",
+		name = "grp_tooltips",
+		position =  
+		{
+			0,
+			0,
+		},
+		HitArea =  
+		{
+			 
+			{
+				type = "Rectangle",
+				size =  
+				{
+					1,
+					1,
+				},
+				position =  
+				{
+					0,
+					0,
+				},
+			},
+		},
+		Children =  
+		{
+			 
+			{
+				type = "TextLabel",
+				style =  
+				{
+					"UIStyles",
+					"_Tooltip",
+				},
+				position =  
+				{
+					0.01027,
+					0.96350,
+				},
+				HitArea =  
+				{
+					 
+					{
+						type = "Rectangle",
+						size =  
+						{
+							1,
+							1,
+						},
+						position =  
+						{
+							0,
+							0,
+						},
+					},
+				},
+				text = "",
+				name = "tooltip",
+				size =  
+				{
+					0.97947,
+					0.03005,
+				},
+			},
+		},
+		size =  
+		{
+			1,
+			1,
+		},
+	},
+	version = 4,
+	Widgets =  
+	{
+		type = "Group",
+		name = "grp_Screen",
+		position =  
+		{
+			0,
+			0,
+		},
+		HitArea =  
+		{
+			 
+			{
+				type = "Rectangle",
+				size =  
+				{
+					1.00001,
+					1.00001,
+				},
+				position =  
+				{
+					0.00010,
+					0.00010,
+				},
+			},
+		},
+		Children =  
+		{
+			 
+			{
+				type = "Group",
+				HitArea =  
+				{
+					 
+					{
+						type = "Rectangle",
+						size =  
+						{
+							1,
+							1,
+						},
+						position =  
+						{
+							0,
+							0,
+						},
+					},
+				},
+				name = "rootGroup",
+				position =  
+				{
+					0,
+					0,
+				},
+				Children =  
+				{
+					 
+					{
+						type = "ArtLabel",
+						style =  
+						{
+							"DefaultStyles",
+							"defStyleLabel",
+						},
+						position =  
+						{
+							0.67650,
+							0,
+						},
+						HitArea =  
+						{
+							 
+							{
+								type = "Rectangle",
+								size =  
+								{
+									1,
+									1,
+								},
+								position =  
+								{
+									0,
+									0,
+								},
+							},
+						},
+						name = "ArtLabel",
+						Presentation =  
+						{
+							Art =  
+							{
+								 
+								{
+									type = "Graphic",
+									ID = 295961,
+									texture = "art/ui/textures/w40k_main_menu_tech.tga",
+									states =  
+									{
+										"Normal",
+										"Active",
+										"Hover",
+										"Disabled",
+									},
+								},
+							},
+						},
+						size =  
+						{
+							0.32300,
+							0.99000,
+						},
+					},
+					 
+					{
+						type = "Group",
+						HitArea =  
+						{
+							 
+							{
+								type = "Rectangle",
+								size =  
+								{
+									1,
+									1,
+								},
+								position =  
+								{
+									0,
+									0,
+								},
+							},
+						},
+						name = "campaignGroup",
+						position =  
+						{
+							0.68957,
+							0.10343,
+						},
+						Children =  
+						{
+							 
+							{
+								type = "Button",
+								tooltip_text = "$10008",
+								text = "$10010",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								name = "btnBack",
+								tooltip_name = "tooltip",
+								position =  
+								{
+									0.02000,
+									0.68719,
+								},
+								style =  
+								{
+									"UIStyles",
+									"btn_MainMenu_16pt",
+								},
+								Presentation =  
+								{
+									Art =  
+									{
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15768,
+												0.15082,
+											},
+											ID = 369182,
+											size =  
+											{
+												0.11277,
+												0.69133,
+											},
+											texture = "art/ui/textures/btn_ornate_detail.tga",
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15800,
+												0.15100,
+											},
+											ID = 369183,
+											size =  
+											{
+												0.11300,
+												0.69100,
+											},
+											texture = "art/ui/textures/btn_ornate_detail_disabled.tga",
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11900,
+												0.32500,
+											},
+											ID = 369184,
+											colour =  
+											{
+												38,
+												38,
+												38,
+												74,
+											},
+											size =  
+											{
+												0.76192,
+												0.32900,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11909,
+												0.32458,
+											},
+											ID = 369185,
+											colour =  
+											{
+												0,
+												0,
+												0,
+												36,
+											},
+											size =  
+											{
+												0.76181,
+												0.32921,
+											},
+											states =  
+											{
+												"Normal",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11902,
+												0.32458,
+											},
+											ID = 369186,
+											colour =  
+											{
+												167,
+												18,
+												18,
+												146,
+											},
+											size =  
+											{
+												0.76196,
+												0.32921,
+											},
+											states =  
+											{
+												"Active",
+											},
+										},
+										 
+										{
+											type = "Line",
+											colour =  
+											{
+												42,
+												42,
+												42,
+												61,
+											},
+											ID = 369187,
+											p2 =  
+											{
+												0.93917,
+												0.47539,
+											},
+											p1 =  
+											{
+												0.06083,
+												0.47539,
+											},
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Text",
+											fontname = "quorum medium bold16",
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 369188,
+											textColourTop =  
+											{
+												0,
+												0,
+												0,
+												202,
+											},
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											states =  
+											{
+												"Normal",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												255,
+												255,
+												255,
+												208,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												255,
+												255,
+												255,
+												225,
+											},
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 369189,
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											dropShadow = true,
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												57,
+												57,
+												57,
+												121,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												25,
+												25,
+												25,
+												150,
+											},
+											position =  
+											{
+												0.21100,
+												0,
+											},
+											ID = 369190,
+											size =  
+											{
+												0.78600,
+												1,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.07316,
+												0,
+											},
+											ID = 369191,
+											size =  
+											{
+												0.85367,
+												0.97219,
+											},
+											texture = "art/ui/textures/btn_mainmenu_hover.tga",
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+									},
+									Sound =  
+									{
+										 
+										{
+											sample = "cursor_over_menu",
+											event = "OnHover",
+										},
+										 
+										{
+											sample = "menu_back_button",
+											event = "OnClick",
+										},
+									},
+								},
+								size =  
+								{
+									0.27700,
+									0.06027,
+								},
+							},
+							 
+							{
+								type = "Button",
+								tooltip_text = "$10000",
+								text = "$10011",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								name = "btnDirectJoin",
+								tooltip_name = "tooltip",
+								position =  
+								{
+									0.01988,
+									0.41881,
+								},
+								style =  
+								{
+									"UIStyles",
+									"btn_MainMenu_16pt",
+								},
+								Presentation =  
+								{
+									Art =  
+									{
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15768,
+												0.15082,
+											},
+											ID = 179339,
+											size =  
+											{
+												0.11277,
+												0.69133,
+											},
+											texture = "art/ui/textures/btn_ornate_detail.tga",
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15800,
+												0.15100,
+											},
+											ID = 179340,
+											size =  
+											{
+												0.11300,
+												0.69100,
+											},
+											texture = "art/ui/textures/btn_ornate_detail_disabled.tga",
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11900,
+												0.32500,
+											},
+											ID = 179341,
+											colour =  
+											{
+												38,
+												38,
+												38,
+												74,
+											},
+											size =  
+											{
+												0.76192,
+												0.32900,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11909,
+												0.32458,
+											},
+											ID = 179342,
+											colour =  
+											{
+												0,
+												0,
+												0,
+												36,
+											},
+											size =  
+											{
+												0.76181,
+												0.32921,
+											},
+											states =  
+											{
+												"Normal",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11902,
+												0.32458,
+											},
+											ID = 179343,
+											colour =  
+											{
+												167,
+												18,
+												18,
+												146,
+											},
+											size =  
+											{
+												0.76196,
+												0.32921,
+											},
+											states =  
+											{
+												"Active",
+											},
+										},
+										 
+										{
+											type = "Line",
+											colour =  
+											{
+												42,
+												42,
+												42,
+												61,
+											},
+											ID = 179344,
+											p2 =  
+											{
+												0.93917,
+												0.47539,
+											},
+											p1 =  
+											{
+												0.06083,
+												0.47539,
+											},
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Text",
+											fontname = "quorum medium bold16",
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 179345,
+											textColourTop =  
+											{
+												0,
+												0,
+												0,
+												201,
+											},
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											states =  
+											{
+												"Normal",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												255,
+												255,
+												255,
+												208,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												255,
+												255,
+												255,
+												225,
+											},
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 179346,
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											dropShadow = true,
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												57,
+												57,
+												57,
+												121,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												25,
+												25,
+												25,
+												150,
+											},
+											position =  
+											{
+												0.21100,
+												0,
+											},
+											ID = 179347,
+											size =  
+											{
+												0.78600,
+												1,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.07316,
+												0,
+											},
+											ID = 179348,
+											size =  
+											{
+												0.85367,
+												0.97219,
+											},
+											texture = "art/ui/textures/btn_mainmenu_hover.tga",
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+									},
+									Sound =  
+									{
+										 
+										{
+											sample = "cursor_over_menu",
+											event = "OnHover",
+										},
+										 
+										{
+											sample = "button_menu",
+											event = "OnClick",
+										},
+									},
+								},
+								size =  
+								{
+									0.27712,
+									0.06027,
+								},
+							},
+							 
+							{
+								type = "Button",
+								tooltip_text = "$10001",
+								text = "$10012",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								name = "btnDirectHost",
+								tooltip_name = "tooltip",
+								position =  
+								{
+									0.01988,
+									0.36282,
+								},
+								style =  
+								{
+									"UIStyles",
+									"btn_MainMenu_16pt",
+								},
+								Presentation =  
+								{
+									Art =  
+									{
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15768,
+												0.15082,
+											},
+											ID = 179349,
+											size =  
+											{
+												0.11277,
+												0.69133,
+											},
+											texture = "art/ui/textures/btn_ornate_detail.tga",
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15800,
+												0.15100,
+											},
+											ID = 179350,
+											size =  
+											{
+												0.11300,
+												0.69100,
+											},
+											texture = "art/ui/textures/btn_ornate_detail_disabled.tga",
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11900,
+												0.32500,
+											},
+											ID = 179351,
+											colour =  
+											{
+												38,
+												38,
+												38,
+												74,
+											},
+											size =  
+											{
+												0.76192,
+												0.32900,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11909,
+												0.32458,
+											},
+											ID = 179352,
+											colour =  
+											{
+												0,
+												0,
+												0,
+												36,
+											},
+											size =  
+											{
+												0.76181,
+												0.32921,
+											},
+											states =  
+											{
+												"Normal",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11902,
+												0.32458,
+											},
+											ID = 179353,
+											colour =  
+											{
+												167,
+												18,
+												18,
+												146,
+											},
+											size =  
+											{
+												0.76196,
+												0.32921,
+											},
+											states =  
+											{
+												"Active",
+											},
+										},
+										 
+										{
+											type = "Line",
+											colour =  
+											{
+												42,
+												42,
+												42,
+												61,
+											},
+											ID = 179354,
+											p2 =  
+											{
+												0.93917,
+												0.47539,
+											},
+											p1 =  
+											{
+												0.06083,
+												0.47539,
+											},
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Text",
+											fontname = "quorum medium bold16",
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 179355,
+											textColourTop =  
+											{
+												0,
+												0,
+												0,
+												201,
+											},
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											states =  
+											{
+												"Normal",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												255,
+												255,
+												255,
+												208,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												255,
+												255,
+												255,
+												225,
+											},
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 179356,
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											dropShadow = true,
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												57,
+												57,
+												57,
+												121,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												25,
+												25,
+												25,
+												150,
+											},
+											position =  
+											{
+												0.21100,
+												0,
+											},
+											ID = 179357,
+											size =  
+											{
+												0.78600,
+												1,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.07316,
+												0,
+											},
+											ID = 179358,
+											size =  
+											{
+												0.85367,
+												0.97219,
+											},
+											texture = "art/ui/textures/btn_mainmenu_hover.tga",
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+									},
+									Sound =  
+									{
+										 
+										{
+											sample = "cursor_over_menu",
+											event = "OnHover",
+										},
+										 
+										{
+											sample = "button_menu",
+											event = "OnClick",
+										},
+									},
+								},
+								size =  
+								{
+									0.27712,
+									0.06027,
+								},
+							},
+							 
+							{
+								type = "Button",
+								tooltip_text = "$10002",
+								text = "$10013",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								name = "btnOnline",
+								tooltip_name = "tooltip",
+								position =  
+								{
+									0.01988,
+									0.30683,
+								},
+								style =  
+								{
+									"UIStyles",
+									"btn_MainMenu_16pt",
+								},
+								Presentation =  
+								{
+									Art =  
+									{
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15768,
+												0.15082,
+											},
+											ID = 179359,
+											size =  
+											{
+												0.11277,
+												0.69133,
+											},
+											texture = "art/ui/textures/btn_ornate_detail.tga",
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15800,
+												0.15100,
+											},
+											ID = 179360,
+											size =  
+											{
+												0.11300,
+												0.69100,
+											},
+											texture = "art/ui/textures/btn_ornate_detail_disabled.tga",
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11900,
+												0.32500,
+											},
+											ID = 179361,
+											colour =  
+											{
+												38,
+												38,
+												38,
+												74,
+											},
+											size =  
+											{
+												0.76192,
+												0.32900,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11909,
+												0.32458,
+											},
+											ID = 179362,
+											colour =  
+											{
+												0,
+												0,
+												0,
+												36,
+											},
+											size =  
+											{
+												0.76181,
+												0.32921,
+											},
+											states =  
+											{
+												"Normal",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11902,
+												0.32458,
+											},
+											ID = 179363,
+											colour =  
+											{
+												167,
+												18,
+												18,
+												146,
+											},
+											size =  
+											{
+												0.76196,
+												0.32921,
+											},
+											states =  
+											{
+												"Active",
+											},
+										},
+										 
+										{
+											type = "Line",
+											colour =  
+											{
+												42,
+												42,
+												42,
+												61,
+											},
+											ID = 179364,
+											p2 =  
+											{
+												0.93917,
+												0.47539,
+											},
+											p1 =  
+											{
+												0.06083,
+												0.47539,
+											},
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Text",
+											fontname = "quorum medium bold16",
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 179365,
+											textColourTop =  
+											{
+												0,
+												0,
+												0,
+												201,
+											},
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											states =  
+											{
+												"Normal",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												255,
+												255,
+												255,
+												208,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												255,
+												255,
+												255,
+												225,
+											},
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 179366,
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											dropShadow = true,
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												57,
+												57,
+												57,
+												121,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												25,
+												25,
+												25,
+												150,
+											},
+											position =  
+											{
+												0.21100,
+												0,
+											},
+											ID = 179367,
+											size =  
+											{
+												0.78600,
+												1,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.07316,
+												0,
+											},
+											ID = 179368,
+											size =  
+											{
+												0.85367,
+												0.97219,
+											},
+											texture = "art/ui/textures/btn_mainmenu_hover.tga",
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+									},
+									Sound =  
+									{
+										 
+										{
+											sample = "cursor_over_menu",
+											event = "OnHover",
+										},
+										 
+										{
+											sample = "button_menu",
+											event = "OnClick",
+										},
+									},
+								},
+								size =  
+								{
+									0.27712,
+									0.06027,
+								},
+							},
+							 
+							{
+								type = "Button",
+								tooltip_text = "$10003",
+								text = "$10014",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								name = "btnLAN",
+								tooltip_name = "tooltip",
+								position =  
+								{
+									0.01988,
+									0.25084,
+								},
+								style =  
+								{
+									"UIStyles",
+									"btn_MainMenu_16pt",
+								},
+								Presentation =  
+								{
+									Art =  
+									{
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15768,
+												0.15082,
+											},
+											ID = 179369,
+											size =  
+											{
+												0.11277,
+												0.69133,
+											},
+											texture = "art/ui/textures/btn_ornate_detail.tga",
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.15800,
+												0.15100,
+											},
+											ID = 179370,
+											size =  
+											{
+												0.11300,
+												0.69100,
+											},
+											texture = "art/ui/textures/btn_ornate_detail_disabled.tga",
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11900,
+												0.32500,
+											},
+											ID = 179371,
+											colour =  
+											{
+												38,
+												38,
+												38,
+												74,
+											},
+											size =  
+											{
+												0.76192,
+												0.32900,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11909,
+												0.32458,
+											},
+											ID = 179372,
+											colour =  
+											{
+												0,
+												0,
+												0,
+												36,
+											},
+											size =  
+											{
+												0.76181,
+												0.32921,
+											},
+											states =  
+											{
+												"Normal",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Rectangle",
+											position =  
+											{
+												0.11902,
+												0.32458,
+											},
+											ID = 179373,
+											colour =  
+											{
+												167,
+												18,
+												18,
+												146,
+											},
+											size =  
+											{
+												0.76196,
+												0.32921,
+											},
+											states =  
+											{
+												"Active",
+											},
+										},
+										 
+										{
+											type = "Line",
+											colour =  
+											{
+												42,
+												42,
+												42,
+												61,
+											},
+											ID = 179374,
+											p2 =  
+											{
+												0.93917,
+												0.47539,
+											},
+											p1 =  
+											{
+												0.06083,
+												0.47539,
+											},
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Text",
+											fontname = "quorum medium bold16",
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 179375,
+											textColourTop =  
+											{
+												0,
+												0,
+												0,
+												201,
+											},
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											states =  
+											{
+												"Normal",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												255,
+												255,
+												255,
+												208,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												255,
+												255,
+												255,
+												225,
+											},
+											position =  
+											{
+												0.21144,
+												0,
+											},
+											ID = 179376,
+											size =  
+											{
+												0.78592,
+												1,
+											},
+											dropShadow = true,
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												57,
+												57,
+												57,
+												121,
+											},
+											fontname = "quorum medium bold16",
+											textColourTop =  
+											{
+												25,
+												25,
+												25,
+												150,
+											},
+											position =  
+											{
+												0.21100,
+												0,
+											},
+											ID = 179377,
+											size =  
+											{
+												0.78600,
+												1,
+											},
+											states =  
+											{
+												"Disabled",
+											},
+										},
+										 
+										{
+											type = "Graphic",
+											position =  
+											{
+												0.07316,
+												0,
+											},
+											ID = 179378,
+											size =  
+											{
+												0.85367,
+												0.97219,
+											},
+											texture = "art/ui/textures/btn_mainmenu_hover.tga",
+											states =  
+											{
+												"Active",
+												"Hover",
+											},
+										},
+									},
+									Sound =  
+									{
+										 
+										{
+											sample = "cursor_over_menu",
+											event = "OnHover",
+										},
+										 
+										{
+											sample = "button_menu",
+											event = "OnClick",
+										},
+									},
+								},
+								size =  
+								{
+									0.27712,
+									0.06027,
+								},
+							},
+						},
+						style =  
+						{
+							"DefaultStyles",
+							"defStyleGroup",
+						},
+						Presentation =  
+						{
+						},
+						size =  
+						{
+							0.30693,
+							0.81213,
+						},
+					},
+					 
+					{
+						type = "ArtLabel",
+						name = "artFooter",
+						position =  
+						{
+							0,
+							0.95828,
+						},
+						HitArea =  
+						{
+							 
+							{
+								type = "Rectangle",
+								size =  
+								{
+									1,
+									1,
+								},
+								position =  
+								{
+									0,
+									0,
+								},
+							},
+						},
+						Presentation =  
+						{
+							Art =  
+							{
+								 
+								{
+									ID = 10326,
+									type = "Rectangle",
+									states =  
+									{
+										"Normal",
+										"Active",
+										"Hover",
+										"Disabled",
+									},
+								},
+							},
+						},
+						size =  
+						{
+							1,
+							0.04172,
+						},
+					},
+				},
+				style =  
+				{
+					"DefaultStyles",
+					"defStyleGroup",
+				},
+				Presentation =  
+				{
+				},
+				size =  
+				{
+					1,
+					1,
+				},
+			},
+		},
+		size =  
+		{
+			1,
+			1,
+		},
+	},
+}
+ToolInfo =  
+{
+	version = 3,
+	WidgetInfo =  
+	{
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "grp_Screen",
+			HitAreaGuides =  
+			{
+			},
+			type = "Group",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "rootGroup",
+			HitAreaGuides =  
+			{
+			},
+			type = "Group",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "ArtLabel",
+			HitAreaGuides =  
+			{
+			},
+			type = "ArtLabel",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "campaignGroup",
+			HitAreaGuides =  
+			{
+			},
+			type = "Group",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnBack",
+			HitAreaGuides =  
+			{
+			},
+			type = "Button",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnDirectJoin",
+			HitAreaGuides =  
+			{
+			},
+			type = "Button",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnDirectHost",
+			HitAreaGuides =  
+			{
+			},
+			type = "Button",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnOnline",
+			HitAreaGuides =  
+			{
+			},
+			type = "Button",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnLAN",
+			HitAreaGuides =  
+			{
+			},
+			type = "Button",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "artFooter",
+			HitAreaGuides =  
+			{
+			},
+			type = "ArtLabel",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "grp_tooltips",
+			HitAreaGuides =  
+			{
+			},
+			type = "",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "tooltip",
+			HitAreaGuides =  
+			{
+			},
+			type = "TextLabel",
+		},
+	},
+	Guides =  
+	{
+	},
+	ScreenInfo =  
+	{
+		LocaleRange =  
+		{
+			10000,
+			10499,
+		},
+	},
+}

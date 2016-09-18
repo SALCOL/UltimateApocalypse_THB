@@ -1,0 +1,2589 @@
+Screen =  
+{
+	TooltipWidgets =  
+	{
+		type = "Group",
+		name = "grp_tooltips",
+		position =  
+		{
+			0,
+			0,
+		},
+		HitArea =  
+		{
+			 
+			{
+				type = "Rectangle",
+				size =  
+				{
+					1,
+					1,
+				},
+				position =  
+				{
+					0,
+					0,
+				},
+			},
+		},
+		Children =  
+		{
+			 
+			{
+				type = "TextLabel",
+				style =  
+				{
+					"UIStyles",
+					"_Tooltip",
+				},
+				position =  
+				{
+					0.01027,
+					0.96168,
+				},
+				HitArea =  
+				{
+					 
+					{
+						type = "Rectangle",
+						size =  
+						{
+							1,
+							1,
+						},
+						position =  
+						{
+							0,
+							0,
+						},
+					},
+				},
+				text = "",
+				name = "tooltip",
+				size =  
+				{
+					0.97947,
+					0.03005,
+				},
+			},
+		},
+		size =  
+		{
+			1,
+			1,
+		},
+	},
+	version = 4,
+	Widgets =  
+	{
+		type = "Group",
+		name = "grp_Screen",
+		position =  
+		{
+			0,
+			0,
+		},
+		HitArea =  
+		{
+			 
+			{
+				type = "Rectangle",
+				size =  
+				{
+					1,
+					1,
+				},
+				position =  
+				{
+					0,
+					0,
+				},
+			},
+		},
+		Children =  
+		{
+			 
+			{
+				type = "Group",
+				HitArea =  
+				{
+					 
+					{
+						type = "Rectangle",
+						size =  
+						{
+							1,
+							1,
+						},
+						position =  
+						{
+							0,
+							0,
+						},
+					},
+				},
+				name = "grpBackground",
+				position =  
+				{
+					0,
+					0,
+				},
+				Children =  
+				{
+					 
+					{
+						type = "Group",
+						HitArea =  
+						{
+							 
+							{
+								type = "Rectangle",
+								size =  
+								{
+									1,
+									1,
+								},
+								position =  
+								{
+									0,
+									0,
+								},
+							},
+						},
+						name = "grpQuit",
+						position =  
+						{
+							0.27660,
+							0.12354,
+						},
+						Children =  
+						{
+							 
+							{
+								type = "TextLabel",
+								text = "$30500",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								style =  
+								{
+									"DefaultStyles",
+									"defStyleLabel",
+								},
+								position =  
+								{
+									0.06132,
+									0.63817,
+								},
+								name = "txtThoughtQuit",
+								Presentation =  
+								{
+									Art =  
+									{
+										 
+										{
+											type = "Text",
+											textColourBottom =  
+											{
+												0,
+												0,
+												0,
+												192,
+											},
+											ID = 7013,
+											fontname = "gillsans_11",
+											states =  
+											{
+												"Normal",
+												"Active",
+												"Hover",
+												"Disabled",
+											},
+										},
+									},
+								},
+								size =  
+								{
+									0.34245,
+									0.02998,
+								},
+							},
+							 
+							{
+								type = "Group",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								name = "grpTitle",
+								position =  
+								{
+									0.03570,
+									0.07877,
+								},
+								Children =  
+								{
+									 
+									{
+										type = "TextLabel",
+										text = "$30502",
+										HitArea =  
+										{
+											 
+											{
+												type = "Rectangle",
+												size =  
+												{
+													1,
+													1,
+												},
+												position =  
+												{
+													0,
+													0,
+												},
+											},
+										},
+										style =  
+										{
+											"DefaultStyles",
+											"defStyleLabel",
+										},
+										position =  
+										{
+											0.00857,
+											0.02041,
+										},
+										name = "sub1",
+										Presentation =  
+										{
+											Art =  
+											{
+												 
+												{
+													type = "Text",
+													textColourBottom =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													horzAlign = "Right",
+													ID = 7022,
+													textColourTop =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													fontname = "quorum medium bold16",
+													states =  
+													{
+														"Normal",
+														"Active",
+														"Hover",
+														"Disabled",
+													},
+												},
+											},
+										},
+										size =  
+										{
+											0.14768,
+											0.02838,
+										},
+									},
+									 
+									{
+										type = "TextLabel",
+										text = "$30503",
+										HitArea =  
+										{
+											 
+											{
+												type = "Rectangle",
+												size =  
+												{
+													1,
+													1,
+												},
+												position =  
+												{
+													0,
+													0,
+												},
+											},
+										},
+										style =  
+										{
+											"DefaultStyles",
+											"defStyleLabel",
+										},
+										position =  
+										{
+											0.22009,
+											0.02041,
+										},
+										name = "sub2",
+										Presentation =  
+										{
+											Art =  
+											{
+												 
+												{
+													type = "Text",
+													textColourBottom =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													ID = 7025,
+													textColourTop =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													fontname = "quorum medium bold16",
+													states =  
+													{
+														"Normal",
+														"Active",
+														"Hover",
+														"Disabled",
+													},
+												},
+											},
+										},
+										size =  
+										{
+											0.15144,
+											0.03005,
+										},
+									},
+									 
+									{
+										type = "TextLabel",
+										text = "$30504",
+										HitArea =  
+										{
+											 
+											{
+												type = "Rectangle",
+												size =  
+												{
+													1,
+													1,
+												},
+												position =  
+												{
+													0,
+													0,
+												},
+											},
+										},
+										style =  
+										{
+											"DefaultStyles",
+											"defStyleLabel",
+										},
+										position =  
+										{
+											0.00996,
+											0.07049,
+										},
+										name = "sub3",
+										Presentation =  
+										{
+											Art =  
+											{
+												 
+												{
+													type = "Text",
+													textColourBottom =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													horzAlign = "Centre",
+													ID = 7028,
+													textColourTop =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													fontname = "quorum medium bold13",
+													states =  
+													{
+														"Normal",
+														"Active",
+														"Hover",
+														"Disabled",
+													},
+												},
+											},
+										},
+										size =  
+										{
+											0.35290,
+											0.02671,
+										},
+									},
+									 
+									{
+										type = "TextLabel",
+										tooltip_text = "$30511",
+										text = "$30501",
+										HitArea =  
+										{
+											 
+											{
+												type = "Rectangle",
+												size =  
+												{
+													1,
+													1,
+												},
+												position =  
+												{
+													0,
+													0,
+												},
+											},
+										},
+										name = "lblColourName",
+										tooltip_name = "tooltip",
+										position =  
+										{
+											0.00950,
+											0.08720,
+										},
+										style =  
+										{
+											"DefaultStyles",
+											"defStyleLabel",
+										},
+										Presentation =  
+										{
+											Art =  
+											{
+												 
+												{
+													type = "Text",
+													textColourBottom =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													fontname = "engravers old english mt30",
+													textColourTop =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													position =  
+													{
+														0,
+														0.10984,
+													},
+													ID = 7018,
+													horzAlign = "Centre",
+													states =  
+													{
+														"Normal",
+														"Active",
+														"Hover",
+														"Disabled",
+													},
+												},
+												 
+												{
+													type = "Line",
+													colour =  
+													{
+														38,
+														38,
+														38,
+														65,
+													},
+													ID = 7019,
+													p2 =  
+													{
+														0.77170,
+														0.93918,
+													},
+													p1 =  
+													{
+														0.22830,
+														0.93442,
+													},
+													states =  
+													{
+														"Normal",
+														"Active",
+														"Hover",
+														"Disabled",
+													},
+												},
+											},
+										},
+										size =  
+										{
+											0.35093,
+											0.05074,
+										},
+									},
+								},
+								style =  
+								{
+									"DefaultStyles",
+									"defStyleGroup",
+								},
+								Presentation =  
+								{
+								},
+								size =  
+								{
+									0.37439,
+									0.16949,
+								},
+							},
+							 
+							{
+								type = "Group",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								name = "grpDataEntry",
+								position =  
+								{
+									0.02827,
+									0.20327,
+								},
+								Children =  
+								{
+									 
+									{
+										type = "TextLabel",
+										text = "$30507",
+										HitArea =  
+										{
+											 
+											{
+												type = "Rectangle",
+												size =  
+												{
+													1,
+													1,
+												},
+												position =  
+												{
+													0,
+													0,
+												},
+											},
+										},
+										style =  
+										{
+											"DefaultStyles",
+											"defStyleLabel",
+										},
+										position =  
+										{
+											0.02878,
+											0.04894,
+										},
+										name = "txtExistingProfile",
+										Presentation =  
+										{
+											Art =  
+											{
+												 
+												{
+													type = "Text",
+													textColourBottom =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													ID = 7055,
+													textColourTop =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													fontname = "quorum medium bold13",
+													states =  
+													{
+														"Normal",
+														"Active",
+														"Hover",
+														"Disabled",
+													},
+												},
+											},
+										},
+										size =  
+										{
+											0.25032,
+											0.02170,
+										},
+									},
+									 
+									{
+										type = "TextLabel",
+										text = "$30508",
+										HitArea =  
+										{
+											 
+											{
+												type = "Rectangle",
+												size =  
+												{
+													1,
+													1,
+												},
+												position =  
+												{
+													0,
+													0,
+												},
+											},
+										},
+										style =  
+										{
+											"DefaultStyles",
+											"defStyleLabel",
+										},
+										position =  
+										{
+											0.03380,
+											0.02261,
+										},
+										name = "txtInfo",
+										Presentation =  
+										{
+											Art =  
+											{
+												 
+												{
+													type = "Text",
+													textColourBottom =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													fontname = "quorum medium bold13",
+													textColourTop =  
+													{
+														0,
+														0,
+														0,
+														192,
+													},
+													vertAlign = "Top",
+													ID = 7058,
+													horzAlign = "Centre",
+													states =  
+													{
+														"Normal",
+														"Active",
+														"Hover",
+														"Disabled",
+													},
+												},
+											},
+										},
+										size =  
+										{
+											0.32288,
+											0.05933,
+										},
+									},
+									 
+									{
+										type = "CustomListBox",
+										ItemTemplate =  
+										{
+											type = "CustomListBoxItem",
+											name = "itemTmplt_customListPreview",
+											position =  
+											{
+												0,
+												0,
+											},
+											HitArea =  
+											{
+												 
+												{
+													type = "Rectangle",
+													size =  
+													{
+														1,
+														1,
+													},
+													position =  
+													{
+														0,
+														0,
+													},
+												},
+											},
+											Children =  
+											{
+												 
+												{
+													type = "RadioButton",
+													tooltip_text = "$30512",
+													text = "",
+													HitArea =  
+													{
+														 
+														{
+															type = "Rectangle",
+															size =  
+															{
+																1,
+																1,
+															},
+															position =  
+															{
+																0,
+																0,
+															},
+														},
+													},
+													name = "btnPreset01",
+													position =  
+													{
+														0.02475,
+														0.00198,
+													},
+													style =  
+													{
+														"UIStyles",
+														"_presetcolor_Swatch",
+													},
+													Presentation =  
+													{
+														Art =  
+														{
+															 
+															{
+																type = "Graphic",
+																ID = 115887,
+																texture = "art/ui/textures/btn_colorswatch_skull.tga",
+																states =  
+																{
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																position =  
+																{
+																	0.11161,
+																	0.11532,
+																},
+																ID = 115888,
+																size =  
+																{
+																	0.77698,
+																	0.76937,
+																},
+																texture = "art/ui/textures/btn_colorswatch_border.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																colour =  
+																{
+																	255,
+																	255,
+																	255,
+																	254,
+																},
+																position =  
+																{
+																	0.12927,
+																	0.15860,
+																},
+																ID = 115889,
+																size =  
+																{
+																	0.74166,
+																	0.68280,
+																},
+																texture = "art/ui/textures/btn_colorswatch.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+														},
+														Sound =  
+														{
+															 
+															{
+																sample = "cursor_over_small_button",
+																event = "OnHover",
+															},
+															 
+															{
+																sample = "small_button_menu",
+																event = "OnClick",
+															},
+														},
+													},
+													tooltip_name = "tooltip",
+												},
+												 
+												{
+													type = "RadioButton",
+													tooltip_text = "$30513",
+													text = "",
+													HitArea =  
+													{
+														 
+														{
+															type = "Rectangle",
+															size =  
+															{
+																1,
+																1,
+															},
+															position =  
+															{
+																0,
+																0,
+															},
+														},
+													},
+													name = "btnPreset02",
+													position =  
+													{
+														0.07832,
+														0.00198,
+													},
+													style =  
+													{
+														"UIStyles",
+														"_presetcolor_Swatch",
+													},
+													Presentation =  
+													{
+														Art =  
+														{
+															 
+															{
+																type = "Graphic",
+																ID = 115890,
+																texture = "art/ui/textures/btn_colorswatch_skull.tga",
+																states =  
+																{
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																position =  
+																{
+																	0.11161,
+																	0.11532,
+																},
+																ID = 115891,
+																size =  
+																{
+																	0.77698,
+																	0.76937,
+																},
+																texture = "art/ui/textures/btn_colorswatch_border.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																colour =  
+																{
+																	255,
+																	255,
+																	255,
+																	254,
+																},
+																position =  
+																{
+																	0.12927,
+																	0.15860,
+																},
+																ID = 115892,
+																size =  
+																{
+																	0.74166,
+																	0.68280,
+																},
+																texture = "art/ui/textures/btn_colorswatch.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+														},
+														Sound =  
+														{
+															 
+															{
+																sample = "cursor_over_small_button",
+																event = "OnHover",
+															},
+															 
+															{
+																sample = "small_button_menu",
+																event = "OnClick",
+															},
+														},
+													},
+													tooltip_name = "tooltip",
+												},
+												 
+												{
+													type = "RadioButton",
+													tooltip_text = "$30514",
+													text = "",
+													HitArea =  
+													{
+														 
+														{
+															type = "Rectangle",
+															size =  
+															{
+																1,
+																1,
+															},
+															position =  
+															{
+																0,
+																0,
+															},
+														},
+													},
+													name = "btnPreset03",
+													tooltip_name = "tooltip",
+													position =  
+													{
+														0.13188,
+														0.00198,
+													},
+													style =  
+													{
+														"UIStyles",
+														"_presetcolor_Swatch",
+													},
+													Presentation =  
+													{
+														Art =  
+														{
+															 
+															{
+																type = "Graphic",
+																ID = 115893,
+																texture = "art/ui/textures/btn_colorswatch_skull.tga",
+																states =  
+																{
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																position =  
+																{
+																	0.11161,
+																	0.11532,
+																},
+																ID = 115894,
+																size =  
+																{
+																	0.77698,
+																	0.76937,
+																},
+																texture = "art/ui/textures/btn_colorswatch_border.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																colour =  
+																{
+																	255,
+																	255,
+																	255,
+																	254,
+																},
+																position =  
+																{
+																	0.12927,
+																	0.15860,
+																},
+																ID = 115895,
+																size =  
+																{
+																	0.74166,
+																	0.68280,
+																},
+																texture = "art/ui/textures/btn_colorswatch.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+														},
+														Sound =  
+														{
+															 
+															{
+																sample = "cursor_over_small_button",
+																event = "OnHover",
+															},
+															 
+															{
+																sample = "small_button_menu",
+																event = "OnClick",
+															},
+														},
+													},
+													size =  
+													{
+														0.03500,
+														0.04580,
+													},
+												},
+												 
+												{
+													type = "RadioButton",
+													tooltip_text = "$30515",
+													text = "",
+													HitArea =  
+													{
+														 
+														{
+															type = "Rectangle",
+															size =  
+															{
+																1,
+																1,
+															},
+															position =  
+															{
+																0,
+																0,
+															},
+														},
+													},
+													name = "btnPreset04",
+													tooltip_name = "tooltip",
+													position =  
+													{
+														0.18545,
+														0.00198,
+													},
+													style =  
+													{
+														"UIStyles",
+														"_presetcolor_Swatch",
+													},
+													Presentation =  
+													{
+														Art =  
+														{
+															 
+															{
+																type = "Graphic",
+																ID = 115896,
+																texture = "art/ui/textures/btn_colorswatch_skull.tga",
+																states =  
+																{
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																position =  
+																{
+																	0.11161,
+																	0.11532,
+																},
+																ID = 115897,
+																size =  
+																{
+																	0.77698,
+																	0.76937,
+																},
+																texture = "art/ui/textures/btn_colorswatch_border.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																colour =  
+																{
+																	255,
+																	255,
+																	255,
+																	254,
+																},
+																position =  
+																{
+																	0.12927,
+																	0.15860,
+																},
+																ID = 115898,
+																size =  
+																{
+																	0.74166,
+																	0.68280,
+																},
+																texture = "art/ui/textures/btn_colorswatch.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+														},
+														Sound =  
+														{
+															 
+															{
+																sample = "cursor_over_small_button",
+																event = "OnHover",
+															},
+															 
+															{
+																sample = "small_button_menu",
+																event = "OnClick",
+															},
+														},
+													},
+													size =  
+													{
+														0.03500,
+														0.04580,
+													},
+												},
+												 
+												{
+													type = "RadioButton",
+													tooltip_text = "$30516",
+													text = "",
+													HitArea =  
+													{
+														 
+														{
+															type = "Rectangle",
+															size =  
+															{
+																1,
+																1,
+															},
+															position =  
+															{
+																0,
+																0,
+															},
+														},
+													},
+													name = "btnPreset05",
+													tooltip_name = "tooltip",
+													position =  
+													{
+														0.23901,
+														0.00198,
+													},
+													style =  
+													{
+														"UIStyles",
+														"_presetcolor_Swatch",
+													},
+													Presentation =  
+													{
+														Art =  
+														{
+															 
+															{
+																type = "Graphic",
+																ID = 115899,
+																texture = "art/ui/textures/btn_colorswatch_skull.tga",
+																states =  
+																{
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																position =  
+																{
+																	0.11161,
+																	0.11532,
+																},
+																ID = 115900,
+																size =  
+																{
+																	0.77698,
+																	0.76937,
+																},
+																texture = "art/ui/textures/btn_colorswatch_border.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																colour =  
+																{
+																	255,
+																	255,
+																	255,
+																	254,
+																},
+																position =  
+																{
+																	0.12927,
+																	0.15860,
+																},
+																ID = 115901,
+																size =  
+																{
+																	0.74166,
+																	0.68280,
+																},
+																texture = "art/ui/textures/btn_colorswatch.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+														},
+														Sound =  
+														{
+															 
+															{
+																sample = "cursor_over_small_button",
+																event = "OnHover",
+															},
+															 
+															{
+																sample = "small_button_menu",
+																event = "OnClick",
+															},
+														},
+													},
+													size =  
+													{
+														0.03500,
+														0.04580,
+													},
+												},
+												 
+												{
+													type = "RadioButton",
+													tooltip_text = "$30517",
+													text = "",
+													HitArea =  
+													{
+														 
+														{
+															type = "Rectangle",
+															size =  
+															{
+																1,
+																1,
+															},
+															position =  
+															{
+																0,
+																0,
+															},
+														},
+													},
+													name = "btnPreset06",
+													tooltip_name = "tooltip",
+													position =  
+													{
+														0.29258,
+														0.00198,
+													},
+													style =  
+													{
+														"UIStyles",
+														"_presetcolor_Swatch",
+													},
+													Presentation =  
+													{
+														Art =  
+														{
+															 
+															{
+																type = "Graphic",
+																ID = 115902,
+																texture = "art/ui/textures/btn_colorswatch_skull.tga",
+																states =  
+																{
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																position =  
+																{
+																	0.11161,
+																	0.11532,
+																},
+																ID = 115903,
+																size =  
+																{
+																	0.77698,
+																	0.76937,
+																},
+																texture = "art/ui/textures/btn_colorswatch_border.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																colour =  
+																{
+																	255,
+																	255,
+																	255,
+																	254,
+																},
+																position =  
+																{
+																	0.12927,
+																	0.15860,
+																},
+																ID = 115904,
+																size =  
+																{
+																	0.74166,
+																	0.68280,
+																},
+																texture = "art/ui/textures/btn_colorswatch.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+														},
+														Sound =  
+														{
+															 
+															{
+																sample = "cursor_over_small_button",
+																event = "OnHover",
+															},
+															 
+															{
+																sample = "small_button_menu",
+																event = "OnClick",
+															},
+														},
+													},
+													size =  
+													{
+														0.03500,
+														0.04580,
+													},
+												},
+												 
+												{
+													type = "RadioButton",
+													tooltip_text = "$30516",
+													text = "",
+													HitArea =  
+													{
+														 
+														{
+															type = "Rectangle",
+															size =  
+															{
+																1,
+																1,
+															},
+															position =  
+															{
+																0,
+																0,
+															},
+														},
+													},
+													name = "btnPreset07",
+													tooltip_name = "tooltip",
+													position =  
+													{
+														0.34614,
+														0.00198,
+													},
+													style =  
+													{
+														"UIStyles",
+														"_presetcolor_Swatch",
+													},
+													Presentation =  
+													{
+														Art =  
+														{
+															 
+															{
+																type = "Graphic",
+																ID = 115905,
+																texture = "art/ui/textures/btn_colorswatch_skull.tga",
+																states =  
+																{
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																position =  
+																{
+																	0.11161,
+																	0.11532,
+																},
+																ID = 115906,
+																size =  
+																{
+																	0.77698,
+																	0.76937,
+																},
+																texture = "art/ui/textures/btn_colorswatch_border.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+															 
+															{
+																type = "Graphic",
+																colour =  
+																{
+																	255,
+																	255,
+																	255,
+																	254,
+																},
+																position =  
+																{
+																	0.12927,
+																	0.15860,
+																},
+																ID = 115907,
+																size =  
+																{
+																	0.74166,
+																	0.68280,
+																},
+																texture = "art/ui/textures/btn_colorswatch.tga",
+																states =  
+																{
+																	"Normal",
+																	"Disabled",
+																	"Active",
+																	"Hover",
+																	"Checked",
+																	"CheckedDisabled",
+																	"CheckedActive",
+																	"CheckedHover",
+																},
+															},
+														},
+														Sound =  
+														{
+															 
+															{
+																sample = "cursor_over_small_button",
+																event = "OnHover",
+															},
+															 
+															{
+																sample = "small_button_menu",
+																event = "OnClick",
+															},
+														},
+													},
+													size =  
+													{
+														0.03500,
+														0.04580,
+													},
+												},
+											},
+											size =  
+											{
+												0.40841,
+												0.05000,
+											},
+										},
+										HitArea =  
+										{
+											 
+											{
+												type = "Rectangle",
+												size =  
+												{
+													1,
+													1,
+												},
+												position =  
+												{
+													0,
+													0,
+												},
+											},
+										},
+										name = "customListPreview",
+										position =  
+										{
+											0.01720,
+											0.07831,
+										},
+										ScrollBar =  
+										{
+											visible = false,
+											type = "ScrollBar",
+											range =  
+											{
+												0,
+												0,
+											},
+											ButtonDecrement =  
+											{
+												type = "Button",
+												buttonType = "ClickOnPress",
+												text = "",
+												HitArea =  
+												{
+													 
+													{
+														type = "Rectangle",
+														size =  
+														{
+															1,
+															1,
+														},
+														position =  
+														{
+															0,
+															0,
+														},
+													},
+												},
+												name = "btnDec_scrlBar_customListPreview",
+												position =  
+												{
+													0,
+													0,
+												},
+												Presentation =  
+												{
+													Art =  
+													{
+														 
+														{
+															type = "Graphic",
+															ID = 57583,
+															texture = "art/ui/textures/widgets/scroll_button_up_highlight.tga",
+															states =  
+															{
+																"Hover",
+															},
+														},
+														 
+														{
+															type = "Graphic",
+															ID = 57584,
+															texture = "art/ui/textures/widgets/scroll_button_up.tga",
+															states =  
+															{
+																"Normal",
+																"Disabled",
+																"Active",
+															},
+														},
+													},
+												},
+												size =  
+												{
+													0.02500,
+													0.02500,
+												},
+											},
+											HitArea =  
+											{
+												 
+												{
+													type = "Rectangle",
+													size =  
+													{
+														1,
+														1,
+													},
+													position =  
+													{
+														0,
+														0,
+													},
+												},
+											},
+											name = "scrlBar_customListPreview",
+											position =  
+											{
+												0.40841,
+												0,
+											},
+											ButtonTrack =  
+											{
+												type = "Button",
+												name = "btnTrk_scrlBar_customListPreview",
+												position =  
+												{
+													0,
+													0.02500,
+												},
+												text = "",
+												HitArea =  
+												{
+													 
+													{
+														type = "Rectangle",
+														size =  
+														{
+															1,
+															1,
+														},
+														position =  
+														{
+															0,
+															0,
+														},
+													},
+												},
+												size =  
+												{
+													0.02500,
+													0.25239,
+												},
+											},
+											ButtonIncrement =  
+											{
+												type = "Button",
+												buttonType = "ClickOnPress",
+												text = "",
+												HitArea =  
+												{
+													 
+													{
+														type = "Rectangle",
+														size =  
+														{
+															1,
+															1,
+														},
+														position =  
+														{
+															0,
+															0,
+														},
+													},
+												},
+												name = "btnInc_scrlBar_customListPreview",
+												position =  
+												{
+													0,
+													0.27739,
+												},
+												Presentation =  
+												{
+													Art =  
+													{
+														 
+														{
+															type = "Graphic",
+															ID = 57571,
+															texture = "art/ui/textures/widgets/scroll_button_down_highlight.tga",
+															states =  
+															{
+																"Hover",
+															},
+														},
+														 
+														{
+															type = "Graphic",
+															ID = 57572,
+															texture = "art/ui/textures/widgets/scroll_button_down.tga",
+															states =  
+															{
+																"Normal",
+																"Disabled",
+																"Active",
+															},
+														},
+													},
+												},
+												size =  
+												{
+													0.02500,
+													0.02500,
+												},
+											},
+											Presentation =  
+											{
+												Art =  
+												{
+													 
+													{
+														type = "Rectangle",
+														ID = 57570,
+														colour =  
+														{
+															173,
+															176,
+															171,
+															104,
+														},
+														states =  
+														{
+															"Normal",
+															"Active",
+															"Hover",
+															"Disabled",
+														},
+													},
+												},
+											},
+											size =  
+											{
+												0.02500,
+												0.30239,
+											},
+										},
+										ItemsGroup =  
+										{
+											type = "Group",
+											name = "items_customListPreview",
+											position =  
+											{
+												0,
+												0,
+											},
+											HitArea =  
+											{
+												 
+												{
+													type = "Rectangle",
+													size =  
+													{
+														1,
+														1,
+													},
+													position =  
+													{
+														0,
+														0,
+													},
+												},
+											},
+											size =  
+											{
+												0.40841,
+												0.30239,
+											},
+										},
+										style =  
+										{
+											"DefaultStyles",
+											"defStyleCustomListBox",
+										},
+										size =  
+										{
+											0.40841,
+											0.30239,
+										},
+									},
+								},
+								style =  
+								{
+									"DefaultStyles",
+									"defStyleGroup",
+								},
+								Presentation =  
+								{
+								},
+								size =  
+								{
+									0.38924,
+									0.38605,
+								},
+							},
+							 
+							{
+								type = "Button",
+								tooltip_text = "$30506",
+								text = "$30509",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								name = "btnAccept",
+								position =  
+								{
+									0.04857,
+									0.58547,
+								},
+								style =  
+								{
+									"UIStyles",
+									"btn_Accept_16pt_WXP_1",
+								},
+								tooltip_name = "tooltip",
+								size =  
+								{
+									0.16980,
+									0.06027,
+								},
+							},
+							 
+							{
+								type = "Button",
+								tooltip_text = "$30505",
+								text = "$30510",
+								HitArea =  
+								{
+									 
+									{
+										type = "Rectangle",
+										size =  
+										{
+											1,
+											1,
+										},
+										position =  
+										{
+											0,
+											0,
+										},
+									},
+								},
+								name = "btnCancel",
+								position =  
+								{
+									0.22354,
+									0.58547,
+								},
+								style =  
+								{
+									"UIStyles",
+									"btn_Accept_16pt_WXP_1",
+								},
+								tooltip_name = "tooltip",
+								size =  
+								{
+									0.16980,
+									0.06027,
+								},
+							},
+						},
+						style =  
+						{
+							"DefaultStyles",
+							"defStyleGroup",
+						},
+						Presentation =  
+						{
+							Art =  
+							{
+								 
+								{
+									type = "Graphic",
+									position =  
+									{
+										-0.12254,
+										0.03747,
+									},
+									ID = 7004,
+									size =  
+									{
+										1.25141,
+										0.93416,
+									},
+									texture = "art/ui/textures/bg_playerprofilepopup.tga",
+									states =  
+									{
+										"Normal",
+										"Disabled",
+										"Active",
+										"Hover",
+									},
+								},
+							},
+						},
+						size =  
+						{
+							0.44305,
+							0.75125,
+						},
+					},
+				},
+				style =  
+				{
+					"DefaultStyles",
+					"defStyleGroup",
+				},
+				Presentation =  
+				{
+					Art =  
+					{
+						 
+						{
+							type = "Graphic",
+							ID = 24900,
+							texture = "art/ui/textures/bg_shadow.tga",
+							states =  
+							{
+								"Normal",
+								"Active",
+								"Hover",
+								"Disabled",
+							},
+						},
+						 
+						{
+							type = "Rectangle",
+							position =  
+							{
+								0,
+								0.95703,
+							},
+							ID = 202980,
+							size =  
+							{
+								1,
+								0.04297,
+							},
+							states =  
+							{
+								"Normal",
+								"Active",
+								"Hover",
+								"Disabled",
+							},
+						},
+					},
+				},
+				size =  
+				{
+					1,
+					1,
+				},
+			},
+		},
+		size =  
+		{
+			1,
+			1,
+		},
+	},
+}
+ToolInfo =  
+{
+	version = 3,
+	WidgetInfo =  
+	{
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "grp_Screen",
+			HitAreaGuides =  
+			{
+			},
+			type = "Group",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+				 
+				{
+					horizontal = false,
+					position = 0.95703,
+				},
+			},
+			name = "grpBackground",
+			HitAreaGuides =  
+			{
+			},
+			type = "Group",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "grpQuit",
+			HitAreaGuides =  
+			{
+			},
+			type = "Group",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "txtThoughtQuit",
+			HitAreaGuides =  
+			{
+			},
+			type = "TextLabel",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "grpTitle",
+			HitAreaGuides =  
+			{
+			},
+			type = "Group",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "sub1",
+			HitAreaGuides =  
+			{
+			},
+			type = "TextLabel",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "sub2",
+			HitAreaGuides =  
+			{
+			},
+			type = "TextLabel",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "sub3",
+			HitAreaGuides =  
+			{
+			},
+			type = "TextLabel",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "lblColourName",
+			HitAreaGuides =  
+			{
+			},
+			type = "TextLabel",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "grpDataEntry",
+			HitAreaGuides =  
+			{
+			},
+			type = "Group",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "txtExistingProfile",
+			HitAreaGuides =  
+			{
+			},
+			type = "TextLabel",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "txtInfo",
+			HitAreaGuides =  
+			{
+			},
+			type = "TextLabel",
+		},
+		 
+		{
+			type = "CustomListBox",
+			autoPopulate = true,
+			HitAreaGuides =  
+			{
+			},
+			ArtGuides =  
+			{
+			},
+			name = "customListPreview",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "items_customListPreview",
+			HitAreaGuides =  
+			{
+			},
+			type = "Component",
+		},
+		 
+		{
+			type = "Component",
+			name = "scrlBar_customListPreview",
+			HitAreaGuides =  
+			{
+			},
+			hidden = true,
+			ArtGuides =  
+			{
+			},
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnDec_scrlBar_customListPreview",
+			HitAreaGuides =  
+			{
+			},
+			type = "Component",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnInc_scrlBar_customListPreview",
+			HitAreaGuides =  
+			{
+			},
+			type = "Component",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnTrk_scrlBar_customListPreview",
+			HitAreaGuides =  
+			{
+			},
+			type = "Component",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnPgDn_scrlBar_customListPreview",
+			HitAreaGuides =  
+			{
+			},
+			type = "Component",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnPgUp_scrlBar_customListPreview",
+			HitAreaGuides =  
+			{
+			},
+			type = "Component",
+		},
+		 
+		{
+			type = "Component",
+			name = "itemTmplt_customListPreview",
+			HitAreaGuides =  
+			{
+			},
+			hidden = true,
+			ArtGuides =  
+			{
+			},
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnPreset01",
+			HitAreaGuides =  
+			{
+			},
+			type = "RadioButton",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnPreset02",
+			HitAreaGuides =  
+			{
+			},
+			type = "RadioButton",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnPreset03",
+			HitAreaGuides =  
+			{
+			},
+			type = "RadioButton",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnPreset04",
+			HitAreaGuides =  
+			{
+			},
+			type = "RadioButton",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnPreset05",
+			HitAreaGuides =  
+			{
+			},
+			type = "RadioButton",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnPreset06",
+			HitAreaGuides =  
+			{
+			},
+			type = "RadioButton",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnPreset07",
+			HitAreaGuides =  
+			{
+			},
+			type = "RadioButton",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnAccept",
+			HitAreaGuides =  
+			{
+			},
+			type = "Button",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "btnCancel",
+			HitAreaGuides =  
+			{
+			},
+			type = "Button",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "grp_tooltips",
+			HitAreaGuides =  
+			{
+			},
+			type = "",
+		},
+		 
+		{
+			ArtGuides =  
+			{
+			},
+			name = "tooltip",
+			HitAreaGuides =  
+			{
+			},
+			type = "TextLabel",
+		},
+	},
+	Guides =  
+	{
+	},
+	ScreenInfo =  
+	{
+		LocaleRange =  
+		{
+			30500,
+			30999,
+		},
+	},
+}

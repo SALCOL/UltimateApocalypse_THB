@@ -1,0 +1,2 @@
+Relic Chunky
+       FOLDEVCT   ë      DATAEVNT   U      barrage_marker_target_beam       spawn_outside_camera_view   1.0   fx#   dowxp_tau_super_shieldDATAEVNT   t      camera_shake_long       cam_shake_duration   15   cam_shake_intensity   .1   cam_shake_falloff   .05   cam_shake_radius   128DATAEVNT   2      clone_unit_lrg       fx$   tau\ethereal\blueprint_unit_03_comboDATAEVNT   R      sound_clone_spawn       sound)   single_player\psyker_structures\arch_open   sound_percent   5.0

@@ -1,0 +1,42 @@
+LocalInfo =  
+{
+	badge_name = "necron_race/Necron",
+	associated_race = "necron_race",
+	banner_name = "necron_race/Necron",
+}
+UnitCustomization =  
+{
+	pattern_name = "default",
+	force_name = "Jarrman Primus",
+	Eyes =  
+	{
+		b = 47,
+		g = 135,
+		r = 212,
+	},
+	Weapons =  
+	{
+		b = 77,
+		g = 196,
+		r = 255,
+	},
+	Primary =  
+	{
+		b = 95,
+		g = 58,
+		r = 37,
+	},
+	Trim =  
+	{
+		b = 77,
+		g = 196,
+		r = 255,
+	},
+	Secondary =  
+	{
+		b = 95,
+		g = 58,
+		r = 37,
+	},
+}
+
