@@ -1,0 +1,45 @@
+--8p_moon: Created by Cylarne_04
+--
+-- Basically this scenario slows down the movement speeds of all units while also setting their mass to 0 to allow 0 G sort of. Hilarious and fun.
+-- Applied research does this.
+
+-------------------------------------------------
+--[[ IMPORTS ]]
+-------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+
+-------------------------------------------------
+--[[ GAME SETUP (variables) ]]
+-------------------------------------------------
+
+-------------------------------------------------
+--[[ ON INITIALIZATION ]]
+-------------------------------------------------
+
+function OnInit()
+
+	Rule_SetupPlayers()
+	Rule_SetupGame()
+	
+end	
+
+-------------------------------------------------
+--[[ LOCAL SCAR Setup ]]
+-------------------------------------------------
+
+function Rule_SetupPlayers()
+	
+	
+	
+end
+
+function Rule_SetupGame()
+
+	Sound_PlaylistClear(PC_Ambient);
+	
+end
+
+
+Scar_AddInit(OnInit)
+

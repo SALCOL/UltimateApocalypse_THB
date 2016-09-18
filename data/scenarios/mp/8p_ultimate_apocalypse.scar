@@ -1,0 +1,304 @@
+-- Ultimate Apocalypse map, dedicated to the Ultimate Apocalypse mod.
+-- Created by Cylarne_04, Krronus, ProfessorGenius.
+
+-- Apocalypse Mod Team.
+
+-------------------------------------------------
+--[[ IMPORTS ]]
+-------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+
+-------------------------------------------------
+--[[ VARIABLES ]]
+-------------------------------------------------
+
+g_explosions = 0;
+caster1_location = 1; -- 100 locations to cast.
+caster2_location = 26;
+caster3_location = 38;
+caster4_location = 45;
+caster5_location = 78;
+
+--[[Markers]]
+-- world_meteor1-100, world_nuker, world_blast1-10, titan_marker, world_titancannon.
+
+--[[EGroups on map]]
+-- cursed_crit_location, titan_cannon, eg_titancannon_relic.
+
+-------------------------------------------------
+--[[ OBJECTIVES ]]
+-------------------------------------------------
+-- Warp Gate
+obj_warpgate = {title_id = 15777700, short_desc_id = 15777702, help_tip_id = 15777703}
+
+-- Titan Arm Cannon
+obj_titancannon = {title_id = 15777707, short_desc_id = 15777708, help_tip_id = 15777708}
+
+-------------------------------------------------
+--[[ ON INITIALIZATION ]]
+-------------------------------------------------
+
+function OnInit()
+	
+	Rule_WorldEvents()
+	Rule_TitanCannon_Objective()
+	Rule_WarpGate_Objective()
+	--Rule_Trailer()
+	--Rule_Titans()
+	
+end	
+
+Scar_AddInit(OnInit)
+
+-------------------------------------------------
+--[[ LOCAL SCAR Setup ]]
+-------------------------------------------------
+
+function Rule_WorldEvents()
+
+	-- Add in the Meteor and Volcano explosion rules.
+	--Rule_AddOneShot(Rule_Meteors, 1)
+	Rule_AddInterval(Rule_Explosions, 40)
+
+end
+
+-------------------------------------------------
+--[[ Secondary Objectives ]]
+-------------------------------------------------
+
+function Rule_TitanCannon_Objective()
+
+	-- Reveal the Titan Cannon
+	FOW_RevealMarker("world_titancannon", -1)
+	Objective_Add(obj_titancannon, false)
+	PingRelic = Ping_Position(EGroup_GetPosition("eg_titancannon_relic"), true)
+	Rule_AddInterval(Rule_TitanCannon_Main, 1)
+
+end
+
+function Rule_TitanCannon_Main()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		if (EGroup_IsCapturedByPlayer("eg_titancannon_relic", player, false)) then
+		
+			if ((world_titancannon_fire) == nil) then
+				world_titancannon_fire = 30; 
+				
+				WinWarning_Add( "ui_cannon_timer", World_GetPlayerAt(0), "", "", "" )
+			end
+			world_titancannon_fire = world_titancannon_fire - 1;
+			WinWarning_SetText("ui_cannon_timer", Loc_FormatText1(15777713, Loc_FormatTime(60409, world_titancannon_fire)))
+			
+			-- Extra Warnings.
+			if (world_titancannon_fire == 4) then
+				Anim_PlayEGroupAnim(EGroup_FromName("titan_cannon"), "firing")
+				
+			elseif (world_titancannon_fire == 1) then
+				TitanCannon_Fire()
+			elseif (world_titancannon_fire == 0) then
+				world_titancannon_fire = 30; 
+				Anim_StopEGroupAnim(EGroup_FromName("titan_cannon"), "firing")
+			end
+			
+		elseif not (world_titancannon_fire) == nil then
+			
+			WinWarning_Remove("ui_cannon_timer")
+			world_titancannon_fire = nil; -- Get arid of the countdown timer and remove it.
+			
+		end
+	end
+
+end
+
+function TitanCannon_Fire()
+
+	Ping_Marker("world_titancannon", false)
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		for i = 1, 10 do
+			Player_GetAllEntitiesNearMarker(player, "eg_blasted", "world_blast"..i)
+			Player_GetAllSquadsNearMarker(player, "sg_blasted", "world_blast"..i)
+		end
+		
+		EGroup_SelfDestroy("eg_blasted", true)
+		SGroup_SelfDestroy("sg_blasted", true)
+		
+		EGroup_Destroy("eg_blasted")
+		SGroup_Destroy("sg_blasted")
+	end
+
+end
+
+function Rule_WarpGate_Objective()
+
+	Objective_Add(obj_warpgate, false)
+	PingCritLocation = Ping_Position(EGroup_GetPosition("cursed_crit_location"), true)
+	PingWG = Ping_Marker("titan_marker", true)
+	Rule_AddOneShot(Rule_WarpGate_StopPing, 60)
+	Rule_AddInterval(Rule_WarpGate_Titan, 1)
+	
+end
+
+function Rule_WarpGate_StopPing()
+
+	Ping_Stop(PingRelic)
+	Ping_Stop(PingCritLocation)
+	Ping_Stop(PingWG)
+	
+end
+
+function Rule_WarpGate_Titan()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		if (EGroup_IsCapturedByPlayer("cursed_crit_location", player, false)) then
+		
+			if ((world_spamtimer_titan) == nil) then
+				world_spamtimer_titan = 601; 
+				
+				WinWarning_Add( "ui_titan_timer", World_GetPlayerAt(0), "", "", "" )
+			end
+			world_spamtimer_titan = world_spamtimer_titan - 1;
+			WinWarning_SetText( "ui_titan_timer", Loc_FormatText1( 15777706, Loc_FormatTime( 60409, world_spamtimer_titan ) )  )
+			-- Extra Warnings.
+			if (world_spamtimer_titan == 600) then
+				local warning = ("WARNING! Titan Arrives in 10 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 300) then
+				local warning = ("WARNING! Titan Arrives in 5 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 240) then
+				local warning = ("WARNING! Titan Arrives in 4 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 180) then
+				local warning = ("WARNING! Titan Arrives in 3 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 120) then
+				local warning = ("WARNING! Titan Arrives in 2 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 60) then
+				local warning = ("WARNING! Titan Arrives in 1 minute!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 30) then
+				local warning = ("WARNING! Titan Arrives in 30 seconds!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 10) then
+				local warning = ("WARNING! Titan is almost here!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 0) then
+				local warning = ("Titan has been spawned from the Warp Gate!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Marker("titan_marker", false)
+				world_spamtimer_titan = 601;
+				if (Player_GetRaceName(player) == "chaos_marine_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "chaos_squad_warhound_titan", "titan_marker", 1)
+					
+				elseif (Player_GetRaceName(player) == "dark_eldar_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "dark_eldar_squad_tormentor", "titan_marker", 1)
+					
+				elseif (Player_GetRaceName(player) == "eldar_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "eldar_squad_titan_revenant", "titan_marker", 1)
+					
+				elseif (Player_GetRaceName(player) == "guard_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "guard_squad_warhound_titan", "titan_marker", 1)
+					
+				elseif (Player_GetRaceName(player) == "necron_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "necron_doomsday_monolith_squad", "titan_marker", 1)
+					
+				elseif (Player_GetRaceName(player) == "ork_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "ork_squad_squiggoth_gargantaun", "titan_marker", 1)
+					
+				elseif (Player_GetRaceName(player) == "sisters_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "sisters_squad_arch_angel", "titan_marker", 1)
+					
+				elseif (Player_GetRaceName(player) == "space_marine_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "space_marine_squad_warhound_titan", "titan_marker", 1)
+					
+				elseif (Player_GetRaceName(player) == "tau_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "tau_manta_squad", "titan_marker", 1)
+					
+				elseif (Mod_IsXP2) then
+					if (Player_GetRaceName(player) == "inquisition_daemonhunt_race") then
+						Util_CreateSquadsAtMarker(player, "sg_titan", "inquisition_squad_warhound_titan", "titan_marker", 1)
+						
+					elseif (Player_GetRaceName(player) == "daemons_race") then
+						Util_CreateSquadsAtMarker(player, "sg_titan", "daemon_squad_hell_spawn", "titan_marker", 1)
+						
+					elseif (Player_GetRaceName(player) == "tyranids_race") then
+						Util_CreateSquadsAtMarker(player, "sg_titan", "tyranids_squad_hierophant", "titan_marker", 1)
+					end
+				end
+			end
+			
+		elseif not (world_spamtimer_titan) == nil then
+			
+			WinWarning_Remove("ui_titan_timer")
+			world_spamtimer_titan = nil; -- Get arid of the countdown timer and remove it.
+			
+		end
+	end
+
+end
+
+-------------------------------------------------
+--[[ World Events ]]
+-------------------------------------------------
+
+function Rule_Explosions()
+	
+	-- The fx below will always happen in a 60 second interval.
+	Util_MarkerFX("world_nuker", "data:Art/Events/Titan/Titan_Cannon_Hit")
+	
+	if (g_explosions < 3) then
+		g_explosions = g_explosions + 1;
+		
+	else -- 3 minor explosions happened
+		Util_MarkerFX("world_nuker", "data:Art/Events/Guard/Weapons/Basilisk_Magnus_Hit") -- Big explosion!
+		
+		local count = World_GetPlayerCount();
+		for i = 0, count-1
+		do
+			
+			local player = World_GetPlayerAt(i);
+		
+			Player_GetAllSquadsNearMarker(player, "sg_nearvolcano", "world_nuker")
+			
+			if (SGroup_Exists("sg_nearvolcano")) then -- Just to be safe with no SCAR errors.
+				SGroup_SelfDestroy("sg_nearvolcano", true)
+				
+				SGroup_Destroy("sg_nearvolcano")
+				
+			end
+		end
+		
+		g_explosions = 0; -- Restart the process.
+	end
+
+end

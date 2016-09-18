@@ -1,0 +1,128 @@
+-- 8p_ultimate_apocalypse.nis
+-- Created by Cylarne 2011
+
+EVENTS = {}
+-------------------------------------------------
+--[[ INTEL EVENTS ]]
+-------------------------------------------------
+
+EVENTS.NIS_Trailer = function()
+--21
+--34
+--49
+--54
+--68
+--94
+--102
+--120
+	FOW_RevealAll()
+	W40k_Letterbox( true, 0 )
+	CTRL.Event_Delay( 0.5 )
+	CTRL.WAIT()
+	CTRL.Event_Delay( 7 )
+		Fade_Start( 0, false )
+		Util_MissionTitle("Ultimate Apocalypse Mod Team presents...")
+	CTRL.WAIT()
+	CTRL.Event_Delay( 7 )
+		Util_MissionTitle("Some upcoming new features of the 2012 release.")
+	CTRL.WAIT()
+	CTRL.Event_Delay(6.8)--21
+		Util_MissionTitle("All in a small demonstration!")
+	CTRL.WAIT()
+	CTRL.Event_Delay(12)
+		Fade_Start( 1.0, true )	
+		CPath_Start("canim_01", "frame1", "frame2")
+	CTRL.WAIT()
+	CTRL.Event_Delay(1)
+		Fade_Start( 1.0, false )
+	CTRL.WAIT()
+	CTRL.Event_Delay(7)--34
+		CPath_Blendout(1)
+		Util_MissionTitle("Build this army!")
+	CTRL.WAIT()
+	CTRL.Event_Delay(6)	
+		Util_MissionTitle("Or build another!")
+	CTRL.WAIT()
+	CTRL.Event_Delay(6)--49
+		Util_MissionTitle("11 races.")
+		Fade_Start( 7.5, false )
+		CPath_Start("canim_01", "frame3", "frame4")
+	CTRL.WAIT()
+	CTRL.Event_Delay(7)--55
+		Util_MissionTitle("And another created by us!")
+	CTRL.WAIT()
+	CTRL.Event_Delay(4.35)
+		Fade_Start( 1.2, true )
+		CPath_CutToPoint("canim_01", "frame_cm")
+		Anim_PlaySGroupAnim("sg_chaptermaster", "battlecry")
+		Util_MissionTitle("Witness the Apocalypse!")
+	CTRL.WAIT()
+	CTRL.Event_Delay(1)--69CPath_Blendout(2)
+		Fade_Start( 0.5, false )
+		Anim_StopSGroupAnim("sg_chaptermaster", "battlecry")
+	CTRL.WAIT()
+	CTRL.Event_Delay(1.65)--69
+		CPath_Blendout(2)
+		SGroup_SetHealthInvulnerable("sg_chaptermaster", true)
+		SGroup_SetHealthInvulnerable("sg_tbroodlord", true)
+		Cmd_SetStance("sg_imperialarmy", STANCE_Attack)
+		Cmd_SetStance("sg_tyranidarmy", STANCE_Attack)
+		for i = 1, 10 do
+			Cmd_AttackMoveMarker("sg_army"..i, "marker_tyranids_army"..i)
+		end
+		for i = 1, 10 do
+			Cmd_AttackMoveMarker("sg_tarmy"..i, "marker_imperium_army"..i)
+		end
+		Cmd_AttackMoveMarker("sg_chaptermaster", "marker_tyranids_bl")
+		Cmd_AttackMoveMarker("sg_tbroodlord", "marker_imperium_cm")
+		Cmd_AttackMoveMarker("sg_ttitan", "marker_imperium_cm")
+		Cmd_AttackMoveMarker("sg_ttitan2", "marker_imperium_cm")
+		Cmd_AttackMoveMarker("sg_tcarnifex", "marker_imperium_cm")
+		Cmd_AttackMoveMarker("sg_warhound", "marker_tyranids_bl")
+		Cmd_MoveToMarker("sg_reaver", "marker_imperium_cm")
+		Cmd_MoveToMarker("sg_tank1", "marker_imperium_army1")
+		Cmd_MoveToMarker("sg_tank2", "marker_imperium_army3")
+		Cmd_MoveToMarker("sg_tank3", "marker_imperium_army5")
+		Cmd_SetStance("sg_reaver", STANCE_StandGround)
+	CTRL.WAIT()
+	CTRL.Event_Delay(8)--77
+		Fade_Start( 1.5, true )
+		CPath_Start("canim_02", "frame1", "frame2")
+		
+	CTRL.WAIT()
+	CTRL.Event_Delay(1)--78
+		Cmd_JumpToPos("sg_army1", SGroup_GetPosition("sg_tarmy1"))
+		Cmd_JumpToPos("sg_army3", SGroup_GetPosition("sg_tarmy3"))
+		Cmd_JumpToPos("sg_army5", SGroup_GetPosition("sg_tarmy5"))
+		Cmd_AttackSGroup("sg_reaver", "sg_ttitan2")
+	CTRL.WAIT()
+	CTRL.Event_Delay(3)--81
+		Cmd_SetStance("sg_chaptermaster", STANCE_CeaseFire)
+		Cmd_MoveToMarker("sg_chaptermaster", "world_meteor47")
+		Cmd_CastAbilityMarker("sg_tank1", "marines_whirlwind_missiles", "world_meteor53")
+		Cmd_CastAbilityPos("sg_tank2", "marines_whirlwind_missiles", SGroup_GetPosition("sg_chaptermaster"))
+		Cmd_CastAbilityMarker("sg_tank3", "marines_whirlwind_missiles", "world_meteor53")
+		Cmd_CastAbilityMarker("sg_reaver", "marines_apocalypse_missiles", "marker_tyranids_bl")
+		for i = 1, 10 do
+			Util_CreateSquadsAtMarker(g_Player2, "sg_tarmy"..i, "tyranids_squad_carnifex_skiller", "marker_tyranids_army"..i, 1)
+			Util_CreateSquadsAtMarkerEx(g_Player2, "sg_tarmy"..i, "tyranids_squad_zoanthropes", "marker_tyranids_army"..i, 1, 1)
+			Cmd_AttackMoveMarker("sg_tarmy"..i, "marker_imperium_army"..i)
+		end
+	CTRL.WAIT()
+	CTRL.Event_Delay(3)--84
+		Cmd_AttackSGroup("sg_reaver", "sg_ttitan2")
+		SGroup_SetHealthInvulnerable("sg_tbroodlord", false)
+	CTRL.WAIT()
+	CTRL.Event_Delay(11)--95
+		Cmd_CastAbilitySelf("sg_chaptermaster", "marines_all_out_war")
+		Fade_Start( 17, false )
+	CTRL.WAIT()
+	CTRL.Event_Delay(8)--102
+		Util_MissionTitle("Stop the Apocalypse!")
+	CTRL.WAIT()
+	
+	----------------------------------------- End cutscene.
+	--CPath_Blendout(1)
+	FOW_Reset()
+	W40k_Letterbox( false, 1)
+end

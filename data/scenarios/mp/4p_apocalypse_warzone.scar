@@ -1,0 +1,167 @@
+-- Titanic Warzone, dedicated to the Ultimate Apocalypse mod.
+-- Created by Cylarne_04.
+-- Scar coded by Cylarne_04.
+
+-- Apocalypse Mod Team.
+
+-------------------------------------------------
+--[[ IMPORTS ]]
+-------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+
+-------------------------------------------------
+--[[ VARIABLES ]]
+-------------------------------------------------
+
+--[[Markers]]
+-- marker_blast_1-28 (1-10) (11-19) (20-28)
+-- marker_titancannon1-3
+-- marker_powersource_1-3
+
+--[[EGroups on map]]
+-- eg_titancannon1-3
+
+-------------------------------------------------
+--[[ OBJECTIVES ]]
+-------------------------------------------------
+
+-------------------------------------------------
+--[[ ON INITIALIZATION ]]
+-------------------------------------------------
+
+function OnInit()
+
+	world_titancannon1_fire = 67; -- Time to fire cannon 1
+	world_titancannon2_fire = 66; -- Time to fire cannon 2
+	world_titancannon3_fire = 65; -- Time to fire cannon 3
+	
+	warzone_playercount = 0; -- integer applied, used for disabling/enabling the main Titan Cannon rule to avoid Multiplayer sync errors.
+	
+	-- Check to see if there is >= 2 players.
+	local count = World_GetPlayerCount();
+	for j = 0, count-1 do
+		local Player = World_GetPlayerAt(j);
+		
+		if (Player_IsAlive(Player) and Cpu_IsCpuPlayer(Player)) then 
+			warzone_playercount = warzone_playercount + 0;
+		elseif (Player_IsAlive(Player)) then
+			warzone_playercount = warzone_playercount + 1;
+		end
+	end
+	
+	if (warzone_playercount < 2) then -- Less than 2 players? Well then set up the cannons!
+		Rule_TitanCannon_Objective()
+	end
+	
+end	
+
+Scar_AddInit(OnInit)
+
+-------------------------------------------------
+--[[ LOCAL SCAR Setup ]]
+-------------------------------------------------
+
+-------------------------------------------------
+--[[ Secondary Objectives ]]
+-------------------------------------------------
+
+function Rule_TitanCannon_Objective()
+
+	-- Reveal the Titan Cannons
+	FOW_RevealMarker("marker_titancannon1", -1)
+	FOW_RevealMarker("marker_titancannon2", -1)
+	FOW_RevealMarker("marker_titancannon3", -1)
+	Rule_AddInterval(Rule_TitanCannon_Main, 1)
+
+end
+
+function Rule_TitanCannon_Main()
+
+	-- Player Thermo Generators count.
+	--[[local count = World_GetPlayerCount();
+	for j = 0, count-1 do
+		local Player = World_GetPlayerAt(j);
+		
+		Player_GetAllEntitiesNearMarker(Player, "eg_powersource_1", "marker_powersource_1")
+		Player_GetAllEntitiesNearMarker(Player, "eg_powersource_2", "marker_powersource_2")
+		Player_GetAllEntitiesNearMarker(Player, "eg_powersource_3", "marker_powersource_3")
+	end]]
+	
+	-- Power Source applied? Tick down the time.
+	--if (EGroup_Exists("eg_powersource_1") and EGroup_Count("eg_powersource_1") > 0 and world_titancannon1_fire > 0) then
+		world_titancannon1_fire = world_titancannon1_fire - 1; -- Tick down the time if there is a Thermo built
+	--end
+	--if (EGroup_Exists("eg_powersource_2") and EGroup_Count("eg_powersource_2") > 0 and world_titancannon2_fire > 0) then
+		world_titancannon2_fire = world_titancannon2_fire - 1; -- Tick down the time if there is a Thermo built
+	--end
+	--if (EGroup_Exists("eg_powersource_3") and EGroup_Count("eg_powersource_3") > 0 and world_titancannon3_fire > 0) then
+		world_titancannon3_fire = world_titancannon3_fire - 1; -- Tick down the time if there is a Thermo built
+	--end
+	
+	------------------------Titan Cannon 1-------------------------
+	if (world_titancannon1_fire == 4) then
+		Anim_PlayEGroupAnim(EGroup_FromName("eg_titancannon1"), "firing")
+	elseif (world_titancannon1_fire == 1) then
+		TitanCannon_Fire(1) -- FIRE!!!
+	elseif (world_titancannon1_fire == 0) then
+		TitanCannon_Stop(1); -- Then stop the cannon's animation
+		r_number = World_GetRand(40, 90);
+		world_titancannon1_fire = r_number; 
+	end
+	------------------------Titan Cannon 2-------------------------
+	if (world_titancannon2_fire == 4) then
+		Anim_PlayEGroupAnim(EGroup_FromName("eg_titancannon2"), "firing")
+	elseif (world_titancannon2_fire == 1) then
+		TitanCannon_Fire(2) -- FIRE!!!
+	elseif (world_titancannon2_fire == 0) then
+		TitanCannon_Stop(2); -- Then stop the cannon's animation
+		r_number = World_GetRand(40, 90);
+		world_titancannon2_fire = r_number; 
+	end
+	------------------------Titan Cannon 3-------------------------
+	if (world_titancannon3_fire == 4) then
+		Anim_PlayEGroupAnim(EGroup_FromName("eg_titancannon3"), "firing")
+	elseif (world_titancannon3_fire == 1) then
+		TitanCannon_Fire(3) -- FIRE!!!
+	elseif (world_titancannon3_fire == 0) then
+		TitanCannon_Stop(3); -- Then stop the cannon's animation
+		r_number = World_GetRand(40, 90);
+		world_titancannon3_fire = r_number; 
+	end
+
+end
+
+function TitanCannon_Fire(f_integer)
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		if (f_integer == 1) then -- Cannon 1's variables, shoot at these markers...
+			for ii = 1, 10 do
+				Player_GetAllEntitiesNearMarker(player, "eg_blasted", "marker_blast_"..ii)
+				Player_GetAllSquadsNearMarker(player, "sg_blasted", "marker_blast_"..ii)
+			end
+		elseif (f_integer == 2) then -- Cannon 2's variables, shoot at these markers...
+			for ii = 11, 19 do
+				Player_GetAllEntitiesNearMarker(player, "eg_blasted", "marker_blast_"..ii)
+				Player_GetAllSquadsNearMarker(player, "sg_blasted", "marker_blast_"..ii)
+			end
+		else
+			for ii = 20, 28 do -- Cannon 3's variables, shoot at these markers...
+				Player_GetAllEntitiesNearMarker(player, "eg_blasted", "marker_blast_"..ii)
+				Player_GetAllSquadsNearMarker(player, "sg_blasted", "marker_blast_"..ii)
+			end
+		end
+		EGroup_SelfDestroy("eg_blasted", true)
+		SGroup_SelfDestroy("sg_blasted", true)
+		
+		EGroup_Destroy("eg_blasted")
+		SGroup_Destroy("sg_blasted")
+	end
+
+end
+
+function TitanCannon_Stop(f_integer2)
+	Anim_StopEGroupAnim(EGroup_FromName("eg_titancannon"..f_integer2), "firing") -- Stops animation of any titan cannon
+end

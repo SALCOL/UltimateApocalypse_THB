@@ -1,0 +1,414 @@
+-- Ultimate Apocalypse map, dedicated to the Ultimate Apocalypse mod.
+-- Created by Cylarne_04.
+-- SCAR coded all by Cylarne_04
+
+-- Apocalypse Mod Team.
+
+-------------------------------------------------
+--[[ IMPORTS ]]
+-------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+
+-------------------------------------------------
+--[[ VARIABLES ]]
+-------------------------------------------------
+
+g_explosions = 0;
+g_Player1 = World_GetPlayerAt(0)
+g_Player2 = World_GetPlayerAt(1)
+
+--[[Markers]]
+-- world_nuker, world_blast1-10, titan_marker, world_titancannon, marker_titanportal_1-8.
+
+--[[EGroups on map]]
+-- cursed_crit_location, titan_cannon, eg_titancannon_relic, eg_titanportal_cl_1-8.
+
+-------------------------------------------------
+--[[ OBJECTIVES ]]
+-------------------------------------------------
+-- Warp Gate
+obj_warpgate = {title_id = 15777700, short_desc_id = 15777701, help_tip_id = 15777703}
+
+-- Titan Arm Cannon
+obj_titancannon = {title_id = 15777707, short_desc_id = 15777708, help_tip_id = 15777708}
+
+-------------------------------------------------
+--[[ ON INITIALIZATION ]]
+-------------------------------------------------
+
+function OnInit()
+	
+	Rule_WorldEvents()
+	Rule_TitanCannon_Objective()
+	Rule_WarpGate_Objective()
+	
+	-- Create army cap modifiers
+	local oModPopulationCap	= Modifier_Create(MAT_Player, "population_cap_player_modifier", MUT_Multiplication, false, 10, "")
+	Modifier_ApplyToPlayer(oModPopulationCap, g_Player1)
+	Modifier_ApplyToPlayer(oModPopulationCap, g_Player2)
+	
+end	
+
+Scar_AddInit(OnInit)
+
+-------------------------------------------------
+--[[ LOCAL SCAR Setup ]]
+-------------------------------------------------
+
+function Rule_WorldEvents()
+
+	-- Add in the Meteor and Volcano explosion rules.
+	--Rule_AddOneShot(Rule_Meteors, 1)
+	Rule_AddInterval(Rule_Explosions, 30)
+
+end
+
+-------------------------------------------------
+--[[ Secondary Objectives ]]
+-------------------------------------------------
+
+function Rule_TitanCannon_Objective()
+
+	-- Reveal the Titan Cannon
+	FOW_RevealMarker("world_titancannon", -1)
+	Util_ObjectiveCreate(obj_titancannon, false)
+	PingRelic = Ping_Position(EGroup_GetPosition("eg_titancannon_relic"), true)
+	Rule_AddInterval(Rule_TitanCannon_Main, 1)
+
+end
+
+function Rule_TitanCannon_Main()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		if (EGroup_IsCapturedByPlayer("eg_titancannon_relic", player, false)) then
+		
+			if ((world_titancannon_fire) == nil) then
+				world_titancannon_fire = 30; 
+				
+				WinWarning_Add( "ui_cannon_timer", World_GetPlayerAt(0), "", "", "" )
+			end
+			world_titancannon_fire = world_titancannon_fire - 1;
+			WinWarning_SetText("ui_cannon_timer", Loc_FormatText1(15777713, Loc_FormatTime(60409, world_titancannon_fire)))
+			
+			-- Extra Warnings.
+			if (world_titancannon_fire == 4) then
+				Anim_PlayEGroupAnim(EGroup_FromName("titan_cannon"), "firing")
+				
+			elseif (world_titancannon_fire == 1) then
+				TitanCannon_Fire()
+			elseif (world_titancannon_fire == 0) then
+				world_titancannon_fire = 30; 
+				Anim_StopEGroupAnim(EGroup_FromName("titan_cannon"), "firing")
+			end
+			
+		elseif not (world_titancannon_fire) == nil then
+			
+			WinWarning_Remove("ui_cannon_timer")
+			world_titancannon_fire = nil; -- Get arid of the countdown timer and remove it.
+			
+		end
+	end
+
+end
+
+function TitanCannon_Fire()
+
+	Ping_Marker("world_titancannon", false)
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		for i = 1, 10 do
+			Player_GetAllEntitiesNearMarker(player, "eg_blasted", "world_blast"..i)
+			Player_GetAllSquadsNearMarker(player, "sg_blasted", "world_blast"..i)
+		end
+		
+		EGroup_SelfDestroy("eg_blasted", true)
+		SGroup_SelfDestroy("sg_blasted", true)
+		
+		EGroup_Destroy("eg_blasted")
+		SGroup_Destroy("sg_blasted")
+	end
+
+end
+
+function Rule_WarpGate_Objective()
+
+	Util_ObjectiveCreate(obj_warpgate, false)
+	PingCritLocation = Ping_Position(EGroup_GetPosition("cursed_crit_location"), true)
+	PingWG = Ping_Marker("titan_marker", true)
+	PingTP1 = Ping_Marker("marker_titanportal_1", true)
+	PingTP2 = Ping_Marker("marker_titanportal_2", true)
+	PingTP3 = Ping_Marker("marker_titanportal_3", true)
+	PingTP4 = Ping_Marker("marker_titanportal_4", true)
+	PingTP5 = Ping_Marker("marker_titanportal_5", true)
+	PingTP6 = Ping_Marker("marker_titanportal_6", true)
+	PingTP7 = Ping_Marker("marker_titanportal_7", true)
+	PingTP8 = Ping_Marker("marker_titanportal_8", true)
+	
+	world_titantimer_1 = 1200; -- Player 1's titans
+	world_titantimer_2 = 1200; -- Player 2's titans
+	increase_titantimer_1 = world_titantimer_1; -- Every routine, the timer gets reset to 600s. added this onto it.
+	increase_titantimer_2 = world_titantimer_2; -- Every routine, the timer gets reset to 600s. added this onto it.
+	
+	WinWarning_Add( "ui_player2_titan_timer", World_GetPlayerAt(0), "", "", "" )
+	WinWarning_Add( "ui_player1_titan_timer", World_GetPlayerAt(0), "", "", "" )
+	WinWarning_SetText("ui_player1_titan_timer", Loc_FormatText1(15777704, Loc_FormatTime(60409, world_titantimer_1)))
+	WinWarning_SetText("ui_player2_titan_timer", Loc_FormatText1(15777705, Loc_FormatTime(60409, world_titantimer_2)))
+	world_titantospawn1_1 = "guard_squad_warhound_titan"; -- defaults just in case
+	world_titantospawn2_1 = "guard_squad_reaver_titan"; -- defaults just in case
+	world_titantospawn1_2 = "guard_squad_warhound_titan"; -- defaults just in case
+	world_titantospawn2_2 = "guard_squad_reaver_titan"; -- defaults just in case
+	
+	world_titantospawn_1_routine = 0; -- For titan variant switch up.
+	world_titantospawn_2_routine = 0; -- For titan variant switch up.
+	
+	if (Player_GetRaceName(g_Player1) == "chaos_marine_race") then world_titantospawn1_1 = "chaos_squad_warhound_titan"; world_titantospawn2_1 = "chaos_squad_reaver_titan";
+	elseif (Player_GetRaceName(g_Player1) == "dark_eldar_race") then world_titantospawn1_1 = "dark_eldar_squad_tormentor"; world_titantospawn2_1 = "dark_eldar_squad_tormentor";
+	elseif (Player_GetRaceName(g_Player1) == "eldar_race") then world_titantospawn1_1 = "eldar_squad_titan_revenant"; world_titantospawn2_1 = "eldar_squad_titan_revenant";
+	elseif (Player_GetRaceName(g_Player1) == "guard_race") then world_titantospawn1_1 = "guard_squad_warhound_titan"; world_titantospawn2_1 = "guard_squad_reaver_titan";
+	elseif (Player_GetRaceName(g_Player1) == "necron_race") then world_titantospawn1_1 = "necron_doomsday_monolith_squad"; world_titantospawn2_1 = "necron_aeonic_orb_squad"; Player_AddResource(g_Player1, RT_Power, 800)
+	elseif (Player_GetRaceName(g_Player1) == "ork_race") then world_titantospawn1_1 = "ork_squad_squiggoth_gargantaun"; world_titantospawn2_1 = "ork_squad_squiggoth_gargantaun";
+	elseif (Player_GetRaceName(g_Player1) == "sisters_race") then world_titantospawn1_1 = "sisters_squad_arch_angel"; world_titantospawn2_1 = "sisters_squad_arch_angel";
+	elseif (Player_GetRaceName(g_Player1) == "space_marine_race") then world_titantospawn1_1 = "space_marine_squad_warhound_titan"; world_titantospawn2_1 = "space_marine_squad_warhound_titan";
+	elseif (Player_GetRaceName(g_Player1) == "tau_race") then world_titantospawn1_1 = "tau_xv202_mako_titan_squad"; world_titantospawn2_1 = "tau_manta_squad";
+	elseif (Player_GetRaceName(g_Player1) == "inquisition_daemonhunt_race") then world_titantospawn1_1 = "inquisition_squad_warhound_titan"; world_titantospawn2_1 = "inquisition_squad_reaver_titan";
+	elseif (Player_GetRaceName(g_Player1) == "daemons_race") then world_titantospawn1_1 = "daemon_squad_soul_grinder"; world_titantospawn2_1 = "daemon_squad_hell_spawn";
+	elseif (Player_GetRaceName(g_Player1) == "tyranids_race") then world_titantospawn1_1 = "tyranids_squad_hierophant"; world_titantospawn2_1 = "tyranids_squad_hierophant";
+	end
+	if (Player_GetRaceName(g_Player2) == "chaos_marine_race") then world_titantospawn1_2 = "chaos_squad_warhound_titan"; world_titantospawn2_2 = "chaos_squad_reaver_titan";
+	elseif (Player_GetRaceName(g_Player2) == "dark_eldar_race") then world_titantospawn1_2 = "dark_eldar_squad_tormentor"; world_titantospawn2_2 = "dark_eldar_squad_tormentor";
+	elseif (Player_GetRaceName(g_Player2) == "eldar_race") then world_titantospawn1_2= "eldar_squad_titan_revenant"; world_titantospawn2_2 = "eldar_squad_titan_revenant";
+	elseif (Player_GetRaceName(g_Player2) == "guard_race") then world_titantospawn1_2 = "guard_squad_warhound_titan"; world_titantospawn2_2 = "guard_squad_reaver_titan";
+	elseif (Player_GetRaceName(g_Player2) == "necron_race") then world_titantospawn1_2 = "necron_doomsday_monolith_squad"; world_titantospawn2_2 = "necron_aeonic_orb_squad"; Player_AddResource(g_Player2, RT_Power, 800)
+	elseif (Player_GetRaceName(g_Player2) == "ork_race") then world_titantospawn1_2 = "ork_squad_squiggoth_gargantaun"; world_titantospawn2_2 = "ork_squad_squiggoth_gargantaun";
+	elseif (Player_GetRaceName(g_Player2) == "sisters_race") then world_titantospawn1_2 = "sisters_squad_arch_angel"; world_titantospawn2_2 = "sisters_squad_arch_angel";
+	elseif (Player_GetRaceName(g_Player2) == "space_marine_race") then world_titantospawn1_2 = "space_marine_squad_warhound_titan"; world_titantospawn2_2 = "space_marine_squad_warhound_titan";
+	elseif (Player_GetRaceName(g_Player2) == "tau_race") then world_titantospawn1_2= "tau_xv202_mako_titan_squad"; world_titantospawn2_2 = "tau_manta_squad";
+	elseif (Player_GetRaceName(g_Player2) == "inquisition_daemonhunt_race") then world_titantospawn1_2 = "inquisition_squad_warhound_titan"; world_titantospawn2_2 = "inquisition_squad_reaver_titan";
+	elseif (Player_GetRaceName(g_Player2) == "daemons_race") then world_titantospawn1_2 = "daemon_squad_soul_grinder"; world_titantospawn2_2 = "daemon_squad_hell_spawn";
+	elseif (Player_GetRaceName(g_Player2) == "tyranids_race") then world_titantospawn1_2 = "tyranids_squad_hierophant"; world_titantospawn2_2 = "tyranids_squad_hierophant";
+	end
+	
+	Rule_AddOneShot(Rule_WarpGate_StopPing, 60)
+	Rule_AddInterval(Rule_WarpGate_MainTitan, 1)
+	Rule_AddInterval(Rule_WarpGate_MultipleTitan, 1)
+	
+end
+
+function Rule_WarpGate_StopPing()
+
+	Ping_Stop(PingRelic)
+	Ping_Stop(PingCritLocation)
+	Ping_Stop(PingWG)
+	Ping_Stop(PingTP1)
+	Ping_Stop(PingTP2)
+	Ping_Stop(PingTP3)
+	Ping_Stop(PingTP4)
+	Ping_Stop(PingTP5)
+	Ping_Stop(PingTP6)
+	Ping_Stop(PingTP7)
+	Ping_Stop(PingTP8)
+	
+end
+
+function Rule_WarpGate_MainTitan()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		if (EGroup_IsCapturedByPlayer("cursed_crit_location", player, false)) then
+			
+			if ((world_spamtimer_titan) == nil) then
+				world_spamtimer_titan = 901; 
+				SGroup_CreateIfNotFound("sg_titan")
+				WinWarning_Add( "ui_titan_timer", World_GetPlayerAt(0), "", "", "" )
+			end
+			if (SGroup_Exists("sg_titan") and SGroup_Count("sg_titan") < 1) then
+				world_spamtimer_titan = world_spamtimer_titan - 1;
+				WinWarning_SetText( "ui_titan_timer", Loc_FormatText1( 15777706, Loc_FormatTime( 60409, world_spamtimer_titan ) )  )
+			end
+			-- Extra Warnings.
+			if (world_spamtimer_titan == 900) then
+				local warning = ("WARNING! Titan Arrives in 15 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 600) then
+				local warning = ("WARNING! Titan Arrives in 10 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 300) then
+				local warning = ("WARNING! Titan Arrives in 5 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 240) then
+				local warning = ("WARNING! Titan Arrives in 4 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 180) then
+				local warning = ("WARNING! Titan Arrives in 3 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 120) then
+				local warning = ("WARNING! Titan Arrives in 2 minutes!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 60) then
+				local warning = ("WARNING! Titan Arrives in 1 minute!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 30) then
+				local warning = ("WARNING! Titan Arrives in 30 seconds!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 10) then
+				local warning = ("WARNING! Titan is almost here!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Position(EGroup_GetPosition("cursed_crit_location"), false)
+				
+			elseif (world_spamtimer_titan == 0) then
+				local warning = ("Titan has been spawned from the Warp Gate!")
+				EventCue_DoEvent("warning", "general_ping", warning, warning)
+				Ping_Marker("titan_marker", false)
+				world_spamtimer_titan = 901;
+				if (Player_GetRaceName(player) == "chaos_marine_race") then world_titantospawn1_1 = "chaos_squad_warhound_titan"; world_titantospawn2_1 = "chaos_squad_reaver_titan";
+				elseif (Player_GetRaceName(player) == "dark_eldar_race") then world_titantospawn1_1 = "dark_eldar_squad_tormentor"; world_titantospawn2_1 = "dark_eldar_squad_tormentor";
+				elseif (Player_GetRaceName(player) == "eldar_race") then world_titantospawn1_1 = "eldar_squad_titan_revenant"; world_titantospawn2_1 = "eldar_squad_titan_revenant";
+				elseif (Player_GetRaceName(player) == "guard_race") then world_titantospawn1_1 = "guard_squad_warhound_titan"; world_titantospawn2_1 = "guard_squad_reaver_titan";
+				elseif (Player_GetRaceName(player) == "necron_race") then world_titantospawn1_1 = "necron_doomsday_monolith_squad"; world_titantospawn2_1 = "necron_aeonic_orb_squad"; Player_AddResource(g_Player1, RT_Power, 800)
+				elseif (Player_GetRaceName(player) == "ork_race") then world_titantospawn1_1 = "ork_squad_squiggoth_gargantaun"; world_titantospawn2_1 = "ork_squad_squiggoth_gargantaun";
+				elseif (Player_GetRaceName(player) == "sisters_race") then world_titantospawn1_1 = "sisters_squad_arch_angel"; world_titantospawn2_1 = "sisters_squad_arch_angel";
+				elseif (Player_GetRaceName(player) == "space_marine_race") then world_titantospawn1_1 = "space_marine_squad_warhound_titan"; world_titantospawn2_1 = "space_marine_squad_warhound_titan";
+				elseif (Player_GetRaceName(player) == "tau_race") then world_titantospawn1_1 = "tau_xv202_mako_titan_squad"; world_titantospawn2_1 = "tau_manta_squad";
+				elseif (Player_GetRaceName(player) == "inquisition_daemonhunt_race") then world_titantospawn1_1 = "inquisition_squad_warhound_titan"; world_titantospawn2_1 = "inquisition_squad_reaver_titan";
+				elseif (Player_GetRaceName(player) == "daemons_race") then world_titantospawn1_1 = "daemon_squad_soul_grinder"; world_titantospawn2_1 = "daemon_squad_hell_spawn";
+				elseif (Player_GetRaceName(player) == "tyranids_race") then world_titantospawn1_1 = "tyranids_squad_hierophant"; world_titantospawn2_1 = "tyranids_squad_hierophant";
+				end
+				Util_CreateSquadsAtMarker(player, "sg_titan", world_titantospawn1_1, "titan_marker", 2)
+				Util_CreateSquadsAtMarker(player, "sg_titan", world_titantospawn2_1, "titan_marker", 1)
+			end
+			
+		elseif not (world_spamtimer_titan) == nil then
+			
+			WinWarning_Remove("ui_titan_timer")
+			world_spamtimer_titan = nil; -- Get arid of the countdown timer and remove it.
+			
+		end
+	end
+
+end
+
+function Rule_WarpGate_MultipleTitan()
+
+	world_titantimer_1_goahead = false;
+	world_titantimer_2_goahead = false;
+	
+	
+	-- Player 1's Titans
+	for i = 1, 8 do
+		if (EGroup_IsCapturedByPlayer("eg_titanportal_cl_"..i, g_Player1, true)) then
+			world_titantimer_1_goahead = true;
+		end
+	end
+	if (world_titantimer_1 >= 1 and world_titantimer_1_goahead == true) then
+		world_titantimer_1 = world_titantimer_1 - 1;
+		WinWarning_SetText("ui_player1_titan_timer", Loc_FormatText1(15777704, Loc_FormatTime(60409, world_titantimer_1)))
+	elseif (world_titantimer_1 <= 0) then
+		world_titantospawn_1_routine = world_titantospawn_1_routine + 1;
+		increase_titantimer_1 = increase_titantimer_1 + 0; -- nevermind
+		local warning = ("Player 1's Titans spawned!")
+		EventCue_DoEvent("warning", "general_ping", warning, warning)
+		world_titantimer_1 = increase_titantimer_1
+		for i = 1, 8 do
+			if (EGroup_IsCapturedByPlayer("eg_titanportal_cl_"..i, g_Player1, true)) then
+				Ping_Marker("marker_titanportal_"..i, false)
+				if (world_titantospawn_1_routine >= 3) then
+					Util_CreateSquadsAtMarker(g_Player1, "sg_supporttitan", world_titantospawn2_1, "marker_titanportal_"..i, 1)
+					world_titantospawn_1_routine = 0;
+				else 
+					Util_CreateSquadsAtMarker(g_Player1, "sg_supporttitan", world_titantospawn1_1, "marker_titanportal_"..i, 1)	
+				end
+			end
+		end
+	end
+	-- Player 2's Titans
+	for i = 1, 8 do
+		if (EGroup_IsCapturedByPlayer("eg_titanportal_cl_"..i, g_Player2, true)) then
+			world_titantimer_2_goahead = true;
+		end
+	end
+	if (world_titantimer_2 >= 1 and world_titantimer_2_goahead == true) then
+		world_titantimer_2 = world_titantimer_2 - 1;
+		WinWarning_SetText("ui_player2_titan_timer", Loc_FormatText1(15777705, Loc_FormatTime(60409, world_titantimer_2)))
+	elseif (world_titantimer_2 <= 0) then
+		world_titantospawn_2_routine = world_titantospawn_2_routine + 1;
+		increase_titantimer_2 = increase_titantimer_2 + 0; -- nevermind
+		local warning = ("Player 2's Titans spawned!")
+		EventCue_DoEvent("warning", "general_ping", warning, warning)
+		world_titantimer_2 = increase_titantimer_2;
+		for i = 1, 8 do
+			if (EGroup_IsCapturedByPlayer("eg_titanportal_cl_"..i, g_Player2, true)) then
+				Ping_Marker("marker_titanportal_"..i, false)
+				if (world_titantospawn_2_routine >= 3) then
+					Util_CreateSquadsAtMarker(g_Player2, "sg_supporttitan", world_titantospawn2_2, "marker_titanportal_"..i, 1)
+					world_titantospawn_2_routine = 0;
+				else 
+					Util_CreateSquadsAtMarker(g_Player2, "sg_supporttitan", world_titantospawn1_2, "marker_titanportal_"..i, 1)	
+				end
+			end
+		end
+	end
+
+end
+
+-------------------------------------------------
+--[[ World Events ]]
+-------------------------------------------------
+
+function Rule_Explosions()
+	
+	-- The fx below will always happen in a 60 second interval.
+	Util_MarkerFX("world_nuker", "data:Art/Events/Titan/Titan_Cannon_Hit")
+	
+	if (g_explosions < 3) then
+		g_explosions = g_explosions + 1;
+		
+	else -- 3 minor explosions happened
+		Util_MarkerFX("world_nuker", "data:Art/Events/Guard/Weapons/Basilisk_Magnus_Hit") -- Big explosion!
+		
+		local count = World_GetPlayerCount();
+		for i = 0, count-1
+		do
+			
+			local player = World_GetPlayerAt(i);
+		
+			Player_GetAllSquadsNearMarker(player, "sg_nearvolcano", "world_nuker")
+			
+			if (SGroup_Exists("sg_nearvolcano")) then -- Just to be safe with no SCAR errors.
+				SGroup_SelfDestroy("sg_nearvolcano", true)
+				
+				SGroup_Destroy("sg_nearvolcano")
+				
+			end
+		end
+		
+		g_explosions = 0; -- Restart the process.
+	end
+
+end
