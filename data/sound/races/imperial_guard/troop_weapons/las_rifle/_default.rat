@@ -1,0 +1,101 @@
+-- This file is generated automatically by the Relic Audio Tool
+
+version = 9
+
+priority = 35
+volume = 0.080000
+volumeRand = 0.020000
+pitch = 1.000000
+pitchRand = 0.020000
+maxPolyphony = 9
+type3D = 1
+envelope = {
+  {
+    distance = 0.000000,
+    volume = 1.000000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 18.000000,
+    volume = 0.960000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 33.000000,
+    volume = 0.720000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 60.500000,
+    volume = 0.506667,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 80.500000,
+    volume = 0.000000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+}
+cardiodScale = 0.000000
+cardiodLowFreq = 0
+cardiodHighFreq = 0
+containerType = 3
+loopingContainer = 0
+loadAllContainer = 0
+silenceBreak = 0.000000
+silenceRandom = 0.000000

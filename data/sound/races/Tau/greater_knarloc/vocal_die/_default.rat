@@ -1,0 +1,100 @@
+-- This file is generated automatically by the Relic Audio Tool
+
+version = 9
+
+priority = 15
+volume = 0.600000
+pitch = 1.000000
+pitchRand = 0.020000
+maxPolyphony = 3
+type3D = 1
+envelope = {
+  {
+    distance = 0.000000,
+    volume = 1.000000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 17.000000,
+    volume = 0.966667,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 42.000000,
+    volume = 0.780000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 65.500000,
+    volume = 0.260000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 95.000000,
+    volume = 0.000000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+}
+cardiodScale = 0.000000
+cardiodLowFreq = 0
+cardiodHighFreq = 0
+containerType = 3
+loopingContainer = 0
+loadAllContainer = 0
+silenceBreak = 0.000000
+silenceRandom = 0.000000

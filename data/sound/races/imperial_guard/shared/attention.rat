@@ -1,0 +1,94 @@
+-- This file is generated automatically by the Relic Audio Tool
+
+version = 9
+
+volume = 0.800000
+pitch = 1.100000
+pitchRand = 0.050000
+maxPolyphony = 2
+type3D = 1
+envelope = {
+  {
+    distance = 0.000000,
+    volume = 1.000000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 10.000000,
+    volume = 1.000000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 21.000000,
+    volume = 0.473333,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 26.500000,
+    volume = 0.140000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 37.500000,
+    volume = 0.000000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+}
+cardiodScale = 0.000000
+cardiodLowFreq = 0
+cardiodHighFreq = 0

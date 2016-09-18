@@ -1,0 +1,14 @@
+-- This file is generated automatically by the Relic Audio Tool
+
+version = 9
+
+priority = 45
+volume = 0.600000
+type3D = 1
+cardiodScale = 0.000000
+cardiodLowFreq = 0
+cardiodHighFreq = 0
+containerType = 3
+loopingContainer = 0
+silenceBreak = 0.000000
+silenceRandom = 0.000000

@@ -1,0 +1,35 @@
+Voiced by Cylarne_04 @ 2011
+All rights reserved for crediting.
+
+
+ability:
+- Unleashing hell.
+- And now, they die.
+
+attack:
+- They are doomed.
+- Nothing can stop me.
+- Maximum fire power!
+- Engage and destroy.
+- Engage and destroy. (2nd alternative)
+- Obliteration engaged.
+
+Move:
+- Moving now.
+- By your command.
+- Relocating.
+- Imperial Reaver Titan, on the move.
+
+selection:
+- How may I be of use?
+- *laughs*
+- *laughs* (2nd alternative)
+- Imperial Reaver Titan, ready for extermination.
+- Dance and cry, ha ha ha ha, dance and cry you puny enemies.
+- I am Apocalypse.
+
+unit_complete:
+- *laughs*
+- And now, the Apocalypse begins.
+- In need of a titan?
+- Imperial Reaver Titan complete.

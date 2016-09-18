@@ -1,0 +1,12 @@
+-- This file is generated automatically by the Relic Audio Tool
+
+version = 9
+
+priority = 95
+volume = 0.850000
+pitchRand = 0.020000
+maxPolyphony = 6
+type3D = 1
+cardiodScale = 0.000000
+cardiodLowFreq = 0
+cardiodHighFreq = 0
