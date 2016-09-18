@@ -1,0 +1,110 @@
+----------------------------------------
+-- File: 'lightningstriketactic.ai'
+-- Created by Cylarne_04 2012
+
+-- Note: For some odd reason, this tactic even though examined multiple times is bugging the ai.
+-- Tactic switched over to the Exorcist Tactic.
+
+class 'SistersLightningStrikeTactic' (SistersVehicleTactic)
+
+SistersLightningStrike = {}
+
+function SistersLightningStrikeTactic:__init( squad_ai ) super( squad_ai )
+	
+	self:SetName("Sisters Lightning Strike Tactic")
+end
+
+--[[function SistersLightningStrikeTactic:InitAbilities()
+
+	if (SistersLightningStrike.bombard_id == nil) then
+		SistersLightningStrike.bombard_id = cpu_manager.stats:GetAbilityID( "guard_missilestrike" )
+	end
+	
+end
+
+function SistersLightningStrikeTactic:DoAbilities()
+
+	if (self.squad_ai:CanDoAbility(SistersLightningStrike.bombard_id)) then
+		Ability.DoAbilityPos(self.squad_ai, SistersLightningStrike.bombard_id, Ability.Filters.CloseInfiltratedEnemy, 2)
+		Ability.DoAbilityPos(self.squad_ai, SistersLightningStrike.bombard_id, Ability.Filters.CloseEnemy, 4)
+	end
+end]]
+--[[function SistersLightningStrikeTactic:JumpAttackRanged()
+
+	-- Call standard method
+	if (Tactic.JumpAttackRanged(self)) then
+		return true
+	end
+	
+	-- Get position and jump range
+	local vSistersLightningStrikePosition = self.squad_ai:GetPosition()
+	local iJumpRange = sqr(self.squad_ai:GetJumpDistance())
+	
+	-- Check if we can jump directly to the target
+	local iClosestDistance = distance_sqr(vSistersLightningStrikePosition, self.target)
+	local vTargetPos = nil
+	if (iClosestDistance < iJumpRange) then
+		vTargetPos = self.target
+	else
+	
+		-- Get closest squad to target position
+		for oSquad in military_manager:GetSquads() do
+	
+			-- Check if squad is valid
+			if (oSquad:IsValid()) then
+			
+				-- Check distance
+				local vPosition = oSquad:GetPosition()
+				local iDistanceToSistersLightningStrike = distance_sqr(vPosition, vSistersLightningStrikePosition)
+				local iDistanceToTarget = distance_sqr(vPosition, self.target)
+				if (iDistanceToSistersLightningStrike < iJumpRange and iDistanceToTarget < iClosestDistance) then
+					iClosestDistance = iDistanceToTarget
+					vTargetPos = vPosition
+				end
+			end
+		end
+		
+		-- Get closest building to target position
+		for oBuilding in military_manager:GetBases() do
+		
+			-- Check if building is valid
+			if (oBuilding:IsValid()) then
+			
+				-- Check distance
+				local vPosition = oBuilding:GetPosition()
+				local iDistanceToSistersLightningStrike = distance_sqr(vPosition, vSistersLightningStrikePosition)
+				local iDistanceToTarget = distance_sqr(vPosition, self.target)
+				if (iDistanceToSistersLightningStrike < iJumpRange and iDistanceToTarget < iClosestDistance) then
+					iClosestDistance = iDistanceToTarget
+					vTargetPos = vPosition
+				end
+			end
+		end
+	end
+	
+	-- Don't jump if we didn't find a target
+	if (vTargetPos == nil or distance_sqr(vSistersLightningStrikePosition, vTargetPos) < sqr(50)) then
+		return false
+	end
+	
+	-- Try to jump to target
+	for iLoop1 = 1, 5 do
+	
+		-- Create a jump position
+		local vJumpPosition = vTargetPos
+		vJumpPosition.x = vJumpPosition.x + math.random(-15, 15)
+		vJumpPosition.z = vJumpPosition.z + math.random(-15, 15)
+			
+		-- Check if target position is in range and if unit is able to jump to target position
+		local iDistance = distance_sqr(vJumpPosition, vSistersLightningStrikePosition)
+		if (iDistance <= iJumpRange and self.squad_ai:CanJumpToPosition(vJumpPosition)) then
+							
+			-- Jump to position
+			self.squad_ai:DoJump(vJumpPosition)
+			self.last_jump = g_iGMT
+			self.m_iLastGatherMove = self.last_jump - 10
+			return true
+		end
+	end
+	return false
+end]]

@@ -1,0 +1,32 @@
+----------------------------------------
+-- File: 'attackscarabtactic.ai'
+-- Edited by Arkhan @ 02.11.2006
+
+class 'AttackScarabTactic' (NecronInfantryTactic)
+
+function AttackScarabTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Attack Scarab Tactic")
+end
+
+function AttackScarabTactic:AlwaysAttack()
+	return true
+end
+
+function AttackScarabTactic:Reinforce()
+
+	-- Only reinforce if we've lots of ressources
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if (iPower > 1200) then
+		InfantryTactic.Reinforce(self)
+	end
+end
+
+function AttackScarabTactic:Upgrade()
+
+	-- Only upgrade if we've lots of ressources
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if (iPower > 1200) then
+		InfantryTactic.Upgrade(self)
+	end
+end

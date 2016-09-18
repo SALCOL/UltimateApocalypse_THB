@@ -1,0 +1,144 @@
+----------------------------------------
+-- File: 'cultistactic.ai'
+-- Edited by LarkinVB	@ 19.08.2005
+-- Edited by Arkhan	@ 12.01.2006
+-- Edited by Thudmeizer	@ 07.01.2016
+
+class 'CultistTactic' (ChaosMarineInfantryTactic)
+
+Cultist = {}
+
+function CultistTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Cultist Tactic")
+end
+
+function CultistTactic:IsAttacker()
+	return (cpu_manager:GetTierLevel() >= 2)
+end
+
+function CultistTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Cultist.explode_id == nil) then
+		Cultist.explode_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_explode" )	
+	end
+	if (Cultist.worshipslaanesh_id == nil) then
+		Cultist.worshipslaanesh_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_slaanesh" )	
+	end
+	if (Cultist.worshipnurgle_id == nil) then
+		Cultist.worshipnurgle_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_nurgle" )	
+	end
+	if (Cultist.worshiptzeentch_id == nil) then
+		Cultist.worshiptzeentch_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_tzeentch" )	
+	end
+	if (Cultist.worshipkhorne_id == nil) then
+		Cultist.worshipkhorne_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_khorne" )	
+	end
+	if (Cultist.infiltration_id == nil) then
+		Cultist.infiltration_id = cpu_manager.stats:GetAbilityID( "chaos_infiltration_cultists" )	
+	end
+end
+
+function CultistTactic:DoAbilities()
+
+	if (self.squad_ai:GetHealthPercentage() >= 0.7) then
+		if (self.squad_ai:CanDoAbility(Cultist.worshipslaanesh_id)) then
+			--Ability.DoAbility( self.squad_ai, Cultist.worshipslaanesh_id, Ability.Filters.IsInCombat )
+			Ability.DoAbilityArea(self.squad_ai, Cultist.worshipslaanesh_id, Ability.Filters.CloseEnemy, 10, 2)
+		end
+		if (self.squad_ai:CanDoAbility(Cultist.worshipnurgle_id)) then
+			--Ability.DoAbility( self.squad_ai, Cultist.worshipnurgle_id, Ability.Filters.IsInCombat )
+			Ability.DoAbilityArea(self.squad_ai, Cultist.worshipnurgle_id, Ability.Filters.CloseEnemy, 10, 2)
+		end
+		if (self.squad_ai:CanDoAbility(Cultist.worshiptzeentch_id)) then
+			--Ability.DoAbility( self.squad_ai, Cultist.worshiptzeentch_id, Ability.Filters.IsInCombat )
+			Ability.DoAbilityArea(self.squad_ai, Cultist.worshiptzeentch_id, Ability.Filters.CloseEnemy, 10, 2)
+		end
+		if (self.squad_ai:CanDoAbility(Cultist.worshipkhorne_id)) then
+			--Ability.DoAbility( self.squad_ai, Cultist.worshipkhorne_id, Ability.Filters.IsInCombat )
+			Ability.DoAbilityArea(self.squad_ai, Cultist.worshipkhorne_id, Ability.Filters.CloseEnemy, 10, 2)
+		end
+	end
+	if (self.squad_ai:CanDoAbility(Cultist.explode_id)) then
+		Ability.DoAbilityArea(self.squad_ai, Cultist.explode_id, Ability.Filters.CloseInfantryEnemy, 4, 2)
+	end
+	if (self.squad_ai:CanDoAbility(Cultist.infiltration_id) and not self.squad_ai:IsUsingAbility(Cultist.infiltration_id)) then
+		self.squad_ai:DoSpecialAbility(Cultist.infiltration_id)
+	end
+
+end
+
+function CultistTactic:Upgrade()
+
+ 	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+   
+	if (not self.squad_ai:IsReinforcing() and cpu_manager:GetTierLevel() >= 2) then
+	  
+		-- Try for upgrade if we've a leader and more than 6 troopers
+		if (self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetNumTroopers() > 6 and self.squad_ai:HasLeader()) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function CultistTactic:Reinforce()
+
+	-- Check if we are reinforcing
+	if (self.squad_ai:IsReinforcing()) then
+		return
+	end
+	
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- Don't reinforce squads in critical condition
+	if (self.squad_ai:GetNumTroopers() <= self.squad_ai:GetMaxTroopers() / 3 and self.squad_ai:IsUnderAttack()) then
+		return
+	end
+
+	-- Check resources
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if ((iRequisition < 900) and not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	-- Always try to get the leader first.
+	if (self.squad_ai:CanReinforce(true, 0)) then
+		self.squad_ai:DoReinforce(true, 0)
+		return
+	end
+	
+	-- Always try to reinforce, as long as I have money
+	if (self.squad_ai:CanReinforce( false, 0 ) and self.squad_ai:HasLeader()) then
+		self.squad_ai:DoReinforce( false, 0 )
+	end
+end
+
+function CultistTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+	
+    -- Set unit on ranged stance in tier 3+
+    if (cpu_manager:GetTierLevel() >= 3 and self.squad_ai:GetMeleeStance() ~= SquadAI.MSTANCE_Ranged) then
+    	self.squad_ai:DoSetMeleeStance(SquadAI.MSTANCE_Ranged)
+    end
+end

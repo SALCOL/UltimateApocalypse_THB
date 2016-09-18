@@ -1,0 +1,71 @@
+-- UCS Fixes
+LOCALIZER -- Requested string ID '16021860' does not exist! -- IDH and THB mod folder inquisition_bodyguard_upgrade_2 -- added it to THB mod locale inqusition_daemonhunt.ucs 
+LOCALIZER -- Requested string ID '16021761' does not exist! -- IDH mod folder inquisition_ultimate_forces -- added it to THB mod locale inqusition_daemonhunt.ucs 
+LOCALIZER -- Requested string ID '16019211' does not fit in a valid key range! -- THB mod folder\ork_grot_gun_cart_kannon -- removed the invalid $ number and replaced with $0
+LOCALIZER -- Requested string ID '16019211' does not fit in a valid key range! -- THB mod folder\ork_grot_gun_cart_zzzap -- removed the invalid $ number and replaced with $0
+LOCALIZER -- Requested string ID '15014061' does not fit in a valid key range! -- THB mod folder\ork_waagh_banner_missile_sp -- removed the invalid $ number and replaced with $0
+LOCALIZER -- Requested string ID '15014061' does not fit in a valid key range! -- THB mod folder\ork_waagh_banner_turret_sp -- removed the invalid $ number and replaced with $0
+LOCALIZER -- Requested string ID '15005899' does not fit in a valid key range! -- THB mod folder\ork_squad_wierdboy -- removed the invalid $ number and replaced with $0
+LOCALIZER -- Requested string ID '15005900' does not fit in a valid key range! -- THB mod folder\ork_squad_wierdboy -- removed the invalid $ number and replaced with $0
+
+-- Remove from UltimateApocalypse_Tyranids_THB\data\attrib\weapon as they are invalid there (already in research path)
+SIM -- Failed to load blueprint for Weapon\tyranids_apocalypse_research.rgd
+SIM -- Failed to load blueprint for Weapon\tyranids_arrival3_research.rgd
+SIM -- Failed to load blueprint for Weapon\tyranids_assimilation_research.rgd
+SIM -- Failed to load blueprint for Weapon\tyranids_gaunt_upgrade_research_1.rgd
+SIM -- Failed to load blueprint for Weapon\tyranids_gaunt_upgrade_research_2.rgd
+SIM -- Failed to load blueprint for Weapon\tyranids_gaunt_upgrade_research_3.rgd
+SIM -- Failed to load blueprint for Weapon\tyranids_swarmlord_blades_research.rgd
+
+-- Remove these from their paths mentioned below as they are already loaded elsewhere
+SIM -- Attempted to load duplicate blueprint, EBPs\Game\DeepStrike\nightwing_strike.rgd (1263) -- folder in UltimateApocalypse_THB
+SIM -- Attempted to load duplicate blueprint, EBPs\Environment\gameplay\daemons_warp_portal.rgd (1648) -- folder in UltimateApocalypse_Daemons
+SIM -- Attempted to load duplicate blueprint, EBPs\Environment\projectiles\tyranids_spores_bioacid.rgd (2051) -- folder in UltimateApocalypse_Tyranids_THB
+SIM -- Attempted to load duplicate blueprint, EBPs\Environment\projectiles\tyranids_spores_toxin.rgd (2051) -- folder in  UltimateApocalypse_Tyranids_THB
+SIM -- Attempted to load duplicate blueprint, EBPs\Environment\projectiles\tyranids_spores_toxin_turret.rgd (2052) -- folder in UltimateApocalypse_Tyranids_THB
+
+-- Remove file under data\attrib\ebps\races\eldar\structures as its a dup
+SIM -- Attempted to load duplicate blueprint, EBPs\Environment\SINGLE_PLAYER_TGD\ELDAR_STRONGHOLD\ELDAR_WEBSAIL.RGD (2212)
+
+-- Rename data\attrib\ebps\races\tau\troops\tau_orca_dropship.rgd to tau_orca_dropships.rgd and update all incidents its called in UltimateApocalypse_THB
+SIM -- Attempted to load duplicate blueprint, EBPs\Environment\TAU\TAU_ORCA_DROPSHIP.RGD (2341)
+
+-- Remove MassiveBattles_local.lua file in UltimateApocalypse_THB\data\scar\winconditions as it is not needed.
+MOD -- No 'exclusive' flag for game rule 'MassiveBattles', skipping...
+MOD -- No 'title' for game rule 'MassiveBattles', skipping...
+MOD -- No 'description' for game rule 'MassiveBattles', skipping...
+MOD -- No 'win_message' for game rule 'MassiveBattles', skipping...
+MOD -- No 'lose_message' for game rule 'MassiveBattles', skipping...
+
+-- Missing Textures
+RENDER ANIM -- 'art/ebps/races/daemons/texture_share/lost_soulº©': Unable to open file!  -- invalid texture name found in "daemon_lost_soul.whm" -- cannot fix.
+RENDER ANIM -- 'art/ebps/races/space_marines/texture_share/walls': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/inquisition/texture_share/hb': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/inquisition/texture_share/ass': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/inquisition/texture_share/pc': Unable to open file!
+RENDER ANIM -- 'ork_strategic_point_flag': Unable to open file!  -- found without texture path in file "spanna_boyz.whm" so placed texture file in root of \data fixes project.
+RENDER ANIM -- 'art/ebps/races/race_tyranid/texture_share/barb_strangler_dif': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/race_tyranid/texture_share/termagaunt_devourer_dif': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/chaos/texture_share/chaos_dreadnoght_1': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/chaos/texture_share/hh_chaos_nightlords_parts': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/kwe/texture_share/bllordhead': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/chaos/texture_share/chaos_iron_warrior_marine_unit': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/chaos/texture_share/hh_chaos_icon_1': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/chaos/texture_share/plague_dreadnought': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/chaos/texture_share/chaos_parts': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/emperors_children/texture_share/dreadnaught_unit': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/kwe/texture_share/noisebod copy': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/kwe/texture_share/slanhelm copy': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/chaos/texture_share/rubric_dread_torso': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/chaos/texture_share/khorne_bezerker_codex_parts': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/space_marines/texture_share/walls': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/craftworld/texture_share/scorpion_unit': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/harlequin/texture_share/eldar_build_anim': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/necron/texture_share/necron_immortal': Unable to open file!
+RENDER ANIM -- 'art/ebps/races/craftworld/texture_share/shurikens': Unable to open file!
+
+-- Missing Models
+RENDER ANIM -- Art/EBPs/Races/Imperial_Guard/Troops/vulture_autocannon_codex: Unable to open file!
+RENDER ANIM -- Art/EBPs/Ebps\Races\Dark_Eldar\Structures\drop_building: Unable to open file! -- Found in eldar_building_sp_dxp3 so changed animator path to races\\imperial_guard\\structures\\guard_mechanized_drop_building
+RENDER ANIM -- Art/EBPs/: Unable to open file! -- remove sisters_squad_missionary_leader.rgd from attrib\ebps\races\sisters\troops as its invalid
+

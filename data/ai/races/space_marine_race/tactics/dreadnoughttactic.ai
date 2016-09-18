@@ -1,0 +1,45 @@
+----------------------------------------
+-- File: 'dreadnoughttactic.ai'
+-- Created by Cylarne
+-- Edited by Thudmeizer @ 02.02.2016
+
+class 'DreadnoughtTactic' (SpaceMarineVehicleTactic)
+
+Dreadnought = {}
+
+function DreadnoughtTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Dreadnought Tactic")
+end
+
+function DreadnoughtTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Dreadnought.hkmissile1_id == nil) then
+		Dreadnought.hkmissile1_id = cpu_manager.stats:GetAbilityID( "marines_hk_missile_ironclad1" )
+	end
+	if (Dreadnought.hkmissile2_id == nil) then
+		Dreadnought.hkmissile2_id = cpu_manager.stats:GetAbilityID( "marines_hk_missile_ironclad2" )
+	end
+end
+
+function DreadnoughtTactic:DoAbilities()
+
+	-- Check if we can to activate hk missiles
+	Ability.DoAbilityTarget(self.squad_ai, Dreadnought.hkmissile1_id, Ability.Filters.CloseVehicleEnemy, 1)
+	Ability.DoAbilityTarget(self.squad_ai, Dreadnought.hkmissile2_id, Ability.Filters.CloseVehicleEnemy, 1)
+
+	-- Call standard method
+	SpaceMarineVehicleTactic.DoAbilities(self)
+end
+
+function DreadnoughtTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end

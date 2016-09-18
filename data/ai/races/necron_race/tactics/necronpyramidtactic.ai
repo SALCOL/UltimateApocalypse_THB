@@ -1,0 +1,43 @@
+----------------------------------------
+-- File: 'necronpyramidtactic.ai'
+-- Edited by Cylarne @ 08.05.2012
+
+class 'NecronPyramidTactic' (BaseTactic)
+
+NecronPyramid = {}
+
+function NecronPyramidTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Pyramid Tactic")
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function NecronPyramidTactic:InitAbilities()
+
+	if (NecronPyramid.Annihilator_id == nil) then
+		NecronPyramid.Annihilator_id = cpu_manager.stats:GetAbilityID( "necron_annihilator" )
+	end
+	if (NecronPyramid.CO_id == nil) then
+		NecronPyramid.CO_id = cpu_manager.stats:GetAbilityID( "necron_cataclysmic_obliterator" )
+	end
+	
+end
+
+function NecronPyramidTactic:DoAbilities()
+	
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	if (self.base_ai:CanDoAbility(NecronPyramid.Annihilator_id)) then
+		if (iPower >= 30000 and self.base_ai:CanDoAbility(NecronPyramid.CO_id)) then
+			Ability.DoAbilityPos(self.base_ai, NecronPyramid.CO_id, Ability.Filters.CloseEnemy, 60)
+			Ability.DoAbilityTargetEntity(self.base_ai, NecronPyramid.CO_id , Ability.EntityFilters.CloseBaseEntityEnemy, 25)
+			Ability.DoAbilityTargetEntity(self.base_ai, NecronPyramid.CO_id , Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+		end
+		-- Activate Apocalyptic Superweapon.
+		Ability.DoAbilityPos(self.base_ai, NecronPyramid.Annihilator_id, Ability.Filters.CloseEnemy, 35)
+		Ability.DoAbilityTargetEntity(self.base_ai, NecronPyramid.Annihilator_id , Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+	end
+	
+	
+	
+end

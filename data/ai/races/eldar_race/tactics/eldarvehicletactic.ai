@@ -1,0 +1,96 @@
+----------------------------------------
+-- File: 'eldarvehicletactic.ai'
+-- Created by Arkhan		@ 31.01.2006
+-- Edited by Thudmeizer         @ 29.03.2007
+-- Edited by Cylarne		@ 3/21/11
+
+class 'EldarVehicleTactic' (VehicleTactic)
+
+EldarVehicle = {}
+
+function EldarVehicleTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Eldar Vehicle Tactic")
+	
+	if (--sName == "eldar_squad_grav_platform" or
+		--sName == "eldar_squad_grav_platform_brightlance" or
+		--sName == "eldar_squad_falcon_grav_tank" or
+		--sName == "eldar_squad_vypers" or
+		--sName == "eldar_squad_nightspinner" or
+		sName == "eldar_squad_wraithlord" or
+		sName == "eldar_squad_war_walker") then
+		
+		--self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("eldar_websail")
+	end
+end
+
+-- Check if the vehicle should dance away in melee
+function EldarVehicleTactic:CheckVehicleDance(sName)
+
+	if (sName == "eldar_squad_grav_platform" or
+		sName == "eldar_squad_grav_platform_brightlance" or
+		sName == "eldar_squad_falcon_grav_tank" or
+		sName == "eldar_squad_vypers" or
+		sName == "eldar_squad_nightspinner" or
+		sName == "eldar_squad_fire_prism") then
+		return true
+	end
+	return false
+end
+
+function EldarVehicleTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (EldarVehicle.boost_id == nil) then
+		EldarVehicle.boost_id = cpu_manager.stats:GetAbilityID( "eldar_graviticbooster" )
+	end
+	if (EldarVehicle.wraithbone_id == nil) then
+		EldarVehicle.wraithbone_id = cpu_manager.stats:GetAbilityID( "eldar_wraithbone_regeneration" )
+	end
+	if (EldarVehicle.eldritch_regen_id == nil) then
+		EldarVehicle.eldritch_regen_id = cpu_manager.stats:GetAbilityID( "eldar_wraithtomb_of_khaine" )
+	end
+	if (EldarVehicle.velociousweapons_id == nil) then
+		EldarVehicle.velociousweapons_id = cpu_manager.stats:GetAbilityID( "eldar_velocious_weapons" )
+	end
+	if (EldarVehicle.eldritchstorm_id == nil) then
+		EldarVehicle.eldritchstorm_id = cpu_manager.stats:GetAbilityID( "eldar_eldritchstorm_wraithlord" )
+	end
+end
+
+function EldarVehicleTactic:DoAbilities()
+	
+	-- Gravitic Boosters (if valid)
+	if (self.squad_ai:CanDoAbility(EldarVehicle.boost_id)) then
+		if ( not self.squad_ai:IsInCombat() and not self.squad_ai:IsUsingAbility(EldarVehicle.boost_id)) then
+			
+			-- Activate the Gravitic Boosters
+			self.squad_ai:DoSpecialAbility(EldarVehicle.boost_id)
+		end	
+		if (self.squad_ai:IsInCombat() and self.squad_ai:IsUsingAbility(EldarVehicle.boost_id)) then
+			
+			-- Deactivate the Gravitic Boosters
+			self.squad_ai:DoSpecialAbility(EldarVehicle.boost_id)
+		end
+	end
+	
+	if (self.squad_ai:GetHealthPercentage() < 0.75 and self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(EldarVehicle.wraithbone_id)) then
+		
+		-- Activate Wraithbone Regeneration
+		self.squad_ai:DoSpecialAbility(EldarVehicle.wraithbone_id)
+	end
+	
+	if (self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(EldarVehicle.velociousweapons_id)) then
+		self.squad_ai:DoSpecialAbility(EldarVehicle.velociousweapons_id)
+	end
+	
+	if (self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(EldarVehicle.eldritchstorm_id)) then
+		Ability.DoAbilityPos( self.squad_ai, EldarVehicle.eldritchstorm_id, Ability.Filters.CloseEnemy, 9 )
+	end
+	
+	if (not self.squad_ai:IsUsingAbility(EldarVehicle.eldritch_regen_id) and self.squad_ai:GetHealthPercentage() < 0.3 and self.squad_ai:CanDoAbility(EldarVehicle.eldritch_regen_id)) then
+		self.squad_ai:DoSpecialAbility(EldarVehicle.eldritch_regen_id)
+	elseif (self.squad_ai:IsUsingAbility(EldarVehicle.eldritch_regen_id) and self.squad_ai:GetHealthPercentage() > 0.8 and self.squad_ai:CanDoAbility(EldarVehicle.eldritch_regen_id)) then
+		self.squad_ai:DoSpecialAbility(EldarVehicle.eldritch_regen_id)
+	end
+end

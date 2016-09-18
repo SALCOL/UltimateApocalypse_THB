@@ -1,0 +1,14 @@
+----------------------------------------
+-- File: 'ripperswarmtactic.ai'
+-- Edited by Thudmeizer @ 05.01.2008
+
+class 'RipperSwarmTactic' (InfantryTactic)
+
+function RipperSwarmTactic:__init( squad_ai ) super( squad_ai )
+
+       self:SetName("Ripper Swarm Tactic")
+end
+
+function RipperSwarmTactic:CanOnlyDecap()
+		return true
+end

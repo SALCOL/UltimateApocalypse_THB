@@ -1,0 +1,23 @@
+----------------------------------------
+-- File: 'tyranidinfantrytactic.ai'
+-- Created by Thudmeizer @ 05.01.2008
+
+class 'TyranidInfantryTactic' (InfantryTactic)
+
+function TyranidInfantryTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Tyranid Infantry Tactic")
+end
+
+function TyranidInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "tyranids_squad_lictor_alpha", false })
+	table.insert(self.commander, { "tyranids_squad_hive_tyrant", true })
+	table.insert(self.commander, { "tyranids_squad_swarmlord", false })
+end
+
+function TyranidInfantryTactic:DoAbilities()
+
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
+end
+

@@ -1,0 +1,284 @@
+-- Edited by Cylarne @ 2012
+
+_Actual =
+{	
+	tier1_list =
+	{
+		addon_list = 
+		{
+			"chaos_hq_addon_1", "addon_dark_eldar_hq_1", "addon_guard_hq_1", "addon_necron_hq_1", "addon_sisters_hq_1", "space_marine_hq_addon_1",
+		},
+		structure_list =
+		{
+			"tau_research_building", "eldar_soul_shrine", "ork_bilda_pit", "ork_mek_shop", "ork_giant_waagh_banner_sp_dxp3", "ork_hq_super",
+		},
+		research_list =
+		{
+		},
+	},
+	tier2_list =
+	{
+		addon_list = 
+		{
+			"chaos_hq_addon_2", "addon_dark_eldar_hq_2", "addon_guard_hq_2", "addon_necron_hq_2", "addon_sisters_hq_2", "space_marine_hq_addon_2",
+		},
+		structure_list =
+		{
+			"tau_shrine_of_montka", "tau_shrine_of_kauyon", "ork_giant_waagh_banner_sp_dxp3", "ork_hq_super",
+		},
+		research_list =
+		{
+			"eldar_tier2_research", "ork_research_tech_squiggoth", "ork_research_tech_battlefortress", "ork_research_tech_kill_bursta", "ork_research_tech_kill_krusha", "ork_research_tech_nobz_armored", "ork_research_tech_lootas",
+		},
+	},
+	tier3_list =
+	{
+		addon_list = 
+		{
+			
+		},
+		structure_list =
+		{
+			"necron_summoning_core_big", "sisters_shrine", "ork_hq_super",
+		},
+		research_list =
+		{
+			"chaos_projectiles", "dark_eldar_tier3_research", "eldar_annihilate_the_enemy", "guard_full_scale_war", "marine_heavy_armor_deployment", "tau_teachings_of_montka_research", "tau_teachings_of_kauyon_research",
+		},
+	},
+	tier4_list =
+	{
+		addon_list = 
+		{
+			
+		},
+		structure_list =
+		{
+			"necron_energy_core", "ork_hq_super",
+		},
+		research_list =
+		{
+			"chaos_sorcerer_research_2", "dark_eldar_tier4_research", "eldar_farseer_ability_research_3", "guard_research_strafing_run", "necron_apocalypse_research", "sisters_research_hammer", "marines_research_bombardment", "tau_path_to_destruction_research",
+		},
+	},
+	superstructure_list = 
+	{	
+		-- Chaos
+		"chaos_hq_super",
+		
+		-- Dark Eldar
+		"dark_eldar_hq_sp_dxp3",
+		
+		-- Eldar
+		"eldar_hq_super",
+		
+		-- Imperial Guard
+		"guard_nuclear_facility",
+		"guard_basilisk_magnus",
+		
+		-- Necrons
+		"monolith_super",
+		
+		-- Orks
+		-- Orks don't have superstructures.
+		
+		-- Sisters of Battle
+		"sisters_shrine_to_the_emperor",
+		
+		-- Space Marines
+		"space_marine_hq_super",
+		
+		-- Tau
+		"tau_arka_ion_cannon",
+	},
+}
+_Tyranids =
+{	
+	tier1_list =
+	{
+		addon_list = 
+		{
+			"tyranids_hq_addon_1",
+		},
+		structure_list =
+		{
+		},
+		research_list =
+		{
+			
+		},
+	},
+	tier2_list =
+	{
+		addon_list = 
+		{
+			"tyranids_hq_addon_2",
+		},
+		structure_list =
+		{
+		},
+		research_list =
+		{
+		},
+	},
+	tier3_list =
+	{
+		addon_list = 
+		{
+		},
+		structure_list =
+		{
+			
+		},
+		research_list =
+		{
+			"tyranids_arrival3_research",
+		},
+	},
+	tier4_list =
+	{
+		addon_list = 
+		{
+		},
+		structure_list =
+		{
+		},
+		research_list =
+		{
+			"tyranids_assimilation_research",
+		},
+	},
+	superstructure_list = 
+	{	
+		
+		-- Tyranids
+		"tyranids_capillary_tower",
+	}
+}
+_Inquisition =
+{	
+	tier1_list =
+	{
+		addon_list = 
+		{
+			"inquisition_tower_addon",
+		},
+		structure_list =
+		{
+		},
+		research_list =
+		{
+			
+		},
+	},
+	tier2_list =
+	{
+		addon_list = 
+		{
+		},
+		structure_list =
+		{
+			"inquisition_grey_knights_teleporter",
+		},
+		research_list =
+		{
+			
+		},
+	},
+	tier3_list =
+	{
+		addon_list = 
+		{
+		},
+		structure_list =
+		{
+			"inquisition_tower_mechanicum", "inquisition_shrine_to_the_emperor",
+		},
+		research_list =
+		{
+			"inquisition_schematic_land_raiders", "inquisition_schematic_stormraven_fury", "inquisition_schematic_dreadknight", "inquisition_schematic_land_raider_special",  
+		},
+	},
+	tier4_list =
+	{
+		addon_list = 
+		{
+		},
+		structure_list =
+		{
+			"inquisition_tower_mechanicum", "inquisition_shrine_to_the_emperor",
+		},
+		research_list =
+		{
+			
+		},
+	},
+	superstructure_list = 
+	{	
+		
+		-- Inquisition
+		"inquisition_nuclear_facility",
+	}
+}
+_Daemons =
+{	
+	tier1_list =
+	{
+		addon_list = 
+		{
+			"addon_daemons_hq_1"
+		},
+		structure_list =
+		{
+		},
+		research_list =
+		{
+			
+		},
+	},
+	tier2_list =
+	{
+		addon_list = 
+		{
+			"addon_daemons_hq_2"
+		},
+		structure_list =
+		{
+		},
+		research_list =
+		{
+		},
+	},
+	tier3_list =
+	{
+		addon_list = 
+		{
+			"addon_daemons_hq_3",
+		},
+		structure_list =
+		{
+			
+		},
+		research_list =
+		{
+		},
+	},
+	tier4_list =
+	{
+		addon_list = 
+		{
+			"addon_daemons_hq_4",
+		},
+		structure_list =
+		{
+		},
+		research_list =
+		{
+		},
+	},
+	superstructure_list = 
+	{	
+		-- Daemons
+		"daemon_doom_pit",
+	}
+}

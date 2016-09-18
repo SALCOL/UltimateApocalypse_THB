@@ -1,0 +1,69 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Relic Units
+-- Created by Cylarne @ 2013
+--
+--	Relic Units are restricted for the ai.
+--
+-- Apocalypse Mod Team
+
+import("ScarUtil.scar");
+
+function RestrictRelicUnits_Ai()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		
+		local player = World_GetPlayerAt(i);
+		
+		if (player_IsHuman_W5(player) == false) then
+	
+			Player_RestrictResearch(player, "chaos_bloodthirster_research")
+			Player_RestrictResearch(player, "chaos_daemon_prince_research")
+			Player_RestrictResearch(player, "necron_ctan_research")
+			import("UA_SCARCore/K_04/RelicEntityList.scar");
+			
+			for i=1,table.getn( relic_squad_list ) do
+				local squad = relic_squad_list[i];
+			
+				Player_RestrictSquad(player, squad);
+			end 
+			if (Mod_Includes_Tyranids == true) then
+				for i=1,table.getn( relic_squad_list_tyranids ) do
+					local squad = relic_squad_list_tyranids [i];
+					
+					Player_RestrictSquad(player, squad);
+				end 
+			end
+			if (Mod_Includes_Inquisition == true) then
+				for i=1,table.getn( relic_squad_list_inquisition ) do
+					local squad = relic_squad_list_inquisition [i];
+					
+					Player_RestrictSquad(player, squad);
+				end 
+			end
+			if (Mod_Includes_Daemons == true) then
+				Player_RestrictResearch(player, "daemons_transform_research")
+				for i=1,table.getn( relic_squad_list_daemons ) do
+					local squad = relic_squad_list_daemons [i];
+					
+					Player_RestrictSquad(player, squad);
+				end 
+			end
+		end
+	end
+
+end
+Scar_AddInit(RestrictRelicUnits_Ai)
+
+-- Function thanks to Gambit!
+function player_IsHuman_W5( player )
+	local name = Player_GetDisplayName(player)[1]
+	if string.len(name) < 3 then return true end
+	name = string.sub(name, -2)
+	if( name == " 1" or name == " 2" or name == " 3" or name == " 4" or name == " 5" or name == " 6" or name == " 7" or name == " 8") then
+		return false
+	else
+		return true
+	end
+end

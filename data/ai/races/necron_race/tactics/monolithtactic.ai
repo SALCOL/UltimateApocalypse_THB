@@ -1,0 +1,30 @@
+----------------------------------------
+-- File: 'monolithtactic.ai'
+-- Edited by Arkhan		@ 15.01.2007
+-- Edited by Cylarne_04 2011
+
+class 'MonolithTactic' (BaseTactic)
+
+function MonolithTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Monolith Tactic")
+
+	-- Building can deepstrike troops
+	self.m_bCanDeepStrikeTroops = true
+end
+
+--[[function MonolithTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Monolith.apocalypse_id == nil) then
+		Monolith.apocalypse_id = cpu_manager.stats:GetAbilityID( "necron_apocalypse" )
+	end
+end
+
+function MonolithTactic:DoAbilities()
+
+	-- Try to activate the Apocalypse
+	if (self.base_ai:CanDoAbility(Monolith.apocalypse_id)) then
+		Ability.DoAbility(self.base_ai, Monolith.apocalypse_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = Monolith.apocalypse_id, min_bodies = 15 })
+	end
+end--]]

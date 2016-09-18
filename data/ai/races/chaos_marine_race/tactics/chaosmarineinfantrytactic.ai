@@ -1,0 +1,128 @@
+----------------------------------------
+-- File: 'chaosmarineinfantrytactic.ai'
+-- Created by Arkhan		@ 12.01.2006
+-- Edited by Thudmeizer         @ 11.10.2006
+-- Edited by Cylarne_04 2011
+
+class 'ChaosMarineInfantryTactic' (InfantryTactic)
+
+function ChaosMarineInfantryTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chaos Marine Infantry Tactic")
+	
+	-- Basic chaos infantry is able to enter transport vehicles
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "chaos_squad_cultist" or
+		sSquadName == "chaos_marine_squad" or
+		sSquadName == "chaos_havoc_marine_squad" or
+		sSquadName == "chaos_plague_marine_squad" or
+		sSquadName == "chaos_rubric_marine_squad" or
+		sSquadName == "chaos_squad_khorne_berserker" or
+		sSquadName == "chaos_squad_psyker" or
+		sSquadName == "chaos_squad_sorcerer" or
+		sSquadName == "chaos_squad_lord" or
+		sSquadName == "chaos_squad_lord_khorne" or
+		sSquadName == "chaos_squad_lord_nurgle" or
+		sSquadName == "chaos_squad_lord_slaanesh" or
+		sSquadName == "chaos_squad_lord_tzeentch" or
+		sSquadName == "chaos_squad_lord_undivided") then
+		self.m_iTransportable = 1
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("chaos_warpforge")
+	elseif (sSquadName == "chaos_squad_horror" or
+		sSquadName == "chaos_squad_bloodletters" or
+		sSquadName == "chaos_squad_daemonettes" or
+		sSquadName == "chaos_squad_screamers" or
+		sSquadName == "chaos_squad_plague_bearers") then
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("chaos_sacrificial_circle")
+	elseif (sSquadName == "chaos_squad_obliterator" or
+		sSquadName == "chaos_squad_possessed_marine" or
+		sSquadName == "chaos_squad_terminator" or
+		sSquadName == "chaos_squad_terminator_khorne") then
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("chaos_greater_sacrificial_circle")
+	end
+end
+
+function ChaosMarineInfantryTactic:AddTargetAbilities()
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_frag_grenades", Ability.Filters.CloseSquadEnemy, 6, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_flashbang_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	--table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_smoke_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_blight_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_noise_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_bolt_of_change_aspiringsorcerer", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_bolt_of_change_psyker", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_doombolt_psyker", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_inferno_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_melta_bombs", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_melta_bombs_havoc", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_krak_grenades", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+end
+
+function ChaosMarineInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "chaos_squad_lord", true })
+	table.insert(self.commander, { "chaos_squad_lord_undivided", false })
+	table.insert(self.commander, { "chaos_squad_sorcerer", false })
+	table.insert(self.commander, { "chaos_squad_sorcerer_advance_sp", false })
+end
+
+function ChaosMarineInfantryTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat() and not self.squad_ai:IsCapturing() and not self.squad_ai:IsBroken()) then
+	  
+		-- Check if I can go berserk while stationary
+		if (not self:IsMoving()) then
+			local berserk_id = cpu_manager.stats:GetAbilityID( "chaos_furious_rage" )
+			if (self.squad_ai:CanDoAbility( berserk_id )) then
+				self.squad_ai:DoSpecialAbility( berserk_id )
+			end
+		end		
+	end
+	
+	-- Check if jump squad can speed up with boost
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+		
+		local boost_id = cpu_manager.stats:GetAbilityID( "chaos_speed_fiend" )
+		if (self.squad_ai:CanDoAbility( boost_id )) then
+			self.squad_ai:DoSpecialAbility( boost_id )
+		end
+	end
+
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+	
+		if (self.squad_ai:HasSquadAttached("chaos_squad_lord")) then
+			ChaosLordTactic.InitAbilities( self )
+			ChaosLordTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("chaos_squad_sorcerer")) then
+			SorcererTactic.InitAbilities( self )
+			SorcererTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("chaos_squad_sorcerer_advance_sp")) then
+			SorcererTactic.InitAbilities( self )
+			SorcererTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("chaos_squad_lord_undivided")) then
+			SorcererTactic.InitAbilities( self )
+			SorcererTactic.DoAbilities( self )
+		end
+	end
+	
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
+end
+
+function ChaosMarineInfantryTactic:CheckDance(oSquad)
+
+	-- Check opponent
+	if (oSquad == nil) then
+		return false
+	end
+	
+	-- Compare opponents
+	local sSquadName = self.squad_ai:GetSquadName()
+	if (sSquadName == "chaos_marine_squad" or sSquadName == "chaos_squad_obliterator") then
+		
+		-- Check opponent
+		if (oSquad:GetSquadName() == "chaos_squad_cultist") then
+			return false
+		end
+	end
+	return true
+end

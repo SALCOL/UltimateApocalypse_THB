@@ -1,0 +1,56 @@
+----------------------------------------
+-- File: 'chimeratactic.ai'
+-- Edited by Arkhan		@ 23.11.2007
+
+class 'ChimeraTactic' (GuardVehicleTactic)
+
+Chimera = {}
+
+function ChimeraTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chimera Tactic")
+
+	-- Vehicle is a light transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 2
+end
+
+function ChimeraTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Chimera.smoke_id == nil) then
+		Chimera.smoke_id = cpu_manager.stats:GetAbilityID( "guard_smoke_launchers" )	
+	end
+	if (Chimera.teargas_id == nil) then
+		Chimera.teargas_id = cpu_manager.stats:GetAbilityID( "guard_nervegas_launchers" )	
+	end
+end
+
+function ChimeraTactic:DoAbilities()
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(Chimera.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Chimera.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(Chimera.smoke_id, oUnit:GetSquad())
+		end
+	end
+	
+	-- Check if we can use Nervegas Launchers
+	if (self.squad_ai:CanDoAbility(Chimera.teargas_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(Chimera.teargas_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 6)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.squad_ai:DoSpecialAbilitySquad(Chimera.teargas_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	-- Call standard method
+	GuardVehicleTactic.DoAbilities(self)
+end

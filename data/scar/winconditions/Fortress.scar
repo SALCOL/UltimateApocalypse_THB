@@ -1,0 +1,87 @@
+----------------------------------------------------------------------------------------------------------------
+-- Civilian Slaughter
+-- Created by Cylarne @ 2015
+--
+--	Kill all civilians.
+--  Each faction will spawn with 10-30 civilians.
+-- 
+-- Apocalypse Mod Team
+
+
+import("ScarUtil.scar");
+
+function CivilianSlaughterInit()
+	
+	SetPlayerCivilians()
+	Rule_AddInterval(CheckCivilianSlaughter, 2)
+	
+	obj_table_CS = { title_id = 15777715, short_desc_id = 15777716, help_tip_id = 15777717 }
+	
+	Objective_Add( obj_table_CS, 1 )
+	
+	
+	Rule_AddOneShot( Rule_NotifyCivilianSlaughter, 0 )
+
+end
+
+function Rule_NotifyCivilianSlaughter()
+
+	print("rule notify civilians ingame")
+	
+	--get the AI to attack on the 240second mark -- Sure? Why not.
+	local count = World_GetPlayerCount()
+	for i = 0, count - 1 do
+		local player = World_GetPlayerAt(i)
+		
+		if Cpu_IsCpuPlayer( player ) then
+			Cpu_NotifyAssassinate( player )
+		end
+	end
+
+end
+
+-- iterates through all players and gets their commander units
+function SetPlayerCivilians()
+	
+	-- get the commander squad for all players and place them in the commanders table.
+	local j = World_GetPlayerCount()
+	for i = 1, j
+	do
+		-- this player
+		local player = World_GetPlayerAt(i-1)
+		local pos = Player_GetStartPosition(player)
+		--local race = Player_GetRace(player)
+		
+		-- create civilian group
+		SGroup_CreateIfNotFound( "civilians"..i )
+		
+		Util_CreateSquadsAtPosition(player, "civilians"..i, "npc_squad_civilian_group", pos, 3)
+		
+	end
+end
+
+function CheckCivilianSlaughter()
+
+	-- total number of players
+	local j = World_GetPlayerCount();	
+	
+	--check for annihilated dudes
+	for i = 1, j
+	do
+		-- check if player has been annihilated
+		local player = World_GetPlayerAt(i-1);
+	
+		--if all Civilians are dead, so are you.
+		if( Player_IsAlive(player) ) then
+			if (SGroup_Exists("civilians"..i) and SGroup_Count("civilians"..i) < 1) then
+				Player_Kill( player )
+			end
+			
+		end
+	end
+		
+	-- check if only one team left -- if only one team left, they win and everybody else loses
+	Util_CheckOneTeamLeft("Fortress");
+end
+
+Scar_AddInit(CivilianSlaughterInit)

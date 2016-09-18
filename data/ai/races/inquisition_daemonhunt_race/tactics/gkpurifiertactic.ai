@@ -1,0 +1,55 @@
+----------------------------------------
+-- File: 'GKPurifiertactic.ai'
+-- Created by Cylarne
+
+class 'GKPurifierTactic' (DaemonhuntInfantryTactic)
+
+GKPurifier = {}
+
+function GKPurifierTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("GKPurifier Tactic")
+end
+
+function GKPurifierTactic:InitAbilities()
+
+	if GKPurifier.medkits == nil then
+	   GKPurifier.medkits = cpu_manager.stats:GetAbilityID( "inquisition_medikits" )	
+	end
+	
+	if GKPurifier.nemesis == nil then
+	   GKPurifier.nemesis = cpu_manager.stats:GetAbilityID( "inquisition_psyker_nemesis" )	
+	end
+	
+	if GKPurifier.shroud == nil then
+	   GKPurifier.shroud = cpu_manager.stats:GetAbilityID( "inquisition_psyker_shroud" )	
+	end
+	
+	if GKPurifier.quake == nil then
+	   GKPurifier.quake = cpu_manager.stats:GetAbilityID( "inquisition_psyker_quake" )	
+	end
+	
+	if GKPurifier.purify == nil then
+	   GKPurifier.purify = cpu_manager.stats:GetAbilityID( "inquisition_psyker_purify" )	
+	end
+end
+
+function GKPurifierTactic:DoAbilities()
+	
+	if (self.squad_ai:IsInCombat()) then
+
+		Ability.DoAbilityPos( self.squad_ai, GKPurifier.nemesis, Ability.Filters.CloseInfantryEnemy, 4 ) 
+		Ability.DoAbilityPos( self.squad_ai, GKPurifier.nemesis, Ability.Filters.CloseMonsterEnemy, 2 )
+		
+		Ability.DoAbilityPos( self.squad_ai, GKPurifier.purify, Ability.Filters.CloseMonsterEnemy, 2 )
+		
+		Ability.DoAbilityArea( self.squad_ai, GKPurifier.quake, Ability.Filters.CloseEnemy, 12, 6 ) 
+		
+		Ability.DoAbility( self.squad_ai, GKPurifier.shroud, Ability.Filters.IsInCombat )
+	end
+	--we are dying, lower requisites for attacks
+	if self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 then
+		
+		Ability.DoAbility( self.squad_ai, GKPurifier.medkits, Ability.Filters.IsInCombat )
+	end
+end

@@ -1,0 +1,42 @@
+----------------------------------------
+-- File: 'Titantactic.ai'
+-- Edited by Cylarne @ 2012
+-- Edited by Thudmeizer		@ 02.02.2016
+
+class 'TitanTactic' (SpaceMarineVehicleTactic)
+
+Titan = {}
+
+function TitanTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Titan Tactic")
+end
+
+function TitanTactic:InitAbilities()
+
+	if Titan.stomp == nil then
+	   Titan.stomp = cpu_manager.stats:GetAbilityID( "titan_stomp" )	
+	end
+	
+	if Titan.missiles == nil then
+	   Titan.missiles = cpu_manager.stats:GetAbilityID( "marines_apocalypse_missiles" )	
+	end
+end
+
+function TitanTactic:DoAbilities()
+
+	Ability.DoAbilityTarget(self.squad_ai, Titan.stomp, Ability.Filters.CloseSquadEnemy, 3)
+	Ability.DoAbilityTarget(self.squad_ai, Titan.missiles, Ability.Filters.CloseSquadEnemy, 6)
+	Ability.DoAbilityTarget(self.squad_ai, Titan.missiles, Ability.Filters.CloseVehicleEnemy, 1)
+end
+
+function TitanTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end

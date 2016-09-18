@@ -1,0 +1,29 @@
+----------------------------------------
+-- File: 'Titantactic.ai'
+-- Edited by Cylarne @ 2012
+
+class 'TitanTactic' (DaemonhuntVehicleTactic)
+
+Titan = {}
+
+function TitanTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Titan Tactic")
+end
+
+function TitanTactic:InitAbilities()
+
+	--[[if Titan.shields == nil then
+	   Titan.shields = cpu_manager.stats:GetAbilityID("titan_shield")	
+	end]]
+
+	if Titan.stomp == nil then
+	   Titan.stomp = cpu_manager.stats:GetAbilityID("titan_stomp")	
+	end
+end
+
+function TitanTactic:DoAbilities()
+
+	Ability.DoAbilityTarget(self.squad_ai, Titan.stomp, Ability.Filters.CloseSquadEnemy, 3)
+
+end

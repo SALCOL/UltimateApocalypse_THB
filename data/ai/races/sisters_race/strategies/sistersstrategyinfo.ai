@@ -1,0 +1,149 @@
+----------------------------------------
+-- File: 'sistersstrategyinfo.ai'
+-- Edited by Thudmeizer    @ 02.02.2016
+-- Edited by Cylarne_04 2011
+
+BuildBaseStrategyInfo = 
+{
+	sisters_race =
+	{
+		post_builder = 2,
+		flag_capture = 2,
+
+		-- Reserve this amount for building units, reinforcing and upgrading
+		req_reserve = 150,
+		
+		--need at least this at all times
+		squad_cap_threshold = 2,
+
+		--need at least this at all times
+		support_cap_threshold = 3,
+		
+		--used to calculate wants for engineers
+		Engineers =
+		{
+			--number of engineers we're aiming for
+			want = 4,
+		},
+		
+		-- Is used to modify the army strength in the build programs (Allows faster balancing adjustments)
+		ArmyStrengthModifier = 1.0,
+				
+		-- Item-Syntax: Min. Tier, Min. Requisition, Min. Power, Min. ArmyStrength, Object-Count, Object-Type, Object-Name
+		BuildPrograms =
+		{
+			-- Allround Strategy
+			{
+				{ 1, 75, 0, 0, 1,	"Unit",		"sisters_squad_missionary" }, -- Force a caturing squad
+				{ 1, 220, 50, 0, 1,	"Unit",		"sisters_squad_canoness" },
+				{ 1, 180, 0, 0, 3,	"Unit",		"sisters_squad_battle_sister" },
+				{ 1, 450, 0, 0, 1,	"Building",	"sisters_hq" },
+				{ 1, 250, 0, 0, 1,	"Building",	"sisters_infantry" },
+				{ 1, 135, 0, 0, 1,	"Building",	"sisters_plasma_generator" },
+				{ 1, 0, 0, 0, 1,	"Building",	"sisters_tanktrap_ai" },
+				{ 1, 0, 0, 0, 20,	"TurretAddon",	"addon_sisters_holy_icon" },
+				{ 1, 90, 80, 0, 40,	"TurretAddon",	"addon_sisters_list_post_1" },
+				{ 1, 135, 0, 0, 3,	"Building",	"sisters_plasma_generator" },
+				{ 1, 175, 50, 0, 1,	"Building",	"sisters_sanctuary" },
+				{ 1, 400, 130, 500, 1,	"Addon",	"addon_sisters_hq_1" },
+				{ 1, 90, 80, 0, 100,	"TurretAddon",	"addon_sisters_list_post_1" },
+				{ 1, 135, 0, 0, 5,	"Building",	"sisters_plasma_generator" },
+
+				{ 2, 200, 125, 0, 1,	"Building",	"sisters_vehicle_building" },
+				{ 2, 135, 0, 0, 6,	"Building",	"sisters_plasma_generator" },
+				{ 2, 50, 90, 500, 30,	"TurretAddon",	"addon_sisters_turret" },
+				{ 2, 125, 50, 0, 1,	"Building",	"sisters_holy_reliquary" },
+				{ 2, 240, 160, 1000, 50,"TurretAddon",	"addon_sisters_list_post_2" },
+				{ 2, 105, 50, 500, 100,	"TurretAddon",	"addon_sisters_holy_icon" },
+				{ 2, 500, 500, 750, 1,	"Addon",	"addon_sisters_hq_2" },
+				{ 2, 700, 150, 750, 2,	"Building",	"sisters_hq" },
+
+				{ 3, 50, 90, 500, 100,	"TurretAddon",	"addon_sisters_turret" },
+				{ 3, 240, 160, 0, 100,	"TurretAddon",	"addon_sisters_list_post_2" },
+			      --{ 3, 305, 180, 0, 100,	"TurretAddon",	"addon_sisters_list_post_3" },
+				{ 3, 1000, 1000, 0, 1,	"Building",	"sisters_shrine" },
+
+				{ 4, 0, 0, 0, 1,	"Unit",		"sisters_squad_living_saint" },
+				{ 4, 135, 0, 0, 10,	"Building",	"sisters_plasma_generator" },
+				{ 4, 1500, 1500, 500, 1,"Research",	"sisters_research_hammer" },
+
+				{ 5, 0, 0, 0, 1,	"Unit",		"sisters_squad_arch_angel" },
+				{ 5, 1000, 1000, 0, 2,	"Building",	"sisters_shrine" },
+				{ 5, 2000, 2000, 0, 1,	"Building",	"sisters_shrine_to_the_emperor" },
+				{ 5, 4000, 4000, 0, 1,	"Research",	"sisters_apocalypse_research" },
+				
+				{ 6, 300, 125, 1500, 100,"Addon",	"addon_sisters_hq_1" },
+				{ 6, 340, 340, 2000, 100,"Addon",	"addon_sisters_hq_2" }				
+			},
+
+		},
+				
+		SquadLimits = 
+		{
+			standard =
+			{
+				sisters_squad_ds_turret = 3,
+				sisters_squad_arch_angel = 1,
+			}
+		},
+	},
+}
+
+BuildOrderStrategyInfo = 
+{
+	sisters_race =
+	{
+		Basic =
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "sisters_squad_servitor" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "squad", "sisters_squad_servitor" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "post_builder" }, 
+			{ "building", "sisters_infantry", true },
+			{ "building", "sisters_plasma_generator" }
+		},
+		
+		QuickStart =
+		{
+			{ "flag_capture" }, { "flag_capture" }, 
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "squad", "sisters_squad_servitor" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "squad", "sisters_squad_servitor" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "post_builder" }, 
+			{ "building", "sisters_infantry", true },
+			{ "building", "sisters_plasma_generator" }
+		},
+		
+		LargeMap =
+		{
+			{ "flag_capture" }, { "flag_capture" }, 
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "squad", "sisters_squad_servitor" },
+			{ "squad", "sisters_squad_servitor" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "squad", "sisters_squad_missionary" },
+			{ "post_builder" }, 
+			{ "building", "sisters_infantry", true },
+			{ "building", "sisters_plasma_generator" }
+		}
+	}
+}
+
+AttackStrategyInfo = 
+{	
+	sisters_race =
+	{
+		MinArmyStrength = 500,
+	},
+}

@@ -1,0 +1,62 @@
+----------------------------------------
+-- File: 'landraidertactic.ai'
+-- Edited by Arkhan         @ 02.02.2016
+-- Edited by Cylarne_04 2011
+
+class 'LandRaiderTactic' (SpaceMarineVehicleTactic)
+
+LandRaider = {}
+
+function LandRaiderTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Land Raider Tactic")
+	
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 2
+	self.m_iTransportSlots = 3
+end
+
+function LandRaiderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (LandRaider.spirit_id == nil) then
+		LandRaider.spirit_id = cpu_manager.stats:GetAbilityID( "marines_machine_spirit" )
+	end
+
+	if (LandRaider.smoke_id == nil) then
+		LandRaider.smoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_launchers_land_raider" )	
+	end
+
+	if (LandRaider.missiles_id == nil) then
+		LandRaider.missiles_id = cpu_manager.stats:GetAbilityID( "marines_whirlwind_missiles" )	
+	end
+end
+
+function LandRaiderTactic:DoAbilities()
+
+	-- Check if I can use machine spirit while stationary
+	if (self.squad_ai:WasRecentlyHurt() and not self.squad_ai:IsInStateMove() and not self.squad_ai:IsInStateAttackMove()) then
+		
+		if (self.squad_ai:CanDoAbility(LandRaider.spirit_id)) then
+			self.squad_ai:DoSpecialAbility(LandRaider.spirit_id)
+		end	  
+	end
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(LandRaider.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(LandRaider.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(LandRaider.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(LandRaider.missiles_id)) then
+		Ability.DoAbilityTarget( self.squad_ai, LandRaider.missiles_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, LandRaider.missiles_id, Ability.Filters.CloseSquadEnemy, 4 )
+	end
+
+	-- Do basic abilities
+	SpaceMarineVehicleTactic.DoAbilities(self)
+end

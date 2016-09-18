@@ -1,0 +1,56 @@
+----------------------------------------
+-- File: 'DarkEldarTormentorTactic.ai'
+-- Edited by Cylarne @ 2012
+
+class 'DarkEldarTormentorTactic' (DarkEldarVehicleTactic)
+
+Tormentor = {}
+
+function DarkEldarTormentorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Dark Eldar Tormentor Tactic")
+end
+
+function DarkEldarTormentorTactic:InitAbilities()
+	
+	if (Tormentor.td) == nil then
+	   Tormentor.td = cpu_manager.stats:GetAbilityID("dark_eldar_tracking_device_titan")	
+	end
+	
+	if (Tormentor.rage == nil) then
+	   Tormentor.rage = cpu_manager.stats:GetAbilityID("dark_eldar_rekindle_rage_titan")	
+	end
+end
+
+function DarkEldarTormentorTactic:DoAbilities()
+
+	Ability.DoAbilityTarget(self.squad_ai, Tormentor.td, Ability.Filters.CloseSquadEnemy, 4)
+	
+	if (self.squad_ai:GetMoralePercentage() < 0.3 and self.squad_ai:CanDoAbility(Tormentor.rage)) then
+		Ability.DoAbility(self.squad_ai, Tormentor.rage, Ability.Filters.IsInCombat)
+	end
+	
+	self:DoAbilityVoidShields()
+
+end
+
+function DarkEldarTormentorTactic:DoAbilityVoidShields()
+
+	-- Check if we should toggle Void Shields
+	local id_VoidShields = cpu_manager.stats:GetAbilityID("dark_eldar_soulshield")
+	local bToggleVoidShields = false
+	
+	local bIsUsing = self.squad_ai:IsUsingAbility(id_VoidShields)
+	local bIsVSonline = self.squad_ai:GetMoralePercentage()
+	
+	-- Void Shield checker.
+	if ((bIsUsing == true and bIsVSonline < 0.1) or
+		(bIsUsing == false and bIsVSonline == 1)) then
+		bToggleVoidShields = true
+	end
+	
+	-- Void Shields enable/disable
+	if (bToggleVoidShields == true and self.squad_ai:CanDoAbility(id_VoidShields)) then
+		self.squad_ai:DoSpecialAbility(id_VoidShields)
+	end
+end

@@ -1,0 +1,32 @@
+----------------------------------------
+-- File: 'sistersexorcisttactic.ai'
+-- Created by Arkhan 	        @ 16.03.2008
+-- Edited by Thudmeizer		@ 23.03.2008
+-- Edited by Cylarne
+
+class 'SistersExorcistTactic' (SistersVehicleTactic)
+
+SistersExorcist = {}
+
+function SistersExorcistTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Exorcist Tank Tactic")
+end
+
+function SistersExorcistTactic:InitAbilities()
+	
+	if (SistersExorcist.bombard_id == nil) then
+		SistersExorcist.bombard_id = cpu_manager.stats:GetAbilityID( "sisters_hk_missiles" )
+	end
+end
+
+function SistersExorcistTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	if (iRequisition > 500 and iPower > 500 and self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(SistersExorcist.bombard_id)) then
+		Ability.DoAbilityPos(self.squad_ai, SistersExorcist.bombard_id, Ability.Filters.CloseVehicleEnemy, 1)
+	end
+
+end

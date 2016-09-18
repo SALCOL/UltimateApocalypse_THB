@@ -1,0 +1,16 @@
+----------------------------------------
+-- File: 'guardmarspatterntactic.ai'
+-- Edited by Krronus		@ 24.10.2006
+-- Edited by Cylarne_04 2011
+
+class 'GuardMarsPatternTactic' (BaseTactic)
+
+GuardMarsPattern = {}
+
+function GuardMarsPatternTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Guard Mars Pattern Tactic")
+	
+	-- Building can deepstrike troops
+	self.m_bCanDeepStrikeTroops = true
+end

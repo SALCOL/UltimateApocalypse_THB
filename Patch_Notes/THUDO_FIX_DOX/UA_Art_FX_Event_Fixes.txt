@@ -1,0 +1,99 @@
+Fixed Missing FX Textures
+FX -- Texture 'DATA:ART/FX/STEEL_LEGION/STEEL_LEGION_BIG_BEAM' is missing, using default!
+FX -- Texture 'DATA:ART/FX/STEEL_LEGION/NIGHT_FX/_TEXTURES/PROJECTOR_BEAM' is missing, using default!
+FX -- Texture 'DATA:ART/FX/STEEL_LEGION/NIGHT_FX/_TEXTURES/PROJECTOR_GLOW' is missing, using default!
+FX -- Texture 'DATA:ART/FX/NIGHT_SHIFT/_textures/ICON_EYE' is missing, using default!
+FX -- Texture 'DATA:ART/FX/NIGHT_SHIFT/_textures/ICON_GLOW' is missing, using default!
+FX -- Texture 'DATA:ART/FX/MELTA/PERTOL_PUFF5' is missing, using default!
+FX -- Texture 'DATA:ART/FX/MELTA/PYRUM_GLOW2' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/FX1SW' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/FX2SW' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/FX3SW' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/FX4SW' is missing, using default!
+FX -- Texture 'DATA:ART/FX/STEEL_LEGION/STEEL_LEGION_BIG_BEAM' is missing, using default!
+FX -- Texture 'DATA:ART/FX/ELDAR/TEXTURES/GUNSHIP_LIGHTNING' is missing, using default!
+FX -- Texture 'DATA:ART/FX/ELDAR/TEXTURES/GUNSHIP_EMPXP' is missing, using default!
+FX -- Texture 'DATA:ART/FX/ELDAR/TEXTURES/GUNSHIP_BLUEFLARE' is missing, using default!
+FX -- Texture 'DATA:ART/FX/ELDAR/TEXTURES/GUNSHIP_LIGHTHING_BALL' is missing, using default!
+FX -- Texture 'DATA:ART/FX/TEXTURES_NEW/GLOW_RINGS/BLUE_THICK_TAU_ENERGY_RING_2' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/LIGHTNING' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/NUKE/SKULLCLOUD' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/NUKE/SKULLCLOUDSIDEON' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/SWIPE' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/NUKE/NECK' is missing, using default!
+FX -- Texture 'DATA:ART/FX/KWE/ALL_CRATER' is missing, using default!
+FX -- Texture 'DATA:ART/FX/MELTA2/PERTOL1PUFF' is missing, using default!
+
+Fixed Missing FX Sequences
+FX -- type (eldar\ghost_warrior_die) not found. Replacing it with default FX (badfx).
+die_catonation
+art/ebps/races/orks/troops/weirdboy
+FX -- type (kwe\transwave) not found. Replacing it with default FX (badfx).
+shok_electrick_fire
+art/ebps/races/orks/structures/zzzap_turret
+FX -- type (kwe\cannon) not found. Replacing it with default FX (badfx).
+shok_electrick_fire_light
+art/ebps/races/orks/structures/zzzap_turret
+FX -- type (melta\muzzle_melta_spray_combo) not found. Replacing it with default FX (badfx).
+melta_fire
+art/ebps/races/space_marines/troops/new_bike
+FX -- type (melta\muzzle_melta_spray_combo) not found. Replacing it with default FX (badfx).
+melta_fire
+art/ebps/races/chaos/troops/chaos_bike
+FX -- type (melta\muzzle_melta_spray_combo3) not found. Replacing it with default FX (badfx).
+melta_tracer_fire
+art/ebps/races/space_marines/troops/new_bike
+FX -- type (melta\muzzle_melta_spray_combo3) not found. Replacing it with default FX (badfx).
+melta_tracer_fire
+art/ebps/races/chaos/troops/chaos_bike
+FX -- type (blood_fx\decapitate_splat) not found. Replacing it with default FX (badfx).
+sync_kill_2_head_splatter_ii
+art/ebps/races/space_marines/troops/new_bike
+FX -- type (blood_fx\decapitate_splat) not found. Replacing it with default FX (badfx).
+sync_kill_2_head_splatter_ii
+art/ebps/races/chaos/troops/chaos_bike
+FX -- type (race_tyranid\structures\smoke_loop) not found. Replacing it with default FX (badfx).
+mouth
+art/ebps/races/race_tyranid/structures/tyranid_base
+FX -- type (armoured_company/chemical_cannon/chemical_cannon_tracer) not found. Replacing it with default FX (badfx).
+nurgle_flamer_tracer
+art/ebps/races/chaos/troops/chaos_lord_terminator
+FX -- type (thousand_sons\weapon_fx\warp_bolt_muzzle_loop) not found. Replacing it with default FX (badfx).
+bolter_fire_noloop_tseentch
+art/ebps/races/chaos/troops/chaos_lord_terminator
+FX -- type (eldar\ulthwe\weapons\night_spinner_spray) not found. Replacing it with default FX (badfx).
+fire_spinner_spray_l
+art/ebps/races/eldar/troops/night_spinner
+FX -- type (eldar\aura_fx\health_upgrade_glow_01) not found. Replacing it with default FX (badfx).
+h_upgrades_aura
+art/events/eldar/upgrade_02
+Event Manager
+FX -- type (steel_legion\pioneer_build_ring_combo) not found. Replacing it with default FX (badfx).
+builder_ring_combo
+art/events/builder_fx/steel_legion_builder_idle
+
+Fixed Missing Events
+EVENTS -- 'Area Effect': Unable to load event 'art/events/worship'!
+EVENTS -- 'Event Ability': Unable to load event 'art/events/eldar/avatar_energy_anticip'!
+EVENTS -- 'Event Ability': Unable to load event 'art/events/guard/abilities/strafe_ordered_target_general'!
+EVENTS -- 'Event Ability': Unable to load event 'art/events/guard/abilities/vox_strafe'!
+EVENTS -- 'Weapon Damage': Unable to load event 'art/events/melta_hit_1'!
+EVENTS -- 'Weapon Damage': Unable to load event 'art/events/guard/weapons/melta2/1'!
+EVENTS -- 'Weapon Damage': Unable to load event 'art/events/guard/weapons/melta2/2'!
+EVENTS -- 'Area Effect': Unable to load event 'art/events/ground_impact/fire_prism_focussed_explosion'!
+EVENTS -- 'Area Effect': Unable to load event 'art/events/ground_impact/impact_de_blaster_flames_ttxp'!
+EVENTS -- 'Weapon Damage': Unable to load event 'art/events/unit_impact_events/eldar_dcannon_hit_inf'!
+EVENTS -- 'Weapon Damage': Unable to load event 'art/events/unit_impact_events/eldar_dcannon_hit_heavy'!
+EVENTS -- 'Combat Weapon': Unable to load event 'art/events/ground_impact/impact_plasma_cannon_all'!
+EVENTS -- 'Area Effect': Unable to load event 'art/events/ground_impact/impact_artillery_s_all'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/eldar/upgrade_02'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/eldar/upgrade_01'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/builder_fx/steel_legion_builder_idle'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/aura/negative_str_steel_legion'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/aura/negative_steel_legion'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/aura/positive_steel_legion'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/aura/positive_str_steel_legion'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/unit_ability_fx/guardian_plasma_nade_hit'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/aura/positive_tau'!
+EVENTS -- 'Event Manager': Unable to load event 'art/events/aura/positive_str_tau'!
+EVENTS -- 'Deep Strike': Unable to load event 'art/events/1'! NOTE: -- Fix was to remove the "1" from ["deep_strike_ext"]["spawn_entity_event"] = "" in structures "inquisition_astra_telepathica.rgd", "inquisition_infantry_bunker.rgd", and "inquisition_watch.rgd"

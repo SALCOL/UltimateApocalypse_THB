@@ -1,0 +1,118 @@
+----------------------------------------
+-- File: 'daemonsinfantrytactic.ai'
+-- Edited by Thudmeizer         @ 10.06.2011
+-- Edited by Cylarne_04 2011
+-- Edited by fuggles 05.06.2013
+-- Edited by CornCobMan 28.05.2013
+-- Edited by Cylarne 6/16/2014
+
+class 'DaemonsInfantryTactic' (InfantryTactic)
+
+function DaemonsInfantryTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Infantry Tactic")	
+	-- Basic daemon infantry is able to enter transport vehicles
+	local sSquadName = squad_ai:GetSquadName()--[[
+	if (	sSquadName == "daemon_squad_bloodletters" or
+		--sSquadName == "daemon_squad_bloodletter_elites" or
+		sSquadName == "daemon_squad_daemonettes" or
+		sSquadName == "daemon_squad_screamers" or
+		--sSquadName == "daemon_squad_horror" or
+		sSquadName == "daemon_squad_plague_bearers" or
+		sSquadName == "daemon_squad_obliterator") then
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("daemon_sacrificial_circle")
+
+	elseif (-- sSquadName == "daemon_squad_lord_of_change" or
+		--sSquadName == "daemon_squad_guo" or
+		--sSquadName == "daemon_squad_keeper_of_secrets" or
+		--sSquadName == "daemon_squad_daemon_prince"
+		sSquadName == "daemon_squad_bloodthirster") then
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("daemon_daemon_pit")
+
+	elseif (sSquadName == "daemon_squad_hell_spawn") then
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("daemon_hq_super")
+	end]]
+end
+
+function DaemonsInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "daemon_squad_lord", true })
+	table.insert(self.commander, { "daemon_squad_lord_stature", true })
+	table.insert(self.commander, { "daemon_squad_khorne_herald", true })
+	table.insert(self.commander, { "daemon_squad_nurgle_herald", true })
+	table.insert(self.commander, { "daemon_squad_slaanesh_herald", true })
+	table.insert(self.commander, { "daemon_squad_tzeentch_herald", true })
+end
+
+function DaemonsInfantryTactic:CheckForDetach()
+	
+	if( self.squad_ai:IsAttached() and self.squad_ai:HasSquadAttached( "daemon_squad_lost_soul" ) ) then
+		local oBuildingToFinish = cpu_manager:GetUnfinishedBuildingInRange()
+		if (oBuildingToFinish ~= nil) then
+			if( distance ( oBuildingToFinish:GetPosition(), self.squad_ai:GetPosition() ) <= 50) then
+				self.squad_ai:DoDetachSquad()
+			end
+		end
+	elseif( self.squad_ai:IsAttached() ) then
+		 -- Detach healthy commanders after combat.
+		if (not self.squad_ai:IsInCombat() and not self.squad_ai:WasRecentlyHurt() and
+			self:CommanderAttached() and self.squad_ai:GetAttachedHealthPercentage() > 0.7) then
+			self.squad_ai:DoDetachSquad()
+			self.squad_ai:DoSetDefaultMeleeStance()
+		end
+		
+		-- Detach commander from broken/capturing
+		if ( self.squad_ai:IsBroken() or self.squad_ai:IsCapturing() ) then 
+			
+			self.squad_ai:DoDetachSquad()
+			self.squad_ai:DoSetDefaultMeleeStance()
+		end
+	end
+end
+
+function DaemonsInfantryTactic:DoAbilities()
+
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+	
+		if (self.squad_ai:HasSquadAttached("daemon_squad_lord")) then
+			DaemonsLordTactic.InitAbilities( self )
+			DaemonsLordTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("daemon_squad_lord_stature")) then
+			DaemonsLordStatureTactic.InitAbilities( self )
+			DaemonsLordStatureTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("daemon_squad_lost_soul")) then
+			DaemonsLostSoulTactic.InitAbilities( self )
+			DaemonsLostSoulTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("daemon_squad_khorne_herald")) then
+			DaemonsHeraldKhorneTactic.InitAbilities( self )
+			DaemonsHeraldKhorneTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("daemon_squad_tzeentch_herald")) then
+			DaemonsHeraldTzeentchTactic.InitAbilities( self )
+			DaemonsHeraldTzeentchTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("daemon_squad_herald_slaanesh")) then
+			DaemonsHeraldSlaaneshTactic.InitAbilities( self )
+			DaemonsHeraldSlaaneshTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("daemon_squad_herald_nurgle")) then
+			DaemonsHeraldNurgleTactic.InitAbilities( self )
+			DaemonsHeraldNurgleTactic.DoAbilities( self )
+		end
+	end
+
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
+end
+
+function DaemonsInfantryTactic:CheckForBroken()
+	-- Call basic broken check method
+	InfantryTactic.CheckForBroken(self)
+end
+
+function DaemonsInfantryTactic:CheckDance(oSquad)
+
+	-- Check opponent
+	if (oSquad == nil) then
+		return false
+	end
+	
+	return true
+end

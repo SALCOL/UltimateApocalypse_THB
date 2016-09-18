@@ -1,0 +1,57 @@
+----------------------------------------
+-- File: 'skullprobetactic.ai'
+-- Edited by Thudmeizer   @ 03.02.2016
+
+class 'SkullProbeTactic' (SpaceMarineInfantryTactic)
+
+SkullProbe = {}
+
+function SkullProbeTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("SkullProbe Tactic")
+end
+
+function SkullProbeTactic:InitAbilities()
+
+	if (SkullProbe.sabotage_id == nil) then
+		SkullProbe.sabotage_id = cpu_manager.stats:GetAbilityID( "marines_sabotage" )	
+	end
+end
+
+function SkullProbeTactic:DoAbilities()
+
+        Ability.DoAbilityTarget( self.squad_ai, SkullProbe.sabotage_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTargetEntity( self.squad_ai, SkullProbe.sabotage_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+end
+
+function SkullProbeTactic:IsSupportDetector()
+	return true
+end
+
+-- Should only attack when attached
+function SkullProbeTactic:IsAttacker()
+	return false
+end
+
+-- Should only defend when attached
+function SkullProbeTactic:IsDefender()
+	return false
+end
+
+function SkullProbeTactic:Update()
+
+   if self:IsComplete() then
+      return
+   end
+   
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+   --attach to squad
+   self:TryAttachSquad( false, false, 1000, 200, nil )
+	
+end
+
+

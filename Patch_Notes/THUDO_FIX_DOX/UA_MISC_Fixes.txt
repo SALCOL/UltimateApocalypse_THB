@@ -1,0 +1,56 @@
+Chaos Daemons
+-------------
+Chaos_Daemons\Data\ai\mapdb\mapdb.ai -- changes due to internal path needing to be updated to "Chaos_Daemons". 
+
+UltimateApocalypse_Daemons
+--------------------------
+UltimateApocalypse_Daemons\data\attrib\abilities\daemons_pit_ability_undivided.rgd -- Removed invalid "tp_targetting_dummy" in target_filter and added back all missing standard ability code (ie. backfire_area_effect).
+UltimateApocalypse_Daemons\data\attrib\abilities\daemons_ability_warp_rending.rgd  -- Duplicate armour value AE fix.
+
+UltimateApocalypse_Inquisition
+------------------------------
+UltimateApocalypse_Inquisition\data\attrib\abilities\inquisition_crack_grenades_stormtroopers.rgd  -- Duplicate armour value AE fix.
+UltimateApocalypse_Inquisition\data\attrib\abilities\inquisition_crack_grenades_bodyguards.rgd  -- Duplicate armour value AE fix.
+UltimateApocalypse_Inquisition\data\attrib\abilities\inquisition_inquisitor_lord_emperor_wrath.rgd  -- Duplicate armour value AE fix.
+UltimateApocalypse_Inquisition\data\attrib\abilities\marines_smite_toth.rgd  -- Duplicate armour value AE fix.
+UltimateApocalypse_Inquisition\data\attrib\sbps\races\inquisition_daemonhunt\inquisition_squad_valkyrie_uamod.rgd  -- Unknown area/sweep AE fix.
+
+UltimateApocalypse_Tyranids_THB
+-------------------------------
+UltimateApocalypse_Tyranids_THB\data\attrib\ebps\environment\gameplay\tyranids_hive_fleet_structure.rgd -- Removed modifiers completely as they are bugged and won't function.
+
+UltimateApocalypse_THB
+----------------------
+-- Updated all these to fix the sound bug
+data\art\ebps\races\eldar\troops\falcon_codex.whm
+data\art\ebps\races\eldar\troops\fire_prism_codex.whm
+data\art\ebps\races\eldar\troops\vyper_codex.whm
+data\art\ebps\races\eldar\troops\wave_serpent.whm
+
+-- Changed animator path to something that was valid: races\\imperial_guard\\structures\\guard_mechanized_drop_building
+data\attrib\ebps\races\eldar\structures\eldar_building_sp_dxp3.rgd
+
+-- Updated these AI files to fix various issues
+data\ai\races\guard_race\info\guardunitstats.ai
+data\ai\races\chaos_marine_race\info\chaosunitstats.ai
+data\ai\core\CpuPrerequisites2.ai
+data\ai\mapdb\mapdb.ai
+data\ai\races\tau_race\info\tauunitstats.ai
+data\ai\races\chaos_marine_race\tactics\sorcerertactic.ai
+data\ai\races\chaos_marine_race\strategies\chaosbuildbasestrategy.ai
+data\ai\races\eldar_race\strategies\eldarstrategyinfo.ai
+data\ai\races\chaos_marine_race\tactics\cultisttactic.ai
+data\ai\races\sisters_race\info\sistersunitstats.ai
+data\ai\races\space_marine_race\info\marineunitstats.ai
+
+-- Fixed two missing UCS entries
+Locale\English\inqusition_daemonhunt.ucs
+
+-- Updated "tau_orca_dropship" to "tau_orca_dropships"
+data\scar\UA_SCARCore\K_04\ApocalypseEntityList.scar
+
+-- Removed the invalid $ number and replaced with $0
+data\attrib\sbps\races\orks\ork_squad_wierdboy.rgd
+
+
+

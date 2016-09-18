@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'marinesbuildingtactic.ai'
+-- Edited by Thudmeizer @ 02.02.2016
+
+class 'MarinesBuildingTactic' (BaseTactic)
+
+MarinesBuilding = {}
+
+function MarinesBuildingTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Marines Building Tactic")
+end
+
+function MarinesBuildingTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (MarinesBuilding.repair_id == nil) then
+		MarinesBuilding.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function MarinesBuildingTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( MarinesBuilding.repair_id )) then
+			self.base_ai:DoSpecialAbility( MarinesBuilding.repair_id )
+		end
+	end
+end

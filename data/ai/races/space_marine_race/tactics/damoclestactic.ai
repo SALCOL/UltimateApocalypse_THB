@@ -1,0 +1,48 @@
+----------------------------------------
+-- File: 'Damoclestactic.ai'
+-- Created by Cylarne_04
+-- Edited by Thudmeizer @ 02.02.2016
+
+class 'DamoclesTactic' (SpaceMarineVehicleTactic)
+
+Damocles = {}
+
+function DamoclesTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Damocles Tactic")
+end
+
+function DamoclesTactic:IsAttacker()
+	return false
+end
+
+function DamoclesTactic:IsDefender()
+	return true
+end
+
+function DamoclesTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Damocles.sensormap_id) == nil then
+		Damocles.sensormap_id = cpu_manager.stats:GetAbilityID( "marines_sensormap" )
+	end
+	if (Damocles.jammermap_id) == nil then
+		Damocles.jammermap_id = cpu_manager.stats:GetAbilityID( "marines_jammermap" )
+	end
+end
+
+function DamoclesTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	local abilitySelector = math.random(1, 100)
+	
+	if (abilitySelector <= 10 and iPower >= 500) then
+		self.squad_ai:DoSpecialAbility(Damocles.sensormap_id) 
+	elseif (abilitySelector <= 50 and iPower >= 500) then
+		Ability.DoAbility( self.squad_ai, Damocles.jammermap_id, Ability.Filters.IsInCombat )
+	end
+
+	-- Call standard method
+	SpaceMarineVehicleTactic.DoAbilities(self)
+end

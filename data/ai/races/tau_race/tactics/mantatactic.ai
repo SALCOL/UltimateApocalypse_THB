@@ -1,0 +1,33 @@
+----------------------------------------
+-- File: 'mantatactic.ai'
+-- Created by Cylarne @ 2013
+
+class 'MantaTactic' (TauVehicleTactic)
+
+Manta = {}
+
+function MantaTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Manta Tactic")
+end
+
+function MantaTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Manta.strike == nil) then
+		Manta.strike = cpu_manager.stats:GetAbilityID( "tau_manta_strike" )
+	end
+	if (Manta.emp == nil) then
+		Manta.emp = cpu_manager.stats:GetAbilityID( "tau_emp_manta" )
+	end
+end
+
+function MantaTactic:DoAbilities()
+
+	if (self.squad_ai:GetHealthPercentage() > 0.5 and self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(Manta.strike)) then
+		Ability.DoAbilityTarget(self.squad_ai, Manta.strike, Ability.Filters.CloseSquadEnemy, 6)
+	end
+	
+	Ability.DoAbilityTarget(self.squad_ai, Manta.emp, Ability.Filters.CloseVehicleEnemy, 2)
+
+end

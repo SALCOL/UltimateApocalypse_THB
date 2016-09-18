@@ -1,0 +1,68 @@
+-- Set up Cap modifiers for AI
+-- Created by Cylarne
+
+import("Player.scar");
+import("GroupCallers.scar");
+import("Command.scar");
+import("Groups.scar");
+import("ScarUtil.scar");
+import("WXPGroups.scar");
+
+-- Settings
+g_fArmyCapModifierd4 = 0.33
+
+
+-- Init the cap modifier code
+function Armydecrease_AI_2_InitRule()
+
+	print("Init Army Cap 50% (AI)...")
+	
+	-- Create army cap modifiers
+	local oModMaxSquadCap	= Modifier_Create(MAT_Player, "max_squad_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifierd4, "")
+	local oModMaxSupportCap	= Modifier_Create(MAT_Player, "max_support_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifierd4, "")
+	local oModSquadCap		= Modifier_Create(MAT_Player, "squad_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifierd4, "")
+	local oModSupportCap	= Modifier_Create(MAT_Player, "support_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifierd4, "")
+	
+	-- Compute all players
+	g_iPlayerCount = World_GetPlayerCount()
+	for iLoop1 = 0, g_iPlayerCount - 1 do
+	
+		-- Get player ID
+		local ePlayerID = World_GetPlayerAt(iLoop1)
+		
+		if (player_IsHuman_W2(ePlayerID) == false) then
+		
+			-- Apply army cap modifiers
+			pcall(Modifier_ApplyToPlayer, oModMaxSquadCap, ePlayerID)
+			pcall(Modifier_ApplyToPlayer, oModMaxSupportCap, ePlayerID)
+			pcall(Modifier_ApplyToPlayer, oModSquadCap, ePlayerID)
+			pcall(Modifier_ApplyToPlayer, oModSupportCap, ePlayerID)
+		end
+	end
+	
+	-- Destroy army cap modifiers
+	Modifier_Destroy(oModMaxSquadCap)
+	Modifier_Destroy(oModMaxSupportCap)
+	Modifier_Destroy(oModSquadCap)
+	Modifier_Destroy(oModSupportCap)
+end
+
+-- Init Massive Battles rule system
+function Armydecrease_AI_2_Setup()
+	Rule_AddOneShot(Armydecrease_AI_2_InitRule, 2.0)
+end
+
+-- Init SCAR
+Scar_AddInit(Armydecrease_AI_2_Setup)
+
+-- Function thanks to Gambit!
+function player_IsHuman_W2( player )
+	local name = Player_GetDisplayName(player)[1]
+	if string.len(name) < 3 then return true end
+	name = string.sub(name, -2)
+	if( name == " 1" or name == " 2" or name == " 3" or name == " 4" or name == " 5" or name == " 6" or name == " 7" or name == " 8") then
+		return false
+	else
+		return true
+	end
+end

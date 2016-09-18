@@ -1,0 +1,64 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Game Enders
+-- Created by Cylarne @ 2012
+--
+--	Super Structures and titans are restricted.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+import("UA_SCARCore/K_04/Tiers&EndGamersList.scar");
+import("winconditions/restrict_tierv.scar");
+
+function Rule_RestrictSupers()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		Player_RestrictSquad(player, "guard_squad_deathstrike_missile_launcher");
+		Player_RestrictSquad(player, "tau_drone_satellite_squad");
+		Player_RestrictSquad(player, "ork_squad_nukklear_bomba");
+		Player_RestrictResearch(player, "ork_research_tech_nukklear_bomma");
+		Player_RestrictSquad(player, "ork_squad_great_gargant");
+		Player_RestrictResearch(player, "ork_research_tech_great_gargant");
+		
+		for i=1,table.getn( _Actual.superstructure_list ) do
+			local restrict = _Actual.superstructure_list[i];
+		
+			local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Actual.superstructure_list[i])
+			Modifier_ApplyToPlayer( modifier, player)
+		end 
+		if (Mod_Includes_Tyranids == true) then
+			-- Restrict the structure.
+			for i=1,table.getn( _Tyranids.superstructure_list ) do
+				local structure = _Tyranids.superstructure_list[i];
+				
+				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Tyranids.superstructure_list[i])
+				Modifier_ApplyToPlayer( modifier, player)
+			end 
+		end
+		if (Mod_Includes_Inquisition == true) then
+			-- Restrict the structure.
+			for i=1,table.getn( _Inquisition.superstructure_list ) do
+				local structure = _Inquisition.superstructure_list[i];
+				
+				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Inquisition.superstructure_list[i])
+				Modifier_ApplyToPlayer( modifier, player)
+			end 
+		end
+		if (Mod_Includes_Daemons == true) then
+			-- Restrict the structure.
+			for i=1,table.getn( _Daemons.superstructure_list ) do
+				local structure = _Daemons.superstructure_list[i];
+				
+				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Daemons.superstructure_list[i])
+				Modifier_ApplyToPlayer( modifier, player)
+			end 
+		end
+	end
+
+end
+
+Scar_AddInit(Rule_RestrictSupers)
+--Scar_AddInit(Rule_RestrictWinbuttons)

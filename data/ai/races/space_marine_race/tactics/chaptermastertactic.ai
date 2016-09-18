@@ -1,0 +1,69 @@
+----------------------------------------
+-- File: 'chaptermastertactic.ai'
+-- Edited by Thudmeizer @ 04.02.2016
+
+class 'ChapterMasterTactic' (SpaceMarineInfantryTactic)
+
+ChapterMaster = {}
+
+function ChapterMasterTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chapter Master Tactic")
+end
+
+function ChapterMasterTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChapterMaster.orbital_b == nil) then
+		ChapterMaster.orbital_b = cpu_manager.stats:GetAbilityID( "marines_orbital_bombardment" )
+	end
+	if (ChapterMaster.battlecry == nil) then
+		ChapterMaster.battlecry = cpu_manager.stats:GetAbilityID( "marines_battlecry" )
+	end
+	if (ChapterMaster.alloutwar == nil) then
+		ChapterMaster.alloutwar = cpu_manager.stats:GetAbilityID( "marines_all_out_war" )
+	end
+	if (ChapterMaster.bomb == nil) then
+		ChapterMaster.bomb = cpu_manager.stats:GetAbilityID( "marines_commander_bomb" )
+	end
+end
+
+function ChapterMasterTactic:DoAbilities()
+
+	-- Try to use battlecry
+	Ability.DoAbilityArea( self.squad_ai, ChapterMaster.battlecry, Ability.Filters.CloseInCombat, 10 )
+	
+	-- Try to use orbital bombardement
+	Ability.DoAbilityPos(self.squad_ai, ChapterMaster.orbital_b, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ChapterMaster.orbital_b, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+	
+	-- Try to use All Out War
+	Ability.DoAbility( self.squad_ai, ChapterMaster.alloutwar, Ability.Filters.IsInCombat )
+
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, ChapterMaster.bomb, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ChapterMaster.bomb, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+end
+
+function ChapterMasterTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+		
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+end

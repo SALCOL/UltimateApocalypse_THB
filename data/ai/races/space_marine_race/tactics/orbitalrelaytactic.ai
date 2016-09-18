@@ -1,0 +1,67 @@
+----------------------------------------
+-- File: 'orbitalrelaytactic.ai'
+-- Edited by Arkhan		@ 15.01.2007
+-- Edited by Cylarne
+-- Edited by Thudmeizer		@ 02.02.2016
+
+class 'OrbitalRelayTactic' (BaseTactic)
+
+OrbitalRelay = {}
+
+function OrbitalRelayTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Orbital Relay Tactic")
+
+	self.m_iArmouryID = cpu_manager.stats:GetBuildingID( "space_marine_interface_relay" )
+end
+
+function OrbitalRelayTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (OrbitalRelay.orbital_s == nil) then
+		OrbitalRelay.orbital_s = cpu_manager.stats:GetAbilityID( "marines_orbital_strike_beacon" )
+	end
+	
+	if (OrbitalRelay.orbital_b == nil) then
+		OrbitalRelay.orbital_b = cpu_manager.stats:GetAbilityID( "marines_orbital_bombardment_beacon" )
+	end
+
+	if (OrbitalRelay.repair_id == nil) then
+		OrbitalRelay.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function OrbitalRelayTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	local abilitySelector = math.random(1, 100)
+	
+	if (abilitySelector <= 10) then
+		-- Try to use orbital strike
+		if (iPower >= 1200) then
+			Ability.DoAbilityPos(self.base_ai, OrbitalRelay.orbital_s, Ability.Filters.CloseVehicleEnemy, 1)
+		end
+		
+		if (iRequisition >= 750 and iPower >= 750) then
+			-- Try to use orbital bombardement
+			Ability.DoAbilityPos(self.base_ai, OrbitalRelay.orbital_b, Ability.Filters.CloseEnemy, 15)
+			if (abilitySelector <= 5) then
+				Ability.DoAbilityTargetEntity(self.base_ai, OrbitalRelay.orbital_b, Ability.EntityFilters.CloseBaseEntityEnemy, 20)
+			end
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( OrbitalRelay.repair_id )) then
+			self.base_ai:DoSpecialAbility( OrbitalRelay.repair_id )
+		end
+	end	
+end
+
+function OrbitalRelayTactic:CanDeepStrikeTroops()
+	return (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iArmouryID, true) > 0)
+end

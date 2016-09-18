@@ -1,0 +1,152 @@
+----------------------------------------------------------------------------------------------------------------
+-- Strategic Objective Win Condtition
+--
+--	Player wins after holding a set percentage of the maps strategic objectives for an amount of time
+--
+-- (c) 2003 Relic Entertainment Inc.
+import("ScarUtil.scar")
+import("WCUtil.scar")
+
+
+--addinit function
+function StrategicObjective()
+
+	-- wait 0.5 secs before adding this rule. this is so it is not executed
+	-- on the same frame as the other win conditions
+	Rule_AddOneShot( StrategicObjective_AddMainRule, 0.50 )
+	
+	if _SOSettingsTable.g_numObj > 0 then        
+        
+		-- put all players into a global team table
+		_SOTeamTable = WCUtil_InitTeamTable()
+		
+		-- add rules
+		Rule_AddOneShot( SORule_EnableStrategicObjectiveUI, 0 )		-- execute on first sim frame
+		
+		-- create a new objective
+		local obj_table_P7 = { title_id = 60002, short_desc_id = 60302, help_tip_id = 60302 }	
+		Objective_Add( obj_table_P7, 1 )
+		
+    end
+end
+
+function StrategicObjective_AddMainRule()
+	
+	-- add the total annihlation check so game doest keep going if all enemies are totally annihlated (this is different than regular annihilate)
+	WCUtil_AddCheckTotalAnnhilate() 
+	
+	if _SOSettingsTable.g_numObj > 0 then 		
+		-- add rules
+        Rule_AddInterval(SORule_CheckStrategicObjectives, 1);	-- MUST be called once per second		
+    end
+	
+end
+
+_SOSettingsTable = 
+{
+	----------------------------------------------------------------------------------------------------------------
+	-- (CUSTOM)
+	----------------------------------------------------------------------------------------------------------------
+	-- custom variable specific to this win condition
+	g_numObj = World_GetNumStrategicObjectives(),
+	
+	----------------------------------------------------------------------------------------------------------------
+	-- (REQUIRED)
+	----------------------------------------------------------------------------------------------------------------
+	-- name for victory function
+	g_wc_name = "strategicobjective",
+	
+	--global variable, the percentage of points that must be held
+	-- NOTE: this value must be > 50
+	g_percent = 51,
+	
+	-- global variable, amount of time in seconds the points must be held for
+	g_timeLimit = 420,
+		
+	--
+	g_spoint_ebp = "strategic_objective_struct",
+	
+	-- # of seconds to player vital countdown sounds before game over
+	g_vital_countdown_time = 15,
+	
+	-- sound files
+	g_victory_sound = "speech/ui/60508",
+	g_defeated_sound = "speech/ui/60528",
+	g_countdown_sound = "Count_down_beep",
+		
+	-- strategic point accesors
+	GetCurrentStrategicPoints = function( playerId )
+		return Player_GetNumStrategicObjectives ( playerId )
+	end,	
+	
+	GetTotalStrategicPoints = function( )
+		return _SOSettingsTable.g_numObj
+	end,
+		
+	----------------------------------------------------------------------------------------------------------------
+	-- (OPTIONAL)
+	----------------------------------------------------------------------------------------------------------------
+	-- event handlers
+	OnCountdownStart = function( winningTeamNum )
+		-- trigger event cue item
+		EventCue_DoEvent( "warning", "speech/ui/60500", "$60462", Loc_FormatText1( 60464, Loc_ConvertNumber( winningTeamNum ) ) )
+	end,
+	
+	-- called every second a team has held a point
+	-- allows you to spawn event cue warnings at 240 secs, 120 secs, 60 secs etc
+	OnTimeRemainingWarning = function( winningTeamNum, secsHeld )		
+		-- trigger event cue items at 4 minutes and 2 minutes and trigger sounds at other times
+		if secsHeld == (60*6) then
+			Sound_Play("speech/ui/60501")
+		end
+		if secsHeld == (60*5) then
+			Sound_Play("speech/ui/60502")
+		end
+		if secsHeld == (60*4) then			
+			EventCue_DoEvent( "warning", "speech/ui/60503", "$60466", Loc_FormatText1( 60468, Loc_ConvertNumber( winningTeamNum ) ) )
+		
+			--get the AI to attack on the 240second mark
+			local count = World_GetPlayerCount()
+			for i = 0, count - 1 do
+				local player = World_GetPlayerAt(i)
+				if Cpu_IsCpuPlayer( player ) then
+					if Player_GetTeam( player ) ~= winningTeamNum-1 then
+						Cpu_CounterVictoryObj( player )
+					end
+				end
+			end
+		end
+		if secsHeld == (60*3) then
+			Sound_Play("speech/ui/60504")
+		end
+		if secsHeld == (60*2) then
+			EventCue_DoEvent( "warning", "speech/ui/60505", "$60470", Loc_FormatText1( 60472, Loc_ConvertNumber( winningTeamNum ) ) )
+		end
+		if secsHeld == (60) then
+			Sound_Play("speech/ui/60506")
+		end
+		if secsHeld == (30) then
+			Sound_Play("speech/ui/60507")
+		end
+	end,
+}
+
+function SORule_EnableStrategicObjectiveUI()
+
+	Taskbar_EnableStrategicUI( _SOSettingsTable.g_spoint_ebp, true )
+	
+end
+
+-- check once per interval to see if teams hold over g_objPercent of the strategic objectives in a map
+function SORule_CheckStrategicObjectives()
+	
+	WCUtil_CheckStrategicPoints( _SOTeamTable, _SOSettingsTable )
+	
+end
+
+Scar_AddInit(StrategicObjective)
+
+
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------

@@ -1,0 +1,163 @@
+----------------------------------------
+-- File: 'devastatortactic.ai'
+-- Edited by Thudmeizer @ 05.02.2016
+
+class 'DevastatorTactic' (SpaceMarineInfantryTactic)
+
+Devastator = {}
+
+function DevastatorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Devastator Tactic")
+end
+
+function DevastatorTactic:InitAbilities()
+
+	if (Devastator.flashbang_id == nil) then
+		Devastator.flashbang_id = cpu_manager.stats:GetAbilityID( "marines_flashbang_grenades" )	
+	end
+
+	if (Devastator.frag_id == nil) then
+		Devastator.frag_id = cpu_manager.stats:GetAbilityID( "marines_frag_grenades" )	
+	end
+
+	if (Devastator.inferno_id == nil) then
+		Devastator.inferno_id = cpu_manager.stats:GetAbilityID( "marines_inferno_grenades" )	
+	end
+
+	if (Devastator.krak_id == nil) then
+		Devastator.krak_id = cpu_manager.stats:GetAbilityID( "marines_krak_grenades" )	
+	end
+
+	if (Devastator.melta_id == nil) then
+		Devastator.melta_id = cpu_manager.stats:GetAbilityID( "marines_melta_bombs" )	
+	end
+
+	if (Devastator.smoke_id == nil) then
+		Devastator.smoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_grenades" )	
+	end
+
+	if (Devastator.sabotage_id == nil) then
+		Devastator.sabotage_id = cpu_manager.stats:GetAbilityID( "marines_sabotage" )	
+	end
+
+	if (Devastator.rally_id == nil) then
+		Devastator.rally_id = cpu_manager.stats:GetAbilityID( "marines_rally" )	
+	end
+
+	if (Devastator.run_id == nil) then
+		Devastator.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function DevastatorTactic:DoAbilities()
+
+        Ability.DoAbilityTarget( self.squad_ai, Devastator.flashbang_id, Ability.Filters.CloseSquadEnemy, 4)
+        Ability.DoAbilityTarget( self.squad_ai, Devastator.frag_id, Ability.Filters.CloseSquadEnemy, 2)
+        Ability.DoAbilityTarget( self.squad_ai, Devastator.inferno_id, Ability.Filters.CloseSquadEnemy, 3)
+        Ability.DoAbilityTarget( self.squad_ai, Devastator.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTarget( self.squad_ai, Devastator.melta_id, Ability.Filters.CloseVehicleEnemy, 1)
+
+	-- Use Sabotage on enemy vehicles or buildings
+        Ability.DoAbilityTarget( self.squad_ai, Devastator.sabotage_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTargetEntity( self.squad_ai, Devastator.sabotage_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+
+	-- Search a squad to launch smoke grenades
+	local iRange = self.squad_ai:GetAbilityRange(Devastator.smoke_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbilitySquad(Devastator.smoke_id, oUnit:GetSquad())
+	end
+
+	if (self.squad_ai:IsBroken()) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( Devastator.rally_id )) then
+			self.squad_ai:DoSpecialAbility( Devastator.rally_id )
+		end
+	end
+
+	-- Check to make sure if no threats are nearby
+	local vSquadPos = self.squad_ai:GetPosition()
+	if not (self.squad_ai:IsInCombat()) and not (self.squad_ai:IsUnderAttack()) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Devastator.run_id )) then
+			self.squad_ai:DoSpecialAbility( Devastator.run_id )
+		end
+	end
+
+	-- Call standard method
+	SpaceMarineInfantryTactic.DoAbilities(self)
+end
+
+function DevastatorTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	-- Only upgrade if not reinforcing
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		if (self.squad_ai:HasUpgradableTrooper()) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function DevastatorTactic:Reinforce()
+
+  --always try for the actual leader first
+	if not self.squad_ai:IsReinforcing() then
+		if self.squad_ai:CanReinforce( false, 0 ) then
+		   self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- try for different types of squad members
+		local SergeantIndex = 0
+		local ApothecaryIndex = 1
+		local BannerIndex = 2
+		local SkullIndex = 3
+	
+		local numSergeants = self.squad_ai:GetLeaderCount( SergeantIndex )
+		local numApothecaries = self.squad_ai:GetLeaderCount( ApothecaryIndex )
+		local numBanners = self.squad_ai:GetLeaderCount( BannerIndex )
+		local numSkulls = self.squad_ai:GetLeaderCount( SkullIndex )
+
+		-- Desired number of each leader type
+		local desiredSergeants = math.random(0,1)
+		local desiredApothecaries = math.random(0,1)
+		local desiredBanners = math.random(0,1)
+		local desiredSkulls = math.random(0,1)
+		
+		-- Desired order of reinforcing
+		if numApothecaries < desiredApothecaries then
+			if self.squad_ai:CanReinforce( true, ApothecaryIndex ) then
+				self.squad_ai:DoReinforce( true, ApothecaryIndex )
+			end
+		elseif numBanners < desiredBanners then
+			if self.squad_ai:CanReinforce( true, BannerIndex ) then
+				self.squad_ai:DoReinforce( true, BannerIndex )
+			end
+		elseif numSkulls < desiredSkulls then
+			if self.squad_ai:CanReinforce( true, SkullIndex ) then
+				self.squad_ai:DoReinforce( true, SkullIndex )
+			end
+		elseif numSergeants < desiredSergeants then
+			if self.squad_ai:CanReinforce( true, SergeantIndex ) then
+				self.squad_ai:DoReinforce( true, SergeantIndex )
+			end
+		end
+	end
+end

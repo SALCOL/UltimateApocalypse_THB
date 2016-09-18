@@ -1,0 +1,111 @@
+----------------------------------------
+-- File: 'terminatorassaulttactic.ai'
+-- Edited by Thudmeizer @ 01.02.2016
+
+class 'TerminatorAssaultTactic' (SpaceMarineInfantryTactic)
+
+TerminatorAssault = {}
+
+function TerminatorAssaultTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Terminator Assault Tactic")
+end
+
+function TerminatorAssaultTactic:InitAbilities()
+
+	if (TerminatorAssault.rally_id == nil) then
+		TerminatorAssault.rally_id = cpu_manager.stats:GetAbilityID( "marines_rally" )	
+	end
+
+	if (TerminatorAssault.run_id == nil) then
+		TerminatorAssault.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function TerminatorAssaultTactic:DoAbilities()
+
+	if (self.squad_ai:IsBroken()) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( TerminatorAssault.rally_id )) then
+			self.squad_ai:DoSpecialAbility( TerminatorAssault.rally_id )
+		end
+	end
+
+	-- Check to make sure if no threats are nearby
+	local vSquadPos = self.squad_ai:GetPosition()
+	if not (self.squad_ai:IsInCombat()) and not (self.squad_ai:IsUnderAttack()) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( TerminatorAssault.run_id )) then
+			self.squad_ai:DoSpecialAbility( TerminatorAssault.run_id )
+		end
+	end
+
+	-- Call standard method
+	SpaceMarineInfantryTactic.DoAbilities(self)
+end
+
+function TerminatorAssaultTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	-- Only upgrade if not reinforcing
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		if (self.squad_ai:HasUpgradableTrooper()) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function TerminatorAssaultTactic:Reinforce()
+
+  --always try for the actual leader first
+	if not self.squad_ai:IsReinforcing() then
+		if self.squad_ai:CanReinforce( false, 0 ) then
+		   self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- try for different types of squad members
+		local SergeantIndex = 0
+		local ApothecaryIndex = 1
+		local BannerIndex = 2
+	
+		local numSergeants = self.squad_ai:GetLeaderCount( SergeantIndex )
+		local numApothecaries = self.squad_ai:GetLeaderCount( ApothecaryIndex )
+		local numBanners = self.squad_ai:GetLeaderCount( BannerIndex )
+
+		-- Desired number of each leader type
+		local desiredSergeants = math.random(0,1)
+		local desiredApothecaries = math.random(0,1)
+		local desiredBanners = math.random(0,1)
+		
+		-- Desired order of reinforcing
+		if numApothecaries < desiredApothecaries then
+			if self.squad_ai:CanReinforce( true, ApothecaryIndex ) then
+				self.squad_ai:DoReinforce( true, ApothecaryIndex )
+			end
+		elseif numBanners < desiredBanners then
+			if self.squad_ai:CanReinforce( true, BannerIndex ) then
+				self.squad_ai:DoReinforce( true, BannerIndex )
+			end
+		elseif numSergeants < desiredSergeants then
+			if self.squad_ai:CanReinforce( true, SergeantIndex ) then
+				self.squad_ai:DoReinforce( true, SergeantIndex )
+			end
+		end
+	end
+end

@@ -1,0 +1,13 @@
+----------------------------------------
+-- File: 'bunkertactic.ai'
+-- Edited by Cylarne
+
+class 'BunkerTactic' (BaseTactic)
+
+function BunkerTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Bunker Tactic")
+	
+	-- Building can deepstrike troops
+	self.m_bCanDeepStrikeTroops = true
+end

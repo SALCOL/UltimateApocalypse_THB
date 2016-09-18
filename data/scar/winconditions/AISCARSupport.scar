@@ -1,0 +1,36 @@
+----------------------------------------------------------------------------------------------------------------
+-- Extremely slow tiering.
+-- Created by Cylarne
+--
+--	Decreases speed of which anything is built.
+--
+-- Apocalypse Mod Team
+--
+
+import("ScarUtil.scar");
+
+function Rule_SpeedTiering3()
+	
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/ApocalypseEntityList.scar");
+		
+		for i=1,table.getn( t_entity_list ) do
+			
+			local modifier_production = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 2, t_entity_list[i])
+			local modifier_time = Modifier_Create(MAT_EntityType, "cost_time_modifier", MUT_Multiplication, false, 0.5, t_entity_list[i])
+			
+			Modifier_ApplyToPlayer( modifier_production, player)
+			Modifier_ApplyToPlayer( modifier_time, player)
+			
+			Modifier_Destroy ( modifier_production )
+			Modifier_Destroy ( modifier_time)
+		end 
+	end
+
+end
+Scar_AddInit(Rule_SpeedTiering3)

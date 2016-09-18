@@ -1,0 +1,29 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["space_marine_race"] =
+{
+	{ "marines_orbital_bombardment", 40 },
+	{ "marines_inquisition", 40 },
+	{ "marines_demoralize", 30 },
+	{ "marines_smite_toth", 30 },
+	{ "marines_smite", 25 },
+	{ "marines_frag_grenades", 25 },
+	{ "marines_frag_grenades_2", 25 },
+	{ "marines_frag_grenades_advance_sp", 25 },
+	{ "marines_weaken_resolve", 25 },
+	{ "marines_weaken_resolve_toth", 25 },
+	{ "marines_melta_bombs", 18 },
+	{ "marines_sabatage", 8 }
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["space_marine_race"] =
+{
+	{ "marines_smoke_launchers", 35 },
+	{ "marines_word_of_emperer", 20 }, -- Relic typo not mine
+	{ "marines_battlecry", 15 },
+	{ "marines_rally", 0 },
+	{ "marines_blessing_of_the_omnissiah", 0 },
+	{ "marines_machine_spirit", 0 }
+}

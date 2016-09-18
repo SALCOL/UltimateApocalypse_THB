@@ -1,0 +1,166 @@
+----------------------------------------
+-- File: 'daemonhuntstrategyinfo.ai'
+-- Edited by Thudmeizer    @ 02.02.2016
+
+BuildBaseStrategyInfo = 
+{
+	inquisition_daemonhunt_race =
+	{
+		post_builder = 2,
+		flag_capture = 3,
+
+		--reserve this amount for building units/buildings (not for use in upgrading/ reinforcing)
+		req_reserve = 200,
+		
+		--need at least this at all times
+		squad_cap_threshold = 3,
+
+		--need at least this at all times
+		support_cap_threshold = 3,
+		
+		--used to calculate wants for engineers
+		Engineers =
+		{
+			--number of engineers we're aiming for
+			want = 3,
+		},
+		
+		-- Is used to modify the army strength in the build programs (Allows faster balancing adjustments)
+		ArmyStrengthModifier = 1.0,
+				
+		-- Item-Syntax: Min. Tier, Min. Requisition, Min. Power, Min. ArmyStrength, Object-Count, Object-Type, Object-Name
+		BuildPrograms =
+		{
+			-- Allround strategy (Research Total: 21)
+			{
+			      --{ 1, 125, 0, 100, 3,	"Unit",		"inquisition_squad_shock_troops" },
+			      --{ 1, 150, 0, 0, 1,	"Unit",		"inquisition_squad_scholars" },
+				{ 1, 450, 0, 0, 1,	"Building",	"inquisition_tower_hq" },
+				{ 1, 250, 0, 0, 1,	"Building",	"inquisition_infantry_bunker" },
+				{ 1, 115, 0, 0, 2,	"Building",	"inquisition_warp_generator" },
+				{ 1, 150, 50, 0, 1,	"Building",	"inquisition_civilian_bunker_ai" },
+				{ 1, 90, 80, 300, 60,	"TurretAddon",	"inquisition_imperial_icon_addon_1" },
+				{ 1, 120, 30, 500, 1,	"Building",	"inquisition_turret_heavy_bolter" },
+				{ 1, 115, 0, 0, 4,	"Building",	"inquisition_warp_generator" },
+				{ 1, 120, 30, 300, 3,	"Building",	"inquisition_turret_heavy_bolter" },
+				{ 1, 500, 230, 300, 1,	"Addon",	"inquisition_tower_addon" },
+				{ 1, 150, 75, 0, 1,	"Building",	"inquisition_librarium" },
+				{ 1, 100, 75, 200, 100,	"TurretAddon",	"inquisition_imperial_icon_addon_1" },
+				{ 1, 90, 0, 0, 1,	"Building",	"inquisition_purification_decree" },
+				
+				{ 2, 320, 60, 0, 1,	"Unit",		"inquisition_squad_inquisitor_ordo_malleus" },
+				{ 2, 290, 40, 0, 1,	"Unit",		"inquisition_squad_inquisitor_lord" },
+				{ 2, 120, 0, 0, 6,	"Building",	"inquisition_warp_generator" },
+				{ 2, 240, 100, 300, 1,	"Building",	"inquisition_watch" },
+				{ 2, 90, 150, 300, 2,	"Building",	"inquisition_purification_decree" },
+				{ 2, 25, 90, 250, 50,	"TurretAddon",	"inquisition_turret_addon" },
+				{ 2, 175, 100, 300, 1,	"Building",	"inquisition_astra_telepathica" },
+				{ 2, 15, 60, 250, 100,	"TurretAddon",	"inquisition_extremis_diabolus" },
+				{ 2, 260, 150, 1000, 40,"TurretAddon",	"inquisition_imperial_icon_addon_2" },
+				{ 2, 300, 150, 300, 1,	"Building",	"inquisition_grey_knights_teleporter" },
+
+			      --{ 3, 550, 990, 0, 1,	"Unit",		"inquisition_squad_dreadknight_titan" },
+				{ 3, 290, 40, 0, 1,	"Unit",		"inquisition_squad_inquisitor_lord" },
+				{ 3, 320, 60, 0, 1,	"Unit",		"inquisition_squad_inquisitor_ordo_malleus" },
+				{ 3, 30, 80, 250, 50,	"TurretAddon",	"inquisition_extremis_diabolus_2" },
+				{ 3, 100, 90, 0, 40,	"TurretAddon",	"inquisition_mass_teleporter" },
+				{ 3, 700, 150, 1000, 2,	"Building",	"inquisition_tower_hq" },
+			      --{ 3, 280, 280, 0, 1,	"Research",	"inquisition_schematic_dreadknight" },
+
+				{ 3, 260, 150, 1000, 100,"TurretAddon",	"inquisition_imperial_icon_addon_2" },
+				{ 3, 950, 580, 500, 1,	"Building",	"inquisition_tower_mechanicum" },
+
+				{ 4, 400, 210, 0, 1,	"Research",	"inquisition_tome_canticle" },
+				{ 4, 890, 400, 500, 1,	"Building",	"inquisition_shrine_to_the_emperor" },
+				{ 4, 1000, 1000, 500, 1,"Building",	"inquisition_nuclear_facility" },
+				{ 4, 4000, 4000, 1000, 1,"Research",	"inquisition_absolute_purification" },
+								
+				{ 5, 9300, 3000, 0, 1,	"Unit",		"inquisition_squad_grey_knight_hero" }	
+			}
+		},
+				
+		SquadLimits = 
+		{
+			standard =
+			{
+--[[
+				inquisition_squad_archivist = 0,
+				inquisition_squad_servitor_maintenance = 2,
+				inquisition_squad_bodyguard = 1,
+				inquisition_squad_shock_troops = math.random( 2,3 ),
+				inquisition_squad_scholars = 1,
+				inquisition_squad_death_cultist = 2,
+				inquisition_squad_grey_knights = math.random( 3,4 ),
+				inquisition_squad_grey_knights_terminator = 1,
+				inquisition_squad_grey_knight_hero = 1,
+				inquisition_squad_inquisitor_lord = 1,
+				inquisition_squad_rhino = math.random( 1,2 ),
+				inquisition_squad_chimera_transport = math.random( 1,2 ),
+				inquisition_squad_dreadnought_assault = math.random( 2,4 ),
+				inquisition_squad_dreadnought_support = math.random( 2,4 ),
+				inquisition_squad_land_raider = 1,
+				inquisition_squad_land_raider_crusader = 1,
+]]
+			}
+		},
+	},
+}
+
+BuildOrderStrategyInfo = 
+{
+	inquisition_daemonhunt_race =
+	{
+		Basic =
+		{
+			{ "flag_capture" }, { "post_builder" },
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_archivist" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_archivist" },
+			{ "building", "inquisition_infantry_bunker", true },
+			{ "building", "inquisition_warp_generator" }
+		},
+		
+		QuickStart =
+		{
+			{ "flag_capture" }, { "post_builder" },
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_archivist" },
+			{ "squad", "inquisition_squad_archivist" },
+			{ "post_builder" },
+			{ "building", "inquisition_infantry_bunker", true },
+			{ "building", "inquisition_librarium", true },
+			{ "building", "inquisition_warp_generator" }
+
+		},
+		
+		LargeMap =
+		{
+			{ "flag_capture" }, { "post_builder" },
+			{ "flag_capture" }, { "flag_capture" },
+			{ "post_builder" }, { "flag_capture" },
+			{ "squad", "inquisition_squad_archivist" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_archivist" },
+			{ "building", "inquisition_warp_generator", true },
+			{ "building", "inquisition_infantry_bunker", true },
+			{ "building", "inquisition_warp_generator" }	
+		}
+	}
+}
+
+AttackStrategyInfo = 
+{	
+	inquisition_daemonhunt_race =
+	{
+		MinArmyStrength = 750,
+	},
+}

@@ -1,0 +1,53 @@
+----------------------------------------
+-- File: 'superstructuretactic.ai'
+-- Edited by Cylarne_04 @ 05.23.2010
+-- Edited by Thudmeizer @ 02.02.2016
+
+class 'SuperStructureTactic' (BaseTactic)
+
+SuperStructure = {}
+
+function SuperStructureTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Super Structure Tactic")
+end
+
+function SuperStructureTactic:InitAbilities()
+
+	if (SuperStructure.Nuke_id == nil) then
+		SuperStructure.Nuke_id = cpu_manager.stats:GetAbilityID( "marines_nuke" )
+		SuperStructure.Nuke2_id = cpu_manager.stats:GetAbilityID( "marines_nuke2" )
+		SuperStructure.Nuke3_id = cpu_manager.stats:GetAbilityID( "marines_nuke3" )
+		--SuperStructure.Nuke4_id = cpu_manager.stats:GetAbilityID( "marines_nuke4" )
+		--SuperStructure.Global = cpu_manager.stats:GetAbilityID( "sisters_exterminatus_global" )
+	end
+
+	if (SuperStructure.repair_id == nil) then
+		SuperStructure.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function SuperStructureTactic:DoAbilities()
+
+	-- Activate Apocalyptic Superweapon.
+	Ability.DoAbilityPos(self.base_ai, SuperStructure.Nuke3_id, Ability.Filters.CloseMonsterEnemy, 1)
+	Ability.DoAbilityPos(self.base_ai, SuperStructure.Nuke2_id, Ability.Filters.CloseVehicleEnemy, 10)
+	Ability.DoAbilityPos(self.base_ai, SuperStructure.Nuke_id, Ability.Filters.CloseEnemy, 35)
+	Ability.DoAbilityTargetEntity(self.base_ai, SuperStructure.Nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Activate the planet destroyer
+	--[[if (iRequisition >= 50000 and iPower >= 50000) then
+		Ability.DoAbilityTargetEntity(self.base_ai, SuperStructure.Global, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	end]]
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SuperStructure.repair_id )) then
+			self.base_ai:DoSpecialAbility( SuperStructure.repair_id )
+		end
+	end
+end

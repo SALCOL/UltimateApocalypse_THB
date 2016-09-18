@@ -1,0 +1,28 @@
+----------------------------------------
+-- File: 'Zoanthropetactic.ai'
+-- Created by Cylarne @ 2015
+
+class 'ZoanthropesTactic' (TyranidInfantryTactic)
+
+Zoanthropes = {}
+
+function ZoanthropesTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Zoanthropes Tactic")
+	
+end
+
+function ZoanthropesTactic:InitAbilities()
+
+	if Zoanthropes.storm_id == nil then
+		Zoanthropes.storm_id = cpu_manager.stats:GetAbilityID( "tyranids_zohan_catalyst" )
+	end
+end
+
+function ZoanthropesTactic:DoAbilities()
+	
+	-- Do the catalyst ability.
+	if (self.squad_ai:CanDoAbility(Zoanthropes.storm_id)) then
+		Ability.DoAbility( self.squad_ai, Zoanthropes.storm_id, Ability.Filters.IsInCombat )
+	end
+end

@@ -1,0 +1,113 @@
+Hint: 
+!!- = Must be done! (Most wanted)
+* = Fixes.
+- = Ideas not taken to effect yet.
+> = To be included next version.
+>> = To be included in future versions.
+
+------------------------
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+------------------------
+AI Changes:
+------------------------
+
+------------------------
+Global: 
+------------------------
+* Turrets now require a control radius but gives off a little radius to allow buildings next to it.
+------------------------
+Chaos Marines: 
+------------------------
+* Mark buffs slightly increased.
+* Cultist melee damage decreased.
+
+------------------------
+Dark Eldar: 
+------------------------ 
+
+------------------------
+Eldar: 
+------------------------
+* Banshees, Dire Avengers, Striking Scorpions, Warp Spiders, Dark Reapers, Fire Dragons, and Swooping Hawks health increased.
+* Ancient Wraithlord can now regenerate health quickly.
+
+
+------------------------
+Imperial Guard: 
+------------------------
+* Conscript damage increased.
+
+------------------------
+Necrons: 
+------------------------
+* AEonic Orb no longer one shots units in melee.
+* AEonic Orb armor decreased (again).
+* Great Pyramid damage nerfed against most units.
+* Annihilator superweapon no longer shares a global recharge. Two Pyramids can fire at once.
+* Amplification Generator Living Metal modifier - health regen slightly decreased.
+* Tier 1 now requires less time to build.
+
+------------------------
+Orks: 
+------------------------
+
+------------------------
+SISTERS:
+------------------------
+
+------------------------
+Space Marines: 
+------------------------
+* Space Marine turret health increased to 1125 from 900.
+* Relic Blade time to produce decreased.
+
+------------------------
+Tau: 
+------------------------
+* Vespids health increased. Ranged damage decreased, especially versus armor.
+* Shield Generators now give off a control radius.
+
+------------------------
+Tyranids: 
+------------------------
+* Biovore Toxin damage decreased. Cost increased greatly.
+* Tyrant Guard can be attached with Tyranid commanders.
+* Spammable and free Spore Clusters damage decreased and especially versus structures.
+* Spammable Spore Cluster production cost increased from 60 power to 200 power.
+* Raveners cost more to reinforce.
+
+------------------------
+Inquisition:
+------------------------
+* Grand Master health returned to normal.
+
+------------------------
+Daemons:
+------------------------
+* Furies damage decreased.
+* Daemon turret damages decreased.
+
+--------------------------------------------------------|
+XP3 Campaign: |
+--------------------------------------------------------|
+
+--------------------------------------------------------|
+Survival: |
+--------------------------------------------------------|
+
+--------------------------------------------------------|
+Arena: |
+--------------------------------------------------------|
+
+--------------------------------------------------------|
+SCAR: | 
+--------------------------------------------------------|
+> New Wincondition: Kill Count
+--------------------------------------------------------|
+SCENARIOS: | 
+--------------------------------------------------------|
+
+--------------------------------------------------------|
+SOUND: | 
+--------------------------------------------------------|

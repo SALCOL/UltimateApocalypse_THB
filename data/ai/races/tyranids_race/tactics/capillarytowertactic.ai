@@ -1,0 +1,52 @@
+----------------------------------------
+-- File: 'capillarytowertactic.ai'
+-- Edited by Cylarne		@ 10/12/15
+
+class 'CapillaryTowerTactic' (BaseTactic)
+
+CapillaryTower = {}
+
+function CapillaryTowerTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Capillary Tower Tactic")
+
+end
+
+function CapillaryTowerTactic:InitAbilities()
+
+	------------------------- SUPERWEAPONS
+	
+	if (CapillaryTower.superweapon2_id == nil) then
+		CapillaryTower.superweapon2_id = cpu_manager.stats:GetAbilityID("tyranids_summon_hive_fleet")
+	end
+	if (CapillaryTower.superweapon1_id == nil) then
+		CapillaryTower.superweapon1_id = cpu_manager.stats:GetAbilityID("tyranids_planetary_bombardment")
+	end
+	
+	if (CapillaryTower.errect_id == nil) then
+		CapillaryTower.errect_id = cpu_manager.stats:GetAbilityID("tyranids_summon_vein")
+	end
+end
+
+function CapillaryTowerTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	if (self.base_ai:CanDoAbility(CapillaryTower.superweapon2_id) and iPower >= 10000) then
+		-- Activate the Hive Fleet.
+		Ability.DoAbilityTargetEntity(self.base_ai, CapillaryTower.superweapon2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	end
+	if (self.base_ai:CanDoAbility(CapillaryTower.superweapon1_id) and iPower >= 7000) then
+		-- Activate the Meteor Strike.
+		Ability.DoAbilityTargetEntity(self.base_ai, CapillaryTower.superweapon1_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+		
+	end
+	
+	if (self.base_ai:CanDoAbility(CapillaryTower.errect_id) and iPower >= 1000) then
+		-- Activate the Errect Ground ability.
+		self.base_ai:DoSpecialAbility(CapillaryTower.errect_id)
+		
+	end
+	
+end
+

@@ -1,0 +1,35 @@
+----------------------------------------
+-- File: 'Titantactic.ai'
+-- Edited by Cylarne @ 2012
+
+class 'TitanTactic' (ChaosMarineVehicleTactic)
+
+Titan = {}
+
+function TitanTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Titan Tactic")
+end
+
+function TitanTactic:InitAbilities()
+
+	--[[if Titan.shields == nil then
+	   Titan.shields = cpu_manager.stats:GetAbilityID("titan_shield")	
+	end]]
+
+	if Titan.stomp == nil then
+	   Titan.stomp = cpu_manager.stats:GetAbilityID("titan_stomp")	
+	end
+	
+	if Titan.missiles == nil then
+	   Titan.missiles = cpu_manager.stats:GetAbilityID("marines_apocalypse_missiles")	
+	end
+end
+
+function TitanTactic:DoAbilities()
+
+	Ability.DoAbilityTarget(self.squad_ai, Titan.stomp, Ability.Filters.CloseSquadEnemy, 3)
+	Ability.DoAbilityTarget(self.squad_ai, Titan.missiles, Ability.Filters.CloseSquadEnemy, 6)
+	Ability.DoAbilityTarget(self.squad_ai, Titan.missiles, Ability.Filters.CloseVehicleEnemy, 1)
+
+end

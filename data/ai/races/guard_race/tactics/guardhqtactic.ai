@@ -1,0 +1,75 @@
+----------------------------------------
+-- File: 'guardhqtactic.ai'
+-- Edited by Arkhan		@ 24.10.2006
+-- Edited by Cylarne_04 2011
+
+class 'GuardHQTactic' (BaseTactic)
+
+GuardHQ = {}
+
+function GuardHQTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Guard HQ Tactic")
+	
+	-- Building is a bunker
+	self:AddToBunkerList()
+end
+
+function GuardHQTactic:InitAbilities()
+
+	--Init ability ID's
+	if (GuardHQ.detection_id == nil) then
+		GuardHQ.detection_id = cpu_manager.stats:GetAbilityID("guard_detection_field")
+	end
+	--[[if (GuardHQ.bombingrun_id == nil) then
+		GuardHQ.bombingrun_id = cpu_manager.stats:GetAbilityID("guard_valkyrie_strike_doctrine")
+	end
+	if (GuardHQ.bombingrun2_id == nil) then
+		GuardHQ.bombingrun2_id = cpu_manager.stats:GetAbilityID("guard_vulture_strike_doctrine")
+	end]]
+	
+	
+end
+
+function GuardHQTactic:DoAbilities()
+
+	-- Try to activate detection field
+	if (self.base_ai:CanDoAbility(GuardHQ.detection_id)) then
+		
+		local abilitySelector = math.random(1, 100)
+		self.m_iBM = cpu_manager.stats:GetBuildingID("guard_basilisk_magnus")
+		if (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iBM, true) > 0 and abilitySelector <= 10) then -- 10% chance to use on bases if a Basilisk Magnus is valid.
+			Ability.DoAbilityTargetEntity(self.base_ai, GuardHQ.detection_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+		end
+		
+		local iRange = self.base_ai:GetAbilityRange(GuardHQ.detection_id)
+		local oSquad = Ability.Filters.CloseInfiltratedEnemy(self.base_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil) then
+			
+			-- Only try to detect if the infiltrated unit is attacking or capturing
+			if (oSquad:IsAttacking()) then
+				self.base_ai:DoSpecialAbilitySquad(GuardHQ.detection_id, oSquad:GetSquad())
+			end
+		end
+	end
+	--[[if (self.base_ai:CanDoAbility(GuardHQ.bombingrun_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(GuardHQ.bombingrun_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 6)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.base_ai:DoSpecialAbilitySquad(GuardHQ.bombingrun_id, oSquad:GetSquad())
+			end
+		end
+	end
+	if (self.base_ai:CanDoAbility(GuardHQ.bombingrun2_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(GuardHQ.bombingrun2_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 3)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.base_ai:DoSpecialAbilitySquad(GuardHQ.bombingrun2_id, oSquad:GetSquad())
+			end
+		end
+	end]]
+end

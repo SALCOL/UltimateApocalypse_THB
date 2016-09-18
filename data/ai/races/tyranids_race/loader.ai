@@ -1,0 +1,181 @@
+----------------------------------------
+-- File: 'nidloader.ai'
+-- Edited by Thudmeizer   @ 28.11.2007
+
+class 'tyranids_race'
+
+-- Constructor
+function tyranids_race:__init()
+
+end
+
+-- Returns the name of the race
+function tyranids_race:GetRaceName()
+	return "tyranids_race"
+end
+
+-- This function is called if tyranids are the race being played
+function tyranids_race:LoadRace( eDifficulty )
+
+	-- Import strategies
+	import( 'Races/tyranids_race/Strategies/NidBuildBaseStrategy.ai' )
+	
+	-- Import strategy info
+	import( "Races/tyranids_race/Strategies/NidStrategyInfo.ai" )
+		
+	-- Import tactics
+	--import( 'Races/tyranids_race/Tactics/CarnifexTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/TyranidInfantryTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/TyranidVehicleTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/HiveFleetTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/WillHiveTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/SpinegauntTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/BroodLordTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/HiveTyrantTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/TrygonTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/CapillaryTowerTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/TurretTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/RipperSwarmTactic.ai' )
+	--import( 'Races/tyranids_race/Tactics/ZoanthropesTactic.ai' )
+	return true
+end
+
+-- This function is called even if tyranids are not the race being played
+function tyranids_race:LoadGlobalInfo()
+
+	-- Import info files
+	import( 'Races/tyranids_race/Info/nidunitstats.ai' )
+	
+	-- Add Tyranid unit stats
+	table.insert(UnitStats, TyranidUnitStats)
+	return true
+end
+
+-- Creates build base strategy
+function tyranids_race:CreateBuildBaseStrategy()
+	return TyranidBuildBaseStrategy(BuildBaseStrategyInfo)
+end
+
+-- Creates a special tactic for a tyranid unit
+function tyranids_race:CreateTactic(oSquadAI)
+
+	-- Get unit name and class
+	local sUnitName = oSquadAI:GetSquadName()
+	local eClass = oSquadAI:GetStats():GetClass()
+	
+	-- Check if there is a special tactic for the unit available
+	if (sUnitName == "tyranids_squad_woth") then
+		return WillHiveTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_spinegaunt") then
+		return SpinegauntTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_spinegaunt_max") then
+		return SpinegauntTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_gaunt_won") then
+		return SpinegauntTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_ripperswarm") then
+		return WillHiveTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_ripperswarm_global") then
+		return WillHiveTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_broodlord") then
+		return BroodLordTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_hive_tyrant") then
+		return HiveTyrantTactic(oSquadAI)
+	elseif (sUnitName == "npc_squad_civilian_group") then
+		return HiveTyrantTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_swarmlord") then
+		return HiveTyrantTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_trygon") then
+		return TrygonTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_hierophant") then
+		return TrygonTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_hierophant_max") then
+		return TrygonTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_spore_cluster_spam") then
+		return BroodLordTactic(oSquadAI)
+	--[[elseif (sUnitName == "tyranids_squad_carnifex") then
+		return CarnifexTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_carnifex_skiller") then
+		return CarnifexTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_carnifex_uber") then
+		return CarnifexTactic(oSquadAI)]]
+	--[[elseif (sUnitName == "tyranids_squad_zoanthropes") then
+		return ZoanthropesTactic(oSquadAI)]]
+	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh or eClass == UnitStatsAI.UC_MonsterMed) then
+		return TyranidVehicleTactic(oSquadAI)
+	end
+	return TyranidInfantryTactic(oSquadAI)
+end
+
+-- Creates a base tactic
+function tyranids_race:CreateBaseTactic(oBuilding)
+
+	-- Get building name
+	local sBuildingName = oBuilding:GetBaseName()
+	
+	-- Check if their is a special tactic for the building available
+	if (sBuildingName == "tyranids_capillary_tower") then
+		return CapillaryTowerTactic(oBuilding)
+	elseif (sBuildingName == "tyranids_turret") then
+		return TurretTactic(oBuilding)
+	elseif (sBuildingName == "tyranids_turret_bioacid") then
+		return TurretTactic(oBuilding)
+	end
+	return nil
+end
+
+-- Returns a specific information
+function tyranids_race:GetInfo(sType)
+
+	-- Check info type
+	if (sType == "TurretPower") then
+		return 300
+	elseif (sType == "SupportAllyFactor") then
+		return 7 / 4
+	elseif (sType == "AttackModifier") then
+		return 0
+	elseif (sType == "CriticalRangeIncreasePerTier") then
+		return 10
+	elseif (sType == "MinArmyStrengthPerTier") then
+		return 750
+	elseif (sType == "AttackRatio") then
+		return 4 / 5
+	elseif (sType == "RetreatRatio") then
+		return 3 / 5
+	elseif (sType == "InvisibleBuildings") then
+		return false
+	elseif (sType == "HarassingLeader") then
+		return "tyranids_squad_hive_tyrant"
+	elseif (sType == "AutoConstructBuildings") then
+		return false
+	end
+	return nil
+end
+
+-- Returns the building type and threat
+function tyranids_race:GetBuildingType(sBuildingName)
+
+	-- Return race specific object string
+	if (sBuildingName == "tyranids_hq") then
+		return "HQ", 0
+
+	elseif (sBuildingName == "tyranids_digest_pool") then
+		return "Generator", 0
+		
+	elseif (sBuildingName == "tyranids_adv_magma_vent") then
+		return "BiggerGenerator", 0
+		
+	elseif (sBuildingName == "tyranids_carnifex_hive") then
+		return "VehicleBuilding", 0
+
+	elseif (sBuildingName == "tyranids_gaunt_hive") then
+		return "Armoury", 0
+		
+	elseif (sBuildingName == "tyranids_spore_chimney") then
+		return "ListeningPost", 0
+		
+	elseif (sBuildingName == "tyranids_turret") then
+		return "Turret", 300
+
+	end
+	return nil, 0
+end

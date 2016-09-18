@@ -1,0 +1,12 @@
+-- Tau SCAR support info script
+-- Created by Arkhan
+
+DonationSettings.tau_race =
+{
+	Title = "Tau",
+	ResourceExchangeRestricted = false,
+	RequisitionExcess = 1000,
+	RequisitionDemand = 400,
+	PowerExcess = 800,
+	PowerDemand = 400,
+}

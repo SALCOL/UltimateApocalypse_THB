@@ -1,0 +1,86 @@
+----------------------------------------
+-- File: 'angrontactic.ai'
+-- Edited by Cylarne 10/2/2014
+
+class 'DaemonsAngronTactic' (DaemonsInfantryTactic)
+
+DaemonsAngron = {}
+
+function DaemonsAngronTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Angron Tactic")
+end
+
+function DaemonsAngronTactic:AlwaysAttack()
+	return true
+end
+
+-- Always attack
+function DaemonsAngronTactic:IsAttacker()
+
+	return true
+end
+
+-- Always defend
+function DaemonsAngronTactic:IsDefender()
+	return true
+end
+
+function DaemonsAngronTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsAngron.forcethrow_id == nil) then
+		DaemonsAngron.forcethrow_id = cpu_manager.stats:GetAbilityID( "daemons_angron_force_throw" )	
+	end
+	
+	if (DaemonsAngron.shroud_id == nil) then
+		DaemonsAngron.shroud_id = cpu_manager.stats:GetAbilityID( "daemons_angron_daemonic_shroud" )	
+	end
+	
+	if (DaemonsAngron.warpstorm_id == nil) then
+		DaemonsAngron.warpstorm_id = cpu_manager.stats:GetAbilityID( "daemons_angron_warp_storm" )	
+	end
+	
+	if (DaemonsAngron.catastrophic_powers_id == nil) then
+		DaemonsAngron.catastrophic_powers_id = cpu_manager.stats:GetAbilityID( "daemons_angron_catastrophic_powers" )	
+	end
+	
+end
+
+function DaemonsAngronTactic:DoAbilities()
+	
+	-- Catastrophic Powers
+	Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.catastrophic_powers_id, Ability.Filters.CloseInfantryEnemy, 16 )
+	Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.catastrophic_powers_id, Ability.Filters.CloseEnemy, 25 )
+	
+	-- Warp Storm
+	Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.catastrophic_powers_id, Ability.Filters.CloseInfantryEnemy, 35 )
+	Ability.DoAbilityTargetEntity(self.squad_ai, DaemonsAngron.warpstorm_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	
+	-- Force Throw
+	Ability.DoAbilityTarget( self.squad_ai, DaemonsAngron.forcethrow_id, Ability.Filters.CloseSquadEnemy, 1 )
+	
+	-- Daemonic Shroud
+	if (self.squad_ai:IsBroken()) then
+		if (self.squad_ai:CanDoAbility(DaemonsAngron.shroud_id)) then
+			self.squad_ai:DoSpecialAbility(DaemonsAngron.shroud_id)
+		end
+	end
+	
+	-- Spawn Bloodthirster Bodyguards
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+	
+end
+
+function DaemonsAngronTactic:Reinforce()
+
+	if (not self.squad_ai:IsReinforcing()) then
+		-- Always try to get the leader first
+		if (self.squad_ai:CanReinforce(true, 0)) then
+			self.squad_ai:DoReinforce(true, 0)
+			return
+		end
+	end
+end

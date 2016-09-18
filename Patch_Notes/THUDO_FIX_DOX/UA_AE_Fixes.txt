@@ -1,0 +1,88 @@
+Updated your tuning.rgd to include all missing errors that could not locate min/max data. 
+Couldn't load all min/max data under modifier_caps for modifier ability_bonus_unit, data:attrib\tables\tuning.rgd
+
+Renamed to "ability_necron_chronometron_event" as event name was invalid.
+Modifier modifiers\ability_necron_chronometron.lua is invalid, data:attrib\abilities\necron_shroud_of_antigravity.rgd
+Modifier modifiers\ability_necron_chronometron.lua is invalid, data:attrib\abilities\necron_shroud_of_antigravity_destroyer.rgd
+
+Removed all the following AE issues by adding 41 tp_armour files to the attrib\tp_armour folder.
+Duplicate value for 'armour_type' 'tp_xxxx' in 'armour_piercing_types',
+
+Removed this massive one as well by running a Corsix Macro over almost all ebps\races\<faction>\troops for all UA factions + 4 abilities.
+Loading error in event_manager_ext.  Unknown modifier type(ability_laud_hailers_foeaura_event)
+
+Corrected the modifier code for the following:
+Modifier modifiers\min_damage_weapon_modifier.lua can't use weapon_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity_type.lua, data:attrib\research\necron_wargear09.rgd
+Modifier modifiers\morale_maximum_squad_modifier.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\marines_banner_wargear.rgd
+Modifier modifiers\morale_maximum_squad_modifier.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity_type.lua, data:attrib\research\marine_librarian_research_2.rgd
+Modifier modifiers\ability_recharge_modifier.lua can't use entity_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_squad_type.lua, data:attrib\research\sisters_arch_angel_research_1.rgd
+Modifier modifiers\ability_recharge_modifier.lua can't use entity_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_squad_type.lua, data:attrib\research\sisters_arch_angel_research_2.rgd
+Modifier modifiers\enable_melee_leap.lua can't use player_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\ebps\races\eldar\troops\eldar_banshees.rgd
+Modifier modifiers\enable_squad_jump.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\marines_vision.rgd
+Modifier modifiers\enable_squad_jump.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\necron_shroud_of_antigravity.rgd
+Modifier modifiers\enable_squad_jump.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\necron_shroud_of_antigravity_destroyer.rgd
+Modifier modifiers\morale_rate_squad_modifier.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\eldar_eldritch_tempest16_ion.rgd
+Modifier modifiers\morale_rate_squad_modifier.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\marines_banner_wargear.rgd
+Modifier modifiers\morale_rate_squad_modifier.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\sisters_angelic_visage.rgd
+Modifier modifiers\morale_rate_squad_modifier.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\sisters_laud_hailers.rgd
+Modifier modifiers\morale_rate_squad_modifier.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\sisters_laud_hailers_am_workshop.rgd
+Modifier modifiers\morale_rate_squad_modifier.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\sisters_laud_hailers_as_convent.rgd
+Modifier modifiers\morale_rate_squad_modifier.lua can't use squad_target_type modifiers with an application type of type_modifierapplicationtype\tp_mod_apply_to_entity.lua, data:attrib\abilities\sisters_laud_hailers_rhino.rgd
+
+Removed these modifiers completely as they are bugged and won't function.
+Modifier modifiers\ability_righteous_fervor_event.lua is invalid, data:attrib\abilities\sisters_act_of_faith_dolan_phail.rgd
+Modifier modifiers\ability_righteous_fervor_event.lua is invalid, data:attrib\abilities\sisters_righteous_fervor.rgd
+Modifier modifiers\combat_melee_damage_modifier.lua is invalid, data:attrib\abilities\inquisition_inquisitor_lord_emperor_wrath.rgd
+Modifier modifiers\combat_melee_damage_modifier.lua is invalid, data:attrib\ebps\races\chaos\troops\chaos_aspiring_sorcerer.rgd
+Modifier modifiers\combat_melee_damage_modifier.lua is invalid, data:attrib\ebps\races\eldar\troops\eldar_striking_scorpion.rgd
+Modifier modifiers\combat_melee_damage_modifier.lua is invalid, data:attrib\ebps\races\eldar\troops\eldar_striking_scorpion_exarch.rgd
+
+Like above, removed these modifiers completely as they are bugged and won't function. Replaced them as follows:
+Loading error in event_manager_ext.  Unknown modifier type(ability_speed_fiend2_event)., data:attrib\ebps\races\dark_eldar\structures\dark_eldar_hq.rgd -- Used modifier: morale_break_event_space_marine
+Loading error in event_manager_ext.  Unknown modifier type(ability_speed_fiend2_event)., data:attrib\ebps\races\inquisition_daemonhunt\structures\inquisition_civilian_bunker.rgd -- Used modifier: ability_mandate_event
+Loading error in event_manager_ext.  Unknown modifier type(ability_speed_fiend2_event)., data:attrib\ebps\races\inquisition_daemonhunt\structures\inquisition_civilian_bunker_ai.rgd -- Used modifier: ability_mandate_event
+Loading error in event_manager_ext.  Unknown modifier type(ability_tier1_event)., data:attrib\ebps\environment\gameplay\tyranids_hive_fleet_structure.rgd -- Used modifier: ability_embolden_event
+Loading error in event_manager_ext.  Unknown modifier type(ability_tier2_event)., data:attrib\ebps\environment\gameplay\tyranids_hive_fleet_structure.rgd -- Used modifier: ability_word_of_the_emperor_event
+Loading error in event_manager_ext.  Unknown modifier type(ability_void_shield_event)., data:attrib\ebps\races\inquisition_daemonhunt\troops\inquisition_predator.rgd -- Used modifier: ability_energy_field_event
+Loading error in event_manager_ext.  Unknown modifier type(ability_void_shield_event)., data:attrib\ebps\races\space_marines\troops\predator.rgd -- Used modifier: ability_energy_field_event
+Loading error in event_manager_ext.  Unknown modifier type(ability_void_shield_event)., data:attrib\ebps\races\space_marines\troops\predator_advance_sp.rgd -- Used modifier: ability_energy_field_event
+Loading error in event_manager_ext.  Unknown modifier type(ability_void_shield_event)., data:attrib\ebps\races\space_marines\troops\predator_baal.rgd -- Used modifier: ability_energy_field_event
+
+Corrected all invalid muzzle data for over a hundred units (example below)
+muzzle is the same as origin for weapon 'weapon\chaos_dummy_weapon.lua'. Setting muzzle to 1 metre in front of the origin, data:attrib\ebps\races\daemons\structures\daemon_listening_post.rgd
+
+Removed invalid "tp_targetting_dummy" in target_filter and added back all missing standard ability code (ie. backfire_area_effect).
+Unknown area effect filter type , data:attrib\abilities\daemons_pit_ability_undivided.rgd
+Unknown area effect type , data:attrib\abilities\daemons_pit_ability_undivided.rgd
+Unknown sweep type , data:attrib\abilities\daemons_pit_ability_undivided.rgd
+
+Removed the non-functioning code "miraculous_intervention_ext" which is notorious to cause this error.
+Unknown area effect filter type , data:attrib\ebps\races\sisters\troops\sisters_arch_angel.rgd
+Unknown area effect filter type , data:attrib\ebps\races\sisters\troops\sisters_living_saint.rgd
+Unknown area effect filter type , data:attrib\ebps\races\sisters\troops\sisters_living_saint_black.rgd
+Unknown area effect filter type , data:attrib\ebps\races\sisters\troops\sisters_living_saint_blue.rgd
+Unknown area effect type , data:attrib\ebps\races\sisters\troops\sisters_arch_angel.rgd
+Unknown area effect type , data:attrib\ebps\races\sisters\troops\sisters_living_saint.rgd
+Unknown area effect type , data:attrib\ebps\races\sisters\troops\sisters_living_saint_black.rgd
+Unknown area effect type , data:attrib\ebps\races\sisters\troops\sisters_living_saint_blue.rgd
+Unknown sweep type , data:attrib\ebps\races\sisters\troops\sisters_arch_angel.rgd
+Unknown sweep type , data:attrib\ebps\races\sisters\troops\sisters_living_saint.rgd
+Unknown sweep type , data:attrib\ebps\races\sisters\troops\sisters_living_saint_black.rgd
+Unknown sweep type , data:attrib\ebps\races\sisters\troops\sisters_living_saint_blue.rgd
+
+Added the missing "screaming_jets_area_effect" section for "squad_jump_ext".
+Unknown area effect filter type , data:attrib\sbps\races\chaos\chaos_squad_thunderhawk.rgd
+Unknown area effect filter type , data:attrib\sbps\races\guard\guard_squad_valkyrie_transport.rgd
+Unknown area effect filter type , data:attrib\sbps\races\inquisition_daemonhunt\inquisition_squad_valkyrie_uamod.rgd
+Unknown area effect filter type , data:attrib\sbps\races\space_marines\space_marine_squad_thunderhawk_uamod.rgd
+Unknown area effect filter type , data:attrib\sbps\races\tau\tau_orca_dropship_squad.rgd
+Unknown area effect type , data:attrib\sbps\races\chaos\chaos_squad_thunderhawk.rgd
+Unknown area effect type , data:attrib\sbps\races\guard\guard_squad_valkyrie_transport.rgd
+Unknown area effect type , data:attrib\sbps\races\inquisition_daemonhunt\inquisition_squad_valkyrie_uamod.rgd
+Unknown area effect type , data:attrib\sbps\races\space_marines\space_marine_squad_thunderhawk_uamod.rgd
+Unknown area effect type , data:attrib\sbps\races\tau\tau_orca_dropship_squad.rgd
+Unknown sweep type , data:attrib\sbps\races\chaos\chaos_squad_thunderhawk.rgd
+Unknown sweep type , data:attrib\sbps\races\guard\guard_squad_valkyrie_transport.rgd
+Unknown sweep type , data:attrib\sbps\races\inquisition_daemonhunt\inquisition_squad_valkyrie_uamod.rgd
+Unknown sweep type , data:attrib\sbps\races\space_marines\space_marine_squad_thunderhawk_uamod.rgd
+Unknown sweep type , data:attrib\sbps\races\tau\tau_orca_dropship_squad.rgd

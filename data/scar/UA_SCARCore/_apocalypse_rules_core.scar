@@ -1,0 +1,419 @@
+-- _apocalypse_rules_core.scar
+-- Created by Cylarne_04 2011
+-- Edited and completed by Cylarne 2013
+--
+-- My win condition, my epicness, mwa ha ha ha ha ha! - Cylarne
+-----------------------------------------------------------------------------------------
+
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+ar_productiontable = { }
+ar_superweaponcountdown = {}
+
+-----------------------------------------------------------------------------------------
+
+--[[ TODO: ]]
+
+function ApocalypseRules_Main()
+
+	-- What the Apocalypse Rules does is spots and reveals super structures, and grants ai wargear over time.
+	
+	-- Ai wargear stuff.
+	ar_wargear_cancel = false; -- Wargear base restriction.
+	Rule_AddIntervalEx(ApocalypseRules_Levelup_GrantToAI, 240, 8) -- Every 2 minutes, ai commanders level up + 1.
+
+	-- Disabled due to the fact this is no longer needed. Sadly.
+	-- Endgamers stuff.
+	Rule_AddInterval(ApocalypseRules_SS_Check, 1) -- Initiate main rule every .4 seconds.
+	
+	--[[ Make a list of produceable superweapon research, then add to the list the following:
+	Prod_AddSquadToList("npc_squad_superweapon1", ar_productiontable)
+	Prod_AddSquadToList("npc_squad_superweapon_necron", ar_productiontable)
+	Prod_AddSquadToList("eldar_squad_unthraith_globalsuperweapon", ar_productiontable)
+	Prod_AddSquadToList("dark_eldar_squad_soulstorm_cataclysm", ar_productiontable)
+	if (Mod_Includes_Tyranids == true) then
+		Prod_AddSquadToList("npc_squad_superweapon_tyranids1", ar_productiontable)
+	end]]
+	
+	-- Once the list is complete, the WarnSS functions will look for each of these researches and create a timer in game.
+	
+end
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--[[END GAMERS]]--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+function ApocalypseRules_SuperweaponWarning(ar_playerindex)
+
+	-- Called by the ApocalypseRules_CheckSS(), this function is called infinitely as well, as long as a winwarning exists for the SS.
+	--[[ApocalypseRules_WarnSS("ar_eg_superstructure_"..j) -- Do SS Warn function.]]
+	
+	if (Prod_IsProducing("ar_eg_superstructure_"..ar_playerindex, ar_productiontable, false)) then
+		if (WinWarning_Exists("ui_ar_nuke_percentage"..ar_playerindex) == false) then
+			ar_superweaponcountdown[ar_playerindex] = 300;
+			WinWarning_Add("ui_ar_nuke_percentage"..ar_playerindex, World_GetPlayerAt(ar_playerindex), "", "", "")
+		elseif (ar_superweaponcountdown[ar_playerindex] >= 0) then
+			--WinWarning_SetText("ui_ar_nuke_percentage"..ar_playerindex, Loc_FormatText2(15043164, Player_GetDisplayName(World_GetPlayerAt(ar_playerindex)), Loc_ConvertNumber(math.floor(powerPercent))))
+			ar_superweaponcountdown[ar_playerindex] = ar_superweaponcountdown[ar_playerindex] - 1
+			if (ar_superweaponcountdown[ar_playerindex] == 280) then
+				Sound_PlayStinger("warning_ua_imminent")
+			elseif (ar_superweaponcountdown[ar_playerindex] == 0) then
+				Sound_PlayStinger("warning_ua_completed")
+				ar_superweaponcountdown[ar_playerindex] = 300
+			end
+			WinWarning_SetText("ui_ar_nuke_percentage"..ar_playerindex, Loc_FormatText1(15043161, Loc_FormatTime(60409, ar_superweaponcountdown[ar_playerindex])))
+		end
+		
+	elseif (WinWarning_Exists("ui_ar_nuke_percentage"..ar_playerindex) == true) then
+		ar_superweaponcountdown[ar_playerindex] = 0;
+		WinWarning_Remove("ui_ar_nuke_percentage"..ar_playerindex)
+	end
+
+end
+
+function ApocalypseRules_SS_Check()
+
+	-- Checks to see if there are any super structures valid throughout the map.
+	-- But in order to check, we have got to add in at least an EGroup for this to work.
+	-- And after that EGroup has been added, apply the SS qualities.
+	
+	local count = World_GetPlayerCount();
+	for j = 0, count-1 do
+		local Player = World_GetPlayerAt(j);
+		local PlayerRace = Player_GetRaceName(Player)
+		local PlayerName = Player_GetDisplayName(Player)
+		local pos = Player_GetStartPosition(Player)
+		
+		-- "ar" stands for Apocalypse Rules just in case I forgotten why I added in an ar in a bloody Entity Group.
+		local ar_entity_pos = Player_GetAllEntitiesNearPos(Player, "ar_entity_structure", pos, 2000)
+		eg_PlayerAll = Player_GetEntities(Player)
+		
+		if (EGroup_Exists("ar_eg_superstructure_"..j) == false) then
+			ApocalypseRules_AddBuildings = function( ar_entity_pos, itemindex, ar_entityID )
+				-- Every single super structure blueprint or Add-on goes here...
+				if (Entity_GetBlueprintName(ar_entityID) == "chaos_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "dark_eldar_hq_sp_dxp3" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "eldar_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "guard_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "guard_basilisk_magnus" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "monolith_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "sisters_shrine_to_the_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "space_marine_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "tau_arka_ion_cannon" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "daemon_doom_pit" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "inquisition_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "tyranids_capillary_tower" and Entity_GetBuildingProgress(ar_entityID) == 1.0) then
+					
+					-- Give the warning.
+					local warning = ("WARNING! Super Structure or critical threat spotted!")
+					EventCue_DoEvent("warning", "general_ping", warning, warning)
+					
+					-- Pinpoint the super structure.
+					EGroup_CreateIfNotFound("ar_eg_superstructure_"..j)
+					--WinWarning_Add("ui_ar_nuke_percentage"..j, World_GetPlayerAt(j), "", "", "")
+					EGroup_Add("ar_eg_superstructure_"..j, ar_entityID)
+					Ping_Position(EGroup_GetPosition("ar_eg_superstructure_"..j), false, "attack")
+					ApocalypseRules_RevealSS("ar_eg_superstructure_"..j)
+					--Sound_PlayStinger("warning_ua")
+				end
+			end
+			
+			EGroup_ForEach(eg_PlayerAll, ApocalypseRules_AddBuildings)
+			
+		-- Is the created super structure destroyed? Yes.
+		elseif (EGroup_Exists("ar_eg_superstructure_"..j) and EGroup_Count("ar_eg_superstructure_"..j) == 0) then
+			
+			-- Delete the no longer needed EGroup SS and remove all effects taken by the SS.
+			ApocalypseRules_RemoveSS(j)
+			
+		-- Is the created super structure destroyed? No.
+		elseif (EGroup_Exists("ar_eg_superstructure_"..j) and EGroup_Count("ar_eg_superstructure_"..j) > 0) then
+			
+			--ApocalypseRules_SuperweaponWarning(j)
+			
+		end
+		
+	end 
+
+end
+
+function ApocalypseRules_RevealSS(ar_superstructure_intel)
+
+	-- Once the SS (Super Structure) is created, the SS will be "tagged" and revealed to all players.
+	local count = World_GetPlayerCount();
+	for j = 0, count-1 do
+		local Player = World_GetPlayerAt(j);
+		
+		FOW_TagEGroup(Player, ar_superstructure_intel)
+		
+	end
+
+end
+
+function ApocalypseRules_RemoveSS(ar_superstructure_intel)
+
+	-- A Super structure has been destroyed, remove all references and variables for it so a second built SS can do the same stuff.
+	
+	EGroup_Destroy("ar_eg_superstructure_"..ar_superstructure_intel)
+	if (EGroup_Exists("ar_apocalypsedummy"..ar_superstructure_intel)) then
+		EGroup_Destroy("ar_apocalypsedummy"..ar_superstructure_intel)
+	end
+	if (WinWarning_Exists("ui_ar_nuke_percentage"..ar_superstructure_intel)) then
+		WinWarning_Remove("ui_ar_nuke_percentage"..ar_superstructure_intel)
+	end
+
+end
+
+function ApocalypseRules_WarnSS(ar_superstructure_intel)
+
+	--[[ Is called when the player has >= 100000 requisition/power.
+	local warning = ("WARNING! Apocalypse is ready!")
+	EventCue_DoEvent("warning", "general_ping", warning, warning)
+	Ping_Position(EGroup_GetPosition(ar_superstructure_intel), false, "attack")
+	Util_MissionTitle("The Apocalypse begins!")
+	Sound_PlayStinger("music_apocalypse_main_skirmish")]]
+
+end
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--[[AI WARGEAR]]--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Function thanks to Gambit!
+function player_IsHuman( player )
+	local name = Player_GetDisplayName(player)[1]
+	if string.len(name) < 3 then return true end
+	name = string.sub(name, -2)
+	if( name == " 1" or name == " 2" or name == " 3" or name == " 4" or name == " 5" or name == " 6" or name == " 7" or name == " 8") then
+		return false
+	else
+		return true
+	end
+end
+
+function ApocalypseRules_Levelup_GrantToAI()
+
+	if (ar_levelupheroes == nil) then
+		ar_levelupheroes = 1;
+	end
+	if (ar_wargear_cancel == false) then
+		local count = World_GetPlayerCount();
+		for j = 0, count-1 do
+			local Player = World_GetPlayerAt(j);
+			
+			if (player_IsHuman(Player) == false) then
+				
+				if (ar_levelupheroes == 8) then
+					Player_GrantResearch(Player, "commander_level8_research")
+					Player_GrantResearch(Player, "necron_lord_boost_8")
+					ApocalypseRules_Wargear_GrantToAI(Player, 10)
+				elseif (ar_levelupheroes == 7) then
+					Player_GrantResearch(Player, "commander_level7_research")
+					Player_GrantResearch(Player, "necron_lord_boost_7")
+					ApocalypseRules_Wargear_GrantToAI(Player, 8)
+					ApocalypseRules_Wargear_GrantToAI(Player, 9)
+				elseif (ar_levelupheroes == 6) then
+					Player_GrantResearch(Player, "commander_level6_research")
+					Player_GrantResearch(Player, "necron_lord_boost_6")
+					ApocalypseRules_Wargear_GrantToAI(Player, 4)
+					ApocalypseRules_Wargear_GrantToAI(Player, 2)
+				elseif (ar_levelupheroes == 5) then
+					Player_GrantResearch(Player, "commander_level5_research")
+					Player_GrantResearch(Player, "necron_lord_boost_5")
+					ApocalypseRules_Wargear_GrantToAI(Player, 7)
+				elseif (ar_levelupheroes == 4) then
+					Player_GrantResearch(Player, "commander_level4_research")
+					Player_GrantResearch(Player, "necron_lord_boost_4")
+					ApocalypseRules_Wargear_GrantToAI(Player, 5)
+					ApocalypseRules_Wargear_GrantToAI(Player, 6)
+				elseif (ar_levelupheroes == 3) then
+					Player_GrantResearch(Player, "commander_level3_research")
+					Player_GrantResearch(Player, "necron_lord_boost_3")
+					ApocalypseRules_Wargear_GrantToAI(Player, 1)
+				elseif (ar_levelupheroes == 2) then
+					Player_GrantResearch(Player, "necron_lord_boost_2")
+					Player_GrantResearch(Player, "commander_level2_research")
+					ApocalypseRules_Wargear_GrantToAI(Player, 3)
+				elseif (ar_levelupheroes == 1) then
+					Player_GrantResearch(Player, "necron_lord_boost")
+					Player_GrantResearch(Player, "commander_level1_research")
+					ApocalypseRules_Wargear_GrantToAI(Player, nil)
+				end
+			end
+		end
+	end
+	
+	ar_levelupheroes = ar_levelupheroes + 1;
+
+end
+
+function ApocalypseRules_Wargear_GrantToAI(ar_f_player, ar_f_wargearoption)
+
+	if not (ar_f_wargearoption == nil) then
+		if (ar_f_wargearoption < 10) then
+			Player_GrantResearch(ar_f_player, "chaos_wargear0"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "dark_eldar_wargear0"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "eldar_wargear0"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "eldar_wargear1"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "guard_wargear0"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "necron_wargear0"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "necron_wargear1"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "marine_wargear0"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "marine_wargear1"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "ork_wargear0"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "sisters_wargear0"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "sisters_wargear1"..ar_f_wargearoption)
+			Player_GrantResearch(ar_f_player, "tau_wargear0"..ar_f_wargearoption)
+			
+			-- Necron stuff
+			if (ar_f_wargearoption >= 2) then
+				if (ar_f_wargearoption == 2) then
+					Player_GrantResearch(ar_f_player, "necron_chronometron_research")
+					Player_GrantResearch(ar_f_player, "necron_phase_shifter_research")
+				elseif (ar_f_wargearoption == 4) then
+					Player_GrantResearch(ar_f_player, "necron_solar_pulse_research")
+				elseif (ar_f_wargearoption == 6) then
+					Player_GrantResearch(ar_f_player, "necron_phylactery_research")
+					Player_GrantResearch(ar_f_player, "necron_phylactery_destroyer_research")
+					Player_GrantResearch(ar_f_player, "necron_resurrection_orb_research")
+					Player_GrantResearch(ar_f_player, "necron_resurrection_orb_destroyer_research")
+					Player_GrantResearch(ar_f_player, "marine_spell_aura_of_honor")
+					Player_GrantResearch(ar_f_player, "marine_spell_curse_machine_spirit")
+					Player_GrantResearch(ar_f_player, "marine_spell_firebolt")
+					Player_GrantResearch(ar_f_player, "marine_spell_halo_shield")
+					Player_GrantResearch(ar_f_player, "marine_spell_haste")
+					Player_GrantResearch(ar_f_player, "marine_spell_mastermind")
+					Player_GrantResearch(ar_f_player, "marine_spell_mind_war")
+					Player_GrantResearch(ar_f_player, "marine_spell_smite")
+					Player_GrantResearch(ar_f_player, "marine_spell_vision")
+					Player_GrantResearch(ar_f_player, "marine_spell_weaken_resolve")
+					Player_GrantResearch(ar_f_player, "marine_spell_word_of_emperor")
+					Player_GrantResearch(ar_f_player, "marine_spell_inquisition")
+					Player_GrantResearch(ar_f_player, "eldar_spell_blind")
+					Player_GrantResearch(ar_f_player, "eldar_spell_eldritch_storm")
+					Player_GrantResearch(ar_f_player, "eldar_spell_embolden")
+					Player_GrantResearch(ar_f_player, "eldar_spell_entanglement")
+					Player_GrantResearch(ar_f_player, "eldar_spell_farsight")
+					Player_GrantResearch(ar_f_player, "eldar_spell_focused_mind")
+					Player_GrantResearch(ar_f_player, "eldar_spell_guide")
+					Player_GrantResearch(ar_f_player, "eldar_spell_mind_war")
+					Player_GrantResearch(ar_f_player, "eldar_spell_shroud")
+					Player_GrantResearch(ar_f_player, "eldar_spell_storm")
+					if (Mod_Includes_Tyranids == true) then
+						Player_GrantResearch(ar_f_player, "tyranids_lictor_adrenal_research")
+						Player_GrantResearch(ar_f_player, "tyranids_lictor_implant_research")
+						Player_GrantResearch(ar_f_player, "tyranids_lictor_senses_research")
+						Player_GrantResearch(ar_f_player, "tyranids_lictor_tendrils_research")
+						Player_GrantResearch(ar_f_player, "tyranids_hivetyrant_toxic_miasma_research")
+						Player_GrantResearch(ar_f_player, "tyranids_hivetyrant_warp_field_research")
+						Player_GrantResearch(ar_f_player, "tyranids_hivetyrant_adrenal_research")
+						Player_GrantResearch(ar_f_player, "tyranids_hivetyrant_carapace_research")
+						Player_GrantResearch(ar_f_player, "tyranids_hivetyrant_implant_research")
+						Player_GrantResearch(ar_f_player, "tyranids_hivetyrant_toxic_miasma_research")
+						Player_GrantResearch(ar_f_player, "tyranids_hivetyrant_wings_research")
+						Player_GrantResearch(ar_f_player, "tyranids_swarmlord_blades_research")
+						Player_GrantResearch(ar_f_player, "tyranids_swarmlord_carapace_research")
+						Player_GrantResearch(ar_f_player, "tyranids_swarmlord_regeneration_research")
+						Player_GrantResearch(ar_f_player, "tyranids_swarmlord_abilities_research")
+						
+					end
+				elseif (ar_f_wargearoption == 8) then
+					Player_GrantResearch(ar_f_player, "necron_veil_of_darkness_research")
+					Player_GrantResearch(ar_f_player, "necron_lightning_storm_research")
+					Player_GrantResearch(ar_f_player, "necron_wargear21")
+					Player_GrantResearch(ar_f_player, "necron_shroud_antigravity_research")
+				end
+			end
+			
+			-- Big Mek stuff
+			if (ar_f_wargearoption == 4) then
+				Player_GrantResearch(ar_f_player, "ork_research_big_mek_3")
+				Player_GrantResearch(ar_f_player, "ork_research_big_mek_1")
+				Player_GrantResearch(ar_f_player, "ork_research_warboss_ranged_1")
+				Player_GrantResearch(ar_f_player, "ork_research_warboss_melee_1")
+			end
+			if (Mod_Includes_Inquisition == true) then
+				if (ar_f_wargearoption == 1) then
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_1")
+				elseif (ar_f_wargearoption == 2) then
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_2")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_4")
+				elseif (ar_f_wargearoption == 3) then
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_3")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_5")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_6")
+				elseif (ar_f_wargearoption == 4) then
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_7")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_9")
+				elseif (ar_f_wargearoption == 5) then
+					Player_GrantResearch(ar_f_player, "inquisition_officers_weapons")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_8")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_10")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_11")
+				elseif (ar_f_wargearoption == 6) then
+					Player_GrantResearch(ar_f_player, "inquisition_temporal_power")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_12")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_13")
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_14")
+				elseif (ar_f_wargearoption == 7) then
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_15")
+				elseif (ar_f_wargearoption == 8) then
+					Player_GrantResearch(ar_f_player, "inquisition_psy_power_16")
+					Player_GrantResearch(ar_f_player, "inquisition_wargear01")
+					Player_GrantResearch(ar_f_player, "inquisition_wargear02")
+					Player_GrantResearch(ar_f_player, "inquisition_wargear03")
+					Player_GrantResearch(ar_f_player, "inquisition_wargear04")
+					Player_GrantResearch(ar_f_player, "inquisition_wargear05")
+				end
+			end		
+			if (Mod_Includes_Daemons == true) then
+				if (ar_f_wargearoption < 10) then
+					Player_GrantResearch(ar_f_player, "daemons_wargear0"..ar_f_wargearoption)
+				end
+			end	
+		else
+			Player_GrantResearch(ar_f_player, "chaos_wargear10")
+			Player_GrantResearch(ar_f_player, "dark_eldar_wargear10")
+			Player_GrantResearch(ar_f_player, "eldar_wargear10")
+			Player_GrantResearch(ar_f_player, "guard_wargear10")
+			Player_GrantResearch(ar_f_player, "guard_wargear11")
+			Player_GrantResearch(ar_f_player, "guard_wargear12")
+			Player_GrantResearch(ar_f_player, "guard_wargear13")
+			Player_GrantResearch(ar_f_player, "guard_wargear14")
+			Player_GrantResearch(ar_f_player, "guard_wargear15")
+			Player_GrantResearch(ar_f_player, "guard_wargear16")
+			Player_GrantResearch(ar_f_player, "guard_wargear17")
+			Player_GrantResearch(ar_f_player, "guard_wargear18")
+			Player_GrantResearch(ar_f_player, "necron_wargear10")
+			Player_GrantResearch(ar_f_player, "necron_wargear20")
+			Player_GrantResearch(ar_f_player, "marine_wargear10")
+			Player_GrantResearch(ar_f_player, "sisters_wargear10")
+			if (Mod_Includes_Daemons == true) then
+				Player_GrantResearch(ar_f_player, "daemons_wargear_angron1")
+				Player_GrantResearch(ar_f_player, "daemons_wargear_angron2")
+				Player_GrantResearch(ar_f_player, "daemons_wargear_angron3")
+				Player_GrantResearch(ar_f_player, "daemons_wargear_angron4")
+				Player_GrantResearch(ar_f_player, "daemons_wargear_angron5")
+				Player_GrantResearch(ar_f_player, "daemons_wargear_angron6")
+				Player_GrantResearch(ar_f_player, "daemons_wargear10")
+				Player_GrantResearch(ar_f_player, "daemons_wargear11")
+			end	
+			
+		end
+	end
+end

@@ -1,0 +1,64 @@
+----------------------------------------------------------------------------------------------------------------
+-- Starting Army
+-- Edited by Krronus, 2:54 8/4/10
+-- Edited by Cylarne @ 2011
+-- Finished @  11/20/10
+--
+--	All players start with an already created army.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+
+
+-- Edited by Kaitenhammer @ 14 II 2015
+function AddArmy_Titans()
+	
+	
+	-- Add an army to the game.
+	local count = World_GetPlayerCount()
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i)
+		local pos = Player_GetStartPosition(player)
+		--local race = Player_GetRace(player)
+	
+		if (Player_GetRaceName(player) == "chaos_marine_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "chaos_squad_warhound_titan", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "dark_eldar_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "dark_eldar_squad_tormentor", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "eldar_race") then
+		Util_CreateSquadsAtPosition(player, "startingarmy", "eldar_squad_titan_revenant", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "guard_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "guard_squad_warhound_titan", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "necron_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "necron_doomsday_monolith_squad", pos, 2)
+			
+		elseif (Player_GetRaceName(player) == "ork_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "ork_squad_ork_gargant", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "sisters_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "sisters_squad_arch_angel", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "space_marine_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "space_marine_squad_warhound_titan", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "tau_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "tau_xv202_mako_titan_squad", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "deamons_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "daemon_squad_greater_brass_scorpion", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "inquisition_daemonhunt_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "inquisition_squad_warhound_vengence_titan", pos, 1)
+			
+		elseif (Player_GetRaceName(player) == "tyranids_race") then
+			Util_CreateSquadsAtPosition(player, "startingarmy", "tyranids_squad_hierophant", pos, 1)
+		end
+	end
+
+end
+Scar_AddInit(AddArmy_Titans)

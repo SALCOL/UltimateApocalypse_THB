@@ -1,0 +1,33 @@
+----------------------------------------
+-- File: 'Tetratactic.ai'
+-- Created by Cylarne @ 2013
+
+class 'TetraTactic' (TauVehicleTactic)
+
+Tetra = {}
+
+function TetraTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Tetra Tactic")
+end
+
+function TetraTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Tetra.booster == nil) then
+		Tetra.booster = cpu_manager.stats:GetAbilityID( "tau_tetra_booster" )
+	end
+	if (Tetra.strike == nil) then
+		Tetra.strike = cpu_manager.stats:GetAbilityID( "tau_tetra_missile_barrage" )
+	end
+end
+
+function TetraTactic:DoAbilities()
+
+	if (self:IsMoving() or self:IsInSubState() and self.squad_ai:CanDoAbility(Tetra.booster)) then
+		self.squad_ai:DoSpecialAbility(Tetra.booster)
+	end
+	
+	Ability.DoAbilityTarget(self.squad_ai, Tetra.strike, Ability.Filters.CloseEnemy, 3)
+
+end

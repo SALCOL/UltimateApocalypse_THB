@@ -1,0 +1,134 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Tier 4
+-- Created by Krronus, 7:22 11/20/10
+-- Edited by Cylarne @ 2011
+--
+--	Tier IV is restricted.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+
+function Rule_RestrictTier4()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/Tiers&EndGamersList.scar");
+		
+		-- Restrict the add-ons.
+		for i=1,table.getn( _Actual.tier4_list.addon_list ) do
+			local addon = _Actual.tier4_list.addon_list[i];
+			Player_RestrictAddOn(player, addon);
+		end 
+		-- Restrict the research.
+		for i=1,table.getn( _Actual.tier4_list.research_list ) do
+			local research = _Actual.tier4_list.research_list[i];
+			Player_RestrictResearch(player, research);
+		end 
+		-- Restrict the structure.
+		for i=1,table.getn( _Actual.tier4_list.structure_list ) do
+			local structure = _Actual.tier4_list.structure_list[i];
+			Player_RestrictBuilding(player, structure);
+		end 
+		if (Mod_Includes_Tyranids == true) then
+			-- Restrict the add-ons.
+			for i=1,table.getn( _Tyranids.tier4_list.addon_list ) do
+				local addon = _Tyranids.tier4_list.addon_list[i];
+				Player_RestrictAddOn(player, addon);
+			end 
+			-- Restrict the research.
+			for i=1,table.getn( _Tyranids.tier4_list.research_list ) do
+				local research = _Tyranids.tier4_list.research_list[i];
+				Player_RestrictResearch(player, research);
+			end
+			-- Restrict the structure.
+			for i=1,table.getn( _Tyranids.tier4_list.structure_list ) do
+				local structure = _Tyranids.tier4_list.structure_list[i];
+				Player_RestrictBuilding(player, structure);
+			end 
+		end
+		if (Mod_Includes_Inquisition == true) then
+			-- Restrict the add-ons.
+			for i=1,table.getn( _Inquisition.tier4_list.addon_list ) do
+				local addon = _Inquisition.tier4_list.addon_list[i];
+				Player_RestrictAddOn(player, addon);
+			end 
+			-- Restrict the research.
+			for i=1,table.getn( _Inquisition.tier4_list.research_list ) do
+				local research = _Inquisition.tier4_list.research_list[i];
+				Player_RestrictResearch(player, research);
+			end
+			-- Restrict the structure.
+			for i=1,table.getn( _Inquisition.tier4_list.structure_list ) do
+				local structure = _Inquisition.tier4_list.structure_list[i];
+				Player_RestrictBuilding(player, structure);
+			end 
+		end
+		if (Mod_Includes_Daemons == true) then
+			-- Restrict the add-ons.
+			for i=1,table.getn( _Daemons.tier4_list.addon_list ) do
+				local addon = _Daemons.tier4_list.addon_list[i];
+				Player_RestrictAddOn(player, addon);
+			end 
+			-- Restrict the research.
+			for i=1,table.getn( _Daemons.tier4_list.research_list ) do
+				local research = _Daemons.tier4_list.research_list[i];
+				Player_RestrictResearch(player, research);
+			end
+			-- Restrict the structure.
+			for i=1,table.getn( _Daemons.tier4_list.structure_list ) do
+				local structure = _Daemons.tier4_list.structure_list[i];
+				Player_RestrictBuilding(player, structure);
+			end 
+		end
+	end
+
+end
+
+function Rule_UnRestrictTier4()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/Tiers&EndGamersList.scar");
+		
+		-- Restrict the add-ons.
+		for i=1,table.getn( _Actual.tier4_list.addon_list ) do
+			local addon = _Actual.tier4_list.addon_list[i];
+			Player_UnRestrictAddOn(player, addon);
+		end 
+		-- Restrict the research.
+		for i=1,table.getn( _Actual.tier4_list.research_list ) do
+			local research = _Actual.tier4_list.research_list[i];
+			Player_UnRestrictResearch(player, research);
+		end 
+		-- Restrict the structure.
+		for i=1,table.getn( _Actual.tier4_list.structure_list ) do
+			local structure = _Actual.tier4_list.structure_list[i];
+			Player_UnRestrictBuilding(player, structure);
+		end 
+		if (Mod_IsXP2 == true) then
+			-- Restrict the add-ons.
+			for i=1,table.getn( _XP2.tier4_list.addon_list ) do
+				local addon = _XP2.tier4_list.addon_list[i];
+				Player_UnRestrictAddOn(player, addon);
+			end 
+			-- Restrict the research.
+			for i=1,table.getn( _XP2.tier4_list.research_list ) do
+				local research = _XP2.tier4_list.research_list[i];
+				Player_UnRestrictResearch(player, research);
+			end
+			-- Restrict the structure.
+			for i=1,table.getn( _XP2.tier4_list.structure_list ) do
+				local structure = _XP2.tier4_list.structure_list[i];
+				Player_UnRestrictBuilding(player, structure);
+			end 
+		end
+	end
+
+end
+Scar_AddInit(Rule_RestrictTier4)

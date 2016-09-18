@@ -1,0 +1,43 @@
+----------------------------------------
+-- File: 'tauvehicletactic.ai'
+-- Edited by Thudmeizer         @ 13.10.2006
+
+class 'TauVehicleTactic' (VehicleTactic)
+
+function TauVehicleTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Tau Vehicle Tactic")
+end
+
+-- Check if the vehicle should dance away in melee
+function TauVehicleTactic:CheckVehicleDance(sName)
+
+	if (sName == "tau_devilfish_troop_carrier" or
+	    sName == "tau_skyray_squad" or
+	    sName == "tau_drone_harbinger_squad" or
+	    sName == "tau_hammerhead_gunship_squad") then
+		return true
+	end
+	return false
+end
+
+function TauVehicleTactic:DoAbilities()
+
+   -- Launch missile barrage
+   local barrage_id = cpu_manager.stats:GetAbilityID( "tau_skyray_missile_barrage" )
+   Ability.DoAbilityPos( self.squad_ai, barrage_id, Ability.Filters.CloseEnemy, 10 ) 
+
+	-- Call standard method
+	VehicleTactic.DoAbilities(self)
+end
+
+function TauVehicleTactic:Reinforce()
+
+	if (not self.squad_ai:IsReinforcing()) then
+		-- Always try to get the leader first
+		if (self.squad_ai:CanReinforce(true, 0)) then
+			self.squad_ai:DoReinforce(true, 0)
+			return
+		end
+	end
+end

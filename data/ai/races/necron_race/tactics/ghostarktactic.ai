@@ -1,0 +1,25 @@
+----------------------------------------
+-- File: 'GhostArktactic.ai'
+-- Edited by Cylarne @ 9-3-2014
+
+class 'GhostArkTactic' (NecronVehicleTactic)
+
+GhostArk = {}
+
+function GhostArkTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Ghost Ark Tactic")
+	
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 2
+end
+
+function GhostArkTactic:InitAbilities()
+
+	
+end
+
+function GhostArkTactic:DoAbilities()
+
+	
+end

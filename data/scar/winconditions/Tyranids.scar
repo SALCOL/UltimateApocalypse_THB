@@ -1,0 +1,87 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Grenades
+-- Created by Cylarne @ 2015
+--
+--	Grenades are restricted.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+
+function RestrictTitanUnits()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		
+		local player = World_GetPlayerAt(i);
+		
+		-- Chaos Grenades
+		Player_RestrictResearch(player, "chaos_flashbang_grenade_research");
+		Player_RestrictResearch(player, "chaos_frag_grenade_research");
+		Player_RestrictResearch(player, "chaos_krak_grenades_research");
+		Player_RestrictResearch(player, "chaos_melta_bomb_research");
+		Player_RestrictResearch(player, "chaos_smoke_grenade_research");
+		Player_RestrictResearch(player, "chaos_smoke_launcher_research");
+		
+		-- Dark Eldar Grenades
+		Player_RestrictResearch(player, "dark_eldar_haywire_grenade_research");
+		Player_RestrictResearch(player, "dark_eldar_gravity_grenade_research");
+		Player_RestrictResearch(player, "dark_eldar_horrorfex_grenade_research");
+		Player_RestrictResearch(player, "dark_eldar_terrorfex_grenade_research");
+		
+		-- Eldar Grenades
+		Player_RestrictResearch(player, "eldar_plasma_grenade_research");
+		Player_RestrictResearch(player, "eldar_blind_grenade_research");
+		Player_RestrictResearch(player, "eldar_haywire_bomb_research");
+		Player_RestrictResearch(player, "eldar_gravity_grenade_research");
+		
+		-- Imperial Guard Grenades
+		Player_RestrictResearch(player, "guard_nervegas_research");
+		Player_RestrictResearch(player, "guard_flashbang_grenade_research");
+		Player_RestrictResearch(player, "guard_frag_grenade_research");
+		Player_RestrictResearch(player, "guard_krak_grenades_research");
+		Player_RestrictResearch(player, "guard_smoke_grenade_research");
+		Player_RestrictResearch(player, "guard_smoke_launcher_research");
+		
+		-- Necron "Grenades"
+		Player_RestrictResearch(player, "necron_reassemble_research");
+		Player_RestrictResearch(player, "necron_gauss_weaponry_research");
+		
+		-- Orks Grenades
+		Player_RestrictResearch(player, "ork_research_stikk_bombs");
+		Player_RestrictResearch(player, "ork_research_tankbustabombs");
+		Player_RestrictResearch(player, "ork_research_boomy_stikk_bombs");
+		
+		-- Sisters Grenades
+		Player_RestrictResearch(player, "sisters_flashbang_grenade_research");
+		Player_RestrictResearch(player, "sisters_phosphor_grenades_research");
+		Player_RestrictResearch(player, "sisters_krak_grenades_research");
+		Player_RestrictResearch(player, "sisters_smoke_grenade_research");
+		
+		-- Space Marine Grenades
+		Player_RestrictResearch(player, "marine_inferno_grenades_research");
+		Player_RestrictResearch(player, "marine_flashbang_grenade_research");
+		Player_RestrictResearch(player, "marine_frag_grenade_research");
+		Player_RestrictResearch(player, "marine_krak_grenades_research");
+		Player_RestrictResearch(player, "marine_melta_bomb_research");
+		Player_RestrictResearch(player, "marine_smoke_grenade_research");
+		Player_RestrictResearch(player, "marine_smoke_launcher_research");
+		
+		-- Tau Grenades
+		Player_RestrictResearch(player, "tau_emp_grenade_research");
+		Player_RestrictResearch(player, "tau_snare_trap_research");
+		Player_RestrictResearch(player, "tau_photon_grenade_research");
+		
+		-- IDH Grenades
+		if (Mod_Includes_Inquisition == true) then
+			--Player_RestrictResearch(player, "inquisition_flashbang_grenade_research");
+			Player_RestrictResearch(player, "inquisition_frag_grenade_research");
+			Player_RestrictResearch(player, "inquisition_krak_grenades_research");
+			Player_RestrictResearch(player, "inquisition_incendiary_grenades_research");
+			Player_RestrictResearch(player, "inquisition_disruption_grenades_research");
+			Player_RestrictResearch(player, "inquisition_medikits");
+		end
+	end
+
+end
+Scar_AddInit(RestrictTitanUnits)

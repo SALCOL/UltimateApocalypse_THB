@@ -1,0 +1,50 @@
+----------------------------------------------------------------------------------------------------------------
+-- Infantry Only
+-- Created by Krronus, 3:20 11/21/10
+--
+--	All vehicles are restricted.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+function RestrictVehicles()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/VehicleEntityList.scar");
+		
+		for i=1,table.getn( v_entity_list ) do
+			local squad = v_entity_list[i];
+		
+			Player_RestrictSquad(player, squad);
+		end 
+		if (Mod_Includes_Tyranids == true) then
+			for i=1,table.getn( v_entity_list_tyranids ) do
+				local squad = v_entity_list_tyranids[i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Inquisition == true) then
+			for i=1,table.getn( v_entity_list_inquisition ) do
+				local squad = v_entity_list_inquisition[i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Daemons == true) then
+			for i=1,table.getn( v_entity_list_daemons ) do
+				local squad = v_entity_list_daemons[i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+	end
+
+end
+Scar_AddInit(RestrictVehicles)

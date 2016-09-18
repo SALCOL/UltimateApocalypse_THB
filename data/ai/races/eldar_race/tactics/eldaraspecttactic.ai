@@ -1,0 +1,15 @@
+----------------------------------------
+-- File: 'eldarAspecttactic.ai'
+-- Edited by Cylarne		@ 3/21/2011
+
+class 'EldarAspectTactic' (BaseTactic)
+
+EldarAspect = {}
+
+function EldarAspectTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Eldar Aspect Tactic")
+	
+	-- Init abilities
+	self.m_bCanDeepStrikeTroops = true
+end

@@ -1,0 +1,32 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["inquisition_daemonhunt_race"] =
+{
+	{ "inquisition_banish", 50 },
+	{ "inquisition_inquisitor_lord_lightning_balls", 50 },
+	{ "inquisition_strike_of_justice", 45 },
+	{ "inquisition_strike_of_justice_champion", 45 },
+	{ "inquisiiton_brother_captain_nemesis", 40 },
+	{ "inquisition_disruption_grenades", 40 },
+	{ "inquisition_inquisitor_lord_doom_machine_spirit", 40 },
+	{ "inquisition_inquisitor_lord_fireball", 35 },
+	{ "inquisition_disruption_grenades_2", 30 },
+	{ "inquisition_crack_grenades_bodyguard", 30 },
+	{ "inquisition_crack_grenades_stormtroopers", 30 },
+	{ "inquisition_frag_grenades_2_bodyguard", 30 },
+	{ "inquisition_frag_grenades_bodyguard", 30 },
+	{ "inquisition_frag_grenades_stormtroopers", 30 },
+	{ "inquisition_inferno_grenades", 30 },
+	{ "inquisition_grey_knight_hero_purge", 30 },
+	{ "inquisition_inquisitor_lord_doom", 30 },
+	{ "inquisition_frag_grenades_2_stormtroopers", 25 },
+	{ "inquisition_inquisitor_lord_dark_commandment", 15 },
+	{ "inquisition_inquisitor_lord_banish", 8 },
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["inquisition_daemonhunt_race"] =
+{
+	{ "inquisition_medkits", 20 },
+}

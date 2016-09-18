@@ -1,0 +1,190 @@
+----------------------------------------
+-- File: 'darkeldarhqtactic.ai'
+-- Edited by Thudmeizer		@ 22.03.2008
+
+class 'DarkEldarHQTactic' (BaseTactic)
+
+DarkEldarHQ = {}
+
+function DarkEldarHQTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Dark Eldar HQ Tactic")
+	
+	self.m_iCommanderID1 = nil
+	self.m_iCommanderID2 = nil
+	
+	-- Init abilities
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function DarkEldarHQTactic:InitAbilities()
+	
+	-- Init abilities
+	if (DarkEldarHQ.m_iABID == nil) then
+		DarkEldarHQ.m_iABID = cpu_manager.stats:GetAbilityID( "dark_eldar_annihilation_beam" ) 
+	end
+	
+	if (DarkEldarHQ.m_iSFID == nil) then
+		DarkEldarHQ.m_iSFID = cpu_manager.stats:GetAbilityID( "dark_eldar_speed_frenzy" ) 
+	end
+	
+	if (DarkEldarHQ.m_iWFID == nil) then
+		DarkEldarHQ.m_iWFID = cpu_manager.stats:GetAbilityID( "dark_eldar_veil_of_shadows" ) 
+	end
+	
+	-- Init global abilities
+	
+	if (DarkEldarHQ.m_iVisionID == nil) then
+		DarkEldarHQ.m_iVisionID = cpu_manager.stats:GetAbilityID( "dark_eldar_piercing_vision" ) 
+	end
+
+	if (DarkEldarHQ.m_iScreamsID == nil) then
+		DarkEldarHQ.m_iScreamsID = cpu_manager.stats:GetAbilityID( "dark_eldar_screams_of_the_damned" ) 
+	end
+
+	if (DarkEldarHQ.m_iLightningID == nil) then
+		DarkEldarHQ.m_iLightningID = cpu_manager.stats:GetAbilityID( "dark_eldar_rend_soul" )
+	end
+
+	if (DarkEldarHQ.m_iCorrosionID == nil) then
+		DarkEldarHQ.m_iCorrosionID = cpu_manager.stats:GetAbilityID( "dark_eldar_corrosive_cloud" )
+	end
+
+	if (DarkEldarHQ.m_iRageID == nil) then
+		DarkEldarHQ.m_iRageID = cpu_manager.stats:GetAbilityID( "dark_eldar_rekindle_rage" )
+	end
+
+	if (DarkEldarHQ.m_iSoulstormID == nil) then
+		DarkEldarHQ.m_iSoulstormID = cpu_manager.stats:GetAbilityID( "dark_eldar_soulstorm" )
+	end
+end
+
+function DarkEldarHQTactic:DoAbilities()
+
+	aitrace("DarkEldarHQTactic: Do abilities...")
+	
+	--[[local delay = math.random(0, 100)
+	local init = math.random(0, 100)
+	local frequency
+	
+	-- Scan more frequently for harder AI settings
+	if (cpu_manager.cpu_player:GetDifficultyLevel() == CpuPlayer.AD_Easy ) then
+		frequency = 20 --About 20% of the time
+	elseif (cpu_manager.cpu_player:GetDifficultyLevel() == CpuPlayer.AD_Standard ) then
+		frequency = 50 --About 50% of the time
+	else 
+		frequency = 90 --90% of the time
+	end
+	
+	if( init > frequency) then
+		return
+	end]]
+	
+	-- Screams of damned
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.m_iVisionID)) then
+		Ability.DoAbilityArea( self.base_ai, DarkEldarHQ.m_iVisionID, Ability.Filters.CloseInfantryEnemy, 70, 6)
+	end
+
+	-- Speed Frenzy
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.m_iScreamsID)) then
+		self.base_ai:DoSpecialAbility(DarkEldarHQ.m_iScreamsID)
+	end
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- War Frenzy
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.m_iLightningID) and iRequisition > 500 and iPower > 500) then
+		self.base_ai:DoSpecialAbility(DarkEldarHQ.m_iLightningID)
+	end
+	
+	-- Rekindle Rage
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.m_iCorrosionID)) then
+		local range = self.base_ai:GetAbilityRange( DarkEldarHQ.m_iCorrosionID )	
+		local squad_filter = function( squad_ai )		
+			return squad_ai:IsInCombat() and squad_ai:GetNumTroopers() >= 4 and not squad_ai:IsCapturing()
+		end	
+   		local target_squad = cpu_manager:GetClosestSquad( self.base_ai:GetPosition(), range, squad_filter )
+		if (target_squad ~= nil) then
+			self.base_ai:DoSpecialAbilitySquad( DarkEldarHQ.m_iCorrosionID, target_squad:GetSquad() )
+ 		end
+	end
+
+	-- Try to activate the "Soul Storm"
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.m_iRageID)) then
+	
+		-- Only activate if enemy unit is attacking
+		local iRange = self.base_ai:GetAbilityRange(DarkEldarHQ.m_iRageID)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 24)
+		if (oSquad ~= nil and oSquad:IsAttacking()) then
+			self.base_ai:DoSpecialAbilitySquad(DarkEldarHQ.m_iRageID, oSquad:GetSquad())
+		end
+	end
+	
+	-- Try to activate the "Annihilation Beam"
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.m_iSoulstormID)) then
+	
+		-- Only activate if enemy unit is attacking
+		local iRange = self.base_ai:GetAbilityRange(DarkEldarHQ.m_iSoulstormID)
+		local oSquad = Ability.Filters.CloseVehicleEnemy(self.base_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil and oSquad:IsAttacking()) then
+			self.base_ai:DoSpecialAbilitySquad(DarkEldarHQ.m_iSoulstormID, oSquad:GetSquad())
+		end
+	end
+	
+	---------------------------------------------------------------------------------------------------------------------
+
+	-- Try to activate the "Rend Soul" ability against enemy commanders (disables enemy abilities and causes damage - Soul cost: 150)
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.m_iSFID)) then
+	
+		-- Only activate if enemy unit is attacking
+		local iRange = self.base_ai:GetAbilityRange(DarkEldarHQ.m_iSFID)
+		local oSquad = Ability.Filters.CloseCommanderEnemy(self.base_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil and oSquad:IsAttacking()) then
+			self.base_ai:DoSpecialAbilitySquad(DarkEldarHQ.m_iSFID, oSquad:GetSquad())
+		end
+	end
+
+	-- Try to activate the "Corrosive Cloud" ability against the enemy (eats enemy armour - Soul cost: 200)
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.m_iWFID)) then
+	
+		-- Only activate if enemy unit is attacking
+		local iRange = self.base_ai:GetAbilityRange(DarkEldarHQ.m_iWFID)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 12)
+		if (oSquad ~= nil and oSquad:IsAttacking()) then
+			self.base_ai:DoSpecialAbilitySquad(DarkEldarHQ.m_iWFID, oSquad:GetSquad())
+		end
+	end
+end
+
+function DarkEldarHQTactic:GetValidCommander(sName, iUnitID)
+
+	-- Init commander object
+	local oCommander = nil
+
+	-- Try to get commander through the unit ID	
+	if (iUnitID ~= nil) then
+		oCommander = military_manager:GetSquadFromID(iUnitID)
+	end
+	
+	-- Check if we have to search a new commander
+	if (oCommander == nil or not oCommander:IsValid()) then
+	
+		-- Search new commander
+		oCommander = nil
+		local iCommanderBPID = cpu_manager.stats:GetSquadID(sName)
+		for oSquad in military_manager:GetSquads() do
+	
+			-- Check for valid squad
+			if (oSquad:IsValid() and not oSquad:IsEngineer()) then
+			
+				-- Check for commander
+				if (oSquad:GetBlueprintID() == iCommanderBPID or (oSquad:IsAttached() and oSquad:HasSquadAttached(sName))) then
+					oCommander = oSquad
+					break
+				end
+			end
+		end
+	end
+	return oCommander
+end

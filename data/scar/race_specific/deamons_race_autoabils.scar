@@ -1,0 +1,22 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["deamons_race"] =
+{
+	{ "daemons_bolt_of_change_loc", 45 },
+	{ "daemons_guo_spit", 45 },
+	{ "daemons_warpfire_roar", 35 },
+	{ "daemons_curse_slaanesh", 30 },
+	{ "daemons_guo_puke", 15 },
+	{ "daemons_fear_roar", 14 },
+	{ "daemons_warpfire", 10 },
+	{ "daemons_warpfire_loc", 10 },
+	{ "daemons_warpfire_lord", 10 },
+	{ "daemons_warpfire_prince", 10 },
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["deamons_race"] =
+{
+	{ "daemons_winds_of_chaos", 8 },
+}

@@ -1,0 +1,166 @@
+-- _apocalypse_rules.scar
+-- Created by Cylarne_04 2011
+--
+-- My win condition, my epicness, mwa ha ha ha ha ha! - Cylarne
+-----------------------------------------------------------------------------------------
+
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+--import("UA_SCARCore/AIDonations.scar")
+--import("UA_SCARCore/AIHighSpeed.scar")
+--import("UA_SCARCore/AIMapDB.scar")
+import("UA_SCARCore/_apocalypse_rules_core.scar")
+
+-----------------------------------------------------------------------------------------
+
+--[[ TODO: ]]
+-- Watch for Fatal SCAR Errors!
+
+Mod_Includes_Tyranids = false; -- Involves Tyranids?
+Mod_Includes_Inquisition = false; -- Involves Inquisition?
+Mod_Includes_Daemons = false; -- Involves Daemons?
+
+ar_playercount = 0; -- integer applied, used for disabling/enabling the main Apocalypse Rules to avoid Multiplayer sync errors.
+
+----------------- YET! Now that this is instantiated, mentioned, go through and find all new races.
+
+function ApocalypseRules() -- Main Ultimate Apocalypse Rule.
+	
+	-- Go through all players and count how many there are. Add New Races wincondition checks.
+	ApocalypseRules_GoThroughPlayers()
+	
+	-- Go through all players and select their HQs for better gameplay.
+	Rule_AddOneShot(ApocalypseRules_SelectHQs, 0.0)
+	
+	FOW_Reset()
+	
+	-- Restrict Honor Guards
+	--ApocalypseRules_RestrictHonorGuards()
+	
+	-- Set starting resources for Easy and Standard resources if on Quickstart.
+	ApocalypseRules_ReadjustQuickstart()
+
+end
+
+function ApocalypseRules_RestrictHonorGuards()
+
+	-- Restrict Honor Guards from player as well, to allow the "Allow Honor Guards" wincondition.
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/HonorGuardList.scar");
+		
+		for i=1,table.getn( hg_squad_list ) do
+			local squad = hg_squad_list[i];
+			
+			Player_RestrictSquad(player, squad);
+		end 
+		if (Mod_Includes_Tyranids == true) then
+			for i=1,table.getn( hg_squad_list_tyranids ) do
+				local squad = hg_squad_list_tyranids[i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Inquisition == true) then
+			for i=1,table.getn( hg_squad_list_inquisition ) do
+				local squad = hg_squad_list_inquisition[i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Daemons == true) then
+			for i=1,table.getn( hg_squad_list_daemons ) do
+				local squad = hg_squad_list_daemons[i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+	end
+end
+
+function ApocalypseRules_GoThroughPlayers()
+	
+	-- Check to see if there is >= 2 players.
+	local count = World_GetPlayerCount();
+	for j = 0, count-1 do
+		local Player = World_GetPlayerAt(j);
+		local Player_Race = Player_GetRaceName(Player);
+		
+		if (Player_IsAlive(Player) and not player_IsHuman(Player)) then 
+			ar_playercount = ar_playercount + 0;
+		elseif (Player_IsAlive(Player)) then
+			ar_playercount = ar_playercount + 1;
+			
+			--Player_GrantResearch(Player, "all_relic_research")
+			
+		end
+		
+		if (Player_Race == "tyranids_race") then
+			Mod_Includes_Tyranids = true
+		elseif (Player_Race == "inquisition_daemonhunt_race") then
+			Mod_Includes_Inquisition = true
+		elseif (Player_Race == "deamons_race") then
+			Mod_Includes_Daemons = true
+		end
+	end
+	
+	-- Other...
+	print("Apocalypse Rules wincondition enabled!");
+	ApocalypseRules_Main(); -- Add in the hidden wincondition, The primary Apocalypse mod code.
+	--SetUpAIMapDB(); -- Add in the hidden wincondition, AIMapDB.
+end
+
+function ApocalypseRules_SelectHQs()
+
+	-- Select each player starting HQ.
+	if (ar_playercount < 2) then
+	
+		local count = World_GetPlayerCount();
+		for j = 0, count-1 do
+			local Player = World_GetPlayerAt(j);
+			
+			Player_GetAllEntitiesNearPos(Player, "starting_hq"..j, Player_GetStartPosition(Player), 5)
+			if (player_IsHuman(Player)) then
+				W40k_SelectEGroup( "starting_hq"..j )
+			end
+			--EGroup_Clear("starting_hq")
+		end
+	end
+end
+
+function ApocalypseRules_ReadjustQuickstart()
+
+	local count = World_GetPlayerCount();
+	for j = 0, count-1 do
+		local Player = World_GetPlayerAt(j);
+		
+		if (Player_GetResource(Player, RT_Requisition) >= 5000 or Player_GetResource(Player, RT_Power) >= 1000) then -- Is officially on quickstart.
+			if (Cpu_IsCpuPlayer(Player) and Cpu_GetDifficulty(Player) == AD_Easy) then
+				Player_AddResource(Player, RT_Power, -7500)
+				Player_AddResource(Player, RT_Requisition, -7500)
+			end
+			if (Cpu_IsCpuPlayer(Player) and Cpu_GetDifficulty(Player) == AD_Standard) then
+				Player_AddResource(Player, RT_Power, -2500)
+				Player_AddResource(Player, RT_Requisition, -2500)
+			end
+		end
+	end
+end
+
+-- Function thanks to Gambit!
+function player_IsHuman( player )
+	local name = Player_GetDisplayName(player)[1]
+	if string.len(name) < 3 then return true end
+	name = string.sub(name, -2)
+	if( name == " 1" or name == " 2" or name == " 3" or name == " 4" or name == " 5" or name == " 6" or name == " 7" or name == " 8") then
+		return false
+	else
+		return true
+	end
+end
+
+Scar_AddInit(ApocalypseRules)

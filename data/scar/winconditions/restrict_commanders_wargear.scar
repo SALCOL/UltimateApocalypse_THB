@@ -1,0 +1,24 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Commander Wargear
+-- Created by Cylarne @ 2014
+--
+--	Commander Wargear is restricted.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+
+function RestrictCommanderWargear()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		
+		local player = World_GetPlayerAt(i);
+		
+		Player_RestrictResearch(player, "commander_level1_research");
+		
+		ar_wargear_cancel = true -- For AI.
+	end
+
+end
+Scar_AddInit(RestrictCommanderWargear)

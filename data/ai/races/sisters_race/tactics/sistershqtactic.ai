@@ -1,0 +1,24 @@
+----------------------------------------
+-- File: 'sistershqtactic.ai'
+-- Edited by Krronus @ 05.23.2010
+
+class 'SistersHQTactic' (BaseTactic)
+
+SistersHQ = {}
+
+function SistersHQTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Sisters HQ Tactic")
+	
+end
+
+function SistersHQTactic:InitAbilities()
+
+	
+	
+end
+
+function SistersHQTactic:DoAbilities()
+
+	
+end

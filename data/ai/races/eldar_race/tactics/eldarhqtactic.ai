@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'eldarhqtactic.ai'
+-- Edited by Cylarne		@ 3/21/2011
+
+class 'EldarHQTactic' (BaseTactic)
+
+EldarHQ = {}
+
+function EldarHQTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Eldar HQ Tactic")
+	
+	-- Init abilities
+	self.m_bCanDeepStrikeTroops = true
+	self.m_iTransportSlots = 2
+end
+
+function EldarHQTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (EldarHQ.soulstone_id == nil) then
+		EldarHQ.soulstone_id = cpu_manager.stats:GetAbilityID( "eldar_soulstone_superweapon" )
+	end
+end
+
+function EldarHQTactic:DoAbilities()
+
+	-- Activate the anti-titan weapon.
+	--Ability.DoAbilityTarget( self.base_ai, EldarHQ.soulstone_id, Ability.Filters.CloseVehicleEnemy, 1 )
+	
+end

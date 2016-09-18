@@ -1,0 +1,96 @@
+----------------------------------------
+-- File: 'Daemonhuntinfantrytactic.ai'
+-- Edited by Thudmeizer		@ 28.03.2007
+-- Edited by Cylarne
+
+class 'DaemonhuntInfantryTactic' (InfantryTactic)
+
+function DaemonhuntInfantryTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemonhunt Infantry Tactic")
+	
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "inquisition_squad_shock_troops") then
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("inquisition_infantry_bunker")
+	end
+end
+
+function DaemonhuntInfantryTactic:AddTargetAbilities()
+	--table.insert(InfantryTactic.TargetAbilities, { nil, "inquisition_medikits", Ability.Filters.IsInCombat })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "inquisition_frag_grenades_bodyguards", Ability.Filters.CloseInfantryEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "inquisition_frag_grenades_stormtroopers", Ability.Filters.CloseInfantryEnemy, 6, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "inquisition_inferno_grenades", Ability.Filters.CloseMonsterEnemy, 2, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "inquisition_disruption_grenades", Ability.Filters.CloseInfantryEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "inquisition_crack_grenades_bodyguards", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "inquisition_crack_grenades_stormtroopers", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+end
+
+function DaemonhuntInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "inquisition_squad_inquisitor_lord", true })
+	table.insert(self.commander, { "inquisition_squad_grey_knight_hero", false })
+	table.insert(self.commander, { "inquisition_squad_grey_knight_champion", false })
+end
+
+function DaemonhuntInfantryTactic:DoAbilities()
+
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+	
+		if (self.squad_ai:HasSquadAttached("inquisition_squad_inquisitor_lord")) then
+			DHLordTactic.InitAbilities( self )
+			DHLordTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("inquisition_squad_grey_knight_hero")) then
+			GKHeroTactic.InitAbilities( self )
+			GKHeroTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("inquisition_squad_grey_knight_champion")) then
+			GKHeroTactic.InitAbilities( self )
+			GKHeroTactic.DoAbilities( self )
+		end
+	end
+	
+	-- Detach commander from broken/capturing
+	if ((self.squad_ai:IsBroken() or self.squad_ai:IsCapturing()) and
+		(self.squad_ai:IsInCombat() or self.squad_ai:WasRecentlyHurt())) then 
+		
+		self.squad_ai:DoDetachSquad()
+		self.squad_ai:DoSetDefaultMeleeStance()
+	end
+	
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
+end
+
+function DaemonhuntInfantryTactic:CheckForBroken()
+
+	if (self.squad_ai:IsBroken()) then
+	
+		-- Check if I can repair my morale (Scholars and Shock Troopers)
+		local dhrally_id = cpu_manager.stats:GetAbilityID( "inquisition_rally" )
+		if (self.squad_ai:CanDoAbility( dhrally_id )) then
+			self.squad_ai:DoSpecialAbility( dhrally_id )
+		end
+
+		-- Check if I can repair my morale (Grey Knight Brother Captain)
+		local gkrally_id = cpu_manager.stats:GetAbilityID( "inquisition_rally_gk" )
+		if (self.squad_ai:CanDoAbility( gkrally_id )) then
+			self.squad_ai:DoSpecialAbility( gkrally_id )
+		end
+	end
+
+	-- Detach commander from broken/capturing
+	if ((self.squad_ai:IsBroken() or self.squad_ai:IsCapturing()) and
+		(self.squad_ai:IsInCombat() or self.squad_ai:WasRecentlyHurt())) then 
+		
+		self.squad_ai:DoDetachSquad()
+		self.squad_ai:DoSetDefaultMeleeStance()
+	end
+	
+	-- Call basic broken check method
+	InfantryTactic.CheckForBroken(self)
+end
+
+function DaemonhuntInfantryTactic:CanOnlyDecap()
+	if (self.squad_ai:GetSquadName() == "inquisition_squad_death_cultist") then
+		return true
+	end
+end

@@ -1,0 +1,176 @@
+----------------------------------------
+-- File: 'eldarstrategyinfo.ai'
+-- Edited by Thudmeizer  @ 07.01.2016
+-- Edited by Cylarne_04  @	 2011
+
+BuildBaseStrategyInfo = 
+{
+	eldar_race =
+	{
+		post_builder = 2,
+		flag_capture = 2,
+
+		-- Reserve this amount for building units, reinforcing and upgrading
+		req_reserve = 150,
+		
+		--need at least this at all times
+		squad_cap_threshold = 2,
+
+		--need at least this at all times
+		support_cap_threshold = 3,
+		
+		--used to calculate wants for engineers
+		Engineers =
+		{
+			--number of engineers we're aiming for
+			want = 2,
+		},
+		
+		-- Is used to modify the army strength in the build programs (Allows faster balancing adjustments)
+		ArmyStrengthModifier = 1.0,
+		
+		-- Item-Syntax: Min. Tier, Min. Requisition, Min. Power, Min. ArmyStrength, Object-Count, Object-Type, Object-Name
+		BuildPrograms =
+		{
+			-- Allround strategy
+			{
+				{ 1, 200, 0, 0, 2,	"Unit",		"eldar_squad_banshees" },
+				{ 1, 240, 15, 0, 1,	"Unit",		"eldar_squad_rangers" }, -- Force a caturing/scout squad
+				{ 1, 240, 60, 0, 1,	"Unit",		"eldar_squad_autarch" },
+				{ 1, 400, 0, 0, 1,	"Building",	"eldar_hq" },
+				{ 1, 100, 0, 0,	1,	"Building",	"eldar_aspect_portal" },
+				{ 1, 200, 0, 0, 8,	"TurretAddon",	"eldar_aspect_stone_direavengers" },
+				{ 1, 200, 0, 0, 20,	"TurretAddon",	"eldar_aspect_stone_banshees" },
+				{ 1, 100, 0, 0, 1,	"Building",	"eldar_webway_gate" },
+				{ 1, 150, 0, 0, 3,	"Building",	"eldar_warp_generator" },
+				{ 1, 90, 80, 0, 100,	"TurretAddon",	"eldar_list_post_addon_1" },
+			      --{ 1, 90, 30, 0, 2,	"Building",	"eldar_support_platform_scatterlaser" },
+				{ 1, 100, 0, 0,	2,	"Building",	"eldar_aspect_portal" },
+				{ 1, 150, 0, 0, 4,	"Building",	"eldar_warp_generator" },
+				{ 1, 400, 130, 600, 1,	"Building",	"eldar_soul_shrine" },
+				{ 1, 150, 0, 0, 5,	"Building",	"eldar_warp_generator" },
+
+			      --{ 2, 280, 80, 0, 1,	"Unit",		"eldar_squad_farseer" },
+			      --{ 2, 240, 40, 0, 1,	"Unit",		"eldar_squad_autarch" },
+				{ 2, 400, 0, 0, 10,	"TurretAddon",	"eldar_aspect_stone_dark_reapers" },
+				{ 2, 400, 0, 0, 30,	"TurretAddon",	"eldar_aspect_stone_scorpions" },
+				{ 2, 400, 0, 0, 10,	"TurretAddon",	"eldar_aspect_stone_swooping_hawk" },
+				{ 2, 150, 0, 0, 6,	"Building",	"eldar_warp_generator" },
+				{ 2, 100, 0, 0, 3,	"Building",	"eldar_webway_gate" },
+			      --{ 2, 90, 25, 0, 4,	"Building",	"eldar_support_platform_scatterlaser" },
+				{ 2, 200, 140, 250, 1,	"Building",	"eldar_support_portal" },
+				{ 2, 560, 200, 0, 1,	"Building",	"eldar_hq" },
+				{ 2, 300, 0, 250, 20,	"TurretAddon",	"eldar_aspect_stone_nightwing" },
+				{ 2, 500, 0, 250, 10,	"TurretAddon",	"eldar_aspect_stone_wraithlord" },
+				{ 2, 500, 0, 250, 10,	"TurretAddon",	"eldar_aspect_stone_war_walker" },
+				{ 2, 500, 0, 500, 80,	"TurretAddon",	"eldar_support_platform_addon" },
+				{ 2, 75, 15, 0, 80,	"TurretAddon",	"eldar_support_platform_addon_shadow_weaver" },
+				{ 2, 500, 0, 500, 10,	"TurretAddon",	"eldar_aspect_stone_vyper" },
+				{ 2, 500, 500, 800, 1,	"Research",	"eldar_tier2_research" },
+			      --{ 2, 90, 30, 0, 7,	"Building",	"eldar_support_platform_scatterlaser" },
+				{ 2, 240, 160, 0, 100,	"TurretAddon",	"eldar_list_post_addon_2" },
+				{ 2, 150, 0, 0, 7,	"Building",	"eldar_warp_generator" },
+
+				{ 3, 270, 150, 0, 1,	"Unit",		"eldar_squad_seer_council" },
+				{ 3, 0, 0, 0, 1,	"Restrict",	"eldar_storm_guardian_squad" },
+				{ 3, 0, 0, 0, 1,	"Restrict",	"eldar_guardian_squad" },
+				{ 3, 0, 0, 0, 1,	"Restrict",	"eldar_squad_jetbikes" },
+				{ 3, 200, 0, 0, 10,	"TurretAddon",	"eldar_aspect_stone_harlequin" },
+				{ 3, 200, 0, 250, 10,	"TurretAddon",	"eldar_aspect_stone_fire_dragon" },
+				{ 3, 200, 0, 0, 10,	"TurretAddon",	"eldar_aspect_stone_nightspinner" },
+				{ 3, 200, 0, 0, 10,	"TurretAddon",	"eldar_aspect_stone_warp_spider" },
+				{ 3, 150, 150, 0, 1,	"Building",	"eldar_khaine_shrine" },
+				{ 3, 150, 0, 0, 8,	"Building",	"eldar_warp_generator" },
+				{ 3, 1000, 1000, 500, 1,"Research",	"eldar_annihilate_the_enemy" },
+				{ 3, 150, 150, 0, 1,	"Building",	"eldar_laughing_god_shrine" },
+
+				{ 4, 420, 180, 250, 1,	"Building",	"eldar_support_portal_super" },
+				{ 4, 500, 200, 0, 2,	"Building",	"eldar_support_platform_uberturret_sp_dxp3" },
+				{ 4, 50, 0, 0, 70,	"TurretAddon",	"eldar_aspect_stone_prism" },
+				{ 4, 50, 0, 0, 70,	"TurretAddon",	"eldar_aspect_stone_wraithwalker" },
+				{ 4, 50, 0, 0, 70,	"TurretAddon",	"eldar_aspect_stone_wraithguard" },
+				{ 4, 500, 330, 0, 3,	"Building",	"eldar_support_platform_uberturret_sp_dxp3" },
+				{ 4, 1500, 1500, 500, 1,"Research",	"eldar_farseer_ability_research_3" },
+				
+				{ 5, 50, 0, 0, 70,	"TurretAddon",	"eldar_aspect_stone_wraithking" },
+				{ 5, 50, 0, 0, 70,	"TurretAddon",	"eldar_aspect_stone_wraithguard_ancient" },
+				{ 5, 630, 280, 0, 1,	"Building",	"eldar_webway_sail" },
+				{ 5, 150, 100, 500, 50,	"TurretAddon",	"eldar_support_platform_addon_uber" },
+				{ 5, 1000, 1000, 0, 1,	"Building",	"eldar_hq_super" },
+			      --{ 5, 5600, 2400, 0, 1,	"Building",	"eldar_vaul_portal" },
+				{ 5, 4000, 4000, 0, 1,	"Research",	"eldar_apocalypse_research" }
+			},
+		},
+				
+		SquadLimits = 
+		{
+			standard = 
+			{
+				eldar_guardian_squad = 2,
+				eldar_storm_guardian_squad = 2,
+				eldar_squad_ds_turret = 3,
+			}
+		}
+	},
+}
+
+BuildOrderStrategyInfo = 
+{
+	eldar_race =
+	{
+		Basic =
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "eldar_squad_bonesinger" },
+			{ "squad", "eldar_storm_guardian_squad" },
+			{ "squad", "eldar_guardian_squad" },
+			{ "squad", "eldar_squad_bonesinger" },
+			{ "squad", "eldar_squad_bonesinger" },
+			{ "post_builder" },
+			{ "building", "eldar_aspect_portal", true },
+			{ "building", "eldar_warp_generator", true },
+			{ "building", "eldar_webway_gate", true },
+			{ "building", "eldar_support_platform_scatterlaser", true },
+			{ "building", "eldar_warp_generator" }
+		},
+		
+		QuickStart =
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" },
+			{ "squad", "eldar_squad_bonesinger" },
+			{ "squad", "eldar_guardian_squad" },
+			{ "squad", "eldar_guardian_squad" },
+			{ "squad", "eldar_squad_bonesinger" },
+			{ "post_builder" }, 
+			{ "building", "eldar_aspect_portal", true },
+			{ "building", "eldar_warp_generator", true },
+			{ "building", "eldar_webway_gate", true },
+			{ "building", "eldar_support_platform_scatterlaser", true },
+			{ "building", "eldar_warp_generator" }
+		},
+		
+		LargeMap =
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" },
+			{ "squad", "eldar_squad_bonesinger" },
+			{ "squad", "eldar_guardian_squad" },
+			{ "squad", "eldar_guardian_squad" },
+			{ "squad", "eldar_squad_bonesinger" },
+			{ "post_builder" }, 
+			{ "building", "eldar_aspect_portal", true },
+			{ "building", "eldar_warp_generator", true },
+			{ "building", "eldar_webway_gate", true },
+			{ "building", "eldar_support_platform_scatterlaser", true },
+			{ "building", "eldar_warp_generator" }
+		}
+	}
+}
+AttackStrategyInfo = 
+{
+	eldar_race =
+	{
+		MinArmyStrength = 100,
+	},
+}

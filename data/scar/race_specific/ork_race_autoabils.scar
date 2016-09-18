@@ -1,0 +1,21 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["ork_race"] =
+{
+	{ "ork_stikkbombs", 20 },
+	{ "ork_tank_zappa", 20 },
+	{ "ork_superstick_bomb", 18 },
+	{ "ork_tankbusta_bombs", 18 }
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["ork_race"] =
+{
+	{ "ork_turbo_boost", 45 },
+	{ "ork_turbo_boost_stormboyz", 35 },
+	{ "ork_power_of_waagh", 15 },
+	{ "ork_fightin_juice", 14 },
+	{ "ork_power_surge", 0 },
+	{ "ork_da_big_waagh", 0 },
+}

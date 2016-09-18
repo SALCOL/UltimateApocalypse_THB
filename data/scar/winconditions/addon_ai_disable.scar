@@ -1,0 +1,16 @@
+-------------------------------------------------
+-- Created By: Cylarne_04
+-- Created @ 1/16/2011
+-- Edited: 3/29/12
+-------------------------------------------------
+
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+
+function OnInit()
+
+	Cpu_EnableAll(false);
+	print("All AI disabled.");
+end
+
+Scar_AddInit(OnInit) 

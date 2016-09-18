@@ -1,0 +1,58 @@
+----------------------------------------
+-- File: 'bombsquig.ai'
+-- Created by Cylarne @ 2014
+
+class 'BombsquigTactic' (OrkInfantryTactic)
+
+Bombsquig = {}
+
+function BombsquigTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Bombsquig Tactic")
+end
+
+function BombsquigTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Bombsquig.blowup_id == nil) then
+		Bombsquig.blowup_id = cpu_manager.stats:GetAbilityID( "ork_bombsquig_blowup" )
+	end
+	if (Bombsquig.kaboom_id == nil) then
+		Bombsquig.kaboom_id = cpu_manager.stats:GetAbilityID( "ork_bombsquig_kaboom!" )
+	end
+end
+
+function BombsquigTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	if (iPower >= 1000) then
+		Ability.DoAbilityArea(self.squad_ai, Bombsquig.kaboom_id, Ability.Filters.CloseEnemy, 20, 17)
+	end
+		
+	if (iPower >= 200) then
+		Ability.DoAbilityArea(self.squad_ai, Bombsquig.blowup_id, Ability.Filters.CloseEnemy, 6, 10)
+	end
+end
+
+function BombsquigTactic:Reinforce()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+   
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	-- Only reinforce if we have the required resource.
+	if (iRequisition < 1000) then
+		return
+	end
+end
+

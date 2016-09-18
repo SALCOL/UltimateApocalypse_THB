@@ -1,0 +1,30 @@
+----------------------------------------
+-- File: 'darkeldarslavecaraveltactic.ai'
+-- Edited by Thudmeizer		@ 22.03.2008
+
+class 'DarkEldarSlaveCaravelTactic' (BaseTactic)
+
+DarkEldarSlaveCaravel = {}
+
+function DarkEldarSlaveCaravelTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Dark Eldar Slave Caravel Tactic")
+end
+
+function DarkEldarSlaveCaravelTactic:InitAbilities()
+	
+	-- Init abilities
+	if (DarkEldarSlaveCaravel.iSoulshockID == nil) then
+		DarkEldarSlaveCaravel.iSoulshockID = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_shock" )
+	end
+	if (DarkEldarSlaveCaravel.iSoulshock2ID == nil) then
+		DarkEldarSlaveCaravel.iSoulshock2ID = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_shock_2" )
+	end
+end
+
+function DarkEldarSlaveCaravelTactic:DoAbilities()
+	Ability.DoAbilityArea(self.base_ai, DarkEldarSlaveCaravel.iSoulshockID, Ability.Filters.CloseInfantryEnemy, 20, 4)
+	Ability.DoAbilityArea(self.base_ai, DarkEldarSlaveCaravel.iSoulshock2ID, Ability.Filters.CloseInfantryEnemy, 10, 8)
+end
+
+

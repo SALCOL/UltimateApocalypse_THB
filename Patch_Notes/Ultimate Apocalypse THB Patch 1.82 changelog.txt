@@ -1,0 +1,146 @@
+Hint: 
+!!- = Must be done! (Most wanted)
+* = Fixes.
+- = Ideas not taken to effect yet.
+> = To be included next version.
+>> = To be included in future versions.
+
+------------------------
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+------------------------
+AI Changes:
+------------------------
+
+------------------------
+Global: 
+------------------------
+* All greater daemons damage versus super structures decreased as it was too high!
+* All tier 1 and under Chaos Space Marines, loyalists, and Grey Knights cost more (especially Raptors and Assault Marines). 
+* Nuclear Missile damage increased (even for Deathstrike).
+* Particle Laser Beam cost decreased from 3500/3500 to 3000/3000.
+
+------------------------
+Chaos Marines: 
+------------------------
+* Chaos Sorceror's Ritual "sacrifice" now does minoot damage versus builders.
+* Havoc Mrine autocannon damage decreased versus structures.
+* Chaos Marine infiltration research cost increased.
+* Commanders can now attach to Obliterators and Mutilators.
+
+------------------------
+Dark Eldar: 
+------------------------ 
+> New unit (after 1.82.0)
+
+------------------------
+Eldar: 
+------------------------
+> New unit (after 1.82.0)
+
+------------------------
+Imperial Guard: 
+------------------------
+* Mars Pattern Convoy limit is now 10. This is one of the exceptions the UA mod has a limit on for balance reasons.
+* Heavy Weapons team autocannon damage versus infantry greatly increased. Now prefers infantry over armored targets.
+* General's Overshield ability now rapidly increases shield regen.
+* General's Reaver Powerfist now applies double modifiers of what it applied before.
+* Imperial Fortress walls can now research Walls upgrade.
+* Basilisk Magnus's damage outputs increased (again), especially versus structures.
+* Basilisk Magnus Volcano shot damage increased (further). Armor piercings were also modified.
+* Commissar Cadet powerglove damage increased.
+* Leman Russ tanks are now equipped with nervegas launchers.
+* Laser Destroyer is now tier 3 requirement. Costs more.
+* Laser Destroyer Tank Hunter weapon reload time decreased by half and will be effective versus tanks and structures alike. Cap increased to 4.
+
+------------------------
+Necrons: 
+------------------------
+* New unit: Mobile Obelisk (Thanks to Boychaos!)
+* Tomb Stalker health regen. increased.
+* Great Pyramid weapon range decreased by 70 meters.
+* Doomsday Monolith, Gauss Pylon, Sentry Pylon, and other monolith variants damage against morale increased.
+* Doomsday Monolith damage versus infantry and structures increased. Electric field damage increased.
+* AEonic Orb health decreased.
+* AEonic Orb's Necrodermic Energies now give a proper description. Recharge time decreased.
+* AEonic Orb's ability recharge time increased.
+* Energy Beacon Deceiver addon now displays proper description.
+* Great Pyramid health decreased, especially by the rates of Sterilization Obelisks.
+* Fully Operational Particle Accelerators only work if the Heavy Thermo Plasma Generator is online (update description).
+* Sentry Pylon damage versus heavily armored vehicles, titans, Living Metal, and super structures further nerfed.
+* Pariahs now drop souls if Dark Eldar (with blood splat).
+* Tier 1 upgrade wait time restored to normal (rollback).
+* Necron Lord cost decreased.
+* The health bonuses of Necron Lord upgrades increased.
+* Necron Warrior damage increased, and slightly versus armored targets.
+
+
+------------------------
+Orks: 
+------------------------
+* Shoota Boy Big Shoota damage decreased.
+* Ork Slugga Boy spam research is now acquired after 160 pop cap. Cost increased.
+
+------------------------
+SISTERS:
+------------------------
+* Winbutton now costs 13,000/13,000 req/power.
+* SOB Arch Angel Divine now says it lays waste to all daemons. Cost to use greatly increased.
+* SOB turrets are now built in the control zone.
+* Exorcist MK Missile was fixed and can now damage objects correctly.
+
+------------------------
+Space Marines: 
+------------------------
+* Whirlwind MKII costs increased.
+
+------------------------
+Tau: 
+------------------------
+> New Unit (after 1.82.0)
+* Vespids damage cost more.
+* Satellite Drone takes another 100 seconds to build.
+* Satellite Drones move slower.
+* Satellite Drones damage increased by 20%.
+* Satellite Drones jump height was fixed and can shoot when flying over enemies.
+* Tau winbutton now costs 25,000/25,0000 to fire.
+* Stealth Suit description was fixed.
+* XV89 Commander attached with Kroot are no longer invincible when the shields are activated.
+
+------------------------
+Tyranids: 
+------------------------
+
+------------------------
+Inquisition:
+------------------------
+* IDH Stormraven height was fixed.
+* All 5 Exterminatus Tomes requires a critical location.
+* Whirlwind Hyperios costs increased.
+* Whirlwind Hyperios weapon recharge time increased.
+* Exterminatus costs now 1500/1500 > 3000/3000 > 6000/6000 > 12000/12000 > 24000/24000
+				FROM
+1000/1000 > 2000/2000 > 4000/4000 > 8000/8000 > 16000/16000 as a + 15,500 of each resource increase.
+* IDH maximum requisition and power income rate increased from 1000/800 req/power to 1100/1100 req/power.
+
+
+------------------------
+Daemons:
+------------------------
+* Primarch Angron's health, damage, armor, and health regen. increased. Invulnerability saves increased.
+* Primarch Angron's Chosen Swrord now matches its description. The weapon is now weak versus commanders.
+* Black Horrors unit and stature is now again affected by all 8 commander researches as the health was too low.
+
+--------------------------------------------------------|
+SCAR: | 
+--------------------------------------------------------|
+> New Wincondition: Kill Count
+* Tomb Stalkers and Sentry Pylons were taken off of the relic unit list and added to vehicle list.
+* Chaos Terminator Lord is now affected by uber commanders and restrict commanders.
+--------------------------------------------------------|
+SCENARIOS: | 
+--------------------------------------------------------|
+
+--------------------------------------------------------|
+SOUND: | 
+--------------------------------------------------------|

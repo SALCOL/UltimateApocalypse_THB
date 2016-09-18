@@ -1,0 +1,98 @@
+----------------------------------------
+-- File: 'HiveTyranttactic.ai'
+-- Edited by Thudmeizer @ 18.06.2007
+
+class 'HiveTyrantTactic' (TyranidInfantryTactic)
+
+HiveTyrant = {}
+
+function HiveTyrantTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Hive Tyrant Tactic")
+end
+
+-- Assassinate win condition -- never attack
+function HiveTyrantTactic:IsAttacker()
+	return (not cpu_manager.assassinate and self:IsCommanderAttacker())
+end
+
+-- Assassinate win condition -- never defend
+function HiveTyrantTactic:IsDefender()
+	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+end
+
+
+function HiveTyrantTactic:InitAbilities()
+
+	if HiveTyrant_catalyst == nil then
+		HiveTyrant_catalyst = cpu_manager.stats:GetAbilityID( "tyranids_hivetyrant_catalyst" )
+	end
+	if HiveTyrant_field == nil then
+		HiveTyrant_field = cpu_manager.stats:GetAbilityID( "tyranids_hivetyrant_warp_field" )
+	end
+	if HiveTyrant_scream == nil then
+		HiveTyrant_scream = cpu_manager.stats:GetAbilityID( "tyranids_swarmlord_scream" )
+	end
+	
+	if HiveTyrant.biobomb_id == nil then
+		HiveTyrant.biobomb_id = cpu_manager.stats:GetAbilityID( "tyranids_bio_bomb" )
+	end
+end
+
+function HiveTyrantTactic:DoAbilities()
+	
+	if (self.squad_ai:CanDoAbility(HiveTyrant_catalyst)) then
+		Ability.DoAbility( self.squad_ai, HiveTyrant_catalyst, Ability.Filters.IsInCombat )
+	end
+	
+	if (self.squad_ai:CanDoAbility(HiveTyrant_scream)) then
+		Ability.DoAbility( self.squad_ai, HiveTyrant_scream, Ability.Filters.IsInCombat )
+	end
+	
+	if (self.squad_ai:GetHealthPercentage() < 0.8 and self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(HiveTyrant_field) and not self.squad_ai:IsUsingAbility(HiveTyrant_field)) then
+
+		-- Activate the Base Shields
+		self.squad_ai:DoSpecialAbility(HiveTyrant_field)
+	end	
+	if (self.squad_ai:CanDoAbility(HiveTyrant_field) and not self.squad_ai:IsInCombat() and self.squad_ai:IsUsingAbility(HiveTyrant_field)) then
+
+		-- Deactivate the Base Shields
+		self.squad_ai:DoSpecialAbility(HiveTyrant_field)
+	end
+	
+	if (self.squad_ai:CanDoAbility(HiveTyrant.biobomb_id) and iRequisition >= 9000) then
+		Ability.DoAbilityPos( self.squad_ai, HiveTyrant.biobomb_id, Ability.Filters.CloseEnemy, 15 ) 
+		Ability.DoAbilityPos( self.squad_ai, HiveTyrant.biobomb_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
+	end
+	
+	
+end
+
+function HiveTyrantTactic:Upgrade()
+
+	-- Check if we have free ressources
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		-- Upgrade if possible
+		if (self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetNumTroopers() > 0) then
+			local class_type = cpu_manager:GetFirstEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function HiveTyrantTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+	
+	  --state machine
+	  if not InfantryTactic.Update( self ) then
+		 return
+	  end
+end

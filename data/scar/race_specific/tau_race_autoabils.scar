@@ -1,0 +1,24 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["tau_race"] =
+{
+	{ "tau_skyray_missile_barrage", 40 },
+	{ "tau_death_pulse", 40 },
+	{ "tau_mark_squad", 35 },
+	{ "tau_target_acquired", 35 },
+	{ "tau_emp_grenade", 25 },
+	{ "tau_photon_grenade", 25 },
+    	{ "tau_snare_trap", 20 },
+	{ "tau_kinetic_energy_blast", 20 },
+	{ "tau_devour", 3 },
+	{ "tau_nuke", 3 },
+	{ "tau_blade_storm", 1 },
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["tau_race"] =
+{
+	{ "tau_personal_shield", 25 },
+	{ "tau_sonic_pulse", 10 }
+}

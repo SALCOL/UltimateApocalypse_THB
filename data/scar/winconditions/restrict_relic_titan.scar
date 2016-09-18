@@ -1,0 +1,49 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Titan Units
+-- Created by Cylarne @ 2015
+--
+--	Titan Units are restricted.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+
+function RestrictTitanUnits()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/RelicEntityList.scar");
+		
+		for i=1,table.getn( titan_squad_list ) do
+			local squad = titan_squad_list[i];
+		
+			Player_RestrictSquad(player, squad);
+		end 
+		if (Mod_Includes_Tyranids == true) then
+			for i=1,table.getn( titan_squad_list_tyranids ) do
+				local squad = titan_squad_list_tyranids [i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Inquisition == true) then
+			for i=1,table.getn( titan_squad_list_inquisition ) do
+				local squad = titan_squad_list_inquisition [i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Daemons == true) then
+			for i=1,table.getn( titan_squad_list_daemons ) do
+				local squad = titan_squad_list_daemons [i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+	end
+
+end
+Scar_AddInit(RestrictTitanUnits)

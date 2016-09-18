@@ -1,0 +1,89 @@
+----------------------------------------
+-- File: 'guardinfantrytactic.ai'
+-- Created by Arkhan		@ 12.01.2006
+
+class 'GuardInfantryTactic' (InfantryTactic)
+
+function GuardInfantryTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Guard Infantry Tactic")
+	
+	-- Guard infantry is able to enter transport vehicles
+	self.m_iTransportable = 1
+end
+
+function GuardInfantryTactic:AddTargetAbilities()
+	table.insert(InfantryTactic.TargetAbilities, { nil, "guard_frag_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "guard_frag_grenades_lieutenant", Ability.Filters.CloseSquadEnemy, 6, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "guard_krak_grenades", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "guard_kasrkin_frag_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "guard_flashbang_grenades", Ability.Filters.CloseSquadEnemy, 6, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "guard_nervegas_grenades", Ability.Filters.CloseSquadEnemy, 9, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "guard_nervegas_grenades_lieutenant", Ability.Filters.CloseSquadEnemy, 9, 0 })
+end
+
+function GuardInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "guard_squad_command_squad", true })
+	table.insert(self.commander, { "guard_squad_officer_squad", false })
+	table.insert(self.commander, { "guard_squad_officer_support_squad", false })
+	table.insert(self.commander, { "guard_squad_command_squad_colonel", true })
+end
+
+function GuardInfantryTactic:DoAbilities()
+
+	-- Check if I can assassinate
+	local assassinate_id = cpu_manager.stats:GetAbilityID( "guard_assassin_assassinate" )
+	Ability.DoAbility( self.squad_ai, assassinate_id, Ability.Filters.IsInCombat )
+
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+	
+		if (self.squad_ai:HasSquadAttached("guard_squad_commissar")) then
+			CommissarTactic.InitAbilities( self )
+			CommissarTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("guard_squad_psyker")) then
+			PsykerTactic.InitAbilities( self )
+			PsykerTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("guard_squad_priest")) then
+			PriestTactic.InitAbilities( self )
+			PriestTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("guard_squad_field_medic")) then
+			PriestTactic.InitAbilities( self )
+			PriestTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("guard_squad_master_vox")) then
+			PriestTactic.InitAbilities( self )
+			PriestTactic.DoAbilities( self )
+		end
+	end
+	
+	-- Check if we can launch smoke
+	--[[local iSmokeID = cpu_manager.stats:GetAbilityID( "guard_bolster_defenses" )
+	if (self.squad_ai:CanDoAbility(iSmokeID)) then
+	
+		if (self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility(iSmokeID)
+		end
+	end]]
+	
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
+end
+
+function GuardInfantryTactic:CheckForDetach()
+
+	-- Detach commander from broken/capturing. guards stay attached
+	if ((self.squad_ai:IsBroken() or self.squad_ai:IsCapturing()) and
+		(self.squad_ai:IsInCombat() or self.squad_ai:WasRecentlyHurt()) and
+		not self.squad_ai:HasSquadAttached( "guard_squad_commissar" ) and
+		not self.squad_ai:HasSquadAttached( "guard_squad_priest" ) and
+		not self.squad_ai:HasSquadAttached( "guard_squad_psyker" )and
+		not self.squad_ai:HasSquadAttached( "guard_squad_field_medic" )and
+		not self.squad_ai:HasSquadAttached( "guard_squad_master_vox" )) then 
+		
+		self.squad_ai:DoDetachSquad()
+		self.squad_ai:DoSetDefaultMeleeStance()
+	end
+
+	-- Call basic detach method
+	InfantryTactic.CheckForDetach(self)
+end

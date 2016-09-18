@@ -1,0 +1,53 @@
+----------------------------------------------------------------------------------------------------------------
+-- NUCLEAR WAR!
+-- Created by Cylarne @ 2015
+--
+--	Makes all super structures able to cast superweapons 2x the normal rate.
+--
+-- Apocalypse Mod Team
+-----------------------------------------------------------------------------------------------------------------
+
+import("ScarUtil.scar");
+import("UA_SCARCore/K_04/Tiers&EndGamersList.scar");
+
+function Rule_NuclearWar()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		for i=1,table.getn( _Actual.superstructure_list ) do
+			local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 2, _Actual.superstructure_list[i])
+			local modifier2 = Modifier_Create(MAT_EntityType, "ability_recharge_modifier", MUT_Multiplication, false, 0.5, _Actual.superstructure_list[i])
+			Modifier_ApplyToPlayer( modifier, player)
+			Modifier_ApplyToPlayer( modifier2, player)
+		end 
+		if (Mod_Includes_Tyranids == true) then
+			for i=1,table.getn( _Tyranids.superstructure_list ) do
+				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 2, _Tyranids.superstructure_list[i])
+				local modifier2 = Modifier_Create(MAT_EntityType, "ability_recharge_modifier", MUT_Multiplication, false, 0.5, _Tyranids.superstructure_list[i])
+				Modifier_ApplyToPlayer( modifier, player)
+				Modifier_ApplyToPlayer( modifier2, player)
+			end 
+		end
+		if (Mod_Includes_Inquisition == true) then
+			for i=1,table.getn( _Inquisition.superstructure_list ) do
+				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 2, _Inquisition.superstructure_list[i])
+				local modifier2 = Modifier_Create(MAT_EntityType, "ability_recharge_modifier", MUT_Multiplication, false, 0.5, _Inquisition.superstructure_list[i])
+				Modifier_ApplyToPlayer( modifier, player)
+				Modifier_ApplyToPlayer( modifier2, player)
+			end 
+		end
+		if (Mod_Includes_Daemons == true) then
+			for i=1,table.getn( _Daemons.superstructure_list ) do
+				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 2, _Daemons.superstructure_list[i])
+				local modifier2 = Modifier_Create(MAT_EntityType, "ability_recharge_modifier", MUT_Multiplication, false, 0.5, _Daemons.superstructure_list[i])
+				Modifier_ApplyToPlayer( modifier, player)
+				Modifier_ApplyToPlayer( modifier2, player)
+			end 
+		end
+	end
+
+end
+Scar_AddInit(Rule_NuclearWar)

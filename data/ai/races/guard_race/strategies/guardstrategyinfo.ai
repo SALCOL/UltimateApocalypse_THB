@@ -1,0 +1,183 @@
+----------------------------------------
+-- File: 'guardstrategyinfo.ai'
+-- Edited by Thudmeizer  @ 02.02.2016
+-- Edited by Cylarne_04 2011
+
+BuildBaseStrategyInfo = 
+{
+	guard_race =
+	{
+		post_builder = 2,
+		flag_capture = 3,
+
+		-- Reserve this amount for building units, reinforcing and upgrading
+		req_reserve = 350,
+		
+		-- need at least this at all times
+		squad_cap_threshold = 3,
+
+		-- need at least this at all times
+		support_cap_threshold = 4,
+		
+		-- used to calculate wants for engineers
+		Engineers =
+		{
+			--number of engineers we're aiming for
+			want = 5,
+		},
+		
+		-- Is used to modify the army strength in the build programs (Allows faster balancing adjustments)
+		ArmyStrengthModifier = 1.0,
+		
+		-- Item-Syntax: Min. Tier, Min. Requisition, Min. Power, Min. ArmyStrength, Object-Count, Object-Type, Object-Name
+		BuildPrograms =
+		{
+			-- Allround strategy, no Doctrines
+			{
+				{ 1, 450, 0, 0, 1,	"Building",	"guard_hq" },
+				{ 1, 125, 0, 0, 1,	"Building",	"guard_infantry" },
+				{ 1, 120, 0, 0, 1,	"Unit",		"guard_squad_guardsmen_conscript" },
+				{ 1, 50, 0, 0, 50,	"TurretAddon",	"addon_guard_medic_temple" },
+				{ 1, 50, 0, 0, 50,	"TurretAddon",	"addon_guard_banner_bearer_temple" },
+				{ 1, 135, 0, 0, 3,	"Building",	"guard_plasma_generator" },
+				{ 1, 90, 80, 0, 50,	"TurretAddon",	"addon_guard_list_post_1" },
+				{ 1, 175, 50, 0, 1,	"Building",	"guard_tactica" },
+				{ 1, 400, 130, 0, 1,	"Addon",	"addon_guard_hq_1" },
+				{ 1, 100, 0, 0, 3,	"Building",	"guard_turret_antitank" },
+				{ 1, 135, 0, 0, 5,	"Building",	"guard_plasma_generator" },
+				{ 1, 100, 0, 0, 4,	"Building",	"guard_turret_antitank" },
+				{ 1, 90, 80, 0, 100,	"TurretAddon",	"addon_guard_list_post_1" },
+
+				{ 2, 100, 0, 0, 5,	"Building",	"guard_turret_antitank" },
+				{ 2, 50, 0, 0, 17,	"TurretAddon",	"addon_guard_turret" },
+				{ 2, 200, 125, 0, 1,	"Building",	"guard_mechanized" },
+				{ 2, 150, 0, 0, 6,	"Building",	"guard_plasma_generator" },
+				{ 2, 500, 0, 0, 10,	"TurretAddon",	"addon_guard_sentinel_depot" },
+				{ 2, 500, 0, 0, 10,	"TurretAddon",	"addon_guard_hellhound_depot" },
+				{ 2, 500, 0, 0, 10,	"TurretAddon",	"addon_guard_ministorum_temple" },
+				{ 2, 500, 0, 0, 10,	"TurretAddon",	"addon_guard_telepathica_temple" },
+				{ 2, 100, 0, 0, 7,	"Building",	"guard_turret_antitank" },
+				{ 2, 500, 500, 0, 1,	"Addon",	"addon_guard_hq_2" },
+				{ 2, 100, 0, 0, 5,	"Building",	"guard_turret_antitank" },
+				{ 2, 240, 160, 500, 100,"TurretAddon",	"addon_guard_list_post_2" },
+
+				{ 3, 200, 50, 0, 3,	"Unit",		"guard_squad_guardsmen_specialweapons" },
+				{ 3, 160, 350, 600, 2,	"Unit",		"guard_squad_lemanruss" },
+				{ 3, 100, 0, 0, 7,	"Building",	"guard_turret_antitank" },
+				{ 3, 50, 0, 0, 100,	"TurretAddon",	"addon_guard_lemanruss_depot" },
+			      --{ 3, 100, 300, 0, 1,	"Building",	"guard_industry" },
+				{ 3, 50, 0, 0, 10,	"TurretAddon",	"addon_guard_kasrkin_quarters" },
+				{ 3, 50, 0, 0, 100,	"TurretAddon",	"addon_guard_basilisk_depot" },
+				{ 3, 500, 0, 0, 10,	"TurretAddon",	"addon_guard_hydra_depot" },
+				{ 3, 500, 0, 0, 10,	"TurretAddon",	"addon_guard_griffon_depot" },
+				{ 3, 500, 0, 500, 10,	"TurretAddon",	"addon_guard_vox_temple" },
+				{ 3, 500, 0, 500, 10,	"TurretAddon",	"addon_guard_vindicare_temple" },
+				{ 3, 160, 160, 0, 1,	"Building", 	"guard_comms_array" },
+				{ 3, 100, 0, 0, 8,	"Building",	"guard_turret_antitank" },
+				{ 3, 1000, 1000, 500, 1,"Research",	"guard_full_scale_war" },
+				{ 3, 50, 0, 0, 10, 	"TurretAddon",	"addon_guard_marauder_depot" },
+				{ 3, 700, 150, 0, 2,	"Building", 	"guard_hq" },
+
+				{ 4, 400, 210, 0, 1,	"Building",	"guard_tanks" },
+				{ 4, 150, 0, 0, 7,	"Building", 	"guard_plasma_generator" },
+				{ 4, 420, 240, 0, 1,	"Building",	"guard_mars_pattern" },
+				{ 4, 150, 0, 0, 8,	"Building",	"guard_plasma_generator" },
+				{ 4, 75, 125, 0, 100,	"TurretAddon",	"addon_guard_turret_heavy" },
+			      --{ 4, 50, 0, 0, 100,	"TurretAddon",	"addon_guard_valkyrie_depot" },
+				{ 4, 50, 0, 0, 100,	"TurretAddon",	"addon_guard_vulture_depot" },
+				{ 4, 400, 0, 0, 50,	"TurretAddon",	"addon_guard_laser_destroyer_depot" },
+				{ 4, 400, 0, 0, 100,	"TurretAddon",	"addon_guard_ogryn_quarters" },
+				{ 4, 400, 0, 0, 30,	"TurretAddon",	"addon_guard_stormtrooper_quarters" },
+				{ 4, 150, 0, 0, 9,	"Building",	"guard_plasma_generator" },
+				{ 4, 1500, 1500, 500, 1,"Research",	"guard_research_strafing_run" },
+				{ 4, 150, 0, 0, 10,	"Building",	"guard_plasma_generator" },
+				{ 4, 400, 350, 0, 1,	"Building",	"guard_turret_missile_launcher_sp" },
+				{ 4, 150, 0, 0, 11,	"Building",	"guard_plasma_generator" },
+				{ 4, 400, 350, 0, 2,	"Building",	"guard_turret_missile_launcher_sp" },
+				{ 4, 150, 0, 0, 12,	"Building",	"guard_plasma_generator" },
+				
+				{ 5, 75, 125, 0, 40,	"TurretAddon",	"addon_guard_turret_wall" },
+				{ 5, 1125, 880, 0, 1,	"Building",	"guard_titan_facility" },
+				{ 5, 1400, 1400, 0, 1,	"Building",	"guard_nuclear_facility" },
+				{ 5, 2000, 2000, 0, 1,	"Research",	"guard_apocalypse_research" },
+				
+				{ 6, 4000, 4000, 0, 1,	"Building",	"guard_basilisk_magnus" },
+				{ 6, 2000, 2000, 0, 100,"TurretAddon",	"addon_guard_platform_locators" },
+				{ 4, 20000, 20000, 0, 25,"TurretAddon",	"addon_guard_platform_apocalypse_rounds" }
+			},
+			
+		},
+		
+		SquadLimits = 
+		{
+			standard = 
+			{
+				guard_squad_ds_turret = 5,
+				guard_squad_deathstrike_missile_launcher = 2,
+				guard_squad_guardsmen_conscript = 4,
+			}
+		}
+	}
+}
+
+BuildOrderStrategyInfo = 
+{
+	guard_race =
+	{
+		Basic =
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "guard_squad_enginseer" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_enginseer" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "post_builder" }, 
+			{ "building", "guard_infantry", true },
+			{ "building", "guard_plasma_generator", true },
+			{ "building", "guard_turret_antitank", true },
+			{ "building", "guard_turret_antitank" }
+		},
+		
+		QuickStart =
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "guard_squad_enginseer" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_enginseer" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "post_builder" }, { "post_builder" },
+			{ "building", "guard_infantry", true },
+			{ "building", "guard_turret_antitank", true },
+			{ "building", "guard_plasma_generator" }
+		},
+		
+		LargeMap =
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_enginseer" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_enginseer" },
+			{ "post_builder" }, { "post_builder" },
+			{ "building", "guard_infantry", true },
+			{ "building", "guard_plasma_generator" }
+		}
+	}
+}
+
+AttackStrategyInfo = 
+{
+	guard_race =
+	{
+		MinArmyStrength = 600,
+	},
+}

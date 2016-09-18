@@ -1,0 +1,37 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["guard_race"] =
+{
+	{ "guard_strafing_run_vox", 70 },
+	{ "guard_valkyrie_strike_vox", 70 },
+	{ "guard_kasrkin_frag_grenades", 50 },
+	{ "guard_kasrkin_frag_grenades_command", 50 },
+	{ "guard_frag_grenades_lieutenant", 45 },
+	{ "guard_strafing_run_tank", 40 },
+	{ "guard_valkyrie_strike", 40 },
+	{ "guard_valkyrie_strike_vox", 40 },
+	{ "guard_strafing_run", 40 },
+	{ "guard_curse_machine_spirits", 40 },
+	{ "guard_psyker_lightning_arc", 30 },
+	{ "guard_psyker_lightning_arc2", 30 },
+	{ "guard_frag_grenades", 30 },
+	{ "guard_krak_grenades", 30 },
+	{ "guard_frag_grenades_lieutenant_2", 30 },
+	{ "guard_frag_grenades_lieutenant_3", 30 },
+	{ "guard_strip_soul", 25 },
+	{ "guard_emp_bombs", 20 },
+	{ "guard_incendiary_bombs", 20 },
+	{ "guard_krak_bombs", 20 },
+	{ "guard_smoke_bombs", 20 },
+	{ "guard_let_it_burn", 15 },
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["guard_race"] =
+{
+	{ "guard_assassin_assassinate", 80 },
+	{ "guard_priest_fanatical", 10 },
+	{ "marines_rally", 10 },
+	{ "guard_commissar_execute", 10 }
+}

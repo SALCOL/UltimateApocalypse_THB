@@ -1,0 +1,63 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Titan Units (AI)
+-- Created by Cylarne @ 2015
+--
+--	Titan Units are restricted for AI.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+
+function RestrictTitanUnits_AI()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/RelicEntityList.scar");
+		if (player_IsHuman_W6(player) == false) then
+		
+			for i=1,table.getn( titan_squad_list ) do
+				local squad = titan_squad_list[i];
+			
+				Player_RestrictSquad(player, squad);
+			end 
+			if (Mod_Includes_Tyranids == true) then
+				for i=1,table.getn( titan_squad_list_tyranids ) do
+					local squad = titan_squad_list_tyranids [i];
+					
+					Player_RestrictSquad(player, squad);
+				end 
+			end
+			if (Mod_Includes_Inquisition == true) then
+				for i=1,table.getn( titan_squad_list_inquisition ) do
+					local squad = titan_squad_list_inquisition [i];
+					
+					Player_RestrictSquad(player, squad);
+				end 
+			end
+			if (Mod_Includes_Daemons == true) then
+				for i=1,table.getn( titan_squad_list_daemons ) do
+					local squad = titan_squad_list_daemons [i];
+					
+					Player_RestrictSquad(player, squad);
+				end 
+			end
+		end
+	end
+
+end
+Scar_AddInit(RestrictTitanUnits_AI)
+
+-- Function thanks to Gambit!
+function player_IsHuman_W6( player )
+	local name = Player_GetDisplayName(player)[1]
+	if string.len(name) < 3 then return true end
+	name = string.sub(name, -2)
+	if( name == " 1" or name == " 2" or name == " 3" or name == " 4" or name == " 5" or name == " 6" or name == " 7" or name == " 8") then
+		return false
+	else
+		return true
+	end
+end

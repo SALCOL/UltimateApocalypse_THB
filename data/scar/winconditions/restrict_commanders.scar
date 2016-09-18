@@ -1,0 +1,49 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Commander Units
+-- Created by Cylarne, 11:54 3/30/14
+--
+--	Commanders are restricted.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+
+function RestrictCommanders()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/Commanders.scar");
+		
+		for i=1,table.getn( commander_squad_list ) do
+			local squad = commander_squad_list[i];
+		
+			Player_RestrictSquad(player, squad);
+		end 
+		if (Mod_Includes_Tyranids == true) then
+			for i=1,table.getn( commander_squad_list_tyranids ) do
+				local squad = commander_squad_list_tyranids [i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Inquisition == true) then
+			for i=1,table.getn( commander_squad_list_inquisition ) do
+				local squad = commander_squad_list_inquisition [i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Daemons == true) then
+			for i=1,table.getn( commander_squad_list_daemons ) do
+				local squad = commander_squad_list_daemons [i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+	end
+
+end
+Scar_AddInit(RestrictCommanders)

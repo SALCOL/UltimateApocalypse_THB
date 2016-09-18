@@ -1,0 +1,201 @@
+----------------------------------------
+-- File: 'necronstrategyinfo.ai'
+-- Edited by Thudmeizer   @ 02.02.2016
+-- Edited by Cylarne_04 2011
+
+BuildBaseStrategyInfo = 
+{	
+	necron_race =
+	{
+		post_builder = 2,
+		flag_capture = 2,
+
+		-- Reserve this amount for building units, reinforcing and upgrading
+		req_reserve = -99999,
+		
+		--need at least this at all times
+		squad_cap_threshold = 2,
+
+		--need at least this at all times
+		support_cap_threshold = 3,
+		
+		--used to calculate wants for engineers
+		Engineers =
+		{
+			--number of engineers we're aiming for
+			want = 4,
+		},
+
+		-- Is used to modify the army strength in the build programs (Allows faster balancing adjustments)
+		ArmyStrengthModifier = 1.0,
+		
+		-- Item-Syntax: Min. Tier, Min. Requisition, Min. Power, Min. ArmyStrength, Object-Count, Object-Type, Object-Name
+		BuildPrograms =
+		{
+			-- Allround strategy
+			{
+				{ 1, 0, 0, 0, 1,	"Building",	"monolith" },
+			      --{ 1, 0, 0, 0, 7,	"Building",	"necron_amplification_generator" },
+				{ 1, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
+				{ 1, 0, 120, 0, 1,	"Building",	"necron_summoning_core" },
+				{ 1, 0, 400, 200, 2,	"Addon", 	"addon_necron_hq_1" },
+			      --{ 1, 0, 200, 100, 6,	"Building",	"necron_turret_ai" },
+			      --{ 1, 0, 200, 0, 8,	"Building",	"necron_amplification_generator" },
+				{ 1, 0, 60, 250, 100,	"TurretAddon",	"addon_necron_list_post_1" },
+			      --{ 1, 0, 200, 100, 8,	"Building",	"necron_turret_ai" },
+
+				{ 2, 0, 0, 0, 8,	"Unit",		"necron_builder_scarab_squad" },
+				{ 2, 0, 200, 500, 35,	"TurretAddon",	"addon_necron_list_post_2" },
+				{ 2, 0, 450, 0, 2,	"Building",	"monolith" },
+				{ 2, 0, 250, 250, 1,	"Building",	"necron_greater_summoning_core" },
+				{ 2, 0, 550, 300, 2,	"Addon",	"addon_necron_hq_2" },
+				{ 2, 0, 220, 500, 100,	"TurretAddon",	"addon_necron_list_post_2" },
+
+				{ 3, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
+				{ 3, 0, 25, 500, 100,	"TurretAddon",	"addon_necron_turret" },
+			      --{ 3, 0, 200, 0, 16,	"Building",	"necron_amplification_generator" },
+				{ 3, 0, 200, 250, 50,	"TurretAddon",	"addon_necron_wall" },
+				{ 3, 0, 900, 0, 1,	"Building",	"necron_summoning_core_big" },
+
+				{ 4, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
+				{ 4, 0, 650, 0, 1,	"Building",	"necron_turret_battery" },
+				{ 4, 0, 250, 0, 50,	"TurretAddon",	"addon_necron_turret_battery" },
+				{ 4, 0, 280, 0, 1,	"Building",	"necron_forbidden_archive" },
+				{ 4, 0, 1500, 0, 1,	"Building",	"necron_energy_core" },
+				
+				{ 5, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
+				{ 5, 0, 2000, 0, 1,	"Building",	"monolith_super" },
+				{ 5, 0, 1000, 0, 100,	"Addon",	"addon_necron_pyramid" },
+				{ 5, 0, 2000, 0, 100,	"Addon",	"addon_necron_pyramid_engaged" },
+				{ 5, 0, 6000, 0, 1,	"Research",	"necron_apocalypse_research" }	
+			},
+			
+		},
+		
+		SquadLimits = 
+		{
+			standard = 
+			{
+				--[[necron_scarab_squad = 2,
+				necron_basic_warrior_squad = 0,
+				necron_flayed_one_squad = 0,
+				necron_immortal_squad = 0,
+				necron_wraith_squad = 1,
+				necron_destroyer_squad = 0,
+				necron_tomb_spyder_squad = 0,
+				necron_heavy_destroyer_squad = 0,
+				necron_annihilation_barge_squad = 0,
+				necron_ghost_ark_squad = 0,
+				necron_doomsday_ark_squad = 0,
+				necron_night_scythe_squad = 0,
+				necron_deathmark_squad = 0,
+				necron_pariah_squad = 0,
+				necron_pariah_deathstrike_squad = 0,
+				necron_tomb_stalker_squad = 0,]]
+			}
+		}
+	},
+}
+
+BuildOrderStrategyInfo = 
+{
+	necron_race =
+	{
+		Basic =
+		{
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "flag_capture" }, { "post_builder" },
+			{ "building", "necron_turret", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_turret_ai", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_turret_ai", true },
+			{ "building", "necron_turret_ai", true },
+			{ "building", "necron_turret", true },
+			{ "building", "necron_turret", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_turret_ai"}
+			
+			
+		},
+		 
+		QuickStart =
+		{
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "flag_capture" }, { "post_builder" },
+			{ "building", "necron_turret", true },
+			{ "building", "monolith", true },
+			{ "building", "necron_turret", true },
+			{ "building", "necron_turret", true },
+			{ "building", "monolith", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_turret", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_summoning_core", true },
+			{ "building", "necron_turret", true },
+			{ "building", "necron_turret_ai", true },
+			{ "building", "necron_turret_ai", true },
+			{ "building", "necron_turret_ai"}
+		},
+		 
+		LargeMap =
+		{
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "squad", "necron_builder_scarab_squad" },
+			{ "flag_capture" }, { "post_builder" },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_turret_ai", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_turret", true },
+			{ "building", "necron_turret", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_amplification_generator", true },
+			{ "building", "necron_turret_ai", true },
+			{ "building", "necron_turret_ai", true },
+			{ "building", "necron_turret_ai"}
+			
+		}
+	},
+}
+
+AttackStrategyInfo = 
+{
+	necron_race =
+	{
+		MinArmyStrength = 350,
+	},
+}

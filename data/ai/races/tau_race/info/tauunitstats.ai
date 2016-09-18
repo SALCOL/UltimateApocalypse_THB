@@ -1,0 +1,1139 @@
+----------------------------------------
+-- File: 'tauunitstats.ai'
+-- Edited by Thudmeizer @ 05.01.2016
+-- Edited by Cylarne_04 2011
+
+--XP3
+UnitStrengths.npc_squad_nuker_xp3 = 0
+UnitStrengths.npc_squad_zombie_xp3 = 10
+UnitStrengths.npc_squad_zombie_largesquad_xp3 = 20
+UnitStrengths.npc_squad_fastzombie_xp3 = 20
+UnitStrengths.npc_squad_fastzombie_largesquad_xp3 = 40
+UnitStrengths.npc_squad_alphazombie_xp3 = 500
+
+-- NPCs
+UnitStrengths.npc_squad_superweapon1 = 0
+UnitStrengths.npc_squad_civilian_group = 0
+
+-- Campaign
+UnitStrengths.tau_commander_squad_advance_sp = 305
+UnitStrengths.tau_crisis_suit_squad_stronghold_sp = 220
+UnitStrengths.tau_drone_harbinger_squad_advance_sp = 300
+UnitStrengths.tau_ethereal_squad_stronghold_sp = 375
+UnitStrengths.tau_hammerhead_gunship_squad_advance_sp = 425
+UnitStrengths.tau_honor_guard_crisis_suit_squad_advance_honor_guard_sp = 220
+UnitStrengths.tau_honor_guard_crisis_suit_squad_advance_sp = 220
+UnitStrengths.tau_honor_guard_fire_warrior_squad_advance_sp = 70
+UnitStrengths.tau_honor_guard_fire_warrior_squad_stronghold_sp = 70
+UnitStrengths.tau_honor_guard_stealth_suit_squad_advance_sp = 85
+UnitStrengths.tau_kroot_alpha_squad_advance_sp = 40
+UnitStrengths.tau_kroot_hound_squad_advance_sp = 80
+UnitStrengths.tau_kroot_shaper_squad_advance_sp = 150
+UnitStrengths.tau_pathfinder_squad_advance_sp = 95
+UnitStrengths.tau_skyray_squad_advance_sp = 325
+UnitStrengths.tau_broadside_battlesuit_squad_clone_sp = 120
+UnitStrengths.tau_stealth_team_squad_sp = 85
+UnitStrengths.tau_vespid_auxiliary_squad_sp = 70
+UnitStrengths.tau_vespid_elder_squad_advance_sp = 70
+UnitStrengths.tau_xv202_mako_titan_squad_clone_sp = 0
+
+-- Skirmish
+UnitStrengths.tau_builder_squad = 0
+UnitStrengths.tau_stealth_team_squad = 85
+UnitStrengths.tau_fire_warrior_squad = 70
+UnitStrengths.tau_tetra_squad = 70
+UnitStrengths.tau_pathfinder_squad = 95
+UnitStrengths.tau_stealth_team_xv25_squad = 105
+UnitStrengths.tau_kroot_carnivore_squad = 40
+UnitStrengths.tau_kroot_shaper_squad = 150
+UnitStrengths.tau_vespid_auxiliary_squad = 70
+UnitStrengths.tau_kroot_hound_squad = 80
+UnitStrengths.tau_krootox_squad = 385
+UnitStrengths.tau_broadside_battlesuit_squad = 120
+UnitStrengths.tau_broadside_battlesuit_xv8_squad = 140
+UnitStrengths.tau_crisis_suit_squad = 220
+UnitStrengths.tau_xv81_crisis_suit_squad = 240
+UnitStrengths.tau_xv9_hazard_suit_squad = 270
+UnitStrengths.tau_shasui_fire_warrior_bodyguard_sp = 70
+UnitStrengths.tau_ethereal_squad = 375
+UnitStrengths.tau_commander_squad = 305
+UnitStrengths.tau_builder_commander_squad = 205
+UnitStrengths.tau_xv89_commander_squad = 320
+UnitStrengths.tau_xv89_bodyguard_squad = 320
+UnitStrengths.tau_kroot_knarloc_rider_squad = 415
+UnitStrengths.tau_devilfish_troop_carrier = 125
+UnitStrengths.tau_drone_turret_squad = 100
+UnitStrengths.tau_drone_remora_squad = 140
+UnitStrengths.tau_piranha_squad = 120
+UnitStrengths.tau_skyray_squad = 325
+UnitStrengths.tau_drone_squad = 110
+UnitStrengths.tau_sniper_drone_squad = 180
+UnitStrengths.tau_barracuda_squad = 350
+UnitStrengths.tau_drone_harbinger_squad = 300
+UnitStrengths.tau_harbinger_drones_squad = 30
+UnitStrengths.tau_hammerhead_gunship_squad = 450
+UnitStrengths.tau_hammerhead_gunship_armor_squad = 450
+UnitStrengths.tau_orca_dropship_squad = 500
+UnitStrengths.tau_greater_knarloc_squad = 550
+UnitStrengths.tau_swordfish_squad = 550
+UnitStrengths.tau_malo_squad = 800
+UnitStrengths.tau_drone_satellite_squad = 800
+UnitStrengths.tau_xv101_riptide_suit_squad = 800
+UnitStrengths.tau_xv104_riptide_suit_squad = 900
+UnitStrengths.tau_xv202_mako_titan_squad = 1000
+UnitStrengths.tau_tigershark_squad = 1000
+UnitStrengths.tau_xv107_rvarna_suit_squad = 1600
+UnitStrengths.tau_manta_squad = 2800
+
+LeaderStrengths.tau_stealth_team_squad = 75
+LeaderStrengths.tau_fire_warrior_squad = 75
+LeaderStrengths.tau_vespid_auxiliary_squad = 75
+
+Attachments.tau_kroot_carnivore_squad = { "tau_kroot_knarloc_rider_squad" }
+Attachments.tau_kroot_hound_squad = { "tau_kroot_knarloc_rider_squad" }
+Attachments.tau_kroot_shaper_squad = { "tau_kroot_knarloc_rider_squad" }
+
+TauUnitStats =
+{
+	race = "tau_race",
+	{
+		name = "Earth Caste Builder",
+		sbp_name = "tau_builder_squad",
+		ebp_name = "tau_builder",
+		class = UnitStatsAI.UC_LightInfantryLow,
+		rating = 0.0,
+		potential =
+		{
+			{
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+	{
+		name = "XV15 Stealthsuit",
+		sbp_name = "tau_stealth_team_squad",
+		ebp_name = "tau_stealth_suit",
+		class = UnitStatsAI.UC_LightInfantryMed,
+		rating = 3,
+		potential =
+		{
+			{
+				name = "tau_stealth_suit_rifle_melee",
+				effectiveness = GenerateUnitEffectiveness(1.4,2.1,1.9,1.7,1.4,0.8,0.3,0.0,1.0,0.0,0.6,0.8,0.3,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_fusion_blaster_stealth_suit",
+				effectiveness = GenerateUnitEffectiveness(3.3,3.3,3.3,3.3,3.3,6.2,6.2,3.7,3.3,3.3,3.3,4.8,3.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_burst_cannon_stealth_team",
+				effectiveness = GenerateUnitEffectiveness(1.6,2.5,2.4,2.2,1.8,0.7,0.6,0.0,1.8,0.0,1.2,1.0,0.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Fire Warrior",
+		sbp_name = "tau_fire_warrior_squad",
+		ebp_name = "tau_fire_warrior",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 4,
+		potential =
+		{
+			{
+				name = "tau_fire_warrior_rifle_melee",
+				effectiveness = GenerateUnitEffectiveness(2.4,3.4,3.1,2.8,2.4,1.6,0.7,0.0,1.9,0.0,1.2,1.6,0.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_pulse_rifle_fire_warrior",
+				effectiveness = GenerateUnitEffectiveness(4.2,5.4,5.2,5.1,4.5,2.3,2.3,1.8,4.5,0.0,3.6,3.2,2.6,1.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Pathfinder",
+		sbp_name = "tau_pathfinder_squad",
+		ebp_name = "tau_pathfinder",
+		class = UnitStatsAI.UC_LightInfantryHigh,
+		rating = 4,
+		potential =
+		{
+			{
+				name = "tau_pathfinder_melee",
+				effectiveness = GenerateUnitEffectiveness(4.1,4.4,4.7,4.8,6.4,1.6,0.7,0.0,1.9,0.0,1.2,1.6,0.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_pulse_rifle_pathfinder",
+				effectiveness = GenerateUnitEffectiveness(3.1,4.1,4.0,3.7,3.3,2.2,1.7,0.0,3.3,0.0,2.5,2.5,2.2,1.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_rail_rifle",
+				effectiveness = GenerateUnitEffectiveness(3.1,4.1,4.0,3.7,3.3,2.2,1.7,0.0,3.3,0.0,2.5,2.5,2.2,1.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV25 Stealthsuit",
+		sbp_name = "tau_stealth_team_xv25_squad",
+		ebp_name = "tau_shasvre_stealth_suit",
+		class = UnitStatsAI.UC_LightInfantryMed,
+		rating = 4.8,
+		potential =
+		{
+			{
+				name = "tau_stealth_suit_rifle_melee",
+				effectiveness = GenerateUnitEffectiveness(1.4,2.1,1.9,1.7,1.4,0.8,0.3,0.0,1.0,0.0,0.6,0.8,0.3,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_fusion_blaster_shasvre_stealth_suit",
+				effectiveness = GenerateUnitEffectiveness(3.3,3.3,3.3,3.3,3.3,6.2,6.2,3.7,3.3,3.3,3.3,4.8,3.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_burst_cannon_xv25",
+				effectiveness = GenerateUnitEffectiveness(1.6,2.5,2.4,2.2,1.8,0.7,0.6,0.0,1.8,0.0,1.2,1.0,0.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Kroot Carnivore",
+		sbp_name = "tau_kroot_carnivore_squad",
+		ebp_name = "tau_kroot_carnivore",
+		class = UnitStatsAI.UC_LightInfantryHigh,
+		rating = 4,
+		potential =
+		{
+			{
+				name = "tau_kroot_rifle_melee",
+				effectiveness = GenerateUnitEffectiveness(4.7,5.0,4.7,4.7,4.7,3.2,2.3,1.5,3.6,0.0,3.2,3.6,2.3,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_kroot_rifle",
+				effectiveness = GenerateUnitEffectiveness(2.3,3.3,3.2,3.0,2.5,1.5,0.9,0.0,2.5,0.0,2.1,1.8,1.2,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Vespid Stingwing",
+		sbp_name = "tau_vespid_auxiliary_squad",
+		ebp_name = "tau_vespid_auxiliary",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 5,
+		potential =
+		{
+			{
+				name = "tau_vespid_claw",
+				effectiveness = GenerateUnitEffectiveness(6.1,6.3,6.0,6.6,8.1,6.8,5.9,4.1,6.8,5.3,5.9,7.4,6.8,5.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_vespid_neutron_blaster",
+				effectiveness = GenerateUnitEffectiveness(3.1,4.1,4.0,3.7,3.3,2.2,1.7,0.0,3.3,0.0,2.5,2.5,2.2,1.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Kroot Hound",
+		sbp_name = "tau_kroot_hound_squad",
+		ebp_name = "tau_kroot_hound",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "tau_kroot_hound_fangs",
+				effectiveness = GenerateUnitEffectiveness(7.2,8.4,8.1,7.7,7.2,6.0,5.4,4.2,6.5,5.4,6.0,6.0,5.4,4.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "XV88 Broadside Battlesuit",
+		sbp_name = "tau_broadside_battlesuit_squad",
+		ebp_name = "tau_broadside_battlesuits_xv8",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "tau_rail_gun_broadside_battlesuit",
+				effectiveness = GenerateUnitEffectiveness(0.0,7.5,7.5,7.0,6.3,7.3,7.3,7.0,5.2,4.1,5.2,6.7,6.7,6.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV88 Broadside Battlesuit Shasvre",
+		sbp_name = "tau_broadside_battlesuit_xv8_squad",
+		ebp_name = "tau_broadside_battlesuits_xv8_shasvre",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "tau_rail_gun_broadside_shasvre",
+				effectiveness = GenerateUnitEffectiveness(0.0,8.0,8.0,8.0,6.3,7.3,7.3,7.0,5.2,4.1,5.2,6.7,6.7,6.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV8 Crisis Battlesuit",
+		sbp_name = "tau_crisis_suit_squad",
+		ebp_name = "tau_crisis_suit",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "tau_flamer_crisis_suit",
+				effectiveness = GenerateUnitEffectiveness(7.1,8.3,8.0,7.6,7.1,4.8,4.9,3.1,5.8,5.3,5.9,1.4,2.8,2.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "tau_burst_cannon_crisis_suit",
+				effectiveness = GenerateUnitEffectiveness(6.1,6.3,6.0,6.6,6.1,6.8,5.9,4.1,6.8,5.3,5.9,7.4,6.8,5.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_missile_pod_crisis_suit",
+				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,3.7,2.7,8.6,8.3,8.0,4.3,5.2,4.3,8.6,8.3,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_fusion_blaster_crisis_suit",
+				effectiveness = GenerateUnitEffectiveness(6.4,6.2,6.5,4.1,2.8,7.5,7.5,5.7,6.8,5.9,5.9,6.8,5.9,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV81 Crisis Battlesuit",
+		sbp_name = "tau_xv81_crisis_suit_squad",
+		ebp_name = "tau_xv81_crisis_suit",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_crisis_suit",
+				effectiveness = GenerateUnitEffectiveness(7.1,8.3,8.0,7.6,7.1,4.8,4.9,3.1,5.8,5.3,5.9,1.4,2.8,2.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "tau_smart_missile_xv81_crisis_suit",
+				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,3.7,2.7,8.6,8.3,8.0,4.3,5.2,4.3,8.6,8.3,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_missile_pod_xv81_crisis_suit",
+				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,3.7,2.7,8.6,8.3,8.0,4.3,5.2,4.3,8.6,8.3,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_plasma_rifle_crisis_suit",
+				effectiveness = GenerateUnitEffectiveness(6.4,6.2,6.5,4.1,2.8,7.5,7.5,5.7,6.8,5.9,5.9,6.8,5.9,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			--[[{
+				name = "tau_plasma_rifle_crisis_suit_right",
+				effectiveness = GenerateUnitEffectiveness(6.4,6.2,6.5,4.1,2.8,7.5,7.5,5.7,6.8,5.9,5.9,6.8,5.9,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},]]
+		}
+	},
+	{
+		name = "XV9 Hazard Suit",
+		sbp_name = "tau_xv9_hazard_suit_squad",
+		ebp_name = "tau_xv9_hazard_suit",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_hazard_suit",
+				effectiveness = GenerateUnitEffectiveness(6.1,6.3,6.0,6.6,6.1,6.8,5.9,4.1,6.8,5.3,5.9,7.4,6.8,5.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_fusion_cascade_hazard_suit",
+				effectiveness = GenerateUnitEffectiveness(6.4,6.2,6.5,4.1,2.8,7.5,7.5,5.7,6.8,5.9,5.9,6.8,5.9,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_ion_cannon_hazard_suit",
+				effectiveness = GenerateUnitEffectiveness(6.4,6.2,6.5,4.1,2.8,7.5,7.5,5.7,6.8,5.9,5.9,6.8,5.9,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Kroot Shaper",
+		sbp_name = "tau_kroot_shaper_squad",
+		ebp_name = "tau_kroot_shaper",
+		class = UnitStatsAI.UC_Commander,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "tau_kroot_shaper_rifle_melee",
+				effectiveness = GenerateUnitEffectiveness(5.5,6.2,6.2,6.0,5.8,4.4,3.3,0.0,5.5,4.4,5.2,5.2,3.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_kroot_shaper_rifle",
+				effectiveness = GenerateUnitEffectiveness(5.5,6.2,6.2,6.0,5.8,4.4,3.3,0.0,5.5,4.4,5.2,5.2,3.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Shasui Fire Warrior Bodyguard Sp",
+		sbp_name = "tau_shasui_fire_warrior_bodyguard_sp",
+		ebp_name = "tau_shasui_fire_warrior_bodyguard_sp",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "tau_pulse_carbine_shasui_fire_warrior_advance_sp",
+				effectiveness = GenerateUnitEffectiveness(3.6,3.6,3.6,3.6,3.6,7.2,6.7,6.2,3.6,4.9,3.6,5.3,5.3,5.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Ethereal",
+		sbp_name = "tau_ethereal_squad",
+		ebp_name = "tau_ethereal",
+		class = UnitStatsAI.UC_Commander,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "tau_ethereal_honor_blade",
+				effectiveness = GenerateUnitEffectiveness(4.4,5.5,5.2,4.8,4.4,3.3,1.8,0.0,3.7,0.0,2.7,3.3,1.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Tau Commander",
+		sbp_name = "tau_commander_squad",
+		ebp_name = "tau_commander",
+		class = UnitStatsAI.UC_Commander,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_commander_melee",
+				effectiveness = GenerateUnitEffectiveness(5.5,6.2,6.2,6.0,5.8,4.4,3.3,0.0,5.5,4.4,5.2,5.2,3.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_burst_cannon_commander",
+				effectiveness = GenerateUnitEffectiveness(5.5,6.2,6.2,6.0,5.8,4.4,3.3,0.0,5.5,4.4,5.2,5.2,3.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV30 Heavy Builder",
+		sbp_name = "tau_builder_commander_squad",
+		ebp_name = "tau_builder_commander",
+		class = UnitStatsAI.UC_Commander,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "space_marine_power_axe_techmarine",
+				effectiveness = GenerateUnitEffectiveness(6.4,7.7,7.5,7.8,7.5,6.1,5.8,8.0,8.0,8.0,6.9,6.1,4.6,4.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "XV89 Commander",
+		sbp_name = "tau_xv89_commander_squad",
+		ebp_name = "tau_xv89_commander",
+		class = UnitStatsAI.UC_Commander,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_commander",
+				effectiveness = GenerateUnitEffectiveness(5.5,6.2,6.2,6.0,5.8,4.4,3.3,0.0,5.5,4.4,5.2,5.2,3.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV89 Bodyguards",
+		sbp_name = "tau_xv89_bodyguard_squad",
+		ebp_name = "tau_xv89_bodyguard",
+		class = UnitStatsAI.UC_Commander,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_bodyguard",
+				effectiveness = GenerateUnitEffectiveness(7.1,8.3,8.0,7.6,7.1,4.8,4.9,3.1,5.8,5.3,5.9,1.4,2.8,2.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "tau_missile_pod_bodyguard_right",
+				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,3.7,2.7,8.6,8.3,8.0,4.3,5.2,4.3,8.6,8.3,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Kroot Knarloc Rider",
+		sbp_name = "tau_kroot_knarloc_rider_squad",
+		ebp_name = "tau_kroot_knarloc_rider",
+		class = UnitStatsAI.UC_Commander,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "tau_greater_knarloc_claw",
+				effectiveness = GenerateUnitEffectiveness(9.3,10.0,10.0,9.8,9.3,10.0,10.0,9.8,10.0,9.6,7.4,9.0,8.1,6.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_greater_knarloc_crossbow",
+				effectiveness = GenerateUnitEffectiveness(7.9,9.1,8.8,8.4,7.9,7.2,6.0,0.0,7.9,6.0,6.7,7.2,6.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+		}
+	},
+	--[[{
+		name = "Drone Turret",
+		sbp_name = "tau_drone_turret_squad",
+		ebp_name = "tau_drone_turret",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 4,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_twin_turret",
+				effectiveness = GenerateUnitEffectiveness(5.5,6.2,6.2,6.0,5.8,4.4,3.3,0.0,5.5,4.4,5.2,5.2,3.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_missile_pod_twin_turret",
+				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,3.7,2.7,8.6,8.3,8.0,4.3,5.2,4.3,8.6,8.3,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},]]
+	{
+		name = "Devilfish Troop Carrier",
+		sbp_name = "tau_devilfish_troop_carrier",
+		ebp_name = "tau_devilfish_troop_carrier",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "tau_twin_linked_pulse_carbine_devilfish",
+				effectiveness = GenerateUnitEffectiveness(4.8,4.8,4.8,5.0,4.8,3.1,3.1,3.1,3.7,0.0,3.7,3.1,3.1,3.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_twin_linked_pulse_carbine_devilfish_right",
+				effectiveness = GenerateUnitEffectiveness(4.8,4.8,4.8,5.0,4.8,3.1,3.1,3.1,3.7,0.0,3.7,3.1,3.1,3.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Tetra Scout Speeder",
+		sbp_name = "tau_tetra_squad",
+		ebp_name = "tau_tetra_scout_speeder",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 3,
+		potential =
+		{
+			{
+				name = "tau_twin_linked_pulse_carbine_tetra",
+				effectiveness = GenerateUnitEffectiveness(4.8,4.8,4.8,5.0,4.8,3.1,3.1,3.1,3.7,0.0,3.7,3.1,3.1,3.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Piranha Skimmer",
+		sbp_name = "tau_piranha_squad",
+		ebp_name = "tau_piranha_skimmer",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 3,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_piranha",
+				effectiveness = GenerateUnitEffectiveness(4.8,4.8,4.8,5.0,4.8,3.1,3.1,3.1,3.7,0.0,3.7,3.1,3.1,3.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_fusion_blaster_piranha",
+				effectiveness = GenerateUnitEffectiveness(4.7,4.9,4.0,3.8,3.0,6.0,6.0,3.8,6.0,1.4,4.0,3.9,3.4,1.5,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Skyray Missile Gunship",
+		sbp_name = "tau_skyray_squad",
+		ebp_name = "tau_skyray",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "tau_skyray_missle_2",
+				effectiveness = GenerateUnitEffectiveness(5.4,5.4,5.4,5.4,5.4,6.5,6.5,0.0,5.8,4.3,5.8,5.4,4.3,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_skyray_missle_1",
+				effectiveness = GenerateUnitEffectiveness(5.4,5.4,5.4,5.4,5.4,6.5,6.5,0.0,5.8,4.3,5.8,5.4,4.3,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_skyray_missle_3",
+				effectiveness = GenerateUnitEffectiveness(5.4,5.4,5.4,5.4,5.4,6.5,6.5,0.0,5.8,4.3,5.8,5.4,4.3,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_skyray_missle_4",
+				effectiveness = GenerateUnitEffectiveness(5.4,5.4,5.4,5.4,5.4,6.5,6.5,0.0,5.8,4.3,5.8,5.4,4.3,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Drone Squad",
+		sbp_name = "tau_drone_squad",
+		ebp_name = "tau_drone_squad",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 5,
+		potential =
+		{
+			{
+				name = "tau_twin_linked_pulse_carbine",
+				effectiveness = GenerateUnitEffectiveness(5.9,5.9,5.9,6.2,5.9,4.1,4.1,4.1,4.8,0.0,4.8,4.1,4.1,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+		}
+	},
+	{
+		name = "Sniper Drone Team",
+		sbp_name = "tau_sniper_drone_squad",
+		ebp_name = "tau_sniper_drone",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 5,
+		potential =
+		{
+			{
+				name = "tau_rail_rifle",
+				effectiveness = GenerateUnitEffectiveness(5.9,5.9,5.9,6.2,5.9,4.1,4.1,4.1,4.8,0.0,4.8,4.1,4.1,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Remora Drones Squad",
+		sbp_name = "tau_drone_remora_squad",
+		ebp_name = "tau_drone_remora",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "tau_twin_linked_pulse_carbine_improved",
+				effectiveness = GenerateUnitEffectiveness(6.9,6.9,6.9,7.2,6.9,5.1,4.1,4.1,4.8,0.0,4.8,4.1,4.1,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+		}
+	},
+	{
+		name = "Barracuda",
+		sbp_name = "tau_barracuda_squad",
+		ebp_name = "tau_barracuda",
+		class = UnitStatsAI.UC_AirMed,
+		rating = 7.5,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_barracuda",
+				effectiveness = GenerateUnitEffectiveness(7.9,8.2,6.9,7.2,6.9,6.2,6.2,6.2,5.8,0.0,4.8,5.2,5.2,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	--[[{
+		name = "Orca Dropship",
+		sbp_name = "tau_orca_dropship_squad",
+		ebp_name = "tau_orca_dropships",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 5,
+		potential =
+		{
+			{
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},]]
+	{
+		name = "Harbinger Drones",
+		sbp_name = "tau_harbinger_drones_squad",
+		ebp_name = "tau_harbinger_drones",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 2,
+		potential =
+		{
+			{
+				name = "tau_twin_linked_pulse_carbine",
+				effectiveness = GenerateUnitEffectiveness(5.9,5.9,5.9,6.2,5.9,5.2,5.2,5.2,4.8,0.0,4.8,5.2,5.2,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Drone Harbinger",
+		sbp_name = "tau_drone_harbinger_squad",
+		ebp_name = "tau_drone_harbinger",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 5,
+		potential =
+		{
+			{
+				name = "tau_twin_linked_pulse_carbine_harbinger_drones_right",
+				effectiveness = GenerateUnitEffectiveness(6.9,6.9,6.9,7.2,6.9,5.1,4.1,4.1,4.8,0.0,4.8,4.1,4.1,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_twin_linked_pulse_carbine_harbinger_drones",
+				effectiveness = GenerateUnitEffectiveness(6.9,6.9,6.9,7.2,6.9,5.1,4.1,4.1,4.8,0.0,4.8,4.1,4.1,4.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Hammerhead Gunship Hunter Killer",
+		sbp_name = "tau_hammerhead_gunship_squad",
+		ebp_name = "tau_hammerhead_gunship",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_hammer_head_gunship",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,7.1,7.0,5.7,8.6,6.8,6.5,8.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_burst_cannon_hammer_head_gunship_right",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,7.1,7.0,5.7,8.6,6.8,6.5,8.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_heavy_burst_cannon_hammer_head_gunship",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,7.1,7.0,5.7,8.6,6.8,6.5,8.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_ion_cannon_hammerhead",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,6.1,6.0,3.7,2.6,2.8,5.5,7.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_plasma_cannon_hammer_head_gunship",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,6.1,6.0,3.7,2.6,2.8,5.5,7.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_heavy_fusion_gun_hammer_head_gunship",
+				effectiveness = GenerateUnitEffectiveness(5.1,6.2,6.0,6.4,5.5,9.6,8.0,8.7,7.1,7.6,5.5,9.2,7.5,7.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_rail_gun_hammer_head_gunship",
+				effectiveness = GenerateUnitEffectiveness(5.1,6.2,6.0,6.4,5.5,9.6,10.0,8.7,7.1,7.6,5.5,7.2,5.5,5.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Hammerhead Gunship Armor Buster",
+		sbp_name = "tau_hammerhead_gunship_armor_squad",
+		ebp_name = "tau_hammerhead_gunship_armor",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_hammer_head_gunship",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,7.1,7.0,5.7,8.6,6.8,6.5,8.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_burst_cannon_hammer_head_gunship_right",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,7.1,7.0,5.7,8.6,6.8,6.5,8.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_heavy_fusion_gun_hammer_head_gunship",
+				effectiveness = GenerateUnitEffectiveness(5.1,6.2,6.0,6.4,5.5,9.6,8.0,8.7,7.1,7.6,5.5,9.2,7.5,7.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_rail_gun_hammer_head_gunship",
+				effectiveness = GenerateUnitEffectiveness(5.1,6.2,6.0,6.4,5.5,9.6,10.0,8.7,7.1,7.6,5.5,7.2,5.5,5.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Krootox",
+		sbp_name = "tau_krootox_squad",
+		ebp_name = "tau_krootox",
+		class = UnitStatsAI.UC_MonsterMed,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "tau_krootox_melee",
+				effectiveness = GenerateUnitEffectiveness(8.0,9.2,8.9,8.5,8.0,9.2,8.7,8.0,8.5,8.0,7.3,9.2,8.7,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_kroot_rifle_krootox",
+				effectiveness = GenerateUnitEffectiveness(7.9,9.1,8.8,8.4,7.9,7.2,6.0,0.0,7.9,6.0,6.7,7.2,6.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+		}
+	},
+	{
+		name = "Greater Knarloc",
+		sbp_name = "tau_greater_knarloc_squad",
+		ebp_name = "tau_greater_knarloc",
+		class = UnitStatsAI.UC_MonsterHigh,
+		rating = 7.0,
+		potential =
+		{
+			{
+				name = "tau_greater_knarloc_claw",
+				effectiveness = GenerateUnitEffectiveness(9.3,10.0,10.0,9.8,9.3,10.0,10.0,9.8,10.0,9.6,7.4,9.0,8.1,6.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Swordfish Gunship",
+		sbp_name = "tau_swordfish_squad",
+		ebp_name = "tau_swordfish",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_swordfish",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,7.1,7.0,5.7,8.6,6.8,6.5,8.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_missile_pod_swordfish_r",
+				effectiveness = GenerateUnitEffectiveness(5.4,5.4,5.4,5.4,5.4,6.5,6.5,0.0,5.8,4.3,5.8,5.4,4.3,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_missile_pod_swordfish_l",
+				effectiveness = GenerateUnitEffectiveness(5.4,5.4,5.4,5.4,5.4,6.5,6.5,0.0,5.8,4.3,5.8,5.4,4.3,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_rail_gun_swordfish_l",
+				effectiveness = GenerateUnitEffectiveness(5.1,6.2,6.0,6.4,5.5,9.6,10.0,8.7,7.1,7.6,5.5,7.2,5.5,5.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_rail_gun_swordfish_r",
+				effectiveness = GenerateUnitEffectiveness(5.1,6.2,6.0,6.4,5.5,9.6,10.0,8.7,7.1,7.6,5.5,7.2,5.5,5.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Malo Gunship",
+		sbp_name = "tau_malo_squad",
+		ebp_name = "tau_malo",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "tau_rail_gun_malo_l",
+				effectiveness = GenerateUnitEffectiveness(7.1,6.2,6.0,6.4,5.5,9.6,10.0,8.7,7.1,7.6,5.5,7.2,5.5,5.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_rail_gun_malo_r",
+				effectiveness = GenerateUnitEffectiveness(7.1,6.2,6.0,6.4,5.5,9.6,10.0,8.7,7.1,7.6,5.5,7.2,5.5,5.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_rail_gun_malo",
+				effectiveness = GenerateUnitEffectiveness(7.1,6.2,6.0,6.4,5.5,9.6,10.0,8.7,7.1,7.6,5.5,7.2,5.5,5.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Prototype Satellite Drone",
+		sbp_name = "tau_drone_satellite_squad",
+		ebp_name = "tau_drone_remora_satellite",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "tau_ion_cannon_satellite",
+				effectiveness = GenerateUnitEffectiveness(10.0,10.0,9.8,9.7,9.3,8.7,8.3,8.4,8.5,9.9,7.9,7.7,7.2,0.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV101 Riptide",
+		sbp_name = "tau_xv101_riptide_suit_squad",
+		ebp_name = "tau_xv101_riptide_suit",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_riptide",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,7.1,7.0,5.7,8.6,6.8,6.5,8.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_fusion_cascade_riptide",
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,7.0,8.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_missile_launcher_riptide",
+				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,3.7,2.7,8.6,8.3,8.0,4.3,5.2,4.3,8.6,8.3,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV104 Riptide",
+		sbp_name = "tau_xv104_riptide_suit_squad",
+		ebp_name = "tau_xv104_riptide_suit",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_riptide",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.8,8.6,8.5,8.3,7.1,7.0,5.7,8.6,6.8,6.5,8.3,5.1,4.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_ion_cannon_riptide",
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,7.0,8.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_fusion_blaster_riptide",
+				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,3.7,2.7,8.6,8.3,8.0,4.3,5.2,4.3,8.6,8.3,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV202 Mako Titan",
+		sbp_name = "tau_xv202_mako_titan_squad",
+		ebp_name = "tau_xv202_mako_titan",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 9.9,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_titan_left",
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,7.0,8.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Tigershark",
+		sbp_name = "tau_tigershark_squad",
+		ebp_name = "tau_tigershark",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 9.9,
+		potential =
+		{
+			{
+				name = "tau_rail_gun_tigershark",
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,7.0,8.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "XV107 R'Varna Titan",
+		sbp_name = "tau_xv107_rvarna_suit_squad",
+		ebp_name = "tau_xv107_rvarna_suit",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 10.0,
+		potential =
+		{
+			{
+				name = "tau_pulse_submunition_cannon_improved",
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,7.0,8.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_pulse_submunition_cannon_right",
+				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Manta",
+		sbp_name = "tau_manta_squad",
+		ebp_name = "tau_manta",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 10,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_manta",
+				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_rail_gun_manta",
+				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Commander Advance Sp",
+		sbp_name = "tau_commander_squad_advance_sp",
+		ebp_name = "tau_commander_advance_sp",
+		class = UnitStatsAI.UC_Commander,
+		rating = 3.3,
+		potential =
+		{
+			{
+				name = "tau_burst_cannon_commander",
+				effectiveness = GenerateUnitEffectiveness(5.7,7.8,7.8,7.1,6.4,2.4,1.2,0.0,5.7,3.6,5.0,3.9,1.6,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_fusion_blaster_commander_sp",
+				effectiveness = GenerateUnitEffectiveness(6.7,5.9,7.0,2.8,2.0,10.0,10.0,3.8,10.0,1.4,8.0,5.9,4.4,1.5,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_plasma_rifle_commander_sp",
+				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,7.8,10.0,10.0,10.0,7.8,7.8,7.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_dummy_weapon",
+				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_missile_launcher_commander",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.2,3.2,3.2,3.2,10.0,7.4,3.7,3.2,4.9,3.2,4.6,2.8,1.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_dummy_weapon",
+				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_flamer_commander",
+				effectiveness = GenerateUnitEffectiveness(6.9,8.2,8.0,7.5,10.0,0.0,0.0,0.0,7.1,5.5,6.6,1.3,0.8,0.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_dummy_weapon",
+				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_commander_jetpack",
+				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "space_marine_dummy_weapon",
+				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_commander_advanced_sensor_array",
+				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "space_marine_dummy_weapon",
+				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "tau_commander_iridium_armor",
+				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "tau_burst_cannon_commander_melee",
+				effectiveness = GenerateUnitEffectiveness(5.7,7.8,7.8,7.1,6.4,2.4,1.2,0.0,5.7,3.6,5.0,3.9,1.6,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Nuke",
+		sbp_name = "npc_squad_superweapon1",
+		ebp_name = "npc_superweapon1",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 0,
+		potential =
+		{
+			{
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+}

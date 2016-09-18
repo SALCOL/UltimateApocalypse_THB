@@ -1,0 +1,39 @@
+--No Fliers
+--Aircraft restriction script by Fuggles
+-- Edited by Cylarne
+
+-----------------------------------------------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+
+function OnInit()
+	Rule_AddOneShot(noflyzone,0)
+end
+
+
+
+Scar_AddInit(OnInit)
+
+
+function noflyzone ()
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/Aircraft.scar");
+		
+		for i=1,table.getn( t_aircraft_list.Actual ) do
+			local squad = t_aircraft_list.Actual[i];
+		
+			Player_RestrictSquad(player, squad);
+		end 
+		
+	end
+
+
+
+end

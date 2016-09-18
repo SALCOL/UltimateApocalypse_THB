@@ -1,0 +1,890 @@
+--####################################################################################################
+--#
+--#	Heroes Special Chaos Marine race info script
+--#
+--#	Original Heroes idea and implementation by CutterShane 2006
+--#	And then created by the Cylarne. 2011
+--#	Adapted to new Daemons Vanilla version by Gambit. 2013-2014
+--####################################################################################################
+
+CommandLevel.deamons_race = { 4, 7 }
+
+UnitTypes.deamons_race =
+{
+
+	-- REGULAR UNITS
+	daemon_squad_lost_soul =
+	{
+		Title = "Lost Soul",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeBuilder,
+		FXType = "Squad",
+		CanAttach = true,
+	},
+	daemon_squad_fury =
+	{
+		Title = "Furies",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_flesh_hound =
+	{
+		Title = "Flesh Hounds",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_nurgling =
+	{
+		Title = "Nurglings",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+
+	-- SPECIAL UNITS
+	daemon_squad_fiends =
+	{
+		Title = "Fiends",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_screamers =
+	{
+		Title = "Screamers",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_bloodletters =
+	{
+		Title = "Bloodletters",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_plague_bearers =
+	{
+		Title = "Plague Bearers",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_daemonettes =
+	{
+		Title = "Daemonettes",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_flamers =
+	{
+		Title = "Flamers",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_horror = 
+	{
+		Title = "Horrors",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_pink_horror =
+	{
+		Title = "Pink Horrors",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_pink_horror_minions =
+	{
+		Title = "Pink Horrors",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_defiler_khorne =
+	{
+		Title = "Blood Slaughterer of Khorne",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+	},
+	daemon_squad_defiler_nurgle =
+	{
+		Title = "Desecrator of Nurgle",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+	},
+	daemon_squad_defiler_slaanesh =
+	{
+		Title = "Debaser of Slaanesh",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+	},
+	daemon_squad_defiler_tzeentch =
+	{
+		Title = "Deceiver of Tzeentch",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+	},
+	daemon_squad_jugg =
+	{
+		Title = "Infernal Juggernaut of Khorne",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+	},
+	daemon_squad_warp_spawn =
+	{
+		Title = "Warp Spawn",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Vehicle",
+	},
+	daemon_squad_blight_drones =
+	{
+		Title = "Blight Drones of Nurgle",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Vehicle",
+	},
+
+	-- COMMANDO UNITS
+	daemon_squad_bloodletter_elites =
+	{
+		Title = "Bloodletter Elites",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_doomed_ones =
+	{
+		Title = "Doomed Ones",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_daemonettes_greater =
+	{
+		Title = "Favoured Daemonettes",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_obliterator =
+	{
+		Title = "Obliterators",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"chaos_obliterator_ranged_group",
+			"chaos_power_fist_obliterator",
+			"daemons_heavy_flamer_obliterator",
+		},
+	},
+	daemon_squad_mutilator =
+	{
+		Title = "Mutilators",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_power_fist_mutilator",
+		},
+	},
+	daemon_squad_honor_guard =
+	{
+		Title = "Honour Guard",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
+	daemon_squad_bloodthirster =
+	{
+		Title = "Bloodthirster",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		Daemon = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_bloodthirster_melee",
+		},
+	},
+	daemon_squad_bloodthirster_angron = 
+	{
+		Title = "Bloodthirster Spawns",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+		Daemon = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_bloodthirster_melee",
+		},
+	},
+	daemon_squad_guo =
+	{
+		Title = "Great Unclean One",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		Daemon = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_guo_melee",
+			"daemons_guo_sword",
+		},
+	},
+	daemon_squad_keeper_of_secrets =
+	{
+		Title = "Keeper of Secrets",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		Daemon = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_kos_melee",
+		},
+	},
+	daemon_squad_lord_of_change =
+	{
+		Title = "Lord of Change",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		Daemon = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_loc_melee",
+		},
+	},
+	daemon_squad_hell_spawn =
+	{
+		Title = "Hell Spawn",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+	},
+	daemon_squad_soul_grinder =
+	{
+		Title = "Soul Grinder",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+	},
+	daemon_squad_greater_brass_scorpion = 
+	{
+		Title = "Greater Brass Scorpion",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_greater_brass_scorpion_demolisher_cannon",
+			"daemons_greater_brass_scorpion_autocannon",
+			"daemons_greater_brass_scorpion_melee",
+		},
+	},
+	daemon_squad_hell_drake = 
+	{
+		Title = "Hell Drake",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"chaos_flamer_heldrake",
+			"chaos_daemon_fire_heldrake",
+			"chaos_doombolt_heldrake",
+			"chaos_firebolt_heldrake",
+		},
+	},
+
+	-- COMMANDER UNITS
+	daemon_squad_lord =
+	{
+		Title = "Daemon Lord",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+		MorphID = 1,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_hellsword",
+			"daemons_hellsword_improved",
+			"daemons_hellsword_greater",
+		},
+	},
+	daemon_squad_lord_khorne =
+	{
+		Title = "Daemon Lord",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+	},
+	daemon_squad_lord_nurgle =
+	{
+		Title = "Daemon Lord",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+	},
+	daemon_squad_lord_slaanesh =
+	{
+		Title = "Daemon Lord",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+	},
+	daemon_squad_lord_tzeentch =
+	{
+		Title = "Daemon Lord",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+	},
+	daemon_squad_lord_stature =
+	{
+		Title = "Daemon Lord (Stature)",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+		MorphID = 1,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_hellsword_greater",
+		},
+	},
+	daemon_squad_lord_stature_khorne =
+	{
+		Title = "Daemon Lord (Stature)",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+	},
+	daemon_squad_lord_stature_nurgle =
+	{
+		Title = "Daemon Lord (Stature)",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+	},
+	daemon_squad_lord_stature_slaanesh =
+	{
+		Title = "Daemon Lord (Stature)",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+	},
+	daemon_squad_lord_stature_tzeentch =
+	{
+		Title = "Daemon Lord (Stature)",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+	},
+	daemon_squad_juggernaut =
+	{
+		Title = "Bloodcrusher of Khorne",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		Unique = true,
+	},
+	daemon_squad_khorne_herald =
+	{
+		Title = "Herald of Khorne",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		Unique = true,
+		CanAttach = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_herald_hellblade_fury_of_chaos",
+		},
+	},
+	daemon_squad_nurgle_herald =
+	{
+		Title = "Herald of Nurgle",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		Unique = true,
+		CanAttach = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_plague_sword_herald",
+			"daemons_plague_weapon",
+		},
+	},
+	daemon_squad_slaanesh_herald =
+	{
+		Title = "Herald of Slaanesh",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		Unique = true,
+		CanAttach = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_dummy_weapon_slaanesh_herald",
+			"daemons_slaanesh_herald_melee",
+		},
+	},
+	daemon_squad_tzeentch_herald =
+	{
+		Title = "Herald of Tzeentch",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		Unique = true,
+		CanAttach = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_daemon_fire_herald",
+			"daemons_daemon_fire_tzeentch_bolt",
+			"daemons_horror_melee",
+		},
+	},
+	daemon_squad_horblu =
+	{
+		Title = "Shadow Fiends",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		Unique = true,
+		HasLeaders = true,
+		HasWeapons = true,
+		Leaders =
+		{
+			"daemon_horblu_purple",
+			"daemon_horblu_green",
+			"daemon_horblu_red",
+			"daemon_horblu_yellow",
+		},
+		Weapons =
+		{
+			"daemons_daemon_fire_improved",
+			"daemons_daemon_fire_improved_tzeentch",
+			"daemons_horror_black_melee",
+			"daemons_doombolt",
+			"daemons_poison_bolt",
+			"daemons_firebolt",
+			"daemons_firebolt_artillery",
+			"daemons_horror_melee",
+		},
+	},
+	daemon_squad_horblu_stature =
+	{
+		Title = "Shadow Fiends (Stature)",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		Unique = true,
+		HasLeaders = true,
+		HasWeapons = true,
+		Leaders =
+		{
+			"daemon_horblu_purple",
+			"daemon_horblu_green",
+			"daemon_horblu_red",
+			"daemon_horblu_yellow",
+		},
+		Weapons =
+		{
+			"daemons_daemon_fire_improved",
+			"daemons_poison_bolt",
+			"daemons_doombolt",
+			"daemons_firebolt",
+			"daemons_horror_melee",
+			"daemons_firebolt_artillery",
+		},
+	},
+	daemon_squad_daemon_prince =
+	{
+		Title = "Greater Demon Prince",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		General = true,
+		CanMorph = true,
+		MorphID = 1,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_daemon_prince_sword_undivided",
+		},
+	},
+	daemon_squad_daemon_prince_khorne =
+	{
+		Title = "Daemon Prince of Khorne",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		General = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_daemon_prince_sword_khorne",
+		},
+	},
+	daemon_squad_daemon_prince_nurgle =
+	{
+		Title = "Daemon Prince of Nurgle",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		General = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_daemon_prince_sword_nurgle",
+		},
+	},
+	daemon_squad_daemon_prince_slaanesh =
+	{
+		Title = "Daemon Prince of Slaanesh",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		General = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_daemon_prince_sword_slaanesh",
+		},
+	},
+	daemon_squad_daemon_prince_tzeentch =
+	{
+		Title = "Daemon Prince of Tzeentch",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		General = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_daemon_prince_sword_tzeentch",
+		},
+	},
+	daemon_squad_primarch_angron =
+	{
+		Title = "Primarch Angron",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		General = true,
+		CanAttach = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"daemons_skullaxe_angron",
+			"daemons_firesword_angron",
+			"daemons_voidsword_angron",
+			"daemons_doom_sickle_angron",
+			"daemons_daemon_prince_sword_angron",
+		},
+	},
+}
+
+UnitRanks.deamons_race =
+{
+	{
+		Name = "Regular",
+		XPRequirements =
+		{
+			Commander = 0,
+			RegularForces = 0,
+			SpecialForces = 0,
+			CommandoForces = 0,
+		},
+		UpgradeFX =
+		{
+			Squad = nil,
+			Vehicle = nil,
+		},
+		AuraFX =
+		{
+			Squad = nil,
+			Vehicle = nil,
+		},
+		MessageFX =
+		{
+			Icon = nil,
+			Sound = nil,
+		},
+	},
+	{
+		Name = "Experienced",
+		XPRequirements =
+		{
+			Commander = 1000,
+			RegularForces = 1000,
+			SpecialForces = 1500,
+			CommandoForces = 2000,
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = nil,
+			Vehicle = nil,
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade_daemons",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Veteran",
+		XPRequirements =
+		{
+			Commander = 2000,
+			RegularForces = 2000,
+			SpecialForces = 3000,
+			CommandoForces = 4000,
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = nil,
+			Vehicle = nil,
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade_daemons",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Expert",
+		XPRequirements =
+		{
+			Commander = 4000,
+			RegularForces = 4000,
+			SpecialForces = 6000,
+			CommandoForces = 8000,
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/docs_tools_unit" },
+			Vehicle = { "guard/abilities/fanatacism_hvy" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade_daemons",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Elite",
+		XPRequirements =
+		{
+			Commander = 6000,
+			RegularForces = 6000,
+			SpecialForces = 9000,
+			CommandoForces = 12000,
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/docs_tools_unit" },
+			Vehicle = { "guard/abilities/fanatacism_hvy" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade_daemons",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Ultra Elite",
+		XPRequirements =
+		{
+			Commander = 8000,
+			RegularForces = 8000,
+			SpecialForces = 12000,
+			CommandoForces = 16000,
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/docs_tools_unit" },
+			Vehicle = { "guard/abilities/fanatacism_hvy" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade_daemons",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Legendary",
+		XPRequirements =
+		{
+			Commander = 11000,
+			RegularForces = 11000,
+			SpecialForces = 16500,
+			CommandoForces = 22000,
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/inspiring" },
+			Vehicle = { "guard/abilities/fanatacism_hvy", "unit_ability_fx/rally_hvy_unit_fx" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade_daemons",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Champion",
+		XPRequirements =
+		{
+			Commander = 14000,
+			RegularForces = -1,
+			SpecialForces = -1,
+			CommandoForces = -1,
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/battlecry_god_light", "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/battlecry_god_light", "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/inspiring" },
+			Vehicle = { "guard/abilities/fanatacism_hvy", "unit_ability_fx/rally_hvy_unit_fx" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade_daemons",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Hero",
+		XPRequirements =
+		{
+			Commander = 17000,
+			RegularForces = -1,
+			SpecialForces = -1,
+			CommandoForces = -1,
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/battlecry_god_light", "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/battlecry_god_light", "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/inspiring" },
+			Vehicle = { "guard/abilities/fanatacism_hvy", "unit_ability_fx/rally_hvy_unit_fx" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade_daemons",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+}

@@ -1,0 +1,59 @@
+----------------------------------------
+-- File: 'carnifextactic.ai'
+-- Created by Cylarne @ 2014
+-- Edited @ 2015
+
+class 'CarnifexTactic' (TyranidInfantryTactic)
+
+Carnifex = {}
+
+function CarnifexTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Carnifex Tactic")
+	
+	-- Add a choice to stay in ranged or melee combat (Uberfex).
+	self.choice_ranged_melee = math.random(1, 100)
+	
+end
+
+function CarnifexTactic:InitAbilities()
+
+	if (Carnifex.bioplasma == nil) then
+		Carnifex.bioplasma = cpu_manager.stats:GetAbilityID( "tyranids_bioplasma" )
+	end
+	if (Carnifex.scream == nil) then
+		Carnifex.scream = cpu_manager.stats:GetAbilityID( "tyranids_carnifex_scream" )
+	end
+end
+
+function CarnifexTactic:DoAbilities()
+	
+	Ability.DoAbilityPos( self.squad_ai, Carnifex.bioplasma, Ability.Filters.CloseEnemy, 6 ) 
+	
+	Ability.DoAbility( self.squad_ai, Carnifex.scream, Ability.Filters.IsInCombat )
+
+end
+
+function CarnifexTactic:Upgrade()
+
+ 	-- If I chose melee combat, don't upgrade!
+	local sSquadName = self.squad_ai:GetSquadName()
+	if (sSquadName == "tyranids_squad_carnifex_uber") then
+		if (self.choice_ranged_melee >= 50) then
+			return
+		end
+	end
+	
+end
+
+function CarnifexTactic:Update()
+	
+	local sSquadName = self.squad_ai:GetSquadName()
+	if (sSquadName == "tyranids_squad_carnifex_uber") then
+		
+		-- Set unit on ranged stance by a 50/50 chance.
+		if (self.squad_ai:GetMeleeStance() ~= SquadAI.MSTANCE_Assault and self.choice_ranged_melee >= 50) then
+			self.squad_ai:DoSetMeleeStance(SquadAI.MSTANCE_Assault)
+		end
+	end
+end

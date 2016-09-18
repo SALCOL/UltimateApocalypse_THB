@@ -1,0 +1,60 @@
+----------------------------------------
+-- File: 'tauarkacannontactic.ai'
+-- Edited by Krronus @ 08.18.2010
+-- Edited by Cylarne_04 2011
+
+class 'TauArkaCannonTactic' (BaseTactic)
+
+TauArkaCannon = {}
+
+function TauArkaCannonTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Tau Arka Cannon Tactic")
+end
+
+function TauArkaCannonTactic:InitAbilities()
+
+	--[[ Init ability ID's
+	if (TauArkaCannon.deathpulse_id == nil) then
+		TauArkaCannon.deathpulse_id = cpu_manager.stats:GetAbilityID( "tau_arka_focused_ion_blast" )
+	end
+	
+	if (TauArkaCannon.superweapon2_id == nil) then
+		TauArkaCannon.superweapon2_id = cpu_manager.stats:GetAbilityID( "tau_arka_ion_strike" )
+	end]]
+	
+	if (TauArkaCannon.superweapon_id == nil) then
+		TauArkaCannon.superweapon_id = cpu_manager.stats:GetAbilityID( "tau_arka_ion_cannon" )
+	end
+	
+	if (TauArkaCannon.IonNuke_id == nil) then
+		TauArkaCannon.IonNuke_id = cpu_manager.stats:GetAbilityID( "tau_nuke" )
+	end
+end
+
+function TauArkaCannonTactic:DoAbilities()
+
+	-- Activate Apocalyptic Superweapon.
+	Ability.DoAbilityPos(self.base_ai, TauArkaCannon.IonNuke_id, Ability.Filters.CloseEnemy, 35)
+	Ability.DoAbilityTargetEntity(self.base_ai, TauArkaCannon.IonNuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 20)
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Anti Aircraft weapon (if in combat, strike back!)
+	--Ability.DoAbility( self.base_ai, TauArkaCannon.deathpulse_id, Ability.Filters.IsInCombat )
+	
+	-- Try to activate all Ion Cannon Superweapons
+	if (self.base_ai:CanDoAbility(TauArkaCannon.superweapon_id) and iRequisition >= 10000 and iPower >= 10000) then
+	
+		Ability.DoAbility( self.base_ai, TauArkaCannon.superweapon_id, Ability.Filters.IsInCombat )
+	end
+	--[[if (self.base_ai:CanDoAbility(TauArkaCannon.superweapon2_id)) then
+	
+		local iRange2 = self.base_ai:GetAbilityRange(TauArkaCannon.superweapon2_id)
+		local oSquad2 = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange2, 6)
+		if (oSquad2 ~= nil) then	
+			self.base_ai:DoSpecialAbilitySquad(TauArkaCannon.superweapon2_id, oSquad2:GetSquad())
+		end
+	end]]
+end

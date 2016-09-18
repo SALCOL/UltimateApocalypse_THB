@@ -1,0 +1,34 @@
+-- Hard Core
+--
+-- original functions by Relic Entertainment Inc.
+-- (c) 2003 Relic Entertainment Inc.
+-- 
+-- Created by Krronus
+-----------------------------------------------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+function HardCore_Init()
+	Rule_AddOneShot( HardCore, 0.5)
+end
+
+function HardCore()
+
+	local Modifier_percent = 0.3
+	
+	local playerCount = World_GetPlayerCount()
+
+	for i = 0, playerCount - 1 do
+		local player = World_GetPlayerAt(i)
+		local race = Player_GetRaceName(player)
+		
+		local modifier = Modifier_Create(MAT_Player, "health_maximum_player_modifier", MUT_Multiplication, false, Modifier_percent, "")
+		local modifier2 = Modifier_Create(MAT_Player, "morale_maximum_player_modifier", MUT_Multiplication, false, Modifier_percent, "")
+	
+		Modifier_ApplyToPlayer( modifier, player)
+		Modifier_ApplyToPlayer( modifier2, player)
+	end
+end
+
+Scar_AddInit(HardCore_Init)

@@ -1,0 +1,23 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["necron_race"] =
+{
+	{ "necron_listening_post", 35 },
+	{ "necron_solar_pulse", 15 },
+	{ "necron_blind", 10 },
+	{ "necron_deceiver_deceive", 0 },
+	{ "necron_stun", 0 },
+	{ "necron_lightning_field", 0 },
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["necron_race"] =
+{
+	{ "necron_chronometron", 10 },
+	{ "necron_wraith_phase_shift", 10 },
+	{ "necron_wraith_phase_shift_advance_sp", 0 },
+	{ "necron_mass_resurrection", 0 },
+	{ "necron_mass_resurrection_beacon", 0 },
+	{ "necron_phase_shifter", 0 },
+}

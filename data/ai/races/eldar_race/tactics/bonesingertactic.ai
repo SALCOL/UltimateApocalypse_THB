@@ -1,0 +1,30 @@
+class 'BonesingerTactic' (EngineerTactic)
+
+Bonesinger = {}
+
+function BonesingerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Bonesinger Tactic")
+	
+	self.m_iTransportable = 1
+	self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("eldar_hq_super")
+end
+
+function BonesingerTactic:IsAffectedByMorale()
+	return false
+end
+
+function BonesingerTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Bonesinger.wraithtomb_id == nil) then
+		Bonesinger.wraithtomb_id = cpu_manager.stats:GetAbilityID( "eldar_wraithtomb" )
+	end
+end
+
+function BonesingerTactic:DoAbilities()
+
+	-- Activate the Wraithtomb.
+	Ability.DoAbilityTargetEntity(self.squad_ai, Bonesinger.wraithtomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	
+end

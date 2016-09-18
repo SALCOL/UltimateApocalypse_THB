@@ -1,0 +1,131 @@
+----------------------------------------
+-- File: 'WillHivetactic.ai'
+-- Edited by Thudmeizer @ 12.12.2006
+
+class 'WillHiveTactic' (EngineerTactic)
+
+WillHive = {}
+
+function WillHiveTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Will Hive Tactic")
+	
+	-- Init abilities
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function WillHiveTactic:CanRepair()
+	return false
+end
+
+function WillHiveTactic:IsAffectedByMorale()
+        return false
+end
+
+function WillHiveTactic:InitAbilities()
+	
+	------------------------- LINKS
+	if (WillHive.link_tyranoform_id == nil) then
+		WillHive.link_tyranoform_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_tyranoform")
+	end
+	if (WillHive.link_infest_id == nil) then
+		WillHive.link_infest_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_infest")
+	end
+	if (WillHive.link_reveal_id == nil) then
+		WillHive.link_reveal_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_reveal")
+	end
+	if (WillHive.link_sporestrike_id == nil) then
+		WillHive.link_sporestrike_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_hivestrike")
+	end
+	if (WillHive.link_hivestrike_id == nil) then
+		WillHive.link_hivestrike_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_hivestrike_greater")
+	end
+	
+	------------------------- SUPERWEAPONS
+	
+	--[[if (WillHive.superweapon2_id == nil) then
+		WillHive.superweapon2_id = cpu_manager.stats:GetAbilityID("tyranids_summon_hive_fleet")
+	end
+	if (WillHive.superweapon1_id == nil) then
+		WillHive.superweapon1_id = cpu_manager.stats:GetAbilityID("tyranids_planetary_bombardment")
+	end
+	
+	if (WillHive.biobomb_id == nil) then
+		WillHive.biobomb_id = cpu_manager.stats:GetAbilityID("tyranids_bio_bomb")
+	end]]
+end
+
+function WillHiveTactic:DoAbilities()
+
+	------------------------------ HIVE MIND LINKS
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	local iRange = 2000
+	local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 6)
+	local squad_filter = function( squad_ai )		
+		return not squad_ai:IsInCombat() and not squad_ai:IsBroken()
+	end	
+	
+	-- Hivestrike
+	if (self.squad_ai:CanDoAbility(WillHive.link_hivestrike_id) and iPower >= 1000) then
+		Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.link_hivestrike_id, Ability.EntityFilters.CloseBaseEntityEnemy, 12)
+	end
+	
+	-- Reveal
+	if (self.squad_ai:CanDoAbility(WillHive.link_reveal_id) and iPower >= 400) then
+		Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.link_reveal_id, Ability.EntityFilters.CloseBaseEntityEnemy, 14)
+	end	
+	
+	-- Infestation
+	if (self.squad_ai:CanDoAbility(WillHive.link_infest_id) and iPower >= 500) then
+		if (math.random(1, 10) >= 8) then
+			Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.link_infest_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10)
+		elseif (math.random(1, 10) >= 5) then
+			--local target_squad = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), range, squad_filter )
+			--self.squad_ai:DoSpecialAbilitySquad(WillHive.link_infest_id, target_squad)
+		elseif (oSquad ~= nil) then
+			self.squad_ai:DoSpecialAbilitySquad(WillHive.link_infest_id, oSquad:GetSquad())
+		end
+	end
+	
+	-- Tyranoformation
+	if (self.squad_ai:CanDoAbility(WillHive.link_tyranoform_id) and iPower >= 600) then
+		if (oSquad ~= nil) then
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.squad_ai:DoSpecialAbilitySquad(WillHive.link_tyranoform_id, oSquad:GetSquad())
+			end
+		end
+	end
+	
+	-- Spore Strike
+	if (self.squad_ai:CanDoAbility(WillHive.link_sporestrike_id) and iPower >= 200) then
+		if (oSquad ~= nil) then
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.squad_ai:DoSpecialAbilitySquad(WillHive.link_sporestrike_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	------------------------------ DO SUPERWEAPONS
+	
+	--[[if (self.squad_ai:CanDoAbility(WillHive.superweapon2_id) and iPower >= 15000) then
+		-- Activate the Meteor Strike.
+		Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.superweapon2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+		
+	elseif (self.squad_ai:CanDoAbility(WillHive.biobomb_id) and iPower < 7000) then
+		local iRange = self.squad_ai:GetAbilityRange(WillHive.biobomb_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 30)
+		if (oSquad ~= nil) then	
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.squad_ai:DoSpecialAbilitySquad(WillHive.biobomb_id, oSquad:GetSquad())
+			end
+		end
+		
+	elseif (self.squad_ai:CanDoAbility(WillHive.superweapon1_id) and iPower >= 7000) then
+		-- Activate the Meteor Strike.
+		Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.superweapon1_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+		
+	end]]
+	
+
+end

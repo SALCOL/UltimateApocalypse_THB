@@ -1,0 +1,82 @@
+----------------------------------------
+-- File: 'sistersinfantrytactic.ai'
+-- Edited by Thudmeizer		@ 15.11.2007
+
+class 'SistersInfantryTactic' (InfantryTactic)
+
+function SistersInfantryTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Infantry Tactic")
+
+	-- Set infantry options
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "sisters_squad_missionary" or
+		sSquadName == "sisters_squad_battle_sister" or
+		sSquadName == "sisters_squad_celestian" or
+		sSquadName == "sisters_squad_assassin" or
+		sSquadName == "sisters_squad_repentia" or
+		sSquadName == "sisters_squad_canoness" or
+		sSquadName == "sisters_squad_confessor") then
+		
+		-- Squads are transportable
+		self.m_iTransportable = 1
+	end
+end
+
+function SistersInfantryTactic:AddTargetAbilities()
+	table.insert(InfantryTactic.TargetAbilities, { nil, "sisters_phosphor_grenades", Ability.Filters.CloseInfantryEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "sisters_flashbang_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "sisters_krak_grenades", Ability.Filters.CloseVehicleEnemy, 4, 0 })
+end
+
+function SistersInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "sisters_squad_canoness", true })
+	table.insert(self.commander, { "sisters_squad_confessor", false })
+end
+
+function SistersInfantryTactic:DoAbilities()
+
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+
+		if (self.squad_ai:HasSquadAttached("sisters_squad_canoness")) then
+			SistersCanonessTactic.InitAbilities( self )
+			SistersCanonessTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("sisters_squad_confessor")) then
+			SistersConfessorTactic.InitAbilities( self )
+			SistersConfessorTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("sisters_squad_missionary")) then
+			SistersMissionaryTactic.InitAbilities( self )
+			SistersMissionaryTactic.DoAbilities( self )
+		end
+	end
+	
+	if (self.squad_ai:IsUnderAttack()) then
+		local infiltration_id = cpu_manager.stats:GetAbilityID( "all_infiltration" )
+		if (self.squad_ai:CanDoAbility(infiltration_id) and not self.squad_ai:IsUsingAbility(infiltration_id)) then
+			self.squad_ai:DoSpecialAbility(infiltration_id)
+		end
+	end
+	
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
+end
+
+function SistersInfantryTactic:CheckDance(oSquad)
+
+	-- Check opponent
+	if (oSquad == nil) then
+		return false
+	end
+	
+	-- Compare opponents
+	local sSquadName = self.squad_ai:GetSquadName()
+	if (sSquadName == "sisters_squad_battle_sister" or sSquadName == "sisters_squad_celestian") then
+		
+		-- Check opponent
+		if (oSquad:GetSquadName() == "chaos_squad_cultist") then
+			return false
+		end
+	end
+	return true
+end

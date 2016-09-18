@@ -1,0 +1,166 @@
+----------------------------------------
+-- File: 'daemonstrategyinfo.ai'
+-- Edited by CornCobMan 03/06/2013
+-- Edited by fuggles 10/06/2013
+-- Edited by Gambit 26/07/2013
+-- Edited by Cylarne 6/16/2014
+-- Edited by Thudmeizer	@	02/02/2016
+
+BuildBaseStrategyInfo = 
+{
+	deamons_race =
+	{
+		post_builder = 2,
+		flag_capture = 2,
+
+		-- Reserve this amount for building units, reinforcing and upgrading
+		req_reserve = 800,
+		
+		--need at least this at all times
+		squad_cap_threshold = 8,
+
+		--need at least this at all times
+		support_cap_threshold = 2,
+		
+		--used to calculate wants for engineers
+		Engineers =
+		{
+			--number of engineers we're aiming for
+			want = 1,
+		},
+		
+		-- Is used to modify the army strength in the build programs (Allows faster balancing adjustments)
+		ArmyStrengthModifier = 1.0,
+		
+		-- Item-Syntax: Min. Tier, Min. Requisition, Min. Power, Min. ArmyStrength, Object-Count, Object-Type, Object-Name
+		BuildPrograms =
+		{
+			-- Undivided
+			{
+				{ 1, 160, 0, 0, 1,	"Unit",		"daemon_squad_fury" }, -- Force a capturing squad
+				{ 1, 305, 0, 0, 1,	"Unit",		"daemon_squad_lord" },
+				{ 1, 160, 0, 0, 1,	"Building",	"daemon_icon" },
+				{ 1, 0, 0, 0, 1,	"Building",	"daemon_turret_ai" },
+				{ 1, 250, 0, 0, 1,	"Building",	"daemon_sacrificial_circle" },
+				{ 1, 160, 0, 0, 2,	"Building",	"daemon_icon" },
+				{ 1, 0, 105, 0, 40,	"TurretAddon", 	"addon_daemons_list_post_1" },
+				{ 1, 250, 0, 0, 1,	"Building",	"daemon_gift_circle" },
+				{ 1, 160, 0, 0, 4,	"Building",	"daemon_icon" },
+				{ 1, 400, 130, 600, 100,"Addon",	"addon_daemons_hq_1" },
+				{ 1, 0, 105, 0, 100,	"TurretAddon",	"addon_daemons_list_post_1" },
+
+				{ 2, 160, 0, 0, 1,	"Unit",		"daemon_squad_fury" }, -- Force a capturing squad
+				{ 2, 300, 0, 0, 1,	"Unit",		"daemon_squad_horblu" },
+				{ 2, 200, 0, 0, 1,	"Unit",		"daemon_squad_blight_drones" },
+				{ 2, 160, 0, 0, 6,	"Building",	"daemon_icon" },
+				{ 2, 320, 0, 250, 1,	"Building",	"daemon_daemon_pit" },
+				{ 2, 0, 100, 0, 80,	"TurretAddon",	"addon_daemons_turret" },
+				{ 2, 0, 250, 0, 25,	"TurretAddon",	"addon_daemons_list_post_2" },
+				{ 2, 250, 0, 0, 3,	"Building",	"daemon_sacrificial_circle" },
+				{ 2, 800, 150, 500, 2,	"Building",	"daemon_hq" },
+				{ 2, 160, 0, 0, 8,	"Building",	"daemon_icon" },
+				{ 2, 500, 500, 450, 100,"Addon",	"addon_daemons_hq_2" },
+
+				{ 3, 180, 0, 0, 1,	"Unit",		"daemon_squad_fury" }, -- Force a capturing squad
+			      --{ 3, 900, 0, 0, 1,	"Unit",		"daemon_squad_hell_spawn" },
+			      --{ 3, 0, 0, 0, 1,	"Building",	"daemon_maledictum" },
+				{ 3, 160, 0, 0, 10,	"Building",	"daemon_icon" },
+				{ 3, 1000, 1000, 0, 100,"Addon",	"addon_daemons_hq_3" },
+				{ 3, 0, 650, 0, 25,	"TurretAddon",	"addon_daemons_list_post_3" },
+				{ 3, 160, 0, 0, 12,	"Building",	"daemon_icon" },
+
+				{ 4, 180, 0, 0, 1,	"Unit",		"daemon_squad_fury" }, -- Force a capturing squad
+			      --{ 4, 0, 0, 0, 1,	"Building",	"daemon_maledictum" },
+				{ 4, 0, 310, 0, 100,	"TurretAddon",	"addon_daemons_list_post_2" },
+				{ 4, 0, 650, 0, 100,	"TurretAddon",	"addon_daemons_list_post_3" },
+				{ 4, 0, 220, 0, 70,	"TurretAddon",	"addon_daemons_turret_warpstorm" },
+			      --{ 4, 1400, 300, 500, 3,	"Building",	"daemon_hq" },
+				{ 4, 1500, 1500, 500, 100,"Addon",	"addon_daemons_hq_4" },
+				
+				{ 5, 180, 0, 0, 1,	"Unit",		"daemon_squad_fury" }, -- Force a capturing squad
+			      --{ 5, 0, 0, 0, 1,	"Building",	"daemon_maledictum" },
+				{ 5, 1250, 0, 0, 1,	"Building",	"daemon_doom_gateway" },
+				{ 5, 0, 2000, 0, 2,	"TurretAddon",	"addon_daemons_hell_fire" },
+				{ 5, 1000, 1000, 0, 1,	"Building",	"daemon_doom_pit" },
+				{ 5, 6000, 6000, 500, 100,"Addon",	"addon_daemons_hq_5" },
+				
+				{ 6, 0, 0, 0, 1,	"Unit",		"daemon_squad_primarch_angron" } 
+			},
+		},
+				
+		SquadLimits = 
+		{
+			standard = 
+			{
+				daemon_squad_fury = 3,
+				daemon_squad_trade_power = 0,
+				daemon_squad_trade_power2 = 0,
+				daemon_squad_trade_power3 = 0,
+				daemon_squad_trade_requisition = 0,
+				daemon_squad_trade_requisition2 = 0,
+				daemon_squad_trade_requisition3 = 0,
+			}
+		}
+	},
+}
+
+BuildOrderStrategyInfo = 
+{
+	deamons_race =
+	{
+		Basic =
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" },
+			{ "squad", "daemon_squad_fury" },
+			{ "squad", "daemon_squad_lost_soul" },
+			{ "squad", "daemon_squad_fury" },
+			{ "squad", "daemon_squad_fury" },
+			{ "post_builder" },
+			{ "building", "daemon_sacrificial_circle", true },
+			{ "building", "daemon_gift_circle", true }
+		
+		},
+		 
+		QuickStart =
+		{
+			{ "flag_capture" }, { "flag_capture" }, 
+			{ "flag_capture" },
+			{ "squad", "daemon_squad_fury" },
+			{ "squad", "daemon_squad_lost_soul" },
+			{ "squad", "daemon_squad_fury" },
+			{ "squad", "daemon_squad_fury" },
+			{ "squad", "daemon_squad_lost_soul" },
+			{ "post_builder" }, { "post_builder" },
+			{ "building", "daemon_sacrificial_circle", true },
+			{ "building", "daemon_sacrificial_circle", true },
+			{ "building", "daemon_gift_circle", true },
+			{ "building", "daemon_turret" },
+			{ "building", "daemon_hq", true },
+		},
+		 
+		LargeMap =
+		{
+			{ "flag_capture" }, { "flag_capture" }, 
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "daemon_squad_fury" },
+			{ "squad", "daemon_squad_fury" },
+			{ "squad", "daemon_squad_lost_soul" },
+			{ "squad", "daemon_squad_fury" },
+			{ "squad", "daemon_squad_fury" },
+			{ "post_builder" },
+			{ "building", "daemon_sacrificial_circle", true },
+			{ "building", "daemon_gift_circle", true }
+		
+		}
+	}
+}
+
+
+AttackStrategyInfo = 
+{
+	deamons_race =
+	{
+		MinArmyStrength = 350,
+	},
+}

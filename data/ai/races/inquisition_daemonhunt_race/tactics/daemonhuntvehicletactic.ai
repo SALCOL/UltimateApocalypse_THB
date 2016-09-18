@@ -1,0 +1,70 @@
+----------------------------------------
+-- File: 'daemonhuntvehicletactic.ai'
+-- Edited by Thudmeizer         @ 27.11.2006
+
+class 'DaemonhuntVehicleTactic' (VehicleTactic)
+
+function DaemonhuntVehicleTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemonhunt Vehicle Tactic")
+	
+	local sName = squad_ai:GetSquadName()
+	if (sName == "inquisition_squad_rhino" or
+	    sName == "inquisition_squad_chimera_transport") then
+		
+		-- Vehicle is a light transport
+		self.m_iTransportVehicle = 1
+		self.m_iTransportSlots = 2
+	end
+end
+
+-- Check if the vehicle should dance away in melee
+function DaemonhuntVehicleTactic:CheckVehicleDance(sName)
+
+	if (sName == "inquisition_squad_rhino" or
+	  --sName == "inquisition_squad_chimera_support" or
+	    sName == "inquisition_squad_chimera_transport" or	    
+		sName == "inquisition_squad_thunderfire_cannon" or	 
+		sName == "inquisition_squad_predator" or
+		sName == "inquisition_squad_whirlwind" or	
+	    --sName == "inquisition_squad_dreadnought_assault" or
+	    sName == "inquisition_squad_dreadnought_support") then
+		return true
+	end
+	return false
+end
+
+function DaemonhuntVehicleTactic:DoAbilities()
+
+	-- Check if I can use machine spirit while stationary
+	if (self.squad_ai:WasRecentlyHurt() and not self.squad_ai:IsInStateMove() and not self.squad_ai:IsInStateAttackMove()) then
+		
+		local spirit_id = cpu_manager.stats:GetAbilityID( "inquisition_machine_spirit" )	  
+		if (self.squad_ai:CanDoAbility(spirit_id)) then
+			self.squad_ai:DoSpecialAbility(spirit_id)
+		end	  
+	end
+
+	-- Rhino Repair!
+	if self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 then
+		selfrepair_id = cpu_manager.stats:GetAbilityID( "inquisition_rhino_self_repair" )
+		if (self.squad_ai:CanDoAbility( selfrepair_id )) then
+			self.squad_ai:DoSpecialAbility( selfrepair_id )
+		end
+	end
+
+	-- Check if we can throw smoke
+	local smoke_launchers = cpu_manager.stats:GetAbilityID( "inquisition_smoke_launchers" )
+	if (self.squad_ai:CanDoAbility(smoke_launchers)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(smoke_launchers)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(smoke_launchers, oUnit:GetSquad())
+		end
+	end
+
+	-- Call standard method
+	VehicleTactic.DoAbilities(self)
+end

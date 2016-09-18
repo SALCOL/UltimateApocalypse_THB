@@ -1,0 +1,60 @@
+----------------------------------------
+-- File: 'necroncoretactic.ai'
+-- Edited by Krronus @ 08.09.2010
+
+class 'NecronCoreTactic' (BaseTactic)
+
+NecronCore = {}
+
+function NecronCoreTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Core Tactic")
+end
+
+function NecronCoreTactic:InitAbilities()
+
+	-- Init ability ID's
+	--[[if (NecronCore.chronometron_id == nil) then
+		NecronCore.chronometron_id = cpu_manager.stats:GetAbilityID( "necron_chronometron_beacon" )
+	end
+	if (NecronCore.chronometron2_id == nil) then
+		NecronCore.chronometron2_id = cpu_manager.stats:GetAbilityID( "necron_chronometron_beacon2" )
+	end
+	if (NecronCore.resurrection_id == nil) then
+		NecronCore.resurrection_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_beacon" )
+	end
+	if (NecronCore.resurrection2_id == nil) then
+		NecronCore.resurrection2_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_beacon2" )
+	end
+	if (NecronCore.possession_id == nil) then
+		NecronCore.possession_id = cpu_manager.stats:GetAbilityID( "necron_possession_beacon" )
+	end
+	if (NecronCore.possession2_id == nil) then
+		NecronCore.possession2_id = cpu_manager.stats:GetAbilityID( "necron_possession_beacon2" )
+	end
+	if (NecronCore.veil_id == nil) then
+		NecronCore.veil_id = cpu_manager.stats:GetAbilityID( "necron_veil_beacon" )
+	end
+	if (NecronCore.veil2_id == nil) then
+		NecronCore.veil2_id = cpu_manager.stats:GetAbilityID( "necron_veil_beacon2" )
+	end]]
+end
+
+function NecronCoreTactic:DoAbilities()
+	
+	--[[Ability.DoAbility( self.base_ai, NecronCore.chronometron_id, Ability.Filters.IsInCombat ) -- Chronometron
+	--self.base_ai:DoSpecialAbility(NecronCore.chronometron2_id) -- Chronometron
+	Ability.DoAbility( self.base_ai, NecronCore.possession_id, Ability.Filters.IsInCombat ) -- Void Possession
+	self.base_ai:DoSpecialAbility(NecronCore.possession2_id) -- Void Possession
+	Ability.DoAbility( self.base_ai, NecronCore.veil_id, Ability.Filters.IsInCombat ) -- Veil of Darkness
+	self.base_ai:DoSpecialAbility(NecronCore.veil2_id) -- Veil of Darkness
+	
+	-- Try to activate the Mass Resurrection ability
+	if (self.base_ai:CanDoAbility(NecronCore.resurrection_id)) then
+		Ability.DoAbility(self.base_ai, NecronCore.resurrection_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronCore.resurrection_id, min_bodies = 2 })
+	end
+	-- Try to activate the Global Resurrection ability
+	if (self.base_ai:CanDoAbility(NecronCore.resurrection2_id)) then
+		Ability.DoAbility(self.base_ai, NecronCore.resurrection2_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronCore.resurrection2_id, min_bodies = 10 })
+	end]]
+end

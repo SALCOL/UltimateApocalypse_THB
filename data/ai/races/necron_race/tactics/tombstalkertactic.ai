@@ -1,0 +1,54 @@
+----------------------------------------
+-- File: 'tombstalkertactic.ai'
+-- Createde by Cylarne @ 2011
+
+class 'TombStalkerTactic' (NecronVehicleTactic)
+
+TombStalker = {}
+
+function TombStalkerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Tomb Stalker Tactic")
+end
+
+function TombStalkerTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TombStalker.invisibility_id == nil) then
+		TombStalker.invisibility_id = cpu_manager.stats:GetAbilityID( "necron_invisibility" )	
+	end
+
+	if (TombStalker.phaseshift_id == nil) then
+		TombStalker.phaseshift_id = cpu_manager.stats:GetAbilityID("necron_wraith_phase_shift")	
+	end	
+end
+
+function TombStalkerTactic:DoAbilities()
+
+	if (self.squad_ai:CanDoAbility(TombStalker.invisibility_id)) then
+		if (not self.squad_ai:IsUsingAbility(TombStalker.invisibility_id) and not self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.7) then
+			self.squad_ai:DoSpecialAbility(TombStalker.invisibility_id)
+			
+		elseif (self.squad_ai:IsUsingAbility(TombStalker.invisibility_id) and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility(TombStalker.invisibility_id)
+		end
+	end
+	if (self.squad_ai:CanDoAbility(TombStalker.phaseshift_id) and self.squad_ai:GetHealthPercentage() < 0.2) then
+		Ability.DoAbility(self.squad_ai, TombStalker.phaseshift_id, Ability.PredicateFilters.IsInCombat)
+	end
+	
+	-- Try to spawn Scarabs
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		TombStalkerTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function TombStalkerTactic:DoDirectSpawnAbility()
+
+	-- Spawn Horblu Support in combat
+	if (self.squad_ai:CanDirectSpawn() and self.squad_ai:IsInCombat()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end

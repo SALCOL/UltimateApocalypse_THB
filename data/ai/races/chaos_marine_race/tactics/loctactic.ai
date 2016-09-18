@@ -1,0 +1,46 @@
+----------------------------------------
+-- File: 'loctactic.ai'
+-- Edited by Cylarne_04 2011
+
+class 'LocTactic' (ChaosMarineInfantryTactic)
+
+Loc = {}
+
+function LocTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Loc Tactic")
+
+end
+
+function LocTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Loc.change_id == nil) then
+		Loc.change_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change_loc" )
+	end
+	if (Loc.invulnerability_id == nil) then
+		Loc.invulnerability_id = cpu_manager.stats:GetAbilityID( "chaos_invulnerability" )
+	end
+	if (Loc.winds_id == nil) then
+		Loc.winds_id = cpu_manager.stats:GetAbilityID( "chaos_winds_loc" )
+	end
+	if (Loc.warpstorm_id == nil) then
+		Loc.warpstorm_id = cpu_manager.stats:GetAbilityID( "chaos_warp_storm_mini" )
+	end
+end
+
+function LocTactic:DoAbilities()
+	
+	Ability.DoAbility( self.squad_ai, Loc.winds_id, Ability.Filters.IsInCombat )
+	
+	Ability.DoAbility( self.squad_ai, Loc.invulnerability_id, Ability.Filters.IsInCombat )
+	
+	-- We are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityTarget( self.squad_ai, Loc.change_id, Ability.Filters.CloseEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Loc.warpstorm_id, Ability.Filters.CloseEnemy, 6 )
+	else
+		Ability.DoAbilityTarget( self.squad_ai, Loc._id, Ability.Filters.CloseInfantryEnemy, 6 )
+		Ability.DoAbilityTarget( self.squad_ai, Loc.warpstorm_id, Ability.Filters.CloseEnemy, 12 )
+	end
+end

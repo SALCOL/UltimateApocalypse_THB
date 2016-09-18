@@ -1,0 +1,14 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Commander Wargear (AI)
+-- Created by Cylarne @ 2014
+--
+--	Commander Wargear is restricted for AI.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+
+function RestrictCommanderWargear_AI()
+	
+	ar_wargear_cancel = true -- For AI.
+end
+Scar_AddInit(RestrictCommanderWargear_AI)

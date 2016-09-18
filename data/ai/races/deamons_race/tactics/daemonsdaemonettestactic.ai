@@ -1,0 +1,47 @@
+----------------------------------------
+-- File: 'daemonsdaemonettestactic.ai'
+-- Edited by CornCobMan 30.05.2013
+-- Edited by Cylarne 6/16/2014
+
+class 'DaemonsDaemonettesTactic' (DaemonsInfantryTactic)
+
+DaemonsDaemonettes = {}
+
+function DaemonsDaemonettesTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Daemonettes Tactic")
+	
+end
+
+function DaemonsInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "daemon_squad_lord", true })
+	table.insert(self.commander, { "daemon_squad_khorne_herald", true })
+	table.insert(self.commander, { "daemon_squad_nurgle_herald", true })
+	table.insert(self.commander, { "daemon_squad_slaanesh_herald", true })
+	table.insert(self.commander, { "daemon_squad_tzeentch_herald", true })
+end
+
+
+
+function DaemonsDaemonettesTactic:InitAbilities()
+
+	if (DaemonsDaemonettes.pavane_id == nil) then
+		DaemonsDaemonettes.pavane_id = cpu_manager.stats:GetAbilityID( "daemons_pavane_of_slaanesh" )
+	end
+	
+	if (DaemonsDaemonettes.allure_id == nil) then
+		DaemonsDaemonettes.allure_id = cpu_manager.stats:GetAbilityID( "daemons_allure" )
+	end
+end
+
+function DaemonsDaemonettesTactic:DoAbilities()
+
+	Ability.DoAbility( self.squad_ai, DaemonsDaemonettes.pavane_id, Ability.Filters.IsInCombat )
+	
+	if (self.squad_ai:CanDoAbility(DaemonsDaemonettes.allure_id) and self.squad_ai:IsInCombat()) then
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsDaemonettes.allure_id, Ability.Filters.CloseInfantryEnemy, 4 )
+	end
+
+	-- Call basic DoAbilities methods
+	DaemonsInfantryTactic.DoAbilities(self)
+end

@@ -1,0 +1,49 @@
+----------------------------------------
+-- File: 'hazardtactic.ai'
+-- Edited by Cylarne @ 4/30/2011
+
+class 'HazardTactic' (TauInfantryTactic)
+
+Hazard = {}
+
+function HazardTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Hazard Tactic")
+end
+
+function HazardTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Hazard.pulse == nil) then
+		Hazard.pulse = cpu_manager.stats:GetAbilityID( "tau_xv9_pulse" )	
+	end
+end
+
+function HazardTactic:DoAbilities()
+
+	-- Target generic enemy 
+	Ability.DoAbilityArea(self.squad_ai, Hazard.pulse, Ability.Filters.CloseInfantryEnemy, 18, 4)
+	
+end
+
+function HazardTactic:Upgrade()
+
+	-- Check if we have free ressources
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		-- Upgrade if possible
+		if (self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetNumTroopers() > 0) then
+			local class_type = cpu_manager:GetFirstEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end

@@ -1,0 +1,254 @@
+----------------------------------------
+-- File: 'smloader.ai'
+-- Edited by Arkhan	@ 23.10.2006
+-- Renamed by Corsix    @ 13.02.2006
+-- Edited by Thudmeizer @ 04.02.2016
+-- Edited by Cylarne_04 2011
+
+class 'space_marine_race'
+
+-- Constructor
+function space_marine_race:__init()
+
+end
+
+-- Returns the name of the race
+function space_marine_race:GetRaceName()
+	return "space_marine_race"
+end
+
+-- This function is called if space marines are the race being played
+function space_marine_race:LoadRace( eDifficulty )
+
+	-- Import strategies
+	import( 'Races/space_marine_race/Strategies/MarineBuildBaseStrategy.ai' )
+	
+	-- Import strategy info
+	import( "Races/space_marine_race/Strategies/MarineStrategyInfo.ai" )
+	
+	-- Import tactics
+	import( 'Races/space_marine_race/Tactics/SpaceMarineInfantryTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/SpaceMarineVehicleTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ServitorTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/SkullProbeTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/TechmarineTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ScoutTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/AttackbikeTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ThunderfireCannonTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/TacticalMarineTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/DevastatorTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/SternguardTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/VanguardTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/TerminatorTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/TerminatorAssaultTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ApothecaryTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/BannerBearerTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ChaplainTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/LibrarianTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ForceCommanderTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ChapterMasterTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/HonourGuardTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/RhinoTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/RazorbackTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/DamoclesTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/LandspeederTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/VindicatorTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/DreadnoughtTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/WhirlwindTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/LandRaiderTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/TitanTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/MarinesHQTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/MarinesBuildingTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/SuperStructureTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/MarineBarracksTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/OrbitalRelayTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/MarinesBombTactic.ai' )
+	return true
+end
+
+-- This function is called even if space marines are not the race being played
+function space_marine_race:LoadGlobalInfo()
+
+	-- Import info files
+	import( 'Races/space_marine_race/Info/marineunitstats.ai' )
+	
+	-- Add space marine unit stats
+	table.insert(UnitStats, SpaceMarineUnitStats)
+	return true
+end
+
+-- Creates build base strategy
+function space_marine_race:CreateBuildBaseStrategy()
+	return MarineBuildBaseStrategy(BuildBaseStrategyInfo)
+end
+
+-- Creates a special tactic for a space marine unit
+function space_marine_race:CreateTactic(oSquadAI)
+
+	-- Get unit name and class
+	local sUnitName = oSquadAI:GetSquadName()
+	local eClass = oSquadAI:GetStats():GetClass()
+	
+	-- Check if there is a special tactic for the unit available	
+	if (sUnitName == "space_marine_squad_servitor") then
+		return ServitorTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_skull_probe") then
+		return SkullProbeTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_techmarine") then
+		return TechmarineTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_scout") then
+		return ScoutTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_tactical") then
+		return TacticalMarineTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_devastator") then
+		return DevastatorTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_sternguard_veteran") then
+		return SternguardTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_vanguard_veteran") then
+		return VanguardTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_terminator") then
+		return TerminatorTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_terminator_assault") then
+		return TerminatorAssaultTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_apothecary") then
+		return ApothecaryTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_banner_bearer") then
+		return BannerBearerTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_chaplain") or (sUnitName == "space_marine_squad_chaplain_advance_sp") then
+		return ChaplainTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_librarian") then
+		return LibrarianTactic(oSquadAI)
+	elseif (sUnitName == "npc_squad_civilian_group") then
+		return ForceCommanderTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_force_commander_killeus") or (sUnitName == "space_marine_squad_force_commander_advance_sp") or (sUnitName == "space_marine_squad_force_commander_terminator") then
+		return ForceCommanderTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_force_commander") or (sUnitName == "space_marine_squad_chapter_master") then
+		return ChapterMasterTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_honor_guard_gladiator") then
+		return HonourGuardTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_tactical_bike") then
+		return AttackbikeTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_thunderfire_cannon") then
+		return ThunderfireCannonTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_rhino") then
+		return RhinoTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_razorback") then
+		return RazorbackTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_land_speeder") then
+		return LandspeederTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_damocles") then
+		return DamoclesTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_vindicator") then
+		return VindicatorTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_dreadnought") or (sUnitName == "space_marine_squad_dreadnought_hellfire") or  (sUnitName == "space_marine_squad_dreadnought_ironclad") then
+		return DreadnoughtTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_whirlwind") or (sUnitName == "space_marine_squad_predator_murderer") then
+		return WhirlwindTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_land_raider") or 
+		(sUnitName == "space_marine_squad_land_raider_crusader") or 
+		(sUnitName == "space_marine_squad_land_raider_helios") or 
+		(sUnitName == "space_marine_squad_land_raider_prometheus") or
+		(sUnitName == "space_marine_squad_land_raider_redeemer") or
+		(sUnitName == "space_marine_squad_land_raider_ares") or 
+		(sUnitName == "space_marine_squad_land_raider_terminus") then
+		return LandRaiderTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_warhound_titan") or (sUnitName == "space_marine_squad_reaver_titan") then
+		return TitanTactic(oSquadAI)
+	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
+	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
+		return SpaceMarineVehicleTactic(oSquadAI)
+	end
+	return SpaceMarineInfantryTactic(oSquadAI)
+end
+
+-- Creates a base tactic
+function space_marine_race:CreateBaseTactic(oBuilding)
+
+	-- Get building name
+	local sBuildingName = oBuilding:GetBaseName()
+	
+	-- Check if their is a special tactic for the building available
+	if (sBuildingName == "space_marine_barracks") then
+		return MarineBarracksTactic(oBuilding)
+	elseif (sBuildingName == "space_marine_orbital_relay") or (sBuildingName == "space_marine_interface_relay") or (sBuildingName == "space_marine_vehicle_building") then
+		return OrbitalRelayTactic(oBuilding)
+	elseif (sBuildingName == "space_marine_hq_super") then
+		return SuperStructureTactic(oBuilding)
+	elseif (sBuildingName == "space_marine_hq") then
+		return MarinesHQTactic(oBuilding)
+	elseif (sBuildingName == "marine_commander_bomb") then
+		return MarinesBombTactic(oBuilding)
+	elseif (sBuildingName == "space_marine_ability_building") or 
+		(sBuildingName == "space_marine_armoury") or 
+		(sBuildingName == "space_marine_generator") or 
+		(sBuildingName == "space_marine_landraider_building") or 
+		(sBuildingName == "space_marine_titan_facility") or 
+		(sBuildingName == "space_marine_listening_post") or
+		(sBuildingName == "space_marine_thermo_generator") or
+		(sBuildingName == "space_marine_titan_facility") or
+		(sBuildingName == "space_marine_turret_bolter") or
+		(sBuildingName == "space_marine_turret_missile_sp") or
+		(sBuildingName == "space_marine_wall") then
+		return MarinesBuildingTactic(oBuilding)
+	end
+	return nil
+end
+
+-- Returns a specific information
+function space_marine_race:GetInfo(sType)
+
+	-- Check info type
+	if (sType == "TurretPower") then
+		return 400
+	elseif (sType == "SupportAllyFactor") then
+		return 9 / 4
+	elseif (sType == "AttackModifier") then
+		return -5
+	elseif (sType == "CriticalRangeIncreasePerTier") then
+		return 10
+	elseif (sType == "MinArmyStrengthPerTier") then
+		return 750
+	elseif (sType == "AttackRatio") then
+		return 4 / 5
+	elseif (sType == "RetreatRatio") then
+		return 3 / 5
+	elseif (sType == "InvisibleBuildings") then
+		return false
+	elseif (sType == "HarassingLeader") then
+		return "space_marine_squad_force_commander_killeus"
+	elseif (sType == "AutoConstructBuildings") then
+		return false
+	end
+	return nil
+end
+
+-- Returns the building type and threat
+function space_marine_race:GetBuildingType(sBuildingName)
+
+	-- Return race specific object string
+	if (sBuildingName == "space_marine_hq") then
+		return "HQ", 0
+		
+	elseif (sBuildingName == "space_marine_generator") then
+		return "Generator", 0
+		
+	elseif (sBuildingName == "space_marine_thermo_generator") then
+		return "BiggerGenerator", 0
+		
+	elseif (sBuildingName == "space_marine_vehicle_building") then
+		return "VehicleBuilding", 0
+		
+	elseif (sBuildingName == "space_marine_armoury") then
+		return "Armoury", 0
+		
+	elseif (sBuildingName == "space_marine_listening_post") then
+		return "ListeningPost", 0
+		
+	elseif (sBuildingName == "space_marine_turret_bolter") then
+		return "Turret", 50
+		
+	elseif (sBuildingName == "space_marine_mine_field") then
+		return "Mine", 25
+	end
+	return nil, 0
+end

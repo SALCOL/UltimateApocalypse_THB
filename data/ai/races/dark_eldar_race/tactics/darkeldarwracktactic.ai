@@ -1,0 +1,41 @@
+----------------------------------------
+-- File: 'darkeldarwracktactic.ai'
+-- Edited by Cylarne @ 2012
+
+class 'DarkEldarWrackTactic' (DarkEldarInfantryTactic)
+
+DarkEldarWrack = {}
+
+function DarkEldarWrackTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Dark Eldar Wrack Tactic")
+end
+
+function DarkEldarWrackTactic:InitAbilities()
+
+	if (DarkEldarWrack.stinger_id == nil) then
+		DarkEldarWrack.stinger_id = cpu_manager.stats:GetAbilityID( "dark_eldar_stinger" )
+	end
+	
+	if (DarkEldarWrack.combatdrugs_id == nil) then
+		DarkEldarWrack.combatdrugs_id = cpu_manager.stats:GetAbilityID( "dark_eldar_combat_drugs" )	
+	end
+end
+
+function DarkEldarWrackTactic:DoAbilities()
+
+	-- We are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityTarget( self.squad_ai, DarkEldarWrack.stinger_id, Ability.Filters.CloseInfantryEnemy, 2 )
+	else
+		Ability.DoAbilityTarget( self.squad_ai, DarkEldarWrack.stinger_id, Ability.Filters.CloseInfantryEnemy, 6 )
+	end
+	
+	if (self.squad_ai:IsInCombat()) then
+
+		-- Use drugs!
+		if (self.squad_ai:CanDoAbility( DarkEldarWrack.combatdrugs_id )) then
+			self.squad_ai:DoSpecialAbility( DarkEldarWrack.combatdrugs_id )
+		end
+	end
+end

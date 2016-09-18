@@ -1,0 +1,41 @@
+Failed to preload patch 'races\daemons\angron\chat\combat_taunting'
+	sound_charge_taunt
+	art/ebps/races/daemons/troops/demon_primarch_angron
+Using default patch for races\daemons\angron\chat\combat_taunting
+Failed to preload patch 'speech\races\orks\battle_fortress\ability\bframpage'
+	sound_vocal_rampage
+	art/ebps/races/orks/troops/battle_wagon
+Using default patch for speech\races\orks\battle_fortress\ability\bframpage
+Failed to preload patch 'speech\races\orks\grot_gang\combat'
+	sound_vocal_combat
+	art/ebps/races/orks/troops/grot_generic
+Using default patch for speech\races\orks\grot_gang\combat
+Failed to preload patch 'speech\races\dark_angels\land_raider_ares\die'
+	sound_die_vocal
+	art/ebps/races/space_marines/troops/land_raider_ares
+Using default patch for speech\races\dark_angels\land_raider_ares\die
+Failed to preload patch 'races\space_marines\bike\burnout\bike_screeech'
+	sound_bike_burnout
+	art/ebps/races/space_marines/troops/new_bike
+Using default patch for races\space_marines\bike\burnout\bike_screeech
+
+Failed to preload patch 'races\space_marines\bike\burnout\bike_screeech'
+	sound_bike_burnout
+	art/ebps/races/chaos/troops/chaos_bike
+Using default patch for races\space_marines\bike\burnout\bike_screeech
+Failed to preload patch ''
+	spirit_stone_gem_glow
+	art/ebps/races/eldar/troops/falcon_codex
+Using default patch for
+Failed to preload patch ''
+	spirit_stone_gem_glow
+	art/ebps/races/eldar/troops/fire_prism_codex
+Using default patch for
+Failed to preload patch ''
+	spirit_stone_gem_glow
+	art/ebps/races/eldar/troops/vyper_codex
+Using default patch for
+Failed to preload patch ''
+	spirit_stone_gem_glow
+	art/ebps/races/eldar/troops/wave_serpent
+Using default patch for

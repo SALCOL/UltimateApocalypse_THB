@@ -1,0 +1,48 @@
+----------------------------------------
+-- File: 'sistersemperortactic.ai'
+-- Edited by Cylarne @ 2012
+
+class 'SistersEmperorTactic' (BaseTactic)
+
+SistersEmperor = {}
+
+function SistersEmperorTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Sisters Emperor Tactic")
+	
+end
+
+function SistersEmperorTactic:InitAbilities()
+
+	
+	if (SistersEmperor.Cheat == nil) then
+		SistersEmperor.Nuke_id = cpu_manager.stats:GetAbilityID( "marines_nuke" )
+		SistersEmperor.Nuke2_id = cpu_manager.stats:GetAbilityID( "marines_nuke2" )
+		SistersEmperor.Nuke3_id = cpu_manager.stats:GetAbilityID( "marines_nuke3" )
+		SistersEmperor.Nuke4_id = cpu_manager.stats:GetAbilityID( "sisters_rein_of_fire" )
+		--SistersEmperor.Global = cpu_manager.stats:GetAbilityID( "sisters_exterminatus_global" )
+	end
+	
+end
+
+function SistersEmperorTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Activate the planet destroyer
+	if (iRequisition >= 20000 and iPower >= 20000) then
+		Ability.DoAbilityTargetEntity(self.base_ai, SistersEmperor.Nuke4_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	end
+	
+	Ability.DoAbilityPos(self.base_ai, SistersEmperor.Nuke2_id, Ability.Filters.CloseVehicleEnemy, 2)
+	Ability.DoAbilityPos(self.base_ai, SistersEmperor.Nuke2_id, Ability.Filters.CloseSquadEnemy, 8)
+	Ability.DoAbilityPos(self.base_ai, SistersEmperor.Nuke3_id, Ability.Filters.CloseVehicleEnemy, 2)
+	Ability.DoAbilityTargetEntity(self.base_ai, SistersEmperor.Nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+	--Ability.DoAbilityPos(self.base_ai, SistersEmperor.Nuke4_id, Ability.Filters.CloseVehicleEnemy, 2)
+	--Ability.DoAbilityPos(self.base_ai, SistersEmperor.Nuke4_id, Ability.Filters.CloseEnemy, 8)
+	--Ability.DoAbilityTargetEntity(self.base_ai, SistersEmperor.Nuke4_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	
+	
+	
+end

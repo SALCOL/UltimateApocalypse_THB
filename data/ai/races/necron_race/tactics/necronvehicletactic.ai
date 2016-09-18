@@ -1,0 +1,34 @@
+----------------------------------------
+-- File: 'necronvehicletactic.ai'
+-- Created by Thudmeizer @ 12.10.2006
+
+class 'NecronVehicleTactic' (VehicleTactic)
+
+function NecronVehicleTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Necron Vehicle Tactic")
+end
+
+-- Check if the vehicle should dance away in melee
+function NecronVehicleTactic:CheckVehicleDance(sName)
+
+	if (sName == "necron_destroyer_squad" or
+		sName == "necron_heavy_destroyer_squad") then
+		return true
+	end
+	return false
+end
+
+function NecronVehicleTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat()) then
+		-- Reassemble if squad strength is low.
+		local reassemble_id = cpu_manager.stats:GetAbilityID( "necron_reassemble" )	  	  
+		if (self.squad_ai:CanDoAbility( reassemble_id ) and self.squad_ai:GetNumTroopers() <= 2) then
+			Ability.DoAbility(self.squad_ai, reassemble_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = reassemble_id, min_bodies = 1 })
+		end
+	end
+
+	-- Call standard method
+	VehicleTactic.DoAbilities(self)
+end

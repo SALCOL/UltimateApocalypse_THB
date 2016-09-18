@@ -1,0 +1,38 @@
+----------------------------------------
+-- File: 'daemonsbloodletterstactic.ai'
+-- Edited by CornCobMan 03.06.2013
+-- Edited by Cylarne 6/16/2014
+
+class 'DaemonsBloodlettersTactic' (DaemonsInfantryTactic)
+
+DaemonsBloodletters = {}
+
+function DaemonsBloodlettersTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Bloodletters Tactic")
+	
+end
+
+function DaemonsInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "daemon_squad_lord", true })
+	table.insert(self.commander, { "daemon_squad_khorne_herald", true })
+	table.insert(self.commander, { "daemon_squad_nurgle_herald", true })
+	table.insert(self.commander, { "daemon_squad_slaanesh_herald", true })
+	table.insert(self.commander, { "daemon_squad_tzeentch_herald", true })
+end
+
+function DaemonsBloodlettersTactic:InitAbilities()
+	if (DaemonsBloodletters.haste_id == nil) then
+		DaemonsBloodletters.haste_id = cpu_manager.stats:GetAbilityID( "daemons_blood_haste" )
+	end
+end
+
+function DaemonsBloodlettersTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(DaemonsBloodletters.haste_id)) then
+		Ability.DoAbility( self.squad_ai, DaemonsBloodletters.haste_id, Ability.Filters.IsInCombat )
+	end
+
+	-- Call basic DoAbilities methods
+	DaemonsInfantryTactic.DoAbilities(self)
+end

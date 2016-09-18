@@ -1,0 +1,599 @@
+--####################################################################################################
+--#
+--#     Heroes Special Tyranid race info script
+--#
+--#     Original Heroes idea and implementation by CutterShane 2006
+--#     Heroes Special rework by Arkhan 2007
+--#     Integrated by Thudmeizer 2007
+--#		And then the Cylarne updated it. 2011
+--#
+--####################################################################################################
+
+CommandLevel.tyranids_race = { 3, 5 }
+
+UnitTypes.tyranids_race =
+{
+	-- Skirmish units
+	tyranids_squad_woth =
+	{
+		Title = "Will Of The Hive",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeBuilder,
+		FXType = "Squad",
+	},
+	tyranids_squad_ripperswarm =
+	{
+		Title = "Ripper Swarm Squad",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeBuilder,
+		FXType = "Squad",
+	},
+	tyranids_squad_ripperswarm_global = 
+	{
+		Title = "Ripper Swarm Global Squad",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeBuilder,
+		FXType = "Squad",
+	},
+	tyranids_squad_spore_cluster =
+	{
+		Title = "Spore Cluster",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeScoutSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_spore_cluster_max =
+	{
+		Title = "Spore Cluster (Hive Mind)",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeScoutSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_spore_cluster_spam =
+	{
+		Title = "Spore Cluster (Turret)",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeScoutSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_genestealer =
+	{
+		Title = "Genestealer Squad",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_spinegaunt =
+	{
+		Title = "Spinegaunt Squad",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_termagant =
+	{
+		Title = "Termagant Squad",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_hormagaunt =
+	{
+		Title = "Hormagaunt Squad",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_gargoyle =
+	{
+		Title = "Gargoyles",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_lictor =
+	{
+		Title = "Lictor",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+		CanAttach = true,
+	},
+	tyranids_squad_genestealer_max =
+	{
+		Title = "Genestealer Max Squad",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_spinegaunt_max =
+	{
+		Title = "Spinegaunt Max Squad",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_termagant_max =
+	{
+		Title = "Termagant Max Squad",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_hormagaunt_max =
+	{
+		Title = "Hormagaunt Max Squad",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_gaunt_won =
+	{
+		Title = "Gaunt Won Squad",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_ravener =
+	{
+		Title = "Ravener Squad",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_carnifex_skiller =
+	{
+		Title = "Carnifex Skiller (Screamer)",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_carnifex_khazi =
+	{
+		Title = "Hellfex",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Vehicle",
+	},
+	tyranids_squad_tyrant_guard =
+	{
+		Title = "Tyrant Guard",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	tyranids_squad_warrior =
+	{
+		Title = "Warrior Squad",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+		Unique = true,
+		HasLeaders = true,
+		HasWeapons = true,
+		Leaders =
+		{
+			"tyranids_warrior_hvy",
+			"tyranids_warrior_hvy_bs",
+		},
+		Weapons =
+		{
+			"tyranids_melee_warrior",
+			"tyranids_melee_warrior_rend",
+			"tyranids_devourer_warrior",
+			"tyranids_deathspitter_warrior",
+			"tyranids_venom_canon_warrior",
+		},
+	},
+	tyranids_squad_broodlord =
+	{
+		Title = "Broodlord",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+	},
+	-- Commanders
+	tyranids_squad_lictor_alpha =
+	{
+		Title = "Lictor Alpha",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		Unique = true,
+		CanAttach = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"tyranids_melee_lictor_alpha",
+		},
+	},
+	tyranids_squad_hive_tyrant =
+	{
+		Title = "Hive Tyrant",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		Unique = true,
+		CanAttach = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"tyranids_melee_hivetyrant",
+			"tyranids_devourer_hivetyrant",
+			"tyranids_scyth_hivetyrant",
+			"tyranids_barbed_strangler_hivetyrant",
+			"tyranids_venom_canon_hivetyrant",
+		},
+	},
+	tyranids_squad_swarmlord =
+	{
+		Title = "Swarmlord",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		Unique = true,
+		CanAttach = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"tyranids_melee_swarmlord",
+		},
+	},
+	-- Vehicles
+	tyranids_squad_zoanthropes =
+	{
+		Title = "Zoanthrope",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Squad",
+		CanAttach = true,
+	},
+	tyranids_squad_biovores =
+	{
+		Title = "Biovore Squad",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeArtillery,
+		FXType = "Vehicle",
+	},
+	tyranids_squad_carnifex =
+	{
+		Title = "Carnifex",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"tyranids_melee_carnifex",
+			"tyranids_barbed_strangler_carnifex",
+			"tyranids_venom_canon_carnifex",
+			"tyranids_melee_carnifex_crushclaw",
+		},
+	},
+	tyranids_squad_carnifex_uber =
+	{
+		Title = "Uberfex",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"tyranids_melee_uberfex",
+			"tyranids_venom_canon_uberfex",
+			"tyranids_bioplasma_uberfex",
+			"tyranids_melee_uberfex_crushclaw",
+		},
+	},
+	tyranids_squad_trygon =
+	{
+		Title = "Trygon",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"tyranids_melee_trygon",
+			"tyranids_melee_trygon_crushclaw",
+		},
+	},
+	tyranids_squad_hierophant =
+	{
+		Title = "Hierphant Titan",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"tyranids_venom_canon_hierophant",
+			"tyranids_venom_canon_improved_left_hierophant",
+			"tyranids_venom_canon_improved_hierophant",
+			"tyranids_melee_hiero",
+			"tyranids_melee_hiero_improved_left",
+			"tyranids_melee_hiero_improved",
+			"tyranids_bioplasma_hierophant",
+		},
+	},
+	tyranids_squad_hierophant_max =
+	{
+		Title = "Hierphant Titan Max",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"tyranids_venom_canon_hierophant",
+			"tyranids_venom_canon_improved_left_hierophant",
+			"tyranids_venom_canon_improved_hierophant",
+			"tyranids_melee_hiero",
+			"tyranids_melee_hiero_improved_left",
+			"tyranids_melee_hiero_improved",
+			"tyranids_bioplasma_hierophant",
+		},
+	},
+}
+
+UnitRanks.tyranids_race =
+{
+	{
+		Name = "Regular", --1
+		XPRequirements =
+		{
+			Commander = 0,
+			RegularForces = 0,
+			SpecialForces = 0,
+			CommandoForces = 0,
+		},
+		UpgradeFX =
+		{
+			Squad = nil,
+			Vehicle = nil,
+		},
+		AuraFX =
+		{
+			Squad = nil,
+			Vehicle = nil,
+		},
+		MessageFX =
+		{
+			Icon = nil,
+			Sound = nil,
+		},
+	},
+	{
+		Name = "Experienced", --2
+		XPRequirements =
+		{
+			Commander = 450, -- * .level
+			RegularForces = 900, -- * .level
+			SpecialForces = 1350, -- * .level
+			CommandoForces = 1600, -- * .level
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = nil,
+			Vehicle = nil,
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Veteran", --3
+		XPRequirements =
+		{
+			Commander = 900, -- * .level
+			RegularForces = 1800, -- * .level
+			SpecialForces = 2700, -- * .level
+			CommandoForces = 3200, -- * .level
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = nil,
+			Vehicle = nil,
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Expert", --4
+		XPRequirements =
+		{
+			Commander = 3024, -- * .level
+			RegularForces = 6040, -- * .level
+			SpecialForces = 9072, -- * .level
+			CommandoForces = 12096, -- * .level
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/docs_tools_unit" },
+			Vehicle = { "guard/abilities/fanatacism_hvy" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Elite", --5
+		XPRequirements =
+		{
+			Commander = 7560, -- * .level
+			RegularForces = 15120, -- * .level
+			SpecialForces = 22680, -- * .level
+			CommandoForces = 30240, -- * .level
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/docs_tools_unit" },
+			Vehicle = { "guard/abilities/fanatacism_hvy" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Ultra Elite", --6
+		XPRequirements =
+		{
+			Commander = 15120, -- * .level
+			RegularForces = 30240, -- * .level
+			SpecialForces = 45360, -- * .level
+			CommandoForces = 60480, -- * .level
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/docs_tools_unit" },
+			Vehicle = { "guard/abilities/fanatacism_hvy" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Legendary", --7
+		XPRequirements =
+		{
+			Commander = 25200, -- * .level
+			RegularForces = 50400, -- * .level
+			SpecialForces = 75600, -- * .level
+			CommandoForces = 100800, -- * .level
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/inspiring" },
+			Vehicle = { "guard/abilities/fanatacism_hvy", "unit_ability_fx/rally_hvy_unit_fx" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Champion", --8
+		XPRequirements =
+		{
+			Commander = 36000, -- * .level
+			RegularForces = 72000, -- * .level
+			SpecialForces = 108000, -- * .level
+			CommandoForces = 144000, -- * .level
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/inspiring" },
+			Vehicle = { "guard/abilities/fanatacism_hvy", "unit_ability_fx/rally_hvy_unit_fx" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Hero", --9
+		XPRequirements =
+		{
+			Commander = 45000, -- * .level
+			RegularForces = 90000, -- * .level
+			SpecialForces = 135000, -- * .level
+			CommandoForces = 180000, -- * .level
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/inspiring" },
+			Vehicle = { "guard/abilities/fanatacism_hvy", "unit_ability_fx/rally_hvy_unit_fx" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+	{
+		Name = "Legendary Hero", --10
+		XPRequirements =
+		{
+			Commander = 50000, -- * .level
+			RegularForces = 100000, -- * .level
+			SpecialForces = 150000, -- * .level
+			CommandoForces = 200000, -- * .level
+		},
+		UpgradeFX =
+		{
+			Squad = { "unit_ability_fx/battlecry_god_light", "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx" },
+			Vehicle = { "unit_ability_fx/battlecry_god_light", "unit_ability_fx/smite_anticipation_fx", "eldar_unit_fx/warp_fx", "unit_ability_fx/smite_impact_fx" },
+		},
+		AuraFX =
+		{
+			Squad = { "unit_ability_fx/inspiring" },
+			Vehicle = { "guard/abilities/fanatacism_hvy", "unit_ability_fx/rally_hvy_unit_fx" },
+		},
+		MessageFX =
+		{
+			Icon = "level_upgrade",
+			Sound = "/races/space_marines/librarian/word_of_the_emporer",
+		},
+	},
+}
+

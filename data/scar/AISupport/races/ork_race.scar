@@ -1,0 +1,12 @@
+-- Ork SCAR support info script
+-- Created by Arkhan
+
+DonationSettings.ork_race =
+{
+	Title = "Ork",
+	ResourceExchangeRestricted = false,
+	RequisitionExcess = 1000,
+	RequisitionDemand = 400,
+	PowerExcess = 800,
+	PowerDemand = 400,
+}

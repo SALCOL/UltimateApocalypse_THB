@@ -1,0 +1,26 @@
+----------------------------------------
+-- File: 'scholarstactic.ai'
+-- Edited by Thudmeizer @ 03.04.2007
+
+class 'ScholarsTactic' (DaemonhuntInfantryTactic)
+
+Scholars = {}
+
+function ScholarsTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Scholars Tactic")
+end
+
+function ScholarsTactic:InitAbilities()
+
+	if (Scholars_prayer_id) == nil then
+	   Scholars_prayer_id = cpu_manager.stats:GetAbilityID( "inquisition_scholar_prayer_of_miracle" )	
+	end
+end
+
+function ScholarsTactic:DoAbilities()
+	if (self.squad_ai:CanDoAbility(Scholars.Scholars_prayer_id)) then
+		Ability.DoAbility( self.squad_ai, Scholars.Scholars_prayer_id, Ability.Filters.IsInCombat)
+	end
+end
+

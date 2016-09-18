@@ -1,0 +1,151 @@
+----------------------------------------
+-- File: 'honourguardtactic.ai'
+-- Edited by Thudmeizer @ 05.02.2016
+
+class 'HonourGuardTactic' (SpaceMarineInfantryTactic)
+
+HonourGuard = {}
+
+function HonourGuardTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Honour Guard Tactic")
+end
+
+function HonourGuardTactic:InitAbilities()
+
+	if (HonourGuard.flashbang_id == nil) then
+		HonourGuard.flashbang_id = cpu_manager.stats:GetAbilityID( "marines_flashbang_grenades" )	
+	end
+
+	if (HonourGuard.frag_id == nil) then
+		HonourGuard.frag_id = cpu_manager.stats:GetAbilityID( "marines_frag_grenades" )	
+	end
+
+	if (HonourGuard.inferno_id == nil) then
+		HonourGuard.inferno_id = cpu_manager.stats:GetAbilityID( "marines_inferno_grenades" )	
+	end
+
+	if (HonourGuard.krak_id == nil) then
+		HonourGuard.krak_id = cpu_manager.stats:GetAbilityID( "marines_krak_grenades" )	
+	end
+
+	if (HonourGuard.melta_id == nil) then
+		HonourGuard.melta_id = cpu_manager.stats:GetAbilityID( "marines_melta_bombs" )	
+	end
+
+	if (HonourGuard.smoke_id == nil) then
+		HonourGuard.smoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_grenades" )	
+	end
+
+	if (HonourGuard.sabotage_id == nil) then
+		HonourGuard.sabotage_id = cpu_manager.stats:GetAbilityID( "marines_sabotage" )	
+	end
+
+	if (HonourGuard.run_id == nil) then
+		HonourGuard.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function HonourGuardTactic:DoAbilities()
+
+        Ability.DoAbilityTarget( self.squad_ai, HonourGuard.flashbang_id, Ability.Filters.CloseSquadEnemy, 4)
+        Ability.DoAbilityTarget( self.squad_ai, HonourGuard.frag_id, Ability.Filters.CloseSquadEnemy, 2)
+        Ability.DoAbilityTarget( self.squad_ai, HonourGuard.inferno_id, Ability.Filters.CloseSquadEnemy, 3)
+        Ability.DoAbilityTarget( self.squad_ai, HonourGuard.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTarget( self.squad_ai, HonourGuard.melta_id, Ability.Filters.CloseVehicleEnemy, 1)
+
+	-- Use Sabotage on enemy vehicles or buildings
+        Ability.DoAbilityTarget( self.squad_ai, HonourGuard.sabotage_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTargetEntity( self.squad_ai, HonourGuard.sabotage_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+
+	-- Search a squad to launch smoke grenades
+	local iRange = self.squad_ai:GetAbilityRange(HonourGuard.smoke_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbilitySquad(HonourGuard.smoke_id, oUnit:GetSquad())
+	end
+
+	-- Check to make sure if no threats are nearby
+	local vSquadPos = self.squad_ai:GetPosition()
+	if not (self.squad_ai:IsInCombat()) and not (self.squad_ai:IsUnderAttack()) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( HonourGuard.run_id )) then
+			self.squad_ai:DoSpecialAbility( HonourGuard.run_id )
+		end
+	end
+
+	-- Call standard method
+	SpaceMarineInfantryTactic.DoAbilities(self)
+end
+
+function HonourGuardTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	-- Only upgrade if not reinforcing
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		if (self.squad_ai:HasUpgradableTrooper()) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function HonourGuardTactic:Reinforce()
+
+  --always try for the actual leader first
+	if not self.squad_ai:IsReinforcing() then
+		if self.squad_ai:CanReinforce( false, 0 ) then
+		   self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- try for different types of squad members
+		local ApothecaryIndex = 0
+		local BannerIndex = 1
+		local SkullIndex = 2
+		local ThunderfireIndex = 3
+	
+		local numApothecaries = self.squad_ai:GetLeaderCount( ApothecaryIndex )
+		local numBanners = self.squad_ai:GetLeaderCount( BannerIndex )
+		local numSkulls = self.squad_ai:GetLeaderCount( SkullIndex )
+		local numThunderfires = self.squad_ai:GetLeaderCount( ThunderfireIndex )
+
+		-- Desired number of each leader type
+		local desiredApothecaries = math.random(0,1)
+		local desiredBanners = math.random(0,1)
+		local desiredSkulls = math.random(0,1)
+		local desiredThunderfires = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if numApothecaries < desiredApothecaries then
+			if self.squad_ai:CanReinforce( true, ApothecaryIndex ) then
+				self.squad_ai:DoReinforce( true, ApothecaryIndex )
+			end
+		elseif numBanners < desiredBanners then
+			if self.squad_ai:CanReinforce( true, BannerIndex ) then
+				self.squad_ai:DoReinforce( true, BannerIndex )
+			end
+		elseif numSkulls < desiredSkulls then
+			if self.squad_ai:CanReinforce( true, SkullIndex ) then
+				self.squad_ai:DoReinforce( true, SkullIndex )
+			end
+		elseif numThunderfires < desiredThunderfires then
+			if self.squad_ai:CanReinforce( true, ThunderfireIndex ) then
+				self.squad_ai:DoReinforce( true, ThunderfireIndex )
+			end
+		end
+	end
+end

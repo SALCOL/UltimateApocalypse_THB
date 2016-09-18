@@ -1,0 +1,23 @@
+----------------------------------------
+-- File: 'Civiliantactic.ai'
+-- Created by Cylarne
+
+class 'CivilianTactic' (DaemonhuntVehicleTactic)
+
+Civilian = {}
+
+function CivilianTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Civilian Tactic")
+end
+
+function CivilianTactic:IsAttacker()
+	return false
+end
+
+function CivilianTactic:IsDefender()
+	return false
+end
+
+
+

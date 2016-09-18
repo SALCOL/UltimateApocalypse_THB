@@ -1,0 +1,821 @@
+----------------------------------------
+-- File: 'daemonsBuildBaseStrategy.ai'
+-- Created by Krronus @ 5/1/11
+
+-- Edited by CornCobMan 03/06/2013
+-- Edited by fuggles 10/06/2013
+-- Edited by Gambit 26/07/2013
+-- Edited by Cylarne 6/16/2014
+
+class 'DaemonsBuildBaseStrategy' (BuildBaseStrategy)
+
+daemonicGiftResearchSelector = math.random( 1, 100 )
+
+function DaemonsBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
+
+	-- Add detector units (Best first, worst last)
+	self:AddDetectorUnit("daemon_squad_lord")
+	self:AddDetectorUnit("daemon_squad_lord_stature")
+	self:AddDetectorUnit("daemon_squad_daemon_prince")
+	self:AddDetectorUnit("daemon_squad_hell_spawn")
+	
+	-- Choose one of two favored army research patterns for the Daemons race.
+	self.m_iFavoredResearch = math.random(1, 2)
+	
+	-- Out of the 5 marks, chose between: Undivided, Tzeentch, Slaanesh, Nurgle, or Khorne.
+	self.m_iMarkResearch = math.random(1, 4)
+	
+	-- Phases of attacks. If army is decreased substantially, or build only titans: modify.
+	self.m_iArmyBuild = math.random(0, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
+	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
+end
+
+function DaemonsBuildBaseStrategy:ChooseBuildProgram()
+
+	-- Check build program count
+	if (table.getn(self.info.BuildPrograms) ~= 5) then
+		return BuildBaseStrategy.ChooseBuildProgram(self)
+	end
+	
+	return 1
+end
+
+function DaemonsBuildBaseStrategy:EvaluateSquadCap()
+
+	--Check squad cap
+	if (self:CheckSquadCap(300, 0)) then
+	
+		-- Check if a plan exists
+		local iBuildingID = cpu_manager.stats:GetBuildingID("daemon_sacrificial_circle")
+		if (self:PlanExists("Build Building Plan", iBuildingID)) then
+			return
+		end
+
+		-- Check if any barracks are in production
+		for oBuildChannel in build_manager:GetBuildChannelAIs() do
+	
+			-- Check building ID
+			if (oBuildChannel:GetBlueprintID() == iBuildingID and not oBuildChannel:ConstructionDone()) then
+				return
+			end
+		end
+		
+		-- Build a barracks
+		local tBuildType = CpuBuildType()
+		tBuildType.btype = CpuPrerequisites.BT_Building
+		tBuildType.name = "daemon_sacrificial_circle"
+		if (self:TryBuild( tBuildType )) then
+			aitrace("BuildController: Dynamic build of "..tBuildType.name)
+		end
+	end
+	
+	-- Check support cap
+	if (self:CheckSupportCap(150, 300)) then
+	
+		-- Check if a plan exists
+		local iBuildingID = cpu_manager.stats:GetBuildingID("daemon_daemon_pit")
+		if (self:PlanExists("Build Building Plan", iBuildingID)) then
+			return
+		end
+		
+		-- Check if any vehicle buildings are in production
+		for oBuildChannel in build_manager:GetBuildChannelAIs() do
+	
+			-- Check building ID
+			if (oBuildChannel:GetBlueprintID() == iBuildingID and not oBuildChannel:ConstructionDone()) then
+				return
+			end
+		end
+		
+		-- Build a vehicle building
+		local tBuildType = CpuBuildType()
+		tBuildType.btype = CpuPrerequisites.BT_Building
+		tBuildType.name = "daemon_daemon_pit"
+		if (self:TryBuild( tBuildType )) then
+			aitrace("BuildController: Dynamic build of "..tBuildType.name)
+		end
+	end  
+end
+
+function DaemonsBuildBaseStrategy:GetBuildingName( sType )
+
+	-- Return race specific object string
+	if (sType == "HQ") then
+		return "daemon_hq"
+		
+	elseif (sType == "VehicleBuilding") then
+		return "daemon_daemon_pit"
+		
+	elseif (sType == "ListeningPost") then
+		return "daemon_listening_post"
+		
+	elseif (sType == "Generator") then
+		return "daemon_icon"
+
+	elseif (sType == "BiggerGenerator") then
+		return "daemon_lab"
+
+	elseif (sType == "Turret") then
+		return "daemon_turret"
+
+	elseif (sType == "Mine") then
+		return "daemon_eye_of_terror"
+	end
+	
+	return nil
+end
+
+function DaemonsBuildBaseStrategy:GetAddonBuilding( sType )
+	
+	if (sType == "addon_daemons_hell_fire") then
+	return "daemon_hq"
+
+	elseif (sType == "addon_daemons_hq_1") then
+	return "daemon_hq"
+
+	elseif (sType == "addon_daemons_hq_2") then
+	return "daemon_hq"
+
+	elseif (sType == "addon_daemons_hq_3") then
+	return "daemon_hq"
+	
+	elseif (sType == "addon_daemons_hq_4") then
+	return "daemon_hq"
+
+	elseif (sType == "addon_daemons_hq_5") then
+	return "daemon_hq"
+
+	elseif (sType == "addon_daemons_list_post_1") then
+		return "daemon_listening_post"
+
+	elseif (sType == "addon_daemons_list_post_2") then
+		return "daemon_listening_post"
+		
+	elseif (sType == "addon_daemons_list_post_3") then
+		return "daemon_listening_post"
+
+	elseif (sType == "addon_daemons_mark_khorne") then
+		return "daemon_listening_post"	
+		
+	elseif (sType == "addon_daemons_mark_nurgle") then
+		return "daemon_listening_post"	
+		
+	elseif (sType == "addon_daemons_mark_slaanesh") then
+		return "daemon_listening_post"	
+		
+	elseif (sType == "addon_daemons_mark_tzeentch") then
+		return "daemon_listening_post"	
+		
+	elseif (sType == "addon_daemons_turret") then
+		return "daemon_turret"
+		
+	elseif (sType == "addon_daemons_turret_warpstorm") then
+		return "daemon_turret"
+	end
+	return nil
+end
+
+-- Arkhan 01.2006: Inherited method to check if an addon is a tier addon
+function DaemonsBuildBaseStrategy:IsTierAddon( sName, iTargetTier )
+
+	-- Check addon name and target tier
+	if (sName == "addon_daemons_hq_1" and iTargetTier == 2) then
+		return true
+	elseif (sName == "addon_daemons_hq_2" and iTargetTier == 3) then
+		return true
+	elseif (sName == "addon_daemons_hq_3" and iTargetTier == 4) then
+		return true
+	elseif (sName == "addon_daemons_hq_4" and iTargetTier == 5) then
+		return true
+	elseif (sName == "addon_daemons_hq_5" and iTargetTier == 6) then
+		return true
+	end
+	return false
+end
+
+-- Arkhan 11.2005: Returns the squad cap and support cap of the given squad
+function DaemonsBuildBaseStrategy:GetUnitStats(sSquadName)
+
+	if (sSquadName == "daemon_squad_bloodletters") then
+		return 6, 0
+	elseif (sSquadName == "daemon_squad_daemonettes") then
+		return 5, 0
+	elseif (sSquadName == "daemon_squad_daemonettes_greater") then
+		return 6, 0
+	elseif (sSquadName == "daemon_squad_flesh_hounds") then
+		return 3, 0
+	elseif (sSquadName == "daemon_squad_nurgling") then
+		return 3, 0
+	elseif (sSquadName == "daemon_squad_fury") then
+		return 4, 0
+	elseif (sSquadName == "daemon_squad_fiends") then
+		return 7, 0
+	elseif (sSquadName == "daemon_squad_flamers") then
+		return 6, 0
+	elseif (sSquadName == "daemon_squad_horror") then
+		return 6, 0
+	elseif (sSquadName == "daemon_squad_pink_horror") then
+		return 6, 0
+	elseif (sSquadName == "daemon_squad_pink_horror_minions") then
+		return 5, 0
+	elseif (sSquadName == "daemon_squad_plague_bearers") then
+		return 6, 0
+	elseif (sSquadName == "daemon_squad_screamers") then
+		return 5, 0
+	elseif (sSquadName == "daemon_squad_defiler_khorne") then
+		return 0, 2
+	elseif (sSquadName == "daemon_squad_defiler_nurgle") then
+		return 0, 2	
+	elseif (sSquadName == "daemon_squad_defiler_slaanesh") then
+		return 0, 2	
+	elseif (sSquadName == "daemon_squad_defiler_tzeentch") then
+		return 0, 2
+	elseif (sSquadName == "daemon_squad_warp_spawn") then
+		return 0, 3
+	elseif (sSquadName == "daemon_squad_daemon_prince") then
+		return 0, 0
+	elseif (sSquadName == "daemon_squad_daemon_prince_khorne") then
+		return 0, 0
+	elseif (sSquadName == "daemon_squad_daemon_prince_nurgle") then
+		return 0, 0
+	elseif (sSquadName == "daemon_squad_daemon_prince_slaanesh") then
+		return 0, 0
+	elseif (sSquadName == "daemon_squad_daemon_prince_tzeentch") then
+		return 0, 0
+	elseif (sSquadName == "daemon_squad_bloodthirster") then
+		return 0, 5
+	elseif (sSquadName == "daemon_squad_guo") then
+		return 0, 5
+	elseif (sSquadName == "daemon_squad_keeper_of_secrets") then
+		return 0, 5
+	elseif (sSquadName == "daemon_squad_lord_of_change") then
+		return 0, 5
+	elseif (sSquadName == "daemon_squad_soul_grinder") then
+		return 0, 5
+	elseif (sSquadName == "daemon_squad_hell_spawn") then
+		return 0, 0
+	end
+	
+	return 0, 0
+	
+end
+
+function DaemonsBuildBaseStrategy:UpdateTierLevel()
+
+	-- Reset tier level
+	self.tierLevel = 1
+	
+	-- Prepare
+	local iHQAddon1ID = cpu_manager.stats:GetAddOnID("addon_daemons_hq_1")
+	local iHQAddon2ID = cpu_manager.stats:GetAddOnID("addon_daemons_hq_2")
+	local iHQAddon3ID = cpu_manager.stats:GetAddOnID("addon_daemons_hq_3")
+	local iHQAddon4ID = cpu_manager.stats:GetAddOnID("addon_daemons_hq_4")
+	local iHQAddon5ID = cpu_manager.stats:GetAddOnID("addon_daemons_hq_5")
+	local oStats = cpu_manager.stats:GetPlayerStatsFromID( cpu_manager.player_id )
+	
+	-- Check HQ's for addons
+	for oBase in oStats:GetBases() do
+	
+		-- Check for valid building
+		if (oBase:IsValid() and not oBase:IsListeningPost()) then
+			
+			-- Check for HQ addon 5
+			if (oBase:HasAddOn(iHQAddon5ID)) then
+				self.tierLevel = 6
+				return
+			-- Check for HQ addon 4
+			elseif (oBase:HasAddOn(iHQAddon4ID)) then
+				self.tierLevel = 5
+				return
+			-- Check for HQ addon 3
+			elseif (oBase:HasAddOn(iHQAddon3ID)) then
+				self.tierLevel = 4
+				return
+			-- Check for HQ addon 2
+			elseif (oBase:HasAddOn(iHQAddon2ID)) then
+				self.tierLevel = 3
+			
+			-- Check for HQ addon 1
+			elseif (oBase:HasAddOn(iHQAddon1ID)) then
+				self.tierLevel = 2
+			end
+		end
+	end
+end
+
+function DaemonsBuildBaseStrategy:BuildFlexible()
+
+	-- Locales
+	local iArmyStrength = cpu_manager:GetArmyStrength()
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Determine my all time largest army. During major casualties, determine if I should create more squads or only focus on build orders and titans.
+	if (iArmyStrength > self.m_iArmyHighestStrength) then
+		self.m_iArmyHighestStrength = iArmyStrength
+	end
+	
+	if (self.m_iArmyBuild < 9) then
+		-- HUGE hit! I have a very large army, and then in battle I lost so many...
+		if (iArmyStrength <= self.m_iArmyHighestStrength - 300 and iArmyStrength <= 2300) then
+			self.m_iArmyBuild = self.m_iArmyBuild + 1
+			self.m_iArmyHighestStrength = 0
+		end
+	elseif (iArmyStrength > 2500) then
+		self.m_iArmyBuild = 0
+	end
+
+	-- FAVORED ARMY!
+	if (self.m_iFavoredResearch == 1) then
+		
+		-- Favored Army: Minions
+		self:DynamicResearch("daemons_research_favored1", 1, 0, 0, 0, 0, nil, 0)
+		self.m_iGiftsResearch = 1
+	else
+		
+		-- Favored Army: Greater Daemons
+		self:DynamicResearch("daemons_research_favored2", 1, 0, 0, 0, 0, nil, 0)
+		self.m_iGiftsResearch = 2
+	end
+	
+	-- MARKS OF CHAOS!
+	if (self.m_iMarkResearch == 1) then
+		self:DynamicResearch("daemons_mark_khorne", 1, 0, 200, 0, 0, nil, 0)
+	elseif (self.m_iMarkResearch == 2) then
+		self:DynamicResearch("daemons_mark_slaanesh", 1, 0, 200, 0, 0, nil, 0)
+	elseif (self.m_iMarkResearch == 3) then
+		self:DynamicResearch("daemons_mark_tzeentch", 1, 0, 200, 0, 0, nil, 0)
+	elseif (self.m_iMarkResearch == 4) then
+		self:DynamicResearch("daemons_mark_nurgle", 1, 0, 200, 0, 0, nil, 0)
+	end
+	
+
+--[[      ****************   ALL DAEMONIC GIFTS --- DAEMONS MOD   ****************
+	> Normal Researches in daemon_gift_circle. Limit 10 (plus the Army selection) <
+	
+	Research------------------Notes-----------------Description--------------------------
+T1	daemons_research_gift3	 (Minions Only)		Demonic Soul
+T1	daemons_research_gift11	 (Greater Daemons Only)	Daemonic Will
+T1---	daemons_possessed_flight			Possessed Boots
+T2	daemons_research_gift4				Rapid Mutation I - Furies
+T2	daemons_research_gift6				Daemonic Fortitude
+T2	daemons_research_gift12				Daemonic Hull
+T2	daemons_research_gift13				Infernal Will - Lost souls
+T2	daemons_research_wings				Possessed Wings
+T2---	daemons_lord_research_1				Stat upgrades for commanders
+T3	daemons_research_gift1				Warp Flames
+T3	daemons_research_gift5	 (Minions Only)		Faster Summoning
+T3	daemons_research_gift8	 (Greater Daemons Only)	Fear
+T3	daemons_research_gift10	 (Greater Daemons Only)	Daemonic Resilience
+T3	daemons_research_gift14	 (Minions Only)		Hatred -Lost Souls
+T3	daemons_research_gift21				Daemonic Obliterators
+T3---	daemons_lord_research_2				More stat upgrades for commanders
+T4	daemons_research_gift7	 (Minions Only)		Greater Daemonic Fortitude
+T4	*daemons_research_gift9				Portals
+T4	daemons_research_gift17	 (Minions Only)		Daemonic Infestation - Shadow Fiends
+T4	daemons_research_gift18				Rapid Mutation II - Furies
+T4	daemons_research_gift19	 (Greater Daemons Only)	Steel-Hearted
+T4	daemons_research_gift20	 (Greater Daemons Only)	Protective Runes - Shadow Fiends
+------------------------------------------------------------------------------------------
+	> GREATER Researches in daemon_maledictum. NO Limit, ALL must be researched <
+	
+	Research------------------Notes-----------------Description--------------------------
+T3	daemons_wargear01	 (Minions Only)		Hellsword I
+T3	daemons_wargear03	 (Minions Only)		Fear
+T4	daemons_wargear02	 (Minions Only)		Hellsword II
+T4	daemons_wargear04	 (Minions Only)		Flame
+T4	daemons_wargear05	 (Minions Only)		Armour
+T4	daemons_research_gift25	 (Minions Only)		Tzeentch's Precision - Shadow Fiends
+T5	daemons_wargear11	 (Minions Only)		Gaze of Murder
+T5	daemons_research_gift23	 (Minions Only)		Infernal Shroud ability - Shadow Fiends
+T3	daemons_research_gift15	 (Greater Daemons Only)	Stature Daemon Lord
+T3	daemons_research_gift16	 (Greater Daemons Only)	Stature Shadow Fiends
+T4	daemons_research_gift24	 (Greater Daemons Only)	Strange Voice ability - Shadow Fiends
+T5	daemons_research_gift22	 (Greater Daemons Only)	Shield Ability - Daemon Lord
+T5	daemons_transform_research			Prince Transformation for ALL lords
+------------------------------------------------------------------------------------------
+	
+	****************   ALL DAEMONIC GIFTS --- APOCALYPSE MOD   ****************
+	> Apocalypse mod version, NO GIFT LIMIT! <
+------------------------------------------------------------------------------------------
+	> Move all researches from Maledictum to Gift circle, including:
+- daemons_research_gift25
+- daemons_research_gift23
+- daemons_research_gift24
+
+------------------------------------------------------------------------------------------
+	> Move all researches from Maledictum to Daemon Pit, including:
+- daemons_transform_research
+- daemons_research_gift15
+- daemons_research_gift16
+	
+-------------------------------------------------------------------------------------------
+	> Removed Researches:
+- daemons_lord_research_1	
+- daemons_lord_research_2
+- All wargear
+- daemons_research_gift21 >>>>>> No Obliterators
+- daemons_research_gift22
+-------------------------------------------------------------------------------------------
+	> Redone:
+	Research------------------Notes-----------------Description--------------------------Requires
+T1  daemons_research_gift4				Rapid Mutation I - Furies
+T1	daemons_research_gift3	 (Minions Only)		Demonic Soul
+T1	daemons_research_gift11	 (Greater Daemons Only)	Daemonic Will
+T2---	daemons_research_gift18				Rapid Mutation II - Furies						Gift 4
+T2	daemons_research_gift6				Daemonic Fortitude
+T2	daemons_research_gift12				Daemonic Hull
+T2	daemons_research_gift13				Infernal Will - Lost souls
+T3---	daemons_research_gift1				Warp Flames										Gift 12
+T3	daemons_research_gift5	 (Minions Only)		Faster Summoning
+T3	daemons_research_gift8	 (Greater Daemons Only)	Fear
+T3	daemons_research_gift10	 (Greater Daemons Only)	Daemonic Resilience
+T3	daemons_research_gift14	 (Minions Only)		Hatred -Lost Souls							Gift 13
+T4---	daemons_research_gift7	 (Minions Only)		Greater Daemonic Fortitude				Gift 6
+T4	*daemons_research_gift9				Portals
+T4	daemons_research_gift17	 (Minions Only)		Daemonic Infestation - Shadow Fiends
+T4	daemons_research_gift19	 (Greater Daemons Only)	Steel-Hearted
+T4	daemons_research_gift20	 (Greater Daemons Only)	Protective Runes - Shadow Fiends
+T5---	daemons_research_gift23	 (Minions Only)		Infernal Shroud ability - Shadow Fiends
+T5	daemons_research_gift24	 (Greater Daemons Only)	Strange Voice ability - Shadow Fiends	Gift 16
+T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability - Shadow Fiends]]
+
+	if (iArmyStrength >= 1000 or (iPower >= 800 and iRequisition >= 900)) then
+		
+
+		-- Favored Minions army.
+		if( cpu_manager.cpu_player:IsResearchComplete( "daemons_research_favored1" ) ) then
+			self:DynamicResearch("daemons_research_gift13", 2, 0, 620, 0, 0, nil, 0) -- Inf Will - LS
+			self:DynamicResearch("daemons_research_gift4", 2, 0, 600, 0, 0, nil, 0)  -- Furies I
+			self:DynamicResearch("daemons_research_gift18", 2, 0, 600, 0, 0, nil, 0)  -- Furies II
+			self:DynamicResearch("daemons_research_gift3", 2, 0, 600, 0, 0, nil, 0)  -- Daemonic Soul
+			self:DynamicResearch("daemons_research_gift6", 2, 0, 550, 0, 0, nil, 0)  -- Daem Fort
+			self:DynamicResearch("daemons_research_gift12", 2, 0, 640, 0, 0, nil, 0) -- Daem Hull
+			self:DynamicResearch("daemons_research_gift1", 3, 0, 800, 0, 0, nil, 0)  -- Flame
+			self:DynamicResearch("daemons_research_gift5", 3, 0, 600, 0, 0, nil, 0)  -- Spam Fest
+			self:DynamicResearch("daemons_research_gift14", 3, 0, 525, 0, 0, nil, 0) -- Hatred - LS
+			self:DynamicResearch("daemons_research_gift7", 4, 0, 600, 0, 0, nil, 0)  -- Greater Fortitude
+			self:DynamicResearch("daemons_research_gift17", 4, 0, 525, 0, 0, nil, 0) -- Daem Inf - SF
+			self:DynamicResearch("daemons_research_gift25", 4, 0, 535, 0, 0, nil, 0) -- SF Precision
+			self:DynamicResearch("daemons_research_gift23", 4, 0, 580, 0, 0, nil, 0) -- SF Shroud
+			
+		-- Favored Daemons army.
+		elseif( cpu_manager.cpu_player:IsResearchComplete( "daemons_research_favored2" ) ) then
+			self:DynamicResearch("daemons_research_gift11", 1, 0, 500, 0, 0, nil, 0) -- Will
+			self:DynamicResearch("daemons_research_gift6", 2, 0, 550, 0, 0, nil, 0)  -- Daem Fort
+			self:DynamicResearch("daemons_research_gift12", 2, 0, 640, 0, 0, nil, 0) -- Daem Hull
+			self:DynamicResearch("daemons_research_gift4", 2, 0, 600, 0, 0, nil, 0)  -- Furies I
+			self:DynamicResearch("daemons_research_gift13", 2, 0, 620, 0, 0, nil, 0) -- Inf Will - LS
+			self:DynamicResearch("daemons_research_gift15", 3, 0, 650, 0, 0, nil, 0) ---- DL Stature
+			self:DynamicResearch("daemons_research_gift16", 3, 0, 650, 0, 0, nil, 0) -- SF Stature
+			self:DynamicResearch("daemons_research_gift1", 3, 0, 620, 0, 0, nil, 0) -- Flames
+			self:DynamicResearch("daemons_research_gift10", 3, 0, 575, 0, 0, nil, 0) -- Daem Resil
+			self:DynamicResearch("daemons_research_gift8", 3, 0, 670, 0, 0, nil, 0) -- Fear
+			self:DynamicResearch("daemons_research_gift14", 3, 0, 525, 0, 0, nil, 0) -- Hatred - LS
+			self:DynamicResearch("daemons_research_gift19", 4, 0, 550, 0, 0, nil, 0) -- Horblu
+			self:DynamicResearch("daemons_research_gift18", 4, 0, 625, 0, 0, nil, 0) -- Furies II
+			self:DynamicResearch("daemons_research_gift20", 4, 0, 460, 0, 0, nil, 0) -- Prot Runes - SF
+			self:DynamicResearch("daemons_research_gift24", 4, 0, 580, 0, 0, nil, 0) -- SF Voice
+			
+		end
+
+
+
+		-- Dynamic research item syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
+		local iArmyStrength = cpu_manager:GetArmyStrength()
+		local iCommanderSquads	= self:CountSquads("daemon_squad_lord")
+		
+		-- Compute resource researches
+		self:DynamicResearch("daemons_requisition_research_1", 2, 75, 250, 0, 0, nil, 0)
+		self:DynamicResearch("daemons_power_research_1", 2, 200, 0, 0, 0, nil, 0)
+		self:DynamicResearch("daemons_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
+		self:DynamicResearch("daemons_power_research_2", 3, 350, 0, 0, 0, nil, 0)
+		self:DynamicResearch("daemons_requisition_research_3", 4, 125, 450, 0, 0, nil, 0)
+		self:DynamicResearch("daemons_power_research_3", 4, 600, 0, 0, 0, nil, 0)
+		self:DynamicResearch("daemons_requisition_research_4", 5, 150, 550, 0, 0, nil, 0)
+		self:DynamicResearch("daemons_power_research_4", 5, 800, 0, 0, 0, nil, 0)
+		
+		-- Compute Turret researches.
+		self:DynamicResearch("daemons_turret_upgrade", 2, 275, 50, 0, 0, nil, 0)
+		self:DynamicResearch("daemons_turret_upgrade_2", 4, 420, 170, 0, 0, nil, 0)
+		
+		-- Compute Daemon Prince research.
+		self:DynamicResearch("daemons_transform_research", 5, 0, 3000, 0, 0, nil, 0) -- Prince
+		
+		-- Compute Endgame research.
+		self:DynamicResearch("daemons_research_planetary_exterminator", 5, 0, 10000, 0, 0, nil, 0)
+		
+		
+		--[[ Angron Wargear
+		self:DynamicResearch("daemons_wargear_angron1", 5, 0, 10000, 0, 0, nil, 0) -- Fear
+		self:DynamicResearch("daemons_wargear_angron2", 5, 0, 15000, 0, 0, nil, 0) -- Invulnerability Hide
+		self:DynamicResearch("daemons_wargear_angron3", 5, 0, 15000, 0, 0, nil, 0) -- Leeching
+		self:DynamicResearch("daemons_wargear_angron4", 5, 0, 15000, 0, 0, nil, 0) ]]-- Catastrophic Powers
+	end
+	-- Restrict dynamic builds to hard difficulty or higher
+	if (CpuManager.AISettings.bMultiBuildings) then
+	
+		-- Dynamic buildings
+		-- Item-Syntax: BuildingName, BuildingCount, MinTier, MinRequisition, MinPower, MinSquadCap, MinSupportCap
+		
+		self:DynamicBuild("daemon_icon", 6 * self:GetBuildingCountByName("daemon_hq"), 3, 500, 0, 0, 0)
+		
+		if ((iPower >= 250 and iRequisition >= 2000) or self.m_iArmyBuild >= 3) then
+			--[[ tier 0
+			self:DynamicBuild("daemon_sacrificial_circle", 2, 1, 1000, 0, 0, 0)
+			self:DynamicBuild("daemon_turret", 4, 1, 300, 0, 0, 0)
+			self:DynamicBuild("daemon_eye_of_terror", 2, 1, 200, 0, 0, 0)
+			
+			-- tier1
+			self:DynamicBuild("daemon_hq", 2, 2, 800, 200, 0, 0)
+			self:DynamicBuild("daemon_maledictum", 1, 2, 0, 300, 0, 0)
+			self:DynamicBuild("daemon_turret", 15, 2, 1000, 0, 0, 0)
+			self:DynamicBuild("daemon_daemon_pit", 2, 2, 1000, 0, 0, 0)
+			
+			-- tier 2
+			
+			-- tier 3
+			self:DynamicBuild("daemon_hq", 3, 4, 1500, 1000, 0, 0)
+			self:DynamicBuild("daemon_daemon_pit", 4, 4, 3000, 0, 0, 0)
+			
+			-- tier 4
+			self:DynamicBuild("daemon_turret", 20, 5, 2000, 0, 0, 0)
+			self:DynamicBuild("daemon_doom_gateway", 2, 5, 1500, 0, 0, 0)
+			self:DynamicBuild("daemon_doom_pit", 5, 5, 10000, 10000, 0, 0)]]
+		end
+		
+		-- Build nukes
+		
+		--[[local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+			
+		-- Build nuke
+		local tBuildType = CpuBuildType()
+		tBuildType.btype = CpuPrerequisites.BT_Squad
+		
+		tBuildType.name = "npc_squad_superweapon1"
+		if (self:TryBuild( tBuildType )) then
+			aitrace("BuildController: Dynamic build of "..tBuildType.name)
+		end]]
+		
+		
+	end
+
+	-- Try to get extra Power
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	if (self.tierLevel >= 5) then
+
+		-- Check resources and research
+		if (iRequisition > 8000 and iPower < 10000) then
+
+			-- Build a Power Trader
+			local tBuildType = CpuBuildType()
+			tBuildType.btype = CpuPrerequisites.BT_Squad
+			tBuildType.name = "daemon_squad_trade_power3"
+			if (self:TryBuild( tBuildType )) then
+				aitrace("BuildController: Dynamic build of "..tBuildType.name)
+			end
+			
+		-- Check resources and research
+		elseif (iRequisition < 120000 and iPower > 20000) then
+
+			-- Build a Requisition Trader
+			local tBuildType = CpuBuildType()
+			tBuildType.btype = CpuPrerequisites.BT_Squad
+			tBuildType.name = "daemon_squad_trade_requisition2"
+			if (self:TryBuild( tBuildType )) then
+				aitrace("BuildController: Dynamic build of "..tBuildType.name)
+			end
+	    end
+	end
+	if (self.tierLevel >= 3) then
+
+		-- Check resources and research
+		if (iRequisition > 900 and iPower < 1500) then
+
+			-- Build a Power Trader
+			local tBuildType = CpuBuildType()
+			tBuildType.btype = CpuPrerequisites.BT_Squad
+			tBuildType.name = "daemon_squad_trade_power"
+			if (self:TryBuild( tBuildType )) then
+				aitrace("BuildController: Dynamic build of "..tBuildType.name)
+			end
+
+		-- Check resources and research
+		elseif (iRequisition < 800 and iPower > 2000) then
+
+			-- Build a Requisition Trader
+			local tBuildType = CpuBuildType()
+			tBuildType.btype = CpuPrerequisites.BT_Squad
+			tBuildType.name = "daemon_squad_trade_requisition"
+			if (self:TryBuild( tBuildType )) then
+				aitrace("BuildController: Dynamic build of "..tBuildType.name)
+			end
+	    end
+	end
+	if (self.tierLevel >= 1) then
+
+		-- Check resources and research
+		if (iRequisition > 400 and iPower < 300) then
+
+			-- Build a Power Trader
+			local tBuildType = CpuBuildType()
+			tBuildType.btype = CpuPrerequisites.BT_Squad
+			tBuildType.name = "daemon_squad_trade_power"
+			if (self:TryBuild( tBuildType )) then
+				aitrace("BuildController: Dynamic build of "..tBuildType.name)
+			end
+
+		-- Check resources and research
+		elseif (iRequisition < 600 and iPower > 600) then
+
+			-- Build a Requisition Trader
+			local tBuildType = CpuBuildType()
+			tBuildType.btype = CpuPrerequisites.BT_Squad
+			tBuildType.name = "daemon_squad_trade_requisition"
+			if (self:TryBuild( tBuildType )) then
+				aitrace("BuildController: Dynamic build of "..tBuildType.name)
+			end
+	    end
+
+	end 
+
+	if (self.tierLevel < 4) then
+
+		-- Used from HQ and Sac Circle to immediately deep-strike units around HQ rather than out into battlefield (necessary sometimes for early game)
+		for build_channel in build_manager:GetBuildChannelAIs() do
+		
+			if (build_channel:CanDeepStrike() and not build_channel:CanOnlyDeepStrikeToEntity() and 
+				build_channel:GetBlueprintID() == cpu_manager.stats:GetBuildingID("daemon_daemon_pit")) or
+			   (build_channel:CanDeepStrike() and not build_channel:CanOnlyDeepStrikeToEntity() and 
+				build_channel:GetBlueprintID() == cpu_manager.stats:GetBuildingID("daemon_sacrificial_circle")) then
+
+			 -- Now deepstrike em around HQ!
+			    aitrace("Deepstriking miliary unit randomly around HQ")
+				local pos = cpu_manager.start_pos
+ 				pos.x = pos.x + math.random(-20, 20)
+				pos.z = pos.z + math.random(-10, 4)
+				build_channel:DoDeepStrikeToPos(pos)
+	       end 
+  	    end
+	end
+	
+	
+	-- Resource trading for high resources
+	self:BuildResourceTrades()
+		
+	-- Random marky addony shizz
+	self:BuildRandomMarkAddons()
+end
+
+function DaemonsBuildBaseStrategy:BuildResourceTrades()
+	local squadID
+
+	-- Check resources
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+		
+	if (iRequisition < (2.5*iPower)) or iRequisition < 300 then 
+		return
+	end
+	
+	if iRequisition >= 1600 and cpu_manager.cpu_player:IsResearchComplete( "daemons_power_research_2" )  then
+		squadID = "daemon_squad_trade_power3"
+	elseif iRequisition >= 1000 and cpu_manager.cpu_player:IsResearchComplete( "daemons_power_research_1" )  then
+		squadID = "daemon_squad_trade_power2"
+	else
+		squadID = "daemon_squad_trade_power"
+	end
+	
+	-- Check if a plan exists for a trade squad
+	if (self:GetPlan("Build Unit Plan", cpu_manager.stats:GetSquadID(squadID)) ~= nil) then
+		return
+	end
+
+	-- Try to build trade squad
+	local tBuildType = CpuBuildType()
+	tBuildType.btype = CpuPrerequisites.BT_Squad
+	tBuildType.name = squadID
+	if (self:TryBuild( tBuildType )) then
+		aitrace("BuildController: Dynamic build of "..tBuildType.name)
+			
+	end
+end
+
+function DaemonsBuildBaseStrategy:BuildRandomMarkAddons()
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	local tierLevel = self:GetTierLevel()
+	
+	if iPower < 350 then 
+		return
+	end
+	
+	if ( tierLevel >= 4 ) then
+		self:DynamicAddon( "addon_daemons_mark_khorne", math.random( 5, 8 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_nurgle", math.random( 5, 8 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_slaanesh", math.random( 5, 8 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_tzeentch", math.random( 5, 8 ), 2, 0, 150, 0, 0, nil, nil, false)
+	elseif ( tierLevel >= 3 ) then
+		self:DynamicAddon( "addon_daemons_mark_khorne", math.random( 3, 5 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_nurgle", math.random( 3, 5 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_slaanesh", math.random( 3, 5 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_tzeentch", math.random( 3, 5 ), 2, 0, 150, 0, 0, nil, nil, false)
+	elseif ( tierLevel >= 2 ) then
+		self:DynamicAddon( "addon_daemons_mark_khorne", math.random( 1, 3 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_nurgle", math.random( 1, 3 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_slaanesh", math.random( 1, 3 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_tzeentch", math.random( 1, 3 ), 2, 0, 150, 0, 0, nil, nil, false)
+	end
+end
+
+--  Method to check if force tech should be computed
+function DaemonsBuildBaseStrategy:ForceTech()
+
+	-- Check time
+	if (g_iGMT < 60 * CpuManager.ForceTech.StartTier1) then
+		return false
+	end
+	
+	-- Check resources
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Check tier
+	local iTierLevel = self:GetTierLevel()
+	if (iTierLevel == 1) then
+	
+		-- Check resources
+		if (iPower > 300) then
+			return false
+		end
+		return not self.m_bHQAddon1
+		
+	elseif (iTierLevel == 2) then
+
+		-- Check current build program
+		if (self.m_iCurrentBuildProgram == 1) then
+
+			-- Check build channel for ability building
+			if (self:GetBuildingCountByName("daemon_daemon_pit", false) < 1) then
+				return true
+			end		
+		end
+		
+		-- Check time
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier2 and (iPower < 800)) then
+			return true
+		end
+		
+	elseif (iTierLevel == 3) then	
+
+		-- Check time
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iPower < 800)) then
+			return true
+		end
+		
+	elseif (iTierLevel == 4) then	
+
+		-- Check time
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier4 and (iPower < 1000)) then
+			return true
+		end
+		
+	end
+	return false
+end
+
+-- Return placement type for buildings
+function DaemonsBuildBaseStrategy:GetPlacementType(iBuildingID)
+	
+	-- Check building
+	if (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_doom_pit")) then
+		return "HQ"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_sacrificial_circle") or 
+		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_daemon_pit") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_doom_gateway")) then
+		return "Military"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_icon") or 
+		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_maledictum") or 
+		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_gift_circle")or
+		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_hq")) then	
+		return "Safeplace"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_turret") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_turret_ai") ) then
+		return "Front1"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_eye_of_terror")) then
+		return "Mine"
+	end
+	return "Basic"
+end
+
+-- Virtual method for checking out relic units
+function DaemonsBuildBaseStrategy:RelicRequired(sName)
+
+	-- Check name
+	if  (sName == "daemon_squad_hell_spawn") or (sName == "daemon_squad_primarch_angron") then
+		return true
+	end
+	return false
+end

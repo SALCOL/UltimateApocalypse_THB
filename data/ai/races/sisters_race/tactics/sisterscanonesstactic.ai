@@ -1,0 +1,106 @@
+----------------------------------------
+-- File: 'sisterscanonesstactic.ai'
+-- Edited by Thudmeizer @ 10.06.2011
+-- Edited by Cylarne_04 2011
+
+class 'SistersCanonessTactic' (SistersInfantryTactic)
+
+SistersCanoness = {}
+
+function SistersCanonessTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Canoness Tactic")
+end
+
+function SistersCanonessTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersCanoness.divinelight_id == nil) then
+		SistersCanoness.divinelight_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_divine_light" )
+	end
+	
+	if (SistersCanoness.flame_id == nil) then
+		SistersCanoness.flame_id = cpu_manager.stats:GetAbilityID( "sisters_ardent_flame_nunciate" )
+	end
+
+	--[[if (SistersCanoness.ascension_id == nil) then
+		SistersCanoness.ascension_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_ascension" )
+	end]]
+	
+	if (SistersCanoness.dolan_phail_id == nil) then
+		SistersCanoness.dolan_phail_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_dolan_phail" )
+	end
+	
+	if (SistersCanoness.tears_id == nil) then
+		SistersCanoness.tears_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_emperors_tears" )
+	end
+end
+
+function SistersCanonessTactic:DoAbilities()
+
+	-- reduces enemy weapon accuracy and increases own weapon damage (Faith cost: 30)
+	Ability.DoAbilityTarget( self.squad_ai, SistersCanoness.divinelight_id, Ability.Filters.CloseSquadEnemy, 1 )
+	
+	--Ability.DoAbilityPos( self.squad_ai, SistersCanoness.flame_id, Ability.Filters.CloseEnemy, 6 ) 
+
+	-- summons non-player controlled angels to fight for a short period (Faith cost: 90)
+	--Ability.DoAbilityArea( self.squad_ai, SistersCanoness.ascension_id, Ability.Filters.CloseEnemy, 10, 10 )
+
+	-- We are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityTarget( self.squad_ai, SistersCanoness.divinelight_id, Ability.Filters.CloseSquadEnemy, 1 )
+		--Ability.DoAbilityPos( self.squad_ai, SistersCanoness.flame_id, Ability.Filters.CloseEnemy, 3 ) 
+		--Ability.DoAbilityArea( self.squad_ai, SistersCanoness.ascension_id, Ability.Filters.CloseEnemy, 10, 5 )
+	end
+	
+	-- Extra Emperor abilities.
+	if ((self:IsMoving() or self:IsInSubState()) and self.squad_ai:IsAttached() and self.squad_ai:CanDoAbility(SistersCanoness.dolan_phail_id)) then
+		self.squad_ai:DoSpecialAbility(SistersCanoness.dolan_phail_id) 
+	end
+	
+	-- Extra Emperor abilities.
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.5) then
+	
+		-- Attached ranged squads do extra damage (Faith cost: 100)
+		if (self.squad_ai:CanDoAbility(SistersCanoness.tears_id)) then
+			self.squad_ai:DoSpecialAbility(SistersCanoness.tears_id) 
+		end
+	end
+end
+
+-- Assassinate win condition -- never attack
+function SistersCanonessTactic:IsAttacker()
+	return (not cpu_manager.assassinate and self:IsCommanderAttacker())
+end
+
+-- Assassinate win condition -- never defend
+function SistersCanonessTactic:IsDefender()
+	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+end
+
+function SistersCanonessTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Assassinate win condition -- never attach to a squad
+	if (not cpu_manager.assassinate) then
+		
+		-- Attach to melee in tier3+
+		if (cpu_manager:GetTierLevel() > 2) then
+		
+			if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+				return
+			end
+		end
+		if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+			self:TryAttachSquadMelee()
+		end
+	end
+end

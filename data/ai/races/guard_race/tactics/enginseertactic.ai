@@ -1,0 +1,21 @@
+----------------------------------------
+-- File: 'Enginseertactic.ai'
+-- Edited by Arkhan 	@ 10.01.2007
+
+class 'EnginseerTactic' (EngineerTactic)
+
+function EnginseerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Enginseer Tactic")
+	
+	-- Squad is NOT able to occupy bunkers, nope
+	self.m_bBunkerSquad = false
+end
+
+function EnginseerTactic:Update()
+
+	-- Update engineer tactic
+	EngineerTactic.Update(self)
+	
+end
+ 

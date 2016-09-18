@@ -1,0 +1,19 @@
+----------------------------------------
+-- File: 'battlefortresstactic.ai'
+-- Edited by Arkhan		@ 10.01.2007
+-- Edited by Cylarne_04 2011
+
+class 'BattlefortressTactic' (OrkVehicleTactic)
+
+function BattlefortressTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Battlefortress Tactic")
+	
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 4
+end
+
+function BattlefortressTactic:AlwaysAttack()
+	return true
+end

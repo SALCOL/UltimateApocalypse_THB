@@ -1,0 +1,216 @@
+----------------------------------------------------------------------------------------------------------------
+-- Economic Victory Win Condtition
+--
+--	Player wins after obtaining a set amount of resources
+--
+-- (c) 2003 Relic Entertainment Inc.
+import("ScarUtil.scar")
+import("WCUtil.scar")
+
+--addinit function
+function EconomicVictory()
+	
+	if (Mod_TotalDestruction == nil) then
+		g_resourceGoalnumber = 15000;
+	else
+		g_resourceGoalnumber = 150000;
+	end
+	
+	-- create global table
+	_EconVict =
+	{
+		--global req table
+		r = {},
+		
+		--global power table
+		p = {},
+		
+		--global variable, the percentage of points that must be held
+		
+		g_reqGoal = g_resourceGoalnumber,
+		g_powGoal = g_resourceGoalnumber,
+	}
+	
+	-- add the total annihlation check so game doest keep going if all enemies are totally annihlated (this is different than regular annihilate)
+	WCUtil_AddCheckTotalAnnhilate() 
+	
+	AmassResourceTables()
+	Rule_AddInterval(EVRule_CheckResources, 2)
+	Rule_AddInterval(EVRule_UpdateWinWarning, 2 )
+	
+	obj_table_P5 = { title_id = 60003, short_desc_id = 60303, help_tip_id = 60303 }
+	
+	Objective_Add( obj_table_P5, 1 )
+	
+end
+
+--sets up the resource table
+function AmassResourceTables()
+	local j = World_GetPlayerCount()
+	
+	for i = 1, j do
+		_EconVict.r[i]=0
+		_EconVict.p[i]=0
+	end
+	
+end
+
+----------------------------------------------------------------------------------------
+--checking the Requisition
+----------------------------------------------------------------------------------------
+function EVRule_CheckResources()
+
+	--iterates through all of the player slots to see if they have enough resources
+	for i = 1, World_GetPlayerCount() do
+		
+		-- get player ID
+		local playerId = World_GetPlayerAt(i-1)
+		
+		-- get raceID
+		local raceId = Player_GetRace(playerId)
+		
+		-- update global resource table
+		_EconVict.r[i] = Player_GetResource(playerId, RT_Requisition)
+		_EconVict.p[i] = Player_GetResource(playerId, RT_Power)
+		
+		-- check economy type
+		local use_only_power = not World_DoesRaceUseRequisition(raceId)
+		
+		-- check for win
+		if (use_only_power and _EconVict.p[i] >= 2 * _EconVict.g_powGoal) or
+			(not use_only_power and _EconVict.r[i] >= _EconVict.g_reqGoal and _EconVict.p[i] >= _EconVict.g_powGoal) then
+			
+			-- players team has won -- game over
+			World_SetTeamWin( playerId, "economicvictory")
+			World_SetGameOver()
+			
+			-- done
+			return
+			
+		end
+		
+	end
+
+end
+
+----------------------------------------------------------------------------------------
+--show win warnings when player obtains over 75%
+----------------------------------------------------------------------------------------
+function EVRule_UpdateWinWarning( )
+	
+	-- total number of players
+	local count = World_GetPlayerCount()
+	
+	--iterates through all of the player slots to see if they have enough power points
+	for i = 1, count do
+		local playerId = World_GetPlayerAt(i-1)
+		local raceId = Player_GetRace(playerId)
+		local use_only_power = not World_DoesRaceUseRequisition(raceId)
+		local power = _EconVict.p[i]
+		local req = _EconVict.r[i]
+		local warningName = "EV_WinWarning_P"..Player_GetID( playerId )
+		
+		-- hide player warning if player is annihilated
+		if Player_IsAnnihilated(playerId) then
+		
+			if WinWarning_Exists(warningName) then
+				WinWarning_Remove(warningName)
+			end
+				
+		elseif( _EconVict.g_reqGoal == 0 ) then
+			
+			-- show power warning if above 75%
+			local powerPercent = (power / _EconVict.g_powGoal) * 100
+			if (use_only_power) then powerPercent = powerPercent / 2 end
+			if( powerPercent > 100 ) then powerPercent = 100 end
+			
+			if( powerPercent > 75 ) then
+				if( not WinWarning_Exists( warningName ) ) then
+						WinWarning_Add( warningName, playerId, "", "$60003", "$60403" )
+				end
+				
+				--60401	%1PLAYERNAME% - Economic Victory -  Pow: %2PERCENT%%.
+				WinWarning_SetText( 
+					warningName, 
+					Loc_FormatText2( 
+						60401, 
+						Player_GetDisplayName( playerId ), 
+						Loc_ConvertNumber( math.floor(powerPercent) )
+					)
+				)
+				
+			else
+				-- hide warning if it exists
+				if( WinWarning_Exists( warningName ) ) then
+					WinWarning_Remove( warningName )
+				end
+			end
+				
+		elseif( _EconVict.g_powGoal == 0 ) then
+			
+			-- show req warning if above 75%
+			local reqPercent = (req / _EconVict.g_reqGoal) * 100
+			if( reqPercent > 100 or use_only_power) then reqPercent = 100 end
+			
+			if( reqPercent > 75 and not use_only_power ) then
+				if( not WinWarning_Exists( warningName ) ) then
+						WinWarning_Add( warningName, playerId, "", "$60003", "$60403" )
+				end
+				
+				--60401	%1PLAYERNAME% - Economic Victory -  Req: %2PERCENT%%.
+				WinWarning_SetText( 
+					warningName, 
+					Loc_FormatText2( 60402, 
+						Player_GetDisplayName( playerId ), 
+						Loc_ConvertNumber( math.floor(reqPercent) ) 
+					)
+				)
+			else
+				-- hide warning if it exists
+				if( WinWarning_Exists( warningName ) ) then
+					WinWarning_Remove( warningName )
+				end
+			end
+			
+		else
+			-- show both warning if above 75%
+			local reqPercent = (req / _EconVict.g_reqGoal) * 100
+			if( reqPercent > 100 or use_only_power) then reqPercent = 100 end
+			
+			local powerPercent = (power / _EconVict.g_powGoal) * 100
+			if (use_only_power) then powerPercent = powerPercent / 2 end
+			if( powerPercent > 100 ) then powerPercent = 100 end
+			
+			if( (reqPercent > 75 and not use_only_power) or (powerPercent > 75) ) then
+				if( not WinWarning_Exists( warningName ) ) then
+						WinWarning_Add( warningName, playerId, "", "$60003", "$60403" )
+				end
+				
+				--60401	%1PLAYERNAME% - Economic Victory -  Req: %2PERCENT%% Pow: %3PERCENT%%..
+				WinWarning_SetText( 
+					warningName, 
+					Loc_FormatText3( 
+						60402, 
+						Player_GetDisplayName( playerId ), 
+						Loc_ConvertNumber( math.floor(reqPercent) ),
+						Loc_ConvertNumber( math.floor(powerPercent) )
+					) 
+				)
+				
+			else
+				-- hide warning if it exists
+				if( WinWarning_Exists( warningName ) ) then
+					WinWarning_Remove( warningName )
+				end
+			end
+			
+		end
+		
+	end
+	
+end
+
+Scar_AddInit(EconomicVictory)
+
+--------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------

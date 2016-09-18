@@ -1,0 +1,148 @@
+---------------------------------
+-- ULTIMATE TIPS AND TRICKS
+-- Created by: Cylarne
+-- Inspired by: Fuggles
+
+
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+
+
+function OnInit()
+
+	Rule_AddInterval(TipsAndTricks_UAMod, 12 )
+
+end
+
+Scar_AddInit(OnInit)
+
+
+function TipsAndTricks_UAMod()
+	local random = World_GetRand(1,145)
+	
+	s_printthis = "None assigned.";
+	if (random <= 1)then s_printthis = "Imperial Guard can deepstrike Baneblades into the front lines!"
+	elseif (random <= 2)then s_printthis = "Eldar's Webway Gates can be detected if you move infantry up close to them."
+	elseif (random <= 3)then s_printthis = "Necrons can deepstrike titans, beware!"
+	elseif (random <= 4)then s_printthis = "Dark Eldar has fearsome soul powers, beware!"
+	elseif (random <= 5)then s_printthis = "Tyranids can use their global abilities to devastate enemies at ease!"
+	elseif (random <= 6)then s_printthis = "The Tau ranged weapons are deadly. Make sure to face them with melee units."
+	elseif (random <= 7)then s_printthis = "Necrons are slow moving and slow to tech up. Kill them early!"
+	elseif (random <= 8)then s_printthis = "Dark Eldar is the fastest race. Do not let them capture their Strategic Points!"
+	elseif (random <= 9)then s_printthis = "Fortify your Strategic Points always."
+	elseif (random <= 10)then s_printthis = "Make sure you research all four requisition and power researches. They provide economic dominance."
+	elseif (random <= 11)then s_printthis = "Use the RUN! ability to boost the movement speed of your infantry."
+	elseif (random <= 12)then s_printthis = "Use the Bumper Mode ability on your vehicles to throw infantry aside!"
+	elseif (random <= 13)then s_printthis = "Produce aircraft and vault them over terrain towards your enemies base!"
+	elseif (random <= 14)then s_printthis = "Turrets are very powerful, stay clear of them with tanks."
+	elseif (random <= 15)then s_printthis = "Imperial Guards' artillery is deadly, attack them first when possible!"
+	elseif (random <= 16)then s_printthis = "Dark Eldar can now stealth their buildings, beware!"
+	elseif (random <= 17)then s_printthis = "Beware the alien, the mutant, the heretic!"
+	elseif (random <= 18)then s_printthis = "Necrons after their two main addons, can cast superweapons for free!"
+	elseif (random <= 19)then s_printthis = "Grenades are your best friend. Purchase them from armories."
+	elseif (random <= 20)then s_printthis = "Chaos Marks are essential for choosing mark specific units."
+	elseif (random <= 23)then s_printthis = "Upgrade your heroes by researching hero wargear from their inventory."
+	elseif (random <= 24)then s_printthis = "Use the AEonic Orb to instakill titans or destroy large armies with its alternative weapon."
+	elseif (random <= 25)then s_printthis = "Build turrets to keep your base safe from an attack."
+	elseif (random <= 26)then s_printthis = "Make sure to always produce a superweapon when you build a super structure."
+	elseif (random <= 27)then s_printthis = "Always capture Strategic Points and Relics."
+	elseif (random <= 28)then s_printthis = "Take away enemy relics to deny them their most powerful units and weapons."
+	elseif (random <= 29)then s_printthis = "Space Marines can use Deepstrike Beacons to locate places to deepstrike."
+	elseif (random <= 30)then s_printthis = "Imperial Guard has the best base defenses than any other race."
+	elseif (random <= 31)then s_printthis = "Necrons are the slowest faction, but almost unbeatable late game."
+	elseif (random <= 32)then s_printthis = "Sisters of Battle are stronger now, in durability, and damage."
+	elseif (random <= 33)then s_printthis = "Don't underestimate the Eldar..."
+	elseif (random <= 34)then s_printthis = "Tyranids will most likely have a secondary base where you'd least expect."
+	elseif (random <= 35)then s_printthis = "Don't ever underestimate Guardsmen, with Commissars, they will pin you down fast!"
+	elseif (random <= 36)then s_printthis = "Take out void shields quickly with weapons like flamers or anti titan weapons."
+	elseif (random <= 37)then s_printthis = "Don't often clump your turrets tight together. Area effect weapons will wipe them out!"
+	elseif (random <= 38)then s_printthis = "Play aggressive mid game, spam end game."
+	elseif (random <= 41)then s_printthis = "Remember: Weapons of Mass Destruction takes 3 minutes to fire its weapons!"
+	elseif (random <= 42)then s_printthis = "Go all the way across the map in two seconds with aircraft transports!"
+	elseif (random <= 43)then s_printthis = "Zoom out all the way. Like what you see? If you don't, play on Apocalyzed maps..."
+	elseif (random <= 44)then s_printthis = "Disable Fog wincondition will remove the fog of war."
+	elseif (random <= 49)then s_printthis = "Low pop cap? Try the Massive and Extreme Battles winconditions."
+	elseif (random <= 50)then s_printthis = "Restrict aircraft (wincondition) if you find that aircraft gets stuck often."
+	elseif (random <= 51)then s_printthis = "Restrict commanders (wincondition) if you don't like dealing with them pesky heroes..."
+	elseif (random <= 52)then s_printthis = "Like tougher fortress defenses? Play on Fortress Defenses wincondition!"
+	elseif (random <= 53)then s_printthis = "If you think the resource rates are too fast or too slow, adjust them for next game within skirmish options."
+	elseif (random <= 57)then s_printthis = "Click the Ultimate Apocalypse button on your HQ for developer info."
+	elseif (random <= 60)then s_printthis = "The mod developers hope you've enjoyed the UA mod so far!"
+	elseif (random <= 62)then s_printthis = "Be sure to donate (optional) to the mod team online!"
+	elseif (random <= 63)then s_printthis = "Make sure you have enough squad and support cap!"
+	elseif (random <= 64)then s_printthis = "The Tau Empire's Manta is the best titan available. Purchase it ASAP."
+	elseif (random <= 65)then s_printthis = "The Ethereal can garrisson in the Manta and provide it bonuses."
+	elseif (random <= 66)then s_printthis = "The Necron Lord can be deepstriked from a Necron Monolith."
+	elseif (random <= 67)then s_printthis = "Eldar infantry can be deepstriked from their HQ."
+	elseif (random <= 68)then s_printthis = "Dark Eldar infantry can be deepstriked from their HQ."
+	elseif (random <= 69)then s_printthis = "Cobra Super Heavy may be inaccurate, but upon impact of anything, chances of survival is low."
+	elseif (random <= 70)then s_printthis = "The Medusa Tank may be inaccurate, but it has deadly shots."
+	elseif (random <= 71)then s_printthis = "Spinegaunts, Termagants, and Hormagaunts are the quickest units to produce and reinforce."
+	elseif (random <= 72)then s_printthis = "Nightwings are the fastest units in the game."
+	elseif (random <= 73)then s_printthis = "The Hive Mind can be used to cast global powers and deepstrike gaunts."
+	elseif (random <= 74)then s_printthis = "The Doomsday Monolith can summon Siege Monoliths to its aid and become the ultimate Doomsday Phalanx!"
+	elseif (random <= 75)then s_printthis = "Tormentor Titans can be stealthed, beware!"
+	elseif (random <= 76)then s_printthis = "Try to find Tau stealth suits. They scout your base and can be deadly when reappearing."
+	elseif (random <= 77)then s_printthis = "Thanks to Cosmocrat, all new models and 3D content are ingame!"
+	elseif (random <= 78)then s_printthis = "Thanks to Fuggles, this wincondition idea exists."
+	elseif (random <= 79)then s_printthis = "Thanks to Rocket-Banana, all icons are updated and not placeholder icons."
+	elseif (random <= 80)then s_printthis = "The 1.73 release took almost 1 year to make! And you are playing it!"
+	elseif (random <= 81)then s_printthis = "Await version 1.74 of the UA mod! Including two new factions!"
+	elseif (random <= 82)then s_printthis = "Place commander explosives to wipe out structures with ease."
+	elseif (random <= 87)then s_printthis = "The relic resource is the resource required to produce special units and titans."
+	elseif (random <= 88)then s_printthis = "Use Heavy Bolters to gun down infantry quickly."
+	elseif (random <= 89)then s_printthis = "Use flamers to deal with structures and morale."
+	elseif (random <= 90)then s_printthis = "Keep producing cheap units if you have tons of resources to spend!"
+	elseif (random <= 93)then s_printthis = "Right click on a unit icon to auto produce the unit within your build queue!"
+	elseif (random <= 97)then s_printthis = "Right click on the reinforce button to reinforce your squad to full strength."
+	elseif (random <= 100)then s_printthis = "The attack move command is much more useful in combat than the standard move command."
+	elseif (random <= 101)then s_printthis = "We are accepting donations! Feel free to donate to the UA mod team!"
+	elseif (random <= 102)then s_printthis = "Destroy all HQ buildings to cripple builder unit production."
+	elseif (random <= 103)then s_printthis = "Plasma generators limit per HQ is 6."
+	elseif (random <= 104)then s_printthis = "Standard relic units = 2 Relic resource."
+	elseif (random <= 105)then s_printthis = "Advanced relic units = 3 Relic resource."
+	elseif (random <= 106)then s_printthis = "Titan units = 4 Relic resource."
+	elseif (random <= 107)then s_printthis = "Advanced Titan units = 6 Relic resource."
+	elseif (random <= 108)then s_printthis = "12 races. Play them all!"
+	elseif (random <= 109)then s_printthis = "Imperial Guard have Nervegas Grenades. Keep your infantry away from it!"
+	elseif (random <= 112)then s_printthis = "Build Waaagh! Banners to expand in population!"
+	elseif (random <= 113)then s_printthis = "The Arch Angel may be a limit of 1, but is an unstoppable god of destruction."
+	elseif (random <= 114)then s_printthis = "Upgrade your turrets to be better suited for vehicles."
+	elseif (random <= 115)then s_printthis = "Orks can enter their own buildings and tunnel underground."
+	elseif (random <= 116)then s_printthis = "Imperial Guard can tunnel underground and travel from building to building."
+	elseif (random <= 117)then s_printthis = "Cheat code: cheat_power 'amount'"
+	elseif (random <= 118)then s_printthis = "Cheat code: cheat_requisition 'amount'"
+	elseif (random <= 119)then s_printthis = "Avenging Angels can be created by the Act of Faith: Ascension ability."
+	elseif (random <= 120)then s_printthis = "Build holy icons to mass produce Living Saints."
+	elseif (random <= 121)then s_printthis = "Always upgrade your Listening Posts..."
+	elseif (random <= 122)then s_printthis = "Nuke things if a base defense looks to be a stale mate."
+	elseif (random <= 123)then s_printthis = "Hotkey: delete key scuttles your units if you don't need them anymore."
+	elseif (random <= 124)then s_printthis = "Upgrade your squads faster by memorizing hotkeys."
+	elseif (random <= 125)then s_printthis = "Find cover if unit morale is broken."
+	elseif (random <= 126)then s_printthis = "The Farseer, Chaos Sorceror, and Librarian are equipped with the most special abilities in the game."
+	elseif (random <= 127)then s_printthis = "Missile Launchers have an area effect impact and can throw infantry."
+	elseif (random <= 128)then s_printthis = "Snipers are best against morale and crippling infantry far away."
+	elseif (random <= 129)then s_printthis = "Scan areas of interest with your HQ scanners (Imperial Guard)."
+	elseif (random <= 130)then s_printthis = "Always reinforce your squads to full strength!"
+	elseif (random <= 131)then s_printthis = "Your commanders can use deadly abilities once you upgrade them with the level 5 research."
+	elseif (random <= 132)then s_printthis = "Wargear is essential for the survival of your commanders."
+	elseif (random <= 136)then s_printthis = "Jumping or teleporting onto an infantry squad throws them into different directions."
+	elseif (random <= 137)then s_printthis = "Revenant Titans are the fastest titans."
+	elseif (random <= 138)then s_printthis = "Phantom Titans are the most durable titans."
+	elseif (random <= 139)then s_printthis = "AEonic Orbs are fragile and expensive, however upon death, they'll kill most units within a wide area."
+	elseif (random <= 140)then s_printthis = "Necrons can build 14 generators per Monolith."
+	elseif (random <= 141)then s_printthis = "Dark Eldar and Eldar can relocate their buildings."
+	elseif (random <= 142)then s_printthis = "Necrons contain the best superweapons available."
+	elseif (random <= 143)then s_printthis = "The Storm Serpent for the Eldar is the weakest, but cheapest relic unit."
+	elseif (random <= 144)then s_printthis = "The Storm Serpent holds entire legions of squads like a Webway Gate."
+	elseif (random <= 145)then s_printthis = "The Lieutenants for the Imperial Guard can produce soldiers from the front lines."
+	end
+	
+	Function_Printword(s_printthis)
+end
+
+function Function_Printword(s_toprint)
+
+	W40k_ShowSystemMessage(s_toprint)
+	
+end

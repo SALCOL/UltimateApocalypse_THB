@@ -1,0 +1,150 @@
+----------------------------------------
+-- File: 'orkstrategyinfo.ai'
+-- Edited by Thudmeizer  @ 02.02.2016
+-- Edited by Cylarne_04 2011
+
+BuildBaseStrategyInfo = 
+{
+	ork_race =
+	{
+		post_builder = 2,
+		flag_capture = 2,
+		
+		-- Reserve this amount for building units, reinforcing and upgrading
+		req_reserve = 150,
+		
+		-- need at least this at all times
+		squad_cap_threshold = 3,
+		
+		--need at least this at all times
+		support_cap_threshold = 3,
+
+		-- used to calculate wants for engineers
+		Engineers =
+		{
+			--number of engineers we're aiming for
+			want = 4,
+		},
+		
+		-- Is used to modify the army strength in the build programs (Allows faster balancing adjustments)
+		ArmyStrengthModifier = 1.0,
+		
+		-- Item-Syntax: Min. Tier, Min. Requisition, Min. Power, Min. ArmyStrength, Object-Count, Object-Type, Object-Name
+		BuildPrograms =
+		{
+			-- Allround Strategy
+			{
+				{ 1, 160, 0, 0, 1,	"Unit",		"ork_squad_stormboy" },
+				{ 1, 140, 0, 0, 1,	"Unit",		"ork_squad_shoota_boy" },
+				{ 1, 190, 0, 0, 1,	"Unit",		"ork_squad_mek_boy" },
+				{ 1, 650, 150, 0, 1,	"Building",	"ork_hq" },
+				{ 1, 225, 0, 0, 1,	"Building",	"ork_boy_hut" },
+				{ 1, 100, 0, 0, 1,	"Building",	"ork_generator" },
+				{ 1, 160, 0, 0, 1,	"Building",	"ork_waagh_banner" },
+				{ 1, 90, 80, 300, 40,	"TurretAddon",	"ork_gork_totem_addon_1" },
+				{ 1, 100, 50, 500, 40,	"TurretAddon",	"ork_hq_addon" },
+				{ 1, 35, 5, 0, 100,	"TurretAddon",	"ork_waagh_banner_gunzaddon" },
+				{ 1, 160, 0, 0, 3,	"Building",	"ork_waagh_banner" },
+				{ 1, 90, 80, 250, 100,	"TurretAddon",	"ork_gork_totem_addon_1" },
+				{ 1, 400, 130, 1000, 1,	"Building",	"ork_bilda_pit" },
+
+				{ 2, 160, 0, 0, 4,	"Building",	"ork_waagh_banner" },
+				{ 2, 250, 135, 0, 1,	"Building",	"ork_mek_shop" },
+				{ 2, 0, 140, 0, 1,	"Research",	"ork_research_tech_killa_kan" },
+				{ 2, 160, 0, 0, 6,	"Building",	"ork_waagh_banner" },
+				{ 2, 75, 90, 500, 30,	"TurretAddon",	"ork_waagh_banner_gunzaddon_2" },
+				{ 2, 160, 0, 0, 7,	"Building",	"ork_waagh_banner" },
+				
+				{ 3, 450, 75, 0, 1,	"Unit",		"ork_squad_warboss" },
+				{ 3, 50, 150, 500, 10,	"TurretAddon",	"ork_boomy_platform_addon" },
+				{ 3, 65, 0, 125, 50,	"TurretAddon",	"ork_waagh_banner_population_addon" },
+				{ 3, 240, 160, 500, 100,"TurretAddon",	"ork_gork_totem_addon_2" },
+				{ 3, 160, 0, 0, 10,	"Building",	"ork_waagh_banner" },
+				
+				{ 4, 0, 0, 0, 4,	"Unit",		"ork_squad_slugga" },
+				{ 4, 160, 0, 0, 12,	"Building",	"ork_waagh_banner" },
+				{ 4, 50, 150, 500, 100,	"TurretAddon",	"ork_boomy_platform_addon" },
+				
+				{ 5, 700, 200, 1000, 1,	"Building",	"ork_hq_super" },
+				{ 5, 3000, 3000, 3000, 1,"Research",	"ork_waagh_research" }
+			},
+		},
+		
+        SquadLimits = 
+		{
+			standard =
+			{
+			
+			}
+		}
+	},
+}
+
+BuildOrderStrategyInfo = 
+{
+	ork_race =
+	{
+		Basic = 
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "squad", "ork_squad_grot" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "post_builder" },
+			{ "building", "ork_boy_hut", true },
+			{ "building", "ork_waagh_banner" }
+		},
+		 
+		QuickStart = 
+		{
+			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "squad", "ork_squad_grot" },
+			{ "squad", "ork_squad_grot" },
+			{ "squad", "ork_squad_grot" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "squad", "ork_squad_slugga" },
+			{ "squad", "ork_squad_grot" },
+			{ "squad", "ork_squad_grot" },
+			{ "squad", "ork_squad_mek_boy" },
+			{ "squad", "ork_squad_stormboy" },
+			{ "squad", "ork_squad_shoota_boy" },
+			{ "squad", "ork_squad_stormboy" },
+			{ "squad", "ork_squad_stormboy" },
+			{ "squad", "ork_squad_grot" },
+			{ "post_builder" }, { "post_builder" },
+			{ "building", "ork_boy_hut", true },
+			{ "building", "ork_waagh_banner", true },
+			{ "building", "ork_boy_hut", true },
+			{ "building", "ork_waagh_banner", true },
+			{ "building", "ork_waagh_banner", true },
+			{ "building", "ork_waagh_banner", true },
+			{ "building", "ork_generator", true },
+			{ "building", "ork_waagh_banner" }
+		},
+		 
+		LargeMap = 
+		{
+			{ "flag_capture" }, { "post_builder" },
+			{ "flag_capture" }, { "flag_capture" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "squad", "ork_squad_grot" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "building", "ork_waagh_banner", true },
+			{ "building", "ork_waagh_banner", true },
+			{ "building", "ork_generator" }
+		}
+	}
+}
+
+AttackStrategyInfo = 
+{	
+	ork_race =
+	{
+		MinArmyStrength = 200,
+	},
+}

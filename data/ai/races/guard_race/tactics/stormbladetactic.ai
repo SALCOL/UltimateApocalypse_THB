@@ -1,0 +1,37 @@
+----------------------------------------
+-- File: 'stormbladetactic.ai'
+-- Edited by Cylarne_04 2011
+
+class 'StormbladeTactic' (GuardVehicleTactic)
+
+Stormblade = {}
+
+function StormbladeTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Stormblade Tactic")
+end
+
+function StormbladeTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Stormblade.smoke_id == nil) then
+		Stormblade.smoke_id = cpu_manager.stats:GetAbilityID( "guard_smoke_launchers" )
+	end
+end
+
+function StormbladeTactic:DoAbilities()
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(Stormblade.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Stormblade.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(Stormblade.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Call standard method
+	GuardVehicleTactic.DoAbilities(self)
+end

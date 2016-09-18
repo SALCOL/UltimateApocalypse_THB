@@ -1,0 +1,169 @@
+----------------------------------------
+-- File: 'sorcerertactic.ai'
+-- Edited by Thudmeizer @ 07.01.2016
+-- Edited by LarkinVB   @ 16.08.2005
+-- Edited by Cylarne_04 2011
+
+class 'SorcererTactic' (ChaosMarineInfantryTactic)
+
+Sorcerer = {}
+
+function SorcererTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sorcerer Tactic")
+	
+	self.dance_time = 0
+end
+
+function SorcererTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function SorcererTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function SorcererTactic:InitAbilities()
+
+	-- Init ability ID's
+	-- Standard Sorceror abilities
+	if (Sorcerer.torment_id == nil) then
+		Sorcerer.torment_id = cpu_manager.stats:GetAbilityID( "chaos_chains_of_torment" )
+	end
+	if (Sorcerer.doombolt_id == nil) then
+		Sorcerer.doombolt_id = cpu_manager.stats:GetAbilityID( "chaos_doombolt" )
+	end
+	if (Sorcerer.firebolt_id == nil) then
+		Sorcerer.firebolt_id = cpu_manager.stats:GetAbilityID( "chaos_firebolt" )
+	end
+	if (Sorcerer.acidbolt_id == nil) then
+		Sorcerer.acidbolt_id = cpu_manager.stats:GetAbilityID( "chaos_acidbolt" )
+	end
+	if (Sorcerer.change_id == nil) then
+		Sorcerer.change_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change" )
+	end
+	if (Sorcerer.change2_id == nil) then
+		Sorcerer.change2_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change_improved" )
+	end
+	if (Sorcerer.change3_id == nil) then
+		Sorcerer.change3_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change_greater" )
+	end
+	if (Sorcerer.corruption_id == nil) then
+		Sorcerer.corruption_id = cpu_manager.stats:GetAbilityID( "chaos_corruption" )
+	end
+	if (Sorcerer.shrine_id == nil) then
+		Sorcerer.shrine_id = cpu_manager.stats:GetAbilityID( "chaos_summon_statue" )
+	end
+	if (Sorcerer.meteors_id == nil) then
+		Sorcerer.meteors_id = cpu_manager.stats:GetAbilityID( "chaos_meteors" )
+	end
+	
+	-- Sorceror Lord abilities
+	if (Sorcerer.tormentlord_id == nil) then
+		Sorcerer.tormentlord_id = cpu_manager.stats:GetAbilityID( "chaos_chains_of_torment_advance_sp" )
+	end
+	if (Sorcerer.changelord_id == nil) then
+		Sorcerer.changelord_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change_greater_lord" )
+	end
+	if (Sorcerer.timelord_id == nil) then
+		Sorcerer.timelord_id = cpu_manager.stats:GetAbilityID( "chaos_warp_time" )
+	end
+end
+
+function SorcererTactic:DoAbilities()
+
+	Ability.DoAbility( self.squad_ai, Sorcerer.timelord_id, Ability.Filters.IsInCombat )
+	
+	-- We are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.torment_id, Ability.Filters.CloseEnemy, 4 ) 
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.doombolt_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.firebolt_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.acidbolt_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.change_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.change2_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.change3_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, Sorcerer.corruption_id, Ability.Filters.CloseEnemy, 4 ) 
+		--Ability.DoAbilityPos( self.squad_ai, Sorcerer.shrine_id, Ability.Filters.CloseEnemy, 3 )
+		Ability.DoAbilityPos( self.squad_ai, Sorcerer.meteors_id, Ability.Filters.CloseEnemy, 5 )
+		
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.changelord_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.tormentlord_id, Ability.Filters.CloseEnemy, 4 ) 
+	else
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.torment_id, Ability.Filters.CloseEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.doombolt_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.firebolt_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.acidbolt_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.change_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.change2_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.change3_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, Sorcerer.corruption_id, Ability.Filters.CloseEnemy, 8 ) 
+		--Ability.DoAbilityPos( self.squad_ai, Sorcerer.shrine_id, Ability.Filters.CloseEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, Sorcerer.meteors_id, Ability.Filters.CloseEnemy, 8 )
+		
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.changelord_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, Sorcerer.tormentlord_id, Ability.Filters.CloseEnemy, 8 ) 
+	end
+end
+
+function SorcererTactic:Update()
+
+    if (self:IsComplete()) then
+        return
+    end
+    
+    -- State machine
+    if (not InfantryTactic.Update( self )) then
+        return
+    end
+    
+	-- Check for close commander
+    local bSetRanged = false
+    local bSetMelee = false
+	local vSquadPos = self.squad_ai:GetPosition()
+	local eStance = self.squad_ai:GetMeleeStance()
+	local oEnemyCommander = Ability.Filters.CloseCommanderEnemy(vSquadPos, 20, 1)
+    if (oEnemyCommander ~= nil) then
+       
+        -- Check health
+        if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
+            bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+            self.dance_time = 0
+		else
+            bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+        end
+	else
+    
+    	-- Check for close attached commander
+    	local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
+    	if (oSquad ~= nil and oSquad:IsAttached()) then
+    		bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+    	else
+    		bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+    	end
+    end
+
+    -- At leat 10 secs ranged stance/dancing
+    if (bSetRanged) then
+        self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+        self.dance_time = g_iGMT
+    elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
+        self.squad_ai:DoSetDefaultMeleeStance()
+        self.dance_time = 0
+    end
+    
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+    
+    -- Attach to melee
+	if (self.squad_ai:GetMeleeStance() == SquadAI.MSTANCE_Assault) then
+
+		if (self:TryAttachSquad(true, true, 50, 100, nil) == nil) then
+		
+			if (self:TryAttachSquad(false, false, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+				self:TryAttachSquadMelee()
+			end
+		end
+	end
+end

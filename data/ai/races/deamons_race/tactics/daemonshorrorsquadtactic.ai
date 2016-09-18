@@ -1,0 +1,103 @@
+----------------------------------------
+-- File: 'daemonshorrorsquadtactic.ai'
+-- Edited by fuggles 27.05.2013
+
+class 'DaemonsHorrorSquadTactic' (DaemonsInfantryTactic)
+
+DaemonsHorrorSquad  = {}
+
+function DaemonsHorrorSquadTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Horror Squad Tactic")
+end
+
+function DaemonsHorrorSquadTactic:InitAbilities()
+
+	-- Init ability ID's
+	if( self.squad_ai:GetSquadName() == "daemon_squad_horblu_stature" ) then
+		if (DaemonsHorrorSquad.voice_id == nil) then
+			DaemonsHorrorSquad.voice_id = cpu_manager.stats:GetAbilityID( "daemons_dark_speech" )
+		end
+	else
+		if (DaemonsHorrorSquad.cloak_id == nil) then
+			DaemonsHorrorSquad.cloak_id = cpu_manager.stats:GetAbilityID( "daemons_cloak_of_darkness" )
+		end
+	end
+end
+
+function DaemonsHorrorSquadTactic:DoAbilities()
+
+	if( self.squad_ai:GetSquadName() == "daemon_squad_horblu_stature" ) then
+		Ability.DoAbility( self.squad_ai, DaemonsHorrorSquad.voice_id, Ability.Filters.IsInCombat )
+	else
+		Ability.DoAbility( self.squad_ai, DaemonsHorrorSquad.cloak_id, Ability.Filters.IsInCombat )
+	end
+	
+	-- Call basic DoAbilities methods
+	DaemonsInfantryTactic.DoAbilities(self)
+end
+
+function DaemonsHorrorSquadTactic:Reinforce()
+
+	-- Allow free reinforcing during harassing time
+	if (g_iGMT > DefendChokePointPlan.HarassingTime * 60) then
+
+		-- If there are no resources available, don't upgrade!
+		if (not Tactic.Options.can_reinforce) then
+			return
+		end
+	end
+
+	if (not self.squad_ai:IsReinforcing()) then
+
+		-- Always try for the actual leader first
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+			return
+		end
+
+		-- Try for different types of squad members
+		local purpleIndex = 0
+		local redIndex = 1
+		local greenIndex = 2
+		local yellowIndex = 3
+	
+		-- Get current leader count
+		local numpurple = self.squad_ai:GetLeaderCount( purpleIndex )
+		local numred = self.squad_ai:GetLeaderCount( redIndex)
+		local numgreen = self.squad_ai:GetLeaderCount( greenIndex )
+		local numyellow = self.squad_ai:GetLeaderCount( yellowIndex )
+
+		-- Desired number of each leader type
+		local desiredpurple = 1
+		local desiredred = 1
+		local desiredgreen = 2
+		local desiredyellow = 3
+		local squadMax = self.squad_ai:GetMaxLeaderCount()
+		
+		if( squadMax > 4 ) then
+			desiredyellow = 6
+		end
+
+		-- Desired order of reinforcing
+		if (numred < desiredred) then
+			if self.squad_ai:CanReinforce( true, redIndex ) then
+				self.squad_ai:DoReinforce( true, redIndex )
+			end
+		elseif (numred < desiredyellow) then
+			if self.squad_ai:CanReinforce( true, yellowIndex ) then
+				self.squad_ai:DoReinforce( true, yellowIndex )
+			end
+		elseif (numpurple < desiredpurple) then
+			if self.squad_ai:CanReinforce( true, purpleIndex ) then
+				self.squad_ai:DoReinforce( true, purpleIndex )
+			end
+
+		elseif (numgreen < desiredgreen) then
+			if self.squad_ai:CanReinforce( true, greenIndex ) then
+				self.squad_ai:DoReinforce( true, greenIndex )
+			end
+		end
+	end
+end
+

@@ -1,0 +1,123 @@
+Hint: 
+!!- = Must be done! (Most wanted)
+* = Fixes
+- = Ideas NOT taken to effect yet.
+>> = To be included in only the Grand Release Gold Edition
+
+------------------------
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Patch 1.8.1 (also included):
+
+* Fixed the Grenadiers' tooltips so it now displays the correct name
+* Fixed the Tomb Stalkers' tooltips so it displays the correct amount of relic resource needed.
+* Tomb Spyders and Tomb Stalkers can now spawn scarabs like they were supposed to
+* Sister of Battle Retributors can now teleport like the rest of infantry after the Wargear of the Ardent Flame has been researched
+* Tau invincibility bug upon creating a satellite drone is now fixed
+* Doubled the cost of the Grand Master. He now costs 18,000 requisition and 4000 power, and takes 2 minutes longer to deploy
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Patch 1.8.2:
+
+------------------------
+AI Changes:
+------------------------
+
+------------------------
+Global: 
+------------------------
+* All Space Marine infantry armor and damage decreased.
+
+------------------------
+Chaos Marines: 
+------------------------
+* Cultists melee damage increased.
+
+------------------------
+Dark Eldar: 
+------------------------ 
+* Hellions, Warriors, Scouragers, Trueborns, Wyches, and Warp Beasts health increased.
+* Kabal Citadel can now Cease Fire.
+* Kabal Fortress now contains the auto repair ability.
+
+------------------------
+Eldar: 
+------------------------
+
+------------------------
+Imperial Guard: 
+------------------------
+* Conscripts now do not "T-stance" when capturing (thanks GreenScorpion for the fix!).
+* Rough Riders melee damage and health decreased.
+* Basilisk Magnus can now Cease Fire.
+
+------------------------
+Necrons: 
+------------------------
+* Sterilization Obelisk no longer rallies a point.
+
+------------------------
+Orks: 
+------------------------
+* Teknolojee Tree no longer rallies a point.
+* Kommandoz Nob Leader no longer is named "Teknolojee: Nobz"
+
+------------------------
+SISTERS:
+------------------------
+
+------------------------
+Space Marines: 
+------------------------
+
+------------------------
+Tau: 
+------------------------
+* Tau Bumper Mods and charge abilities now functions normally.
+* Kroot Hunt ability sight radius modifier decreased.
+* Ion Cannon can now Cease Fire.
+* XV89 Commander can now upgrade his weapons.
+
+------------------------
+Tyranids: 
+------------------------
+
+------------------------
+Inquisition:
+------------------------
+* Dreadknight was greatly nerfed, including decreased void shields, damage immunities removed, ranged combat buffs removed, and instant morale recovery is gone.
+* Shrine to the Emperors are now more expensive.
+* Grey Knight Paladins are now slightly weaker. Squad cap increased from 6 to 7.
+* Grand Master Fearlessness ability was removed.
+* Grand Master now costs 18,000 requisition and 8,000 power to field. Grand Master now requires the Shrine to the Emperor.
+
+------------------------
+Daemons:
+------------------------
+* Instability modifiers were nerfed. Health decreased for all Daemon squads.
+
+--------------------------------------------------------|
+XP3 Campaign: |
+--------------------------------------------------------|
+
+--------------------------------------------------------|
+Survival: |
+--------------------------------------------------------|
+
+--------------------------------------------------------|
+Arena: |
+--------------------------------------------------------|
+
+--------------------------------------------------------|
+SCAR: | 
+--------------------------------------------------------|
+* Autoabilities wincondition added thanks to a UA mod fan!
+
+--------------------------------------------------------|
+SCENARIOS: | 
+--------------------------------------------------------|
+- Test Map no longer gives a scar error.
+
+--------------------------------------------------------|
+SOUND: | 
+--------------------------------------------------------|

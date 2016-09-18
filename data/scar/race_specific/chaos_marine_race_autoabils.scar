@@ -1,0 +1,58 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["chaos_marine_race"] =
+{
+	{ "chaos_noise_grenades", 50 },
+	{ "chaos_corruption", 45 },
+	{ "chaos_guo_spit", 45 },
+	{ "chaos_bolt_of_change_loc", 45 },
+	{ "chaos_corruption_advance_sp", 40 },
+	{ "chaos_bolt_of_change", 36 },
+	{ "chaos_bolt_of_change_aspiringsorcerer", 36 },
+	{ "chaos_bolt_of_change_greater", 36 },
+	{ "chaos_bolt_of_change_greater_lord", 36 },
+	{ "chaos_bolt_of_change_improved", 36 },
+	{ "chaos_doombolt", 35 },
+	{ "chaos_firebolt", 35 },
+	{ "chaos_doombolt_psyker", 35 },
+	{ "chaos_frag_grenades", 30 },
+	{ "chaos_inferno_grenades", 30 },
+	{ "chaos_frag_grenades2", 30 },
+	{ "chaos_krak_grenades", 30 },
+	{ "chaos_frag_grenades_2", 25 },
+	{ "chaos_chains_of_torment", 25 },
+	{ "chaos_chains_of_torment_advance_sp", 25 },
+	{ "chaos_brass_let_it_burn", 25 },
+	{ "chaos_frag_grenades_prisoner", 30 },
+	{ "chaos_blight_grenades", 25 },
+	{ "chaos_doom_siren", 18 },
+	{ "chaos_detector", 15 },
+	{ "chaos_guo_puke", 15 },
+	{ "chaos_winds_loc, 8 },
+	{ "chaos_biotoxin_rocket", 4 },
+	{ "chaos_symbol_of_chaos", 0 },
+	{ "chaos_symbol_of_chaos_khorne", 0 },
+	{ "chaos_warp_time", 0 },
+	{ "chaos_warp_time_aspiringsorcerer", 0 },
+	{ "chaos_symbol_of_chaos_nurgle", 0 },
+	{ "chaos_symbol_of_chaos_slaanesh", 0 },
+	{ "chaos_symbol_of_chaos2", 0 },
+	{ "chaos_taint_ability", 0 },
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["chaos_marine_race"] =
+{
+	{ "chaos_blood_syphon", 45 },
+	{ "chaos_smoke_launchers_land_raider", 35 },
+	{ "chaos_smoke_launchers_land_raider_2", 35 },
+	{ "chaos_smoke_launchers", 30 },
+	{ "chaos_daemon_strength", 0 },
+	{ "chaos_daemon_strength_daemon_prince", 0 },
+	{ "chaos_furious_rage", 0 },
+	{ "chaos_speed_fiend", 0 },
+	{ "chaos_symbol_of_chaos", 0 },
+	{ "chaos_symbol_of_chaos2", 0 },
+	{ "chaos_taint_ability", 0 },
+}

@@ -1,0 +1,43 @@
+-- Edited by Cylarne_04 2011
+
+class 'BrassScorpionTactic' (ChaosMarineInfantryTactic)
+
+BrassScorpion = {}
+
+function BrassScorpionTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("BrassScorpion Tactic")
+	
+	-- Add a choice to stay in ranged or melee combat.
+	self.choice_ranged_melee = math.random(1, 100)
+
+end
+
+function BrassScorpionTactic:AlwaysAttack()
+	return true
+end
+
+function BrassScorpionTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (BrassScorpion.Flame == nil) then
+		BrassScorpion.Flame = cpu_manager.stats:GetAbilityID( "chaos_Brass_let_it_burn" )
+	end
+	if (BrassScorpion.Wildfire == nil) then
+		BrassScorpion.Wildfire = cpu_manager.stats:GetAbilityID( "chaos_Brass_wildfire" )
+	end
+end
+
+function BrassScorpionTactic:DoAbilities()
+
+	Ability.DoAbilityTarget( self.squad_ai, BrassScorpion.Flame, Ability.Filters.CloseEnemy, 6 )
+	Ability.DoAbilityArea( self.squad_ai, BrassScorpion.Wildfire, Ability.Filters.CloseEnemy, 15, 10 ) 
+end
+
+function BrassScorpionTactic:Update()
+	
+	-- Set unit on ranged stance by a 50/50 chance.
+	if (self.squad_ai:GetMeleeStance() == SquadAI.MSTANCE_Assault and cpu_manager:GetTierLevel() >= 5 and self.choice_ranged_melee >= 50) then
+		self.squad_ai:DoSetMeleeStance(SquadAI.MSTANCE_Ranged)
+	end
+end

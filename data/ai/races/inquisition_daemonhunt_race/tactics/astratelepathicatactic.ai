@@ -1,0 +1,88 @@
+----------------------------------------
+-- File: 'astratelepathicatactic.ai'
+-- Edited by Thudmeizer		@ 03.05.2008
+-- Edited by Cylarne
+
+
+class 'AstraTelepathicaTactic' (BaseTactic)
+
+function AstraTelepathicaTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Astra Telepathica Tactic")
+	
+	-- Building can deepstrike troops
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function AstraTelepathicaTactic:InitAbilities()
+	
+	-- Init abilities
+	if (self.m_iExterminatusID == nil) then
+		self.m_iExterminatusID = cpu_manager.stats:GetAbilityID("inquisition_exterminatus")
+	end
+
+	if (self.m_iMegameltaID == nil) then
+		self.m_iMegameltaID = cpu_manager.stats:GetAbilityID("inquisition_mega_melta")
+	end
+end
+
+function AstraTelepathicaTactic:DoAbilities()
+
+	-- Try to activate the exterminatus orbital attack - monsters
+	if (self.base_ai:CanDoAbility(self.m_iExterminatusID)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(self.m_iExterminatusID)
+		local oSquad = Ability.Filters.CloseMonsterEnemy(self.base_ai:GetPosition(), iRange, 6)
+		if (oSquad ~= nil) then
+			
+			-- Only try to detect if the unit is attacking or capturing
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.base_ai:DoSpecialAbilitySquad(self.m_iExterminatusID, oSquad:GetSquad())
+			end
+		end
+	end
+	
+	-- Try to activate the exterminatus orbital attack - infantry
+	if (self.base_ai:CanDoAbility(self.m_iExterminatusID)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(self.m_iExterminatusID)
+		local oSquad = Ability.Filters.CloseInfantryEnemy(self.base_ai:GetPosition(), iRange, 10)
+		if (oSquad ~= nil) then
+			
+			-- Only try to detect if the unit is attacking or capturing
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.base_ai:DoSpecialAbilitySquad(self.m_iExterminatusID, oSquad:GetSquad())
+			end
+		end
+	end
+	
+	-- Try to activate the mega melta torpedo attack - monsters
+	if (self.base_ai:CanDoAbility(self.m_iMegameltaID)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(self.m_iMegameltaID)
+		local oSquad = Ability.Filters.CloseMonsterEnemy(self.base_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil) then
+			
+			-- Only try to detect if the unit is attacking
+			if (oSquad:IsInCombat()) then
+				self.base_ai:DoSpecialAbilitySquad(self.m_iMegameltaID, oSquad:GetSquad())
+			end
+		end
+	end
+
+	-- Try to activate the mega melta torpedo attack - vehicles
+	if (self.base_ai:CanDoAbility(self.m_iMegameltaID)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(self.m_iMegameltaID)
+		local oSquad = Ability.Filters.CloseVehicleEnemy(self.base_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil) then
+			
+			-- Only try to detect if the unit is attacking
+			if (oSquad:IsInCombat()) then
+				self.base_ai:DoSpecialAbilitySquad(self.m_iMegameltaID, oSquad:GetSquad())
+			end
+		end
+	end
+
+	
+end

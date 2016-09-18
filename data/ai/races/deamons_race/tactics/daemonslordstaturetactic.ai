@@ -1,0 +1,201 @@
+----------------------------------------
+-- File: 'daemonslordstaturetactic.ai'
+-- Edited by CornCobMan @ 11.06.2013
+
+class 'DaemonsLordStatureTactic' (DaemonsInfantryTactic)
+
+DaemonsLordStature = {}
+
+function DaemonsLordStatureTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons LordStature Tactic")
+	
+	self.attachlist = {}
+	self:AddAttachList()
+end
+
+function DaemonsLordStatureTactic:AddAttachList()
+	table.insert( self.attachlist, "daemon_squad_bloodletter_elites")
+	table.insert( self.attachlist, "daemon_squad_bloodletters")
+	table.insert( self.attachlist, "daemon_squad_daemonettes_greater")
+	table.insert( self.attachlist, "daemon_squad_fiends")
+	table.insert( self.attachlist, "daemon_squad_plague_bearers")
+	table.insert( self.attachlist, "daemon_squad_daemonettes")
+	table.insert( self.attachlist, "daemon_squad_flesh_hound")
+end
+
+function DaemonsLordStatureTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsLordStature.warpfire_id == nil) then
+		DaemonsLordStature.warpfire_id = cpu_manager.stats:GetAbilityID( "daemons_warpfire_lord" )	
+	end
+
+	if (DaemonsLordStature.warpportal_id == nil) then
+		DaemonsLordStature.warpportal_id = cpu_manager.stats:GetAbilityID( "daemons_warp_portal_lord" )	
+	end
+	
+	if (DaemonsLordStature.hellmouth_id == nil) then
+		DaemonsLordStature.hellmouth_id = cpu_manager.stats:GetAbilityID( "daemons_warpfire_roar" )	
+	end
+	
+	if (DaemonsLordStature.obliteration_id == nil) then
+		DaemonsLordStature.obliteration_id = cpu_manager.stats:GetAbilityID( "daemons_divine_obliteration" )	
+	end
+	
+	if (DaemonsLordStature.murder_id == nil) then
+		DaemonsLordStature.murder_id = cpu_manager.stats:GetAbilityID( "daemons_wargear_murder" )	
+	end
+	
+	if (DaemonsLordStature.shield_id == nil) then
+		DaemonsLordStature.shield_id = cpu_manager.stats:GetAbilityID( "daemons_wargear_shield" )	
+	end
+end
+
+function DaemonsLordStatureTactic:DoAbilities()
+
+	-- Check if we can possess
+	-- Update, don't, the ai is bugged upon possession.
+	if (self.squad_ai:CanPossess()) then
+	
+		-- Check if we are in combat
+		if ((self.squad_ai:IsInCombat() or cpu_manager.terrain_analyzer:HasThreat(self.squad_ai:GetPosition(), 35)) and self.squad_ai:GetHealthPercentage() < 0.5) then
+			self.squad_ai:DoPossess()
+		end
+	end
+	
+	--Ability.DoAbilityPos( self.squad_ai, DaemonsLordStature.warpportal_id, Ability.Filters.CloseSquadEnemy, 1 )
+	Ability.DoAbilityArea( self.squad_ai, DaemonsLordStature.obliteration_id, Ability.Filters.CloseInfantryEnemy, 6 )
+	Ability.DoAbilityPos( self.squad_ai, DaemonsLordStature.hellmouth_id, Ability.Filters.CloseSquadEnemy, 2 )
+	Ability.DoAbilityTarget( self.squad_ai, DaemonsLordStature.warpfire_id, Ability.Filters.CloseSquadEnemy, 1 )
+	Ability.DoAbilityTarget( self.squad_ai, DaemonsLordStature.murder_id, Ability.Filters.CloseSquadEnemy, 1 )
+	Ability.DoAbility( self.squad_ai, DaemonsLordStature.shield_id, Ability.Filters.IsInCombat )
+end
+
+-- Assassinate win condition -- never attack
+function DaemonsLordStatureTactic:IsAttacker()
+
+	-- Never attack in assassinate game mode
+	return (not cpu_manager.assassinate and  self:IsCommanderAttacker())
+end
+
+-- Assassinate win condition -- never defend
+function DaemonsLordStatureTactic:IsDefender()
+	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+end
+
+
+function DaemonsLordStatureTactic:CheckForDance()
+	InfantryTactic.CheckForDance(self)
+end
+
+function DaemonsLordStatureTactic:CheckForDeath()
+	InfantryTactic.CheckForDeath(self)
+end
+
+
+function DaemonsLordStatureTactic:AttachSquadMatch( squad_ai )
+	local squadName = squad_ai:GetSquadName()
+			
+	for i = 1, table.getn( self.attachlist ) do
+		if( self.attachlist[i] ~= nil and squadName == self.attachlist[i] and not squad_ai:IsAttached() ) then
+			return true	
+		end
+	end
+	
+	return false
+end
+		
+function DaemonsLordStatureTactic:TryAttachSquad( melee, match_stance, radius, min_strength, health )
+
+	local bInfiltrator = self.squad_ai:IsInfiltrating()
+	if not self.squad_ai:IsBroken() and 
+		(health == nil or self.squad_ai:GetHealthPercentage() < health) then
+		
+		--minimum strength of squad we want to attach to
+		if min_strength == nil then
+			min_strength = 160 + (cpu_manager:GetTierLevel() - 1) * 40
+		end
+
+		local range_filter = function( squad_ai )
+			local oTactic = squad_ai:GetTactic()
+			return squad_ai:IsRanged() and not squad_ai:IsBroken() and not squad_ai:IsCapturing() and
+					oTactic:GetUnitStrength() >= min_strength and self.squad_ai:CanAttachTo( squad_ai ) and
+					not oTactic:IsInSubState() and (not squad_ai:IsInfiltrating() or bInfiltrator) and oTactic:IsAttacker() and self:AttachSquadMatch( squad_ai )
+		end
+		
+		local melee_filter = function( squad_ai )
+			local oTactic = squad_ai:GetTactic()
+			return not squad_ai:IsRanged() and not squad_ai:IsBroken() and not squad_ai:IsCapturing() and
+					oTactic:GetUnitStrength() >= min_strength and self.squad_ai:CanAttachTo( squad_ai ) and
+					not oTactic:IsInSubState() and (not squad_ai:IsInfiltrating() or bInfiltrator) and oTactic:IsAttacker() and self:AttachSquadMatch( squad_ai )
+		end
+
+		--attach to ranged
+		if not melee then
+			
+			local attach_to = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), radius, range_filter )
+			
+			if attach_to == nil and not match_stance then
+				--try for melee unit if we don't care about the stance
+				local attach_to = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), radius, melee_filter )
+			end
+			
+			if attach_to ~= nil then			
+				self:DoMoveAttach( attach_to )		            		 
+				
+				if match_stance then
+				attach_to:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+				end			
+			end
+			
+		else --attach to melee
+			
+			local attach_to = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), radius, melee_filter )
+			if attach_to == nil and not match_stance then
+				--try for ranged unit if we don't care about the stance
+				local attach_to = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), radius, range_filter )
+			end
+
+			if attach_to ~= nil then
+			
+				self:DoMoveAttach( attach_to )		            		 
+				
+				if match_stance then
+				attach_to:DoSetMeleeStance( SquadAI.MSTANCE_Assault )
+				end
+			end
+		end
+	end
+
+	return attach_to 
+
+end
+
+function DaemonsLordStatureTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Assassinate win condition -- never attach to a squad
+	if (not cpu_manager.assassinate) then
+				
+		-- Attach to melee in tier2+
+		if (cpu_manager:GetTierLevel() >= 1) then
+		
+			if (self:TryAttachSquad(false, false, 250, nil, nil) ~= nil) then
+				return
+			end
+		end
+		self:TryAttachSquad(false, false, 250, 150, self.m_fCommanderAttachHealth)
+	end
+	
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

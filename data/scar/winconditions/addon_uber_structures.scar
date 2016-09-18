@@ -1,0 +1,39 @@
+-- Uber Structures
+--
+-- Increases the health of all structures, making them 'uber'.
+-- 
+-- Created by Cylarne
+-- 
+-- 
+-- Apocalypse mod team
+-----------------------------------------------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+function UberStructures_Init()
+	Rule_AddOneShot( UberStructures, 0.5)
+end
+
+function UberStructures()
+
+	local Modifier_percent = 1.3
+	
+	local playerCount = World_GetPlayerCount()
+
+	for i = 0, playerCount - 1 do
+		local player = World_GetPlayerAt(i)
+		local race = Player_GetRaceName(player)
+		
+		import("UA_SCARCore/K_04/StructureEntityList.scar");
+		
+		-- Buff commanders
+		for i=1,table.getn( t_structures_list ) do
+			local modifier = Modifier_Create(MAT_EntityType, "health_maximum_modifier", MUT_Multiplication, false, 3, t_structures_list[i])
+		
+			Modifier_ApplyToPlayer( modifier, player)
+		end 
+	end
+end
+
+Scar_AddInit(UberStructures_Init)

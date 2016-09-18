@@ -1,0 +1,38 @@
+----------------------------------------
+-- File: 'marinebarrackstactic.ai'
+-- Edited by Arkhan		@ 15.01.2007
+-- Edited by Thudmeizer		@ 02.02.2016
+
+class 'MarineBarracksTactic' (BaseTactic)
+
+MarineBarracks = {}
+
+function MarineBarracksTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Marine Barracks Tactic")
+
+	self.m_iArmouryID = cpu_manager.stats:GetBuildingID( "space_marine_armoury" )
+end
+
+function MarineBarracksTactic:CanDeepStrikeTroops()
+	return (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iArmouryID, true) > 0)
+end
+
+function MarineBarracksTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (MarineBarracks.repair_id == nil) then
+		MarineBarracks.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function MarineBarracksTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( MarineBarracks.repair_id )) then
+			self.base_ai:DoSpecialAbility( MarineBarracks.repair_id )
+		end
+	end
+end

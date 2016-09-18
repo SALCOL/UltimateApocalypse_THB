@@ -1,0 +1,58 @@
+----------------------------------------
+-- File: 'daemonsdoompittactic.ai'
+-- Created by CornCobMan 03/06/2013
+-- Edited by Cylarne 6/16/2014
+
+class 'DaemonsDoomPitTactic' (BaseTactic)
+
+DaemonsDoomPit = {}
+
+function DaemonsDoomPitTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Daemons DoomPit Tactic")
+end
+
+function DaemonsDoomPitTactic:InitAbilities()
+	
+	-- Init abilities	
+	if (DaemonsDoomPit.pit_khorne_id == nil) then
+		DaemonsDoomPit.pit_khorne_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_khorne" )
+	end
+	
+	if (DaemonsDoomPit.pit_nurgle_id == nil) then
+		DaemonsDoomPit.pit_nurgle_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_nurgle" )
+	end
+	
+	if (DaemonsDoomPit.pit_slaanesh_id == nil) then
+		DaemonsDoomPit.pit_slaanesh_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_slaanesh" )
+	end
+	
+	if (DaemonsDoomPit.pit_tzeentch_id == nil) then
+		DaemonsDoomPit.pit_tzeentch_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_tzeentch" )
+	end
+end
+
+function DaemonsDoomPitTactic:DoAbilities()
+
+	local abilitySelector = math.random(1, 100)
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	if( abilitySelector <= 25) then
+		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.pit_khorne_id) and iPower >= 200 ) then
+			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.pit_khorne_id, Ability.Filters.CloseInCombat, 4 )
+		end
+	elseif( abilitySelector <= 50) then
+		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.pit_nurgle_id) and iPower >= 200 ) then
+			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.pit_nurgle_id, Ability.Filters.CloseInCombat, 4 )
+		end
+	elseif( abilitySelector <= 50) then
+		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.pit_slaanesh_id) and iPower >= 200 ) then
+			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.pit_slaanesh_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		end
+	else
+		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.pit_tzeentch_id) and iPower >= 200 ) then
+			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.pit_tzeentch_id, Ability.Filters.CloseInCombat, 4 )
+		end
+	end
+end
+

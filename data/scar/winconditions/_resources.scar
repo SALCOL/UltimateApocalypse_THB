@@ -1,0 +1,79 @@
+-- _totaldestruction.scar
+-- Created by Cylarne_04 2011
+-- This win condition basically transforms the mod to the old XP1 styled expansion, featuring greater scale battles and greater starting resources.
+-----------------------------------------------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+
+-- Init ExtremeBattles rule system
+function Total_Destruction_Setup()
+
+	-- Delay by 1.9 seconds just because.
+	Mod_TotalDestruction = 1;
+	Rule_AddOneShot(Total_Destruction_Resources, 1.9)
+	--Rule_AddOneShot(Total_Destruction_Caps, 1.9)
+	print("Total Destruction mod activated!")
+	
+end
+
+function Total_Destruction_Resources()
+
+	-- This function sets up the resources of each player. This works for Necrons, Tyranids, and Daemons as well...
+	local count = World_GetPlayerCount();
+	for j = 0, count-1 do
+		local Player = World_GetPlayerAt(j);
+		
+		-- Is not Necron...
+		if not (Player_GetRaceName(Player) == "necron_race") then
+			-- Is on standard?
+			if (Player_GetResource(Player, RT_Requisition) < 5000) then
+				Player_SetResource(Player, RT_Requisition, 10000)
+				Player_SetResource(Player, RT_Power, 10000)
+			-- Is on quickstart?
+			elseif (Player_GetResource(Player, RT_Requisition) >= 5000) then
+				Player_SetResource(Player, RT_Requisition, 100000)
+				Player_SetResource(Player, RT_Power, 100000)
+			end
+			
+		-- Is Necron...
+		elseif (Player_GetRaceName(Player) == "necron_race") then
+			-- Is on standard?
+			if (Player_GetResource(Player, RT_Power) <= 1000) then
+				Player_SetResource(Player, RT_Power, 20000)
+				
+			-- Is on quickstart?
+			elseif (Player_GetResource(Player, RT_Power) > 1000) then
+				Player_SetResource(Player, RT_Power, 200000)
+			end
+		end
+	end
+end
+
+function Total_Destruction_Caps()
+
+	-- Increase squad caps by 300%
+	g_cap = 3.0;
+	
+	-- Create army cap modifiers
+	local g_MaxSquadCap = Modifier_Create(MAT_Player, "max_squad_cap_player_modifier", MUT_Multiplication, false, g_cap, "")
+	local g_MaxSupportCap = Modifier_Create(MAT_Player, "max_support_cap_player_modifier", MUT_Multiplication, false, g_cap, "")
+	local g_PopCap = Modifier_Create(MAT_Player, "population_cap_player_modifier", MUT_Multiplication, false, g_cap, "")
+	local g_SquadCap = Modifier_Create(MAT_Player, "squad_cap_player_modifier", MUT_Multiplication, false, g_cap, "")
+	local g_SupportCap = Modifier_Create(MAT_Player, "support_cap_player_modifier", MUT_Multiplication, false, g_cap, "")
+	
+	local count = World_GetPlayerCount();
+	for j = 0, count - 1 do
+		local Player = World_GetPlayerAt(j);
+		
+		Modifier_ApplyToPlayer(g_MaxSquadCap, Player)
+		Modifier_ApplyToPlayer(g_MaxSupportCap, Player)
+		Modifier_ApplyToPlayer(g_PopCap, Player)
+		Modifier_ApplyToPlayer(g_SquadCap, Player)
+		Modifier_ApplyToPlayer(g_SupportCap, Player)
+	end
+end
+
+-- Init SCAR
+Scar_AddInit(Total_Destruction_Setup)

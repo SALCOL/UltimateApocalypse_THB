@@ -1,0 +1,34 @@
+----------------------------------------
+-- File: 'marineshqtactic.ai'
+-- Edited by Krronus @ 05.23.2010
+-- Edited by Thudmeizer @ 02.02.2016
+
+class 'MarinesHQTactic' (BaseTactic)
+
+MarinesHQ = {}
+
+function MarinesHQTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Marines HQ Tactic")
+	
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function MarinesHQTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (MarinesHQ.repair_id == nil) then
+		MarinesHQ.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function MarinesHQTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( MarinesHQ.repair_id )) then
+			self.base_ai:DoSpecialAbility( MarinesHQ.repair_id )
+		end
+	end
+end

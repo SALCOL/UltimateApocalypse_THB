@@ -1,0 +1,48 @@
+----------------------------------------
+-- File: 'conscripttactic.ai'
+-- Created by Cylarne
+
+class 'ConscriptTactic' (GuardInfantryTactic)
+
+Conscript = {}
+
+function ConscriptTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Conscript Tactic")
+
+	-- Squad is NOT able to occupy bunkers, nope
+	self.m_bBunkerSquad = false
+	
+	self.m_iTacticaID = cpu_manager.stats:GetBuildingID("guard_tactica")
+end
+
+function ConscriptTactic:InitAbilities()
+
+	-- None
+end
+
+function ConscriptTactic:DoAbilities()
+
+	-- None
+	
+end
+
+function ConscriptTactic:Reinforce()
+
+	-- Do not reinforce if morale is broken!
+	if (self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- Always try to reinforce if we have a Tactica Control, and is ready to spam attack.
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (not self.squad_ai:IsReinforcing() and cpu_manager.player_stats:GetNumBasesByBPID(self.m_iTacticaID, true) > 0 and iRequisition > 300) then
+	    self.squad_ai:DoReinforce( false, 0 )
+	else 
+		return
+	end
+end
+
+function ConscriptTactic:AlwaysAttack()
+	return (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iTacticaID, true) > 0)
+end

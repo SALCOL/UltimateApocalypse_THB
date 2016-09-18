@@ -1,0 +1,109 @@
+--Your squads will automatically use abilities whenever possible
+--
+-- original functions by Relic Entertainment Inc.
+-- (c) 2003 Relic Entertainment Inc.
+-- 
+--Created by CutterShane
+--version 1.1
+
+import("Player.scar");
+import("GroupCallers.scar");
+import("Command.scar");
+import("Groups.scar");
+import("ScarUtil.scar");
+
+health_bias = 4.0
+
+AutoAbilsSettings = {}
+AutoAbilsSettings.AbilsThem = {}
+AutoAbilsSettings.AbilsUs = {}
+
+abils_last_user = nil
+aa_attackerID = nil
+aa_targetID = nil
+
+function AutoAbilMainRule()
+	local players = {}
+	local races = {}
+    local squads = {}
+	local j = World_GetPlayerCount()
+	for i = 1, j do
+		players[i] = World_GetPlayerAt (i-1)
+		races[i] = Player_GetRaceName (players[i])
+		squads[i] = Player_GetSquads (players[i])
+	end
+	for i = 1, j do
+		if (AutoAbilsSettings.AbilsThem[races[i]] ~= nil) or (AutoAbilsSettings.AbilsUs[races[i]] ~= nil) then
+			local CheckSquadsG = function (egroupid, itemindex, squadoneID)
+				local current_command = Squad_GetActiveCommand (squadoneID)
+				if (current_command ~= SQUADSTATEID_Move) and (current_command ~= SQUADSTATEID_Capture) and (abils_last_user ~= squadoneID) then
+					local closest = nil
+					local closedist = 0
+					local thissquadpos = Squad_GetPosition (squadoneID)
+					local attacker_health = Squad_GetHealth (squadoneID) / health_bias
+					local CheckDistG = function (egroupid, itemindex, squadtwoID)
+						if Player_CanSeeSquad (players[i], squadtwoID, false) then
+							if Squad_GetHealth (squadtwoID) > attacker_health then
+								local dist = World_DistancePointToPoint (thissquadpos, Squad_GetPosition (squadtwoID))
+								if (dist < closedist) or (closest == nil) then
+									closest = squadtwoID
+									closedist = dist
+								end
+							end
+						end
+					end
+					for k = 1, j do
+						if i ~= k then
+							if Player_GetRelationship (players[i], players[k]) == R_ENEMY then
+								SGroup_ForEach (squads[k], CheckDistG)
+							end
+						end
+					end
+					if closest ~= nil then
+						SGroup_Clear (aa_attackerID)
+						SGroup_Clear (aa_targetID)
+						SGroup_Add (aa_attackerID, squadoneID)
+						SGroup_Add (aa_targetID, closest)
+						local hascast = false
+						if (AutoAbilsSettings.AbilsThem[races[i]] ~= nil) then
+							for l in AutoAbilsSettings.AbilsThem[races[i]] do
+								if AutoAbilsSettings.AbilsThem[races[i]][l][2] <= closedist then break end
+								hascast = Cmd_CastAbilitySGroup ("sg_aa_attacker", AutoAbilsSettings.AbilsThem[races[i]][l][1], "sg_aa_target")
+								if hascast then break end
+							end
+						end
+						if (hascast == false) and (AutoAbilsSettings.AbilsUs[races[i]] ~= nil) then
+							for l in AutoAbilsSettings.AbilsUs[races[i]] do
+								if AutoAbilsSettings.AbilsUs[races[i]][l][2] <= closedist then break end
+								hascast = Cmd_CastAbilitySelf ("sg_aa_attacker", AutoAbilsSettings.AbilsUs[races[i]][l][1])
+								if hascast then break end
+							end
+						end
+						if hascast then abils_last_user = squadoneID end
+					end
+				end
+			end
+			SGroup_ForEach (squads[i], CheckSquadsG)
+		end
+	end
+end
+
+function AutoAbil_InitRule()
+	local j = World_GetPlayerCount()
+	for i = 1, j do
+		local player = World_GetPlayerAt(i-1)
+		local playerRace = Player_GetRaceName (player)
+		if (AutoAbilsSettings.AbilsThem[playerRace] == nil) and (AutoAbilsSettings.AbilsUs[playerRace] == nil) then
+			pcall (import, 'race_specific/'..playerRace..'_autoabils.scar')
+		end
+	end
+	aa_attackerID = SGroup_CreateIfNotFound ("sg_aa_attacker")
+	aa_targetID = SGroup_CreateIfNotFound ("sg_aa_target")
+	Rule_AddInterval (AutoAbilMainRule, 1.33) 
+end
+
+function SetupAutoAbil()
+	Rule_AddOneShot (AutoAbil_InitRule, 1.35)
+end
+
+Scar_AddInit(SetupAutoAbil)

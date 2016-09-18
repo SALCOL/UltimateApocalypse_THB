@@ -1,0 +1,19 @@
+--NoFog - based on the Labmode mod
+--
+-- original functions by Relic Entertainment Inc.
+-- (c) 2003 Relic Entertainment Inc.
+-- 
+-- Created by Krronus
+-----------------------------------------------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+
+function OnInit()
+	FOW_RevealAll()
+	print"Fog of War is revealed!"
+end
+
+Scar_AddInit(OnInit)
+

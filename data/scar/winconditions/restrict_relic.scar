@@ -1,0 +1,53 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Relic Units
+-- Created by Cylarne, 9:03 1/21/11
+--
+--	Relic Units are restricted.
+--
+-- Apocalypse Mod Team
+import("ScarUtil.scar");
+
+function RestrictRelicUnits()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		
+		local player = World_GetPlayerAt(i);
+	
+		Player_RestrictResearch(player, "chaos_bloodthirster_research")
+		Player_RestrictResearch(player, "chaos_daemon_prince_research")
+		Player_RestrictResearch(player, "necron_ctan_research")
+		import("UA_SCARCore/K_04/RelicEntityList.scar");
+		
+		for i=1,table.getn( relic_squad_list ) do
+			local squad = relic_squad_list[i];
+		
+			Player_RestrictSquad(player, squad);
+		end 
+		if (Mod_Includes_Tyranids == true) then
+			for i=1,table.getn( relic_squad_list_tyranids ) do
+				local squad = relic_squad_list_tyranids [i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Inquisition == true) then
+			for i=1,table.getn( relic_squad_list_inquisition ) do
+				local squad = relic_squad_list_inquisition [i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+		if (Mod_Includes_Daemons == true) then
+			Player_RestrictResearch(player, "daemons_transform_research")
+			for i=1,table.getn( relic_squad_list_daemons ) do
+				local squad = relic_squad_list_daemons [i];
+				
+				Player_RestrictSquad(player, squad);
+			end 
+		end
+	end
+
+end
+Scar_AddInit(RestrictRelicUnits)

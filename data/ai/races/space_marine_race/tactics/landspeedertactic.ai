@@ -1,0 +1,48 @@
+----------------------------------------
+-- File: 'landspeedertactic.ai'
+-- Edited by Thudmeizer @ 02.02.2016
+
+class 'LandspeederTactic' (SpaceMarineVehicleTactic)
+
+Landspeeder = {}
+
+function LandspeederTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Landspeeder Tactic")
+end
+
+function LandspeederTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Landspeeder.sabotage_id == nil) then
+		Landspeeder.sabotage_id = cpu_manager.stats:GetAbilityID( "marines_sabotage_storm" )
+	end
+end
+
+function LandspeederTactic:DoAbilities()
+
+	-- Check if we can to activate the jamming beacon against enemy vehicles
+	Ability.DoAbilityArea(self.squad_ai, Landspeeder.sabotage_id, Ability.Filters.CloseVehicleEnemy, 8, 1)
+
+	-- Search a building
+	local iRange = self.squad_ai:GetAbilityRange(Landspeeder.sabotage_id)
+	local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.squad_ai:GetPosition(), iRange, 1)
+	if (oBuilding ~= nil) then
+		-- Activate the jamming beacon against enemy buildings
+		self.squad_ai:DoSpecialAbilityEntity(Landspeeder.sabotage_id, oBuilding) 
+	end
+
+	-- Call standard method
+	SpaceMarineVehicleTactic.DoAbilities(self)
+end
+
+function LandspeederTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end

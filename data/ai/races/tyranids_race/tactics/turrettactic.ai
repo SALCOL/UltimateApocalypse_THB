@@ -1,0 +1,38 @@
+----------------------------------------
+-- File: 'Turrettactic.ai'
+-- Edited by Cylarne @ 2015
+
+class 'TurretTactic' (BaseTactic)
+
+Turret = {}
+
+function TurretTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Turret Tactic")
+
+end
+
+function TurretTactic:InitAbilities()
+	
+	if (Turret.minelaunch_id == nil) then
+		Turret.minelaunch_id = cpu_manager.stats:GetAbilityID("tyranids_minelaunch")
+	end
+	if (Turret.minelaunch2_id == nil) then
+		Turret.minelaunch2_id = cpu_manager.stats:GetAbilityID("tyranids_minelaunch_greater")
+	end
+end
+
+function TurretTactic:DoAbilities()
+
+	if (self.base_ai:CanDoAbility(Turret.minelaunch_id)) then
+		-- Activate turret minelaunch.
+		Ability.DoAbilityPos(self.base_ai, Turret.minelaunch_id, Ability.Filters.CloseEnemy, 5)
+		
+	elseif (self.base_ai:CanDoAbility(Turret.minelaunch2_id)) then
+		-- Activate turret minelaunch.
+		Ability.DoAbilityPos(self.base_ai, Turret.minelaunch2_id, Ability.Filters.CloseEnemy, 8)
+		
+	end
+	
+end
+

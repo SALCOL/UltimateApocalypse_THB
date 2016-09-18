@@ -1,0 +1,12 @@
+-- Necron SCAR support info script
+-- Created by Arkhan
+
+DonationSettings.necron_race =
+{
+	Title = "Necron",
+	ResourceExchangeRestricted = false,
+	RequisitionExcess = 0,
+	RequisitionDemand = 0,
+	PowerExcess = 1200,
+	PowerDemand = 600,
+}

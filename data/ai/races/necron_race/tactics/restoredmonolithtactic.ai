@@ -1,0 +1,184 @@
+----------------------------------------
+-- File: 'restoredmonolithtactic.ai'
+-- Created by Arkhan @ 31.10.2006
+-- Edited by Cylarne_04 2011
+
+class 'RestoredMonolithTactic' (NecronVehicleTactic)
+
+RestoredMonolith = {}
+
+function RestoredMonolithTactic:__init( squad_ai ) super( squad_ai )
+	
+	self:SetName("Restored Monolith Tactic")
+	
+	self.underpossession = false
+	
+end
+
+function RestoredMonolithTactic:InitAbilities()
+
+	-- Init ability ID's
+	-- Chronometron = no click
+	-- Phase Generator
+	-- Unnatural Solar Pulses
+	-- Greater Resurrection
+	-- Mass Production Grid
+	-- Ascend/descend/direct spawn.
+	
+	
+	--------------------------------Phalanx
+	if (RestoredMonolith.pulse_id == nil) then
+		RestoredMonolith.pulse_id = cpu_manager.stats:GetAbilityID( "necron_solar_pulse_monolith" )
+	end
+	if (RestoredMonolith.shifter_id == nil) then
+		RestoredMonolith.shifter_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter_monolith" )
+	end
+	if (RestoredMonolith.resurrection_id == nil) then
+		RestoredMonolith.resurrection_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_monolith" )
+	end
+	
+	--------------------------------Standard Monoliths
+	if (RestoredMonolith.production_id == nil) then
+		RestoredMonolith.production_id = cpu_manager.stats:GetAbilityID( "necron_mass_production" )
+	end
+	
+end
+
+function RestoredMonolithTactic:DoAbilities()
+
+	Ability.DoAbility( self.squad_ai, RestoredMonolith.shifter_id, Ability.Filters.IsInCombat )
+
+	-- Try to activate the Solar Pulse
+	if (self.squad_ai:CanDoAbility(RestoredMonolith.pulse_id)) then
+		Ability.DoAbilityPos(self.squad_ai, RestoredMonolith.pulse_id, Ability.Filters.CloseInfiltratedEnemy, 1)
+		Ability.DoAbilityPos(self.squad_ai, RestoredMonolith.pulse_id, Ability.Filters.CloseEnemy, 2)
+	end
+	-- Try to activate the Greater Resurrection ability
+	if (self.squad_ai:CanDoAbility(RestoredMonolith.resurrection_id)) then
+		Ability.DoAbility(self.squad_ai, RestoredMonolith.resurrection_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronCore.resurrection_id, min_bodies = 4 })
+	end
+	
+	------------------------------------ Production Grid
+	if (self.squad_ai:CanDoAbility(RestoredMonolith.production_id )) then
+		if (not self.squad_ai:IsUsingAbility(RestoredMonolith.production_id)) then
+			if ((self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.9) or (not self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() < 0.5)) then
+				self.squad_ai:DoSpecialAbility(RestoredMonolith.production_id )
+			else
+			end
+		else
+			if (not self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() >= 0.5) then
+				self.squad_ai:DoSpecialAbility(RestoredMonolith.production_id )
+			end
+		end
+	end
+	
+	------------------------------------- Spawn/Ascend/Descend
+	-- Try to spawn Necron Warriors if from Siege Monoliths.
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	if (iPower >= 1000) then
+		if (self.timedDirectSpawnAbility ~= nil) then
+			self.timedDirectSpawnAbility:Call()
+		else
+			RestoredMonolithTactic.DoDirectSpawnAbility(self)
+		end
+	end
+	
+	-- The Ascend/Descend option
+	-- Try to possess
+	--[[if (not self.squad_ai:IsInCombat() and self.squad_ai:CanPossess()) then
+		if (self.underpossession and self.squad_ai:GetHealthPercentage() < 0.6) then
+			self.squad_ai:DoPossess()
+			self.underpossession = false
+		elseif (self.squad_ai:GetHealthPercentage() > 0.9) then
+			self.squad_ai:DoPossess()
+			self.underpossession = true
+		end
+	end]]
+end
+
+function RestoredMonolithTactic:DoDirectSpawnAbility()
+
+	if (self.squad_ai:CanDirectSpawn() and self.squad_ai:IsInCombat()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+function RestoredMonolithTactic:JumpAttackRanged()
+
+	-- Call standard method
+	if (Tactic.JumpAttackRanged(self)) then
+		return true
+	end
+	
+	-- Get position and jump range
+	local vMonolithPosition = self.squad_ai:GetPosition()
+	local iJumpRange = sqr(self.squad_ai:GetJumpDistance())
+	
+	-- Check if we can jump directly to the target
+	local iClosestDistance = distance_sqr(vMonolithPosition, self.target)
+	local vTargetPos = nil
+	if (iClosestDistance < iJumpRange) then
+		vTargetPos = self.target
+	else
+	
+		-- Get closest squad to target position
+		for oSquad in military_manager:GetSquads() do
+	
+			-- Check if squad is valid
+			if (oSquad:IsValid()) then
+			
+				-- Check distance
+				local vPosition = oSquad:GetPosition()
+				local iDistanceToMonolith = distance_sqr(vPosition, vMonolithPosition)
+				local iDistanceToTarget = distance_sqr(vPosition, self.target)
+				if (iDistanceToMonolith < iJumpRange and iDistanceToTarget < iClosestDistance) then
+					iClosestDistance = iDistanceToTarget
+					vTargetPos = vPosition
+				end
+			end
+		end
+		
+		-- Get closest building to target position
+		for oBuilding in military_manager:GetBases() do
+		
+			-- Check if building is valid
+			if (oBuilding:IsValid()) then
+			
+				-- Check distance
+				local vPosition = oBuilding:GetPosition()
+				local iDistanceToMonolith = distance_sqr(vPosition, vMonolithPosition)
+				local iDistanceToTarget = distance_sqr(vPosition, self.target)
+				if (iDistanceToMonolith < iJumpRange and iDistanceToTarget < iClosestDistance) then
+					iClosestDistance = iDistanceToTarget
+					vTargetPos = vPosition
+				end
+			end
+		end
+	end
+	
+	-- Don't jump if we didn't find a target
+	if (vTargetPos == nil or distance_sqr(vMonolithPosition, vTargetPos) < sqr(50)) then
+		return false
+	end
+	
+	-- Try to jump to target
+	for iLoop1 = 1, 5 do
+	
+		-- Create a jump position
+		local vJumpPosition = vTargetPos
+		vJumpPosition.x = vJumpPosition.x + math.random(-15, 15)
+		vJumpPosition.z = vJumpPosition.z + math.random(-15, 15)
+			
+		-- Check if target position is in range and if unit is able to jump to target position
+		local iDistance = distance_sqr(vJumpPosition, vMonolithPosition)
+		if (iDistance <= iJumpRange and self.squad_ai:GetHealthPercentage() > 0.8 and self.squad_ai:CanJumpToPosition(vJumpPosition)) then
+							
+			-- Jump to position
+			self.squad_ai:DoJump(vJumpPosition)
+			self.last_jump = g_iGMT
+			self.m_iLastGatherMove = self.last_jump - 10
+			return true
+		end
+	end
+	return false
+end

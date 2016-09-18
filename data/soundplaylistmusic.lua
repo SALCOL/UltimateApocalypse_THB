@@ -1,0 +1,43 @@
+playlist = 
+{
+	tracks = 
+	{		
+		"music_dawnofwartheme",
+		"uamod_music1",
+		"music_coming_of_chaos",
+		"music_evil_armies",
+		"uamod_music2",
+		"music_urban_wasteland",
+		"uamod_music3",
+		"music_warhammer40ktheme",
+		"uamod_music4",
+		"uamod_music5",
+		"music_ork_theme",
+		"uamod_music6",
+		"uamod_music7",
+		"music_necron_theme_remix",
+		"music_eldartheme",
+		"uamod_music8",
+		"uamod_music9",
+		"uamod_music10",
+		"music_apocalypse_main_skirmish",
+		"music_necron_theme",
+		"uamod_music11",
+		"uamod_music12",
+		"uamod_music13",
+		"music_force_commander_theme",
+		"uamod_music14",
+		"uamod_music15",
+		"music_chant",
+		"music_coming_of_chaos",
+		"music_necron_theme_remix",
+		"music_apocalypse_main_old",
+		"EpicScore",
+		"music_daemons_main",
+	},
+	
+	silence_min = 20.0,
+	silence_max = 60.0,
+	
+	order = false,
+}

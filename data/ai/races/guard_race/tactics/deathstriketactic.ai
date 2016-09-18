@@ -1,0 +1,35 @@
+----------------------------------------
+-- File: 'Deathstriketactic.ai'
+-- Created by Cylarne_04 2014
+
+class 'DeathstrikeTactic' (GuardVehicleTactic)
+
+Deathstrike = {}
+
+function DeathstrikeTactic:__init( squad_ai ) super( squad_ai )
+	
+	self:SetName("Deathstrike Tactic")
+end
+
+function DeathstrikeTactic:InitAbilities()
+
+	if (Deathstrike.bombard_id == nil) then
+		Deathstrike.bombard_id = cpu_manager.stats:GetAbilityID( "guard_deathstrike_missile_launch" )
+	end
+	
+end
+
+function DeathstrikeTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+		
+	-- Activate the nuke.
+	if (iRequisition >= 2000 and iPower >= 2000) then
+		if (self.squad_ai:CanDoAbility(Deathstrike.bombard_id)) then
+			Ability.DoAbilityPos(self.squad_ai, Deathstrike.bombard_id, Ability.Filters.CloseVehicleEnemy, 1)
+			Ability.DoAbilityPos(self.squad_ai, Deathstrike.bombard_id, Ability.Filters.CloseEnemy, 15)
+		end
+	end
+end
+

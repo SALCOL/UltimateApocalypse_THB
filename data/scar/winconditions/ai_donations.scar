@@ -1,0 +1,15 @@
+-- AI Donations
+--
+-- original functions by Relic Entertainment Inc.
+-- (c) 2003 Relic Entertainment Inc.
+-- 
+-- Created by Cylarne
+-----------------------------------------------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+import("UA_SCARCore/AIDonations.scar")
+
+--Scar_AddInit()
+SetupAIDonations();

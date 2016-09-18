@@ -1,0 +1,62 @@
+----------------------------------------
+-- File: 'doomsdaymonolithtactic.ai'
+-- Created by ProfessorGenius @ 1.17.2011
+-- Assisted by Thudmeizer and Corncobman
+
+class 'DoomsdayMonolithTactic' (NecronVehicleTactic)
+
+DoomsdayMonolith = {}
+
+function DoomsdayMonolithTactic:__init( squad_ai ) super( squad_ai )
+	
+	self:SetName("Doomsday Monolith Tactic")
+end
+
+function DoomsdayMonolithTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DoomsdayMonolith.pulse_id == nil) then
+		DoomsdayMonolith.pulse_id = cpu_manager.stats:GetAbilityID( "necron_solar_pulse_monolith" )
+	end
+	if (DoomsdayMonolith.shifter_id == nil) then
+		DoomsdayMonolith.shifter_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter_monolith" )
+	end
+	if (DoomsdayMonolith.resurrection_id == nil) then
+		DoomsdayMonolith.resurrection_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_monolith" )
+	end
+	
+end
+
+function DoomsdayMonolithTactic:DoAbilities()
+
+	Ability.DoAbility( self.squad_ai, DoomsdayMonolith.shifter_id, Ability.Filters.IsInCombat )
+
+	
+	-- Try to activate the Unnatural Solar Pulses ability
+	if (self.squad_ai:CanDoAbility(DoomsdayMonolith.pulse_id)) then
+		Ability.DoAbilityPos(self.squad_ai, DoomsdayMonolith.pulse_id, Ability.Filters.CloseInfiltratedEnemy, 1)
+		Ability.DoAbilityPos(self.squad_ai, DoomsdayMonolith.pulse_id, Ability.Filters.CloseEnemy, 2)
+	end
+	-- Try to activate the Greater Resurrection ability
+	if (self.squad_ai:CanDoAbility(DoomsdayMonolith.resurrection_id)) then
+		Ability.DoAbility(self.squad_ai, DoomsdayMonolith.resurrection_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronCore.resurrection_id, min_bodies = 10 })
+	end
+	
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	if (iPower >= 2000) then
+		if (self.timedDirectSpawnAbility ~= nil) then
+			self.timedDirectSpawnAbility:Call()
+		else
+			DoomsdayMonolithTactic.DoDirectSpawnAbility(self)
+		end
+	end
+end
+
+function DoomsdayMonolithTactic:DoDirectSpawnAbility()
+
+	if (self.squad_ai:CanDirectSpawn() and self.squad_ai:IsInCombat()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+

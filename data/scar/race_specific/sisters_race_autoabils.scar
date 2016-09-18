@@ -1,0 +1,28 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["sisters_race"] =
+{
+	{ "sisters_hk_missiles", 1000 },
+	{ "sisters_mark_squad", 30 },
+	{ "sisters_witch_hammer", 30 },
+	{ "sisters_divine_pronouncement", 30 },
+	{ "sisters_phosphor_grenades", 25 },
+	{ "sisters_act_of_faith_divine_retribution", 25 },
+	{ "sisters_ardent_flame", 25 },
+	{ "sisters_holy_rage", 25 },
+	{ "sisters_krak_grenades", 18 },
+	{ "sisters_dismantle", 0 },
+	{ "sisters_exorcist_missile_ability", 0 }
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["sisters_race"] =
+{
+	{ "sisters_angelic_visage", 25 },
+	{ "sisters_laud_hailers", 0 },
+	{ "sisters_conflagration", 0 },
+	{ "sisters_rosarius_wargear", 0 },
+	{ "sisters_righteous_fervor", 0 },
+	{ "sisters_seal_of_purity", 0 },
+}

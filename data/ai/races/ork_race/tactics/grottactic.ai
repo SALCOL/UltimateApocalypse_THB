@@ -1,0 +1,44 @@
+class 'GrotTactic' (EngineerTactic)
+
+Grot = {}
+
+function GrotTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Grot Tactic")
+	
+	self.m_iBannersID = cpu_manager.stats:GetBuildingID("ork_waagh_banner")
+	self.m_iPile_o_gunsID = cpu_manager.stats:GetBuildingID("ork_pile_o_guns")
+end
+
+function GrotTactic:InitAbilities()
+
+
+end
+
+function GrotTactic:DoAbilities()
+
+
+end
+
+function GrotTactic:Reinforce()
+
+	local sSquadName = self.squad_ai:GetSquadName()
+	if (sSquadName == "ork_squad_grot_gang") then
+
+		-- Don't reinforce more than 5 grots -- they get stuck
+		local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+		if (not self.squad_ai:IsReinforcing() and cpu_manager.player_stats:GetNumBasesByBPID(self.m_iBannersID, true) < 4 and cpu_manager.player_stats:GetNumBasesByBPID(self.m_iPile_o_gunsID, true) > 1 and iRequisition > 500) then
+			if (self.squad_ai:CanReinforce( false, 0 )) then
+				self.squad_ai:DoReinforce( false, 0 )
+			end
+		end
+	else 
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+end
+
+function GrotTactic:IsAffectedByMorale()
+	return false
+end

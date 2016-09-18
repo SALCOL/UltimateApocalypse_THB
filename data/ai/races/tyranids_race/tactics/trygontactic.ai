@@ -1,0 +1,86 @@
+----------------------------------------
+-- File: 'Trygontactic.ai'
+-- Created by Thudmeizer @ 31.07.2007
+
+class 'TrygonTactic' (TyranidInfantryTactic)
+
+Trygon = {}
+
+function TrygonTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Trygon Tactic")
+
+	self.timedDirectSpawnAbility = Timer( TrygonTactic.DoDirectSpawnAbility, self, 5 )
+	
+	-- Add a choice to stay in ranged or melee combat (Hierophant).
+	self.choice_ranged_melee = math.random(1, 100)
+end
+
+function TrygonTactic:AlwaysAttack()
+	return true
+end
+
+function TrygonTactic:InitAbilities()
+
+	if Trygon.storm_id == nil then
+		Trygon.storm_id = cpu_manager.stats:GetAbilityID( "tyranids_trygon_storm" )
+	end
+	if Trygon.bioplasma_id == nil then
+		Trygon.bioplasma_id = cpu_manager.stats:GetAbilityID( "tyranids_bioplasma_trygon" )
+	end
+	if Trygon.infest_id == nil then
+		Trygon.infest_id = cpu_manager.stats:GetAbilityID( "tyranids_hierophant_infest" )
+	end
+	
+	
+end
+
+function TrygonTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	
+	if (self.squad_ai:CanDoAbility(Trygon.storm_id)) then
+		Ability.DoAbility( self.squad_ai, Trygon.storm_id, Ability.Filters.IsInCombat )
+	end
+	if (self.squad_ai:CanDoAbility(Trygon.bioplasma_id)) then
+		Ability.DoAbilityPos( self.squad_ai, Trygon.bioplasma_id, Ability.Filters.CloseEnemy, 10 ) 
+	end
+	if (self.squad_ai:CanDoAbility(Trygon.infest_id) and self.squad_ai:IsInCombat()) then
+		self.squad_ai:DoSpecialAbility(Trygon.infest_id) 
+	end
+
+	-- Try to spawn Ravener guards
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		TrygonTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function TrygonTactic:DoDirectSpawnAbility()
+
+	-- Spawn Ravener guards in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+
+function TrygonTactic:Update()
+	
+	local sSquadName = self.squad_ai:GetSquadName()
+	if (sSquadName == "tyranids_squad_hierophant") --[[or (sSquadName == "tyranids_squad_hierophant_max")]] then
+		
+		-- Set unit on ranged stance by a 50/50 chance.
+		if (self.squad_ai:GetMeleeStance() ~= SquadAI.MSTANCE_Ranged and self.choice_ranged_melee >= 50) then
+			self.squad_ai:DoSetMeleeStance(SquadAI.MSTANCE_Ranged)
+		end
+	end
+	
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

@@ -1,0 +1,43 @@
+----------------------------------------
+-- File: 'EldarSuperweapontactic.ai'
+-- Edited by Jared @ 09.03.2005
+
+class 'EldarSuperweaponTactic' (BaseTactic)
+
+EldarSuperweapon = {}
+
+function EldarSuperweaponTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Eldar Superweapon Tactic")
+	
+	-- Init abilities
+	self.m_bCanDeepStrikeTroops = true
+	
+end
+
+function EldarSuperweaponTactic:InitAbilities()
+
+	if (EldarSuperweapon.superweapon_id == nil) then
+		EldarSuperweapon.superweapon_id = cpu_manager.stats:GetAbilityID( "eldar_nuke" )
+	end
+	if (EldarSuperweapon.superweapon2_id == nil) then
+		EldarSuperweapon.superweapon2_id = cpu_manager.stats:GetAbilityID( "eldar_nuke2" )
+	end
+	--[[if (EldarSuperweapon.superweapon3_id == nil) then
+		EldarSuperweapon.superweapon3_id = cpu_manager.stats:GetAbilityID( "eldar_nuke3" )
+	end]]
+	--[[if (EldarSuperweapon.superweapon4_id == nil) then
+		EldarSuperweapon.superweapon4_id = cpu_manager.stats:GetAbilityID( "eldar_nuke4" )
+	end]]
+end
+
+function EldarSuperweaponTactic:DoAbilities()
+	
+	-- Activate Apocalyptic Superweapon.
+	if (self.base_ai:CanDoAbility(EldarSuperweapon.superweapon_id)) then
+		Ability.DoAbilityPos(self.base_ai, EldarSuperweapon.superweapon_id, Ability.Filters.CloseEnemy, 30)
+		Ability.DoAbilityTargetEntity(self.base_ai, EldarSuperweapon.superweapon2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 16)
+		Ability.DoAbilityPos(self.base_ai, EldarSuperweapon.superweapon_id, Ability.Filters.CloseVehicleEnemy, 3)
+		Ability.DoAbilityPos(self.base_ai, EldarSuperweapon.superweapon2_id, Ability.Filters.CloseEnemy, 1)
+	end
+end

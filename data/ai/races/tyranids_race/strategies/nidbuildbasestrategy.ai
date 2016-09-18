@@ -1,0 +1,606 @@
+----------------------------------------
+-- File: 'tyranidbuildbasestrategy.ai'
+-- Edited by Thudmeizer @ 02.12.2007
+
+class 'TyranidBuildBaseStrategy' (BuildBaseStrategy)
+
+function TyranidBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
+
+	-- Add detector units (Best first, worst last)
+	self:AddDetectorUnit("tyranids_squad_woth")
+	self:AddDetectorUnit("tyranids_squad_lictor")
+	
+	-- Phases of attacks. If army is decreased substantially, or build only titans: modify.
+	self.m_iArmyBuild = math.random(0, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
+	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
+end
+
+function TyranidBuildBaseStrategy:ChooseBuildProgram()
+
+	-- Check build program count
+	if (table.getn(self.info.BuildPrograms) ~= 4) then
+		return BuildBaseStrategy.ChooseBuildProgram(self)
+	end
+	return 1
+end
+
+function TyranidBuildBaseStrategy:EvaluateSquadCap()
+
+	-- Check squad cap
+	if (self:CheckSquadCap(300, 0)) then
+		
+		local tBuildType = CpuBuildType()
+		tBuildType.btype = CpuPrerequisites.BT_Research
+		
+		if (not cpu_manager.cpu_player:IsResearchComplete( "tyranids_caps_research" )) then
+			tBuildType.name = "tyranids_caps_research"
+		elseif (not cpu_manager.cpu_player:IsResearchComplete( "tyranids_caps_research_1" )) then
+			tBuildType.name = "tyranids_caps_research_1"
+		elseif (not cpu_manager.cpu_player:IsResearchComplete( "tyranids_caps_research_2" )) then
+			tBuildType.name = "tyranids_caps_research_2"
+		else
+			return
+		end
+		
+		if (self:TryBuild( tBuildType )) then
+			aitrace("BuildController: Dynamic research of "..tBuildType.name)
+		end
+	end
+	-- Check support cap
+	if (self:CheckSupportCap(150, 300)) then
+		local tBuildType = CpuBuildType()
+		tBuildType.btype = CpuPrerequisites.BT_Research
+		
+		if (not cpu_manager.cpu_player:IsResearchComplete( "tyranids_caps_research_3" )) then
+			tBuildType.name = "tyranids_caps_research_3"
+		elseif (not cpu_manager.cpu_player:IsResearchComplete( "tyranids_caps_research_4" )) then
+			tBuildType.name = "tyranids_caps_research_4"
+		else
+			return
+		end
+		
+		if (self:TryBuild( tBuildType )) then
+			aitrace("BuildController: Dynamic research of "..tBuildType.name)
+		end
+	end
+end
+
+function TyranidBuildBaseStrategy:GetBuildingName( sType )
+
+	-- Return race specific object string
+	if (sType == "HQ") then
+		return "tyranids_hq"
+
+	elseif (sType == "Generator") then
+		return "tyranids_digest_pool"
+		
+	elseif (sType == "BiggerGenerator") then
+		return "tyranids_adv_magma_vent"
+		
+	elseif (sType == "VehicleBuilding") then
+		return "tyranids_carnifex_hive"
+		
+	elseif (sType == "ListeningPost") then
+		return "tyranids_spore_chimney"
+		
+	elseif (sType == "Turret") then
+		return "tyranids_turret"
+	end
+	
+	return nil
+end
+
+function TyranidBuildBaseStrategy:GetAddonBuilding( sType )
+
+	if (sType == "tyranids_hq_addon_1") then
+		return "tyranids_hq"
+		
+	elseif (sType == "tyranids_hq_addon_2") then
+		return "tyranids_hq"
+		
+	elseif (sType == "tyranids_list_post_addon_1") then
+		return "tyranids_spore_chimney"
+
+	elseif (sType == "tyranids_list_post_addon_2") then
+		return "tyranids_spore_chimney"
+		
+	elseif (sType == "tyranids_structure_shield_addon") then
+		return "tyranids_capillary_vein"
+		
+	elseif (sType == "tyranids_structure_production_addon") then
+		return "tyranids_capillary_vein"
+		
+	elseif (sType == "tyranids_structure_regeneration_addon") then
+		return "tyranids_capillary_vein"
+		
+	elseif (sType == "tyranids_structure_sight_addon") then
+		return "tyranids_capillary_vein"
+		
+	elseif (sType == "tyranids_turret_bioacid_addon") then
+		return "tyranids_turret"
+		
+	elseif (sType == "tyranids_turret_launcher_addon") then
+		return "tyranids_turret"
+		
+	elseif (sType == "tyranids_turret_production_addon") then
+		return "tyranids_turret"
+		
+	elseif (sType == "tyranids_titanchamber_addon_1") then
+		return "tyranids_biotitan_hive"
+
+	elseif (sType == "tyranids_titanchamber_addon_2") then
+		return "tyranids_biotitan_hive"
+		
+	end
+	return nil
+end
+
+-- Arkhan 11.2005: Returns the squad cap and support cap of the given squad
+function TyranidBuildBaseStrategy:GetUnitStats(sSquadName)
+
+	if (sSquadName == "tyranids_squad_spinegaunt") then
+		return 1, 0
+	elseif (sSquadName == "tyranids_squad_termagant") then
+		return 2, 0
+	elseif (sSquadName == "tyranids_squad_hormagaunt") then
+		return 2, 0
+	elseif (sSquadName == "tyranids_squad_genestealer") then
+		return 3, 0
+	elseif (sSquadName == "tyranids_squad_spinegaunt_max") then
+		return 1, 0
+	elseif (sSquadName == "tyranids_squad_termagant_max") then
+		return 2, 0
+	elseif (sSquadName == "tyranids_squad_hormagaunt_max") then
+		return 2, 0
+	elseif (sSquadName == "tyranids_squad_genestealer_max") then
+		return 3, 0
+	elseif (sSquadName == "tyranids_squad_carnifex_skiller") then
+		return 1, 0
+	elseif (sSquadName == "tyranids_squad_gaunt_won") then
+		return 1, 0
+	elseif (sSquadName == "tyranids_squad_ravener") then
+		return 1, 0
+	elseif (sSquadName == "tyranids_squad_warrior") then
+		return 2, 0
+	elseif (sSquadName == "tyranids_squad_carnifex_khazi") then
+		return 1, 0
+	elseif (sSquadName == "tyranids_squad_zoanthropes") then
+		return 0, 2
+	elseif (sSquadName == "tyranids_squad_biovores") then
+		return 0, 1
+	elseif (sSquadName == "tyranids_squad_carnifex") then
+		return 0, 3
+	elseif (sSquadName == "tyranids_squad_trygon") then
+		return 0, 0
+	end
+	return 0, 0
+end
+
+-- Arkhan 01.2006: Inherited method to check if an addon is a tier addon
+function TyranidBuildBaseStrategy:IsTierAddon( sName, iTargetTier )
+
+	-- Check addon name and target tier
+	if (sName == "tyranids_hq_addon_1" and iTargetTier == 2) then
+		return true
+	elseif (sName == "tyranids_hq_addon_2" and iTargetTier == 3) then
+		return true
+	end
+	return false
+end
+
+function TyranidBuildBaseStrategy:UpdateTierLevel()
+
+	-- Reset tier level
+	self.tierLevel = 1
+	
+	-- Prepare
+	local iHQAddon1ID = cpu_manager.stats:GetAddOnID("tyranids_hq_addon_1")
+	local iHQAddon2ID = cpu_manager.stats:GetAddOnID("tyranids_hq_addon_2")
+	local oStats = cpu_manager.stats:GetPlayerStatsFromID( cpu_manager.player_id )
+	
+	-- Check HQ's for addons
+	for oBase in oStats:GetBases() do
+
+		-- Check for valid building
+		if (oBase:IsValid() and not oBase:IsListeningPost()) then
+
+		-- Check for HQ addon 2
+		if (oBase:HasAddOn(iHQAddon2ID)) then
+		
+			-- We still have the proper add-on
+			if (cpu_manager.cpu_player:IsResearchComplete("tyranids_apocalypse_research")) then
+				self.tierLevel = 6
+				return
+			elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_assimilation_research")) then
+				self.tierLevel = 5
+				return
+			elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_arrival3_research")) then
+				self.tierLevel = 4
+				return
+			else
+				self.tierLevel = 3
+				return
+			end
+		
+		-- Check for HQ addon 1
+		elseif (oBase:HasAddOn(iHQAddon1ID)) then
+			self.tierLevel = 2
+		end
+	  end
+	end
+end
+
+function TyranidBuildBaseStrategy:BuildFlexible()
+
+	-- Locales
+	local iArmyStrength = cpu_manager:GetArmyStrength()
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Determine my all time largest army. During major casualties, determine if I should create more squads or only focus on build orders and titans.
+	if (iArmyStrength > self.m_iArmyHighestStrength) then
+		self.m_iArmyHighestStrength = iArmyStrength
+	end
+	
+	if (self.m_iArmyBuild < 4) then
+		-- HUGE hit! I have a very large army, and then in battle I lost so many...
+		if (iArmyStrength <= self.m_iArmyHighestStrength - 300 and iArmyStrength <= 2300) then
+			self.m_iArmyBuild = self.m_iArmyBuild + 1
+			self.m_iArmyHighestStrength = 0
+		end
+	elseif (iArmyStrength > 2500) then
+		self.m_iArmyBuild = 0
+	end
+	
+	if (iPower >= 500) then
+		
+		-- Dynamic research
+		local num_gaunt_squads = self:CountSquads("tyranids_squad_spinegaunt")+ self:CountSquads("tyranids_squad_termagant")+ self:CountSquads("tyranids_squad_hormagaunt") or self:CountSquads("tyranids_squad_spinegaunt_max")+ self:CountSquads("tyranids_squad_termagant_max")+ self:CountSquads("tyranids_squad_hormagaunt_max")
+		local num_genestealer_squads = self:CountSquads("tyranids_squad_genestealer")+ self:CountSquads("tyranids_squad_genestealer_max")
+		local num_lictor_squads =  self:CountSquads("tyranids_squad_lictor") + self:CountSquads("tyranids_squad_lictor_alpha")
+		local num_warrior_squads =  self:CountSquads("tyranids_squad_warrior") + self:CountSquads("tyranids_squad_ravener") + self:CountSquads("tyranids_squad_biovores") + self:CountSquads("tyranids_squad_broodlord") + self:CountSquads("tyranids_squad_zoanthropes") 
+		local num_carnifex_squads = self:CountSquads("tyranids_squad_carnifex_skiller") + self:CountSquads("tyranids_squad_carnifex_khazi")+ self:CountSquads("tyranids_squad_carnifex") + self:CountSquads("tyranids_squad_carnifex_uber") + self:CountSquads("tyranids_squad_tyrant_guard")
+		local num_broodlord_squads = self:CountSquads("tyranids_squad_broodlord")
+		local num_ripper_squads = self:CountSquads("tyranids_squad_ripperswarm")
+		local num_titans = self:CountSquads("tyranids_squad_trygon") + self:CountSquads("tyranids_squad_hierophant") + self:CountSquads("tyranids_squad_hierophant_max")
+
+			-- Item-Syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
+		if (num_gaunt_squads > 2) then
+			self:DynamicResearch("tyranids_gaunt_upgrade_research_1", 1, 0, 150, 0, 0, nil, 0)
+			--self:DynamicResearch("tyranids_lp_toxic_miasma_research", 2, 50, 0, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_gaunt_upgrade_research_2", 2, 0, 150, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_gaunt_devourer_research", 2, 0, 80, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_hormagaunt_adrenal_glands_research", 2, 0, 40, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_building_miasmax2_research", 3, 0, 250, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_building_synapse_aurax2_research", 3, 0, 250, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_gaunt_upgrade_research_3", 3, 0, 200, 0, 0, nil, 0)
+		end
+
+		if (num_genestealer_squads > 1) then
+			self:DynamicResearch("tyranids_genestealer_senses_research", 1, 0, 30, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_genestealer_upgrade_research_1", 1, 0, 180, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_genestealer_upgrade_research_2", 2, 0, 200, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_genestealer_upgrade_research_3", 3, 0, 210, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_genestealer_implant_research", 2, 60, 0, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_genestealer_scyth_research", 2, 80, 0, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_genestealer_tendrils_research", 3, 0, 75, 0, 0, nil, 0)
+		end
+		
+		if (num_lictor_squads > 1) then
+			self:DynamicResearch("tyranids_lictor_upgrade_research_1", 1, 0, 180, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_lictor_upgrade_research_2", 2, 0, 200, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_lictor_upgrade_research_3", 3, 0, 210, 0, 0, nil, 0)
+		end
+		
+		if (num_warrior_squads > 0) then
+			self:DynamicResearch("tyranids_warrior_weapons_research", 2, 0, 75, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_warrior_adrenal_glands_research", 4, 0, 300, 0, 0, nil, 0)
+			--self:DynamicResearch("tyranids_warrior_ext_carapace_research", 3, 0, 40, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_warrior_leaping_research", 3, 0, 100, 0, 0, nil, 0)
+		end
+
+		if (num_carnifex_squads > 1) then
+			self:DynamicResearch("tyranids_carnifex_ext_carapace_research", 2, 0, 200, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_carnifex_thorned_carapace_research", 4, 0, 300, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_carnifex_toxic_miasma_research", 3, 0, 50, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_carnifex_implant_research", 3, 0, 250, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_carnifex_regeneration_research", 3, 0, 250, 0, 0, nil, 0)
+		end
+
+		if (num_broodlord_squads > 0) then
+			self:DynamicResearch("tyranids_genestealer_bl_infiltration_research", 4, 0, 300, 0, 0, nil, 0)
+		end
+
+		if (num_ripper_squads > 0) then
+			self:DynamicResearch("tyranids_ripper_leaping_research", 3, 0, 30, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_ripper_toxin_sacs_research", 3, 0, 50, 0, 0, nil, 0)
+		end
+		
+		if (num_titans > 0) then
+			self:DynamicResearch("tyranids_titan_bioplasma_research", 5, 200, 0, 0, 0, "tyranids_squad_trygon", 1)
+			self:DynamicResearch("tyranids_titan_regen_research", 5, 0, 350, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_titan_melee_research", 5, 0, 350, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_titan_armor_research", 5, 0, 450, 0, 0, nil, 0)
+			self:DynamicResearch("tyranids_titan_armor2_research", 5, 0, 600, 0, 0, nil, 0)
+		end
+		
+		-- Tier updates
+		self:DynamicResearch("tyranids_requisition_research_1", 2, 75, 250, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_power_research", 2, 350, 0, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_arrival3_research", 3, 600, 300, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_power_research_2", 3, 450, 0, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_requisition_research_3", 4, 125, 450, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_power_research_3", 4, 550, 0, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_assimilation_research", 4, 1000, 500, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_power_research_4", 5, 650, 0, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_relic_research_1", 4, 0, 1500, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_requisition_research_4", 5, 150, 550, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_relic_research_2", 5, 0, 3000, 0, 0, nil, 0) 
+		
+		
+		self:DynamicResearch("tyranids_apocalypse_research", 5, 1500, 1500, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_requisition_research_5", 6, 300, 1000, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_power_research_5", 6, 800, 100, 0, 0, nil, 0)
+		
+		-- Final
+		self:DynamicResearch("tyranids_biobomb_research", 6, 0, 2000, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_errect_research", 6, 0, 5000, 0, 0, nil, 0)
+		self:DynamicResearch("tyranids_hivefleet_research", 6, 0, 10000, 0, 0, nil, 0) 
+		self:DynamicResearch("tyranids_eatworld_research", 6, 0, 30000, 0, 0, nil, 0) 
+	end
+	
+	-- Restrict dynamic builds to hard difficulty or higher
+	if (CpuManager.AISettings.bMultiBuildings) then
+	
+		-- Dynamic buildings
+		-- Item-Syntax: BuildingName, BuildingCount, MinTier, MinRequisition, MinPower, MinSquadCap, MinSupportCap
+		
+		self:DynamicBuild("tyranids_hq", 2, 1, 1000, 0, 0, 0)
+		self:DynamicBuild("tyranids_digest_pool", 6 * self:GetBuildingCountByName("tyranids_hq"), 3, 500, 0, 0, 0)
+		self:DynamicBuild("tyranids_turret", 5, 1, 400, 0, 0, 0)
+		
+		if ((iPower >= 0 and iRequisition >= 2200) or self.m_iArmyBuild >= 3) then
+		
+			if (self.m_iArmyBuild >= 4) then
+				self:DynamicBuild("tyranids_turret", 20, 1, 120, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret_bioacid", 20, 4, 600, 0, 0, 0)
+			end
+			
+			-- Tier 0
+			self:DynamicBuild("tyranids_gaunt_hive", 4, 1, 700, 0, 0, 0)
+			
+			-- Tier 1
+			self:DynamicBuild("tyranids_warrior_hive", 2, 2, 700, 0, 0, 0)
+			self:DynamicBuild("tyranids_carnifex_hive", 2, 2, 700, 0, 0, 0)
+			
+			-- Tier 2
+			self:DynamicBuild("tyranids_turret", 15, 3, 1100, 0, 0, 0)
+			
+			-- Tier 3
+			self:DynamicBuild("tyranids_hq", 3, 4, 3500, 0, 0, 0)
+			self:DynamicBuild("tyranids_turret_bioacid", 10, 4, 1600, 0, 0, 0)
+			
+			-- Tier 4
+			self:DynamicBuild("tyranids_relic_hive", 2, 5, 2000, 0, 0, 0)
+			self:DynamicBuild("tyranids_biotitan_hive", 1, 5, 2000, 0, 0, 0)
+			self:DynamicBuild("tyranids_capillary_tower", 3, 5, 8000, 0, 0, 0)
+			self:DynamicBuild("tyranids_capillary_tower", 8, 5, 16000, 0, 0, 0)
+		end
+			
+		-- Build nukes
+		
+		--[[local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+			
+		-- Build nuke
+		local tBuildType = CpuBuildType()
+		tBuildType.btype = CpuPrerequisites.BT_Squad
+		
+		tBuildType.name = "npc_squad_superweapon1"
+		if (self:TryBuild( tBuildType )) then
+			aitrace("BuildController: Dynamic build of "..tBuildType.name)
+		end]]
+	end
+	
+	self:BuildFreeGaunts()
+
+	-- Check resources
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iTierLevel = self:GetTierLevel()
+
+	if (iRequisition < 600 and iTierLevel < 3) or
+	   (iRequisition < 1000 and iTierLevel > 2) then
+
+		-- Check if a plan exists
+		local iBuildingID = cpu_manager.stats:GetBuildingID("tyranids_digest_pool")
+		if (self:PlanExists("Build Building Plan", iBuildingID)) then
+			return
+		end
+		
+		-- Check if any Hives are in production
+		for oBuildChannel in build_manager:GetBuildChannelAIs() do
+	
+			-- Check building ID
+			if (oBuildChannel:GetBlueprintID() == iBuildingID and not oBuildChannel:ConstructionDone()) then
+				return
+			end
+		end
+		
+		-- Build a Pool
+		local tBuildType = CpuBuildType()
+		tBuildType.btype = CpuPrerequisites.BT_Building
+		tBuildType.name = "tyranids_digest_pool"
+		if (self:TryBuild( tBuildType )) then
+			aitrace("BuildController: Dynamic build of "..tBuildType.name)
+		end
+		return
+	end
+	
+	if (iRequisition < 2000 and iTierLevel > 3) then
+
+		-- Check if a plan exists
+		local iBuildingID = cpu_manager.stats:GetBuildingID("tyranids_capillary_vein")
+		if (self:PlanExists("Build Building Plan", iBuildingID)) then
+			return
+		end
+		
+		-- Check if any Hives are in production
+		for oBuildChannel in build_manager:GetBuildChannelAIs() do
+	
+			-- Check building ID
+			if (oBuildChannel:GetBlueprintID() == iBuildingID and not oBuildChannel:ConstructionDone()) then
+				return
+			end
+		end
+		
+		-- Build a Pool
+		local tBuildType = CpuBuildType()
+		tBuildType.btype = CpuPrerequisites.BT_Building
+		tBuildType.name = "tyranids_capillary_vein"
+		if (self:TryBuild( tBuildType )) then
+			aitrace("BuildController: Dynamic build of "..tBuildType.name)
+		end
+		return
+	end
+end
+
+function TyranidBuildBaseStrategy:BuildFreeGaunts()
+
+	-- Desired squads
+	local iDesiredSquads = 4
+
+	-- Check if we have two monoliths
+	if (self:GetBuildingCountByName("tyranids_gaunt_hive", true) < 2) then
+		iDesiredSquads = 2
+	end
+	
+	-- Check number of Necron Warrior squads
+	local iUnitID = cpu_manager.stats:GetSquadID("tyranids_squad_spinegaunt")
+	if (cpu_manager.player_stats:GetNumSquadsByBPID(iUnitID) >= iDesiredSquads) then
+		return
+	end
+	
+	-- Check if we have free squad cap
+	local iSquadCap = self:GetUnitStats("tyranids_squad_spinegaunt")
+	if (self:GetSquadCapLeft() < iSquadCap) then
+		return
+	end
+	
+	-- Check if a plan exists for a Necron Warrior squad
+	if (self:GetPlan("Build Unit Plan", iUnitID) ~= nil) then
+		return
+	end
+
+	-- Try to build free Necron Warrior squad
+	local tBuildType = CpuBuildType()
+	tBuildType.btype = CpuPrerequisites.BT_Squad
+	tBuildType.name = "tyranids_squad_spinegaunt"
+	if (self:TryBuild(tBuildType)) then
+		return
+	end
+end
+
+-- Arkhan 01.2006: Method to check if force tech should be computed
+function TyranidBuildBaseStrategy:ForceTech()
+
+	-- Check time
+	if (g_iGMT < 60 * CpuManager.ForceTech.StartTier1) then
+		return false
+	end
+	
+	-- Check ressources
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Check tier
+	local iTierLevel = self:GetTierLevel()
+	if (iTierLevel == 1) then
+	
+		-- Check resources
+		if (iRequisition > 600) then
+			return false
+		end
+	
+		-- Check for soul shrine
+		if (self:GetBuildingCountByName("tyranids_warrior_hive", false) >= 1) then
+			return false
+		end
+		return true
+		
+	elseif (iTierLevel == 2) then
+
+		-- Check for support portal
+		if (self:GetBuildingCountByName("tyranids_carnifex_hive", false) < 1) then
+			return true
+		end
+		
+		-- Check time
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier2 and (iRequisition < 800)) then
+			return true
+		end
+		
+	elseif (iTierLevel == 3) then	
+
+		-- Check time
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iRequisition < 1000)) then
+			return true
+		end
+		
+	elseif (iTierLevel == 4) then	
+
+		-- Check time
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier4 and (iRequisition < 800 or iPower < 800)) then
+			return true
+		end
+	end
+	return false
+end
+
+-- Arkhan 03.2006: Return placement type for buildings
+function TyranidBuildBaseStrategy:GetPlacementType(iBuildingID)
+	
+	-- Check building
+	if (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_capillary_tower") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_warrior_hive") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_carnifex_hive") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_biotitan_hive") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_relic_hive")) then
+		return "Military"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_gaunt_hive") or
+			iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_turret_bioacid") or
+			iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_turret")) then
+		return "Front2"   
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_digest_pool") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_capillary_vein") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_xeno_hive") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_biomorph_hive") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_hq")) then
+        return "Safeplace"	
+	end
+	return "Basic"
+end
+
+-- Arkhan 11.2006: Check if we have enough resources for a bigger generator
+function TyranidBuildBaseStrategy:HasResourcesForBiggerGenerator(iRequisition, iPower)
+
+	-- Check requisition
+	if (iRequisition < 500) then
+		return false
+	end
+	return true
+end
+
+-- Arkhan 11.2006: Virtual method for checking out relic units
+function TyranidBuildBaseStrategy:RelicRequired(sName)
+
+	-- Check name
+	if (sName == "tyranids_squad_carnifex_uber") or 
+	(sName == "tyranids_squad_trygon") or 
+	(sName == "tyranids_squad_hierophant") or
+	(sName == "tyranids_squad_hierophant_max")then
+		return true
+	end
+	return false
+end
+

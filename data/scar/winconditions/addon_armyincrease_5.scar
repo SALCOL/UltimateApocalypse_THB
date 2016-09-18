@@ -1,0 +1,54 @@
+-- Set up Cap modifiers
+-- Created by Arkhan
+-- Edited by Cylarne @ 2011
+
+import("Player.scar");
+import("GroupCallers.scar");
+import("Command.scar");
+import("Groups.scar");
+import("ScarUtil.scar");
+import("WXPGroups.scar");
+
+-- Settings
+g_fArmyCapModifier5 = 200
+
+
+-- Init the cap modifier code
+function Armycap_5_InitRule()
+
+	print("Init Army Cap +200...")
+	
+	-- Create army cap modifiers
+	local oModMaxSquadCap	= Modifier_Create(MAT_Player, "max_squad_cap_player_modifier", MUT_Addition, false, g_fArmyCapModifier5, "")
+	local oModMaxSupportCap	= Modifier_Create(MAT_Player, "max_support_cap_player_modifier", MUT_Addition, false, g_fArmyCapModifier5, "")
+	local oModSquadCap		= Modifier_Create(MAT_Player, "squad_cap_player_modifier", MUT_Addition, false, g_fArmyCapModifier5, "")
+	local oModSupportCap	= Modifier_Create(MAT_Player, "support_cap_player_modifier", MUT_Addition, false, g_fArmyCapModifier5, "")
+	
+	-- Compute all players
+	g_iPlayerCount = World_GetPlayerCount()
+	for iLoop1 = 0, g_iPlayerCount - 1 do
+	
+		-- Get player ID
+		local ePlayerID = World_GetPlayerAt(iLoop1)
+		
+		-- Apply army cap modifiers
+		pcall(Modifier_ApplyToPlayer, oModMaxSquadCap, ePlayerID)
+		pcall(Modifier_ApplyToPlayer, oModMaxSupportCap, ePlayerID)
+		pcall(Modifier_ApplyToPlayer, oModSquadCap, ePlayerID)
+		pcall(Modifier_ApplyToPlayer, oModSupportCap, ePlayerID)
+	end
+	
+	-- Destroy army cap modifiers
+	Modifier_Destroy(oModMaxSquadCap)
+	Modifier_Destroy(oModMaxSupportCap)
+	Modifier_Destroy(oModSquadCap)
+	Modifier_Destroy(oModSupportCap)
+end
+
+-- Init Massive Battles rule system
+function Armycap_5_Setup()
+	Rule_AddOneShot(Armycap_5_InitRule, 2.0)
+end
+
+-- Init SCAR
+Scar_AddInit(Armycap_5_Setup)

@@ -1,0 +1,43 @@
+----------------------------------------------------------------------------------------------------------------
+-- Restrict Winbuttons
+-- Created by Cylarne @ 2015
+--
+--	Tier V is restricted.
+--
+-- Apocalypse Mod Team
+
+import("ScarUtil.scar");
+
+function Rule_RestrictWinbuttons()
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		-- Restrict actual Tier V.
+		Player_RestrictResearch(player, "chaos_apocalypse_research");
+		Player_RestrictResearch(player, "dark_eldar_apocalypse_research");
+		Player_RestrictResearch(player, "eldar_apocalypse_research");
+		Player_RestrictResearch(player, "guard_apocalypse_research");
+		Player_RestrictResearch(player, "necron_apocalypse_research");
+		Player_RestrictResearch(player, "marine_apocalypse_research");
+		Player_RestrictResearch(player, "sisters_apocalypse_research");
+		Player_RestrictResearch(player, "tau_apocalypse_research");
+		Player_RestrictResearch(player, "ork_research_tech_great_gargant");
+		
+		
+		if (Mod_Includes_Tyranids == true) then
+			Player_RestrictResearch(player, "tyranids_apocalypse_research");
+		end
+		if (Mod_Includes_Inquisition == true) then
+			Player_RestrictResearch(player, "inquisition_absolute_purification");
+		end
+		if (Mod_Includes_Daemons == true) then
+			Player_RestrictAddOn(player, "addon_daemons_hq_5");
+		end
+	end
+
+end
+
+Scar_AddInit(Rule_RestrictWinbuttons)

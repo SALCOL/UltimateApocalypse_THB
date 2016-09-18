@@ -1,0 +1,53 @@
+----------------------------------------
+-- File: 'GKChampiontactic.ai'
+-- Created by Cylarne
+
+class 'GKChampionTactic' (DaemonhuntInfantryTactic)
+
+GKChampion = {}
+
+function GKChampionTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("GKChampion Tactic")
+end
+
+function GKChampionTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function GKChampionTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function GKChampionTactic:InitAbilities()
+
+	if GKChampion.rally == nil then
+	   GKChampion.rally = cpu_manager.stats:GetAbilityID( "inquisition_rally_gk" )	
+	end
+
+	if GKChampion.light == nil then
+	   GKChampion.light = cpu_manager.stats:GetAbilityID( "inquisition_strike_of_justice_champion" )	
+	end
+end
+
+function GKChampionTactic:DoAbilities()
+	
+	if (self.squad_ai:IsBroken()) then
+		
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( GKChampion.rally )) then
+			self.squad_ai:DoSpecialAbility( GKChampion.rally )
+		end
+	end
+
+	Ability.DoAbilityPos( self.squad_ai, GKChampion.light, Ability.Filters.CloseInfantryEnemy, 8 ) 
+	Ability.DoAbilityPos( self.squad_ai, GKChampion.light, Ability.Filters.CloseMonsterEnemy, 1 ) 
+
+	--we are dying, lower requisites for attacks
+	if self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 then
+	
+        Ability.DoAbilityPos( self.squad_ai, GKChampion.light, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, GKChampion.light, Ability.Filters.CloseInfantryEnemy, 4 ) 
+
+	end
+end

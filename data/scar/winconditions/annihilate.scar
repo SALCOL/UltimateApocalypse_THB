@@ -1,0 +1,54 @@
+----------------------------------------------------------------------------------------------------------------
+-- Annihilate Win Condtition (for all mod factions)
+-- Edited by Thudmeizer  @ 10.03.2008
+-- Improved by Apocalypse Mod Team
+--
+--	Last player standing wins.
+--
+-- (c) 2003 Relic Entertainment Inc.
+import("ScarUtil.scar");
+-- Code used from the annihilate.scar function.
+import("UA_SCARCore/K_04/AnnihilateExceptions.scar");
+
+function Annihilate()
+
+	-- wait 0.25 secs before adding this rule. this is so it is not executed
+	-- on the same frame as the other win conditions
+	Rule_AddOneShot( Annihilate_AddMainRule, 0.25 )
+	
+	obj_table_P1 = { title_id = 60000, short_desc_id = 60300, help_tip_id = 60300 }
+	
+	Objective_Add( obj_table_P1, 1 )
+	
+end
+
+function Annihilate_AddMainRule()
+	Rule_AddInterval(CheckAnnihilate, 0.2)
+end
+
+function CheckAnnihilate()
+
+	-- total number of players
+	local count = World_GetPlayerCount();
+	
+	--check for annihilated dudes
+	for i = 0, count-1
+	do
+		-- check if player has been annihilated
+		local player = World_GetPlayerAt(i);
+		local playerRace = Player_GetRaceName(player)
+	
+		-- if no buildings then you die
+		if( Player_IsAlive(player) ) then
+			if( Player_HasBuildingsExcept( player, _Annihilate.g_annihilate_exceptions ) == false ) then
+				
+				Player_Kill(player);
+			end
+		end
+	end
+	
+	-- check if only one team left -- if only one team left, they win and everybody else loses
+	Util_CheckOneTeamLeft("annihilate");
+end
+
+Scar_AddInit(Annihilate)

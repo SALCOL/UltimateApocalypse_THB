@@ -1,0 +1,13 @@
+-- Tyranid SCAR support info script
+-- Created by Arkhan
+-- Integrated by Thudmeizer - Feb 2007
+
+DonationSettings.tyranids_race =
+{
+	Title = "Tyranid",
+	ResourceExchangeRestricted = false,
+	RequisitionExcess = 1200,
+	RequisitionDemand = 600,
+	PowerExcess = 800,
+	PowerDemand = 400,
+}

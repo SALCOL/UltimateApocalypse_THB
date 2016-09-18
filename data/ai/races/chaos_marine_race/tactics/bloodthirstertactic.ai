@@ -1,0 +1,27 @@
+class 'BloodThirsterTactic' (ChaosMarineInfantryTactic)
+
+BloodThirster = {}
+
+function BloodThirsterTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("BloodThirster Tactic")
+
+end
+
+function BloodThirsterTactic:AlwaysAttack()
+	return true
+end
+
+function BloodThirsterTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (BloodThirster.lust_id == nil) then
+		BloodThirster.lust_id = cpu_manager.stats:GetAbilityID( "chaos_blood_lust" )
+	end
+end
+
+function LocTactic:DoAbilities()
+	
+	Ability.DoAbility( self.squad_ai, BloodThirster.lust_id, Ability.Filters.IsInCombat )
+end
+

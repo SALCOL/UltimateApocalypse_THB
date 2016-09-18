@@ -1,0 +1,195 @@
+SM
+
+Stormraven Fury - both default front hull bolters have no muzzle FX when firing but bullets are seen coming out. All other H.Bolters show a muzzle FX.
+Land Raider Helios - Is it the intention to have its main missile battery have range of the entire map? When it is built, it immediately starts firing at targets all across the map. Also, the Missile Barrage ability shows the missiles coming out in the front of the model rather than out of the Missile Pod itself at the top of the model.
+Ironclad Dreadnought - Both Krak Missile abilities: Krak Missile show coming out from the front-center of the model rather than near the top on either side of the Krak Missile Launchers where they should be dispensed.
+Dreadnought - Inferno Cannon has the fire FX firing on an arc a little higher when it hits its target whereas it should be a stream direct to the target.
+Razorback - Pink Icon when upgrading to Heavy Flamer. FIXED: -- Added missing "razorback_icon__space_marine_heavy_flamer_razorback.tga" file to data\art\ui\ingame\space_marine_icons.
+Vindicator - There is a small twin-Bolter pod on the top (beside larger Marine-manned Storm Bolter turret which fires fine) that is not functioning/firing when in range. 
+Thunderhawk - when destroyed, the model does not vanish from the battlefield but hangs in the air forever. Can you mimic the Tau Orca Transport's death as that is the animation to use here.
+Whirlwind MK2 - Missiles fired from main pod start well above the model: they should start firing right outside instead of too far above.
+Standard Bearer (standalone and for all squads) - Bolter Muzzle FX shows off and below to the left of the model rather than on and in-front of it.
+Weapon Servitors - Have no melee animations so model looks broken/stagnant when in close combat.
+Force Commander - when upgraded to Melta Gun it shows firing it more upward to the target rather than straight-on (compared to other of its weapon upgrades). Also its default weapon (Bolt Pistol) has no bullet being fired, only the muzzle FX shows. 
+
+CSM
+
+Chaos Space Marines - when upgraded to Missile Launcher has its projectile start point a little low below the barrel from the weapon it comes from. Should be moved up to match the level of the launcher.
+Chaos Attack Bike - when upgraded to Plasma Pistol does not show any projectile being fired apart from a muzzle flash.
+Havoc Marines - when upgraded to Missile Launcher has its projectile start point a little low and to the left below the barrel from the weapon it comes from. Should be moved up to match the level of the launcher. 
+Plague Marines - when upgraded to Melta Gun the marine shows firing it upward to the target rather than straight-on. 
+Berzeker Marines - their default weapon (Bolt Pistol) has no bullet being fired, only the muzzle FX shows.
+Chaos Icon Bearer - its default weapon (Bolt Pistol) has no bullet being fired, only the muzzle FX shows.
+Chaos Dreadnought - when upgraded to Multi-Melta it shows firing it more downnward to the target rather than straight-on (compared to other of its weapon upgrades).
+Chaos Terminators - has pink icon when Heavy Flamer upgrade is built. FIXED: -- Added missing "chaos_terminator_icon__chaos_heavy_flamer_terminator.tga" file to data\art\ui\ingame\chaos_icons. Also, their Storm Bolters (their default weapon) have no tracers/bullets firing although when they attack-move it briefly shows.
+Mutilators - show as pink boxes. Error log: 'mutilator': XRef'ed Anim 'aim_idle' in model 'art/ebps/races/chaos/troops/obliterator' is missing! FIXED! -- Added missing Obliterator files that have embedded Xref anims.
+Chaos Lord - when upgraded to Melta Gun it shows firing it more upward to the target rather than straight-on (compared to other of its weapon upgrades). Also its default weapon (Bolt Pistol) has no bullet being fired, only the muzzle FX shows.
+Chaos Sorcerer - its default weapon (Plasma Pistol) has no bullet being fired, only the muzzle FX shows. 
+Rhino - Heavy Bolter turret has no bullets/tracers being fired, only the muzzle FX shows.
+Predator - after upgrading to Missile Pod, the pod does not appear on the model but the option exists (maybe OE hardpoint name is wrong?). When using attack-ground, missiles sometimes fly backward from model rather than always directing to target.
+Chaos Land Raider - when using attack-ground to fire missile, missiles show up lower where they should be coming from. They should be originating/starting from out-front of the Missile Launcher on-top the vehicle.
+Thunderhawk - when destroyed, the model does not vanish from the battlefield but hangs in the air forever. Can you mimic the Tau Orca Transport's death as that is the animation to use here.
+Hell Drake - its default ranged attack (falling flame beads) starts well above its beak/head rather than outside its mouth or slightly lower. Its melee attack (when just above a target) looks slightly better but should still be adjusted so its lower into its mouth than above/outside its beak.
+Champion of Nurgle/Slaanesh - its Plasma Pistol fires/points too high above target when it attacks (its bullets/ordnance fly right over target): it should be facing the target on a more straight line-of-sight.
+Plague Reaper - when using attack-ground to fire missile, missiles show up lower and to the left where they should be coming from. They should be originating/starting from out-front of the Missile Launcher on-top the vehicle. 
+Branching - when you choose, say, the Khorne branch, should not Khorne not have available any items from, say, Nurgle (ie. Plague Marines)? I still see access to other squad types that Khorne should not have access to (ie. Rubrics Marines from Warp Forge). 
+Branching Part 2 - Khorne and Nurlge seems to be the only Marks with its own unique Terminators or unique S.Heavy vehicle (Khorne Terminators) but where are the others? There are many unique Mark-specific Chaos units/vehicles that are available. Just ask. :)
+Branching Part 3 - On top of each Marking its own custom (Chosen Squad, Terminators, and Dreadnought) recommend the following extras to add to each branch and also the default branch (the one when the user chooses no Mark at all):
+Khorne - Decimator Walker
+Nurgle - Undead Zombie Horde
+Slaanesh - Subjugator Mini-Titan, Sonic Predator
+Tzeentch - Silver Tower 
+Renegades - New Cultists, New Sorcerer, New Lord, Chaos Razorback, Chaos Chimera, Chaos Griffon, Chaos Basilisk, Chaos Leman Russ, Chaos Macharius, Chaos Baneblade
+
+
+Eldar
+
+Laughing God (aka Spirit Walker) - projectile fired by its only ranged weapon (missile) starts too far back from the launcher: it needs to start just before it right in front.
+Void Spinner S.Heavy Skimmer - projectile fired by its only ranged weapon (filaments) should originate a little higher from its current start point. Right now its a little too further out from the launcher. 
+Scorpion S.Heavy Skimmer - default turret Scatter Laser, Shuriken weapon upgrade, and Brightlance weapon upgrade all fire/point too low when it attacks targets (its bullets/ordnance fly right under target): it should be facing the target on a more straight line-of-sight.
+Scorpion S.Heavy Skimmer - Missile launcher weapon upgrade has missile orginating too high above launcher: it should be lowered and positioned to start just before the launcher. 
+Wave Serpent - Missile launcher weapon upgrade has missile orginating too low above launcher and the model itself: it should be raised and positioned to start just before the launcher. 
+Vyper - all turret weapons (including Scatter Laser default) except for Missile Launcher fire/point too low when it attacks targets (its bullets/ordnance fly right under target): it should be facing the target on a more straight line-of-sight.
+NightSpinner - there is no difference in weapon ordnance FX between default Shuriken Catapult and upgraded Shuriken Cannon apart from latter has a single stream. Should they not use same Shuriken weapon FX as other skimmers like Falcon and Wave Serpent?
+Fire Prism - has pink icon when built. FIXED: -- Added missing "fire_prism_icon.tga" and other tga files to data\art\ui\ingame\eldar_icons and disabled counterparts.
+Ancient Wraithlord - when upgraded to either Shuriken Cannon or Brightlance both fire/point too high above target when it attacks (its bullets/ordnance fly right over target): it should be facing the target on a more straight line-of-sight.
+Soul Walker - when upgraded to Improved Power Sword there is no discernable difference on model to default sword. Maybe give the Improved Power Sword upgrade a simple glow?
+WraithGuard and Ancient WraithGuard's SpiritSeer leader - fires his Shuriken Pistol downward to the target rather than straight-on. 
+Anient WraithGuard - main default Wraithcannon weapon has its projectile firing along the ground rather than to the target in the air. 
+Shrine of the Laughing Gawd - desperately needs a new icon as it looks out of place with all others due to its pink silhouette.
+Seer Council - fires their Shuriken Pistol downward to the target rather than straight-on. 
+Autarch - when upgraded to either the Shuriken Catapult or Fusion Gun the firing position/angle of the way its fired skews badly to the right totally missing the target. 
+
+Orks
+
+Deff Dread - has no ranged attack? It has two Shootas, one on each side of chest area but they do not fire at all.
+Killa Kan - when upgraded to Rockitt Launcha, the missile appears lower than it should: it should appear at the level of the launcher itself.
+Battle Wagon - Lobba, Zzzzap Gun upgrade, and Rockitt Launcha upgrade have their weapon start points too low below the barrel from the weapon they come from. Should be moved up to match the gun they come from.
+Kill Krusha - main gun does not pivot up or down to sight the target. Working as designed?
+Sqiggoth - Rockitt Launcha upgrade has its weapon start points too low below the barrel from the weapon it comes from. Should be moved up to match the level of the gun.
+Battle Fortress - Rockitt Launcha have their weapon start points too low below the barrel from the weapon they come from. Should be moved up to match the gun they come from. Also, STRONGLY RECOMMEND using the DoW2 Battle Fortress as its 10x better than the one you have. :)
+Kommandoz - Rockitt Launcha upgrade has its weapon start point a little low below the barrel from the weapon it comes from. Should be moved up to match the level of the gun.
+Lootaz - Says they can teleport without the Big Mek, but, they have no teleport option. 
+Ard Boyz - Rockitt Launcha upgrade has its weapon start point a little too the left of the barrel from the weapon it comes from. Should be moved over to the right to match the level of the gun. Also, actual missile itself being loaded onto the launcha model during the load animation is missing: this is out of your control of course unless re-added.
+War Boss- Mega Cannon upgrade fires too downward towards target. Should be a little more straight-to-sight if possible.  
+Kustum Stompa and Ork Stompa - When you activate something called "Launch Grot Leader" spawn ability it actually releases a squad called the "Trojan Boyz". Should the ability not maybe be "Launch Trojan Boyz"? 
+Trojan Boyz - when they upgrade to Burnas their icon turns pink. FIXED: -- Added missing "grot_leader_icon.tga" and other tga files to data\art\ui\ingame\ork_icons.
+Ork Stompa - No Melee attack? :(
+Great Gargant - No Melee attack? Also, when it dies, recommend one helleva massive explosion since it looks like its packed with tons of explosives and stored munitions. :)
+Supa Dupa Zzzzappy Turret - when trying to place it on the battlefield the silhouette shows red no matter where you place it down. Only until you try the spot do you become aware it can be built there.
+
+IG
+
+Stormblade - all H.Bolters on the model (side and turret) have muzzle FX coming out the sides of the barrels rather than from the front. 
+Stormsword - both side dual-H.Bolters have muzzle FX coming out the sides of the barrels rather than from the front. Also, turret single Bolter does not fire at all.
+Stormlord - front hull dual-H.Bolters have muzzle FX coming out slightly off to its right. Needs a little adjustment so its positioned correctly in front of the bolters.
+Leman Russ Murderer and Conqueror Tanks - both turret-mounted dual-H.Bolters do not fire at all.
+Chimera - both turret-mounted dual-H.Bolters has no muzzle FX when firing but bullets are seen coming out. All other H.Bolters show a muzzle FX.
+Chimera Assault Tank - Unsure if this is the case but main turret seems to have a smaller thick bolter on it but does not fire or show muzzle FX. Again, unsure if this is supposed to be a weapon.
+Vulture Gunship - does not face down when firing its frontal guns: it keeps facing 45 degrees to the sky rather than 45 degrees down to the ground. 
+General's Personal Reaver Titan - when upgrading to that massive Fist, the Titan has no melee options?  
+Imperial Guardsmen with Sniper Rifle Upgrade - fires a little too downward towards target. Should be a little more straight-to-sight if possible. 
+Imperial Heavy Support with Missile Launcher Upgrade - when missile fires from launcher there is an odd flame effect on the back that shoots up at 45 degrees rather than out of the missle tube. There is also an odd red-coloured laser marker below the loader that maybe was intended to be shot out to "paint the target"?
+Colonel Command Squad - when a second Field Medic is built in the Squad and it is asked to attack at range it shows as being almost stuck half way in the ground and does not attack.
+Vox Operator - fires a little too downward towards target. Should be a little more straight-to-sight if possible.  
+Field Commander Lieutenant - fires a little too downward towards target. Should be a little more straight-to-sight if possible. 
+
+Necrons
+
+Great Pyramid - when initially built with no upgrades, the "Cease Fire! (Off)" icon is PINK. FIXED! -- Added missing "ability_ceasefire_off.tga" file to data\art\ui\ingame_disabled\command_icons
+Ancient Summoning Core (Tier III) - there are four vehicles present that don't show the Relic Resource so it does not tell you how much of that resource is required to build those so yer left guessing if you have enough. Those impacted are the Siege Monolith (310 Relic Points), Doomsday Monolith (500 Relic Points), Aeonic Orb (1000 Relic Points), and the Gauss Pylon (500 Relic Points). Suggest if game engine limitation use UCS so players know the cost.  
+Doomsday Monolith - after summoning a Siege Monolith the respawn time for the next one shows above the icon? Game engine limitation (?) as normally it should show below the icon.
+Obelisk (ones built on strats/relics) - there are two abilities both called "Wailing Doom" and have the same UCS description but when either is used they have slightly different FX when they attack. Should they not be named or described differently? 
+
+Tau
+
+Guidance Beacon - when trying to place it on the battlefield the silhouette shows red no matter where you place it down. Only until you try the spot do you become aware it can be built there.
+Path to Destruction (Tier IV) icon - looks out of place compared to all other faction major tier icons as it just looks like another ability/research icon but without any symbols denoting what it does. Consider revamping it so it looks like other major tier advancing icons.
+Kroot Alpha Knarloc Rider - ranged attack when arrow is fired appears well below model along the ground: it should originate out in front of the crossbow. 
+Prototype Drone Satelitte - shows only as a red point in the sky with a tail streaking downward half way to the ground. It used to look like a concealed/cloaked Remora Stealth Fighter.
+Devilfish Troop Transport - does not fire when cloaked. It can only attack when detected. 
+Skyray Missile Gunship - Missiles fired from Right Missile Pod need to be moved a little over to the right from where it starts. Also, whats the difference between the default Missiles and the Missile Upgrades: they look the same. 
+Hammerhead GunShip - when upgraded to Twin-Linked Plasma Cannon its weapon trails fly right over target rather than straight-on (compared to other of its weapon upgrades). Also, when upgraded to the Railgun, its endpoint occurs beyond the target rather than on the target. 
+Stingray Gunship - all Railguns, when fired, have their ending points occur beyond the target rather than on the target. 
+Swordfish Gunship - all Railguns, when fired, have their ending points occur beyond the target rather than on the target.  
+Fire Warriors - when upgraded to Pulse Rifle, sometimes the weapon misfires and shoots way off and over target. That intended?
+XV8 Sunfire Battlesuits - when upgraded to Missile Pods, the Missile's start point is too far to the right of the front of the weapon it originates from. Should be moved to the left to match the level of the pod.
+XV8 Crisis Battlesuits - when upgraded to Missile Pods, the Missile's start point is a little to the left and up from the front of the weapon it originates from. Should be moved a little more to the right and down to match the level of the pod. Also, model is missing all melee animations.
+XV88 Broadside Shasvre Elites - when firing default missiles from Missle Pod, the start point is too low and should be much further up to where the Pods are located (above head). Also, all Railguns, when fired, have their ending points occur beyond the target rather than on the target.
+XV88 Broadside Battlesuits - all Railguns, when fired, have their ending points occur beyond the target rather than on the target. 
+X9 Hazard Suits - Both Ion Cannon and Fusion Cascades upgrades fire well above the target rather then hitting level and straight-on.
+XV30 Heavy Builder - no ranged attack?
+XV89 Commander - when upgraded to Airburst Fragmentation, the grenade orginates a little to the right and back: it should come out more to the left and front of the weapon. Also, Plasma Rifle upgrade, when fired, has its ending point occur beyond the target rather than on the target. 
+XV22 Commander - when upgraded to Plasma Rifle, it fires well above the target rather then hitting level and straight-on.
+XV101 Riptide Titan - when firing from Missile Pods, the missiles' start points fire too low below the Pods they comes from. Should be moved up to match the level of the missile pods. Also its Plasma Rifle fires well above the target rather then hitting straight-on.
+XV104 Riptide Titan - when upgraded to Fusion Blaster (replaces missile pods on top shoulders) does not fire at all. When firing from Missile Pod, the missile's start point fires a little to the right of the Pod it comes from. Should be moved over to the left.
+XV107 R'varna Titan - its Remora Artillary Drone's default Twin Linked Pulse Carbines weapons fire above target rather then hitting level and straight-on. Also its long range artillery attack (Skyray Missile) orginates wayy too low from model and should have it moved up. 
+Manta - not sure on those outer firing "disc-like" weapons that seem to come out of nowhere in the center of each wing. Just there for looks as their tracers don't seem to actually hit the ground but just extend out from the Manta and dissipate in the air in front of it. 
+Odd art error: EVENTS -- 'art/ebps/races/tau/structures/tau_shield_generator' -- event 'sound_clone_spawn' percent must be below One! 
+
+Dark Eldar
+
+TrueBorn Warriors - when upgraded to Greater Dark Lance, weapon fx shows a steady stream on the ground but already has a laser FX attached to the lance so unsure the ground fx with it is needed? This ground fx also over-shoots the target ending far beyond it which looks odd. Also, all the TrueBorn weapons fire over the head of their targets rather then right at them. 
+Slave Chambers - is there a reason there are two Soul Shock abilities for each building? Seems like there should be only one ability per Slave Chamber.
+Scourages - all their weapons (including Dark Lance upgrade) seems to fire over the head of their targets rather then right at them. 
+Dias of Destruction - like Slave Chamber's two of the same Soul Shock abilities, why does the Dias have two Dark Scythe abilities? One should be enough?
+Void Dragon Phoenix and Voidraven Fighter - there are two pink streaming/tracers coming down from the aircraft that seem quite out of place and lingers too long since they seem to repeat over each other.
+Tormentor Titan - like both the Void Dragon Phoenix and Voidraven Fighter, there is a constant pink stream coming from the unit that overlaps itself which looks very odd. Assault version of the Tormentor Titan does not have this which looks better.
+Annihilation Beam HQ top-action bar ability - when fired, also shows a constant pink stream coming out of it on a tangent (hitting other targets) apart from the actual cool main beam. Not sure if intended.  
+Fleet of Foot ability (all squads) - noticed sometimes the icon goes PINK for a moment when squads are in combat and the ability is turned off. FIXED: -- Added missing "de_foot_on_fire_ability.tga" file to data\art\ui\ingame\dark_eldar_icons and disabled counterparts.
+
+Sisters of Battle
+
+Exorcist Sanctorum - Missiles fired from main pod start well above the model: they should start firing right outside instead of too far above. 
+Veteran Superior, Missionary, and Hospitalier (all squads) - their default weapon (Bolt Pistol) has no bullet/tracers being fired, only the muzzle FX shows. 
+Almoness - her default weapon (Bolt Pistol) has no bullet/tracers being fired, only the muzzle FX shows. 
+Veteran Superior, Serpham Superior, Celestrian Superior, and Hospitalier - when upgraded to the Inferno Pistol, it fires well downward towards target (flame stream goes right into the ground). Should be a little more straight-to-sight if possible.
+Battle Sisters - when squad upgrades to either Melta Gun or Multi-Melta the model stand motionless with no animations when firing on enemies.
+Seraphims - when squad upgrades to Flamer and Inferno Pistol the models stand motionless with no animations when firing on enemies. Also, squad makes an odd "popping sound ever 1-2 seconds" when firing on targets -- unsure why as no weapon is sync'ed to the soundfx.
+Retributors - when upgraded to Multi-Melta the model stand motionless with no animation when firing on enemies.
+Nunciate Superior (Command Squad Leader) - her default weapon (Bolt Pistol) has no bullet/tracers being fired, only the muzzle FX shows. When upgraded to Plasma Pistol, the tracers fire over the head of their targets rather then right at them. When upgraded to the Inferno Pistol, she fires well downward towards target (flame stream goes right into the ground). Should be a little more straight-to-sight if possible.
+
+IDH
+
+Vulture Gunship - does not face down when firing its frontal guns: it keeps facing 45 degrees to the sky rather than 45 degrees down to the ground. 
+Stormraven Fury - does not face down when firing: it keeps facing straight ahead. 
+Valkyrie Transport - when destroyed, the model does not vanish from the battlefield but hangs in the air forever. Can you mimic the Tau Orca Transport's death as that is the animation to use here. 
+Whirlwind Hyperios - for its default attack, missiles fired from main pod start well above the model: they should start firing right outside instead of too far above.
+Land Raider Daemon Hunter - when upgraded to Phobos Wargear, there is no mention in the UCS that the top Multi-Melta Gunner is lost with this upgrade. 
+Bodyguards - when upgraded to Flamer, throws fire into the ground before target rather than at the target. When the Acolyte's (Sergeant) weapon is upgraded to Plasma Pistol, it fires into the ground in front of the enemy instead of right at target. Also, squad gets two of the exact Frag Grenade abilites of the same kind -- is that expected?
+Scholars' Acolyte (Sergeant) - default bolt pistol has no muzzle FX while tracer is there. Further, when the Acolyte is upgraded to Plasma Pistol, it fires into the ground in front of the enemy instead of right at target.
+Thunderfire Cannon - shows no tracer/bullets when firing but muzzle FX is present. Also, maybe show a cooldown/setup indicator as unit seems to wait a few seconds each time it fires a volley.
+Astropath - When targetting with his default weapon, LasPistol, 50% of the time it fires completely off target skewing to the left on a 45 degree angle.
+Nemesis Dreadknight - its default ranged weapon, the Autocannon, has no tracer/bullets shown when firing but has the muzzle FX present.
+Venerable Dreadnought - when upgraded to Lascannons, its weapon trail ends well after the target it has hit: it should stop at the target.
+Dreadnought - when upgraded to Lascannons, its weapon trail ends well after the target it has hit (much further in fact than the Venerable Dreadnought's): it should stop at the target.
+Purgation Assault Deadnought - when upgraded to Psycannons, its weapon trail ends well after the target it has hit (much further in fact than the Venerable Dreadnought's): it should stop at the target. When upgraded to Multi-Melta, the weapon stream also ends well passed the target but not as bad.
+Purgation Hellfire Deadnought - Missiles fired from its left side missile pod orginate/start a little too the right and down. They should be moved more left and up to be in the center of the pod. When upgraded to Lascannon, its weapon trail ends well after the target it has hit (much further in fact than the Venerable Dreadnought's): it should stop at the target. When upgraded to its PlasmaCannon, the Plasma FX fired originates a little too far to the left and down: it should be moved up and to the right. 
+Ordo Malleus Supreme Lord - Plasma Pistol shows no tracer/bullets when firing but muzzle FX is present.
+Inquisitor Lord - default bolt pistol shows no tracer/bullets being fired but muzzle FX is there. 
+Brotherhood Champion - default bolt pistol shows no tracer/bullets being fired but muzzle FX is there.
+Exterminatus End-Game Super Weapon - absolutely incredible and complete map destruction but oddly some buildings remain behind with 1 health like HQ, Titan Building, Nuclear Facility (that launched it) and the Shrine of the Emperor. Is this "as designed" to keep the player who launched it from not actually losing the game? 
+
+Daemons
+
+Bloodletters have no valid icon (its pink). FIXED: -- Added missing "daemons_bloodletter_elites_icon.tga" and other tga files to data\art\ui\ingame\daemons_icons and disabled counterparts.
+Shadow Fiend Yellow Horror - its artillery attack almost never hits its target. Is this working as designed? 
+Blight Drone - when it dies, would be cool to see it fall from the sky right to the ground and make a decent impact. 
+Super Weapon Planetary Exterminator - when activated from the Nightmare Altar it will keep on firing off every minute or two even if it hasn't yet recharged yet. Is this working as designed as the UCS doesn't mention that it keeps re-activating on its own?
+Dark Speech ability UCS - at the end of the fifth line it should read "regardless OF allegiance".
+Listening Post Mark-specific addons (ie. Mark of Khorne Add-on) - they are buildable at each Listening Post offering additional health and damage. It should be mentioned in the UCS that each time one of these addons is built, so long as the Listening Post remains, those additional health and damage bonuses stack.
+
+Tyranids
+
+Biovores - when upgrading to Death Launcher there is a strange green glowing ball that fires along the ground at the target that only occurs when using Attack-Ground. Also all upgraded weapons seem to have their start points originate a little high from the model's main cannon.
+Uberfex - when using Attack-Ground, the green ball seems to come out from underneath the model, go through it, then out to target. It should come up a little above the front of the back of the head.
+Carnifex - when upgraded to either Barbed Strangler or Venom Cannon it shows no firing animation when attacking - it just shows a standard idle animation.
+Hellfex - has no ranged attack animation like Carnifex where projectiles come out of model when asked to attack a target.
+Biomorph - Bio Plasma weapon upgrade (all units/squads that can upgrade to it) - its UCS says its "Accuracy: Never Misses" however since its an artillery attack it misses almost all the time. 
+Hive Tyrant - when upgraded to Barbed Strangler weapon, its projectile fires too close to the ground and orginates too far in front of the weapon's startpoint. Should be moved up and back to start in the barrel of the weapon.
+
+General
+
+Fliers seem to easily get stuck on mountains and hills. Many times I need to JUMP them away so they are unstuck.
+RAM!!! ability (all vehicle squads) - like Fleet of Foot ability noticed sometimes the icon goes PINK for a moment when vehicle is in combat and the ability is turned off. FIXED: -- Added missing "strike_icon.tga" file to data\art\ui\ingame\command_icons and disabled counterparts.
+Space Marine, Imperial Guard, and IDH's Nuclear Facility - its pre-build placement area is much too large considering the size of the actual building. Please consider dropping it so its the actual size of the building as it requires a gross amount of space but the building in the game is small. 

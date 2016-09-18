@@ -1,0 +1,68 @@
+----------------------------------------
+-- File: 'nightbringertactic.ai'
+-- Edited by Thudmeizer @ 17.10.2006
+
+class 'NightBringerTactic' (NecronInfantryTactic)
+
+NightBringer = {}
+
+function NightBringerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Night Bringer Tactic")
+end
+
+-- Don't return to Necron Lord
+function NightBringerTactic:InitAbilities()
+
+	-- Night Bringer abilities --
+
+	-- Invulnerability
+	if (NightBringer.invulnerability_id == nil) then
+		NightBringer.invulnerability_id = cpu_manager.stats:GetAbilityID( "necron_invulnerability" )
+	end
+	
+	-- Invisibility
+	if (NightBringer.invisibility_id == nil) then
+		NightBringer.invisibility_id = cpu_manager.stats:GetAbilityID( "necron_invisibility" )
+	end
+	
+	--[[ Pillar of Darkness
+	if (NightBringer.pillar_id == nil) then
+		NightBringer.pillar_id = cpu_manager.stats:GetAbilityID( "necron_pillar_summoning_nightbringer" )
+	end]]
+	
+	-- Deceiver abilities --
+	
+	-- Deceive
+	if (NightBringer.deceive_id == nil) then
+		NightBringer.deceive_id = cpu_manager.stats:GetAbilityID( "necron_deceiver_deceive" )
+	end
+	
+end
+
+function NightBringerTactic:DoAbilities()
+	
+	-- Try abilities
+	Ability.DoAbility(self.squad_ai, NightBringer.invisibility_id, Ability.PredicateFilters.IsInCombat)
+	Ability.DoAbility(self.squad_ai, NightBringer.invulnerability_id, Ability.PredicateFilters.IsInCombat)
+	Ability.DoAbilityTarget(self.squad_ai, NightBringer.deceive_id, Ability.Filters.CloseEnemy, 6)
+	
+	-- Try to create the Deceiver Illusions
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		NightBringerTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function NightBringerTactic:DoDirectSpawnAbility()
+
+	-- Spawn Horblu Support in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+
+function NightBringerTactic:AlwaysAttack()
+	return true
+end

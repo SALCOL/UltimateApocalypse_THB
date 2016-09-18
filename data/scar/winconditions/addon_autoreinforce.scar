@@ -1,0 +1,133 @@
+--Squads auto reinforce
+--
+-- original functions by Relic Entertainment Inc.
+-- (c) 2003 Relic Entertainment Inc.
+--
+--Created by CornCobMan
+--based on Heroes mod 
+--by CutterShane
+--Edited by Cylarne 
+--version 2.0
+
+import("Player.scar");
+import("GroupCallers.scar");
+import("Command.scar");
+import("Groups.scar");
+import("ScarUtil.scar");
+
+-- CUSTOMIZATION OPTIONS
+
+
+
+function Reinforce_Freeze (playerID, squadID, freeze)
+	if (freeze) then
+		if ((not SGroup_ContainsSquad (sg_reinforce_locked, squadID)) and Cpu_IsCpuPlayer (playerID) and Cpu_IsEnabled (playerID)) then
+			SGroup_Add (sg_reinforce_locked, squadID)
+			pcall (Cpu_LockSquad, playerID, Squad_GetGameID (squadID))
+		end
+	else
+		if (SGroup_ContainsSquad (sg_reinforce_locked, squadID) and Cpu_IsCpuPlayer (playerID) and Cpu_IsEnabled (playerID)) then
+			SGroup_Remove (sg_reinforce_locked, squadID)
+			pcall (Cpu_UnlockSquad, playerID, Squad_GetGameID (squadID))
+		end
+	end
+end
+
+function Reinforce_MainRule ()
+	repeat
+		reinforce_p = reinforce_p + 1
+	until ((reinforce_p > reinforce_players_num) or (Player_IsAlive (reinforce_player[reinforce_p])))
+	if (reinforce_p > reinforce_players_num) then reinforce_p = 1 end
+	if (Player_IsAlive (reinforce_player[reinforce_p])) then
+		local reinforce_this_time = World_GetGameTime()
+		local reinforce_plus = reinforce_this_time - reinforce_last_time[reinforce_p]
+		local player_race = Player_GetRaceName (reinforce_player[reinforce_p])
+		reinforce_squads[reinforce_p] = Player_GetSquads (reinforce_player[reinforce_p])
+		repeat
+			reinforce_target[reinforce_p] = reinforce_target[reinforce_p] + 1
+			if (reinforce_target[reinforce_p] > reinforce_players_num) then
+				reinforce_target[reinforce_p] = 1
+			end
+		until ((reinforce_target[reinforce_p] == reinforce_p) or (Player_GetRelationship (reinforce_player[reinforce_p], reinforce_player[reinforce_target[reinforce_p]]) == R_ENEMY))
+		local Reinforce_SquadCheck = function (sgroupid, itemindex, squadID)
+			local reinforce_bu = Squad_GetBaseUnitName (squadID)
+			local reinforce_n = Squad_GetGameID (squadID)
+			if (reinforcees[reinforce_n] == nil) then
+				reinforcees[reinforce_n] = {}
+			end
+			local level = reinforcees[reinforce_n].level
+			if (reinforce_plus >= 1) then
+				reinforce_last_time[reinforce_p] = reinforce_this_time
+
+				local pos = Squad_GetPosition (squadID)
+				local battle = Squad_IsUnderAttack (squadID)
+				local broken = Squad_IsMoraleBroken (squadID)
+				if (battle) then
+					if (Squad_IsReinforcing (squadID)) then
+						SGroup_Clear (sg_reinforce_temp)
+						SGroup_Add (sg_reinforce_temp, squadID)
+						Command_SquadExt (reinforce_player[reinforce_p], sg_reinforce_temp, SCMD_ReinforceTrooperOverwatch, 0, 0)
+					end
+				end
+				if (not broken) then
+					Reinforce_Freeze (reinforce_player[reinforce_p], squadID, false)
+					if (reinforce_target[reinforce_p] ~= reinforce_p) then
+						local reinforce_com = Squad_GetActiveCommand (squadID)
+						if (reinforce_com == SQUADSTATEID_Idle) or (reinforce_com == SQUADSTATEID_Combat) or (reinforce_com == SQUADSTATEID_Melee) or (reinforce_com == SQUADSTATEID_CombatStance) then
+						end
+					end
+					if (not battle) then
+						if (not Squad_IsReinforcing (squadID)) then
+							SGroup_Clear (sg_reinforce_temp)
+							SGroup_Add (sg_reinforce_temp, squadID)
+							Command_SquadExt (reinforce_player[reinforce_p], sg_reinforce_temp, SCMD_ReinforceTrooperOverwatch, 1, 0)
+						end
+					end
+				end
+			end
+		end
+		SGroup_ForEach (reinforce_squads[reinforce_p], Reinforce_SquadCheck)
+	end
+end
+
+function Reinforce_InitRule ()
+	reinforce_players_num = World_GetPlayerCount()
+	for i = 1, reinforce_players_num do
+		reinforce_player[i] = World_GetPlayerAt (i - 1)
+		reinforce_squads[i] = Player_GetSquads (reinforce_player[i])
+		reinforce_target[i] = reinforce_players_num - i
+		local player_race = Player_GetRaceName (reinforce_player[i])
+		if (Cpu_IsCpuPlayer (reinforce_player[i]) and Cpu_IsEnabled (reinforce_player[i])) then
+			pcall (Cpu_SetLippy, reinforce_player[i], true)
+		end
+	end
+	sg_reinforce_locked = SGroup_CreateIfNotFound ("sg_reinforce_runners")
+	sg_reinforce_temp = SGroup_CreateIfNotFound ("sg_reinforcees")
+	sg_reinforce_targ = SGroup_CreateIfNotFound ("sg_reinforce_targets")
+	eg_reinforce_targ = EGroup_CreateIfNotFound ("eg_reinforce_targets")
+	for i = 1, reinforce_players_num do
+		reinforce_last_time[i] = World_GetGameTime()
+	end
+	Rule_AddInterval (Reinforce_MainRule, 0)
+end
+
+function Reinforce_Setup ()
+	
+	reinforce_p = 0
+	reinforce_players_num = 0
+	sg_reinforce_locked = nil
+	sg_reinforce_temp = nil
+	sg_reinforce_targ = nil
+	eg_reinforce_targ = nil
+
+	reinforcees = {}
+	reinforce_last_time = {}
+	reinforce_player = {}
+	reinforce_race = {}
+	reinforce_squads = {}
+	reinforce_target = {}
+	
+	Rule_AddOneShot (Reinforce_InitRule, 1.0)
+end
+
+Scar_AddInit (Reinforce_Setup)

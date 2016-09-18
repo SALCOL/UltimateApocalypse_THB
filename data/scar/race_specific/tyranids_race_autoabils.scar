@@ -1,0 +1,15 @@
+-- Abilities must be placed in descending order by range (the second parameter)
+
+-- AbilsThem are abilities used against enemy targets
+AutoAbilsSettings.AbilsThem["tyranids_race"] =
+{
+	{ "tyranids_bioplasma", 45 },
+	{ "tyranids_bioplasma_trygon", 45 },
+	{ "tyranids_carnifex_scream", 10 },
+}
+
+-- AbilsUs are abilities used on self
+AutoAbilsSettings.AbilsUs["tyranids_race"] =
+{
+
+}

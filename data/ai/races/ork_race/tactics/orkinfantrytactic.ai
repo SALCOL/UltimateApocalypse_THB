@@ -1,0 +1,78 @@
+----------------------------------------
+-- File: 'orkinfantrytactic.ai'
+-- Created by Arkhan		@ 12.01.2006
+
+class 'OrkInfantryTactic' (InfantryTactic)
+
+function OrkInfantryTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Ork Infantry Tactic")
+	
+	-- Basic ork infantry is able to enter transport vehicles
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName ~= "ork_squad_stormboy" and
+		sSquadName ~= "ork_flash_gitz_squad") then
+		self.m_iTransportable = 1
+	end
+end
+
+function OrkInfantryTactic:AddTargetAbilities()
+    table.insert(InfantryTactic.TargetAbilities, { nil, "ork_stikkbombs", Ability.Filters.CloseSquadEnemy, 4, 0 })
+    table.insert(InfantryTactic.TargetAbilities, { nil, "ork_tankbusta_bombs", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "ork_tankbusta_bombs_sp_dxp3_prisoner", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "ork_superstick_bomb", Ability.Filters.CloseSquadEnemy, 7, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "ork_nuke_boyz", Ability.Filters.CloseSquadEnemy, 7, 0 })
+end
+
+function OrkInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "ork_squad_mek_boy", false })
+	table.insert(self.commander, { "ork_squad_warboss", true })
+end
+
+function OrkInfantryTactic:DoAbilities()
+
+	-- Check if I can establish the great waagh!
+	local waagh_id = cpu_manager.stats:GetAbilityID( "ork_waagh!!!" )
+	Ability.DoAbility( self.squad_ai, waagh_id, Ability.Filters.IsInCombat )
+	
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+	
+		if (self.squad_ai:HasSquadAttached("ork_squad_bad_dok")) then
+			BadDokTactic.InitAbilities( self )
+			BadDokTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("ork_squad_mek_boy")) then
+			MekBoyTactic.InitAbilities( self )
+			MekBoyTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("ork_squad_warboss")) then
+			WarBossTactic.InitAbilities( self )
+			WarBossTactic.DoAbilities( self )
+		end
+	end
+	
+	local infiltration_id = cpu_manager.stats:GetAbilityID( "all_infiltration" )
+	if (self.squad_ai:CanDoAbility(infiltration_id) and not self.squad_ai:IsUsingAbility(infiltration_id)) then
+		self.squad_ai:DoSpecialAbility(infiltration_id)
+	end
+	
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
+end
+
+function OrkInfantryTactic:CheckForDetach()
+
+	if (not self.squad_ai:IsInCombat() and not self.squad_ai:WasRecentlyHurt()) then
+	  
+		-- Detach dok from weak squad, perhaps we can find a better one 
+		if (self.squad_ai:HasSquadAttached( "ork_squad_bad_dok" )) then	
+		 
+			if (self.squad_ai:GetTactic():GetUnitStrength() < 200) then
+				self.squad_ai:DoDetachSquad()
+				self.squad_ai:DoSetDefaultMeleeStance()
+			end
+		end
+	end
+	
+	-- Call basic detach method
+	InfantryTactic.CheckForDetach(self)
+end

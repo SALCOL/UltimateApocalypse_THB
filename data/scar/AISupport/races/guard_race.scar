@@ -1,0 +1,12 @@
+-- Imperial Guard SCAR support info script
+-- Created by Arkhan
+
+DonationSettings.guard_race =
+{
+	Title = "Imperial Guard",
+	ResourceExchangeRestricted = false,
+	RequisitionExcess = 1000,
+	RequisitionDemand = 400,
+	PowerExcess = 800,
+	PowerDemand = 400,
+}

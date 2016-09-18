@@ -1,0 +1,84 @@
+----------------------------------------
+-- File: 'spacemarinevehicletactic.ai'
+-- Edited by Thudmeizer		@ 03.02.2016
+
+class 'SpaceMarineVehicleTactic' (VehicleTactic)
+
+function SpaceMarineVehicleTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Space Marine Vehicle Tactic")
+
+	-- All Dreadnoughts can enter deepstrike buildings
+	local sName = squad_ai:GetSquadName()
+	if (sName == "space_marine_squad_dreadnought" or
+		sName == "space_marine_squad_dreadnought_hellfire" or
+		sName == "space_marine_squad_dreadnought_ironclad" or
+		sName == "space_marine_squad_dreadnought_venerable") then
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "space_marine_orbital_relay" )
+
+	elseif (sName == "space_marine_squad_tactical_bike") then
+		
+		-- Squads are transportable and able to deepstrike	
+		self.m_iTransportable = 1
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "space_marine_orbital_relay" )
+	end
+end
+
+-- Check if the vehicle should dance away in melee
+function SpaceMarineVehicleTactic:CheckVehicleDance(sName)
+
+	if (sName == "space_marine_squad_tactical_bike" or
+		sName == "space_marine_squad_rhino" or
+		sName == "space_marine_squad_razorback" or
+		sName == "space_marine_squad_land_speeder" or
+		sName == "space_marine_squad_tempest" or
+		sName == "space_marine_squad_dreadnought" or
+		sName == "space_marine_squad_dreadnought_hellfire" or
+		sName == "space_marine_squad_dreadnought_ironclad" or
+		sName == "space_marine_squad_dreadnought_venerable" or
+		sName == "space_marine_squad_damocles" or
+		sName == "space_marine_squad_vindicator" or
+		sName == "space_marine_squad_whirlwind" or
+		sName == "space_marine_squad_predator" or
+		sName == "space_marine_squad_predator_advance_sp" or
+		sName == "space_marine_squad_predator_murderer" or
+		sName == "space_marine_squad_land_raider" or
+		sName == "space_marine_squad_land_raider_redeemer" or
+		sName == "space_marine_squad_land_raider_crusader" or
+		sName == "space_marine_squad_land_raider_helios" or
+		sName == "space_marine_squad_land_raider_prometheus" or
+		sName == "space_marine_squad_land_raider_ares" or
+		sName == "space_marine_squad_land_raider_terminus") then
+		return true
+	end
+	return false
+end
+
+function SpaceMarineVehicleTactic:DoAbilities()
+
+	-- Check if we can launch smoke
+	local vehiclesmoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_launchers" )
+
+	-- Search a squad
+	local iRange = self.squad_ai:GetAbilityRange(vehiclesmoke_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbilitySquad(vehiclesmoke_id, oUnit:GetSquad())
+	end
+
+	-- Enable ramming speed only when not attacking and with enough health
+	local combatspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )
+	if (self.squad_ai:IsUsingAbility(combatspeed_id)) then
+
+		-- Turn ramming speed ON if stopped attacking, OR if health < 50%
+		if ((not self.squad_ai:IsAttacking()) or self.squad_ai:GetHealthPercentage() < 0.5) then
+			self.squad_ai:DoSpecialAbility(combatspeed_id)
+		end
+		-- Turn ramming speed OFF only when attacking, AND when health > 50%
+		elseif (self.squad_ai:IsAttacking() and self.squad_ai:GetHealthPercentage() > 0.5) then
+			self.squad_ai:DoSpecialAbility(combatspeed_id)
+	end
+
+	-- Call standard method
+	VehicleTactic.DoAbilities(self)
+end

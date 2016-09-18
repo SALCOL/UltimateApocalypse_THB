@@ -1,0 +1,43 @@
+----------------------------------------------------------------------------------------------------------------
+-- Titan Wars (for all faction mods)
+-- Edited by Krronus, 5:35 3/8/10
+-- Edited by Cylarne @ 2011
+-- Edited by Cylarne @ 2012
+--
+--	Now removes all Relic resource caps.
+--
+-- (c) 2003 Relic Entertainment Inc.
+import("ScarUtil.scar");
+
+function TitanInit()
+	
+	SetPlayerTitans()
+
+end
+
+function SetPlayerTitans()
+
+	
+	
+	local count = World_GetPlayerCount();
+	for i = 0, count-1
+	do
+		local player = World_GetPlayerAt(i);
+		
+		import("UA_SCARCore/K_04/RelicEntityList.scar");
+		
+		if not (Player_GetRaceName(player) == "ork_race") then
+			local oModPopulationCap	= Modifier_Create(MAT_Player, "population_cap_player_modifier", MUT_Multiplication, false, 2, "")
+			Modifier_ApplyToPlayer( oModPopulationCap, player)
+			--local oModFaithCap	= Modifier_Create(MAT_Player, "faith_max_modifier", MUT_Addition, false, 200, "")
+			--Modifier_ApplyToPlayer( oModFaithCap, player)
+		else	
+			for i=1,table.getn( relic_entity_list ) do
+				local modifier_nolimit = Modifier_Create(MAT_EntityType, "cost_population_modifier", MUT_Multiplication, false, 0.5, relic_entity_list[i])
+				Modifier_ApplyToPlayer( modifier_nolimit, player)
+			end 
+		end
+	end
+end
+
+Scar_AddInit(TitanInit)

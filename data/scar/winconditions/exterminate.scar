@@ -1,0 +1,80 @@
+----------------------------------------------------------------------------------------------------------------
+-- Exterminate Win Condtition
+--
+--	Destroy the enemies entire army to win.
+--
+-- Created/Edited by gentry_joey
+-- Edited by Cylarne @ 2011
+
+import("ScarUtil.scar");
+
+function Exterminate()
+
+	-- wait 0.25 secs before adding this rule. this is so it is not executed
+	-- on the same frame as the other win conditions
+	Rule_AddOneShot( Exterminate_AddMainRule, 0.25 )
+end
+
+function Exterminate_AddMainRule()
+
+	Rule_AddInterval(CheckExterminate, 0.2)
+	
+	obj_table_exterminate = { title_id = 15777710, short_desc_id = 15777711, help_tip_id = 15777712 }
+	Util_ObjectiveCreate(obj_table_exterminate, true)
+	
+end
+
+_Exterminate = 
+{
+	--don't count these when counting the number of buildings owned
+	g_exterminate_exceptions = 
+	{
+		"chaos_mine_field",
+		"chaos_tanktrap",
+		"daemon_eye_of_terror",
+		"dark_eldar_mine_field",
+		"eldar_mine_field",
+		"guard_mines",
+		"guard_tanktrap",
+		"ork_mine_field",
+		"ork_tanktrap",
+		"space_marine_mine_field",
+		"space_marine_tanktrap",
+		"sisters_mines",
+		"sisters_tanktrap",
+		"tau_mines",
+		"inquisition_mines",
+		"inquisition_tanktrap",
+		"tyranids_mines",
+	},
+	
+	-- at least this number of units if no buildings
+	g_NumUnits = 2,
+}
+
+function CheckExterminate()
+
+	-- total number of players
+	local count = World_GetPlayerCount();
+	
+	--check for Exterminated dudes
+	for i = 0, count-1
+	do
+		-- check if player has been Exterminated
+		local player = World_GetPlayerAt(i);
+	
+		--if no buildings and less than g_NumUnits, then you die
+		if( Player_IsAlive(player) ) then
+			if( Player_HasBuildingsExcept(player, _Exterminate.g_exterminate_exceptions) == false ) then
+				if( Player_GetUnitCount(player) < _Exterminate.g_NumUnits ) then
+					Player_Kill(player);
+				end
+			end
+		end
+	end
+	
+	-- check if only one team left -- if only one team left, they win and everybody else loses
+	Util_CheckOneTeamLeft("exterminate");
+end
+
+Scar_AddInit(Exterminate)

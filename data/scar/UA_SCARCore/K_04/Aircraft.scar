@@ -1,0 +1,52 @@
+t_aircraft_list =
+{
+	Actual =
+	{
+		"eldar_squad_nightwing",
+		"chaos_squad_hell_talon",
+		"dark_eldar_squad_raven",
+		"guard_squad_marauder",
+		"ork_squad_fighta_bomba",
+		"sisters_squad_lightning",
+		"space_marine_squad_tempest",
+		"necron_scarab_squad",
+		"tau_barracuda_squad",
+		
+		-- New UA mod...
+		"chaos_squad_thunderhawk",
+		"chaos_squad_heldrake",
+		"dark_eldar_squad_phoenix",
+		"dark_eldar_squad_voidraven",
+		"dark_eldar_squad_voidraven_variant",
+		"eldar_squad_phoenix",
+		"eldar_squad_vampire_raider",
+		"guard_squad_valkyrie_transport",
+		"guard_squad_vulture",
+		"guard_squad_marauder_vigilant",
+		"necron_night_scythe_squad",
+		"ork_squad_nukklear_bomba",
+		"sisters_squad_lightning_strike",
+		"space_marine_squad_thunderhawk_uamod",
+		"space_marine_squad_stormraven",
+		"tau_drone_satellite_squad",
+		"tau_orca_dropship_squad",
+		"tau_manta_squad",
+		"tau_tigershark_squad",
+		
+	},
+	Tyranids = 
+	{
+		"tyranids_squad_gargoyle",
+	},
+	Inquisition = 
+	{
+		"inquisition_squad_stormraven_fury",
+		"inquisition_squad_valkyrie_uamod",
+		"inquisition_squad_tempest",
+		"inquisition_squad_vulture",
+	},
+	Daemons = 
+	{
+		"daemon_squad_hell_drake",
+	}
+}

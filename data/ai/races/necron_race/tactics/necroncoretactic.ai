@@ -1,0 +1,60 @@
+----------------------------------------
+-- File: 'necroncoretactic.ai'
+-- Edited by Krronus @ 08.09.2010
+-- Edited by Cylarne @ 2014
+
+class 'NecronCoreTactic' (BaseTactic)
+
+NecronCore = {}
+
+function NecronCoreTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Core Tactic")
+end
+
+function NecronCoreTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (NecronCore.selfdestruct_id == nil) then
+		NecronCore.selfdestruct_id = cpu_manager.stats:GetAbilityID( "necron_amplifier_selfdestruct" )
+	end
+	if (NecronCore.Portal_id == nil) then
+		NecronCore.Portal_id = cpu_manager.stats:GetAbilityID( "necron_homeworld_portal" )
+	end
+end
+
+function NecronCoreTactic:DoAbilities()
+	
+	if (self.base_ai:CanDoAbility(NecronCore.selfdestruct_id) and self.base_ai:IsInCombat()) then
+		Ability.DoAbilityArea(self.base_ai, NecronCore.selfdestruct_id, Ability.Filters.CloseInfantryEnemy, 20, 8) -- Self Destruct if enemy units are nearbye.
+		Ability.DoAbilityArea(self.base_ai, NecronCore.selfdestruct_id, Ability.Filters.CloseInfantryEnemy, 35, 18) -- Self Destruct if enemy units are nearbye.
+	end
+	
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to use the Homeworld Portal
+	-- Reference from the Chaos Lord tactic.
+    if (self.base_ai:CanDoAbility(NecronCore.Portal_id)) then
+    
+        local oTarget = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), 1000, 6)
+        if (oTarget ~= nil and iPower >= 1000) then
+
+        	-- Get distance to enemy unit
+            local vSquadPos = self.base_ai:GetPosition()
+            local vEnemyPos = oTarget:GetPosition()
+            local iDistance = distance(vSquadPos, vEnemyPos)
+            
+            -- If target is too far away launch auspex in range
+            local vTargetPos = Vector3f(vSquadPos)
+            local iRange = self.base_ai:GetAbilityRange(NecronCore.Portal_id)
+            if (iDistance > iRange) then
+                local fThrowFactor = iRange / iDistance
+                vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
+                vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
+            else
+                vTargetPos = Vector3f(vEnemyPos)
+            end
+            self.base_ai:DoSpecialAbilityPos(NecronCore.Portal_id, vTargetPos)
+        end
+    end
+end

@@ -1,0 +1,81 @@
+----------------------------------------
+-- File: 'Attackbiketactic.ai'
+-- Created by Cylarne
+-- Edited by Thudmeizer		@ 09.02.2016
+
+class 'AttackbikeTactic' (SpaceMarineVehicleTactic)
+
+Attackbike = {}
+
+function AttackbikeTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Attackbike Tactic")
+end
+
+function AttackbikeTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Attackbike.flashbang_id == nil) then
+		Attackbike.flashbang_id = cpu_manager.stats:GetAbilityID( "marines_flashbang_grenades" )	
+	end
+
+	if (Attackbike.frag_id == nil) then
+		Attackbike.frag_id = cpu_manager.stats:GetAbilityID( "marines_frag_grenades" )	
+	end
+
+	if (Attackbike.inferno_id == nil) then
+		Attackbike.inferno_id = cpu_manager.stats:GetAbilityID( "marines_inferno_grenades" )	
+	end
+
+	if (Attackbike.krak_id == nil) then
+		Attackbike.krak_id = cpu_manager.stats:GetAbilityID( "marines_krak_grenades" )	
+	end
+
+	if (Attackbike.melta_id == nil) then
+		Attackbike.melta_id = cpu_manager.stats:GetAbilityID( "marines_melta_bombs" )	
+	end
+
+	if (Attackbike.smoke_id == nil) then
+		Attackbike.smoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_grenades" )
+	end
+end
+
+function AttackbikeTactic:DoAbilities()
+
+	-- Activate various targetted abilities
+        Ability.DoAbilityTarget( self.squad_ai, Attackbike.flashbang_id, Ability.Filters.CloseSquadEnemy, 4)
+	Ability.DoAbilityTarget( self.squad_ai, Attackbike.frag_id, Ability.Filters.CloseEnemy, 4)
+        Ability.DoAbilityTarget( self.squad_ai, Attackbike.inferno_id, Ability.Filters.CloseSquadEnemy, 3)
+        Ability.DoAbilityTarget( self.squad_ai, Attackbike.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTarget( self.squad_ai, Attackbike.melta_id, Ability.Filters.CloseVehicleEnemy, 1)
+	
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(Attackbike.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Attackbike.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 40) then
+			self.squad_ai:DoSpecialAbilitySquad(Attackbike.smoke_id, oUnit:GetSquad())
+		end
+	end
+end
+
+function AttackbikeTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end
+
+function AttackbikeTactic:AlwaysAttack()
+	return true
+end
+
+function AttackbikeTactic:CanOnlyDecap()
+	return true
+end

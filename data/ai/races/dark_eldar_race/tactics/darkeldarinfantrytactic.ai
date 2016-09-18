@@ -1,0 +1,97 @@
+----------------------------------------
+-- File: 'darkeldarinfantrytactic.ai'
+-- Edited by Thudmeizer		@ 26.10.2008
+
+class 'DarkEldarInfantryTactic' (InfantryTactic)
+
+function DarkEldarInfantryTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Dark Eldar Infantry Tactic")
+
+	-- Set infantry options
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "dark_eldar_squad_mandrake" or
+		sSquadName == "dark_eldar_squad_warrior" or
+		sSquadName == "dark_eldar_squad_archon" or
+		sSquadName == "dark_eldar_squad_haemonculus") then
+		
+		-- Squads are transportable
+		self.m_iTransportable = 1
+	end
+end
+
+function DarkEldarInfantryTactic:AddTargetAbilities()
+	--table.insert(InfantryTactic.TargetAbilities, { nil, "dark_eldar_soul_leach", Ability.Filters.CloseSquadEnemy, 1, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "dark_eldar_gravitic_grenade", Ability.Filters.CloseSquadEnemy, 3, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "dark_eldar_horrorfex_grenade", Ability.Filters.CloseSquadEnemy, 2, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "dark_eldar_terrorfex_grenade", Ability.Filters.CloseSquadEnemy, 1, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "dark_eldar_haywire_bombs", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+end
+
+function DarkEldarInfantryTactic:AddCommanders()
+	table.insert(self.commander, { "dark_eldar_squad_archon", true })
+	table.insert(self.commander, { "dark_eldar_squad_haemonculus", false })
+end
+
+function DarkEldarInfantryTactic:DoAbilities()
+
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+
+		if (self.squad_ai:HasSquadAttached("dark_eldar_squad_haemonculus")) then
+			DarkEldarHaemonculusTactic.InitAbilities( self )
+			DarkEldarHaemonculusTactic.DoAbilities( self )
+		end
+	end
+	
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
+	
+	self:DoAbilityFoF()
+end
+
+function DarkEldarInfantryTactic:CheckDance(oSquad)
+
+	-- Check opponent
+	if (oSquad == nil) then
+		return false
+	end
+	
+	-- Compare opponents
+	local sSquadName = self.squad_ai:GetSquadName()
+	if (sSquadName == "dark_eldar_squad_warrior" or sSquadName == "dark_eldar_squad_warrior_trueborn" or sSquadName == "dark_eldar_squad_scourge") then
+		
+		-- Check opponent
+		if (oSquad:GetSquadName() == "chaos_squad_cultist") then
+			return false
+		end
+	end
+	return true
+end
+
+function DarkEldarInfantryTactic:DoAbilityFoF()
+
+	-- Check if we should toggle FoF
+	local iFoFID = cpu_manager.stats:GetAbilityID("dark_eldar_footonfire")
+	local bToggleFoF = false
+	
+	-- Check if unit is using the ability
+	local bIsUsing = self.squad_ai:IsUsingAbility(iFoFID)
+	
+	-- Check if unit is in battle
+	local bIsInCombat = self.squad_ai:IsInCombat()
+	
+	-- Check distance to target
+	local bMoving = (self:IsMoving() or self:IsInSubState())
+	
+	-- Check if FoF should be toggled
+	if ((bIsUsing == true and bIsInCombat == true) or
+		(bIsUsing == false and (bIsInCombat == false or bMoving == true))) then
+		bToggleFoF = true
+	end
+	
+	-- Toggle FoF
+	if (bToggleFoF and self.squad_ai:CanDoAbility(iFoFID)) then
+		self.squad_ai:DoSpecialAbility(iFoFID)
+	end
+end

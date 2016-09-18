@@ -1,0 +1,12 @@
+-- Inquisition SCAR support info script
+-- Created by Arkhan
+
+DonationSettings.deamons_race =
+{
+	Title = "Daemons",
+	ResourceExchangeRestricted = false,
+	RequisitionExcess = 1000,
+	RequisitionDemand = 400,
+	PowerExcess = 800,
+	PowerDemand = 400,
+}

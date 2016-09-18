@@ -1,0 +1,12 @@
+----------------------------------------
+-- File: 'vindicatortactic.ai'
+-- Edited by Grumbling Orc, March 2009
+
+class 'VindicatorTactic' (SpaceMarineVehicleTactic)
+
+Vindicator = {}
+
+function VindicatorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Vindicator Tactic")
+end
