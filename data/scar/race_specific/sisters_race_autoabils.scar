@@ -3,26 +3,18 @@
 -- AbilsThem are abilities used against enemy targets
 AutoAbilsSettings.AbilsThem["sisters_race"] =
 {
-	{ "sisters_hk_missiles", 1000 },
-	{ "sisters_mark_squad", 30 },
-	{ "sisters_witch_hammer", 30 },
-	{ "sisters_divine_pronouncement", 30 },
-	{ "sisters_phosphor_grenades", 25 },
-	{ "sisters_act_of_faith_divine_retribution", 25 },
+	{ "sisters_phosphor_grenades", 30},
+	{ "sisters_krak_grenades", 30 },
 	{ "sisters_ardent_flame", 25 },
-	{ "sisters_holy_rage", 25 },
-	{ "sisters_krak_grenades", 18 },
-	{ "sisters_dismantle", 0 },
-	{ "sisters_exorcist_missile_ability", 0 }
+	{ "sisters_ardent_flame_arch_angel", 25 },
+	{ "sisters_ardent_flame_nunciate", 25 },
+	{ "sisters_holy_rage", 10 }
 }
 
 -- AbilsUs are abilities used on self
 AutoAbilsSettings.AbilsUs["sisters_race"] =
 {
-	{ "sisters_angelic_visage", 25 },
-	{ "sisters_laud_hailers", 0 },
-	{ "sisters_conflagration", 0 },
-	{ "sisters_rosarius_wargear", 0 },
-	{ "sisters_righteous_fervor", 0 },
-	{ "sisters_seal_of_purity", 0 },
+	{ "sisters_angelic_visage", 20 },
+	{ "sisters_holy_murder", 15 },
+	{ "sisters_conflagration", 15 },
 }

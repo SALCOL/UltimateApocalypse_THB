@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'loader.ai'
--- Edited by Thudmeizer	@ 23.03.2008
+-- Edited by Thudmeizer	@ 20.06.2016
 -- Edited by Cylarne_04 2011
 
 class 'sisters_race'
@@ -25,24 +25,42 @@ function sisters_race:LoadRace( eDifficulty )
 	import( "Races/sisters_race/Strategies/SistersStrategyInfo.ai" )
 
  	-- Import tactics
-	--import( 'Races/sisters_race/Tactics/SistersLightningStrikeTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersInfantryTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersVehicleTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersServitorTactic.ai' )
-	import( 'Races/sisters_race/Tactics/SistersRepentiaTactic.ai' )
-	import( 'Races/sisters_race/Tactics/SistersHQTactic.ai' )
-	import( 'Races/sisters_race/Tactics/SistersEmperorTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersMissionaryTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersCherubTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersBattleSisterTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersSeraphimTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersCelestianTactic.ai' )
-	import( 'Races/sisters_race/Tactics/SistersPenitentTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersRetributorTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersRepentiaTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersRedemptionistTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersAssassinTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersLegatineTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersBuilderTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersCanonessTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersConfessorTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersInquisitorTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersNunciateTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersRhinoTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersExorcistTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersImmolatorTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersPenitentTactic.ai' )
+        import( 'Races/sisters_race/Tactics/SistersLightningStrikeTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersCapitolTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersLivingSaintTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersArchAngelTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersHQTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersListeningPostTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersBigGeneratorTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersBunkerTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersCitadelTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersShrineTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersMissileSiloTactic.ai' )
 	import( 'Races/sisters_race/Tactics/SistersBuildingDefenseTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersBuildingTactic.ai' )
+	import( 'Races/sisters_race/Tactics/SistersBombTactic.ai' )
 	return true
 end
 
@@ -72,44 +90,54 @@ function sisters_race:CreateTactic(oSquadAI)
 	-- Check if there is a special tactic for the unit available
 	if (sUnitName == "sisters_squad_servitor") then
 		return SistersServitorTactic(oSquadAI)
-	elseif (sUnitName == "sisters_squad_repentia") then
-		return SistersRepentiaTactic(oSquadAI)
 	elseif (sUnitName == "sisters_squad_missionary") then
 		return SistersMissionaryTactic(oSquadAI)
-	elseif (sUnitName == "sisters_squad_curia") then
-		return SistersMissionaryTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_saint_cherub") then
+		return SistersCherubTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_battle_sister") then
+		return SistersBattleSisterTactic(oSquadAI)
 	elseif (sUnitName == "sisters_squad_seraphim") then
 		return SistersSeraphimTactic(oSquadAI)
 	elseif (sUnitName == "sisters_squad_celestian") then
 		return SistersCelestianTactic(oSquadAI)
-	elseif (sUnitName == "sisters_squad_canoness") then
-		return SistersCanonessTactic(oSquadAI)
-	elseif (sUnitName == "npc_squad_civilian_group") then
-		return SistersCanonessTactic(oSquadAI)
-	elseif (sUnitName == "sisters_squad_nunciate_superior") then
-		return SistersCanonessTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_retributor") then
+		return SistersRetributorTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_repentia") then
+		return SistersRepentiaTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_redemptionist") then
+		return SistersRedemptionistTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_assassin") then
+		return SistersAssassinTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_legatine_superior") then
+		return SistersLegatineTactic(oSquadAI)
+	elseif (sUnitName == "sisters_inquisitor_squad") then
+		return SistersInquisitorTactic(oSquadAI)
 	elseif (sUnitName == "sisters_squad_almoness") then
+		return SistersBuilderTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_canoness") or (sUnitName == "npc_squad_civilian_group") then
 		return SistersCanonessTactic(oSquadAI)
 	elseif (sUnitName == "sisters_squad_confessor") then
 		return SistersConfessorTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_nunciate_superior") then
+		return SistersNunciateTactic(oSquadAI)
 	elseif (sUnitName == "sisters_squad_rhino") then
 		return SistersRhinoTactic(oSquadAI)
 	elseif (sUnitName == "sisters_squad_immolator_tank") then
 		return SistersImmolatorTactic(oSquadAI)
-	elseif (sUnitName == "sisters_squad_exorcist_tank") then
+	elseif (sUnitName == "sisters_squad_exorcist_tank") or (sUnitName == "sisters_squad_exorcist_mk") then
 		return SistersExorcistTactic(oSquadAI)
-	elseif (sUnitName == "sisters_squad_exorcist_mk") then
-		return SistersExorcistTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_lightning") or (sUnitName == "sisters_squad_lightning_strike") then
+		return SistersLightningStrikeTactic(oSquadAI)
 	elseif (sUnitName == "sisters_squad_penitent_engine") then
 		return SistersPenitentTactic(oSquadAI)
-	elseif (sUnitName == "sisters_squad_lightning_strike") then
-		return SistersExorcistTactic(oSquadAI)
-	elseif (sUnitName == "sisters_squad_living_saint") or
-		(sUnitName == "sisters_squad_living_saint_blue") or
-		(sUnitName == "sisters_squad_living_saint_black") or
-		(sUnitName == "sisters_squad_arch_angel")then
+	elseif (sUnitName == "sisters_squad_capitol_imperialis") then
+		return SistersCapitolTactic(oSquadAI)
+	elseif (sUnitName == "sisters_squad_living_saint") or (sUnitName == "sisters_squad_living_saint_blue") or (sUnitName == "sisters_squad_living_saint_black") then
 		return SistersLivingSaintTactic(oSquadAI)
-	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) then
+	elseif (sUnitName == "sisters_squad_arch_angel") then
+		return SistersArchAngelTactic(oSquadAI)
+	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
+	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return SistersVehicleTactic(oSquadAI)
 	end
 	return SistersInfantryTactic(oSquadAI)
@@ -122,12 +150,32 @@ function sisters_race:CreateBaseTactic(oBuilding)
 	local sBuildingName = oBuilding:GetBaseName()
 	
 	-- Check if their is a special tactic for the building available
-	if ((sBuildingName == "sisters_infantry") or (sBuildingName == "sisters_sanctuary") or (sBuildingName == "sisters_vehicle_building") or (sBuildingName == "sisters_holy_reliquary")) then
+	if (sBuildingName == "sisters_infantry") or 
+		(sBuildingName == "sisters_sanctuary") or
+		(sBuildingName == "sisters_vehicle_building") or 
+		(sBuildingName == "sisters_holy_reliquary") then
 		return SistersBuildingDefenseTactic(oBuilding)
-	elseif ((sBuildingName == "sisters_shrine_to_the_emperor")) then
-		return SistersEmperorTactic(oBuilding)
-	elseif ((sBuildingName == "sisters_hq")) then
+	elseif (sBuildingName == "sisters_plasma_generator") or 
+		(sBuildingName == "sisters_capitol_building") or
+		(sBuildingName == "sisters_shrine_to_the_emperor") or
+		(sBuildingName == "sisters_turret_flamer") then
+		return SistersBuildingTactic(oBuilding)
+	elseif (sBuildingName == "sisters_wall") then
+		return SistersBunkerTactic(oBuilding)
+	elseif (sBuildingName == "sisters_krak") then
+		return SistersCitadelTactic(oBuilding)
+	elseif (sBuildingName == "sisters_listening_post") then
+		return SistersListeningPostTactic(oBuilding)
+	elseif (sBuildingName == "sisters_thermo_plasma") then
+		return SistersBigGeneratorTactic(oBuilding)
+	elseif (sBuildingName == "sisters_shrine") then
+		return SistersShrineTactic(oBuilding)
+	elseif (sBuildingName == "sisters_missile_silo") then
+		return SistersMissileSiloTactic(oBuilding)
+	elseif (sBuildingName == "sisters_hq") then
 		return SistersHQTactic(oBuilding)
+	elseif (sBuildingName == "sisters_commander_bomb") then
+		return SistersBombTactic(oBuilding)
 	end
 	return nil
 end

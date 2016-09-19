@@ -1,0 +1,65 @@
+----------------------------------------
+-- File: 'ravenertactic.ai'
+-- Created by Thudmeizer @ 25.04.2016
+
+class 'RavenerTactic' (TyranidInfantryTactic)
+
+Ravener = {}
+
+function RavenerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Ravener Tactic")
+end
+
+-- Raveners are allowed to retreat even directly after a jump
+function RavenerTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function RavenerTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function RavenerTactic:InitAbilities()
+
+	if (Ravener.tunnel_id == nil) then
+		Ravener.tunnel_id = cpu_manager.stats:GetAbilityID( "tyranids_tunnel_spawn" )
+	end	
+
+	if (Ravener.run_id == nil) then
+		Ravener.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function RavenerTactic:DoAbilities()
+
+	-- Spawn Tunnel Link: An emplacement used to hold Tyranid units and Raveners underground. Shares the same squad types of units being held within all Tunnels. Tunnels can spawn Raveners and Raveners.
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	if (self.squad_ai:CanDoAbility(Ravener.tunnel_id) and iRequisition >= 2000) then
+		Ability.DoAbilityPos( self.squad_ai, Ravener.tunnel_id, Ability.Filters.CloseEnemy, 1 ) 
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Ravener.run_id )) then
+			self.squad_ai:DoSpecialAbility( Ravener.run_id )
+		end
+	end
+end
+
+function RavenerTactic:Update()
+	
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

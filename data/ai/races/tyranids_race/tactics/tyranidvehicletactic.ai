@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'tyranidvehicletactic.ai'
--- Created by Thudmeizer @ 11.12.2006
+-- Created by Thudmeizer @ 25.04.2016
 
 class 'TyranidVehicleTactic' (VehicleTactic)
 
@@ -12,9 +12,10 @@ end
 --Check if the vehicle should dance away in melee
 function TyranidVehicleTactic:CheckVehicleDance(sName)
 
-	if (sName == "tyranids_squad_carnifex_hellfex") then
-		--sName == "" or
-		--sName == "") then
+	if (sName == "tyranids_squad_carnifex" or
+		sName == "tyranids_squad_carnifex_skiller" or
+		sName == "tyranids_squad_carnifex_hellfex" or
+		sName == "tyranids_squad_carnifex_uber") then
 		return true
 	end
 	return false
@@ -22,7 +23,7 @@ end
 
 function TyranidVehicleTactic:Upgrade()
 
-	-- Check if we have free ressources
+	-- Check if we have free resources
 	if (not Tactic.Options.can_reinforce) then
 		return
 	end

@@ -3,10 +3,10 @@ playlist =
 	tracks = 
 	{
 		"Ambient-Prototype-Battle BG",
-		"music_apocalypse_ambient",
-		"ambience_chaoscorruption1",
-		"ambience_chaoscorruption2",
-		--"music_apocalypse_ambient",
+		"ambient_desert",
+		"ambient_city",
+		"ambient_wind",
+		"ambient_space",
 	},
 	
 	silence_min = 3.0,

@@ -1,0 +1,13 @@
+
+version = 9
+
+priority = 70
+volume = 0.300000
+maxPolyphony = 3
+cardiodScale = 0.000000
+cardiodLowFreq = 0
+cardiodHighFreq = 0
+containerType = 3
+loopingContainer = 0
+silenceBreak = 0.000000
+silenceRandom = 0.000000

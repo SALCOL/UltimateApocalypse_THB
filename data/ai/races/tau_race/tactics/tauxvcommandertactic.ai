@@ -1,0 +1,205 @@
+----------------------------------------
+-- File: 'tauxvcommandertactic.ai'
+-- Edited by Thudmeizer @ 20.04.2016
+
+class 'TauXVCommanderTactic' (TauInfantryTactic)
+
+TauXVCommander = {}
+
+function TauXVCommanderTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Tau XV Commander Tactic")
+end
+
+function TauXVCommanderTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelTauXVCommander = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelTauXVCommander ~= nil) then
+			local addOnID = buildChannelTauXVCommander:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelTauXVCommander:IsBuilding() == 0 and buildChannelTauXVCommander:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelTauXVCommander:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+-- Tau XV89 Commander is allowed to retreat even directly after a jump
+function TauXVCommanderTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function TauXVCommanderTactic:IsAttacker()	
+	return self:IsCommanderAttacker()
+end
+
+function TauXVCommanderTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function TauXVCommanderTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function TauXVCommanderTactic:CanJumpAttached()
+	return true
+end
+
+function TauXVCommanderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TauXVCommander.shield_id == nil) then
+		TauXVCommander.shield_id = cpu_manager.stats:GetAbilityID( "tau_personal_shield_xv89_commander" )	
+	end
+	if (TauXVCommander.bomb_id == nil) then
+		TauXVCommander.bomb_id = cpu_manager.stats:GetAbilityID( "tau_commander_bomb" )
+	end
+	if (TauXVCommander.run_id == nil) then
+		TauXVCommander.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function TauXVCommanderTactic:DoAbilities()
+
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, TauXVCommander.bomb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, TauXVCommander.bomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Personal Shield: Personal/Halo Shields are protective shields that protect the user completely from harm. While active, the shields will transfer damage from health to shields (morale).
+	-- When the morale of the user drops to 0, the user will be incapable of shield damage and will start to lose health instead.
+	local conditionsMet = (self.squad_ai:IsInCombat() or self.squad_ai:WasRecentlyHurt()) and self.squad_ai:GetMoralePercentage() > 0.1
+    	if self.squad_ai:IsUsingAbility(TauXVCommander.shield_id) then
+        	-- Turn shields OFF if not in the fray OR morale < 10%
+        	if not conditionsMet then
+            		self.squad_ai:DoSpecialAbility(TauXVCommander.shield_id)
+        	end
+    		-- Turn shields ON only when in-combat or hurt, AND morale > 10%
+    		elseif conditionsMet then
+        		self.squad_ai:DoSpecialAbility(TauXVCommander.shield_id)
+    	end
+--[[
+	-- Personal Shield: Personal/Halo Shields are protective shields that protect the user completely from harm. While active, the shields will transfer damage from health to shields (morale).
+	-- When the morale of the user drops to 0, the user will be incapable of shield damage and will start to lose health instead.
+	if (self.squad_ai:IsUsingAbility(TauXVCommander.shield_id)) then
+
+		-- Turn shields OFF if stopped attacking OR morale < 20%
+		if ((not self.squad_ai:IsAttacking()) or self.squad_ai:GetMoralePercentage() < 0.2) then
+			self.squad_ai:DoSpecialAbility(TauXVCommander.shield_id)
+		end
+		-- Turn shields ON only when attacking AND morale > 20%
+		elseif (self.squad_ai:IsAttacking() and self.squad_ai:GetMoralePercentage() > 0.2) then
+			self.squad_ai:DoSpecialAbility(TauXVCommander.shield_id)
+	end
+
+	-- Personal Shield: Personal/Halo Shields are protective shields that protect the user completely from harm. While active, the shields will transfer damage from health to shields (morale).
+	-- When the morale of the user drops to 0, the user will be incapable of shield damage and will start to lose health instead.
+	if (self.squad_ai:IsUsingAbility(TauXVCommander.shield_id)) then
+
+		-- Turn shields OFF if stopped attacking, OR if health < 50% OR morale > 70%
+		if ((not self.squad_ai:IsAttacking()) or self.squad_ai:GetHealthPercentage() < 0.5 or self.squad_ai:GetMoralePercentage() > 0.7) then
+			self.squad_ai:DoSpecialAbility(TauXVCommander.shield_id)
+		end
+		-- Turn shields ON only when attacking, AND when health > 50% AND morale < 30%
+		elseif (self.squad_ai:IsAttacking() and self.squad_ai:GetHealthPercentage() > 0.5 and self.squad_ai:GetMoralePercentage() < 0.3) then
+			self.squad_ai:DoSpecialAbility(TauXVCommander.shield_id)
+	end
+]]
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( TauXVCommander.run_id )) then
+			self.squad_ai:DoSpecialAbility( TauXVCommander.run_id )
+		end
+	end
+end
+
+function TauXVCommanderTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_tau_xv89_commander_fusion_gun		-- Randomize 1/3
+--	self:AutoBuildAddOn(1)	--	[addon_02] addon_tau_xv89_commander_cyclic_ion		-- Randomize 2/3
+--	self:AutoBuildAddOn(2)	--	[addon_03] addon_tau_xv89_commander_plasma_rifle	-- Randomize 3/3
+--	self:AutoBuildAddOn(3)	--	[addon_04] addon_tau_xv89_commander_missile_launcher	-- Randomize 1/2
+--	self:AutoBuildAddOn(4)	--	[addon_05] addon_tau_xv89_commander_fragmentation	-- Randomize 2/2
+
+--	self:AutoBuildAddOn(5)	--	[addon_06] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(9)	-- 	[addon_10] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(10)	-- 	[addon_11] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(11)	-- 	[addon_12] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(12)	-- 	[addon_13] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(13)	-- 	[addon_14] addon_commanders_increase_production_2	8
+
+	-- Figure out my enemy's favourite class
+	local enemy = cpu_manager:FindClosestEnemyPlayer()
+	if (enemy == nil) then
+		return
+	end
+	
+	local class_type = enemy:GetMajorityClassType()
+	
+	-- Hard counter upgrade for infantry
+	if (class_type == UnitStatsAI.UC_LightInfantryLow) or 
+		(class_type == UnitStatsAI.UC_LightInfantryMed) or 
+		(class_type == UnitStatsAI.UC_LightInfantryHigh) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryMed) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryHigh) or
+		(class_type == UnitStatsAI.UC_MonsterMed) then 
+   		if (cpu_manager:GetTierLevel() >= 2) then 
+			local addon_random_infantry_wargear = math.random( 1,2 )
+			self:AutoBuildAddOn(addon_random_infantry_wargear )	-- Randomize between Cyclic Ion and Plasma Rifle
+			self:AutoBuildAddOn(4)	-- Airbursting Frag
+		end
+	-- Hard counter upgrade for vehicles
+	elseif (class_type == UnitStatsAI.UC_VehicleLow) or 
+		(class_type == UnitStatsAI.UC_VehicleMed) or
+		(class_type == UnitStatsAI.UC_VehicleHigh) or
+		(class_type == UnitStatsAI.UC_MonsterHigh) then
+   		if (cpu_manager:GetTierLevel() >= 2) then 
+			self:AutoBuildAddOn(0)	-- Fusion Gun
+			self:AutoBuildAddOn(3)	-- Missile Launcher
+		end
+	end
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 5,13 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(7)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function TauXVCommanderTactic:Update()
+
+	if (self:IsComplete()) then
+        	return
+    	end
+
+    	-- State machine
+    	if (not InfantryTactic.Update(self)) then
+        	return
+    	end
+    
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+		
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

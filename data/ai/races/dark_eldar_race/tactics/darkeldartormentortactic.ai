@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'DarkEldarTormentorTactic.ai'
+-- File: 'darkeldartormentorTactic.ai'
 -- Edited by Cylarne @ 2012
+-- Edited by Thudmeizer	@ 05.04.2016
 
 class 'DarkEldarTormentorTactic' (DarkEldarVehicleTactic)
 
@@ -13,31 +14,35 @@ end
 
 function DarkEldarTormentorTactic:InitAbilities()
 	
-	if (Tormentor.td) == nil then
-	   Tormentor.td = cpu_manager.stats:GetAbilityID("dark_eldar_tracking_device_titan")	
+	if (Tormentor.tracking_id == nil) then
+		Tormentor.tracking_id = cpu_manager.stats:GetAbilityID( "dark_eldar_tracking_device_titan" )	
 	end
 	
-	if (Tormentor.rage == nil) then
-	   Tormentor.rage = cpu_manager.stats:GetAbilityID("dark_eldar_rekindle_rage_titan")	
+	if (Tormentor.rage_id == nil) then
+		Tormentor.rage_id = cpu_manager.stats:GetAbilityID( "dark_eldar_rekindle_rage_titan" )	
 	end
 end
 
 function DarkEldarTormentorTactic:DoAbilities()
 
-	Ability.DoAbilityTarget(self.squad_ai, Tormentor.td, Ability.Filters.CloseSquadEnemy, 4)
-	
-	if (self.squad_ai:GetMoralePercentage() < 0.3 and self.squad_ai:CanDoAbility(Tormentor.rage)) then
-		Ability.DoAbility(self.squad_ai, Tormentor.rage, Ability.Filters.IsInCombat)
+	if (self.squad_ai:CanDoAbility(Tormentor.tracking_id)) then
+		Ability.DoAbilityTarget(self.squad_ai, Tormentor.tracking_id, Ability.Filters.CloseSquadEnemy, 4)
+	end
+
+	if (self.squad_ai:GetMoralePercentage() < 0.3 and self.squad_ai:CanDoAbility(Tormentor.rage_id)) then
+		Ability.DoAbilityArea(self.squad_ai, Tormentor.rage_id, Ability.Filters.CloseEnemy, 20, 1)
 	end
 	
-	self:DoAbilityVoidShields()
+	-- Call standard method
+	DarkEldarVehicleTactic.DoAbilities(self)
 
+	--self:DoAbilityVoidShields()
 end
-
+--[[
 function DarkEldarTormentorTactic:DoAbilityVoidShields()
 
 	-- Check if we should toggle Void Shields
-	local id_VoidShields = cpu_manager.stats:GetAbilityID("dark_eldar_soulshield")
+	local id_VoidShields = cpu_manager.stats:GetAbilityID( "dark_eldar_soulshield" )
 	local bToggleVoidShields = false
 	
 	local bIsUsing = self.squad_ai:IsUsingAbility(id_VoidShields)
@@ -54,3 +59,4 @@ function DarkEldarTormentorTactic:DoAbilityVoidShields()
 		self.squad_ai:DoSpecialAbility(id_VoidShields)
 	end
 end
+]]

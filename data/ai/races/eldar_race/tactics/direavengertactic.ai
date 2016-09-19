@@ -1,0 +1,118 @@
+----------------------------------------
+-- File: 'direavengertactic.ai'
+-- Edited by Arkhan		@ 12.01.2006
+-- Edited by Thudmeizer		@ 21.02.2016
+
+class 'DireAvengerTactic' (EldarInfantryTactic)
+
+DireAvenger = {}
+
+function DireAvengerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName( "Dire Avenger Tactic" )
+end
+
+function DireAvengerTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DireAvenger.blind_id == nil) then
+		DireAvenger.blind_id = cpu_manager.stats:GetAbilityID( "eldar_blind_grenades" )
+	end
+	if (DireAvenger.gravitic_id == nil) then
+		DireAvenger.gravitic_id = cpu_manager.stats:GetAbilityID( "eldar_gravitic_grenades" )
+	end
+	if (DireAvenger.haywire_id == nil) then
+		DireAvenger.haywire_id = cpu_manager.stats:GetAbilityID( "eldar_haywire_bombs_2" )
+	end
+	if (DireAvenger.plasma_id == nil) then
+		DireAvenger.plasma_id = cpu_manager.stats:GetAbilityID( "eldar_plasma_grenades" )
+	end
+end
+
+function DireAvengerTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat()) then
+		Ability.DoAbilityTarget( self.squad_ai, DireAvenger.blind_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, DireAvenger.gravitic_id, Ability.Filters.CloseInfantryEnemy, 6 )
+		Ability.DoAbilityTarget( self.squad_ai, DireAvenger.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, DireAvenger.plasma_id, Ability.Filters.CloseSquadEnemy, 4 )
+	end
+
+	-- Call basic DoAbilities methods
+	EldarInfantryTactic.DoAbilities(self)
+end
+
+function DireAvengerTactic:Reinforce()
+
+	-- Check if we are reinforcing
+	if (self.squad_ai:IsReinforcing()) then
+		return
+	end
+	
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- Don't reinforce squads in critical condition
+	if (self.squad_ai:GetNumTroopers() <= self.squad_ai:GetMaxTroopers() / 3 and self.squad_ai:IsUnderAttack()) then
+		return
+	end
+
+	if (not self.squad_ai:IsReinforcing()) then
+		
+		-- Try for different types of squad members
+		local ExarchIndex = 0
+		local PlatGenericIndex = 1
+		local PlatBrightlanceIndex = 2
+		local PlatDcannonIndex = 3
+
+		-- Get current leader count
+		local numExarch = self.squad_ai:GetLeaderCount( ExarchIndex )
+		local numPlatGeneric = self.squad_ai:GetLeaderCount( PlatGenericIndex)
+		local numPlatBrightlance = self.squad_ai:GetLeaderCount( PlatBrightlanceIndex )
+		local numPlatDcannon = self.squad_ai:GetLeaderCount( PlatDcannonIndex )
+
+		-- Desired number of each leader type
+		local desiredExarch = math.random(0,1)
+		local desiredPlatGeneric = math.random(0,1)
+		local desiredPlatBrightlance = math.random(0,1)
+		local desiredPlatDcannon = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if (numExarch < desiredExarch) then
+			if self.squad_ai:CanReinforce( true, ExarchIndex ) then
+				self.squad_ai:DoReinforce( true, ExarchIndex )
+			end
+		elseif (numPlatGeneric < desiredPlatGeneric) then
+			if self.squad_ai:CanReinforce( true, PlatGenericIndex ) then
+				self.squad_ai:DoReinforce( true, PlatGenericIndex )
+			end
+		elseif (numPlatBrightlance < desiredPlatBrightlance) then
+			if self.squad_ai:CanReinforce( true, PlatBrightlanceIndex ) then
+				self.squad_ai:DoReinforce( true, PlatBrightlanceIndex )
+			end
+		elseif (numPlatDcannon < desiredPlatDcannon) then
+			if self.squad_ai:CanReinforce( true, PlatDcannonIndex ) then
+				self.squad_ai:DoReinforce( true, PlatDcannonIndex )
+			end
+		end
+	end
+	
+	-- Always try to get the leader first
+	if (self.squad_ai:CanReinforce(true, 0)) then
+		self.squad_ai:DoReinforce(true, 0)
+		return
+	end
+
+	-- Check resources
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if ((iRequisition < 800 or self.m_bPowerCost) and not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	-- Always try to reinforce, as long as I have money
+	if (self.squad_ai:CanReinforce( false, 0 ) and self.squad_ai:HasLeader() and cpu_manager:GetTierLevel() >= 2) then
+		self.squad_ai:DoReinforce( false, 0 )
+	end
+end

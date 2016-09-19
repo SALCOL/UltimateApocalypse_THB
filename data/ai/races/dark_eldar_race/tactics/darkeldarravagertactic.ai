@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarravagertactic.ai'
--- Edited by Thudmeizer @ 23.10.2008
+-- Edited by Thudmeizer @ 05.04.2016
 
 class 'DarkEldarRavagerTactic' (DarkEldarVehicleTactic)
 
@@ -16,10 +16,6 @@ function DarkEldarRavagerTactic:InitAbilities()
 	if (DarkEldarRavager.horrorfex_id == nil) then
 		DarkEldarRavager.horrorfex_id = cpu_manager.stats:GetAbilityID( "dark_eldar_horrorfex" )	
 	end
-	
-	if (DarkEldarRavager.horrorfex_barrage_id == nil) then
-		DarkEldarRavager.horrorfex_barrage_id = cpu_manager.stats:GetAbilityID( "dark_eldar_horrorfex_barrage" )	
-	end
 end
 
 function DarkEldarRavagerTactic:DoAbilities()
@@ -30,9 +26,6 @@ function DarkEldarRavagerTactic:DoAbilities()
 		Ability.DoAbilityPos( self.squad_ai, DarkEldarRavager.horrorfex_id, Ability.Filters.CloseSquadEnemy, 1 ) 
 	end
 	
-	if (self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(DarkEldarRavager.horrorfex_barrage_id)) then
-
-		-- Send bomb against enemy infantry
-		Ability.DoAbilityPos( self.squad_ai, DarkEldarRavager.horrorfex_barrage_id, Ability.Filters.CloseSquadEnemy, 2 ) 
-	end
+	-- Call standard method
+	DarkEldarVehicleTactic.DoAbilities(self)
 end

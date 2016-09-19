@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'warbosstactic.ai'
--- Edited by Thudmeizer @ 09.03.2005
+-- Edited by Thudmeizer @ 23.02.2016
 -- Edited by LarkinVB   @ 31.07.2005
 
 class 'WarBossTactic' (OrkInfantryTactic)
@@ -12,25 +12,86 @@ function WarBossTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("WarBoss Tactic")
 end
 
+function WarBossTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelWarBoss = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelWarBoss ~= nil) then
+			local addOnID = buildChannelWarBoss:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelWarBoss:IsBuilding() == 0 and buildChannelWarBoss:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelWarBoss:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
 function WarBossTactic:IsAttacker()
-	return (not cpu_manager.assassinate and self:IsCommanderAttacker())
+	return self:IsCommanderAttacker()
 end
 
 function WarBossTactic:IsDefender()
-	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+	return self:IsCommanderDefender()
 end
 
 function WarBossTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (WarBoss.waagh == nil) then
-		WarBoss.waagh = cpu_manager.stats:GetAbilityID( "ork_power_of_waagh" )
+	if (WarBoss.power_id == nil) then
+		WarBoss.power_id = cpu_manager.stats:GetAbilityID( "ork_power_of_waagh" )
+	end
+	if (WarBoss.nuke_id == nil) then
+		WarBoss.nuke_id = cpu_manager.stats:GetAbilityID( "ork_commander_bomb" )
+	end
+	if (WarBoss.waagh_id == nil) then
+		WarBoss.waagh_id = cpu_manager.stats:GetAbilityID( "ork_waagh!!!" )
+	end
+	if (WarBoss.run_id == nil) then
+		WarBoss.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
 	end
 end
 
 function WarBossTactic:DoAbilities()
 
-	Ability.DoAbility( self.squad_ai, WarBoss.waagh, Ability.Filters.IsInCombat ) 
+	Ability.DoAbilityArea( self.squad_ai, WarBoss.power_id, Ability.Filters.CloseEnemy, 20, 5 ) 
+
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, WarBoss.nuke_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, WarBoss.nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Charge if in combat and enemy is not adjacent or while broken
+	-- Don't waagh if health is too low or we are not moving !
+	local squad_pos = self.squad_ai:GetPosition()
+	if (((self.squad_ai:IsInCombat() and Ability.Filters.CloseEnemy( squad_pos, 20, 1 ) == nil) or
+	   	self.squad_ai:IsBroken()) and self.squad_ai:GetHealthPercentage() > 0.8 and self:IsMoving()) then 
+		if (self.squad_ai:CanDoAbility(WarBoss.waagh_id)) then
+			self.squad_ai:DoSpecialAbility(WarBoss.waagh_id)
+		end
+	end
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( WarBoss.run_id )) then
+			self.squad_ai:DoSpecialAbility( WarBoss.run_id )
+		end
+	end
+end
+
+function WarBossTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_population.lua			5/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support.lua			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_04] addon_commanders_increase_production.lua		5/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_05] addon_commanders_increase_health.lua			6/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_06] addon_commanders_increase_morale.lua			6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_07] addon_commanders_cap_population_2.lua		8
+--	self:AutoBuildAddOn(6)	-- 	[addon_08] addon_commanders_cap_support_2.lua			8
+--	self:AutoBuildAddOn(7)	-- 	[addon_09] addon_commanders_increase_production_2.lua		8
+
+	local addon_random_commander_upgrades = math.random( 0,7 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
 end
 
 function WarBossTactic:Update()

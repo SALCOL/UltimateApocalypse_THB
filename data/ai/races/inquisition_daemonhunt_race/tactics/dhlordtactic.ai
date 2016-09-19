@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'DHLordtactic.ai'
--- Edited by Thudmeizer @ 05.07.2007
+-- Edited by Thudmeizer @ 15.04.2016
 
 class 'DHLordTactic' (DaemonhuntInfantryTactic)
 
@@ -8,7 +8,21 @@ DHLord = {}
 
 function DHLordTactic:__init( squad_ai ) super( squad_ai )
 
-	self:SetName("DHLord Tactic")
+	self:SetName("DH Lord Tactic")
+end
+
+function DHLordTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDHLord = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDHLord ~= nil) then
+			local addOnID = buildChannelDHLord:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelDHLord:IsBuilding() == 0 and buildChannelDHLord:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelDHLord:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
 end
 
 -- Assassinate win condition -- never attack
@@ -23,94 +37,63 @@ end
 
 function DHLordTactic:InitAbilities()
 
-	-- Inquisitor Lord abilities
-	
-	if DHLord.recovery == nil then
-	   DHLord.recovery = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_psychic_recovery" )	
+	-- Init abilities
+	if (DHLord.banish_id == nil) then
+	  	DHLord.banish_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_banish" )	
 	end
-	
-	if DHLord.fireball == nil then
-	   DHLord.fireball = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_fireball" )	
+	if (DHLord.commandment_id == nil) then
+	   	DHLord.commandment_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_dark_commandment" )	
+	end	
+	if (DHLord.portal_id == nil) then
+	   	DHLord.portal_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_destinative_portal" )
 	end
-	
-	if DHLord.haste_lord == nil then
-	   DHLord.haste_lord = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_haste" )	
+	if (DHLord.doom_id == nil) then
+	   	DHLord.doom_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_doom" )	
 	end
-	
-	if DHLord.slow == nil then
-	   DHLord.slow = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_slow" )	
+	if (DHLord.doommachine_id == nil) then
+	   	DHLord.doommachine_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_doom_machine_spirit" )	
 	end
-	
-	if DHLord.banish == nil then
-	   DHLord.banish = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_banish" )	
+	if (DHLord.wrath_id == nil) then
+	   	DHLord.wrath_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_emperor_wrath" )	
 	end
-	
-	if DHLord.lightning_balls == nil then
-	   DHLord.lightning_balls = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_lightning_balls" )	
+	if (DHLord.fireball_id == nil) then
+	   	DHLord.fireball_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_fireball" )	
 	end
-	
-	if DHLord.doom == nil then
-	   DHLord.doom = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_doom" )	
+	if (DHLord.power_id == nil) then
+	   	DHLord.power_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_great_power" )	
 	end
-	
-	if DHLord.doom_machine == nil then
-	   DHLord.doom_machine = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_doom_machine_spirit" )	
+	if (DHLord.haste_id == nil) then
+	   	DHLord.haste_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_haste" )	
 	end
-	
-	if DHLord.inspiration == nil then
-	   DHLord.inspiration = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_inspiration_conquest" )	
+	if (DHLord.inspiration_id == nil) then
+	   	DHLord.inspiration_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_inspiration_conquest" )	
 	end
-	
-	if DHLord.word == nil then
-	   DHLord.word = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_word_of_emperor" )	
+	if (DHLord.lightningballs_id == nil) then
+	   	DHLord.lightningballs_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_lightning_balls" )	
 	end
-	
-	if DHLord.wrath == nil then
-	   DHLord.wrath = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_emperor_wrath" )	
+	if (DHLord.purity_id == nil) then
+	   	DHLord.purity_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_plane_of_purity" )
 	end
-	
-	if DHLord.power == nil then
-	   DHLord.power = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_great_power" )	
+	if (DHLord.recovery_id == nil) then
+		DHLord.recovery_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_psychic_recovery" )	
 	end
-	
-	if DHLord.pop == nil then
-	   DHLord.pop = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_plane_of_purity" )	
+	if (DHLord.slow_id == nil) then
+	   	DHLord.slow_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_slow" )	
 	end
-	
-	if DHLord.commandment == nil then
-	   DHLord.commandment = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_dark_commandment" )	
+	if (DHLord.word_id == nil) then
+	   	DHLord.word_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_lord_word_of_emperor" )	
 	end
-	
-	-- Ordo Malleus Supreme Lord abilities
-	
-	if DHLord.weaken == nil then
-	   DHLord.weaken = cpu_manager.stats:GetAbilityID( "marines_weaken_resolve_toth" )	
+	if (DHLord.run_id == nil) then
+		DHLord.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
-	
-	if DHLord.smite == nil then
-	   DHLord.smite = cpu_manager.stats:GetAbilityID( "marines_smite_toth" )	
-	end
-	
-	if DHLord.haste_ordo == nil then
-	   DHLord.haste_ordo = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_ordo_malleus_haste" )	
-	end
-	
-	if DHLord.orbital_bombard == nil then
-	   DHLord.orbital_bombard = cpu_manager.stats:GetAbilityID( "inquisition_orbital_bombardment" )	
-	end
-	
 end
 
 function DHLordTactic:DoAbilities()
 
 	-- Cast the Greater Power ability always and if we are in combat; and we can use it.
-	if (self.squad_ai:CanDoAbility( DHLord.power )) then
-		Ability.DoAbility( self.squad_ai, DHLord.power, Ability.Filters.IsInCombat )
+	if (self.squad_ai:CanDoAbility( DHLord.power_id )) then
+		Ability.DoAbilityArea( self.squad_ai, DHLord.power_id, Ability.Filters.CloseEnemy, 20, 1 )
 	end
-	
-	-- Ordo Malleus Supreme Lord Orbital Bombardment
-	Ability.DoAbilityPos(self.squad_ai, DHLord.orbital_bombard, Ability.Filters.CloseEnemy, 24)
-	Ability.DoAbilityPos(self.squad_ai, DHLord.orbital_bombard, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
 
 	local spellcast_fury = 0.95
 	
@@ -131,66 +114,82 @@ function DHLordTactic:DoAbilities()
 	if (self.squad_ai:GetHealthPercentage() < 0.3) then
 		spellcast_fury = 0.05 -- Only 5% morale remaining, full ability uses!!!
 		
-		if (self.squad_ai:CanDoAbility( DHLord.wrath )) then
-			Ability.DoAbility( self.squad_ai, DHLord.wrath, Ability.Filters.IsInCombat )
+		if (self.squad_ai:CanDoAbility( DHLord.wrath_id )) then
+			Ability.DoAbilityArea( self.squad_ai, DHLord.wrath_id, Ability.Filters.CloseEnemy, 10, 1 )
 		end
 		
-		if (self.squad_ai:CanDoAbility( DHLord.pop )) then
-			Ability.DoAbility( self.squad_ai, DHLord.pop, Ability.Filters.IsInCombat )
+		if (self.squad_ai:CanDoAbility( DHLord.purity_id )) then
+			Ability.DoAbilityArea( self.squad_ai, DHLord.purity_id, Ability.Filters.CloseEnemy, 20, 1 )
 		end
 	end
 	
 	-- Normal spellcasting, morale.
 	if (self.squad_ai:GetMoralePercentage() >= spellcast_fury) then
-		-- Inquisitor Lord, Haste
-		Ability.DoAbility( self.squad_ai, DHLord.haste_lord, Ability.Filters.IsInCombat ) 
+
+		-- Haste
+		Ability.DoAbilityArea( self.squad_ai, DHLord.haste_id, Ability.Filters.CloseEnemy, 15, 1 )
 		
-		-- Ordo Malleus Supreme Lord, Haste
-		Ability.DoAbility( self.squad_ai, DHLord.haste_ordo, Ability.Filters.IsInCombat ) 
+		-- Doom of the Machine Spirit
+		Ability.DoAbilityTarget( self.squad_ai, DHLord.doommachine_id, Ability.Filters.CloseVehicleEnemy, 1 )
 		
-		-- Inquisitor Lord, Doom of the Machine Spirit
-		Ability.DoAbilityTarget( self.squad_ai, DHLord.doom_machine, Ability.Filters.CloseVehicleEnemy, 1 )
-		
-		-- Inquisitor Lord, Dark Commandment
-		Ability.DoAbilityTarget( self.squad_ai, DHLord.commandment, Ability.Filters.CloseMonsterEnemy, 1 )
+		-- Dark Commandment
+		Ability.DoAbilityTarget( self.squad_ai, DHLord.commandment_id, Ability.Filters.CloseMonsterEnemy, 1 )
 		
 		if (self.squad_ai:GetMoralePercentage() >= 0.8) then
-			-- Inquisitor Lord, Word of the Emperor, if attached
+
+			-- Word of the Emperor, if attached
 			if (self.squad_ai:IsAttached()) then
-				Ability.DoAbility( self.squad_ai, DHLord.word, Ability.Filters.IsInCombat ) 
+				Ability.DoAbilityArea( self.squad_ai, DHLord.word_id, Ability.Filters.CloseEnemy, 20, 1 )
 			end
 			
-			-- Inquisitor Lord, Inspiration through holy conquest
-			Ability.DoAbility( self.squad_ai, DHLord.inspiration, Ability.Filters.IsInCombat )
+			-- Inspiration through holy conquest
+			Ability.DoAbilityArea( self.squad_ai, DHLord.inspiration_id, Ability.Filters.CloseEnemy, 10, 1 )
 		end
+
+		-- Summon Portal (not supported by AI which cannot use these like Eldar Webways or IG Bunkers to send troops between them)
+		--Ability.DoAbilityPos( self.squad_ai, DHLord.portal_id, Ability.Filters.CloseEnemy, 5 )	
+
+		-- Mightest Swing
+		Ability.DoAbilityPos( self.squad_ai, DHLord.banish_id, Ability.Filters.CloseMonsterEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, DHLord.banish_id, Ability.Filters.CloseCommanderEnemy, 1 )
+			
+		-- Slow
+		Ability.DoAbilityTarget( self.squad_ai, DHLord.slow_id, Ability.Filters.CloseInfantryEnemy, 6 )
 		
-		-- Inquisitor Lord, Mightest Swing
-		Ability.DoAbilityPos( self.squad_ai, DHLord.banish, Ability.Filters.CloseMonsterEnemy, 1 )
-		Ability.DoAbilityPos( self.squad_ai, DHLord.banish, Ability.Filters.CloseCommanderEnemy, 1 )
+		-- Plane of Purity
+		Ability.DoAbilityArea( self.squad_ai, DHLord.purity_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityArea( self.squad_ai, DHLord.purity_id, Ability.Filters.CloseMonsterEnemy, 5 )
+
+		-- Doom
+		Ability.DoAbilityTarget( self.squad_ai, DHLord.doom_id, Ability.Filters.CloseInfantryEnemy, 3 )
 		
-		-- Ordo Malleus Supreme Lord, Weaken Resolve
-		Ability.DoAbilityTarget( self.squad_ai, DHLord.weaken, Ability.Filters.CloseInfantryEnemy, 4 )
+		-- Fireball
+		Ability.DoAbilityPos( self.squad_ai, DHLord.fireball_id, Ability.Filters.CloseEnemy, 7 )
 		
-		-- Ordo Malleus Supreme Lord, Smite
-		Ability.DoAbilityTarget( self.squad_ai, DHLord.smite, Ability.Filters.CloseEnemy, 4 )
-		
-		-- Inquisitor Lord, Slow
-		Ability.DoAbilityTarget( self.squad_ai, DHLord.slow, Ability.Filters.CloseInfantryEnemy, 6 )
-		
-		-- Inquisitor Lord, Doom
-		Ability.DoAbilityTarget( self.squad_ai, DHLord.doom, Ability.Filters.CloseInfantryEnemy, 3 )
-		
-		-- Inquisitor Lord, Fireball
-		Ability.DoAbilityPos( self.squad_ai, DHLord.fireball, Ability.Filters.CloseEnemy, 7 )
-		
-		-- Inquisitor Lord, Lightning Balls
-		Ability.DoAbilityPos( self.squad_ai, DHLord.lightning_balls, Ability.Filters.CloseEnemy, 5 )
-		Ability.DoAbilityPos( self.squad_ai, DHLord.lightning_balls, Ability.Filters.CloseInfiltratedEnemy, 1 )
-		
-		
+		-- Lightning Balls
+		Ability.DoAbilityPos( self.squad_ai, DHLord.lightningballs_id, Ability.Filters.CloseEnemy, 5 )
+		Ability.DoAbilityPos( self.squad_ai, DHLord.lightningballs_id, Ability.Filters.CloseInfiltratedEnemy, 1 )
 	end
 
-	
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DHLord.run_id )) then
+			self.squad_ai:DoSpecialAbility( DHLord.run_id )
+		end
+	end
+end
+
+function DHLordTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	-- 	[addon_01] inquisition_inquisitor_lord_destruction_incarnate_addon
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] inquisition_inquisitor_lord_mage_sorceror_addon
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] inquisition_inquisitor_lord_psychic_aid_addon
+
+	-- Randomize these Inquisitor addons
+	local addon_random_commander_upgrades = math.random( 0,2 )	-- Randomize these addons
+	self:AutoBuildAddOn(addon_random_commander_upgrades)
 end
 
 function DHLordTactic:Update()
@@ -215,8 +214,6 @@ function DHLordTactic:Update()
 			end
 		end
 		if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
-
-
 			self:TryAttachSquadMelee()
 		end
 	end

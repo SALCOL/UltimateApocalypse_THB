@@ -1,0 +1,39 @@
+----------------------------------------
+-- File: 'guardbasiliskmagnustactic.ai'
+-- Edited by Thudmeizer         @ 28.02.2016
+
+class 'GuardBasiliskMagnusTactic' (BaseTactic)
+
+GuardBasiliskMagnus = {}
+
+function GuardBasiliskMagnusTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Guard Basilisk Magnus Tactic")
+end
+
+function GuardBasiliskMagnusTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function GuardBasiliskMagnusTactic:InitAbilities()
+
+	-- Init Ability ID's and Addon ID's
+	GuardBasiliskMagnus.locatorsAddonID = cpu_manager.stats:GetAddOnID( "addon_guard_platform_locators" )
+	GuardBasiliskMagnus.apocalypseAddonID =  cpu_manager.stats:GetAddOnID( "addon_guard_platform_apocalypse_rounds" )
+end
+
+function GuardBasiliskMagnusTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- All HQ Locators	-- addon_guard_platform_locators
+--	self:AutoBuildAddOn(1) -- Apocalypse Rounds	-- addon_guard_platform_apocalypse_rounds
+
+	-- Always build both addons
+	self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())	-- Locators 
+	self:AutoBuildTurretAddOn(1, self.base_ai:GetEntity():GetID())	-- Apocalypse Rounds
+end

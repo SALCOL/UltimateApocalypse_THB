@@ -1,0 +1,77 @@
+----------------------------------------
+-- File: 'darkeldarrampagetactic.ai'
+-- Edited by Thudmeizer @ 02.04.2016
+
+class 'DarkEldarRampageTactic' (DarkEldarVehicleTactic)
+
+DarkEldarRampage = {}
+
+function DarkEldarRampageTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Dark Eldar Rampage Tactic")
+	
+	-- Vehicle is a light transport
+	--self.m_iTransportVehicle = 1
+	--self.m_iTransportSlots = 2
+end
+
+function DarkEldarRampageTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarRampage.laymines_id == nil) then
+		DarkEldarRampage.laymines_id = cpu_manager.stats:GetAbilityID( "dark_eldar_laymines" )
+	end
+	if (DarkEldarRampage.abilityrecharge_id == nil) then
+		DarkEldarRampage.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+	if (DarkEldarRampage.heal_id == nil) then
+		DarkEldarRampage.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+	if (DarkEldarRampage.reinforce_id == nil) then
+		DarkEldarRampage.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+	if (DarkEldarRampage.barrage_id == nil) then
+		DarkEldarRampage.barrage_id = cpu_manager.stats:GetAbilityID( "dark_eldar_horrorfex_barrage" )	
+	end
+end
+
+function DarkEldarRampageTactic:DoAbilities()
+	
+	-- Send bomb against enemy infantry
+	Ability.DoAbilityPos( self.squad_ai, DarkEldarRampage.barrage_id, Ability.Filters.CloseSquadEnemy, 1 ) 
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( DarkEldarRampage.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 3000 and iPower >= 3000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( DarkEldarRampage.laymines_id )
+		end
+	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(DarkEldarRampage.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(DarkEldarRampage.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(DarkEldarRampage.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(DarkEldarRampage.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(DarkEldarRampage.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(DarkEldarRampage.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Call standard method
+	DarkEldarVehicleTactic.DoAbilities(self)
+end

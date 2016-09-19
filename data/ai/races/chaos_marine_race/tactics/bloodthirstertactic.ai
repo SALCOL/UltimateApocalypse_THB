@@ -1,3 +1,7 @@
+----------------------------------------
+-- File: 'bloodthirstertactic.ai'
+-- Edited by Thudmeizer	@ 17.02.2016
+
 class 'BloodThirsterTactic' (ChaosMarineInfantryTactic)
 
 BloodThirster = {}
@@ -5,7 +9,20 @@ BloodThirster = {}
 function BloodThirsterTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("BloodThirster Tactic")
+end
 
+function BloodThirsterTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelBloodThirster = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelBloodThirster ~= nil) then
+			local addOnID = buildChannelBloodThirster:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelBloodThirster:IsBuilding() == 0 and buildChannelBloodThirster:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelBloodThirster:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
 end
 
 function BloodThirsterTactic:AlwaysAttack()
@@ -20,8 +37,32 @@ function BloodThirsterTactic:InitAbilities()
 	end
 end
 
-function LocTactic:DoAbilities()
+function BloodThirsterTactic:DoAbilities()
 	
 	Ability.DoAbility( self.squad_ai, BloodThirster.lust_id, Ability.Filters.IsInCombat )
+
+	-- Call basic DoAbilities methods
+	ChaosMarineInfantryTactic.DoAbilities(self)
 end
 
+function BloodThirsterTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades) 
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end

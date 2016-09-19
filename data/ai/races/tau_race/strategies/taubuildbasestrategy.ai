@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'taubuildbasestrategy.ai'
--- Edited by Thudmeizer @ 06.03.2008
+-- Edited by Thudmeizer @ 08.06.2016
 -- Edited by Cylarne_04 2011
 
 class 'TauBuildBaseStrategy' (BuildBaseStrategy)
@@ -15,6 +15,12 @@ function TauBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	-- Phases of attacks. If army is decreased substantially, or build only titans: modify.
 	self.m_iArmyBuild = math.random(0, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
 	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
+
+	-- Determine Kauyon or Mont'ka selection
+	self.m_iPathResearch = math.random( 0,1 )
+
+	-- dark40k - set items that need bypass for CpuPrerequisites
+	CpuPrerequisites2.AddSpecialItem("addon_tau_turret_probe", CpuPrerequisites.BT_AddOn)
 end
 
 function TauBuildBaseStrategy:ChooseBuildProgram()
@@ -47,7 +53,6 @@ function TauBuildBaseStrategy:ChooseBuildProgram()
 	end
 		
 	-- Now choose a program
-	
 	local iRandom = math.random(1, 100)
 	if (iRandom <= iBuildProgram1) then
 		return 1
@@ -98,12 +103,11 @@ function TauBuildBaseStrategy:GetBuildingName( sType )
 		return "tau_listening_post"
 		
 	elseif (sType == "Turret") then
-		return nil
+		return "tau_turret"
 		
 	elseif (sType == "Mine") then
-		return nil
+		return "tau_mines"
 	end
-	
 	return nil
 end
 
@@ -117,6 +121,15 @@ function TauBuildBaseStrategy:GetAddonBuilding( sType )
 		
 	elseif (sType == "addon_tau_turret") then
 		return "tau_turret"
+
+	elseif (sType == "addon_tau_turret_probe") then
+		return "tau_turret"
+
+	elseif (sType == "addon_superweapon") then
+		return "tau_arka_ion_cannon"
+
+	elseif (sType == "addon_tau_shield") then
+		return "tau_shield_generator"
 	end
 	return nil
 end
@@ -126,38 +139,54 @@ function TauBuildBaseStrategy:GetUnitStats(sSquadName)
 
 	if (sSquadName == "tau_stealth_team_squad") then
 		return 1, 0
-	elseif (sSquadName == "tau_fire_warrior_squad") then
-		return 2, 0
 	elseif (sSquadName == "tau_shasui_fire_warrior_bodyguard_sp") then
-		return 2, 0
-	elseif (sSquadName == "tau_vespid_auxiliary_squad") then
+		return 1, 0
+	elseif (sSquadName == "tau_fire_warrior_squad") then
 		return 2, 0
 	elseif (sSquadName == "tau_kroot_carnivore_squad") then
 		return 2, 0
-	elseif (sSquadName == "tau_kroot_hound_squad") then
-		return 3, 0
 	elseif (sSquadName == "tau_pathfinder_squad") then
 		return 2, 0
-	elseif (sSquadName == "tau_broadside_battlesuit_squad") then
-		return 3, 0
-	elseif (sSquadName == "tau_crisis_suit_squad") then
+	elseif (sSquadName == "tau_stealth_team_xv25_squad") then
 		return 2, 0
+	elseif (sSquadName == "tau_kroot_hound_squad") then
+		return 3, 0
+	elseif (sSquadName == "tau_broadside_battlesuit_squad") then
+		return 4, 0
+	elseif (sSquadName == "tau_vespid_auxiliary_squad") then
+		return 6, 0
+	elseif (sSquadName == "tau_xv9_hazard_suit_squad") then
+		return 7, 0
+	elseif (sSquadName == "tau_broadside_battlesuit_xv8_squad") then
+		return 5, 0
+	elseif (sSquadName == "tau_crisis_suit_squad") then
+		return 5, 0
+	elseif (sSquadName == "tau_xv81_crisis_suit_squad") then
+		return 6, 0
+	elseif (sSquadName == "tau_tetra_squad") then
+		return 0, 1
 	elseif (sSquadName == "tau_devilfish_troop_carrier") then
 		return 0, 1
+	elseif (sSquadName == "tau_piranha_squad") then
+		return 0, 1
+	elseif (sSquadName == "tau_orca_dropship_squad") then
+		return 0, 2
+	elseif (sSquadName == "tau_drone_harbinger_squad") then
+		return 0, 2
+	elseif (sSquadName == "tau_drone_remora_squad") then
+		return 0, 2
 	elseif (sSquadName == "tau_drone_squad") then
 		return 0, 2
 	elseif (sSquadName == "tau_skyray_squad") then
-		return 0, 3
-	elseif (sSquadName == "tau_drone_harbinger_squad") then
-		return 0, 5
+		return 0, 2
+	elseif (sSquadName == "tau_sniper_drone_squad") then
+		return 0, 2
 	elseif (sSquadName == "tau_barracuda_squad") then
-		return 0, 4
+		return 0, 3
 	elseif (sSquadName == "tau_hammerhead_gunship_squad") then
-		return 0, 3
+		return 0, 4
 	elseif (sSquadName == "tau_krootox_squad") then
-		return 0, 3
-	elseif (sSquadName == "tau_greater_knarloc_squad") then
-		return 0, 5
+		return 0, 6
 	end
 	return 0, 0
 end
@@ -168,34 +197,41 @@ function TauBuildBaseStrategy:UpdateTierLevel()
 	self.tierLevel = 1
 	
 	-- Check researches
-	if cpu_manager.cpu_player:IsResearchComplete("tau_apocalypse_research") then
+	if (cpu_manager.cpu_player:IsResearchComplete("tau_apocalypse_research")) then
 		self.tierLevel = 6
+		return
 	elseif (cpu_manager.cpu_player:IsResearchComplete("tau_path_to_destruction_research")) then
 		self.tierLevel = 5
-	elseif (cpu_manager.cpu_player:IsResearchComplete("tau_teachings_of_kauyon_research") or
-		cpu_manager.cpu_player:IsResearchComplete("tau_teachings_of_montka_research")) then
+		return
+	elseif (cpu_manager.cpu_player:IsResearchComplete("tau_teachings_of_kauyon_research") or cpu_manager.cpu_player:IsResearchComplete("tau_teachings_of_montka_research")) then
 		self.tierLevel = 4
-	elseif self:GetBuildingCountByName("tau_shrine_of_montka") > 0 or
-		self:GetBuildingCountByName("tau_shrine_of_kauyon") > 0 then
+		return
+	elseif self:GetBuildingCountByName("tau_shrine_of_montka") > 0 or self:GetBuildingCountByName("tau_shrine_of_kauyon") > 0 then
 		self.tierLevel = 3
+		return
 	elseif self:GetBuildingCountByName("tau_research_building") > 0 then
 		self.tierLevel = 2
+		return
 	end
 end
 
 function TauBuildBaseStrategy:BuildFlexible()
-	
-	--[[if (self.m_iPathResearch == 1) then
+
+	if (self.m_iPathResearch == 1) then
 		
 		-- Teachings of Kauyon.	
-		self:DynamicResearch("tau_teachings_of_kauyon_research", 3, 450, 450, 0, 0, nil, 0)
-		
+		self:DynamicBuild("tau_shrine_of_kauyon", 1, 2, 375, 375, 0, 0)
+		self:DynamicResearch("tau_teachings_of_kauyon_research", 3, 750, 950, 0, 0, nil, 0)
+		self:DynamicBuild("tau_shrine_of_montka", 1, 4, 500, 500, 0, 0)		
+		self:DynamicResearch("tau_teachings_of_montka_research", 5, 800, 1200, 0, 0, nil, 0)
 	else
-		
-		-- Teachings of Mont'ka.		
-		self:DynamicResearch("tau_teachings_of_montka_research", 3, 450, 450, 0, 0, nil, 0)
-	end]]
-	
+		-- Teachings of Mont'ka.
+		self:DynamicBuild("tau_shrine_of_montka", 1, 2, 500, 500, 0, 0)		
+		self:DynamicResearch("tau_teachings_of_montka_research", 3, 800, 1200, 0, 0, nil, 0)
+		self:DynamicBuild("tau_shrine_of_kauyon", 1, 4, 375, 375, 0, 0)
+		self:DynamicResearch("tau_teachings_of_kauyon_research", 5, 750, 950, 0, 0, nil, 0)
+	end
+
 	-- Locales
 	local iArmyStrength = cpu_manager:GetArmyStrength()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
@@ -234,11 +270,11 @@ function TauBuildBaseStrategy:BuildFlexible()
 			if (iArmyStrength >= 1250) then
 			
 				self:DynamicResearch("tau_photon_grenade_research", 1, 25, 75, 0, 0, nil, 0)
-				self:DynamicResearch("tau_snare_trap_research", 1, 50, 50, 0, 0, nil, 0)
+				self:DynamicResearch("tau_snare_trap_research", 1, 25, 25, 0, 0, nil, 0)
 				
 				-- Compute scout researches
 				if (iScoutSquads >= 2) then
-					self:DynamicResearch("tau_stealth_suit_damage_research", 1, 50, 50, 0, 0, nil, 0)
+					self:DynamicResearch("tau_stealth_suit_damage_research", 1, 40, 40, 0, 0, nil, 0)
 				end
 			end
 		end
@@ -246,19 +282,16 @@ function TauBuildBaseStrategy:BuildFlexible()
 		-- Compute tier 2 researches
 		if (self.tierLevel >= 2) then
 			
+			-- Compute resource researches
+			self:DynamicResearch("tau_power_research", 2, 200, 20, 0, 0, nil, 0)
+			self:DynamicResearch("tau_requisition_research", 2, 75, 250, 0, 0, nil, 0)
+
 			-- Compute infantry research
 			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("tau_max_weapons_research", 2, 50, 100, 0, 0, nil, 0)
+				self:DynamicResearch("tau_max_weapons_research", 2, 75, 75, 0, 0, nil, 0)
 				self:DynamicResearch("tau_improved_power_source_research", 2, 50, 100, 0, 0, nil, 0)
 				self:DynamicResearch("tau_emp_grenade_research", 2, 75, 75, 0, 0, nil, 0)
 			end
-			
-			-- Compute resource researches
-			self:DynamicResearch("tau_power_research", 2, 300, 100, 0, 0, nil, 0)
-			self:DynamicResearch("tau_requisition_research", 2, 100, 300, 0, 0, nil, 0)
-			
-			-- Compute commander research
-			
 			
 			-- Compute Kroot researches
 			if (iKrootSquads >= 2) then
@@ -266,7 +299,9 @@ function TauBuildBaseStrategy:BuildFlexible()
 			end
 
 			-- Compute vehicle researches
-			self:DynamicResearch("tau_missile_barrage_research", 2, 100, 100, 0, 0, "tau_skyray_squad", 1)
+			self:DynamicResearch("tau_missile_barrage_research", 2, 100, 100, 0, 0, nil, 0)
+			self:DynamicResearch("tau_vehicle_health_research", 2, 160, 50, 0, 0, nil, 0)
+			self:DynamicResearch("tau_vehicle_shields_research", 2, 125, 75, 0, 0, nil, 0)
 			
 			-- Compute secondary researches
 			if (iArmyStrength >= 1250) then
@@ -274,10 +309,9 @@ function TauBuildBaseStrategy:BuildFlexible()
 				-- Compute scout researches
 				if (iScoutSquads >= 2) then
 					self:DynamicResearch("tau_target_lock", 2, 75, 50, 0, 0, nil, 0)
-					self:DynamicResearch("tau_stealth_suit_damage_research", 1, 50, 50, 0, 0, nil, 0)
 				end
-				
-				--[[-- Compute wargear researches
+--[[
+				-- Compute wargear researches
 				self:DynamicResearch("tau_wargear01", 2, 0, 0, 0, 0, "tau_commander_squad", 1)
 				self:DynamicResearch("tau_wargear02", 4, 0, 0, 0, 0, "tau_commander_squad", 1)
 				self:DynamicResearch("tau_wargear03", 2, 0, 0, 0, 0, "tau_commander_squad", 1)
@@ -286,11 +320,11 @@ function TauBuildBaseStrategy:BuildFlexible()
 				self:DynamicResearch("tau_wargear06", 2, 0, 0, 0, 0, "tau_commander_squad", 1)
 				self:DynamicResearch("tau_wargear07", 2, 0, 0, 0, 0, "tau_commander_squad", 1)
 				self:DynamicResearch("tau_wargear08", 2, 0, 0, 0, 0, "tau_commander_squad", 1)
-				self:DynamicResearch("tau_wargear09", 2, 0, 0, 0, 0, "tau_commander_squad", 1)]]
-				
+				self:DynamicResearch("tau_wargear09", 2, 0, 0, 0, 0, "tau_commander_squad", 1)
+]]
 				-- Compute turret upgrades research
-				self:DynamicResearch("tau_turret_upgrade1", 2, 50, 50, 0, 0, nil, 0)
-				self:DynamicResearch("tau_turret_upgrade2", 3, 150, 100, 0, 0, nil, 0)
+				self:DynamicResearch("tau_turret_upgrade1", 2, 180, 180, 0, 0, nil, 0)
+				self:DynamicResearch("tau_turret_upgrade2", 3, 390, 390, 0, 0, nil, 0)
 				self:DynamicResearch("tau_listening_post_upgrade", 3, 600, 240, 0, 0, nil, 0)
 			end
 		end
@@ -298,23 +332,26 @@ function TauBuildBaseStrategy:BuildFlexible()
 		-- Compute tier 3 researches
 		if (self.tierLevel >= 3) then
 		
+			-- Compute resource researches
+			self:DynamicResearch("tau_power_research_2", 3, 350, 40, 0, 0, nil, 0)
+			self:DynamicResearch("tau_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
+
 			-- Compute infantry research
 			if (iInfantrySquads >= 3) then
 				self:DynamicResearch("tau_improved_metallurgy", 3, 150, 150, 0, 0, nil, 0)
 			end
-			
-			-- Compute resource researches
-			self:DynamicResearch("tau_power_research_2", 3, 475, 80, 0, 0, nil, 0)
-			self:DynamicResearch("tau_requisition_research_2", 3, 80, 475, 0, 0, nil, 0)
-			self:DynamicResearch("tau_relic_research", 4, 250, 250, 0, 0, nil, 0)
-			self:DynamicResearch("tau_relic_research_2", 5, 350, 350, 0, 0, nil, 0)
-			
-			-- Teachings of Kauyon.	
-			self:DynamicResearch("tau_teachings_of_kauyon_research", 3, 450, 450, 0, 0, nil, 0)
-			
-			-- Teachings of Mont'ka.		
-			self:DynamicResearch("tau_teachings_of_montka_research", 3, 450, 450, 0, 0, nil, 0)
-			
+
+			-- Computer Probe Addon for emplacements if enemy has infiltrators
+			if (cpu_manager:EnemyHasUnitInfiltrators() or cpu_manager:EnemyHasBaseInfiltrators()) then
+				self:DynamicAddon("addon_tau_turret_probe", 5, 3, 10, 80, 0, 0, nil, nil, false)
+			end
+
+			-- Compute Wall Research
+			self:DynamicResearch("all_walls_research", 3, 280, 280, 0, 0, nil, 0)
+
+			-- Compute vehicle researches
+			self:DynamicResearch("tau_vehicle_shields_research_2", 3, 150, 100, 0, 0, nil, 0)
+
 			-- Compute secondary researches
 			if (iArmyStrength >= 1750) then
 
@@ -324,7 +361,7 @@ function TauBuildBaseStrategy:BuildFlexible()
 				end	
 				
 				if (iKrootSquads >= 2) then
-					self:DynamicResearch("tau_beast_blood_research", 3, 80, 40, 0, 0, nil, 0)
+					self:DynamicResearch("tau_beast_blood_research", 3, 80, 30, 0, 0, nil, 0)
 					self:DynamicResearch("tau_targeting_optics_kroot", 3, 100, 100, 0, 0, nil, 0)
 				end	
 			end
@@ -333,49 +370,68 @@ function TauBuildBaseStrategy:BuildFlexible()
 		-- Compute tier 4 researches
 		if (self.tierLevel >= 4) then
 			
+			-- Compute resource researches
+			self:DynamicResearch("tau_power_research_3", 4, 500, 60, 0, 0, nil, 0)
+			self:DynamicResearch("tau_requisition_research_3", 4, 125, 450, 0, 0, nil, 0)
+			
+			-- Computer Relic researches
+			self:DynamicResearch("tau_relic_research", 4, 1000, 1000, 0, 0, nil, 0)
+
 			-- Compute infantry research
 			if (iInfantrySquads >= 3) then
 				self:DynamicResearch("tau_improved_power_source_research_2", 4, 150, 100, 0, 0, nil, 0)
-				
-				-- Compute Plasma Rifle research.
-				--self:DynamicResearch("tau_plasma_rifles", 4, 75, 50, 0, 0, nil, 0)
 			end
 			
 			if (iKrootSquads >= 1) then
-				self:DynamicResearch("tau_beast_blood_research_2", 4, 100, 50, 0, 0, nil, 0)
-				self:DynamicResearch("tau_kroot_pact_research", 4, 250, 250, 0, 0, nil, 0)
-				self:DynamicResearch("tau_kroot_pact_research_2", 4, 450, 450, 0, 0, nil, 0)
+				self:DynamicResearch("tau_beast_blood_research_2", 4, 100, 40, 0, 0, nil, 0)
+				self:DynamicResearch("tau_improved_metallurgy_kroot", 4, 150, 150, 0, 0, nil, 0)
+				self:DynamicResearch("tau_kroot_pact_research", 4, 350, 200, 0, 0, nil, 0)
+				self:DynamicResearch("tau_kroot_pact_research_2", 4, 450, 310, 0, 0, nil, 0)
 			end	
-			
-			-- Compute resource researches
-			self:DynamicResearch("tau_power_research_3", 4, 650, 60, 0, 0, nil, 0)
-			self:DynamicResearch("tau_requisition_research_3", 4, 60, 650, 0, 0, nil, 0)
-			
+
 			-- Compute Tier IV
-			self:DynamicResearch("tau_path_to_destruction_research", 4, 660, 660, 0, 0, nil, 0)
+			self:DynamicResearch("tau_path_to_destruction_research", 4, 1200, 1800, 0, 0, nil, 0)
+		end
+
+		-- Compute tier 5 researches
+		if (self.tierLevel >= 5) then
+
+			-- Compute resource researches
+			self:DynamicResearch("tau_power_research_4", 5, 650, 80, 0, 0, nil, 0)
+			self:DynamicResearch("tau_requisition_research_4", 5, 150, 550, 0, 0, nil, 0)
 			
+			-- Computer Relic researches
+			self:DynamicResearch("tau_relic_research_2", 5, 2000, 2000, 0, 0, nil, 0)
+
+			-- Compute R'vanra researches
 			self:DynamicResearch("tau_rvarna_parts_research", 5, 100, 100, 0, 0, nil, 0)
 			self:DynamicResearch("tau_rvarna_parts_research_2", 5, 200, 200, 0, 0, nil, 0)
-			self:DynamicResearch("tau_rvarna_submunition_research", 5, 2500, 2500, 0, 0, nil, 0)
-			
-			-- Compute resource researches
-			self:DynamicResearch("tau_power_research_4", 5, 825, 40, 0, 0, nil, 0)
-			self:DynamicResearch("tau_requisition_research_4", 5, 40, 825, 0, 0, nil, 0)
-			
-			-- Compute secondary researches
-			if (iArmyStrength >= 2500) then
-				
-				-- Compute Titan researches
-				if (iTitanSquads >= 1) then
-					self:DynamicResearch("tau_manta_weapons_research", 5, 300, 300, 0, 0, nil, 0)
-					self:DynamicResearch("tau_manta_armor_research", 5, 300, 300, 0, 0, nil, 0)
-					self:DynamicResearch("tau_manta_missile_barrage_research", 5, 300, 300, 0, 0, nil, 0)
-				end
+
+			-- Compute Titan researches
+			if (iTitanSquads >= 1) then
+				self:DynamicResearch("tau_rvarna_submunition_research", 5, 3500, 3500, 0, 0, nil, 0)
 			end
-			
-			self:DynamicResearch("tau_apocalypse_research", 5, 1500, 1500, 0, 0, nil, 0)
-			self:DynamicResearch("tau_requisition_research_5", 6, 300, 1000, 0, 0, nil, 0)
+
+			-- Compute Manta researches
+			if (self:CountSquads("tau_manta_squad") >= 1) then
+				self:DynamicResearch("tau_manta_weapons_research", 5, 300, 300, 0, 0, nil, 0)
+				self:DynamicResearch("tau_manta_armor_research", 5, 300, 300, 0, 0, nil, 0)
+				self:DynamicResearch("tau_manta_missile_barrage_research", 5, 780, 780, 0, 0, nil, 0)
+			end
+
+			-- Compute Tier V
+			self:DynamicResearch("tau_apocalypse_research", 5, 3000, 5000, 0, 0, nil, 0)
+		end
+
+		-- Compute tier 6 researches
+		if (self.tierLevel >= 6) then
+
+			-- Compute resource researches
 			self:DynamicResearch("tau_power_research_5", 6, 800, 100, 0, 0, nil, 0)
+			self:DynamicResearch("tau_requisition_research_5", 6, 300, 1100, 0, 0, nil, 0)
+
+			-- Compute Arka Cannon research
+			self:DynamicResearch("tau_arka_cannon_research", 6, 20000, 20000, 0, 0, nil, 0)
 		end	
 	end
 
@@ -385,39 +441,47 @@ function TauBuildBaseStrategy:BuildFlexible()
 		-- Dynamic buildings
 		-- Item-Syntax: BuildingName, BuildingCount, MinTier, MinRequisition, MinPower, MinSquadCap, MinSupportCap
 		
-		self:DynamicBuild("tau_plasma_generator", 6 * self:GetBuildingCountByName("tau_hq"), 3, 500, 0, 0, 0)
-		self:DynamicBuild("tau_turret", 3, 1, 155, 50, 0, 0)
+		self:DynamicBuild("tau_plasma_generator", 6 * self:GetBuildingCountByName("tau_hq"), 3, 600, 0, 0, 0)
+		self:DynamicBuild("tau_turret", 4, 1, 400, 200, 0, 0)
 		
 		if ((iPower >= 1200 and iRequisition >= 1800) or self.m_iArmyBuild >= 3) then
 		
-			self:DynamicBuild("tau_hq", 2, 1, 560, 200, 0, 0)
-			self:DynamicBuild("tau_turret", 6, 1, 400, 400, 0, 0)
+			self:DynamicBuild("tau_hq", 2, 1, 800, 200, 0, 0)
+			self:DynamicBuild("tau_turret", 6, 1, 500, 400, 0, 0)
+			self:DynamicBuild("tau_wall", 6, 3, 600, 0, 0, 0)
+			self:DynamicBuild("tau_mines", 8, 3, 400, 100, 0, 0)
 			
 			-- Tier 1
-			self:DynamicBuild("tau_barracks", 2, 2, 1500, 0, 0, 0)
-			self:DynamicBuild("tau_kroot_nest", 2, 2, 1000, 0, 0, 0)
-			self:DynamicBuild("tau_vehicle_building", 2, 2, 500, 1000, 0, 0)
+			self:DynamicBuild("tau_barracks", 2, 2, 800, 0, 0, 0)
+			self:DynamicBuild("tau_kroot_nest", 2, 2, 900, 0, 0, 0)
+			self:DynamicBuild("tau_vehicle_building", 2, 2, 1000, 300, 0, 0)
 			
 			-- Tier 2
 			self:DynamicBuild("tau_hq", 3, 3, 1000, 500, 0, 0)
-			self:DynamicBuild("tau_turret", 20, 3, 1100, 1100, 0, 0)
+			self:DynamicBuild("tau_turret", 12, 3, 1100, 800, 0, 0)
+			self:DynamicBuild("tau_wall", 10, 3, 800, 0, 0, 0)
 			self:DynamicBuild("tau_shield_generator", 3, 3, 300, 900, 0, 0)
 			
 			-- Tier 3
-			self:DynamicBuild("tau_guidance_beacon", 2, 4, 4000, 4000, 0, 0)
-			self:DynamicBuild("tau_shrine_of_purpose", 2, 4, 4000, 4000, 0, 0)
-			self:DynamicBuild("tau_shield_generator", 10, 4, 600, 2000, 0, 0)
+			self:DynamicBuild("tau_guidance_beacon", 2, 4, 1000, 1000, 0, 0)
+		      --self:DynamicBuild("tau_shrine_of_purpose", 2, 4, 4000, 4000, 0, 0)
+			self:DynamicBuild("tau_shield_generator", 6, 4, 600, 2000, 0, 0)
+			self:DynamicBuild("tau_mines", 10, 5, 700, 300, 0, 0)
 			
 			-- Tier 4
-			self:DynamicBuild("tau_titan_building", 2, 5, 1000, 5500, 0, 0)
-			self:DynamicBuild("tau_arka_ion_cannon", 3, 5, 5500, 5500, 0, 0)
-			self:DynamicBuild("tau_arka_ion_cannon", 6, 5, 9500, 9500, 0, 0)
+			self:DynamicBuild("tau_barracks", 3, 5, 900, 0, 0, 0)
+			self:DynamicBuild("tau_kroot_nest", 3, 5, 1000, 800, 0, 0)
+			self:DynamicBuild("tau_vehicle_building", 3, 5, 1500, 1000, 0, 0)
+			self:DynamicBuild("tau_titan_building", 2, 5, 2000, 1500, 0, 0)
+			self:DynamicBuild("tau_arka_ion_cannon", 2, 5, 5000, 5000, 0, 0)
+			self:DynamicBuild("tau_hq", 4, 5, 3000, 3000, 0, 0)
+			self:DynamicBuild("tau_guidance_beacon", 3, 6, 3500, 3500, 0, 0)
+			self:DynamicBuild("tau_turret_sp", 6, 5, 4000, 4000, 0, 0)
+			self:DynamicBuild("tau_arka_ion_cannon", 3, 6, 7500, 7500, 0, 0)
 		end
-		
-		
+--[[		
 		-- Build nukes
-		
-		--[[local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+		local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 			
 		-- Build nuke
@@ -427,19 +491,20 @@ function TauBuildBaseStrategy:BuildFlexible()
 		tBuildType.name = "npc_squad_superweapon1"
 		if (self:TryBuild( tBuildType )) then
 			aitrace("BuildController: Dynamic build of "..tBuildType.name)
-		end]]
+		end
+]]
 	end
 end
-
+--[[
 -- Cylarne_04: An option to make the AI build titans (preferred).
 function TauBuildBaseStrategy:ModifySquadDemand(iUnitID)
-
-	--[[ Check for squads who aren't titan or relic units and refrain from creating them if we are at a high tier.
-	if (iUnitID == (not cpu_manager.stats:GetSquadID("tau_xv202_mako_titan_squad")) and 
-		iUnitID == (not cpu_manager.stats:GetSquadID("tau_xv101_riptide_suit_squad")) and 
-		iUnitID == (not cpu_manager.stats:GetSquadID("tau_xv104_riptide_suit_squad")) and 
-		iUnitID == (not cpu_manager.stats:GetSquadID("tau_xv107_rvarna_suit_squad")) and 
-		iUnitID == (not cpu_manager.stats:GetSquadID("tau_manta_squad"))) then
+ 
+	-- Check for squads who aren't titan or relic units and refrain from creating them if we are at a high tier.
+	if (iUnitID == (not cpu_manager.stats:GetSquadID( "tau_xv202_mako_titan_squad" )) and 
+		iUnitID == (not cpu_manager.stats:GetSquadID( "tau_xv101_riptide_suit_squad" )) and 
+		iUnitID == (not cpu_manager.stats:GetSquadID( "tau_xv104_riptide_suit_squad" )) and 
+		iUnitID == (not cpu_manager.stats:GetSquadID( "tau_xv107_rvarna_suit_squad" )) and 
+		iUnitID == (not cpu_manager.stats:GetSquadID( "tau_manta_squad" ))) then
 		
 		-- Check resources
 		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
@@ -449,10 +514,10 @@ function TauBuildBaseStrategy:ModifySquadDemand(iUnitID)
 			(self.m_iArmyBuild >= 4 and iPower < 3000 and iRequisition < 6000 )) then
 			return 0
 		end
-	end]]
+	end
 	return BuildBaseStrategy.ModifySquadDemand(self, iUnitID)
 end
-
+]]
 -- Method to check if force tech should be computed
 function TauBuildBaseStrategy:ForceTech()
 
@@ -513,24 +578,27 @@ end
 function TauBuildBaseStrategy:GetPlacementType(iBuildingID)
 	
 	-- Check building
-	if (iBuildingID == cpu_manager.stats:GetBuildingID("tau_arka_ion_cannon")) then
-		return "HQ"
+	if (iBuildingID == cpu_manager.stats:GetBuildingID("tau_hq")) then
+		return "Safeplace"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tau_barracks") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("tau_kroot_nest") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("tau_vehicle_building")or
-			iBuildingID == cpu_manager.stats:GetBuildingID("tau_guidance_beacon")) then
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_kroot_nest") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_vehicle_building") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_guidance_beacon") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_titan_building")) then
 		return "Military"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tau_turret") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_turret_sp") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_wall") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("tau_shield_generator")) then
 		return "Front2"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tau_mines")) then
 		return "Mine"
 	elseif (cpu_manager:IsGenerator(iBuildingID) or
-			iBuildingID == cpu_manager.stats:GetBuildingID("tau_research_building") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("tau_shrine_of_montka") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("tau_shrine_of_kauyon") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("tau_hq") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("tau_shrine_of_purpose")) then
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_research_building") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_shrine_of_montka") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_shrine_of_kauyon") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_shrine_of_purpose") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tau_arka_ion_cannon")) then
 		return "BaseBack"
 	end
 	return "Basic"
@@ -541,7 +609,7 @@ function TauBuildBaseStrategy:RelicRequired(sName)
 
 	-- Check name
 	if  (sName == "tau_greater_knarloc_squad") or
-	    (sName == "tau_swordfish_squad") or
+		(sName == "tau_swordfish_squad") or
 		(sName == "tau_malo_squad") or
 		(sName == "tau_manta_squad") or
 		(sName == "tau_xv101_riptide_suit_squad") or

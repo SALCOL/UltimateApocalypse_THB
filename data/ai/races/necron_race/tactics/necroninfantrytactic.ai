@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'necroninfantrytactic.ai'
--- Created by Thudmeizer  @ 26.10.2006
+-- Created by Thudmeizer  @ 04.05.2016
 
 class 'NecronInfantryTactic' (InfantryTactic)
 
@@ -8,14 +8,46 @@ function NecronInfantryTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Necron Infantry Tactic")
 
-	-- Necrons don't get cover boni
+	-- Necrons don't get cover bonus
 	self.m_bTakeCover = false
+
+	-- Elite infantry is able to enter transport vehicles and deepstrike
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "necron_flayed_one_squad" or
+		sSquadName == "necron_lychguard_squad" or
+		sSquadName == "necron_lord_squad") then
+
+		-- Elite infantry is able to enter large transport vehicles and deepstrike building
+		self.m_iTransportable = 2	-- Restored Monolith
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "monolith" ) or cpu_manager.stats:GetBuildingID( "monolith_super" )
+
+	elseif (sSquadName == "necron_scarab_squad" or
+		sSquadName == "necron_basic_warrior_squad" or
+		sSquadName == "necron_immortal_squad" or
+		sSquadName == "necron_wraith_squad" or
+		sSquadName == "necron_deathmark_squad" or
+		sSquadName == "necron_pariah_squad" or
+		sSquadName == "necron_pariah_deathstrike_squad" or
+		sSquadName == "necron_destroyer_squad" or
+		sSquadName == "necron_heavy_destroyer_squad" or
+		sSquadName == "necron_overseer_squad" or
+		sSquadName == "necron_lord_destroyer_squad") then
+
+		-- Infantry is able to enter transports
+		self.m_iTransportable = 1	-- Ghost Ark
+
+	elseif (sSquadName == "necron_lord_death_squad") then
+
+		-- Commander is able to enter deepstrike building
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "necron_summoning_core_big" )
+	end
 end
 
 function NecronInfantryTactic:AddCommanders()
 	table.insert(self.commander, { "necron_lord_squad", true })
 	table.insert(self.commander, { "necron_lord_destroyer_squad", false })
 	table.insert(self.commander, { "necron_overseer_squad", false })
+	table.insert(self.commander, { "necron_lord_death_squad", false })
 end
 
 function NecronInfantryTactic:IsAffectedByMorale()
@@ -29,21 +61,6 @@ end
 
 function NecronInfantryTactic:DoAbilities()
 
-	if (self.squad_ai:IsInCombat()) then
-		-- Reassemble if squad strength is low.
-		local reassemble_id = cpu_manager.stats:GetAbilityID( "necron_reassemble" )	  	  
-		if (self.squad_ai:CanDoAbility( reassemble_id ) and self.squad_ai:GetNumTroopers() <= 5) then
-			Ability.DoAbility(self.squad_ai, reassemble_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = reassemble_id, min_bodies = 1 })
-		end
-	end
-	
-	-- Use the overcharge mode if getting shot at, and health is >= 0.8.
-	local overcharge_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )	  	  
-	if (self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility( overcharge_id ) and self.squad_ai:GetHealthPercentage() >= 0.95 and not self.squad_ai:IsUsingAbility(overcharge_id)) then
-		self.squad_ai:DoSpecialAbility( overcharge_id )
-	elseif (self.squad_ai:CanDoAbility( overcharge_id ) and (self.squad_ai:GetHealthPercentage() < 0.95 or not self.squad_ai:IsInCombat()) and self.squad_ai:IsUsingAbility(overcharge_id)) then
-		self.squad_ai:DoSpecialAbility( overcharge_id )
-	end
 end
 
 -- Necron infantry has problems with the jump option

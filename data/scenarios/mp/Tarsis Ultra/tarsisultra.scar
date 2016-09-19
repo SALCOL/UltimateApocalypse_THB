@@ -1,0 +1,475 @@
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+
+function OnInit()
+g_Player1 = World_GetPlayerAt(0)
+g_Player2 = World_GetPlayerAt(1)
+g_Player3 = World_GetPlayerAt(2)
+g_Player4 = World_GetPlayerAt(3)
+g_Player5 = World_GetPlayerAt(4)
+g_Player6 = World_GetPlayerAt(5)
+g_Player7 = World_GetPlayerAt(6)
+g_Player8 = World_GetPlayerAt(7)
+TelSquad1_ID=SGroup_CreateIfNotFound("TelSquad1")
+TelSquad2_ID=SGroup_CreateIfNotFound("TelSquad2")
+TelSquad3_ID=SGroup_CreateIfNotFound("TelSquad3")
+TelSquad4_ID=SGroup_CreateIfNotFound("TelSquad4")
+TelSquad31_ID=SGroup_CreateIfNotFound("TelSquad31")
+TelSquad41_ID=SGroup_CreateIfNotFound("TelSquad41")
+Util_CreateSquadsAtMarkerEx(g_Player1, "sg_thunder1", "space_marine_squad_thunderhawk", "Tel_Entrance1", 1, 1)
+Util_CreateSquadsAtMarkerEx(g_Player2, "sg_thunder2", "space_marine_squad_thunderhawk", "Tel_Entrance2", 1, 1)
+Util_CreateSquadsAtMarkerEx(g_Player3, "sg_thunder3", "space_marine_squad_thunderhawk", "Tel_Entrance3", 1, 1)
+Util_CreateSquadsAtMarkerEx(g_Player4, "sg_thunder4", "space_marine_squad_thunderhawk", "Tel_Entrance4", 1, 1)
+Util_CreateSquadsAtMarkerEx(g_Player3, "sg_thunder31", "space_marine_squad_thunderhawk", "Tel_Entrance31", 1, 1)
+Util_CreateSquadsAtMarkerEx(g_Player4, "sg_thunder41", "space_marine_squad_thunderhawk", "Tel_Entrance41", 1, 1)
+Rule_Add(Rule_Teleport1)
+Rule_Add(Rule_Teleport2)
+Rule_Add(Rule_Teleport3)
+Rule_Add(Rule_Teleport4)
+Rule_Add(Rule_Teleport31)
+Rule_Add(Rule_Teleport41)
+end
+Scar_AddInit(OnInit)
+
+function Rule_Teleport1()
+
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder1"))==0 then
+		Rule_Remove(Rule_Teleport1)
+		return
+	end
+
+	-- get all squads around starting position
+	SGroup_Clear(TelSquad1_ID)
+	Player_GetAllSquadsNearMarker(g_Player1,"TelSquad1","Tel_Entrance1")
+
+	-- check if there are squads to carry (thunder counts as one)
+	if SGroup_Count(TelSquad1_ID)>1 then
+		--stop current rule while transport is on
+		Rule_Remove(Rule_Teleport1)
+		-- remove the thunderhawk from the group to move
+		SGroup_Remove(TelSquad1_ID,SGroup_GetSpawnedSquadAt(SGroup_FromName("sg_thunder1"),1))
+		-- hide group to move
+		SGroup_DeSpawn("TelSquad1")
+		-- launch animation
+		Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder1") ,"sp_take_off")
+		-- next transport phase (let time for animation to play)
+		Rule_AddOneShot(Rule_Teleport1b,5)
+	end
+end
+
+function Rule_Teleport1b()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder1"))==0 then
+		SGroup_DestroyAllSquads("TelSquad1")
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder1")
+	SGroup_ReSpawnMarker("sg_thunder1","Tel_Exit1")
+	-- start anim
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder1") ,"sp_land")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport1c,5)
+end
+
+function Rule_Teleport1c()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder1"))==0 then
+		SGroup_DestroyAllSquads("TelSquad1")
+		return
+	end
+	-- reveal transport squad in destination position
+	SGroup_ReSpawnMarker("TelSquad1","Tel_Exit1")
+	-- show take off animation for thunderhawk
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder1") ,"sp_take_off")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport1d,5)
+end
+
+function Rule_Teleport1d()
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder1"))==0 then
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder1")
+	SGroup_ReSpawnMarker("sg_thunder1","Tel_Entrance1")
+	-- play landing at start position
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder1") ,"sp_land")
+	-- restart intial transport rule (let time for animation to play)
+	Rule_AddDelay(Rule_Teleport1,5)
+end
+
+
+
+
+
+function Rule_Teleport2()
+
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder2"))==0 then
+		Rule_Remove(Rule_Teleport2)
+		return
+	end
+
+	-- get all squads around starting position
+	SGroup_Clear(TelSquad2_ID)
+	Player_GetAllSquadsNearMarker(g_Player2,"TelSquad2","Tel_Entrance2")
+
+	-- check if there are squads to carry (thunder counts as one)
+	if SGroup_Count(TelSquad2_ID)>1 then
+		--stop current rule while transport is on
+		Rule_Remove(Rule_Teleport2)
+		-- remove the thunderhawk from the group to move
+		SGroup_Remove(TelSquad2_ID,SGroup_GetSpawnedSquadAt(SGroup_FromName("sg_thunder2"),1))
+		-- hide group to move
+		SGroup_DeSpawn("TelSquad2")
+		-- launch animation
+		Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder2") ,"sp_take_off")
+		-- next transport phase (let time for animation to play)
+		Rule_AddOneShot(Rule_Teleport2b,5)
+	end
+end
+
+function Rule_Teleport2b()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder2"))==0 then
+		SGroup_DestroyAllSquads("TelSquad2")
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder2")
+	SGroup_ReSpawnMarker("sg_thunder2","Tel_Exit2")
+	-- start anim
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder2") ,"sp_land")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport2c,5)
+end
+
+function Rule_Teleport2c()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder2"))==0 then
+		SGroup_DestroyAllSquads("TelSquad2")
+		return
+	end
+	-- reveal transport squad in destination position
+	SGroup_ReSpawnMarker("TelSquad2","Tel_Exit2")
+	-- show take off animation for thunderhawk
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder2") ,"sp_take_off")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport2d,5)
+end
+
+function Rule_Teleport2d()
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder2"))==0 then
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder2")
+	SGroup_ReSpawnMarker("sg_thunder2","Tel_Entrance2")
+	-- play landing at start position
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder2") ,"sp_land")
+	-- restart intial transport rule (let time for animation to play)
+	Rule_AddDelay(Rule_Teleport2,5)
+end
+
+
+
+
+function Rule_Teleport3()
+
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder3"))==0 then
+		Rule_Remove(Rule_Teleport3)
+		return
+	end
+
+	-- get all squads around starting position
+	SGroup_Clear(TelSquad3_ID)
+	Player_GetAllSquadsNearMarker(g_Player3,"TelSquad3","Tel_Entrance3")
+
+	-- check if there are squads to carry (thunder counts as one)
+	if SGroup_Count(TelSquad3_ID)>1 then
+		--stop current rule while transport is on
+		Rule_Remove(Rule_Teleport3)
+		-- remove the thunderhawk from the group to move
+		SGroup_Remove(TelSquad3_ID,SGroup_GetSpawnedSquadAt(SGroup_FromName("sg_thunder3"),1))
+		-- hide group to move
+		SGroup_DeSpawn("TelSquad3")
+		-- launch animation
+		Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder3") ,"sp_take_off")
+		-- next transport phase (let time for animation to play)
+		Rule_AddOneShot(Rule_Teleport3b,5)
+	end
+end
+
+function Rule_Teleport3b()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder3"))==0 then
+		SGroup_DestroyAllSquads("TelSquad3")
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder3")
+	SGroup_ReSpawnMarker("sg_thunder3","Tel_Exit3")
+	-- start anim
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder3") ,"sp_land")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport3c,5)
+end
+
+function Rule_Teleport3c()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder3"))==0 then
+		SGroup_DestroyAllSquads("TelSquad3")
+		return
+	end
+	-- reveal transport squad in destination position
+	SGroup_ReSpawnMarker("TelSquad3","Tel_Exit3")
+	-- show take off animation for thunderhawk
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder3") ,"sp_take_off")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport3d,5)
+end
+
+function Rule_Teleport3d()
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder3"))==0 then
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder3")
+	SGroup_ReSpawnMarker("sg_thunder3","Tel_Entrance3")
+	-- play landing at start position
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder3") ,"sp_land")
+	-- restart intial transport rule (let time for animation to play)
+	Rule_AddDelay(Rule_Teleport3,5)
+end
+
+
+
+
+function Rule_Teleport4()
+
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder4"))==0 then
+		Rule_Remove(Rule_Teleport4)
+		return
+	end
+
+	-- get all squads around starting position
+	SGroup_Clear(TelSquad4_ID)
+	Player_GetAllSquadsNearMarker(g_Player4,"TelSquad4","Tel_Entrance4")
+
+	-- check if there are squads to carry (thunder counts as one)
+	if SGroup_Count(TelSquad4_ID)>1 then
+		--stop current rule while transport is on
+		Rule_Remove(Rule_Teleport4)
+		-- remove the thunderhawk from the group to move
+		SGroup_Remove(TelSquad4_ID,SGroup_GetSpawnedSquadAt(SGroup_FromName("sg_thunder4"),1))
+		-- hide group to move
+		SGroup_DeSpawn("TelSquad4")
+		-- launch animation
+		Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder4") ,"sp_take_off")
+		-- next transport phase (let time for animation to play)
+		Rule_AddOneShot(Rule_Teleport4b,5)
+	end
+end
+
+function Rule_Teleport4b()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder4"))==0 then
+		SGroup_DestroyAllSquads("TelSquad4")
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder4")
+	SGroup_ReSpawnMarker("sg_thunder4","Tel_Exit4")
+	-- start anim
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder4") ,"sp_land")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport4c,5)
+end
+
+function Rule_Teleport4c()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder4"))==0 then
+		SGroup_DestroyAllSquads("TelSquad4")
+		return
+	end
+	-- reveal transport squad in destination position
+	SGroup_ReSpawnMarker("TelSquad4","Tel_Exit4")
+	-- show take off animation for thunderhawk
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder4") ,"sp_take_off")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport4d,5)
+end
+
+function Rule_Teleport4d()
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder4"))==0 then
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder4")
+	SGroup_ReSpawnMarker("sg_thunder4","Tel_Entrance4")
+	-- play landing at start position
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder4") ,"sp_land")
+	-- restart intial transport rule (let time for animation to play)
+	Rule_AddDelay(Rule_Teleport4,5)
+end
+
+
+
+
+
+function Rule_Teleport31()
+
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder31"))==0 then
+		Rule_Remove(Rule_Teleport31)
+		return
+	end
+
+	-- get all squads around starting position
+	SGroup_Clear(TelSquad31_ID)
+	Player_GetAllSquadsNearMarker(g_Player3,"TelSquad31","Tel_Entrance31")
+
+	-- check if there are squads to carry (thunder counts as one)
+	if SGroup_Count(TelSquad31_ID)>1 then
+		--stop current rule while transport is on
+		Rule_Remove(Rule_Teleport31)
+		-- remove the thunderhawk from the group to move
+		SGroup_Remove(TelSquad31_ID,SGroup_GetSpawnedSquadAt(SGroup_FromName("sg_thunder31"),1))
+		-- hide group to move
+		SGroup_DeSpawn("TelSquad31")
+		-- launch animation
+		Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder31") ,"sp_take_off")
+		-- next transport phase (let time for animation to play)
+		Rule_AddOneShot(Rule_Teleport31b,5)
+	end
+end
+
+function Rule_Teleport31b()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder31"))==0 then
+		SGroup_DestroyAllSquads("TelSquad31")
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder31")
+	SGroup_ReSpawnMarker("sg_thunder31","Tel_Exit31")
+	-- start anim
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder31") ,"sp_land")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport31c,5)
+end
+
+function Rule_Teleport31c()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder31"))==0 then
+		SGroup_DestroyAllSquads("TelSquad31")
+		return
+	end
+	-- reveal transport squad in destination position
+	SGroup_ReSpawnMarker("TelSquad31","Tel_Exit31")
+	-- show take off animation for thunderhawk
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder31") ,"sp_take_off")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport31d,5)
+end
+
+function Rule_Teleport31d()
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder31"))==0 then
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder31")
+	SGroup_ReSpawnMarker("sg_thunder31","Tel_Entrance31")
+	-- play landing at start position
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder31") ,"sp_land")
+	-- restart intial transport rule (let time for animation to play)
+	Rule_AddDelay(Rule_Teleport31,5)
+end
+
+
+
+
+
+
+
+
+function Rule_Teleport41()
+
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder41"))==0 then
+		Rule_Remove(Rule_Teleport41)
+		return
+	end
+
+	-- get all squads around starting position
+	SGroup_Clear(TelSquad41_ID)
+	Player_GetAllSquadsNearMarker(g_Player4,"TelSquad41","Tel_Entrance41")
+
+	-- check if there are squads to carry (thunder counts as one)
+	if SGroup_Count(TelSquad41_ID)>1 then
+		--stop current rule while transport is on
+		Rule_Remove(Rule_Teleport41)
+		-- remove the thunderhawk from the group to move
+		SGroup_Remove(TelSquad41_ID,SGroup_GetSpawnedSquadAt(SGroup_FromName("sg_thunder41"),1))
+		-- hide group to move
+		SGroup_DeSpawn("TelSquad41")
+		-- launch animation
+		Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder41") ,"sp_take_off")
+		-- next transport phase (let time for animation to play)
+		Rule_AddOneShot(Rule_Teleport41b,5)
+	end
+end
+
+function Rule_Teleport41b()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder41"))==0 then
+		SGroup_DestroyAllSquads("TelSquad41")
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder41")
+	SGroup_ReSpawnMarker("sg_thunder41","Tel_Exit41")
+	-- start anim
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder41") ,"sp_land")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport41c,5)
+end
+
+function Rule_Teleport41c()
+	-- if thunderhawk is dead then stop rules forever and kill transported squad
+	if SGroup_Count(SGroup_FromName("sg_thunder41"))==0 then
+		SGroup_DestroyAllSquads("TelSquad41")
+		return
+	end
+	-- reveal transport squad in destination position
+	SGroup_ReSpawnMarker("TelSquad41","Tel_Exit41")
+	-- show take off animation for thunderhawk
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder41") ,"sp_take_off")
+	-- next transport phase (let time for animation to play)
+	Rule_AddOneShot(Rule_Teleport41d,5)
+end
+
+function Rule_Teleport41d()
+	-- if thunderhawk is dead then stop rules forever
+	if SGroup_Count(SGroup_FromName("sg_thunder41"))==0 then
+		return
+	end
+	-- move thunderhawk to destination
+	SGroup_DeSpawn("sg_thunder41")
+	SGroup_ReSpawnMarker("sg_thunder41","Tel_Entrance41")
+	-- play landing at start position
+	Anim_PlaySGroupAnim(SGroup_FromName("sg_thunder41") ,"sp_land")
+	-- restart intial transport rule (let time for animation to play)
+	Rule_AddDelay(Rule_Teleport41,5)
+end

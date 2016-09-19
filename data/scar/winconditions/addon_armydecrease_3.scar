@@ -32,6 +32,11 @@ function Armydecrease_AI_InitRule()
 		
 		if (player_IsHuman_W1(ePlayerID) == false) then
 		
+			if (Player_GetRaceName(ePlayerID) == "ork_race") then
+				local oModPopulationCap	= Modifier_Create(MAT_Player, "population_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifierd3, "")
+				Modifier_ApplyToPlayer( oModPopulationCap, ePlayerID)
+			end
+		
 			-- Apply army cap modifiers
 			pcall(Modifier_ApplyToPlayer, oModMaxSquadCap, ePlayerID)
 			pcall(Modifier_ApplyToPlayer, oModMaxSupportCap, ePlayerID)

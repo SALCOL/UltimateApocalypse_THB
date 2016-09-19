@@ -1,0 +1,71 @@
+----------------------------------------
+-- File: 'dhbiggeneratortactic.ai'
+-- Edited by Thudmeizer @ 17.04.2016
+
+class 'DHBigGeneratorTactic' (BaseTactic)
+
+DHBigGenerator = {}
+
+function DHBigGeneratorTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("DH Big Generator Tactic")
+
+	self.m_iNukeID = cpu_manager.stats:GetBuildingID( "inquisition_nuclear_facility" )
+end
+
+function DHBigGeneratorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DHBigGenerator.repair_id == nil) then
+		DHBigGenerator.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+	if (DHBigGenerator.inhibitor_id == nil) then
+		DHBigGenerator.inhibitor_id = cpu_manager.stats:GetAbilityID( "all_apocalypse_inhibitor" )
+	end
+	if (DHBigGenerator.recharge_id == nil) then
+		DHBigGenerator.recharge_id = cpu_manager.stats:GetAbilityID( "all_thermo_shieldrecharge" )
+	end
+end
+
+function DHBigGeneratorTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iNukeID, true) > 0) and (iPower >= 40000) then
+
+		-- Increase charge rate of super weapons
+		if (self.base_ai:CanDoAbility( DHBigGenerator.inhibitor_id )) then
+			self.base_ai:DoSpecialAbility( DHBigGenerator.inhibitor_id )
+		end
+	end
+
+	-- Search for a specific uber units which are low on morale
+	if (self.base_ai:CanDoAbility( DHBigGenerator.recharge_id ) and (iPower >= 10000)) then
+		if self:PlayerHasLowMoraleSquad(0.3) then
+			-- Enable the Shield Recharge on currently impacted units with low morale (low shield level)
+            		self.base_ai:DoSpecialAbility( DHBigGenerator.recharge_id )
+        	end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DHBigGenerator.repair_id )) then
+			self.base_ai:DoSpecialAbility( DHBigGenerator.repair_id )
+		end
+	end
+end
+
+-- Called to find if the player has a squad (from a specific list) that meets the low morale condition.
+function DHBigGeneratorTactic:PlayerHasLowMoraleSquad(iMoraleRatio)
+	for oSquad in cpu_manager.stats:GetPlayerStatsFromID(cpu_manager.player_id):GetSquads() do
+    		if oSquad:IsValid() then
+        	local oName = oSquad:GetSquadName()
+       			if (oName == "inquisition_squad_warhound_titan" or oName == "inquisition_squad_warhound_vengence_titan") then
+            			if oSquad:GetMoralePercentage() <= iMoraleRatio then
+                		return true
+            			end
+        		end
+    		end
+	end
+	return false
+end

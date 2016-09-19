@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'honourguardtactic.ai'
--- Edited by Thudmeizer @ 05.02.2016
+-- Edited by Thudmeizer @ 07.06.2016
 
 class 'HonourGuardTactic' (SpaceMarineInfantryTactic)
 
@@ -41,6 +41,10 @@ function HonourGuardTactic:InitAbilities()
 		HonourGuard.sabotage_id = cpu_manager.stats:GetAbilityID( "marines_sabotage" )	
 	end
 
+	if (HonourGuard.turret_id == nil) then
+		HonourGuard.turret_id = cpu_manager.stats:GetAbilityID( "marines_layturret" )	
+	end
+
 	if (HonourGuard.run_id == nil) then
 		HonourGuard.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
@@ -65,9 +69,12 @@ function HonourGuardTactic:DoAbilities()
 		self.squad_ai:DoSpecialAbilitySquad(HonourGuard.smoke_id, oUnit:GetSquad())
 	end
 
-	-- Check to make sure if no threats are nearby
-	local vSquadPos = self.squad_ai:GetPosition()
-	if not (self.squad_ai:IsInCombat()) and not (self.squad_ai:IsUnderAttack()) then
+	-- Try to place turret
+	Ability.DoAbilityPos( self.squad_ai, HonourGuard.turret_id, Ability.Filters.CloseEnemy, 10 )
+	Ability.DoAbilityPos( self.squad_ai, HonourGuard.turret_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2 )
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
 
 		-- If I am safe I can run
 		if (self.squad_ai:CanDoAbility( HonourGuard.run_id )) then

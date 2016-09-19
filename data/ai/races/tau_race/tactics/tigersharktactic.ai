@@ -1,0 +1,59 @@
+----------------------------------------
+-- File: 'tigersharktactic.ai'
+-- Created by Cylarne @ 2013
+-- Edited by Thudmeizer	@ 24.04.2016
+
+class 'TigerSharkTactic' (TauVehicleTactic)
+
+TigerShark = {}
+
+function TigerSharkTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Tiger Shark Tactic")
+end
+
+-- Tiger Shark is allowed to retreat even directly after a jump
+function TigerSharkTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function TigerSharkTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TigerShark.barrage_id == nil) then
+		TigerShark.barrage_id = cpu_manager.stats:GetAbilityID( "tau_tigershark_missile_barrage" )
+	end
+end
+
+function TigerSharkTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	if (self.squad_ai:CanDoAbility( TigerShark.barrage_id ) and (iRequisition >= 500 and iPower >= 500)) then
+
+		if (self.squad_ai:GetHealthPercentage() > 0.7 and self.squad_ai:IsInCombat()) then
+			Ability.DoAbilityPos(self.squad_ai, TigerShark.barrage_id, Ability.Filters.CloseEnemy, 24)
+			Ability.DoAbilityPos(self.squad_ai, TigerShark.barrage_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+		end
+	end
+end
+
+function TigerSharkTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+    	-- State machine
+    	if (not VehicleTactic.Update(self)) then
+        	return
+    	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

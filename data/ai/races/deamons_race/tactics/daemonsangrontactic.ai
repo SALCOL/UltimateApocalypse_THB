@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'angrontactic.ai'
+-- File: 'daemonsangrontactic.ai'
 -- Edited by Cylarne 10/2/2014
+-- Edited by Thudmeizer	@ 07.05.2016
 
 class 'DaemonsAngronTactic' (DaemonsInfantryTactic)
 
@@ -9,78 +10,219 @@ DaemonsAngron = {}
 function DaemonsAngronTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Daemons Angron Tactic")
+
+	self.timedDirectSpawnAbility = Timer( DaemonsAngronTactic.DoDirectSpawnAbility, self, 5 )
 end
 
-function DaemonsAngronTactic:AlwaysAttack()
-	return true
+function DaemonsAngronTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDaemonsAngron = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDaemonsAngron ~= nil) then
+			local addOnID = buildChannelDaemonsAngron:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelDaemonsAngron:IsBuilding() == 0 and buildChannelDaemonsAngron:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelDaemonsAngron:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
 end
 
--- Always attack
 function DaemonsAngronTactic:IsAttacker()
-
-	return true
+	return self:IsCommanderAttacker()
 end
 
--- Always defend
 function DaemonsAngronTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Daemons Angron is allowed to retreat even directly after a jump
+function DaemonsAngronTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function DaemonsAngronTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+-- Arkhan 03.2006: Inherited method used by commanders which are able to jump with an attached squad
+function DaemonsAngronTactic:CanJumpAttached()
 	return true
 end
 
 function DaemonsAngronTactic:InitAbilities()
 
 	-- Init ability ID's
+	if (DaemonsAngron.powers_id == nil) then
+		DaemonsAngron.powers_id = cpu_manager.stats:GetAbilityID( "daemons_angron_catastrophic_powers" )	
+	end
+
+	if (DaemonsAngron.shroud_id == nil) then
+		DaemonsAngron.shroud_id = cpu_manager.stats:GetAbilityID( "daemons_angron_daemonic_shroud" )	
+	end
+
 	if (DaemonsAngron.forcethrow_id == nil) then
 		DaemonsAngron.forcethrow_id = cpu_manager.stats:GetAbilityID( "daemons_angron_force_throw" )	
 	end
 	
-	if (DaemonsAngron.shroud_id == nil) then
-		DaemonsAngron.shroud_id = cpu_manager.stats:GetAbilityID( "daemons_angron_daemonic_shroud" )	
+	if (DaemonsAngron.sacrifice_id == nil) then
+		DaemonsAngron.sacrifice_id = cpu_manager.stats:GetAbilityID( "daemons_angron_sacrifice" )	
 	end
 	
 	if (DaemonsAngron.warpstorm_id == nil) then
 		DaemonsAngron.warpstorm_id = cpu_manager.stats:GetAbilityID( "daemons_angron_warp_storm" )	
 	end
-	
-	if (DaemonsAngron.catastrophic_powers_id == nil) then
-		DaemonsAngron.catastrophic_powers_id = cpu_manager.stats:GetAbilityID( "daemons_angron_catastrophic_powers" )	
-	end
-	
 end
 
 function DaemonsAngronTactic:DoAbilities()
 	
-	-- Catastrophic Powers
-	Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.catastrophic_powers_id, Ability.Filters.CloseInfantryEnemy, 16 )
-	Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.catastrophic_powers_id, Ability.Filters.CloseEnemy, 25 )
-	
-	-- Warp Storm
-	Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.catastrophic_powers_id, Ability.Filters.CloseInfantryEnemy, 35 )
-	Ability.DoAbilityTargetEntity(self.squad_ai, DaemonsAngron.warpstorm_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-	
-	-- Force Throw
-	Ability.DoAbilityTarget( self.squad_ai, DaemonsAngron.forcethrow_id, Ability.Filters.CloseSquadEnemy, 1 )
-	
-	-- Daemonic Shroud
-	if (self.squad_ai:IsBroken()) then
-		if (self.squad_ai:CanDoAbility(DaemonsAngron.shroud_id)) then
-			self.squad_ai:DoSpecialAbility(DaemonsAngron.shroud_id)
+	-- If we are dying, lower requisites for attacks
+	if ( self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 ) then
+
+		-- Doom Blast 
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.powers_id, Ability.Filters.CloseSquadEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.powers_id, Ability.Filters.CloseMonsterEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.powers_id, Ability.Filters.CloseEnemy, 10 )
+
+		-- Force Throw
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.forcethrow_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.forcethrow_id, Ability.Filters.CloseMonsterEnemy, 4 )
+
+	else
+		-- Doom Blast 
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.powers_id, Ability.Filters.CloseSquadEnemy, 15 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.powers_id, Ability.Filters.CloseMonsterEnemy, 15 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.powers_id, Ability.Filters.CloseEnemy, 25 )
+
+		-- Force Throw
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.forcethrow_id, Ability.Filters.CloseSquadEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.forcethrow_id, Ability.Filters.CloseMonsterEnemy, 8 )
+	end
+
+	-- Rift of Protection
+	local iRange = self.squad_ai:GetAbilityRange(DaemonsAngron.shroud_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 10)
+	if (oUnit ~= nil and oUnit:IsInCombat() and oUnit:IsBroken() and cpu_manager:GetUnitStrength(oUnit) > 150) or (self.squad_ai:IsBroken()) then
+		self.squad_ai:DoSpecialAbility(DaemonsAngron.shroud_id)
+	end
+
+	-- Khorne's Sacrifice
+--[[
+	if ( self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.3 ) then
+		if self.squad_ai:CanDoAbility(DaemonsAngron.sacrifice_id) then
+			local oSquad = self:GetCloseAlliedSquadToSacrifice(self.squad_ai:GetAbilityRange(DaemonsAngron.sacrifice_id))
+			if oSquad ~= nil then
+				self.squad_ai:DoSpecialAbilitySquad(DaemonsAngron.sacrifice_id, oSquad:GetSquad())
+			end
 		end
 	end
+]]
+	if (self.squad_ai:CanDoAbility(DaemonsAngron.sacrifice_id) and (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.3)) then
+		local range = self.squad_ai:GetAbilityRange( DaemonsAngron.sacrifice_id )	
+		local squad_filter = function( squad_ai )		
+			return squad_ai:GetNumTroopers() >= 4 and not squad_ai:IsInCombat()
+		end	
+   		local oSquad = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), range, squad_filter )
+		if (oSquad ~= nil) then
+			local oStats = oSquad:GetStats()
+			if (oStats ~= nil) then
+				if oStats:GetClass() == UnitStatsAI.UC_MonsterMed then
+					self.squad_ai:DoSpecialAbilitySquad( DaemonsAngron.sacrifice_id, oSquad:GetSquad() )
+				end
+			end
+ 		end
+	end
 	
+	-- Warp Storm
+	Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.warpstorm_id, Ability.Filters.CloseInfantryEnemy, 35 )
+	Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.warpstorm_id, Ability.Filters.CloseMonsterEnemy, 25 )
+	Ability.DoAbilityPos( self.squad_ai, DaemonsAngron.warpstorm_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+
 	-- Spawn Bloodthirster Bodyguards
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		DaemonsAngronTactic.DoDirectSpawnAbility(self)
+	end	
+end
+
+function DaemonsAngronTactic:DoDirectSpawnAbility()
+
+	-- Spawn Bloodthirster Bodyguards in combat
 	if (self.squad_ai:CanDirectSpawn()) then 
 		self.squad_ai:DoDirectSpawn()
 	end
-	
 end
 
-function DaemonsAngronTactic:Reinforce()
+function DaemonsAngronTactic:Upgrade()
 
-	if (not self.squad_ai:IsReinforcing()) then
-		-- Always try to get the leader first
-		if (self.squad_ai:CanReinforce(true, 0)) then
-			self.squad_ai:DoReinforce(true, 0)
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production_2	8
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_daemons_angron_chosen_sword		1/4 mutually-exclusive melee
+--	self:AutoBuildAddOn(9)	-- 	[addon_10] addon_daemons_angron_doom_sickle		2/4 mutually-exclusive melee
+--	self:AutoBuildAddOn(10)	-- 	[addon_11] addon_daemons_angron_fire_sword		3/4 mutually-exclusive melee
+--	self:AutoBuildAddOn(11)	-- 	[addon_12] addon_daemons_angron_void_sword		4/4 mutually-exclusive melee
+
+	local addon_random_commander_upgrades = math.random( 0,7 )	-- Randomize these addons
+	self:AutoBuildAddOn(addon_random_commander_upgrades)
+
+	local addon_random_commander_wargear = math.random( 8,11 )	-- Randomize this wargear
+	self:AutoBuildAddOn(addon_random_commander_wargear)
+end
+
+function DaemonsAngronTactic:GetCloseAlliedSquadToSacrifice(iRange)
+	local iPosition = self.squad_ai:GetPosition()
+	for oPlayer in cpu_manager.stats:GetPlayerStats() do
+		if not oPlayer:IsPlayerDead() then
+			if not cpu_manager.player_stats:IsEnemy(oPlayer) then
+				for oSquad in oPlayer:GetSquads() do
+					if oSquad:IsValid() then
+						if (oSquad:GetHealthPercentage() > 0.8) then
+							if distance(oSquad:GetPosition(),iPosition) < iRange then 
+								return oSquad
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return nil
+end
+
+function DaemonsAngronTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+		
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
 			return
 		end
 	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

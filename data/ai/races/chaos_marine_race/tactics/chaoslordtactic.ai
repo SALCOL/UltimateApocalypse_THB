@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'chaoslordtactic.ai'
--- Edited by Thudmeizer @ 11.10.2005
+-- Edited by Thudmeizer @ 28.02.2016
 -- Edited by LarkinVB   @ 31.07.2005
 
 class 'ChaosLordTactic' (ChaosMarineInfantryTactic)
@@ -14,6 +14,20 @@ function ChaosLordTactic:__init( squad_ai ) super( squad_ai )
 	self.m_oTimedSpecialAbilities = Timer( ChaosLordTactic.DoTimedSpecialAbilities, self, 7 )
 end
 
+function ChaosLordTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelChaosLord = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelChaosLord ~= nil) then
+			local addOnID = buildChannelChaosLord:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelChaosLord:IsBuilding() == 0 and buildChannelChaosLord:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelChaosLord:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
 -- Assassinate win condition -- never attack
 function ChaosLordTactic:IsAttacker()
 	return (not cpu_manager.assassinate and self:IsCommanderAttacker())
@@ -22,6 +36,27 @@ end
 -- Assassinate win condition -- never defend
 function ChaosLordTactic:IsDefender()
 	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+end
+
+-- Chaos Lord is allowed to retreat even directly after a jump
+function ChaosLordTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Assassinate win condition -- never jump into combat
+function ChaosLordTactic:JumpAttack()
+
+	if (not cpu_manager.assassinate) then
+		Tactic.JumpAttack(self)
+	end
+end
+
+function ChaosLordTactic:CanJumpAttached()
+	return true
 end
 
 function ChaosLordTactic:InitAbilities()
@@ -33,16 +68,66 @@ function ChaosLordTactic:InitAbilities()
 	if (ChaosLord.detector_id == nil) then
 		ChaosLord.detector_id = cpu_manager.stats:GetAbilityID( "chaos_detector" )	
 	end
+	if (ChaosLord.bomb_id == nil) then
+		ChaosLord.bomb_id = cpu_manager.stats:GetAbilityID( "chaos_commander_bomb" )
+	end
+	if (ChaosLord.run_id == nil) then
+		ChaosLord.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function ChaosLordTactic:DoAbilities()
 
 	Ability.DoAbility( self.squad_ai, ChaosLord.strength_id, Ability.Filters.IsInCombat )
 	
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, ChaosLord.bomb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ChaosLord.bomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( ChaosLord.run_id )) then
+			self.squad_ai:DoSpecialAbility( ChaosLord.run_id )
+		end
+	end
+
 	if (self.m_oTimedSpecialAbilities ~= nil) then
 		self.m_oTimedSpecialAbilities:Call()
 	else
 		ChaosLordTactic.DoTimedSpecialAbilities(self)
+	end
+
+	-- Check if we can possess
+	if (self.squad_ai:CanPossess()) then
+	
+		-- Check if we are in combat
+		if (self.squad_ai:IsInCombat() or cpu_manager.terrain_analyzer:HasThreat(self.squad_ai:GetPosition(), 35)) then
+			self.squad_ai:DoPossess()
+		end
+	end
+end
+
+function ChaosLordTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
 	end
 end
 
@@ -100,4 +185,7 @@ function ChaosLordTactic:Update()
 			self:TryAttachSquadMelee()
 		end
 	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

@@ -1,0 +1,34 @@
+----------------------------------------
+-- File: 'dhbombtactic.ai'
+-- Edited by Thudmeizer	@ 16.04.2016
+
+class 'DHBombTactic' (BaseTactic)
+
+DHBomb = {}
+
+function DHBombTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("DH Bomb Tactic")
+end
+
+function DHBombTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DHBomb.detonate_id == nil) then
+		DHBomb.detonate_id = cpu_manager.stats:GetAbilityID( "nuke_detonate" )
+	end
+end
+
+function DHBombTactic:DoAbilities()
+	
+	-- Detonate Bomb with enemies in vicinity!
+	Ability.DoAbilityArea(self.base_ai, DHBomb.detonate_id, Ability.Filters.CloseEnemy, 10, 5)
+
+	-- Search a building
+	local iRange = self.base_ai:GetAbilityRange(DHBomb.detonate_id)
+	local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.base_ai:GetPosition(), iRange, 1)
+	if (oBuilding ~= nil) then
+		-- Detonate the Bomb!
+		self.base_ai:DoSpecialAbilityEntity(DHBomb.detonate_id, oBuilding) 
+	end
+end

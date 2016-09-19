@@ -6,5 +6,5 @@ always_on = false,
 title = "Addon: AI Donations",
 win_message = "",
 lose_message = "",
-description = "Allows the AI to exchange resources with players or AI."
+description = "WARNING! Not multiplayer usable! Allows the AI to exchange resources with players or AI."
 }

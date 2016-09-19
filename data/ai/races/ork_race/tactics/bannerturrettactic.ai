@@ -1,0 +1,38 @@
+----------------------------------------
+-- File: 'bannerturrettactic.ai'
+-- Edited by Thudmeizer         @ 27.02.2016
+
+class 'BannerTurretTactic' (BaseTactic)
+
+BannerTurret = {}
+
+function BannerTurretTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Banner Turret Tactic")
+end
+
+function BannerTurretTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function BannerTurretTactic:InitAbilities()
+
+	-- Init Ability ID's and Addon ID's
+	BannerTurret.mainAddonID = cpu_manager.stats:GetAddOnID( "ork_waagh_banner_gunzaddon" )
+	BannerTurret.missileAddonID =  cpu_manager.stats:GetAddOnID( "ork_waagh_banner_gunzaddon_2" )
+end
+
+function BannerTurretTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Twin Shootas		-- ork_waagh_banner_gunzaddon
+--	self:AutoBuildAddOn(1) -- Rocket Launcha	-- ork_waagh_banner_gunzaddon_2
+
+	-- Always build the main twin shoota addon as late game they aren't built for some reason. Secondary addon will be built reliability via the main Build Order.
+	self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())	-- Twin Shootas
+end

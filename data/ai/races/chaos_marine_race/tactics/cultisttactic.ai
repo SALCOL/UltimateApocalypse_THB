@@ -2,7 +2,7 @@
 -- File: 'cultistactic.ai'
 -- Edited by LarkinVB	@ 19.08.2005
 -- Edited by Arkhan	@ 12.01.2006
--- Edited by Thudmeizer	@ 07.01.2016
+-- Edited by Thudmeizer	@ 03.05.2016
 
 class 'CultistTactic' (ChaosMarineInfantryTactic)
 
@@ -23,50 +23,61 @@ function CultistTactic:InitAbilities()
 	if (Cultist.explode_id == nil) then
 		Cultist.explode_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_explode" )	
 	end
-	if (Cultist.worshipslaanesh_id == nil) then
-		Cultist.worshipslaanesh_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_slaanesh" )	
-	end
-	if (Cultist.worshipnurgle_id == nil) then
-		Cultist.worshipnurgle_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_nurgle" )	
-	end
-	if (Cultist.worshiptzeentch_id == nil) then
-		Cultist.worshiptzeentch_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_tzeentch" )	
-	end
+
 	if (Cultist.worshipkhorne_id == nil) then
 		Cultist.worshipkhorne_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_khorne" )	
 	end
-	if (Cultist.infiltration_id == nil) then
-		Cultist.infiltration_id = cpu_manager.stats:GetAbilityID( "chaos_infiltration_cultists" )	
+
+	if (Cultist.worshipnurgle_id == nil) then
+		Cultist.worshipnurgle_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_nurgle" )	
+	end
+
+	if (Cultist.worshipslaanesh_id == nil) then
+		Cultist.worshipslaanesh_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_slaanesh" )	
+	end
+
+	if (Cultist.worshiptzeentch_id == nil) then
+		Cultist.worshiptzeentch_id = cpu_manager.stats:GetAbilityID( "chaos_cultist_worship_tzeentch" )	
 	end
 end
 
 function CultistTactic:DoAbilities()
 
-	if (self.squad_ai:GetHealthPercentage() >= 0.7) then
-		if (self.squad_ai:CanDoAbility(Cultist.worshipslaanesh_id)) then
-			--Ability.DoAbility( self.squad_ai, Cultist.worshipslaanesh_id, Ability.Filters.IsInCombat )
-			Ability.DoAbilityArea(self.squad_ai, Cultist.worshipslaanesh_id, Ability.Filters.CloseEnemy, 10, 2)
+	if (self.squad_ai:GetHealthPercentage() >= 0.6) then
+
+		-- Search a squad
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), 20, 2)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 60) then
+
+			if (self.squad_ai:CanDoAbility(Cultist.worshipkhorne_id)) then
+				self.squad_ai:DoSpecialAbility(Cultist.worshipkhorne_id)
+				--Ability.DoAbilityArea(self.squad_ai, Cultist.worshipkhorne_id, Ability.Filters.CloseEnemy, 10, 2)
+			end
+
+			if (self.squad_ai:CanDoAbility(Cultist.worshipnurgle_id)) then
+				self.squad_ai:DoSpecialAbility(Cultist.worshipnurgle_id)
+				--Ability.DoAbilityArea(self.squad_ai, Cultist.worshipnurgle_id, Ability.Filters.CloseEnemy, 10, 2)
+			end
+
+			if (self.squad_ai:CanDoAbility(Cultist.worshipslaanesh_id)) then
+				self.squad_ai:DoSpecialAbility(Cultist.worshipslaanesh_id)
+				--Ability.DoAbilityArea(self.squad_ai, Cultist.worshipslaanesh_id, Ability.Filters.CloseEnemy, 10, 2)
+			end
+
+			if (self.squad_ai:CanDoAbility(Cultist.worshiptzeentch_id)) then
+				self.squad_ai:DoSpecialAbility(Cultist.worshiptzeentch_id)
+				--Ability.DoAbilityArea(self.squad_ai, Cultist.worshiptzeentch_id, Ability.Filters.CloseEnemy, 10, 2)
+			end
 		end
-		if (self.squad_ai:CanDoAbility(Cultist.worshipnurgle_id)) then
-			--Ability.DoAbility( self.squad_ai, Cultist.worshipnurgle_id, Ability.Filters.IsInCombat )
-			Ability.DoAbilityArea(self.squad_ai, Cultist.worshipnurgle_id, Ability.Filters.CloseEnemy, 10, 2)
-		end
-		if (self.squad_ai:CanDoAbility(Cultist.worshiptzeentch_id)) then
-			--Ability.DoAbility( self.squad_ai, Cultist.worshiptzeentch_id, Ability.Filters.IsInCombat )
-			Ability.DoAbilityArea(self.squad_ai, Cultist.worshiptzeentch_id, Ability.Filters.CloseEnemy, 10, 2)
-		end
-		if (self.squad_ai:CanDoAbility(Cultist.worshipkhorne_id)) then
-			--Ability.DoAbility( self.squad_ai, Cultist.worshipkhorne_id, Ability.Filters.IsInCombat )
-			Ability.DoAbilityArea(self.squad_ai, Cultist.worshipkhorne_id, Ability.Filters.CloseEnemy, 10, 2)
-		end
-	end
-	if (self.squad_ai:CanDoAbility(Cultist.explode_id)) then
-		Ability.DoAbilityArea(self.squad_ai, Cultist.explode_id, Ability.Filters.CloseInfantryEnemy, 4, 2)
-	end
-	if (self.squad_ai:CanDoAbility(Cultist.infiltration_id) and not self.squad_ai:IsUsingAbility(Cultist.infiltration_id)) then
-		self.squad_ai:DoSpecialAbility(Cultist.infiltration_id)
 	end
 
+	-- Sacrifice a cultist to reduce nearby enemy morale
+	if (self.squad_ai:CanDoAbility(Cultist.explode_id)) then
+		Ability.DoAbilityArea(self.squad_ai, Cultist.explode_id, Ability.Filters.CloseInfantryEnemy, 10, 2)
+	end
+
+	-- Call basic DoAbilities methods
+	ChaosMarineInfantryTactic.DoAbilities(self)
 end
 
 function CultistTactic:Upgrade()
@@ -93,16 +104,36 @@ end
 
 function CultistTactic:Reinforce()
 
-	-- Check if we are reinforcing
-	if (self.squad_ai:IsReinforcing()) then
-		return
-	end
-	
-	-- If I am broken, don't upgrade!
+	-- If I am broken, don't upgrade/reinforce!
 	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
-		return
+	   return
 	end
-	
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- try for different types of squad members
+		local iChampionIndex = 0
+        	local iIconBearerIndex = 1
+		
+		local iNumChampion = self.squad_ai:GetLeaderCount( iChampionIndex )
+		local iNumIconBearer = self.squad_ai:GetLeaderCount( iIconBearerIndex )
+
+		-- Desired number of each leader type
+		local iDesiredChampion = 1
+		local iDesiredIconBearer = 1
+		
+		-- Desired order of reinforcing
+		if iNumChampion < iDesiredChampion then
+			if self.squad_ai:CanReinforce( true, iChampionIndex ) then
+				self.squad_ai:DoReinforce( true, iChampionIndex )
+			end
+		elseif iNumIconBearer < iDesiredIconBearer then
+			if self.squad_ai:CanReinforce( true, iIconBearerIndex ) then
+				self.squad_ai:DoReinforce( true, iIconBearerIndex )
+			end
+		end
+	end
+
 	-- Don't reinforce squads in critical condition
 	if (self.squad_ai:GetNumTroopers() <= self.squad_ai:GetMaxTroopers() / 3 and self.squad_ai:IsUnderAttack()) then
 		return
@@ -114,15 +145,13 @@ function CultistTactic:Reinforce()
 		return
 	end
 	
-	-- Always try to get the leader first.
-	if (self.squad_ai:CanReinforce(true, 0)) then
-		self.squad_ai:DoReinforce(true, 0)
-		return
-	end
-	
-	-- Always try to reinforce, as long as I have money
-	if (self.squad_ai:CanReinforce( false, 0 ) and self.squad_ai:HasLeader()) then
-		self.squad_ai:DoReinforce( false, 0 )
+	-- Don't reinforce more than 12 squad members -- they both get stuck or don't capture points properly
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 12) then
+        	if (self.squad_ai:CanReinforce(true, 0)) then            
+            		self.squad_ai:DoReinforce(true, 0)
+       		elseif (self.squad_ai:CanReinforce(false, 0)) then
+            		self.squad_ai:DoReinforce(false, 0)
+		end
 	end
 end
 

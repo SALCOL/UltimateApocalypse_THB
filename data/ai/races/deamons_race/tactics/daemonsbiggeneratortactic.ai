@@ -1,0 +1,83 @@
+----------------------------------------
+-- File: 'daemonsbiggeneratortactic.ai'
+-- Edited by Thudmeizer @ 12.06.2016
+
+class 'DaemonsBigGeneratorTactic' (BaseTactic)
+
+DaemonsBigGenerator = {}
+
+function DaemonsBigGeneratorTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Daemons Big Generator Tactic")
+
+	self.m_iNukeID = cpu_manager.stats:GetBuildingID( "daemon_doom_pit" )
+
+	ResourcesGenTMR = g_iGMT
+end
+
+function DaemonsBigGeneratorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsBigGenerator.repair_id == nil) then
+		DaemonsBigGenerator.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+	if (DaemonsBigGenerator.inhibitor_id == nil) then
+		DaemonsBigGenerator.inhibitor_id = cpu_manager.stats:GetAbilityID( "all_apocalypse_inhibitor" )
+	end
+	if (DaemonsBigGenerator.powerdump_id == nil) then
+		DaemonsBigGenerator.powerdump_id = cpu_manager.stats:GetAbilityID( "all_thermo_dump_power" )
+	end
+	if (DaemonsBigGenerator.reqdump_id == nil) then
+		DaemonsBigGenerator.reqdump_id = cpu_manager.stats:GetAbilityID( "all_thermo_dump_requisition" )
+	end
+end
+
+function DaemonsBigGeneratorTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iNukeID, true) > 0) and (iPower >= 30000) then
+
+		-- Increase charge rate of super weapons
+		if (self.base_ai:CanDoAbility( DaemonsBigGenerator.inhibitor_id )) then
+			self.base_ai:DoSpecialAbility( DaemonsBigGenerator.inhibitor_id )
+		end
+	end
+
+	-- Check resources needs every (at least) 6 secs, to avoid issues with multiple ability castings
+	if  g_iGMT > ResourcesGenTMR + 6 then
+    		local iReq = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+    		local iPow = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+    		-- Check if we have enough Power to dump, but keep 3500 Power as reserve (ability costs 6000 Pow)
+    		if iPow > 9500 then
+       			-- Check if we actually need Requisition
+        		if iReq < 1000 then
+            			-- Dump Power for Requisition
+            			if self.base_ai:CanDoAbility(DaemonsBigGenerator.powerdump_id) then
+                			self.base_ai:DoSpecialAbility(DaemonsBigGenerator.powerdump_id)
+                			ResourcesGenTMR = g_iGMT
+            			end
+        		end
+    		end
+    
+    		-- Check if we have enough Requisition to dump, but keep 4000 Requisition as reserve (ability costs 5000 Req)
+    		if iReq > 9000 then
+        		-- Check if we actually need Power
+        		if iPow < 1000 then
+            			-- Dump Requisition for Power
+            			if self.base_ai:CanDoAbility(DaemonsBigGenerator.reqdump_id) then
+                			self.base_ai:DoSpecialAbility(DaemonsBigGenerator.reqdump_id)
+                			ResourcesGenTMR = g_iGMT
+           			end
+        		end
+    		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DaemonsBigGenerator.repair_id )) then
+			self.base_ai:DoSpecialAbility( DaemonsBigGenerator.repair_id )
+		end
+	end
+end

@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'stealthteamtactic.ai'
 -- Created by Arkhan		@ 21.03.2008
+-- Edited by Thudmeizer		@ 18.03.2016
 
 class 'StealthTeamTactic' (TauInfantryTactic)
 
@@ -9,6 +10,13 @@ StealthTeam = {}
 function StealthTeamTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Stealth Team Tactic")
+
+	self:InitAbilities()
+	self.lastused_ability_snaretrap_time = g_iGMT
+	self.lastused_ability_snaretrap_position = squad_ai:GetPosition()
+	self.min_snaretrap_requisition = 400 -- amount of requisition to have before typical use
+	self.min_snaretrap_time = 240 -- 30 seconds to wait between use, in possibly same location
+	self.min_snaretrap_distance = squad_ai:GetAbilityRange(StealthTeam.snaretrap_id) * 2 -- min distance between consecutive throws
 end
 
 -- Don't attack until tier 2
@@ -19,27 +27,103 @@ end
 function StealthTeamTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (StealthTeam.iEMPGrenadeID == nil) then
-		StealthTeam.iEMPGrenadeID = cpu_manager.stats:GetAbilityID( "tau_emp_grenade" )	
+	if (StealthTeam.emp_id == nil) then
+		StealthTeam.emp_id = cpu_manager.stats:GetAbilityID( "tau_emp_grenade" )	
 	end
-	if (StealthTeam.infiltration == nil) then
-		StealthTeam.infiltration = cpu_manager.stats:GetAbilityID( "all_infiltration" )
+	if (StealthTeam.photon_id == nil) then
+		StealthTeam.photon_id = cpu_manager.stats:GetAbilityID( "tau_photon_grenade" )
+	end
+	if (StealthTeam.snaretrap_id == nil) then
+		StealthTeam.snaretrap_id = cpu_manager.stats:GetAbilityID( "tau_snare_trap" )	
+	end
+	if (StealthTeam.run_id == nil) then
+		StealthTeam.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function StealthTeamTactic:DoAbilities()
 	
-	-- Check if we can use EMP grenade
-	Ability.DoAbilityTarget(self.squad_ai, StealthTeam.iEMPGrenadeID, Ability.Filters.CloseVehicleEnemy, 1)
+	if (self.squad_ai:IsInCombat()) then
+
+		if (self.squad_ai:CanDoAbility(StealthTeam.photon_id)) then
+			Ability.DoAbilityTarget( self.squad_ai, StealthTeam.photon_id, Ability.Filters.CloseSquadEnemy, 4 )
+		end
+
+		if (self.squad_ai:CanDoAbility(StealthTeam.emp_id)) then
+			Ability.DoAbilityTarget( self.squad_ai, StealthTeam.emp_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		end
+	end
+
+	-- Check if we can use snare trap ability
+	if (self.squad_ai:CanDoAbility(StealthTeam.snaretrap_id)) then
 	
-	-- Infiltration
-	-- Not using infiltration
-	if (self.squad_ai:CanDoAbility(StealthTeam.infiltration) and (self.squad_ai:GetHealthPercentage() <= 0.9) and not self.squad_ai:IsUsingAbility(StealthTeam.infiltration)) then
-		self.squad_ai:DoSpecialAbility(StealthTeam.infiltration)
-		
-	-- Using infiltration 
-	elseif (self.squad_ai:IsInCombat() and self.squad_ai:IsUsingAbility(StealthTeam.infiltration)) then
-		self.squad_ai:DoSpecialAbility(StealthTeam.infiltration)
+		-- Get ability range
+		local iRange = self.squad_ai:GetAbilityRange(StealthTeam.snaretrap_id)
+	
+		-- If surrounded, try to use the snare trap
+		if (self.squad_ai:IsInCombat()) then
+	
+			local vSquadPos = self.squad_ai:GetPosition()
+			local fThrowFactor = 1 / 3
+			local oEnemy = Ability.Filters.CloseEnemy(vSquadPos, iRange, 4)
+			if (oEnemy ~= nil) then
+			
+				local vEnemyPos = oEnemy:GetPosition()
+				local vTargetPos = Vector3f(vSquadPos)
+				vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
+				vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
+				self:DoSpecialAbilitySnareTrap(vTargetPos, true)
+			end
+		else
+			-- Check for close strategic point
+			local oTarget = Ability.Filters.CloseStrategicPoint(self.squad_ai:GetPosition(), iRange)
+			if (oTarget ~= nil) then
+			
+				-- Modify position
+				local vTargetPos = oTarget:GetPosition()
+				local vDir = cpu_manager:GetDirectionToEnemy(vTargetPos)
+				local iOffset = math.random(1, 5)		
+				vTargetPos.x = vTargetPos.x + vDir.x * iOffset
+				vTargetPos.z = vTargetPos.z + vDir.z * iOffset
+				local iDistanceSqr = distance_sqr(vTargetPos, self.squad_ai:GetPosition())
+				if (iDistanceSqr < sqr(iRange) and iDistanceSqr > 1) then
+					self:DoSpecialAbilitySnareTrap(vTargetPos, false)
+				end
+			end
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( StealthTeam.run_id )) then
+			self.squad_ai:DoSpecialAbility( StealthTeam.run_id )
+		end
+	end
+
+	-- Call basic DoAbilities methods
+	TauInfantryTactic.DoAbilities(self)
+end
+
+function StealthTeamTactic:DoSpecialAbilitySnareTrap(position,skip_prereqs)
+
+	local current_time = g_iGMT
+	local current_requisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	local last_time = self.lastused_ability_snaretrap_time
+	local last_pos = self.lastused_ability_snaretrap_position
+	local min_requisition = self.min_snaretrap_requisition
+	local min_time = self.min_snaretrap_time 
+	local min_distance = self.min_snaretrap_distance
+	
+	-- Check situation
+	if (skip_prereqs or (current_requisition > min_requisition and current_time - last_time > min_time) or 
+		(current_requisition > min_requisition and distance(position,last_pos) > min_distance)) then
+
+		-- Use snare trap ability
+		self.squad_ai:DoSpecialAbilityPos(StealthTeam.snaretrap_id, position)
+		self.lastused_ability_snaretrap_time = current_time
+		self.lastused_ability_snaretrap_position = position
 	end
 end
 

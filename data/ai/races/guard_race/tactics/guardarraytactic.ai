@@ -1,0 +1,94 @@
+----------------------------------------
+-- File: 'guardarraytactic.ai'
+-- Edited by Thudmeizer		@ 08.04.2016
+
+class 'GuardArrayTactic' (BaseTactic)
+
+GuardArray = {}
+
+function GuardArrayTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Guard Array Tactic")
+	
+	-- Building is a bunker
+	self:AddToBunkerList()
+end
+
+function GuardArrayTactic:InitAbilities()
+
+	--Init ability ID's
+	if (GuardArray.valkstrike_id == nil) then
+		GuardArray.valkstrike_id = cpu_manager.stats:GetAbilityID( "guard_valkyrie_strike_doctrine" )
+	end
+	if (GuardArray.valkstrike2_id == nil) then
+		GuardArray.valkstrike2_id = cpu_manager.stats:GetAbilityID( "guard_valkyrie_strike2" )
+	end
+	if (GuardArray.vultstrike_id == nil) then
+		GuardArray.vultstrike_id = cpu_manager.stats:GetAbilityID( "guard_vulture_strike_doctrine" )
+	end
+	if (GuardArray.vultstrike2_id == nil) then
+		GuardArray.vultstrike2_id = cpu_manager.stats:GetAbilityID( "guard_vulture_strike" )
+	end
+	if (GuardArray.repair_id == nil) then
+		GuardArray.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function GuardArrayTactic:DoAbilities()
+
+	if (self.base_ai:CanDoAbility(GuardArray.valkstrike_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(GuardArray.valkstrike_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 8)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.base_ai:DoSpecialAbilitySquad(GuardArray.valkstrike_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	if (self.base_ai:CanDoAbility(GuardArray.valkstrike2_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(GuardArray.valkstrike2_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 12)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.base_ai:DoSpecialAbilitySquad(GuardArray.valkstrike2_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	if (self.base_ai:CanDoAbility(GuardArray.vultstrike_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(GuardArray.vultstrike_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 8)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.base_ai:DoSpecialAbilitySquad(GuardArray.vultstrike_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	if (self.base_ai:CanDoAbility(GuardArray.vultstrike2_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(GuardArray.vultstrike2_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 12)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.base_ai:DoSpecialAbilitySquad(GuardArray.vultstrike2_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( GuardArray.repair_id )) then
+			self.base_ai:DoSpecialAbility( GuardArray.repair_id )
+		end
+	end
+end
+
+function GuardArrayTactic:CanDeepStrikeTroops()
+	return true
+end

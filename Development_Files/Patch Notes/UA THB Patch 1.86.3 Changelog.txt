@@ -1,0 +1,359 @@
+Hint: 
+* = Fixes.
+- = Ideas not taken to effect yet.
+!* = Applied ingame, but as rough drafts (non final product)
+> = Noted for next version.
+>> = Noted, but not for another two versions or more.
+
+------------------------
+
+CHANGES INCLUDE:
+- Space Marine AI further improved by Thudmeizer.
+- Chaos Space Marine AI improved.
+- Eldar AI improved.
+- Orks AI improved.
+- Eldar balance/additions focus.
+- Chaos Space Marine balance/additions focus.
+- Fixes of 3 major game breaking bugs.
+
+PLANS FOR FUTURE VERSIONS:
+
+- Do up more balance changes in a phase of regular patching for version 1.86.
+- Finish AI for all factions, complete revamp by Thudmeizer.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+NEW CREDITS:
+- Thudmeizer - For Eldar, Chaos Space Marines, and Ork new AI. + Greater improved Space Marine AI. And even more work.
+- Eranthis Aconite for more structure sounds.
+- Zany Reaper - TTRU mod for Shining Spears and more unit sounds.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+------------------------
+Global: 
+------------------------
+
+* All structure sounds newly implemented in version 1.86 were fixed.
+* New 1.86 rule: All turrets (by a large request) were limited to 8 per HQ. All advanced turrets were limited to three per HQ. All factions that don't have advanced turrets have a limit of 10 per hq.
+* New 1.86 rule: All Thermo Generators are now useful. All thermo generators now contain abilities that will tremendously supply your faction with great benefits in later tiers. Also involving the exchange of resources.
+* Missile launchers can no longer attack ground.
+* All minefields take 16 seconds longer to construct and are more expensive in requisition. Some factions like Sisters or Dark Eldar may vary...
+* All Warhound Titan flamers damage increased by 30%.
+* All heroes upon leveling up with hero researches get 150% maxed health from 250% fully upgraded to level 8.
+* All weapons that are not vehicle (or Ancient Wraithguard) that do >= 10% damage to titans now have decreased values by a large margin. Some units that can single handedly take down a titan or a super structure (very ridiculously) were fixed. 
+* Reaver Titan Mega Melta damage decreased by 9%, modifiers were nerfed by a lot and will no longer has a good chance at killing a Primarch.
+
+AI Changes ------------------------
+
+------------------------
+Chaos Marines: 
+------------------------
+
+* Warp Storm of World End ability was remade. Warp Storm of World End pillars now spawn in a quantity of 30. FX changed up instead of a warp storm cloud hovering above, blocking the view.
+* Warp Storm of World End now unleashes a shockwave of chaos energy blasts every 5 seconds for 90 seconds (total duration) within a 300 meter radius, destroying all in its path for a true winbutton.
+* Warp Storm of World End Pillars can now regenerate 100 health per second, health increased by 2,000hp.
+* Warp Storm of World End ability description was changed so that it matches what it should do ingame.
+* Daemons coming out from the pillars will now attack anything at full map range without command.
+* Daemons coming out from the pillars cost no cap and are hard capped at 15 squads.
+* Attack Bikes can no longer RUN.
+* The Hellsmith can now be Force Labored. (Just remember to turn it off to not kill him).
+* Icon Bearers and Aspiring Champions no longer infiltrates the squad.
+* Chaos Lords, Chaos Sorceror, and Sorceror Lord no longer loses shield aesthetics when morale is lost.
+* The Lord of Change invulnerability spell now requires a global recharge time.
+* The Lord of Change now plays an animation upon casting mini warp storms.
+* Dirge Shots research for Slaanesh mark cost increased from 110/65 req/power to 275/150 req/power and requires tier III.
+* Bolts of Change ability damages decreased by 40%. Bolts of change now applies a knockback effect.
+* Shrine of Khorne summoning from the Chaos Sorceror cost increased to 1000/500 req/power each.
+* Time to cast the Shrine of Khorne summoning from the Chaos Sorceror increased by 100%.  
+* Rubric Marines are now a lot more powerful, but costly. They now act like the once was Plague Marines.
+* Rubric Marines are now given stimulates similar to other Chaos Marines. Damage further increased by 30%.
+* Rubric Marines move slower. Squad loadout stays the same, squad cap increased.
+* Rubric Marines max weapon loadout (starting) increased by two.
+* Rubric Marines are immune to knockback.
+* Noise Marine health decreased by 15%. Champion cost increased by 20 more requisition.
+* Noise Marine weapon upgrades costs increased by 100%.
+* Noise Marine leader ability damage was completely removed, but morale damage increased by 400%.
+* Plague Marines no longer have morale.
+* Plague Marines squad loadout (minimum) decreased from 4 to 2 (maximum) 9 to 4. Squad cap decreased.
+* Blight Grenades (upon impact) now do real damage to any target and actually does something. Duration increased from 1 second to 10 seconds of punishing affects.
+* Fumigating Smoke of Plague Marines actually works now. Drains morale of enemies and demoralizes sight like description states.
+* Eye of the Warp no longer affects monstrous creatures or greater daemons.
+* Chaos Vindicator reload time decreased by half.
+* Khorne Terminators now deals more damage as a loyalist Assault Terminator, but more effective versus infantry, heavy infantry, monsters, daemons, and commanders. Less against armor.
+* Khorne Terminators now receive the same ability stats as Khorne Berserkers.
+* Khorne Terminators now gain more health regeneration when in combat.
+* Khorne Terminator health increased from 1560 to 1800. Matching the stats. of a loyalist Assault Terminator.
+* Chaos Terminators now deal 30% more damage than an average loyalist terminator, boosted from only 10%. (Reaper Cannons untouched).
+* All damages of chaos terminators are better than the loyalists now.
+* Obliterator Assault Cannon damage increased by 60%. Lascannon damage increased by 40% with armor piercings changed up. Plasma gun twin damage increased by 80%.
+* Obliterators now target all titan and super structure armor types with lascannons.
+* Obliterator movement speed increased.
+* Obliterators heavy flamer damage increased by 20%. Maximum range increased from 10 meters to 25 meters.
+* Mutilators movement speed increased.
+* Mutilators damage versus super structures and titans decreased. 
+* Mutilator damage versus all infantry types is the same, 80% damage piercing.
+* Mutilator damage versus commanders increased by 20%.
+* Chaos Space Marine armory researches, like improved armor or health researches now affect Obliterators, Mutilators, and Possessed Marines.
+** To all those who complain about the squad caps for Mutilators and Obliterators, all tier IV infantry are like that (Where Hazard Suits are SC 7, but are in a squad of 2). AND with the changes above, Mutilators and Obliterators should be a true tier IV unit.
+* Havoc Marine Autocannons overall damage now matches the damage of a regular autocannon, so they are not overpowered anymore.
+* Havoc Marine Heavy Bolter damage decreased by 5%.
+* Chaos Predator autocannon damage decreased by 15%.
+* Chaos Dreadnought autocannon reload time decreased from 2.5 seconds to 1.5 second reload. Damage matches a loyalist Dreadnought.
+* Possessed Marines are cheaper to recruit. Squad cap decreased by 1.
+* Grand Lord of Chaos research cost decreased from 1440/400 to 500/250 req/power.
+* Bloodthirster Blood Pulse ability leaches 100% more health from its enemies. Knockback removed. Damage increased by 100%.
+* Bloodthirster health regeneration increased by 7 hp per second, 30% more in combat.
+* Champion of Nurgle health regeneration increased by 5hp per second. Health decreased by 100hp.
+* Champion of Khorne loses regeneration in combat and can now use Berserker Fury just like Aspiring Champions.
+* Champion of Slaanesh movement speed increased by 30%.
+
+
+AI Changes-------------
+
+* REVAMPED AI! Thanks to Thudmeizer.
+
+------------------------
+Chaos Daemons:
+------------------------
+
+* The Lord of Change invulnerability spell now requires a global recharge time.
+* The Lord of Change now plays an animation upon casting mini warp storms.
+* Bloodthirster health regeneration increased by 9, 180% more in combat.
+* Furies cost increased from 30 to 50 requisition.
+* Squad loadout decreased from 4 to 2 (minimum); 7 to 5 (maximum).
+
+AI Changes-------------
+
+------------------------
+Dark Eldar: 
+------------------------ 
+
+* Both Void Ravens now require tier V and Donation of Souls IV.
+* Both Void Raven health increased by 15,000hp. Damage increased by 10%.
+* Shadow Super Heavy damage increased by 20%.
+* Soul Annihilator damage versus super structures decreased from 900 AP to 70 AP.
+
+AI Changes-------------
+
+------------------------
+Eldar: 
+------------------------
+!* "New" Unit: Shuriken Cannon Platform
+!* "New" Unit: Brightlance Cannon Platform
+!* New Unit: Shining Spears (Thanks to TTRU mod, ZanyReaper). 
+!* New Research: Song of Peace
+!* New Research: Improved and Greater Shroud Ability Research.
+!* New Research: Improved Healing Waystation Research.
+!* New Research: Disruption Ability Research.
+!* New Research and ability: Resource Allocation Matrix.
+!* New addon for Eldritch Spire: Destruction Stone
+!* New addon for Eldritch Spire: Infinity Resource Stone
+!* New addon for Eldritch Spire: Infinity Shroud Stone
+* New VO: Vaul Portal (Thanks to TTRU mod)
+* Eldar is now a race of both ally/enemy support. 
+* The Autarch is no longer invulnerable (insane regen) after Runes of Doom research.
+* Eldritch Spires now blow up like a nuclear affect, but are now extremely cheap and quick to create per structure.
+* Eldritch Tempest now lasts 30 seconds longer.
+* Infiltration event was removed. Shrouding structures or units with Webway Gates will not play a sound anymore, revealing to players locations in FOW.
+* Eldritch Spires can now be upgraded with crucial game ending addon choices or fire off the Eldritch Cataclysm winbutton.
+* Champion of Khaine icon was updated.
+* Healing Waystation icon was updated.
+* Ancient Wraithguard hp increased by 2500 hp each and damage increased by 25%.
+* Ancient Wraithlord armor increased by 2 and health regeneration increased further by 3.
+* All Bright Lances add ranged damage multipliers upon hit for a small duration.
+* Wraithlord, Falcon, Wave Serpent, and Vyper Brightlances are now completely accurate.
+* Wraithlord, Falcon, War Walker, Wave Serpent, Vyper, Corsair, and Scorpion Brightlance damages increased by 110% (as they were underpowered).
+* Brightlance weapons for the support platform damage increased by 25%.
+* Wraithguard Brightlances damage increased by 15%.
+* Eldar Uber Turret upgrade addon damage against structures decreased by 50%, infantry by 20%. Overall damage by 40%. But fires slightly faster.
+* Uber Turret addon now requires tier III.
+* Vaul Portal sight radius decreased to a standard super structure sight radius size.
+* Autarch's Rune of Doom wargear no longer increases health regeneration by 600hp per second.
+* Tier V cost increased by an additional 2000/2000 requisition/power as there are now 3 Apocalypse choices (well 4, but infinity stones count as one :p)
+* Cobra Super Heavy damage decreased by 10%.
+* Rangers are now in a squad of 4, but are a lot more powerful even compared to scouts (as you tier up). Costs more per unit.
+* Ranger Long Rifles now throws an enemy back and deals more morale damage along with movement speed reductions.
+* Harlequins can now capture Strategic Points.
+* Striking Scorpion damage versus structures decreased by 25%.
+* Dark Reapers leader unit upgrade damage output does the same amount of damage as shuriken cannon platforms. Cost increased.
+* Dark Reaper weapon range increased by 10m.
+* Dark Reaper effectiveness against infantry decreased, heavy infantry greatly increased, and can deal good damage to elite heavy infantry and slightly commanders. Tooltip now stands as correct.
+* Websail Shroud research now cloaks the structures of allies within a 50m radius.
+* Websail Structural Integrity Stone now affects low armored structures and Eldritch Spire, plus applies a 50% bonus hp to all structures instead of a 1000hp bonus.
+* Healing Waystation Stone now applies 200% more health regeneration to all nearby squads. Including allies.
+* Reaper Launcher of the Soul Walker does now the same effect as Shuriken Cannons, scatter damage.
+* Phantom Titan damage versus monstrous creatures decreased as it was too high.
+* Soul Walker cost increased. Melee damage decreased by 10%.
+* Vampire Raider cost increased by 15%.
+* Vampire Raider now costs 1075 relic resource.
+* Swooping Hawk damage decreased by 10%.
+* Plasma Grenade damage increased by 25%.
+* Haywire Bombs range increased by 15m. Units can throw them farther.
+* Wraithlord flamer weapon range increased. 
+
+AI Changes-------------
+
+* REVAMPED AI! Thanks to Thudmeizer.
+
+------------------------
+Imperial Guard: 
+------------------------
+
+* Stormblade damage increased by 10%, even more versus vehicles. Damage against super structures decreased by 40%. Damage against elite heavy infantry increased by 25%.
+* Stormsword effectiveness versus super structures and heavily armored structures decreased by 70%.
+
+
+AI Changes-------------
+
+------------------------
+Inquisition:
+------------------------
+
+
+AI Changes-------------
+
+
+------------------------
+Necrons: 
+------------------------
+
+* All economy researches (up to tier V) are now more expensive and grant less power income to the player.
+* Ancient Summoning Core cost increased from 1400 power to 1800 power. Required build time increased from 200 seconds to 250 seconds.
+* Energy Core cost increased from 2000 power to 2500 power. Required build time increased from 260 seconds to 300 seconds.
+* Obelisk upgrade II addon weapon range decreased by 15m.
+
+
+AI Changes-------------
+
+------------------------
+Orks: 
+------------------------
+
+* Ork Global wide Waaagh! volume and refresh timers decreased. Will no longer crash the game (if not as much).
+* Walls take more time to construct.
+* Squiggoth cost decreased from 1200 requisition to 900 requisition each unit.
+* Squiggoth damage against titans increased. Tooltip updated.
+
+AI Changes-------------
+
+* REVAMPED AI! Thanks to Thudmeizer.
+
+------------------------
+Sisters of Battle:
+------------------------
+
+* Apologies for last patch as the Miraculous Intervention was removed without warning. Reason being: Lags game and creates errors, so reinventing the Miraculous intervention is a must!
+* All Living Saints no longer get revived continuously and can actually die now.
+* All Living Saints has Miraculous Intervention back, but as a clickable ability. Whenever the user wishes, he/she can spend a thousand faith in bringing the saint back to life (if a Shrine structure is valid). Timed badly however, and not micro managed, the saint will die a horrible death.
+* Arch Angel limit was removed, all players are able to build unlimited Arch Angels.
+* Arch Angel relic resource cost increased from 0 to 1000. 5x more than standard Living Saints.
+* Arch Angel research II health modifiers decreased. 
+* Arch Angels no longer require a relic.
+* Arch Angels now cost 3000 faith from 2000.
+* Nunciate Superior no longer loses shield aesthetics when morale is lost.
+* Death Cult Assassin damage increased by 1000%. Is now extremely deadly to all commanders and infantry alike, killing them almost immediately if engaged.
+* Death Cult Assassin movement speed increased by 20%.
+* Death Cult Assassin can now use Emperor's Tears and Dolain Phile abilities just like the Cannoness.
+* Death Cult Assassin cost increased from 90/80 req/power to 200/50 req/power.
+* Death Cult Assassin sight radius increased. Can now detect infiltrated units.
+* Battle Sister and Retributor Heavy Flamer now does damage to structures.
+* Flamers and Heavy Flamers for the Battle Sisters and Retributors damage against structures increased by 60%.
+* Penitent Engine tooltip updated telling the player to use its flamers against structures/monstrous creatures/morale.
+
+AI Changes-------------
+
+
+------------------------
+Space Marines: 
+------------------------
+
+* New VO: Damocles 
+* New VO: Razorback
+* New VO: Vindicator
+* New VO: Attack Bike
+* New VO: Devastator (All thanks to Zany Reaper, TTRU mod)
+* Land Raider Ares main cannon damage increased by 40% and now shares the same effectiveness as a Stormsword, only a bit more effective against super structures.
+* Land Raider Ares is the only relic transport that can deploy mines.
+* Thermonuclear Power Generator (Thanks to Hard Mod) is now fully implemented into game. 
+* Sniper rifles damage decreased by 35%. Sniper Rifles now require an armory to be fielded.
+* Scout Bolters no longer deal suppression Fire.
+* Devastators heavy bolter damage decreased by 7%.
+* Thermonuclear generator now costs 3500 requisition builds 30 seconds slower and grants 33% less power to the faction.
+* Terminator Storm Bolter accuracy increased when on the move.
+* Predator autocannon damage decreased by 15%.
+* Vanguard Veteran health decreased by 200 hp.
+* Sternguard Veteran health decreased by 120 hp.
+* Orbital Bombardment damage against super structures decreased by 70%.
+
+
+AI Changes-------------
+
+* REVAMPED AI #2! Thanks to Thudmeizer.
+
+------------------------
+Tau: 
+------------------------
+
+* R'Varna left arm damage against titans decreased by 40%. Damage against structures decreased by 20%.
+* Broadside Battlesuit range increased by 25 meters.
+* Mako Titan description updated where it no longer says it can be garrissoned inside a Manta.
+* Manta requires now tier V.
+
+AI Changes-------------
+
+------------------------
+Tyranids: 
+------------------------
+
+* Planetary Exterminator firing glitch was fixed. New hotkey and location, Z, bottom left of UI along with Hive Fleet.
+* Max miasma fx was removed, increasing CPU performance.
+* Max Miasma health decrementation of enemies was removed.
+* Hive Fleet is now located at the middle left of the GUI.
+* Capillary Tower can now fire its superweapons (bug fixed).
+* Screamer Killer Carnifex cost increased by 15%.
+* Khazi Carnifex weapon damage (default) decreased by 20%.
+* All Spore Cluster damages versus structures decreased by 50%.
+* Deepstrike Spore Clusters damage (explosion) decreased by 50%.
+* Deepstrike Spore Cluster loadout decreased by half.
+* Tyrant Guard costs increased from 180 to 220 requisition per unit.
+* Lictors now cost 150 requisition.
+* Spinegaunts reinforcement cost decreased from 3 to 2 requisition each.
+* Spinegaunts (Without Number) reinforce time increased from 0.1 to 0.8 seconds wait time. Cost decreased from 5 to 3 requisition each.
+* Ravener maximum weapon upgrade count is now 4. Death Spitter reload time increased by 2 seconds.
+* Screamer Killer Carnifex and Warrior Death Spitter reload time increased by 2 seconds.
+* Warrior Venom Cannon cost increased from 70 to 100 requisition.
+* Warrior Devourer cost increased from 25 to 50 requisition.
+* Warrior Deathspitter and Barbed Strangler cost increased from 35 to 60 requisition.
+* Warriors now cost 80 requisition each to reinforce.
+* Warriors now cost 280 requisition to produce and 40 seconds to build.
+* Biovores now cost 150 requisition per unit.
+* Biovore squad loadout decreased from 4 to 2 units.
+* Biovore Toxin launchers damage decreased by 30%. Morale damage decreased by 60%.
+* Hierophant ranged damage versus titans decreased by 50%.
+* Khazi Carnifex weapons cost more.
+
+AI Changes-------------
+
+--------------------------------------------------------|
+Tech Trees (Visual Images Separate from mod): | 
+--------------------------------------------------------|
+
+* Completed Imperial Guard 1.86 Tech Tree (Inside UltimateApocalypse_THB\Patch_Notes folder)
+* Completed Necrons 1.86 Tech Tree
+* Completed Space Marine 1.86 Tech Tree
+* Completed Dark Eldar 1.86 Tech Tree
+
+--------------------------------------------------------|
+SCAR (Winconditions): | 
+--------------------------------------------------------|
+* New Wincondition: Replaced Daemons ally sacrifice (other mod wincondition) wincondition with a new wincondition: MediumCore.
+* New Wincondition: Replaced MassiveBattles (other mod wincondition) Addon: Titan Wars: Infinite
+* New Wincondition: Replaced ExtremeBattles (other mod wincondition) Addon: Scarce Resources 
+* New Wincondition: Replaced SmallBattles (other mod wincondition) Addon: Scarce Resource Rates
+* Restriction: Vehicles no longer restricts aircraft.
+* Annihilate wincondition now ignores Thermonuclear generators.
+--------------------------------------------------------|
+SCENARIOS: | 
+--------------------------------------------------------|

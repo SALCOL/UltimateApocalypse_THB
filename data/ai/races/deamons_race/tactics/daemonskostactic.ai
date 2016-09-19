@@ -1,0 +1,51 @@
+----------------------------------------
+-- File: 'daemonskostactic.ai'
+-- Edited by fuggles 27.05.2013
+-- Edited by Thudmeizer	08.05.2016
+
+class 'DaemonsKosTactic' (DaemonsInfantryTactic)
+
+DaemonsKos = {}
+
+function DaemonsKosTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Kos Tactic")
+end
+
+function DaemonsKosTactic:AlwaysAttack()
+	return true
+end
+
+function DaemonsKosTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsKos.allure_id == nil) then
+		DaemonsKos.allure_id = cpu_manager.stats:GetAbilityID( "daemons_allure_kos" )
+	end
+end
+
+function DaemonsKosTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	if (iPower >= 80) then
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsKos.allure_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsKos.allure_id, Ability.Filters.CloseMonsterEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsKos.allure_id, Ability.Filters.CloseCommanderEnemy, 1 )
+	end
+end
+
+function DaemonsKosTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

@@ -1,0 +1,328 @@
+----------------------------------------
+-- File: 'sorcereradvancedtactic.ai'
+-- Edited by Thudmeizer @ 21.03.2016
+-- Edited by LarkinVB   @ 16.08.2005
+-- Edited by Cylarne_04 2011
+
+class 'SorcererAdvancedTactic' (ChaosMarineInfantryTactic)
+
+SorcererAdvanced = {}
+
+function SorcererAdvancedTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sorcerer Advanced Tactic")
+	
+	self.dance_time = 0
+end
+
+function SorcererAdvancedTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelSorcererAdvanced = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelSorcererAdvanced ~= nil) then
+			local addOnID = buildChannelSorcererAdvanced:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelSorcererAdvanced:IsBuilding() == 0 and buildChannelSorcererAdvanced:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelSorcererAdvanced:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function SorcererAdvancedTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function SorcererAdvancedTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Sorcerer Advanced is allowed to retreat even directly after a jump
+function SorcererAdvancedTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Arkhan 03.2006: Inherited method used by commanders which are able to jump with an attached squad
+function SorcererAdvancedTactic:CanJumpAttached()
+	return true
+end
+
+function SorcererAdvancedTactic:InitAbilities()
+
+	-- Init ability ID's
+	-- Standard Sorceror abilities
+	if (SorcererAdvanced.acidbolt_id == nil) then
+		SorcererAdvanced.acidbolt_id = cpu_manager.stats:GetAbilityID( "chaos_acidbolt" )
+	end
+	if (SorcererAdvanced.change_id == nil) then
+		SorcererAdvanced.change_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change" )
+	end
+	if (SorcererAdvanced.changegreater_id == nil) then
+		SorcererAdvanced.changegreater_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change_greater" )
+	end
+	if (SorcererAdvanced.changeimproved_id == nil) then
+		SorcererAdvanced.changeimproved_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change_improved" )
+	end
+	if (SorcererAdvanced.torment_id == nil) then
+		SorcererAdvanced.torment_id = cpu_manager.stats:GetAbilityID( "chaos_chains_of_torment" )
+	end
+	if (SorcererAdvanced.corruption_id == nil) then
+		SorcererAdvanced.corruption_id = cpu_manager.stats:GetAbilityID( "chaos_corruption" )
+	end
+	if (SorcererAdvanced.doombolt_id == nil) then
+		SorcererAdvanced.doombolt_id = cpu_manager.stats:GetAbilityID( "chaos_doombolt" )
+	end
+	if (SorcererAdvanced.firebolt_id == nil) then
+		SorcererAdvanced.firebolt_id = cpu_manager.stats:GetAbilityID( "chaos_firebolt" )
+	end
+	if (SorcererAdvanced.meteors_id == nil) then
+		SorcererAdvanced.meteors_id = cpu_manager.stats:GetAbilityID( "chaos_meteors" )
+	end
+	if (SorcererAdvanced.confusion_id == nil) then
+		SorcererAdvanced.confusion_id = cpu_manager.stats:GetAbilityID( "chaos_ritual_confusion" )
+	end
+	if (SorcererAdvanced.eye_id == nil) then
+		SorcererAdvanced.eye_id = cpu_manager.stats:GetAbilityID( "chaos_ritual_eye" )
+	end
+	if (SorcererAdvanced.sacrifice_id == nil) then
+		SorcererAdvanced.sacrifice_id = cpu_manager.stats:GetAbilityID( "chaos_ritual_sacrifice" )
+	end
+	if (SorcererAdvanced.gate_id == nil) then
+		SorcererAdvanced.gate_id = cpu_manager.stats:GetAbilityID( "chaos_summon_gate" ) -- Not really useful to lay down portal that builds very expensive units in the middle of a battlefield.
+	end
+	if (SorcererAdvanced.shrine_id == nil) then
+		SorcererAdvanced.shrine_id = cpu_manager.stats:GetAbilityID( "chaos_summon_statue" )
+	end
+	if (SorcererAdvanced.run_id == nil) then
+		SorcererAdvanced.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+
+	-- Sorceror Lord abilities
+	if (SorcererAdvanced.changelord_id == nil) then
+		SorcererAdvanced.changelord_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change_greater_lord" )
+	end
+	if (SorcererAdvanced.tormentlord_id == nil) then
+		SorcererAdvanced.tormentlord_id = cpu_manager.stats:GetAbilityID( "chaos_chains_of_torment_advance_sp" )
+	end
+	if (SorcererAdvanced.rift_id == nil) then
+		SorcererAdvanced.rift_id = cpu_manager.stats:GetAbilityID( "chaos_rift" ) -- AI cannot use portal like Eldar Webways to transport units between them.
+	end
+	if (SorcererAdvanced.tzeentch_id == nil) then
+		SorcererAdvanced.tzeentch_id = cpu_manager.stats:GetAbilityID( "chaos_ritual_tzeentch" )
+	end
+	if (SorcererAdvanced.storm_id == nil) then
+		SorcererAdvanced.storm_id = cpu_manager.stats:GetAbilityID( "chaos_storm_of_change" )
+	end
+	if (SorcererAdvanced.timelord_id == nil) then
+		SorcererAdvanced.timelord_id = cpu_manager.stats:GetAbilityID( "chaos_warp_time" )
+	end
+end
+
+function SorcererAdvancedTactic:DoAbilities()
+
+	-- We are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		-- Standard Sorceror abilities
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.acidbolt_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.change_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.changegreater_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.changeimproved_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.torment_id, Ability.Filters.CloseEnemy, 4 ) 
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.corruption_id, Ability.Filters.CloseEnemy, 4 ) 
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.doombolt_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.firebolt_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.meteors_id, Ability.Filters.CloseEnemy, 5 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.gate_id, Ability.Filters.CloseEnemy, 25)
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.gate_id, Ability.EntityFilters.CloseBaseEntityEnemy, 4)
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.shrine_id, Ability.Filters.CloseEnemy, 10 )
+		-- Sorceror Lord abilities
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.changelord_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.tormentlord_id, Ability.Filters.CloseEnemy, 4 ) 
+		--Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.rift_id, Ability.Filters.CloseEnemy, 25, 10 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.storm_id, Ability.Filters.CloseEnemy, 15 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.storm_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+		Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.timelord_id, Ability.Filters.CloseEnemy, 10, 4 ) 
+
+	else
+		-- Standard Sorceror abilities
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.acidbolt_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.change_id, Ability.Filters.CloseSquadEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.changegreater_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.changeimproved_id, Ability.Filters.CloseSquadEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.torment_id, Ability.Filters.CloseEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.corruption_id, Ability.Filters.CloseEnemy, 8 ) 
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.doombolt_id, Ability.Filters.CloseSquadEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.firebolt_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.meteors_id, Ability.Filters.CloseEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.gate_id, Ability.Filters.CloseEnemy, 35)
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.gate_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.shrine_id, Ability.Filters.CloseEnemy, 15 )
+		-- Sorceror Lord abilities
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.changelord_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, SorcererAdvanced.tormentlord_id, Ability.Filters.CloseEnemy, 8 ) 
+		--Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.rift_id, Ability.Filters.CloseEnemy, 25, 15 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.storm_id, Ability.Filters.CloseEnemy, 24 )
+		Ability.DoAbilityPos( self.squad_ai, SorcererAdvanced.storm_id, Ability.EntityFilters.CloseBaseEntityEnemy, 4)
+		Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.timelord_id, Ability.Filters.CloseEnemy, 10, 6 ) 
+	end
+
+	-- Confusion: The ritual of confusion will temporarily cause everything who oppose the powers of Chaos to attack each other and lose control, so long as the ritual is used.
+	-- DOES NOT affect titans, heavily armored vehicles, structures, aircraft, or daemons.
+	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(SorcererAdvanced.confusion_id)) then
+		Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.confusion_id, Ability.Filters.CloseSquadEnemy, 20, 4 )
+		Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.confusion_id, Ability.Filters.CloseCommanderEnemy, 20, 1 )
+	end
+
+	-- All-Seeing Eye: Allows the SorcererAdvanced to see everything throughout the globe so long as the ability is active.
+	-- The SorcererAdvanced is unable to attack, move, or use other abilities for almost a minute will globally affect the world and turn the tide of battle with this ultimate power.
+
+	-- Cast only if safe.
+	if (not self.squad_ai:IsInCombat() and not cpu_manager.terrain_analyzer:HasThreat(self.squad_ai:GetPosition(), 60)) then
+
+		-- Check if we are healthy and can do ability.
+		if (self.squad_ai:GetHealthPercentage() > 0.6 and self.squad_ai:CanDoAbility(SorcererAdvanced.eye_id)) then
+	
+			--[[local iRange = self.squad_ai:GetAbilityRange(SorcererAdvanced.eye_id)
+			local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), 60, 20)
+			if (oSquad ~= nil) then
+			
+				-- Only try to detect if the infiltrated unit is attacking or capturing
+				if (oSquad:IsAttacking()) then]]
+					self.squad_ai:DoSpecialAbility(SorcererAdvanced.eye_id)
+				--end
+			--end
+		end
+	end
+
+	-- Ritual Sacrifice: A global offensive/defensive ability that drains the health of enemies at a minor rate over time for 45 seconds.
+	-- The SorcererAdvanced becomes immobile and will do nothing throughout the duration of this spell.
+
+	-- Cast only if safe.
+	if (not self.squad_ai:IsInCombat() and not cpu_manager.terrain_analyzer:HasThreat(self.squad_ai:GetPosition(), 50)) then
+
+		-- Check if we are healthy and can do ability.
+		if (self.squad_ai:GetHealthPercentage() > 0.7 and self.squad_ai:CanDoAbility(SorcererAdvanced.sacrifice_id)) then
+			Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.sacrifice_id, Ability.Filters.CloseSquadEnemy, 50, 30 )
+			Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.sacrifice_id, Ability.Filters.CloseMonsterEnemy, 50, 30 )
+		end
+	end
+
+	-- Ritual Full Might of Tzeentch: The Chaos Sorceror, unable to attack, move, or use other abilities for almost a minute will globally affect the world and turn the tide of battle with this ultimate power.
+	-- Might of Tzeentch will make the Lord of Change recruitable for free, and will allow the Lord of Change to use his abilities without delay!
+	-- Instantly recharges the Lord of Change's abilities and greatly increases ability range so long as the Sorceror Lord is using the Ritual.
+
+	-- Cast only if safe.
+	if (not self.squad_ai:IsInCombat() and not cpu_manager.terrain_analyzer:HasThreat(self.squad_ai:GetPosition(), 40)) then
+
+		-- Check if we are healthy and can do ability.
+		if (self.squad_ai:GetHealthPercentage() > 0.8 and self.squad_ai:CanDoAbility(SorcererAdvanced.sacrifice_id)) then
+			Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.tzeentch_id, Ability.Filters.CloseSquadEnemy, 40, 25 )
+			Ability.DoAbilityArea( self.squad_ai, SorcererAdvanced.tzeentch_id, Ability.Filters.CloseMonsterEnemy, 40, 25 )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SorcererAdvanced.run_id )) then
+			self.squad_ai:DoSpecialAbility( SorcererAdvanced.run_id )
+		end
+	end
+
+	-- Check if we can possess
+	if (self.squad_ai:CanPossess()) then
+	
+		-- Check if we are in combat
+		if (self.squad_ai:IsInCombat() or cpu_manager.terrain_analyzer:HasThreat(self.squad_ai:GetPosition(), 35)) then
+			self.squad_ai:DoPossess()
+		end
+	end
+end
+
+function SorcererAdvancedTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function SorcererAdvancedTactic:Update()
+
+    if (self:IsComplete()) then
+        return
+    end
+    
+    -- State machine
+    if (not InfantryTactic.Update( self )) then
+        return
+    end
+    
+	-- Check for close commander
+    local bSetRanged = false
+    local bSetMelee = false
+	local vSquadPos = self.squad_ai:GetPosition()
+	local eStance = self.squad_ai:GetMeleeStance()
+	local oEnemyCommander = Ability.Filters.CloseCommanderEnemy(vSquadPos, 20, 1)
+    if (oEnemyCommander ~= nil) then
+       
+        -- Check health
+        if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
+            bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+            self.dance_time = 0
+		else
+            bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+        end
+	else
+    
+    	-- Check for close attached commander
+    	local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
+    	if (oSquad ~= nil and oSquad:IsAttached()) then
+    		bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+    	else
+    		bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+    	end
+    end
+
+    -- At leat 10 secs ranged stance/dancing
+    if (bSetRanged) then
+        self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+        self.dance_time = g_iGMT
+    elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
+        self.squad_ai:DoSetDefaultMeleeStance()
+        self.dance_time = 0
+    end
+    
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+    
+    -- Attach to melee
+	if (self.squad_ai:GetMeleeStance() == SquadAI.MSTANCE_Assault) then
+
+		if (self:TryAttachSquad(true, true, 50, 100, nil) == nil) then
+		
+			if (self:TryAttachSquad(false, false, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+				self:TryAttachSquadMelee()
+			end
+		end
+	end
+end

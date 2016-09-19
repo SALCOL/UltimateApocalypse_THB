@@ -1,0 +1,71 @@
+----------------------------------------
+-- File: 'deathmarkstactic.ai'
+-- Created by Cylarne @ 6.28.2012
+-- Edited by Thudmeizer	@ 09.03.2016
+
+class 'DeathmarksTactic' (NecronInfantryTactic)
+
+Deathmarks = {}
+
+function DeathmarksTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Deathmarks Tactic")
+end
+
+function DeathmarksTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Deathmarks.hfhs_id == nil) then
+		Deathmarks.hfhs_id = cpu_manager.stats:GetAbilityID( "necron_hfhs" )
+	end
+	if (Deathmarks.marksquad_id == nil) then
+		Deathmarks.marksquad_id = cpu_manager.stats:GetAbilityID( "necron_mark_squad" )
+	end
+	if (Deathmarks.veil_id == nil) then
+		Deathmarks.veil_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter_veil" )
+	end
+	if (Deathmarks.reassemble_id == nil) then
+		Deathmarks.reassemble_id = cpu_manager.stats:GetAbilityID( "necron_reassemble" )
+	end
+	if (Deathmarks.truegauss_id == nil) then
+		Deathmarks.truegauss_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )
+	end
+end
+
+function DeathmarksTactic:DoAbilities()
+	
+	Ability.DoAbilityPos(self.squad_ai, Deathmarks.marksquad_id, Ability.Filters.CloseEnemy, 3)
+	Ability.DoAbilityPos(self.squad_ai, Deathmarks.marksquad_id, Ability.Filters.CloseCommanderEnemy, 1)
+
+	-- Hunters from Hypespace: Allows Deathmarks to move in and out of positions with lightning speed. 
+	-- The duration of this ability is very short, but while active, the Deathmarks can move to any location almost instantly, perfect for setting up assassinations.
+	if ((self:IsMoving() or self:IsInSubState()) and self.squad_ai:CanDoAbility( Deathmarks.hfhs_id )) then
+		if (self.squad_ai:GetHealthPercentage() > 0.4 and not self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility(Deathmarks.hfhs_id)
+		end
+	end
+
+	--Shadow Shifter: Cloaks and disables the squad for several seconds, enabling quick regeneration and recovery from battle.
+	-- Infiltrated squad will also receive no damage from incoming attacks (if at all revealed), but cannot attack either.
+	if (self.squad_ai:IsInCombat()) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			self.squad_ai:DoSpecialAbility(Deathmarks.veil_id)
+		end
+	end
+
+	-- Reassemble: - Reassembles any fallen Necron unit 7m away from the squad at a moderate cost of power.
+	if (self.squad_ai:IsInCombat()) then
+		-- Reassemble if squad strength is low.
+		if (self.squad_ai:CanDoAbility( Deathmarks.reassemble_id ) and self.squad_ai:GetNumTroopers() < 3) then
+			Ability.DoAbility(self.squad_ai, Deathmarks.reassemble_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = Deathmarks.reassemble_id, min_bodies = 1 })
+		end
+	end
+
+	-- Gauss Weapon Overcharge: the squad will receive a boost in maximum damage, but a critical reduction in movement speed for a duration.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.5) then
+		Ability.DoAbilityArea( self.squad_ai, Deathmarks.truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
+	end
+
+	-- Call standard method
+	NecronInfantryTactic.DoAbilities(self)
+end

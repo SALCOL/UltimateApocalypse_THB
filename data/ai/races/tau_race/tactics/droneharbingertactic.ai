@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'droneharbingertactic.ai'
--- Edited by Thudmeizer @ 26.10.2006
+-- Edited by Thudmeizer @ 18.03.2016
 
 class 'DroneHarbingerTactic' (TauVehicleTactic)
 
@@ -65,6 +65,9 @@ function DroneHarbingerTactic:DoAbilities()
 	else
 		DroneHarbingerTactic.DoDirectSpawnAbility(self)
 	end
+
+	-- Call standard method
+	TauVehicleTactic.DoAbilities(self)
 end
 
 function DroneHarbingerTactic:DoDirectSpawnAbility()
@@ -93,26 +96,26 @@ end
 
 function DroneHarbingerTactic:Update()
 
-    if (self:IsComplete()) then
-        return
-    end
+	if (self:IsComplete()) then
+        	return
+    	end
 
-    -- State machine
-    if (not VehicleTactic.Update(self)) then
-        return
-    end
+    	-- State machine
+    	if (not VehicleTactic.Update(self)) then
+        	return
+   	end
     
 	-- Check stance
 	if (self.squad_ai:GetStance() ~= SquadAI.STANCE_StandGround) then
 		self.squad_ai:DoSetStance(SquadAI.STANCE_StandGround)
 	end
     
-    -- Check damage
-    local iPower = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Power)
-    if (self.squad_ai:WasRecentlyHurt() or iPower < self.m_iMinSpawnPower) then
-    	self.m_bNeedRepair = true
-    elseif (self.squad_ai:GetHealthPercentage() > 0.4 and iPower > self.m_iMinSpawnPower + 200 and
+    	-- Check damage
+    	local iPower = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Power)
+    	if (self.squad_ai:WasRecentlyHurt() or iPower < self.m_iMinSpawnPower) then
+    		self.m_bNeedRepair = true
+    	elseif (self.squad_ai:GetHealthPercentage() > 0.4 and iPower > self.m_iMinSpawnPower + 200 and
     		distance_sqr(self.squad_ai:GetPosition(), cpu_manager.start_pos) > sqr(50)) then
-    	self.m_bNeedRepair = false
-    end
+    		self.m_bNeedRepair = false
+    	end
 end

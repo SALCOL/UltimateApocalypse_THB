@@ -1,0 +1,357 @@
+-- Created by Cylarne_04 @ 2013
+-- Helped by Jaguar Lord.
+-- Daemons mod team.
+
+-------------------------------------------------
+--[[ IMPORTS ]]
+-------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+
+-------------------------------------------------
+--[[ GAME SETUP ]]
+-------------------------------------------------
+
+--[[Player spawns in, NIS goes off.
+
+* NIS:
+	- "Ha ha ha ha ha ha"
+	- "Yes... come forth to witness the ritual of sacrifice. You have entered the Arena of Khorne, and I am your host."
+	- "The blood of the blood god awaits those who kill in his name. The greater the sacrifice, the greater the gifts of Chaos; at your full disposal."
+	- "Summon the lost souls that lie in hell. Sacrifice your enemies to the blood god of Khorne and bring forth the army of the Chaos Daemons!"
+	- "Heh heh heh, yes. More souls to sacrifice, more vigilance in the eyes of the fearless.
+	- "The gifts of Chaos are now yours to command, champion! Now go... Bring forth the army of Chaos Daemons!"
+	- "Ha ha ha ha ha ha! Look at them... all of them, trembling like placid ants." 
+
+* SCAR code the kill secondary objective with NIS and events.
+* Add in loop to indicate if the Daemon Prince is alive or dead.
+* Add in the loop for the victor and have the victor spawn the Chaos Daemons at markers.
+* SCAR code center arena. If enemy commander comes in contact, then spawn the Daemon Prince at enemy commanders' location and do NIS. Reveal Daemon Prince and commander to all players.
+	- "The Arena of Khorne is my home and my throne of sacrifice. Your soul will be a trophy to my domain!"
+	- "Player commander speaks."]]
+
+-- Players
+g_Player1 = World_GetPlayerAt(0);
+g_Player2 = World_GetPlayerAt(1);
+g_Player3 = World_GetPlayerAt(2);
+g_Player4 = World_GetPlayerAt(3);
+
+--elseif (EGroup_Exists("eg_strategic_point") and i_objective_captured == false and EGroup_IsCapturedByPlayer("eg_strategic_point", g_Player, true)) then
+g_daemonprince_born = false;
+g_thereisavictor = false;
+g_challengedplayer = g_Player1;
+g_counter_daemons = 30;
+g_counter_bloodthirster = 600;
+g_counter_engines = 90;
+g_counter_daemonprince = 600;
+
+-------------------------------------------------
+--[[ Marker Variables ]]
+-------------------------------------------------
+--[[marker_spawn_daemons1-8, marker_arena_trigger]]
+
+-------------------------------------------------
+--[[ Entity Variables ]]
+-------------------------------------------------
+--[[eg_relic]]
+
+-------------------------------------------------
+--[[ OBJECTIVES ]]
+-------------------------------------------------
+
+-- Secondary: Kill or be killed
+obj_arena_of_khorne = {title_id = 16003561, short_desc_id = 16003562, help_tip_id = 16003563}
+
+-------------------------------------------------
+--[[ ON INITIALIZATION ]]
+-------------------------------------------------
+
+function OnInit()
+
+	-- First thing is first!
+	Rule_StartIntroduction()
+	
+	-- Add in music.
+	Rule_SetupMusicPlaylist()
+	
+	-- Handles the restoring of save games)
+	Rule_AddInterval(Rule_AOKLoop, 1)
+	
+end	
+
+function OnGameRestore() -- So game knows to run Rule_RestoreSupport() since the player has reloaded a save game
+	
+	
+end
+
+function Rule_AOKLoop() -- Generic Arena of Khorne spawn loop.
+
+	-------------------------------------
+	--[[CHECK IF DAEMON PRINCE IS ALIVE]]
+	-------------------------------------
+	SGroup_CreateIfNotFound("sg_daemonprince")
+	
+	if (g_counter_daemonprince > 0 and g_daemonprince_born == false and g_thereisavictor == true) then
+		g_counter_daemonprince = g_counter_daemonprince - 1
+	end
+	
+	if (SGroup_Count("sg_daemonprince") == 0) then
+		g_daemonprince_born = false;
+	elseif (SGroup_Count("sg_daemonprince") >= 1) then
+		g_daemonprince_born = true;
+		g_counter_daemonprince = 600;
+	end
+
+	-------------------------
+	--[[TRIGGER]]------------
+	-------------------------
+	local blueprints_commanders = Util_MakeBlueprintTable("dark_eldar_squad_archon", "daemon_squad_lord", "space_marine_squad_force_commander","chaos_squad_lord","guard_squad_command_squad","eldar_squad_farseer", 
+	"sisters_squad_canoness", "necron_lord_squad","ork_squad_warboss","tau_commander_squad")
+
+	local j = World_GetPlayerCount();
+    for i = 1, j do
+		local player = World_GetPlayerAt(i-1);
+	
+		if (Player_AreSquadsNearMarker(player, "marker_arena_of_khorne") and g_daemonprince_born == false and g_counter_daemonprince <= 0 and g_thereisavictor == true) then
+			
+			Player_GetAllSquadsNearMarker(player, "sg_enteredunits", "marker_arena_of_khorne")
+			if (SGroup_ContainsBlueprints("sg_enteredunits", blueprints_commanders, false)) then
+				if (i_objective_arena_of_khorne_player1 ~= nil and g_daemonprince_born == false) then -- To avoid scar errors, add this.
+					if (i_objective_arena_of_khorne_player1 == true) then -- Summon Daemon Prince and ping them.
+						Rule_AOK_SummonDaemonPrinceAndChallenge(g_Player1, "sg_enteredunits")
+					end
+				end
+				if (i_objective_arena_of_khorne_player2 ~= nil and g_daemonprince_born == false) then -- To avoid scar errors, add this.
+					if (i_objective_arena_of_khorne_player2 == true) then -- Summon Daemon Prince and ping them.
+						Rule_AOK_SummonDaemonPrinceAndChallenge(g_Player2, "sg_enteredunits")
+					end
+				end
+				if (i_objective_arena_of_khorne_player3 ~= nil and g_daemonprince_born == false) then -- To avoid scar errors, add this.
+					if (i_objective_arena_of_khorne_player3 == true) then -- Summon Daemon Prince and ping them.
+						Rule_AOK_SummonDaemonPrinceAndChallenge(g_Player3, "sg_enteredunits")
+					end
+				end
+				if (i_objective_arena_of_khorne_player4 ~= nil and g_daemonprince_born == false) then -- To avoid scar errors, add this.
+					if (i_objective_arena_of_khorne_player4 == true) then -- Summon Daemon Prince and ping them.
+						Rule_AOK_SummonDaemonPrinceAndChallenge(g_Player4, "sg_enteredunits")
+					end
+				end
+			else SGroup_Clear("sg_enteredunits")
+			end
+		end
+	end
+	
+	-------------------------
+	--[[CHAMPIONS]]----------
+	-------------------------
+	
+	if (i_objective_arena_of_khorne_player1 == true or i_objective_arena_of_khorne_player2 == true or 
+		i_objective_arena_of_khorne_player3 == true or i_objective_arena_of_khorne_player4 == true) then
+		g_thereisavictor = true;
+		g_counter_daemons = g_counter_daemons - 1;
+		g_counter_bloodthirster = g_counter_bloodthirster - 1;
+		g_counter_engines = g_counter_engines - 1;
+		
+		if (i_objective_arena_of_khorne_player1 == true) then
+			Rule_AOK_SpawnDaemons(g_Player1)
+		elseif (i_objective_arena_of_khorne_player2 == true) then
+			Rule_AOK_SpawnDaemons(g_Player2)
+		elseif (i_objective_arena_of_khorne_player3 == true) then
+			Rule_AOK_SpawnDaemons(g_Player3)
+		elseif (i_objective_arena_of_khorne_player4 == true) then
+			Rule_AOK_SpawnDaemons(g_Player4)
+		end
+	end
+end
+
+
+
+-------------------------------------------------
+--[[ MUSIC ]]
+-------------------------------------------------
+
+function Rule_SetupMusicPlaylist()
+
+	t_ambient = {"Rain_thunder_amb" }
+	
+	Playlist_Manager( PC_Ambient, t_ambient, true , true , {5, 10})
+	
+end
+
+-------------------------------------------------
+--[[ LOCAL SCAR Setup ]]
+-------------------------------------------------
+
+function Rule_StartIntroduction()
+
+	Util_StartNIS(EVENTS.AOK_Opening)
+	Rule_AddOneShot(Rule_AOK_NIS1, 550) -- Delay the first NIS conversation.
+	Rule_AddOneShot(Rule_AOK_NIS2, 1020) -- Delay the second NIS conversation.
+	
+	FOW_Reset() -- Reset the Fog of War to make it mission relative.
+	
+	Rule_AddOneShot(Rule_AOK_KillOrBeKilled, 1)
+	
+end
+
+-------------------------------------------------
+--[[ World Events ]]
+-------------------------------------------------
+
+function Rule_AOK_NIS1()
+
+	Util_StartNIS(EVENTS.AOK_DelayedNIS1)
+	
+end
+
+function Rule_AOK_NIS2()
+
+	Util_StartNIS(EVENTS.AOK_DelayedNIS2)
+	
+end
+
+function Rule_AOK_KillOrBeKilled()
+	
+	if (Objective_Exists(obj_arena_of_khorne.title_id) == false) then
+		Objective_Add(obj_arena_of_khorne, false) -- Add in the objective as a secondary objective.
+		
+		g_requiredkills = World_GetRand(80, 320); -- Randomized required kill count per game.
+		
+		-- Check if player is alive and setup the player's secondary objective attributes.
+		
+		if (Player_IsAlive(g_Player1)) then
+			g_Player1_kills = Stats_PlayerUnitsKilled(Player_GetID(g_Player1))
+			UI_ShowRatio("P1_Kills", g_Player1, 16003565, g_Player1_kills, g_requiredkills )
+			i_objective_arena_of_khorne_player1 = false; -- Display wincondition, sets this player to not own a Chaos Daemon army.
+		end
+		if (Player_IsAlive(g_Player2)) then
+			g_Player2_kills = Stats_PlayerUnitsKilled(Player_GetID(g_Player2))
+			UI_ShowRatio("P2_Kills", g_Player2, 16003566, g_Player2_kills, g_requiredkills )
+			i_objective_arena_of_khorne_player2 = false; -- Display wincondition, sets this player to not own a Chaos Daemon army.
+		end
+		if (Player_IsAlive(g_Player3)) then
+			g_Player3_kills = Stats_PlayerUnitsKilled(Player_GetID(g_Player3))
+			UI_ShowRatio("P3_Kills", g_Player3, 16003567, g_Player3_kills, g_requiredkills )
+			i_objective_arena_of_khorne_player3 = false; -- Display wincondition, sets this player to not own a Chaos Daemon army.
+		end
+		if (Player_IsAlive(g_Player4)) then
+			g_Player4_kills = Stats_PlayerUnitsKilled(Player_GetID(g_Player4))
+			UI_ShowRatio("P4_Kills", g_Player4, 16003568, g_Player4_kills, g_requiredkills )
+			i_objective_arena_of_khorne_player4 = false; -- Display wincondition, sets this player to not own a Chaos Daemon army.
+		end
+		
+		
+		Rule_AddInterval(Rule_AOK_KillCount, 1)
+		--Objective_ShowScreen()
+	end
+end
+
+function Rule_AOK_KillCount()
+	
+	if (i_objective_arena_of_khorne_player1 == false) then
+		g_Player1_kills = Stats_PlayerUnitsKilled(Player_GetID(g_Player1))
+		UI_ShowRatioUpdate("P1_Kills", 16003565, g_Player1_kills, g_requiredkills )
+		if (g_Player1_kills >= g_requiredkills) then
+			-- Play NIS, "congratulations, you win!"
+			-- Set this player as the victor
+			-- Automatically summon Bloodletters OR Flesh Hounds after every 20 seconds.
+			-- Summon a Bloodthirster every 10 minutes.
+			-- Summon Daemon engines every 5 minutes.
+			-- g_requiredkills * 2
+			Util_StartNIS(EVENTS.AOK_Ownership)
+			i_objective_arena_of_khorne_player1 = true;
+			i_objective_arena_of_khorne_player2 = false;
+			i_objective_arena_of_khorne_player3 = false;
+			i_objective_arena_of_khorne_player4 = false;
+			g_requiredkills = g_requiredkills * 2;
+		end
+	end
+	if (i_objective_arena_of_khorne_player2 == false) then
+		g_Player2_kills = Stats_PlayerUnitsKilled(Player_GetID(g_Player2))
+		UI_ShowRatioUpdate("P2_Kills", 16003566, g_Player2_kills, g_requiredkills )
+		if (g_Player2_kills >= g_requiredkills) then
+			Util_StartNIS(EVENTS.AOK_Ownership)
+			i_objective_arena_of_khorne_player1 = false;
+			i_objective_arena_of_khorne_player2 = true;
+			i_objective_arena_of_khorne_player3 = false;
+			i_objective_arena_of_khorne_player4 = false;
+			g_requiredkills = g_requiredkills * 2;
+		end
+	end
+	if (i_objective_arena_of_khorne_player3 == false) then
+		g_Player3_kills = Stats_PlayerUnitsKilled(Player_GetID(g_Player3))
+		UI_ShowRatioUpdate("P3_Kills", 16003567, g_Player3_kills, g_requiredkills )
+		if (g_Player3_kills >= g_requiredkills) then
+			Util_StartNIS(EVENTS.AOK_Ownership)
+			i_objective_arena_of_khorne_player1 = false;
+			i_objective_arena_of_khorne_player2 = false;
+			i_objective_arena_of_khorne_player3 = true;
+			i_objective_arena_of_khorne_player4 = false;
+			g_requiredkills = g_requiredkills * 2;
+		end
+	end
+	if (i_objective_arena_of_khorne_player4 == false) then
+		g_Player4_kills = Stats_PlayerUnitsKilled(Player_GetID(g_Player4))
+		UI_ShowRatioUpdate("P4_Kills", 16003568, g_Player4_kills, g_requiredkills )
+		if (g_Player4_kills >= g_requiredkills) then
+			Util_StartNIS(EVENTS.AOK_Ownership)
+			i_objective_arena_of_khorne_player1 = false;
+			i_objective_arena_of_khorne_player2 = false;
+			i_objective_arena_of_khorne_player3 = false;
+			i_objective_arena_of_khorne_player4 = true;
+			g_requiredkills = g_requiredkills * 2;
+		end
+	end
+	
+end
+
+function Rule_AOK_SummonDaemonPrinceAndChallenge(f_player, f_sgroup)
+
+	Util_CreateSquadsAtMarker(f_player, "sg_daemonprince", "daemon_squad_daemon_prince_khorne", "marker_arena_of_khorne", 1)
+	Ping_Marker("marker_arena_of_khorne", false)
+	
+	local j = World_GetPlayerCount();
+    for i = 1, j do
+		local player = World_GetPlayerAt(i-1);
+		FOW_TagSGroup(player, "sg_daemonprince")
+	end
+	
+	local oHealthIncrease	= Modifier_Create(MAT_Squad, "health_maximum_modifier", MUT_Multiplication, false, 3.0, "")
+	ModifierUtil_ApplyToSGroup("sg_daemonprince", oHealthIncrease, true)
+	
+	g_challengedplayer = f_player
+	Cmd_AttackSGroup("sg_daemonprince", f_sgroup)
+	Util_StartNIS(EVENTS.AOK_DaemonPrinceChallenge)
+	g_daemonprince_born = true;
+end
+
+function Rule_AOK_SpawnDaemons(f_player)
+
+	if (g_counter_daemons <= 0) then
+		local randomspawn = World_GetRand(1, 8)
+		local randomcreature = World_GetRand(1, 3)
+		if (randomcreature == 1) then
+			Util_CreateSquadsAtMarker(f_player, "sg_daemonarmy", "daemon_squad_bloodletters", "marker_spawn_daemons"..randomspawn, 1)
+		elseif (randomcreature == 2) then
+			Util_CreateSquadsAtMarker(f_player, "sg_daemonarmy", "daemon_squad_flesh_hound", "marker_spawn_daemons"..randomspawn, 1)
+		elseif (randomcreature == 3) then
+			Util_CreateSquadsAtMarker(f_player, "sg_daemonarmy", "daemon_squad_pink_horror", "marker_spawn_daemons"..randomspawn, 1)
+		end
+		g_counter_daemons = 15;
+	end
+	if (g_counter_bloodthirster <= 0 and EGroup_IsCapturedByPlayer("eg_relic", f_player, false)) then
+		local randomspawn = World_GetRand(1, 8)
+		Util_CreateSquadsAtMarker(f_player, "sg_daemonarmy", "daemon_squad_bloodthirster", "marker_spawn_daemons"..randomspawn, 1)
+		g_counter_bloodthirster = 600;
+	end
+	if (g_counter_engines <= 0) then
+		local randomspawn = World_GetRand(1, 8)
+		Util_CreateSquadsAtMarker(f_player, "sg_daemonarmy", "daemon_squad_defiler_khorne", "marker_spawn_daemons"..randomspawn, 2)
+		g_counter_engines = 60;
+	end
+	
+end
+
+
+Scar_AddInit(OnInit)
+

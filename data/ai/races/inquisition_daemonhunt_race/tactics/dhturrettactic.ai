@@ -1,0 +1,42 @@
+----------------------------------------
+-- File: 'dhturrettactic.ai'
+-- Edited by Thudmeizer @ 18.04.2016
+
+class 'DHTurretTactic' (DaemonhuntVehicleTactic)
+
+DHTurret = {}
+
+function DHTurretTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DH Turret Tactic")
+end
+
+function DHTurretTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DHTurret.repair_id == nil) then
+		DHTurret.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function DHTurretTactic:DoAbilities()
+
+	-- Turret Repair!
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.squad_ai:CanDoAbility( DHTurret.repair_id )) then
+			self.squad_ai:DoSpecialAbility( DHTurret.repair_id )
+		end
+	end
+end
+
+function DHTurretTactic:Upgrade()
+
+	-- If there are no resources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end

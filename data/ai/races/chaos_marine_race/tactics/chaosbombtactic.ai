@@ -1,0 +1,34 @@
+----------------------------------------
+-- File: 'chaosbombtactic.ai'
+-- Edited by Thudmeizer	@ 12.02.2016
+
+class 'ChaosBombTactic' (BaseTactic)
+
+ChaosBomb = {}
+
+function ChaosBombTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Chaos Bomb Tactic")
+end
+
+function ChaosBombTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChaosBomb.detonate_id == nil) then
+		ChaosBomb.detonate_id = cpu_manager.stats:GetAbilityID( "nuke_detonate" )
+	end
+end
+
+function ChaosBombTactic:DoAbilities()
+	
+	-- Detonate Bomb with enemies in vicinity!
+	Ability.DoAbilityArea(self.base_ai, ChaosBomb.detonate_id, Ability.Filters.CloseEnemy, 10, 5)
+
+	-- Search a building
+	local iRange = self.base_ai:GetAbilityRange(ChaosBomb.detonate_id)
+	local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.base_ai:GetPosition(), iRange, 1)
+	if (oBuilding ~= nil) then
+		-- Detonate the Bomb!
+		self.base_ai:DoSpecialAbilityEntity(ChaosBomb.detonate_id, oBuilding) 
+	end
+end

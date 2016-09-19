@@ -1,0 +1,6 @@
+-- This file is generated automatically by the Relic Audio Tool
+
+version = 9
+
+loopStart = 768
+loopCount = 1

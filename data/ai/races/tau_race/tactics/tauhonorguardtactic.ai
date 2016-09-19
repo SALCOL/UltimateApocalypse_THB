@@ -1,8 +1,10 @@
 ----------------------------------------
--- File: 'TauHonorGuardtactic.ai'
--- Edited by Thudmeizer @ 02.11.2006
+-- File: 'tauhonorguardtactic.ai'
+-- Edited by Thudmeizer @ 18.03.2016
 
 class 'TauHonorGuardTactic' (TauInfantryTactic)
+
+TauHonorGuard = {}
 
 function TauHonorGuardTactic:__init( squad_ai ) super( squad_ai )
 
@@ -11,4 +13,39 @@ end
 
 function TauHonorGuardTactic:AlwaysAttack()
 	return true
+end
+
+function TauHonorGuardTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TauHonorGuard.empshasui_id == nil) then
+		TauHonorGuard.empshasui_id = cpu_manager.stats:GetAbilityID( "tau_emp_grenade_shasui" )	
+	end
+	if (TauHonorGuard.photonshasui_id == nil) then
+		TauHonorGuard.photonshasui_id = cpu_manager.stats:GetAbilityID( "tau_photon_grenade_shasui" )
+	end
+	if (TauHonorGuard.run_id == nil) then
+		TauHonorGuard.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function TauHonorGuardTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat()) then
+
+		Ability.DoAbilityTarget( self.squad_ai, TauHonorGuard.photonshasui_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, TauHonorGuard.empshasui_id, Ability.Filters.CloseVehicleEnemy, 1 )
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( TauHonorGuard.run_id )) then
+			self.squad_ai:DoSpecialAbility( TauHonorGuard.run_id )
+		end
+	end
+
+	-- Call basic DoAbilities methods
+	TauInfantryTactic.DoAbilities(self)
 end

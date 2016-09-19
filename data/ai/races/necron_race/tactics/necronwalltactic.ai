@@ -1,0 +1,54 @@
+----------------------------------------
+-- File: 'necronwalltactic.ai'
+-- Edited by Thudmeizer         @ 12.03.2016
+
+class 'NecronWallTactic' (BaseTactic)
+
+NecronWall = {}
+
+function NecronWallTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Wall Tactic")
+end
+
+function NecronWallTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function NecronWallTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (NecronWall.repair_id == nil) then
+		NecronWall.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+
+	-- Init Ability ID's and Addon ID's
+	NecronWall.mainAddonID = cpu_manager.stats:GetAddOnID( "addon_necron_wall" )
+end
+
+function NecronWallTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Gauss	Weapon	-- addon_necron_wall
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+   	if (cpu_manager:GetTierLevel() > 4 and iPower >= 2000) then 
+
+		-- Always build the main gauss addon as late game they aren't built reliably
+		self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())	-- addon_necron_wall
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( NecronWall.repair_id )) then
+			self.base_ai:DoSpecialAbility( NecronWall.repair_id )
+		end
+	end
+end

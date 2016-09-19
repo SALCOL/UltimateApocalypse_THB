@@ -1,3 +1,7 @@
+----------------------------------------
+-- File: 'bonesingertactic.ai'
+-- Edited by Thudmeizer		@ 23.04.2016
+
 class 'BonesingerTactic' (EngineerTactic)
 
 Bonesinger = {}
@@ -5,9 +9,6 @@ Bonesinger = {}
 function BonesingerTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Bonesinger Tactic")
-	
-	self.m_iTransportable = 1
-	self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("eldar_hq_super")
 end
 
 function BonesingerTactic:IsAffectedByMorale()
@@ -20,11 +21,120 @@ function BonesingerTactic:InitAbilities()
 	if (Bonesinger.wraithtomb_id == nil) then
 		Bonesinger.wraithtomb_id = cpu_manager.stats:GetAbilityID( "eldar_wraithtomb" )
 	end
+
+	if (Bonesinger.song_id == nil) then
+		Bonesinger.song_id = cpu_manager.stats:GetAbilityID( "eldar_bonessong" )
+	end
+
+	if (Bonesinger.peace_id == nil) then
+		Bonesinger.peace_id = cpu_manager.stats:GetAbilityID( "eldar_song_of_peace" )
+	end
+
+	if (Bonesinger.run_id == nil) then
+		Bonesinger.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+	end
+
+	if (Bonesinger.foot_id == nil) then
+		Bonesinger.foot_id = cpu_manager.stats:GetAbilityID( "eldar_fleetoffoot" )	
+	end
 end
 
 function BonesingerTactic:DoAbilities()
 
-	-- Activate the Wraithtomb.
+	-- Activate the Wraithtomb
 	Ability.DoAbilityTargetEntity(self.squad_ai, Bonesinger.wraithtomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-	
+
+	-- Activate the Song of Peace
+	Ability.DoAbilityArea(self.squad_ai, Bonesinger.peace_id, Ability.Filters.CloseEnemy, 70, 45)
+
+	-- Search for a near-by damaged building
+	local iRange = self.squad_ai:GetAbilityRange(Bonesinger.song_id)
+    	local iSelfRange = self.squad_ai:GetPosition()
+    	local oBuilding = self:GetAlliedDamagedBuildingWithin(0.5, iSelfRange, iRange)
+    	local oBuildingB = self:GetClosestAlliedDamagedBuildingWithin(0.5, iSelfRange, iRange)
+    	if oBuilding ~= nil then
+	       	-- Cast Bone Song on our own or allies' damaged buildings
+        	self.squad_ai:DoSpecialAbilityEntity(Bonesinger.song_id, oBuilding:GetEntity())
+    	elseif oBuildingB ~= nil then
+	       	-- Cast Bone Song on cloeset own or allies' damaged buildings
+        	self.squad_ai:DoSpecialAbilityEntity(Bonesinger.song_id, oBuildingB:GetEntity())
+    	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Bonesinger.foot_id )) then
+			self.squad_ai:DoSpecialAbility( Bonesinger.foot_id )
+		elseif (self.squad_ai:CanDoAbility(Bonesinger.run_id)) then
+			self.squad_ai:DoSpecialAbility(Bonesinger.run_id)
+
+		end
+	end
+end
+
+-- Called to find a random ally/own damaged building (finished) within range.
+function BonesingerTactic:GetAlliedDamagedBuildingWithin(iHealthRatio, iPosition, iRange)
+local iRange_sqr = iRange * iRange
+for oPlayer in cpu_manager.stats:GetPlayerStats() do
+    	if not (cpu_manager.player_stats:IsEnemy(oPlayer) or oPlayer:IsPlayerDead()) then
+        	for oBuilding in oPlayer:GetBases() do
+            		if oBuilding:IsValid() then
+                		if (oBuilding:IsConstructionDone() and oBuilding:CanBeRepaired() and oBuilding:GetHealthPercentage() <= iHealthRatio) then
+                    			if distance_sqr(oBuilding:GetPosition(),iPosition) < iRange_sqr then
+                        		return oBuilding
+                    			end
+                		end
+            		end
+        	end
+	end
+end
+return nil
+end
+
+-- Called to find THE CLOSEST ally/own damaged building (finished) within range.
+function BonesingerTactic:GetClosestAlliedDamagedBuildingWithin(iHealthRatio, iPosition, iRange)
+	local iRange_sqr = iRange * iRange
+	local best_base = nil
+	local best_distance = -1
+	local candidate_bases = {}
+	for oPlayer in cpu_manager.stats:GetPlayerStats() do
+    		if not (cpu_manager.player_stats:IsEnemy(oPlayer) or oPlayer:IsPlayerDead()) then
+        		for oBuilding in oPlayer:GetBases() do
+            			if oBuilding:IsValid() then
+                			if (oBuilding:IsConstructionDone() and oBuilding:CanBeRepaired() and oBuilding:GetHealthPercentage() <= iHealthRatio) then
+                				local oPos = oBuilding:GetPosition()
+                    				if distance_sqr(oPos,iPosition) < iRange_sqr then
+                        				local base_info = {}
+                        				base_info.base = oBuilding
+                        				base_info.distance = distance(oPos,iPosition)
+                        				table.insert(candidate_bases,base_info)
+                    				end
+                			end
+            			end
+        		end
+    		end
+	end
+
+	-- Sort candidates so we get closest at array index 1
+	table.sort(candidate_bases,function(e1,e2) return e1.distance < e2.distance end)
+	if table.getn(candidate_bases) > 0 then
+    		return candidate_bases[1].base
+	else
+    		return nil
+	end
+end
+
+function BonesingerTactic:Update()
+
+	self:DoAbilities()
+
+	if (self:IsComplete()) then
+		return
+	end
+    
+	-- State machine
+	if (not EngineerTactic.Update( self )) then
+		return
+	end
 end

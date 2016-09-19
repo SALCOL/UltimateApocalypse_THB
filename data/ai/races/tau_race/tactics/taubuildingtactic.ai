@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'taubuildingtactic.ai'
+-- Edited by Thudmeizer	@ 16.03.2016
+
+class 'TauBuildingTactic' (BaseTactic)
+
+TauBuilding = {}
+
+function TauBuildingTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Tau Building Tactic")
+end
+
+function TauBuildingTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TauBuilding.repair_id == nil) then
+		TauBuilding.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function TauBuildingTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( TauBuilding.repair_id )) then
+			self.base_ai:DoSpecialAbility( TauBuilding.repair_id )
+		end
+	end
+end

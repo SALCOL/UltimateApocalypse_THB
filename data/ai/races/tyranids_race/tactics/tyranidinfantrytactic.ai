@@ -1,21 +1,63 @@
 ----------------------------------------
 -- File: 'tyranidinfantrytactic.ai'
--- Created by Thudmeizer @ 05.01.2008
+-- Created by Thudmeizer @ 25.04.2016
 
 class 'TyranidInfantryTactic' (InfantryTactic)
 
 function TyranidInfantryTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Tyranid Infantry Tactic")
+
+	-- Basic infantry is able to enter transport vehicles
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "tyranids_squad_ripperswarm" or
+		sSquadName == "tyranids_squad_ripperswarm_global" or
+		sSquadName == "tyranids_squad_lictor" or
+		sSquadName == "tyranids_squad_lictor_alpha") then
+
+		-- Infantry can enter deepstrike buildings
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "tyranids_digest_pool" )
+	end
 end
 
 function TyranidInfantryTactic:AddCommanders()
-	table.insert(self.commander, { "tyranids_squad_lictor_alpha", false })
 	table.insert(self.commander, { "tyranids_squad_hive_tyrant", true })
 	table.insert(self.commander, { "tyranids_squad_swarmlord", false })
+	table.insert(self.commander, { "tyranids_squad_lictor_alpha", false })
 end
 
 function TyranidInfantryTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		local run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+		if (self.squad_ai:CanDoAbility( run_id )) then
+			self.squad_ai:DoSpecialAbility( run_id )
+		end
+	end
+
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+	
+		if (self.squad_ai:HasSquadAttached("tyranids_squad_hive_tyrant")) then
+			HiveTyrantTactic.InitAbilities( self )
+			HiveTyrantTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("tyranids_squad_swarmlord")) then
+			SwarmLordTactic.InitAbilities( self )
+			SwarmLordTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("tyranids_squad_lictor_alpha")) then
+			LictorAlphaTactic.InitAbilities( self )
+			LictorAlphaTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("tyranids_squad_lictor")) then
+			LictorTactic.InitAbilities( self )
+			LictorTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("tyranids_squad_zoanthropes")) then
+			ZoanthropeTactic.InitAbilities( self )
+			ZoanthropeTactic.DoAbilities( self )
+		end
+	end
 
 	-- Call basic DoAbilities methods
 	InfantryTactic.DoAbilities(self)

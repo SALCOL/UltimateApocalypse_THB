@@ -1,12 +1,30 @@
 ----------------------------------------
 -- File: 'darkeldarvehicletactic.ai'
--- Edited by Thudmeizer         @ 24.10.2008
+-- Edited by Thudmeizer         @ 20.06.2016
 
 class 'DarkEldarVehicleTactic' (VehicleTactic)
 
 function DarkEldarVehicleTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Dark Eldar Vehicle Tactic")
+
+	-- Set vehicle options
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "dark_eldar_squad_reaver") then
+		
+		-- Squads are transportable and can deepstrike
+		self.m_iTransportable = 1	-- Raider / Rampage
+
+		if (cpu_manager:GetTierLevel() < 4) then 
+			self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "dark_eldar_hq" )
+
+		elseif (cpu_manager:GetTierLevel() > 3) then 
+			self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "dark_eldar_hq_sp_dxp3" )
+		end
+	end
+
+	-- Set FoF range
+	self.m_iFoFRange = 35
 end
 
 -- Check if the vehicle should dance away in melee
@@ -15,18 +33,105 @@ function DarkEldarVehicleTactic:CheckVehicleDance(sName)
 	if (sName == "dark_eldar_squad_reaver" or
 	    sName == "dark_eldar_squad_raider" or
 	    sName == "dark_eldar_squad_ravager" or
+	    sName == "dark_eldar_squad_reaper" or
+	    sName == "dark_eldar_squad_rampage" or
+	    sName == "dark_eldar_squad_shadow" or
 	    sName == "dark_eldar_squad_dais_of_destruction") then
 		return true
 	end
 	return false
 end
 
-function DarkEldarVehicleTactic:CanOnlyDecap()
+function DarkEldarVehicleTactic:DoAbilities()
 
-	local sSquadName = self.squad_ai:GetSquadName()
-	if (sSquadName == "dark_eldar_squad_reaver") then
-		return true
+	-- RAM!!! - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	local rammingspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( rammingspeed_id )) then
+			self.squad_ai:DoSpecialAbility( rammingspeed_id )
+		end
 	end
-	return false
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		local foot_id = cpu_manager.stats:GetAbilityID( "dark_eldar_footonfire" )
+		if (self.squad_ai:CanDoAbility( foot_id )) then
+			self.squad_ai:DoSpecialAbility( foot_id )
+		end
+	end
+
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+
+		if (self.squad_ai:HasSquadAttached("dark_eldar_squad_araspida")) then
+			DarkEldarMobileShieldTactic.InitAbilities( self )
+			DarkEldarMobileShieldTactic.DoAbilities( self )
+		end
+	end
+
+	-- Check if I should enable/disable fire on foot
+	--self:DoAbilityFoF()
 end
 
+function DarkEldarVehicleTactic:ToggleFoF( squad_ai, state )
+
+	-- Check if the squad can handle foot on fire
+	local id = cpu_manager.stats:GetAbilityID( "dark_eldar_footonfire" )
+	if (not squad_ai:CanDoAbility(id)) then
+		return
+	end
+	
+	-- Check if it's already in desired state
+	if (squad_ai:IsUsingAbility(id) == state) then
+		return 
+	end
+	
+	-- Activate fleet of foot
+	squad_ai:DoSpecialAbility(id)
+end
+
+-- Dreddnott edit (April 16th)
+function DarkEldarVehicleTactic:DoAbilityFoF()
+
+	-- Check if we should toggle FoF
+    	local iFoFID = cpu_manager.stats:GetAbilityID( "dark_eldar_footonfire" )
+    	local bToggleFoF = false
+
+    	-- Check whether we're using the ability
+    	local bIsUsing = self.squad_ai:IsUsingAbility(iFoFID)
+
+    	-- Check if we're attacking
+    	local bIsAttacking = self.squad_ai:IsInStateAttackMove()
+    
+    	-- Check if we are shooting or fighting in melee
+    	local bIsFighting = self.squad_ai:IsAttacking()
+    
+   	-- Check if we're moving normally
+    	local bIsMoving = (self.squad_ai:IsInStateMove() and not bIsAttacking)
+
+    	-- Check if we're in a state that should FoF regardless of enemy presence
+    	local bAvoidCombat = (self.squad_ai:IsBroken() or self:IsInSubState() or self.squad_ai:IsCapturing() or bIsMoving)
+
+    	-- Check if we should slow down for enemies nearing range
+    	local vSquadPos = self.squad_ai:GetPosition()
+    	local oEnemy = cpu_manager.cpu_player:FindFirstEnemy(vSquadPos, self.m_iFoFRange, 1)
+    	local bCloseEnemy = (oEnemy ~= nil)
+    
+    	-- Helper flags
+    	local bIsCharging = (bIsAttacking and bCloseEnemy)
+    	local bIsDefending = (not bIsMoving and bCloseEnemy)
+    	local bIsInCombat = (bIsFighting or bIsCharging or bIsDefending)
+
+    	-- Check if FoF should be toggled
+    	if ((bIsUsing and bIsInCombat and not bAvoidCombat) or (not bIsUsing and (not bIsInCombat or bAvoidCombat))) then        
+        	bToggleFoF = true
+    	end
+
+    	-- Toggle FoF
+    	if (bToggleFoF and self.squad_ai:CanDoAbility(iFoFID)) then
+        	self.squad_ai:DoSpecialAbility(iFoFID)
+	end
+end

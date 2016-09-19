@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'landraidertactic.ai'
--- Edited by Arkhan         @ 02.02.2016
+-- Edited by Thudmeizer	@ 25.05.2016
 -- Edited by Cylarne_04 2011
 
 class 'LandRaiderTactic' (SpaceMarineVehicleTactic)
@@ -27,9 +27,33 @@ function LandRaiderTactic:InitAbilities()
 		LandRaider.smoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_launchers_land_raider" )	
 	end
 
+	if (LandRaider.abilityrecharge_id == nil) then
+		LandRaider.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (LandRaider.heal_id == nil) then
+		LandRaider.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (LandRaider.reinforce_id == nil) then
+		LandRaider.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+
+	-- Helios
 	if (LandRaider.missiles_id == nil) then
 		LandRaider.missiles_id = cpu_manager.stats:GetAbilityID( "marines_whirlwind_missiles" )	
 	end
+
+	-- Prometheus
+	if (LandRaider.sensormap_id == nil) then
+		LandRaider.sensormap_id = cpu_manager.stats:GetAbilityID( "marines_sensormap_prometheus" )
+	end
+
+	-- Prometheus
+	if (LandRaider.jammermap_id == nil) then
+		LandRaider.jammermap_id = cpu_manager.stats:GetAbilityID( "marines_jammermap_prometheus" )
+	end
+
 end
 
 function LandRaiderTactic:DoAbilities()
@@ -52,9 +76,44 @@ function LandRaiderTactic:DoAbilities()
 		end
 	end
 
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(LandRaider.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(LandRaider.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(LandRaider.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(LandRaider.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(LandRaider.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(LandRaider.reinforce_id, oUnit:GetSquad())
+	end
+
 	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(LandRaider.missiles_id)) then
-		Ability.DoAbilityTarget( self.squad_ai, LandRaider.missiles_id, Ability.Filters.CloseVehicleEnemy, 1 )
-		Ability.DoAbilityTarget( self.squad_ai, LandRaider.missiles_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, LandRaider.missiles_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, LandRaider.missiles_id, Ability.Filters.CloseSquadEnemy, 4 )
+	end
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	local abilitySelector = math.random(1, 100)
+	
+	if (abilitySelector <= 10 and iPower >= 500) then
+		if (self.squad_ai:CanDoAbility(LandRaider.sensormap_id)) then
+			self.squad_ai:DoSpecialAbility(LandRaider.sensormap_id) 
+		end
+	elseif (abilitySelector <= 50 and iPower >= 500) then
+		if (self.squad_ai:CanDoAbility(LandRaider.jammermap_id) and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility(LandRaider.jammermap_id) 
+		end
 	end
 
 	-- Do basic abilities

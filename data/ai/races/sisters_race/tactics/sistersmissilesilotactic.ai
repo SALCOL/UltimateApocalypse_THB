@@ -1,0 +1,94 @@
+----------------------------------------
+-- File: 'sistersmissilesilotactic.ai'
+-- Edited by Cylarne @ 2012
+-- Edited by Thudmeizer	@ 07.06.2016
+
+class 'SistersMissileSiloTactic' (BaseTactic)
+
+SistersMissileSilo = {}
+
+function SistersMissileSiloTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Sisters Missile Silo Tactic")
+end
+
+function SistersMissileSiloTactic:InitAbilities()
+
+	if (SistersMissileSilo.Nuke1_id == nil) then
+		SistersMissileSilo.Nuke1_id = cpu_manager.stats:GetAbilityID( "sisters_nuke" )		-- Nuke (All)
+	end
+	if (SistersMissileSilo.Nuke2_id == nil) then
+		SistersMissileSilo.Nuke2_id = cpu_manager.stats:GetAbilityID( "sisters_nuke2" )		-- EMP (Vehicles/Buildings) 
+	end
+	if (SistersMissileSilo.Nuke3_id == nil) then
+		SistersMissileSilo.Nuke3_id = cpu_manager.stats:GetAbilityID( "sisters_nuke3" )		-- Particle Cannon (All)
+	end
+	if (SistersMissileSilo.curtain_id == nil) then
+		SistersMissileSilo.curtain_id = cpu_manager.stats:GetAbilityID( "sisters_nuke4" )	-- Iron Curtain (All)
+	end
+	if (SistersMissileSilo.repair_id == nil) then
+		SistersMissileSilo.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function SistersMissileSiloTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Activate EMP
+	if (iRequisition >= 10000 and iPower >= 10000) then
+		Ability.DoAbilityPos(self.base_ai, SistersMissileSilo.Nuke2_id, Ability.Filters.CloseVehicleEnemy, 5)
+		Ability.DoAbilityPos(self.base_ai, SistersMissileSilo.Nuke2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10)
+		Ability.DoAbilityPos(self.base_ai, SistersMissileSilo.Nuke2_id, Ability.Filters.CloseSquadEnemy, 12)
+	end
+
+	-- Fire the Nuke
+	if (iRequisition >= 7000 and iPower >= 7000) then
+		Ability.DoAbilityPos(self.base_ai, SistersMissileSilo.Nuke1_id, Ability.Filters.CloseEnemy, 24)
+		Ability.DoAbilityPos(self.base_ai, SistersMissileSilo.Nuke1_id, Ability.EntityFilters.CloseBaseEntityEnemy, 12)
+	end
+
+	-- Check if we can use the Particle Cannon
+	if (self.base_ai:CanDoAbility(SistersMissileSilo.Nuke3_id) and (iRequisition >= 15000 and iPower >= 15000)) then
+	
+		-- Get closest squad in range
+		local iRange = self.base_ai:GetAbilityRange(SistersMissileSilo.Nuke3_id)
+		local oSquad = cpu_manager.cpu_player:FindFirstEnemy(self.base_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil) then
+		
+			-- Get stats
+			local oStats = oSquad:GetStats()
+			if (oStats ~= nil) then
+			
+				-- Check unit type
+				local eClass = oStats:GetClass()
+				if (eClass == UnitStatsAI.UC_VehicleHigh or eClass == UnitStatsAI.UC_Commander or
+					eClass == UnitStatsAI.UC_MonsterHigh or oSquad:GetNumTroopers() >= 10) then
+					
+					-- Use Particle Cannon ability on squad
+					self.base_ai:DoSpecialAbilitySquad(SistersMissileSilo.Nuke3_id, oSquad:GetSquad())
+				end
+			end	
+		end
+	end
+
+	-- Check if we can use the Iron Curtain
+	if (self.base_ai:CanDoAbility(SistersMissileSilo.curtain_id) and (iRequisition >= 8000 and iPower >= 8000)) then
+	
+		-- Search a squad
+		local iRange = self.base_ai:GetAbilityRange(SistersMissileSilo.curtain_id)
+		local oUnit = Ability.Filters.CloseHurt(self.base_ai:GetPosition(), iRange, 10)
+		if (oUnit ~= nil and oUnit:IsInCombat() and oUnit:WasRecentlyHurt() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.base_ai:DoSpecialAbilitySquad(SistersMissileSilo.curtain_id, oUnit:GetSquad())
+		end
+	end
+	
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SistersMissileSilo.repair_id )) then
+			self.base_ai:DoSpecialAbility( SistersMissileSilo.repair_id )
+		end
+	end	
+end

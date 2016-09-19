@@ -1,0 +1,39 @@
+-- scarceresources.scar
+-- Created by Cylarne_04 2011
+-- This win condition basically transforms the mod to the old XP1 styled expansion, featuring greater scale battles and greater starting resources.
+-----------------------------------------------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+
+-- Init ExtremeBattles rule system
+function Scarce_Resources_Setup()
+
+	-- Delay by 0.1 seconds just because.
+	Mod_TotalDestruction = 1;
+	Rule_AddOneShot(Scarce_Resources_Resources, 0.1)
+	
+end
+
+function Scarce_Resources_Resources()
+
+	-- This function sets up the resources of each player. This works for Necrons, Tyranids, and Daemons as well...
+	local count = World_GetPlayerCount();
+	for j = 0, count-1 do
+		local Player = World_GetPlayerAt(j);
+		
+		-- Is not Necron...
+		if not (Player_GetRaceName(Player) == "necron_race") then
+			Player_SetResource(Player, RT_Requisition, 400)
+			Player_SetResource(Player, RT_Power, 50)
+			
+		-- Is Necron...
+		elseif (Player_GetRaceName(Player) == "necron_race") then
+			Player_SetResource(Player, RT_Power, 250)
+		end
+	end
+end
+
+-- Init SCAR
+Scar_AddInit(Scarce_Resources_Setup)

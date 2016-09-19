@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'sistersexorcisttactic.ai'
 -- Created by Arkhan 	        @ 16.03.2008
--- Edited by Thudmeizer		@ 23.03.2008
+-- Edited by Thudmeizer		@ 11.04.2016
 -- Edited by Cylarne
 
 class 'SistersExorcistTactic' (SistersVehicleTactic)
@@ -18,15 +18,24 @@ function SistersExorcistTactic:InitAbilities()
 	if (SistersExorcist.bombard_id == nil) then
 		SistersExorcist.bombard_id = cpu_manager.stats:GetAbilityID( "sisters_hk_missiles" )
 	end
+
+	if (SistersExorcist.incendiary_id == nil) then
+		SistersExorcist.incendiary_id = cpu_manager.stats:GetAbilityID( "sisters_exorcist_incendiary_missiles" )
+	end
 end
 
 function SistersExorcistTactic:DoAbilities()
 
-	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	
-	if (iRequisition > 500 and iPower > 500 and self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(SistersExorcist.bombard_id)) then
-		Ability.DoAbilityPos(self.squad_ai, SistersExorcist.bombard_id, Ability.Filters.CloseVehicleEnemy, 1)
+	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(SistersExorcist.bombard_id)) then
+		Ability.DoAbilityPos( self.squad_ai, SistersExorcist.bombard_id, Ability.Filters.CloseVehicleEnemy, 2 )
+    		Ability.DoAbilityPos( self.squad_ai, SistersExorcist.bombard_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2 )
 	end
 
+	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(SistersExorcist.incendiary_id)) then
+		Ability.DoAbilityPos( self.squad_ai, SistersExorcist.incendiary_id, Ability.Filters.CloseSquadEnemy, 4 )
+    		Ability.DoAbilityPos( self.squad_ai, SistersExorcist.incendiary_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2 )
+	end
+
+	-- Call standard method
+	SistersVehicleTactic.DoAbilities(self)
 end

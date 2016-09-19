@@ -1,0 +1,53 @@
+----------------------------------------
+-- File: 'daemonsnurglingtactic.ai'
+-- Edited by Thudmeizer		@ 12.05.2016
+
+class 'DaemonsNurglingTactic' (DaemonsInfantryTactic)
+
+DaemonsNurgling = {}
+
+function DaemonsNurglingTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Nurgling Tactic")
+end
+
+function DaemonsNurglingTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsNurgling.run_id == nil) then
+		DaemonsNurgling.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+	end
+end
+
+function DaemonsNurglingTactic:DoAbilities()
+	
+	-- Check if we can safely run
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+		if (self.squad_ai:CanDoAbility( DaemonsNurgling.run_id )) then
+			self.squad_ai:DoSpecialAbility( DaemonsNurgling.run_id )
+		end
+	end
+end
+
+function DaemonsNurglingTactic:Reinforce()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+   
+	-- If there are no resources available, don't upgrade!
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (iRequisition < 500 and not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	-- Don't reinforce more than 12 squad members -- they both get stuck or don't capture points properly
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 12) then
+        	if (self.squad_ai:CanReinforce(true, 0)) then            
+            		self.squad_ai:DoReinforce(true, 0)
+       		elseif (self.squad_ai:CanReinforce(false, 0)) then
+            		self.squad_ai:DoReinforce(false, 0)
+		end
+	end
+end

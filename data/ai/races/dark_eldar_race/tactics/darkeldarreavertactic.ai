@@ -1,0 +1,58 @@
+----------------------------------------
+-- File: 'darkeldarreavertactic.ai'
+-- Edited by Thudmeizer @ 05.04.2016
+
+class 'DarkEldarReaverTactic' (DarkEldarVehicleTactic)
+
+DarkEldarReaver = {}
+
+function DarkEldarReaverTactic:__init( squad_ai ) super( squad_ai )
+	
+	self:SetName("Dark Eldar Reaver Tactic")
+end
+
+function DarkEldarReaverTactic:InitAbilities()
+
+	if (DarkEldarReaver.haywire_id == nil) then
+		DarkEldarReaver.haywire_id = cpu_manager.stats:GetAbilityID( "dark_eldar_haywire_bombs" )	
+	end
+	if (DarkEldarReaver.horrorfex_id == nil) then
+		DarkEldarReaver.horrorfex_id = cpu_manager.stats:GetAbilityID( "dark_eldar_horrorfex_grenade" )	
+	end
+	if (DarkEldarReaver.terrorfex_id == nil) then
+		DarkEldarReaver.terrorfex_id = cpu_manager.stats:GetAbilityID( "dark_eldar_terrorfex_grenade" )	
+	end
+end
+
+function DarkEldarReaverTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat()) then
+
+		-- Send grenade against enemy infantry
+		Ability.DoAbilityPos( self.squad_ai, DarkEldarReaver.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
+
+		-- Send grenade against enemy infantry
+		Ability.DoAbilityPos( self.squad_ai, DarkEldarReaver.horrorfex_id, Ability.Filters.CloseSquadEnemy, 1 ) 
+
+		-- Send bomb against enemy infantry
+		Ability.DoAbilityPos( self.squad_ai, DarkEldarReaver.terrorfex_id, Ability.Filters.CloseInfantryEnemy, 4 ) 
+	end
+end
+
+function DarkEldarReaverTactic:Reinforce()
+	
+	-- Always try to reinforce
+	if (not self.squad_ai:IsReinforcing()) then
+			
+		if (self.squad_ai:CanReinforce( true, 0 )) then
+			self.squad_ai:DoReinforce( true, 0 )
+		elseif (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end	
+	end
+end
+
+function DarkEldarReaverTactic:CanOnlyDecap()
+	return true
+end
+

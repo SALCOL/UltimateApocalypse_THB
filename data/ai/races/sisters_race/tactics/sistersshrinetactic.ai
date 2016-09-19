@@ -1,0 +1,65 @@
+----------------------------------------
+-- File: 'sistersshrinetactic.ai'
+-- Edited by Thudmeizer	@ 10.04.2016
+
+class 'SistersShrineTactic' (BaseTactic)
+
+SistersShrine = {}
+
+function SistersShrineTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Sisters Shrine Tactic")
+end
+
+function SistersShrineTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersShrine.repair_id == nil) then
+		SistersShrine.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+	if (SistersShrine.intervention_id == nil) then
+		SistersShrine.intervention_id = cpu_manager.stats:GetAbilityID( "sisters_miraculous_intervention" )
+	end
+end
+
+function SistersShrineTactic:DoAbilities()
+--[[
+	-- Miraculous Intervention: If the Arch Angel falls in battle, her incredible faith will allow her to rise once again. (Faith cost: 800)
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.3) then
+
+		if (self.base_ai:CanDoAbility( SistersShrine.intervention_id )) then
+			self.base_ai:DoSpecialAbility( SistersShrine.intervention_id )
+		end
+	end
+]]
+	-- Search for a specific uber units which are VERY low on health (Faith cost: 800)
+	if (self.base_ai:CanDoAbility( SistersShrine.intervention_id )) then
+		if self:PlayerHasLowHealthSquad(0.1) then
+			-- Enable Intervention on currently impacted units with very low health
+            		self.base_ai:DoSpecialAbility( SistersShrine.intervention_id )
+        	end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SistersShrine.repair_id )) then
+			self.base_ai:DoSpecialAbility( SistersShrine.repair_id )
+		end
+	end
+end
+
+-- Called to find if the player has a squad (from a specific list) that meets the low health condition.
+function SistersShrineTactic:PlayerHasLowHealthSquad(iHealthRatio)
+	for oSquad in cpu_manager.stats:GetPlayerStatsFromID(cpu_manager.player_id):GetSquads() do
+    		if oSquad:IsValid() then
+        	local oName = oSquad:GetSquadName()
+       			if (oName == "sisters_squad_living_saint" or oName == "sisters_squad_living_saint_blue" or oName == "sisters_squad_living_saint_black" or oName == "sisters_squad_arch_angel") then
+            			if oSquad:GetHealthPercentage() <= iHealthRatio then
+                		return true
+            			end
+        		end
+    		end
+	end
+	return false
+end

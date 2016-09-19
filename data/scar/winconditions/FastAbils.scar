@@ -1,0 +1,52 @@
+--Decreases ability recharge time
+--
+-- original functions by Relic Entertainment Inc.
+-- (c) 2003 Relic Entertainment Inc.
+-- 
+--Created by CutterShane
+--version 1.0
+
+import("Player.scar");
+import("GroupCallers.scar");
+import("Command.scar");
+import("Groups.scar");
+import("ScarUtil.scar");
+
+fa_recharge_time = 0.25
+
+fa_blueprints_applied = {}
+
+function FastAbilsMainRule()
+	local j = World_GetPlayerCount()
+	local fa_players = {}
+	for i = 1, j do
+		fa_players[i] = World_GetPlayerAt (i-1)
+	end
+	for i = 1, j do
+		local squads = Player_GetSquads (fa_players[i])
+		local SquadFastAbils = function (egroupid, itemindex, squadoneID)
+			local squad_blueprint = Squad_GetBaseUnitName (squadoneID)
+			if (fa_blueprints_applied[squad_blueprint] ~= true) then
+				local fa_ability = Modifier_Create (MAT_EntityType, "ability_recharge_modifier", MUT_Multiplication, false, fa_recharge_time, squad_blueprint)
+				fa_blueprints_applied[squad_blueprint] = true
+				for m = 1, j do
+					Modifier_ApplyToPlayer (fa_ability, fa_players[m])
+				end
+				
+				Modifier_Destroy ( fa_ability )
+			end
+		end
+		SGroup_ForEach (squads, SquadFastAbils)
+	end
+end
+
+function FastAbils_InitRule()
+	Rule_AddInterval (FastAbilsMainRule, 5.03)
+	FastAbilsMainRule()
+end
+
+function SetupFastAbils()
+	Rule_AddOneShot (FastAbils_InitRule, 1.3)
+end
+
+Scar_AddInit(SetupFastAbils)

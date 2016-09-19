@@ -1,0 +1,56 @@
+----------------------------------------
+-- File: 'darkeldarportaltactic.ai'
+-- Edited by Thudmeizer	@ 20.04.2016
+
+class 'DarkEldarPortalTactic' (BaseTactic)
+
+DarkEldarPortal = {}
+
+function DarkEldarPortalTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Dark Eldar Portal Tactic")
+end
+
+function DarkEldarPortalTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarPortal.repair_id == nil) then
+		DarkEldarPortal.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+
+	if (DarkEldarPortal.crucible_id == nil) then
+		DarkEldarPortal.crucible_id = cpu_manager.stats:GetAbilityID( "dark_eldar_portal_crucible" )
+	end
+
+	if (DarkEldarPortal.shroud_id == nil) then
+		DarkEldarPortal.shroud_id = cpu_manager.stats:GetAbilityID( "dark_eldar_shroud_shadow" )
+	end
+end
+
+function DarkEldarPortalTactic:DoAbilities()
+
+	-- We are dying, lower requisites for attacks and use life drain!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.5) then
+		Ability.DoAbilityTarget(self.base_ai, DarkEldarPortal.crucible_id, Ability.Filters.CloseSquadEnemy, 4)
+	else
+		Ability.DoAbilityTarget(self.base_ai, DarkEldarPortal.crucible_id, Ability.Filters.CloseSquadEnemy, 8)
+	end
+
+	-- Can we activate Dark Abyss when enemy is nearby
+	if (self.base_ai:IsUsingAbility(DarkEldarPortal.shroud_id)) then
+		-- Turn shroud on only when enemy is nearby
+		if (Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), 35, 1) == nil) then
+			self.base_ai:DoSpecialAbility(DarkEldarPortal.shroud_id)
+		end
+	elseif (Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), 35, 1) ~= nil) then
+		self.base_ai:DoSpecialAbility(DarkEldarPortal.shroud_id)
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DarkEldarPortal.repair_id )) then
+			self.base_ai:DoSpecialAbility( DarkEldarPortal.repair_id )
+		end
+	end
+end

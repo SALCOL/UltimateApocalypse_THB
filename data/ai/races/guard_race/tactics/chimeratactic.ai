@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'chimeratactic.ai'
 -- Edited by Arkhan		@ 23.11.2007
+-- Edited by Thudmeizer		@ 20.06.2016
 
 class 'ChimeraTactic' (GuardVehicleTactic)
 
@@ -21,8 +22,25 @@ function ChimeraTactic:InitAbilities()
 	if (Chimera.smoke_id == nil) then
 		Chimera.smoke_id = cpu_manager.stats:GetAbilityID( "guard_smoke_launchers" )	
 	end
+
 	if (Chimera.teargas_id == nil) then
 		Chimera.teargas_id = cpu_manager.stats:GetAbilityID( "guard_nervegas_launchers" )	
+	end
+
+	if (Chimera.abilityrecharge_id == nil) then
+		Chimera.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (Chimera.heal_id == nil) then
+		Chimera.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (Chimera.reinforce_id == nil) then
+		Chimera.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+
+	if (Chimera.laymines_id == nil) then
+		Chimera.laymines_id = cpu_manager.stats:GetAbilityID( "guard_laymines" )
 	end
 end
 
@@ -49,6 +67,38 @@ function ChimeraTactic:DoAbilities()
 				self.squad_ai:DoSpecialAbilitySquad(Chimera.teargas_id, oSquad:GetSquad())
 			end
 		end
+	end
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( Chimera.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 1000 and iPower >= 1000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( Chimera.laymines_id )
+		end
+	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(Chimera.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(Chimera.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(Chimera.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(Chimera.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(Chimera.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(Chimera.reinforce_id, oUnit:GetSquad())
 	end
 
 	-- Call standard method

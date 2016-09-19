@@ -1,0 +1,132 @@
+----------------------------------------
+-- File: 'reavercaptaintactic.ai'
+-- Edited by Cylarne @ 2012
+-- Edited by Thudmeizer		@ 04.03.2016
+
+class 'ReaverCaptainTactic' (GuardVehicleTactic)
+
+ReaverCaptain = {}
+
+function ReaverCaptainTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Reaver Captain Tactic")
+end
+
+function ReaverCaptainTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelReaverCaptain = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelReaverCaptain ~= nil) then
+			local addOnID = buildChannelReaverCaptain:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelReaverCaptain:IsBuilding() == 0 and buildChannelReaverCaptain:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelReaverCaptain:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function ReaverCaptainTactic:AutoBuildResearch( researchSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelReaverCaptain = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelReaverCaptain ~= nil) then
+			local ResearchID = buildChannelReaverCaptain:GetItemIDAt(BuildChannelAI.PQ_Research, researchSlot)
+			if (buildChannelReaverCaptain:IsBuilding() == 0 and buildChannelReaverCaptain:CanAddToQueue(BuildChannelAI.PQ_Research, ResearchID) == BuildChannelAI.CANBUILD_Ok) then			
+				buildChannelReaverCaptain:BuildResearch(ResearchID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function ReaverCaptainTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ReaverCaptain.speech_id == nil) then
+		ReaverCaptain.speech_id = cpu_manager.stats:GetAbilityID( "guard_speech_captain" )	
+	end
+	
+	if (ReaverCaptain.missiles_id == nil) then
+		ReaverCaptain.missiles_id = cpu_manager.stats:GetAbilityID( "marines_apocalypse_missiles" )	
+	end
+
+	if (ReaverCaptain.inhibitor_id == nil) then
+		ReaverCaptain.inhibitor_id = cpu_manager.stats:GetAbilityID( "guard_apocalypse_inhibitor" )	
+	end
+end
+
+function ReaverCaptainTactic:DoAbilities()
+
+	-- Invoke the great demoralizing Imperial Directive to the unworthy filth!
+	Ability.DoAbilityArea(self.squad_ai, ReaverCaptain.speech_id, Ability.Filters.CloseEnemy, 60, 24)
+
+	-- Launch the crippling Apocalypse Missiles!
+	Ability.DoAbilityPos(self.squad_ai, ReaverCaptain.missiles_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ReaverCaptain.missiles_id, Ability.Filters.CloseVehicleEnemy, 3)
+	Ability.DoAbilityPos(self.squad_ai, ReaverCaptain.missiles_id, Ability.EntityFilters.CloseBaseEntityEnemy, 4)
+
+	-- Enable Overshields which doubles shield strength and shield regeneration at the expense of power.
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if (iPower >= 500) then 
+		if (self.squad_ai:IsInCombat() and self.squad_ai:WasRecentlyHurt()) or (self.squad_ai:GetMoralePercentage() < 0.8) then
+			if (self.squad_ai:CanDoAbility( ReaverCaptain.inhibitor_id )) then
+				self.squad_ai:DoSpecialAbility( ReaverCaptain.inhibitor_id )
+			end
+		end
+	end
+end
+
+function ReaverCaptainTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_guard_reaver_autocannon		1/2 exclusive upgrade
+--	self:AutoBuildAddOn(1)	--	[addon_02] addon_guard_reaver_powerfist			2/2 exclusive upgrade
+--	self:AutoBuildAddOn(2)	--	[addon_03] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(3)	--	[addon_04] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(4)	--	[addon_05] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(5)	--	[addon_06] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(6)	--	[addon_07] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(7)	--	[addon_08] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(8)	--	[addon_09] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(9)	--	[addon_10] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(10)	--	[addon_11] addon_commanders_increase_production_2	8
+
+-- 	self:AutoBuildResearch(0) --	[research_01] guard_titanic_armor_research		-- Always build
+-- 	self:AutoBuildResearch(1) --	[research_02] guard_apocalypse_inhibitor_research	-- Always build
+
+	-- Randomize between Autocannon or Powerfist
+	local addon_random_commander_wargear = math.random( 0,1 )	-- Randomize these wargear addons
+	self:AutoBuildAddOn(addon_random_commander_wargear)
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 2,10 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(4)		-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	if (iRequisition >= 300 and iPower >= 300) then
+
+		-- Always build the Titan Armour research
+		self:AutoBuildResearch(0) 
+	end
+	if (iRequisition >= 1000 and iPower >= 1000) then
+
+		-- Always build the Apocalypse Inhibitor research
+		self:AutoBuildResearch(1)
+	end
+--[[
+	-- If there are no resources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+]]
+end

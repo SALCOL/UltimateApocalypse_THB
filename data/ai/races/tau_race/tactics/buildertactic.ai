@@ -1,0 +1,15 @@
+----------------------------------------
+-- File: 'buildertactic.ai'
+-- Edited by Thudmeizer @ 18.03.2016
+
+class 'BuilderTactic' (EngineerTactic)
+
+function BuilderTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Builder Tactic")
+end
+
+function BuilderTactic:IsAffectedByMorale()
+	return false
+end
+

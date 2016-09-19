@@ -1,0 +1,56 @@
+----------------------------------------
+-- File: 'wraithconstructtactic.ai'
+-- Edited by Thudmeizer		@ 22.03.2016
+
+class 'WraithConstructTactic' (EldarVehicleTactic)
+
+WraithConstruct = {}
+
+function WraithConstructTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Wraith Construct Tactic")
+end
+
+function WraithConstructTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (WraithConstruct.regeneration_id == nil) then
+		WraithConstruct.regeneration_id = cpu_manager.stats:GetAbilityID( "eldar_wraithbone_regeneration" )
+	end
+
+	if (WraithConstruct.eldritchstorm_id == nil) then
+		WraithConstruct.eldritchstorm_id = cpu_manager.stats:GetAbilityID( "eldar_eldritchstorm_wraithlord" )
+	end
+end
+
+function WraithConstructTactic:DoAbilities()
+
+	-- Wraithbone Regeneration: - The user will become disabled for a temporary duration in exchange for massive health regeneration.
+	if (not self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() < 0.3 ) then
+		if (self.squad_ai:CanDoAbility(WraithConstruct.regeneration_id)) then
+			self.squad_ai:DoSpecialAbility(WraithConstruct.regeneration_id)
+		end
+	end
+
+	if (self.squad_ai:IsInCombat()) then
+
+		if (self.squad_ai:CanDoAbility(WraithConstruct.eldritchstorm_id)) then
+			Ability.DoAbilityPos( self.squad_ai, WraithConstruct.eldritchstorm_id, Ability.Filters.CloseEnemy, 9 )
+		end
+	end
+
+	-- Call standard method
+	EldarVehicleTactic.DoAbilities(self)
+end
+
+function WraithConstructTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end
+

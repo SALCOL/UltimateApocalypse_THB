@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marinebuildbasestrategy.ai'
--- Edited by Thudmeizer @ 02.02.2016
+-- Edited by Thudmeizer @ 20.06.2016
 -- Edited by Cylarne_04 2011
 
 class 'MarineBuildBaseStrategy' (BuildBaseStrategy)
@@ -15,6 +15,7 @@ function MarineBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	self.m_iArmyBuild = math.random(0, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
 	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
 	
+	CpuPrerequisites2.AddSpecialItem("space_marine_turret_addon_probe", CpuPrerequisites.BT_AddOn)
 end
 
 function MarineBuildBaseStrategy:ChooseBuildProgram()
@@ -114,6 +115,9 @@ function MarineBuildBaseStrategy:GetAddonBuilding( sType )
 		
 	elseif (sType == "space_marine_list_post_addon_2") then
 		return "space_marine_listening_post"
+
+	elseif (sType == "space_marine_thermonuclear_addon") then
+		return "space_marine_thermonuclear_generator"
 		
 	elseif (sType == "space_marine_turret_addon_lascannon") then
 		return "space_marine_turret_missile_sp"
@@ -132,6 +136,9 @@ function MarineBuildBaseStrategy:GetAddonBuilding( sType )
 		
 	elseif (sType == "space_marine_hq_addon_2") then
 		return "space_marine_hq"
+
+	elseif (sType == "addon_superweapon") then
+		return "space_marine_hq_super"
 	end
 	return nil
 end
@@ -154,19 +161,21 @@ function MarineBuildBaseStrategy:GetUnitStats(sSquadName)
 	if (sSquadName == "space_marine_squad_scout") then
 		return 1, 0
 	elseif (sSquadName == "space_marine_squad_tactical_bike") then
-		return 0, 1
+		return 2, 1
 	elseif (sSquadName == "space_marine_squad_servitor_weapons") then
 		return 2, 0
 	elseif (sSquadName == "space_marine_squad_tactical") then
-		return 3, 0
+		return 2, 0
 	elseif (sSquadName == "space_marine_squad_assault") then
-		return 3, 0
+		return 2, 0
 	elseif (sSquadName == "space_marine_squad_devastator") then
-		return 4, 0
+		return 3, 0
 	elseif (sSquadName == "space_marine_squad_sternguard_veteran") then
-		return 5, 0
+		return 4, 0
 	elseif (sSquadName == "space_marine_squad_vanguard_veteran") then
-		return 5, 0
+		return 4, 0
+	elseif (sSquadName == "space_marine_squad_lotd_tactical") then
+		return 4, 0
 	elseif (sSquadName == "space_marine_squad_terminator") then
 		return 6, 0
 	elseif (sSquadName == "space_marine_squad_terminator_assault") then
@@ -181,6 +190,8 @@ function MarineBuildBaseStrategy:GetUnitStats(sSquadName)
 		return 0, 2
 	elseif (sSquadName == "space_marine_squad_damocles") then
 		return 0, 3
+	elseif (sSquadName == "space_marine_squad_rhino_stalker") then
+		return 0, 3
 	elseif (sSquadName == "space_marine_squad_razorback") then
 		return 0, 3
 	elseif (sSquadName == "space_marine_squad_dreadnought") then
@@ -192,7 +203,7 @@ function MarineBuildBaseStrategy:GetUnitStats(sSquadName)
 	elseif (sSquadName == "space_marine_squad_dreadnought_venerable") then
 		return 0, 5
 	elseif (sSquadName == "space_marine_squad_whirlwind") then
-		return 0, 4
+		return 0, 3
 	elseif (sSquadName == "space_marine_squad_predator") then
 		return 0, 5
 	elseif (sSquadName == "space_marine_squad_predator_advance_sp") then
@@ -270,7 +281,6 @@ function MarineBuildBaseStrategy:BuildFlexible()
 	
 	if (iArmyStrength >= 1000 or (iPower >= 800 and iRequisition >= 900)) then
 		
-	
 		-- Dynamic research item syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
 		local iLibrarianSquads	= self:CountSquads("space_marine_squad_librarian")
 		local iCommanderSquads	= self:CountSquads("space_marine_squad_force_commander_killeus") + self:CountSquads("space_marine_squad_chaplain") + iLibrarianSquads
@@ -301,30 +311,34 @@ function MarineBuildBaseStrategy:BuildFlexible()
 			
 				-- Compute infantry researches
 				if (iInfantrySquads >= 3) then
-					self:DynamicResearch("marine_sergeant_melee_upgrade_1", 1, 50, 20, 0, 0, "space_marine_squad_assault", 2)
-					self:DynamicResearch("marine_sniper_rifle", 1, 75, 35, 0, 0, "space_marine_squad_scout", 2)
+					self:DynamicResearch("marine_sergeant_melee_upgrade_1", 1, 50, 20, 0, 0, nil, 0)
+					self:DynamicResearch("marine_sniper_rifle", 1, 150, 100, 0, 0, "space_marine_squad_scout", 1)
 				end
 				
 				-- Compute skull probe researches
-				self:DynamicResearch("marine_skull_probe_infiltrate_research", 1, 50, 50, 0, 0, "space_marine_squad_skull_probe", 1)
+				self:DynamicResearch("marine_skull_probe_infiltrate_research", 1, 50, 25, 0, 0, "space_marine_squad_skull_probe", 1)
 			end
+
+				-- Compute HQ Tier2 Addons for future HQs
+				if (self:GetBuildingCountByName("space_marine_hq") > 1) then
+					self:DynamicAddon("space_marine_hq_addon_1", 100, 1, 400, 130, 0, 0, nil, nil, false)
+				end
 		end
 		
 		-- Compute tier 2 researches
 		if (self.tierLevel >= 2) then
 		
+			-- Compute resource researches
+			self:DynamicResearch("marine_power_research_1", 2, 200, 20, 0, 0, nil, 0)
+			self:DynamicResearch("marine_requisition_research_1", 2, 75, 250, 0, 0, nil, 0)
+
 			-- Compute infantry researches
 			if (iInfantrySquads >= 3) then
 				self:DynamicResearch("marine_health_upgrade_research_2", 2, 100, 50, 0, 0, nil, 0)
 				self:DynamicResearch("marine_sergeant_ranged_upgrade_1", 2, 50, 20, 0, 0, nil, 0)
 				self:DynamicResearch("marine_armor_upgrade_research_2", 2, 150, 100, 0, 0, nil, 0)
 				self:DynamicResearch("marine_bolter_upgrade_research", 2, 80, 35, 0, 0, nil, 0)
-
 			end
-			
-			-- Compute resource researches
-			self:DynamicResearch("marine_requisition_research_1", 2, 75, 250, 0, 0, nil, 0)
-			self:DynamicResearch("marine_power_research_1", 2, 200, 20, 0, 0, nil, 0)
 			
 			-- Compute commander researches
 			if (iLibrarianSquads >= 1) then
@@ -346,14 +360,19 @@ function MarineBuildBaseStrategy:BuildFlexible()
 				end
 			end
 			
+			-- Compute Landspeeder researches
+			if (self:CountSquads("space_marine_squad_land_speeder") >= 1) then
+				self:DynamicResearch("marine_land_speeder_research", 2, 50, 25, 0, 0, nil, 0)
+			end
+
 			-- Compute bonus researches
 			if (iArmyStrength >= 1750) then
 						
 				-- Compute infantry researches
 				if (iInfantrySquads >= 3) then
-					self:DynamicResearch("marine_max_weapons_research", 2, 75, 75, 0, 0, "space_marine_squad_tactical", 2)
-					self:DynamicResearch("marine_sergeant_melee_upgrade_2", 2, 50, 20, 0, 0, "space_marine_squad_assault", 2)
-					self:DynamicResearch("marine_scout_infiltrate_research", 2, 100, 150, 0, 0, "space_marine_squad_scout", 2)
+					self:DynamicResearch("marine_max_weapons_research", 2, 75, 75, 0, 0, "space_marine_squad_tactical", 1)
+					self:DynamicResearch("marine_sergeant_melee_upgrade_2", 2, 50, 20, 0, 0, nil, 0)
+					self:DynamicResearch("marine_scout_infiltrate_research", 2, 100, 50, 0, 0, "space_marine_squad_scout", 1)
 				end
 			
 				-- Compute turret upgrades research
@@ -362,7 +381,12 @@ function MarineBuildBaseStrategy:BuildFlexible()
 				self:DynamicResearch("marine_listening_post_upgrade", 3, 600, 240, 0, 0, nil, 0)
 				
 				-- Compute vehicle researches
-				self:DynamicResearch("marine_smoke_launcher_research", 2, 75, 25, 0, 0, "space_marine_squad_rhino", 2)
+				self:DynamicResearch("marine_smoke_launcher_research", 2, 75, 25, 0, 0, nil, 0)
+			end
+
+			-- Compute HQ Tier3 Addons for future HQs
+			if (self:GetBuildingCountByName("space_marine_hq") > 1 and (iPower >= 2500 and iRequisition >= 2500)) then
+				self:DynamicAddon("space_marine_hq_addon_2", 50, 2, 500, 500, 0, 0, nil, nil, false)
 			end
 		end
 		
@@ -370,17 +394,32 @@ function MarineBuildBaseStrategy:BuildFlexible()
 		if (self.tierLevel >= 3) then
 		
 			-- Compute resource researches
-			self:DynamicResearch("marine_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
 			self:DynamicResearch("marine_power_research_2", 3, 350, 40, 0, 0, nil, 0)
+			self:DynamicResearch("marine_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
+
+			-- Compute bonus infantry researches
 			self:DynamicResearch("marine_melta_bomb_research", 3, 100, 100, 0, 0, nil, 0)
 
 			-- Compute secondary researches
 			if (iArmyStrength >= 1750) then
 
+				-- Compute infantry researches
+				if (iInfantrySquads >= 3) then
+					self:DynamicResearch("marine_max_weapons_research_2", 3, 150, 150, 0, 0, nil, 0)
+				end
+
 				-- Compute commander researches
 				if (iCommanderSquads >= 1) then
 					self:DynamicResearch("marine_force_commander_research_2", 3, 100, 50, 0, 0, "space_marine_squad_force_commander_killeus", 1)
 				end
+			end
+
+			-- Compute vehicle researches
+			self:DynamicResearch("marine_vehicle_armor_research", 3, 125, 75, 0, 0, nil, 0)
+
+			-- Compute Probe Addon for emplacements if enemy has infiltrators
+			if (cpu_manager:EnemyHasUnitInfiltrators() or cpu_manager:EnemyHasBaseInfiltrators()) then
+				self:DynamicAddon("space_marine_turret_addon_probe", 5, 3, 10, 85, 0, 0, nil, nil, false)
 			end
 			
 			-- Compute bonus researches
@@ -388,38 +427,81 @@ function MarineBuildBaseStrategy:BuildFlexible()
 
 				-- Compute terminator researches
 				self:DynamicResearch("marine_personalteleporter_research", 3, 75, 125, 0, 0, nil, 0)
+
+				-- Compute Wall Research
+				self:DynamicResearch("all_walls_research", 3, 280, 280, 0, 0, nil, 0)
 			end
+
+			-- Compute Tier III
+			self:DynamicResearch("marine_heavy_armor_deployment", 3, 1000, 1000, 0, 0, nil, 0)
 		end
 		
 		-- Compute tier 4 researches
 		if (self.tierLevel >= 4) then
 		
+			-- Compute resource researches
+			self:DynamicResearch("marine_power_research_3", 4, 500, 60, 0, 0, nil, 0)
+			self:DynamicResearch("marine_requisition_research_3", 4, 125, 450, 0, 0, nil, 0)
+
+			-- Compute infantry researches
+			if (iInfantrySquads >= 3) then
+				self:DynamicResearch("marine_max_weapons_research_3", 4, 200, 200, 0, 0, nil, 0)
+				self:DynamicResearch("marine_squad_size_increase_research", 4, 300, 300, 0, 0, nil, 0)
+			end
+
 			-- Compute Terminator Weaponry
-			self:DynamicResearch("marine_advanced_weaponry_research", 4, 300, 175, 0, 0, nil, 0)
+			self:DynamicResearch("marine_advanced_weaponry_research", 4, 400, 225, 0, 0, nil, 0)
 			
-			-- Compute final infantry researches.
+			-- Compute final infantry researches
 			self:DynamicResearch("marine_health_upgrade_research_3", 4, 150, 100, 0, 0, nil, 0)
 			self:DynamicResearch("marine_armor_upgrade_research_3", 4, 180, 120, 0, 0, nil, 0)
 			self:DynamicResearch("marine_accuracy_upgrade_research_3", 4, 150, 100, 0, 0, nil, 0)
 			
-			-- Compute resource researches
-			self:DynamicResearch("marine_requisition_research_3", 4, 125, 450, 0, 0, nil, 0)
-			self:DynamicResearch("marine_power_research_3", 4, 500, 60, 0, 0, nil, 0)
+			-- Compute Relic researches
 			self:DynamicResearch("marine_relic_research_1", 4, 1000, 1000, 0, 0, nil, 0)
-			self:DynamicResearch("marine_relic_research_2", 5, 2000, 2000, 0, 0, nil, 0)
-			
+
 			-- Compute Tier IV
 			self:DynamicResearch("marines_research_bombardment", 4, 1500, 1500, 0, 0, nil, 0)
-			
+		end
+
+		-- Compute tier 5 researches
+		if (self.tierLevel >= 5) then
+
 			-- Compute resource researches
-			self:DynamicResearch("marine_requisition_research_4", 5, 150, 550, 0, 0, nil, 0)
 			self:DynamicResearch("marine_power_research_4", 5, 650, 80, 0, 0, nil, 0)
-			
+			self:DynamicResearch("marine_requisition_research_4", 5, 150, 550, 0, 0, nil, 0)
+
+			-- Compute Armoury of the Emperor researches
+			self:DynamicResearch("marine_hellstorm_research", 5, 500, 500, 0, 0, nil, 0)
+			self:DynamicResearch("marine_terra_army_research", 5, 800, 800, 0, 0, nil, 0)
+
+			-- Compute Relic researches
+			self:DynamicResearch("marine_relic_research_2", 5, 2000, 2000, 0, 0, nil, 0)
+
 			-- Compute Apocalypse
-			self:DynamicResearch("marine_apocalypse_research", 5, 4000, 4000, 0, 0, nil, 0)
-			self:DynamicResearch("marine_requisition_research_5", 6, 300, 1100, 0, 0, nil, 0)
+			self:DynamicResearch("marine_apocalypse_research", 5, 8000, 8000, 0, 0, nil, 0)
+		end
+
+		-- Compute tier 6 researches
+		if (self.tierLevel >= 6) then
+
+			-- Compute resource researches
 			self:DynamicResearch("marine_power_research_5", 6, 800, 100, 0, 0, nil, 0)
+			self:DynamicResearch("marine_requisition_research_5", 6, 300, 1100, 0, 0, nil, 0)
 			
+			-- Compute Armoury of the Emperor researches
+			self:DynamicResearch("marine_emperors_space_marines_research", 6, 2000, 2000, 0, 0, nil, 0)
+			self:DynamicResearch("marine_essence_machine_spirit_research", 6, 1500, 4000, 0, 0, nil, 0)
+			self:DynamicResearch("marine_iron_curtain_research", 6, 3500, 3500, 0, 0, nil, 0)
+
+			-- Compute Misc Titan researches
+			if (self:CountSquads("space_marine_squad_warhound_titan") >= 1) or (self:CountSquads("space_marine_squad_reaver_titan") >= 1) then
+				self:DynamicResearch("marine_essence_omnissiah_research", 6, 5000, 10000, 0, 0, nil, 0)
+			end
+
+			-- Compute final Armoury of the Emperor researches
+			self:DynamicResearch("marine_terra_fortress_research", 6, 15000, 15000, 0, 0, nil, 0)
+			self:DynamicResearch("marine_battlefleet_gothic_research", 6, 45000, 45000, 0, 0, nil, 0)
 		end
 	end
 
@@ -441,10 +523,12 @@ function MarineBuildBaseStrategy:BuildFlexible()
 				self:DynamicBuild("space_marine_wall", 20, 3, 1100, 0, 0, 0)
 				self:DynamicBuild("space_marine_turret_missile_sp", 20, 3, 600, 600, 0, 0)
 				self:DynamicBuild("space_marine_turret_bolter", 20, 1, 280, 100, 0, 0)
+				self:DynamicBuild("space_marine_mine_field", 8, 2, 400, 100, 0, 0)
+				self:DynamicBuild("space_marine_tanktrap", 5, 2, 500, 0, 0, 0)
 			else
 				-- Tier 1
-				self:DynamicBuild("space_marine_barracks", 3, 2, 1500, 0, 0, 0)
-				self:DynamicBuild("space_marine_vehicle_building", 3, 2, 500, 1000, 0, 0)
+				self:DynamicBuild("space_marine_barracks", 2, 2, 1500, 0, 0, 0)
+				self:DynamicBuild("space_marine_vehicle_building", 2, 2, 500, 1000, 0, 0)
 				
 				-- Tier 2
 				self:DynamicBuild("space_marine_hq", 3, 3, 1000, 500, 0, 0)
@@ -453,17 +537,27 @@ function MarineBuildBaseStrategy:BuildFlexible()
 				self:DynamicBuild("space_marine_orbital_relay", 2, 4, 1000, 1000, 0, 0)
 				
 				-- Tier 4
-				self:DynamicBuild("space_marine_titan_facility", 2, 5, 5000, 3000, 0, 0)
+				self:DynamicBuild("space_marine_hq_super", 2, 5, 3500, 3500, 0, 0)
+				self:DynamicBuild("space_marine_ability_building", 2, 5, 4000, 3000, 0, 0)
 			end
 			
-			-- Tier 1
+			-- Tier 2
 			self:DynamicBuild("space_marine_barracks", 2, 2, 1500, 0, 0, 0)
 			self:DynamicBuild("space_marine_vehicle_building", 2, 2, 500, 1000, 0, 0)
 			
+			-- Build additional buildings
 			self:DynamicBuild("space_marine_hq", 3, 3, 1500, 900, 0, 0)
 			self:DynamicBuild("space_marine_interface_relay", 4, 4, 1000, 1000, 0, 0)
-			self:DynamicBuild("space_marine_hq_super", 2, 5, 1000, 1000, 0, 0)
-			self:DynamicBuild("space_marine_mine_field", 5, 1, 500, 500, 0, 0)
+			self:DynamicBuild("space_marine_mine_field", 10, 3, 600, 200, 0, 0)
+			self:DynamicBuild("space_marine_tanktrap", 6, 3, 750, 0, 0, 0)
+			self:DynamicBuild("space_marine_barracks", 3, 5, 2500, 0, 0, 0)
+			self:DynamicBuild("space_marine_vehicle_building", 3, 5, 3000, 2000, 0, 0)
+			self:DynamicBuild("space_marine_landraider_building", 2, 6, 4000, 3500, 0, 0)
+			self:DynamicBuild("space_marine_titan_facility", 2, 6, 5000, 3000, 0, 0)
+			self:DynamicBuild("space_marine_orbital_relay", 3, 5, 4000, 4000, 0, 0)
+			self:DynamicBuild("space_marine_hq_super", 3, 5, 5000, 5000, 0, 0)
+			self:DynamicBuild("space_marine_hq", 4, 6, 5500, 5500, 0, 0)
+			self:DynamicBuild("space_marine_thermonuclear_generator", 2, 6, 7000, 0, 0, 0)
 		end
 --[[
 		-- Build nukes
@@ -555,25 +649,27 @@ end
 function MarineBuildBaseStrategy:GetPlacementType(iBuildingID)
 	
 	-- Check building
-	if (iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_orbital_relay") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_hq_super")) then
-		return "HQ"
+	if (iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_hq")) then
+		return "Safeplace"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_barracks") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_landraider_building") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_titan_facility") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_vehicle_building")) then
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_ability_building") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_landraider_building") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_titan_facility") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_orbital_relay") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_vehicle_building")) then
 		return "Military"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_turret_bolter") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_wall") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_turret_missile_sp")) then
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_wall") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_turret_missile_sp") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_interface_relay")) then
 		return "Front2"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_mine_field") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_tanktrap") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_interface_relay")) then
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_tanktrap")) then
 		return "Mine"
 	elseif (cpu_manager:IsGenerator(iBuildingID) or
-			iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_armoury") or
-			iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_hq")) then
+	        iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_hq_super") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_thermonuclear_generator") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("space_marine_armoury")) then
 		return "BaseBack"
 	end
 	return "Basic"
@@ -637,7 +733,7 @@ end
 
 -- Arkhan 11.2006: Virtual method for checking out relic units
 function MarineBuildBaseStrategy:RelicRequired(sName)
---[[
+
 	-- Check name
 	if (sName == "space_marine_squad_land_raider") or
 		(sName == "space_marine_squad_land_raider_ares") or
@@ -650,6 +746,5 @@ function MarineBuildBaseStrategy:RelicRequired(sName)
 		(sName == "space_marine_squad_reaver_titan") then
 		return true
 	end
-]]
 	return false
 end

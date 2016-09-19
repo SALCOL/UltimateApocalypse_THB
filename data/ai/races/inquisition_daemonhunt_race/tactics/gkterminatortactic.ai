@@ -1,0 +1,132 @@
+----------------------------------------
+-- File: 'gkterminatortactic.ai'
+-- Edited by Thudmeizer @ 18.04.2016
+-- Edited by Cylarne
+
+class 'GKTerminatorTactic' (DaemonhuntInfantryTactic)
+
+GKTerminator = {}
+
+function GKTerminatorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("GK Terminator Tactic")
+end
+
+-- Terminators are allowed to retreat even directly after a jump
+function GKTerminatorTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function GKTerminatorTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function GKTerminatorTactic:InitAbilities()
+
+	if (GKTerminator.medkits_id == nil) then
+		GKTerminator.medkits_id = cpu_manager.stats:GetAbilityID( "inquisition_medikits" )	
+	end
+	
+	if (GKTerminator.nemesis_id == nil) then
+		GKTerminator.nemesis_id = cpu_manager.stats:GetAbilityID( "inquisition_brother_captain_nemesis" )	
+	end
+	
+	if (GKTerminator.banish_id == nil) then
+		GKTerminator.banish_id = cpu_manager.stats:GetAbilityID( "inquisition_banish" )	
+	end
+	
+	if (GKTerminator.justice_id == nil) then
+		GKTerminator.justice_id = cpu_manager.stats:GetAbilityID( "inquisition_strike_of_justice" )	
+	end
+
+	if (GKTerminator.disruption_id == nil) then
+		GKTerminator.disruption_id = cpu_manager.stats:GetAbilityID( "inquisition_disruption_grenades" )	
+	end
+
+	if (GKTerminator.run_id == nil) then
+		GKTerminator.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function GKTerminatorTactic:DoAbilities()
+	
+	-- If we are dying, lower requisites for attacks
+	if self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 then
+
+		if (self.squad_ai:CanDoAbility( GKTerminator.nemesis_id )) then
+			Ability.DoAbilityPos( self.squad_ai, GKTerminator.nemesis_id, Ability.Filters.CloseSquadEnemy, 2 ) 
+			Ability.DoAbilityPos( self.squad_ai, GKTerminator.nemesis_id, Ability.Filters.CloseMonsterEnemy, 2 )
+		end
+
+		if (self.squad_ai:CanDoAbility( GKTerminator.justice_id )) then
+			Ability.DoAbilityPos( self.squad_ai, GKTerminator.justice_id, Ability.Filters.CloseInfantryEnemy, 3 ) 
+			Ability.DoAbilityPos( self.squad_ai, GKTerminator.justice_id, Ability.Filters.CloseMonsterEnemy, 3 )
+		end
+
+		if (self.squad_ai:CanDoAbility( GKTerminator.banish_id )) then
+			Ability.DoAbilityTarget( self.squad_ai, GKTerminator.banish_id, Ability.Filters.CloseMonsterEnemy, 2 )
+		end
+
+		if (self.squad_ai:CanDoAbility( GKTerminator.disruption_id )) then
+			Ability.DoAbilityTarget( self.squad_ai, GKTerminator.disruption_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		end
+	else
+		if (self.squad_ai:CanDoAbility( GKTerminator.nemesis_id )) then
+			Ability.DoAbilityPos( self.squad_ai, GKTerminator.nemesis_id, Ability.Filters.CloseSquadEnemy, 4 ) 
+			Ability.DoAbilityPos( self.squad_ai, GKTerminator.nemesis_id, Ability.Filters.CloseMonsterEnemy, 4 )
+		end
+
+		if (self.squad_ai:CanDoAbility( GKTerminator.justice_id )) then
+			Ability.DoAbilityPos( self.squad_ai, GKTerminator.justice_id, Ability.Filters.CloseInfantryEnemy, 6 ) 
+			Ability.DoAbilityPos( self.squad_ai, GKTerminator.justice_id, Ability.Filters.CloseMonsterEnemy, 6 )
+		end
+
+		if (self.squad_ai:CanDoAbility( GKTerminator.banish_id )) then
+			Ability.DoAbilityTarget( self.squad_ai, GKTerminator.banish_id, Ability.Filters.CloseMonsterEnemy, 4 )
+		end
+
+		if (self.squad_ai:CanDoAbility( GKTerminator.disruption_id )) then
+			Ability.DoAbilityTarget( self.squad_ai, GKTerminator.disruption_id, Ability.Filters.CloseInfantryEnemy, 6 )
+		end
+	end
+
+	-- Use Medkits if low on health
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		
+		if (self.squad_ai:CanDoAbility( GKTerminator.medkits_id )) then
+			self.squad_ai:DoSpecialAbility( GKTerminator.medkits_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( GKTerminator.run_id )) then
+			self.squad_ai:DoSpecialAbility( GKTerminator.run_id )
+		end
+	end
+
+	-- Do basic abilities
+	DaemonhuntInfantryTactic.DoAbilities(self)
+end
+
+
+function GKTerminatorTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

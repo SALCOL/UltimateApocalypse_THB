@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'harbingerdronestactic.ai'
--- Edited by Thudmeizer @ 26.10.2006
+-- Edited by Thudmeizer @ 18.03.2016
 
 class 'HarbingerDronesTactic' (TauVehicleTactic)
 
@@ -85,10 +85,10 @@ end
 
 function HarbingerDronesTactic:DoAbilities()
 
-	-- Target a wide area for an Air Caste Strike
+	-- Initiate Self-Destruct!
 	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.3) then
 		if (self.squad_ai:CanDoAbility(HarbingerDrones.selfdestruct_id)) then
-			Ability.DoAbility( self.squad_ai, HarbingerDrones.selfdestruct_id, Ability.Filters.IsInCombat )
+			Ability.DoAbilityArea( self.squad_ai, HarbingerDrones.selfdestruct_id, Ability.Filters.CloseEnemy, 10, 1 )
 		end
 	end
 end

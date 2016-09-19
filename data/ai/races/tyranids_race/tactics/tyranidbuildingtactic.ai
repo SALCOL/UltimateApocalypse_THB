@@ -1,0 +1,24 @@
+----------------------------------------
+-- File: 'tyranidbuildingtactic.ai'
+-- Edited by Thudmeizer @ 25.04.2016
+
+class 'TyranidBuildingTactic' (BaseTactic)
+
+TyranidBuilding = {}
+
+function TyranidBuildingTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Tyranid Building Tactic")
+end
+
+function TyranidBuildingTactic:InitAbilities()
+
+end
+
+function TyranidBuildingTactic:DoAbilities()
+
+end
+
+function TyranidBuildingTactic:CanDeepStrikeTroops()
+	return true
+end

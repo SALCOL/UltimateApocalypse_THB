@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'eldarAspecttactic.ai'
--- Edited by Cylarne		@ 3/21/2011
+-- File: 'eldaraspecttactic.ai'
+-- Edited by Cylarne		@ 03/02/2011
+-- Edited by Thudmeizer		@ 09.04.2016
 
 class 'EldarAspectTactic' (BaseTactic)
 
@@ -9,7 +10,27 @@ EldarAspect = {}
 function EldarAspectTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Eldar Aspect Tactic")
-	
-	-- Init abilities
-	self.m_bCanDeepStrikeTroops = true
+end
+
+function EldarAspectTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (EldarAspect.repair_id == nil) then
+		EldarAspect.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function EldarAspectTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( EldarAspect.repair_id )) then
+			self.base_ai:DoSpecialAbility( EldarAspect.repair_id )
+		end
+	end
+end
+
+function EldarAspectTactic:CanDeepStrikeTroops()
+	return true
 end

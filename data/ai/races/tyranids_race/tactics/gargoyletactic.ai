@@ -1,0 +1,56 @@
+----------------------------------------
+-- File: 'gargoyletactic.ai'
+-- Edited by Thudmeizer	@ 26.04.2016
+
+class 'GargoyleTactic' (TyranidInfantryTactic)
+
+Gargoyle = {}
+
+function GargoyleTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Gargoyle Tactic")
+end
+
+function GargoyleTactic:AlwaysAttack()
+	return true
+end
+
+-- Gargoyles are allowed to retreat even directly after a jump
+function GargoyleTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function GargoyleTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function GargoyleTactic:Reinforce()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+
+	-- Don't reinforce more than 10 squad members -- they get stuck
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 10) then 
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+end
+
+function GargoyleTactic:Update()
+
+    	-- State machine
+    	if (not InfantryTactic.Update(self)) then
+        	return
+    	end
+    
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

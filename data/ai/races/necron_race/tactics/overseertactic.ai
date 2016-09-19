@@ -1,0 +1,157 @@
+----------------------------------------
+-- File: 'overseertactic.ai'
+-- Edited by Thudmeizer @ 20.06.2016
+
+class 'OverseerTactic' (NecronInfantryTactic)
+
+Overseer = {}
+
+function OverseerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Overseer Tactic")
+end
+
+function OverseerTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function OverseerTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function OverseerTactic:MoveToDisengage()
+	Tactic.MoveToDisengage(self)
+end
+
+function OverseerTactic:CheckForDance()
+	InfantryTactic.CheckForDance(self)
+end
+
+function OverseerTactic:CheckForDeath()
+	InfantryTactic.CheckForDeath(self)
+end
+
+-- Overseer is allowed to retreat even directly after a jump
+function OverseerTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function OverseerTactic:InitAbilities()
+	
+	if (Overseer.lightning_id == nil) then
+		Overseer.lightning_id = cpu_manager.stats:GetAbilityID( "necron_gauss_lightning_arc" )
+	end
+	if (Overseer.lightningimproved_id == nil) then
+		Overseer.lightningimproved_id = cpu_manager.stats:GetAbilityID( "necron_gauss_lightning_arc_improved" )
+	end
+	if (Overseer.hyperspace_id == nil) then
+		Overseer.hyperspace_id = cpu_manager.stats:GetAbilityID( "necron_hfhs_overseer" )
+	end
+	if (Overseer.portal_id == nil) then
+		Overseer.portal_id = cpu_manager.stats:GetAbilityID( "necron_homeworld_portal_overseer" )
+	end
+	if (Overseer.lightningstorm_id == nil) then
+		Overseer.lightningstorm_id = cpu_manager.stats:GetAbilityID( "necron_lightning_storm_overseer" )
+	end
+	if (Overseer.shifter_id == nil) then
+		Overseer.shifter_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter_overseer" )
+	end
+	if (Overseer.seekanddestroy_id == nil) then
+		Overseer.seekanddestroy_id = cpu_manager.stats:GetAbilityID( "necron_search_and_destroy" )
+	end
+	if (Overseer.solarpulse_id == nil) then
+		Overseer.solarpulse_id = cpu_manager.stats:GetAbilityID( "necron_solar_pulse_overseer" )
+	end
+end
+
+function OverseerTactic:DoAbilities()
+
+	-- Gauss Lightning Arc: Sends out a bolt of destruction at the designated target.
+	Ability.DoAbilityPos(self.squad_ai, Overseer.lightning_id, Ability.Filters.CloseEnemy, 6)
+	Ability.DoAbilityPos(self.squad_ai, Overseer.lightningimproved_id, Ability.Filters.CloseEnemy, 12)
+
+	-- Hunters from Hypespace: Allows Overseer to move in and out of positions with lightning speed. 
+	-- The duration of this ability is very short, but while active, the Deathmarks can move to any location almost instantly, perfect for setting up assassinations.
+	if ((self:IsMoving() or self:IsInSubState()) and self.squad_ai:CanDoAbility( Overseer.hyperspace_id )) then
+		if (self.squad_ai:GetHealthPercentage() > 0.4 and not self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( Overseer.hyperspace_id )
+		end
+	end
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try for the Homeworld Portal
+    	if (self.squad_ai:CanDoAbility(Overseer.portal_id)) then
+    
+		local oTarget = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), 1000, 6)
+		if (oTarget ~= nil and iPower >= 1000) then
+
+        		-- Get distance to enemy unit
+			local vSquadPos = self.squad_ai:GetPosition()
+			local vEnemyPos = oTarget:GetPosition()
+			local iDistance = distance(vSquadPos, vEnemyPos)
+            
+            		-- If target is too far away launch the portal in range
+			local vTargetPos = Vector3f(vSquadPos)
+            		local iRange = self.squad_ai:GetAbilityRange(Overseer.portal_id)
+            		if (iDistance > iRange) then
+               			local fThrowFactor = iRange / iDistance
+                		vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
+                		vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
+           		else
+                	vTargetPos = Vector3f(vEnemyPos)
+            		end
+
+		-- Cast the Homeworld Portal
+		self.squad_ai:DoSpecialAbilityPos(Overseer.portal_id, vTargetPos)
+
+		end
+    	end
+
+	-- Lightning Storm: Centered on the caster, a giant blast of electrical energy strikes down enemy targets within a 25m radius.
+	-- Devastating blast of electrical energy pulses that deal good damage to all affected targets.
+	if (self.squad_ai:CanDoAbility(Overseer.lightningstorm_id)) then
+	
+		local oUnit = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), 20, 6)
+		if (oUnit ~= nil) then
+			self.squad_ai:DoSpecialAbility(Overseer.lightningstorm_id)
+		end
+	end
+
+	-- Shadow Shifter: Cloaks and disables the squad for several seconds, enabling quick regeneration and recovery from battle.
+	-- Infiltrated squad will also receive no damage from incoming attacks (if at all revealed), but cannot attack either.
+	if (self.squad_ai:IsInCombat()) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			self.squad_ai:DoSpecialAbility( Overseer.shifter_id )
+		end
+	end
+
+	-- Seek and Destroy: Extends the sight and keen sight radius of the Overseer for a duration.
+	Ability.DoAbilityArea(self.squad_ai, Overseer.seekanddestroy_id, Ability.Filters.CloseInfiltrator, 40, 1)
+	Ability.DoAbilityArea(self.squad_ai, Overseer.seekanddestroy_id, Ability.Filters.CloseEnemy, 20, 5)
+
+	-- Solar Pulse: Allows the Overseer to periodically unleash photon bursts. Infiltrated units in a large area are revealed and blinds others for several seconds.
+	if (self.squad_ai:CanDoAbility( Overseer.solarpulse_id )) then
+		Ability.DoAbilityPos(self.squad_ai, Overseer.solarpulse_id, Ability.Filters.CloseInfiltratedEnemy, 1)
+		Ability.DoAbilityPos(self.squad_ai, Overseer.solarpulse_id, Ability.Filters.CloseEnemy, 6)
+	end
+end
+
+function OverseerTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+    
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

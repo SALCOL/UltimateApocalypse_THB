@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'loader.ai'
--- Edited by Thudmeizer	@ 11.10.2006
+-- Edited by Thudmeizer		@ 04.05.2016
 -- Edited by Arkhan		@ 23.10.2006
 -- Edited by Cylarne_04 2011
 
@@ -26,27 +26,44 @@ function necron_race:LoadRace( eDifficulty )
 	import( "Races/necron_race/Strategies/NecronStrategyInfo.ai" )
 	
 	-- Import tactics
-	import( 'Races/necron_race/Tactics/NecronPyramidTactic.ai' )
-	import( 'Races/necron_race/Tactics/NecronCoreTactic.ai' )
-	import( 'Races/necron_race/Tactics/NecronShieldTactic.ai' )
 	import( 'Races/necron_race/Tactics/NecronInfantryTactic.ai' )
 	import( 'Races/necron_race/Tactics/NecronVehicleTactic.ai' )
-	import( 'Races/necron_race/Tactics/NecronLordTactic.ai' )
-	--import( 'Races/necron_race/Tactics/NecronLordDestroyerTactic.ai' )
-	import( 'Races/necron_race/Tactics/NecronDeathmarksTactic.ai' )
-	import( 'Races/necron_race/Tactics/GhostArkTactic.ai' )
-	import( 'Races/necron_race/Tactics/FlayedOnesTactic.ai' )
 	import( 'Races/necron_race/Tactics/ScarabBuilderTactic.ai' )
-	import( 'Races/necron_race/Tactics/TombSpyderTactic.ai' )
-	import( 'Races/necron_race/Tactics/TombStalkerTactic.ai' )
-	import( 'Races/necron_race/Tactics/NightBringerTactic.ai' )
+	import( 'Races/necron_race/Tactics/WarriorTactic.ai' )
+	import( 'Races/necron_race/Tactics/DeathmarksTactic.ai' )
 	import( 'Races/necron_race/Tactics/WraithTactic.ai' )
-	import( 'Races/necron_race/Tactics/OrbTactic.ai' )
+	import( 'Races/necron_race/Tactics/FlayedOnesTactic.ai' )
+	import( 'Races/necron_race/Tactics/PariahTactic.ai' )
+	import( 'Races/necron_race/Tactics/LychGuardTactic.ai' )
+	import( 'Races/necron_race/Tactics/TombSpyderTactic.ai' )
+	import( 'Races/necron_race/Tactics/DestroyerTactic.ai' )
+	import( 'Races/necron_race/Tactics/OverseerTactic.ai' )
+	import( 'Races/necron_race/Tactics/DeathLordTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronLordTactic.ai' )
+        import( 'Races/necron_race/Tactics/NecronLordDestroyerTactic.ai' )
+	import( 'Races/necron_race/Tactics/NightBringerTactic.ai' )
+	import( 'Races/necron_race/Tactics/DeceiverTactic.ai' )
+	import( 'Races/necron_race/Tactics/DeceiverIllusionTactic.ai' )
+	import( 'Races/necron_race/Tactics/TombStalkerTactic.ai' )
+	import( 'Races/necron_race/Tactics/PylonTactic.ai' )
+	import( 'Races/necron_race/Tactics/GhostArkTactic.ai' )
+	import( 'Races/necron_race/Tactics/SiegeMonolithTactic.ai' )
+	import( 'Races/necron_race/Tactics/AirMonolithTactic.ai' )
 	import( 'Races/necron_race/Tactics/DoomsdayMonolithTactic.ai' )
 	import( 'Races/necron_race/Tactics/RestoredMonolithTactic.ai' )
+	import( 'Races/necron_race/Tactics/AeonicOrbTactic.ai' )
 	import( 'Races/necron_race/Tactics/AttackScarabTactic.ai' )
 	import( 'Races/necron_race/Tactics/NecronListeningPostTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronAmpGeneratorTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronCoreTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronBigGeneratorTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronBatteryTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronBeaconTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronObeliskTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronPyramidTactic.ai' )
 	import( 'Races/necron_race/Tactics/MonolithTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronBuildingTactic.ai' )
+	import( 'Races/necron_race/Tactics/NecronWallTactic.ai' )
 	return true
 end
 
@@ -76,53 +93,58 @@ function necron_race:CreateTactic(oSquadAI)
 	-- Check if there is a special tactic for the unit available
 	if (sUnitName == "necron_builder_scarab_squad") then
 		return ScarabBuilderTactic(oSquadAI)
+	elseif (sUnitName == "necron_scarab_squad") then
+		return AttackScarabTactic(oSquadAI)
+	elseif (sUnitName == "necron_basic_warrior_squad") or (sUnitName == "necron_immortal_squad") then
+		return WarriorTactic(oSquadAI)
+	elseif (sUnitName == "necron_wraith_squad") then
+		return WraithTactic(oSquadAI)
+	elseif (sUnitName == "necron_flayed_one_squad") then
+		return FlayedOnesTactic(oSquadAI)
+	elseif (sUnitName == "necron_deathmark_squad") then
+		return DeathmarksTactic(oSquadAI)
+	elseif (sUnitName == "necron_pariah_squad") or (sUnitName == "necron_pariah_deathstrike_squad") then
+		return PariahTactic(oSquadAI)
 	elseif (sUnitName == "necron_tomb_spyder_squad") then
 		return TombSpyderTactic(oSquadAI)
-	elseif (sUnitName == "necron_tomb_stalker_squad") then
-		return TombStalkerTactic(oSquadAI)
-	elseif (sUnitName == "necron_lord_squad") then
-		return NecronLordTactic(oSquadAI)
-	elseif (sUnitName == "npc_squad_civilian_group") then
-		return NecronLordTactic(oSquadAI)
-	elseif (sUnitName == "necron_lord_destroyer_squad") then
-		return NecronLordTactic(oSquadAI)
+	elseif (sUnitName == "necron_destroyer_squad") or (sUnitName == "necron_heavy_destroyer_squad") then
+		return DestroyerTactic(oSquadAI)
+	elseif (sUnitName == "necron_lychguard_squad") then
+		return LychGuardTactic(oSquadAI)
 	elseif (sUnitName == "necron_overseer_squad") then
-		return NecronLordTactic(oSquadAI)
+		return OverseerTactic(oSquadAI)
 	elseif (sUnitName == "necron_lord_death_squad") then
+		return DeathLordTactic(oSquadAI)
+	elseif (sUnitName == "necron_lord_destroyer_squad") then
+		return NecronLordDestroyerTactic(oSquadAI)
+	elseif (sUnitName == "necron_lord_squad") or (sUnitName == "npc_squad_civilian_group") then
 		return NecronLordTactic(oSquadAI)
 	elseif (sUnitName == "necron_night_bringer") then
 		return NightBringerTactic(oSquadAI)
 	elseif (sUnitName == "necron_deceiver_squad") then
-		return NightBringerTactic(oSquadAI)
+		return DeceiverTactic(oSquadAI)
 	elseif (sUnitName == "necron_deceiver_squad_illusion") then
-		return NightBringerTactic(oSquadAI)
-	elseif (sUnitName == "necron_wraith_squad") then
-		return WraithTactic(oSquadAI)
-	elseif (sUnitName == "necron_deathmark_squad") then
-		return NecronDeathmarksTactic(oSquadAI)
+		return DeceiverIllusionTactic(oSquadAI)
+	elseif (sUnitName == "necron_ghost_ark_squad") then
+		return GhostArkTactic(oSquadAI)
+	elseif (sUnitName == "necron_tomb_stalker_squad") then
+		return TombStalkerTactic(oSquadAI)
+	elseif (sUnitName == "necron_pylon_squad") or (sUnitName == "necron_pylon_sentry_squad") then   
+		return PylonTactic(oSquadAI)
 	elseif (sUnitName == "necron_siege_monolith_squad") then
-		return RestoredMonolithTactic(oSquadAI)
+		return SiegeMonolithTactic(oSquadAI)
 	elseif (sUnitName == "necron_siege_monolith_air_squad") then
-		return RestoredMonolithTactic(oSquadAI)
+		return AirMonolithTactic(oSquadAI)
 	elseif (sUnitName == "necron_restored_monolith_squad") then
 		return RestoredMonolithTactic(oSquadAI)
 	elseif (sUnitName == "necron_doomsday_monolith_squad") then
 		return DoomsdayMonolithTactic(oSquadAI)
-	elseif (sUnitName == "necron_pylon_squad") then
-		return RestoredMonolithTactic(oSquadAI)
-	elseif (sUnitName == "necron_pylon_sentry_squad") then
-		return RestoredMonolithTactic(oSquadAI)
 	elseif (sUnitName == "necron_aeonic_orb_squad") then
-		return OrbTactic(oSquadAI)
-	elseif (sUnitName == "necron_scarab_squad") then
-		return AttackScarabTactic(oSquadAI)
-	elseif (sUnitName == "necron_flayed_one_squad") then
-		return FlayedOnesTactic(oSquadAI)
-	elseif (sUnitName == "necron_ghost_ark_squad") then
-		return GhostArkTactic(oSquadAI)
+		return AeonicOrbTactic(oSquadAI)
 	elseif (oSquadAI:IsEngineer()) then
 		return nil
-	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) then
+	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
+	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return NecronVehicleTactic(oSquadAI)
 	end
 	return NecronInfantryTactic(oSquadAI)
@@ -135,18 +157,35 @@ function necron_race:CreateBaseTactic(oBuilding)
 	local sBuildingName = oBuilding:GetBaseName()
 	
 	-- Check if their is a special tactic for the building available
-	if (sBuildingName == "necron_listening_post") then
-		return NecronListeningPostTactic(oBuilding)
-	elseif (sBuildingName == "monolith") then
+	if (sBuildingName == "monolith") then
 		return MonolithTactic(oBuilding)
 	elseif (sBuildingName == "monolith_super") then
 		return NecronPyramidTactic(oBuilding)
+	elseif (sBuildingName == "necron_listening_post") then
+		return NecronListeningPostTactic(oBuilding)
 	elseif (sBuildingName == "necron_amplification_generator") then
-		return NecronCoreTactic(oBuilding)
+		return NecronAmpGeneratorTactic(oBuilding)
 	elseif (sBuildingName == "necron_summoning_core_big") then
 		return NecronCoreTactic(oBuilding)
+	elseif (sBuildingName == "necron_thermoplasma_generator") then
+		return NecronBigGeneratorTactic(oBuilding)
 	elseif (sBuildingName == "necron_turret_battery") then
-		return NecronShieldTactic(oBuilding)
+		return NecronBatteryTactic(oBuilding)
+	elseif (sBuildingName == "necron_resurrection_beacon") then
+		return NecronBeaconTactic(oBuilding)
+	elseif (sBuildingName == "necron_sterilization_obelisk") then
+		return NecronObeliskTactic(oBuilding)
+	elseif (sBuildingName == "necron_wall") then
+		return NecronWallTactic(oBuilding)
+	elseif (sBuildingName == "necron_energy_core") or
+		(sBuildingName == "necron_forbidden_archive") or
+		(sBuildingName == "necron_heavy_thermoplasma_generator") or
+		(sBuildingName == "necron_plasma_generator") or
+		(sBuildingName == "necron_summoning_core") or
+		(sBuildingName == "necron_turret") or
+		(sBuildingName == "necron_turret_ai") or
+		(sBuildingName == "necron_turret_missile_sp") then
+		return NecronBuildingTactic(oBuilding)
 	end
 	return nil
 end

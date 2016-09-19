@@ -1,0 +1,34 @@
+----------------------------------------
+-- File: 'daemonsjuggtactic.ai'
+-- Edited by Gambit 5.30.2014
+-- Edited by Thudmeizer	08.05.2016
+
+class 'DaemonsJuggTactic' (DaemonsVehicleTactic)
+
+DaemonsJugg = {}
+
+function DaemonsJuggTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Infernal Juggernaut Tactic")
+end
+
+function DaemonsJuggTactic:InitAbilities()
+
+	if (DaemonsJugg.headbutt_id == nil) then
+		DaemonsJugg.headbutt_id = cpu_manager.stats:GetAbilityID( "daemons_jugg_head_butt" )
+	end
+end
+
+function DaemonsJuggTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat()) then
+		Ability.DoAbilityPos( self.squad_ai, DaemonsJugg.headbutt_id, Ability.Filters.CloseSquadEnemy, 5 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsJugg.headbutt_id, Ability.Filters.CloseMonsterEnemy, 5 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsJugg.headbutt_id, Ability.Filters.CloseVehicleEnemy, 2 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsJugg.headbutt_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Call basic DoAbilities methods
+	DaemonsVehicleTactic.DoAbilities(self)
+end
+ 

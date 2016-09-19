@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'chaosbuildingtactic.ai'
+-- Edited by Thudmeizer	@ 12.02.2016
+
+class 'ChaosBuildingTactic' (BaseTactic)
+
+ChaosBuilding = {}
+
+function ChaosBuildingTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Chaos Building Tactic")
+end
+
+function ChaosBuildingTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChaosBuilding.repair_id == nil) then
+		ChaosBuilding.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function ChaosBuildingTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( ChaosBuilding.repair_id )) then
+			self.base_ai:DoSpecialAbility( ChaosBuilding.repair_id )
+		end
+	end
+end

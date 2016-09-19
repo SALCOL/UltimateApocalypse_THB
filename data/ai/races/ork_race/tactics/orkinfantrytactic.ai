@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'orkinfantrytactic.ai'
 -- Created by Arkhan		@ 12.01.2006
+-- Edited by Thudmeizer		@ 28.02.2016
 
 class 'OrkInfantryTactic' (InfantryTactic)
 
@@ -10,37 +11,75 @@ function OrkInfantryTactic:__init( squad_ai ) super( squad_ai )
 	
 	-- Basic ork infantry is able to enter transport vehicles
 	local sSquadName = squad_ai:GetSquadName()
-	if (sSquadName ~= "ork_squad_stormboy" and
-		sSquadName ~= "ork_flash_gitz_squad") then
+	if (sSquadName == "ork_squad_grot_gang" or
+		sSquadName == "ork_squad_bombsquigs" or
+		sSquadName == "ork_squad_slugga" or
+		sSquadName == "ork_squad_burna" or
+		sSquadName == "ork_squad_shoota_boy" or
+		sSquadName == "ork_squad_honor_guard_slugga" or
+		sSquadName == "ork_squad_nob" or
+		sSquadName == "ork_squad_armored_nob" or
+		sSquadName == "ork_squad_ard_boyz" or
+		sSquadName == "ork_squad_kommandoz" or
+		sSquadName == "ork_squad_tankbusta" or
+		sSquadName == "ork_squad_lootas" or
+		sSquadName == "ork_flash_gitz_squad" or
+		sSquadName == "ork_squad_bad_dok" or
+		sSquadName == "ork_squad_mek_boy" or
+		sSquadName == "ork_squad_warboss") then
+
+		-- Squads can enter transports
 		self.m_iTransportable = 1
 	end
 end
 
 function OrkInfantryTactic:AddTargetAbilities()
-    table.insert(InfantryTactic.TargetAbilities, { nil, "ork_stikkbombs", Ability.Filters.CloseSquadEnemy, 4, 0 })
-    table.insert(InfantryTactic.TargetAbilities, { nil, "ork_tankbusta_bombs", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "ork_stikkbombs", Ability.Filters.CloseSquadEnemy, 4, 0 })
+	table.insert(InfantryTactic.TargetAbilities, { nil, "ork_tankbusta_bombs", Ability.Filters.CloseVehicleEnemy, 1, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "ork_tankbusta_bombs_sp_dxp3_prisoner", Ability.Filters.CloseVehicleEnemy, 1, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "ork_superstick_bomb", Ability.Filters.CloseSquadEnemy, 7, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "ork_nuke_boyz", Ability.Filters.CloseSquadEnemy, 7, 0 })
 end
 
 function OrkInfantryTactic:AddCommanders()
-	table.insert(self.commander, { "ork_squad_mek_boy", false })
+	table.insert(self.commander, { "ork_squad_mek_boy", true })
 	table.insert(self.commander, { "ork_squad_warboss", true })
+	table.insert(self.commander, { "ork_squad_wierdboy", false })
 end
 
 function OrkInfantryTactic:DoAbilities()
 
-	-- Check if I can establish the great waagh!
-	local waagh_id = cpu_manager.stats:GetAbilityID( "ork_waagh!!!" )
-	Ability.DoAbility( self.squad_ai, waagh_id, Ability.Filters.IsInCombat )
-	
+	-- Waagh if in combat and enemy is not adjacent or while broken
+	-- Don't waagh if health is too low or we are not moving !
+	local squad_pos = self.squad_ai:GetPosition()
+	if (((self.squad_ai:IsInCombat() and Ability.Filters.CloseEnemy( squad_pos, 20, 1 ) == nil) or
+	   	self.squad_ai:IsBroken()) and self.squad_ai:GetHealthPercentage() > 0.8 and self:IsMoving()) then 
+
+		local waagh_id = cpu_manager.stats:GetAbilityID( "ork_waagh!!!" )
+		if (self.squad_ai:CanDoAbility(waagh_id)) then
+			self.squad_ai:DoSpecialAbility(waagh_id)
+		end
+	end
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		local run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+		if (self.squad_ai:CanDoAbility( run_id )) then
+			self.squad_ai:DoSpecialAbility( run_id )
+		end
+	end
+
 	-- I might have these attached
 	if (self.squad_ai:IsAttached()) then
 	
 		if (self.squad_ai:HasSquadAttached("ork_squad_bad_dok")) then
 			BadDokTactic.InitAbilities( self )
 			BadDokTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("ork_squad_wierdboy")) then
+			WierdBoyTactic.InitAbilities( self )
+			WierdBoyTactic.DoAbilities( self )
 		elseif (self.squad_ai:HasSquadAttached("ork_squad_mek_boy")) then
 			MekBoyTactic.InitAbilities( self )
 			MekBoyTactic.DoAbilities( self )
@@ -48,11 +87,6 @@ function OrkInfantryTactic:DoAbilities()
 			WarBossTactic.InitAbilities( self )
 			WarBossTactic.DoAbilities( self )
 		end
-	end
-	
-	local infiltration_id = cpu_manager.stats:GetAbilityID( "all_infiltration" )
-	if (self.squad_ai:CanDoAbility(infiltration_id) and not self.squad_ai:IsUsingAbility(infiltration_id)) then
-		self.squad_ai:DoSpecialAbility(infiltration_id)
 	end
 	
 	-- Call basic DoAbilities methods
@@ -75,4 +109,44 @@ function OrkInfantryTactic:CheckForDetach()
 	
 	-- Call basic detach method
 	InfantryTactic.CheckForDetach(self)
+end
+
+function OrkInfantryTactic:Upgrade()
+
+	-- Check if we have free resources
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- Don't upgrade slugga squads with less than 2 troopers
+	if (self.squad_ai:GetSquadName() == "ork_squad_slugga" and self.squad_ai:GetNumTroopers() < 2) then
+		return
+	end
+	
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetNumTroopers() > 1) then
+		
+		-- Figure out my enemy's favourite class
+		local enemy = cpu_manager:FindClosestEnemyPlayer()
+		if (enemy == nil) then
+			return
+		end
+		local class_type = enemy:GetMajorityClassType()
+		
+		-- Larkins hard counter upgrade for HeavyInfantryMed 
+		if (class_type < UnitStatsAI.UC_HeavyInfantryMed) then	  
+		  
+			local enemy_race = enemy:GetPlayerRaceName()
+			if (enemy_race == "space_marine_race" or enemy_race == "chaos_marine_race" or enemy_race == "necron_race") then
+		    	class_type = UnitStatsAI.UC_HeavyInfantryMed
+		  	end
+		end
+		
+		-- Do best upgrade
+		self.squad_ai:DoBestUpgrade(class_type)
+	end
 end

@@ -1,0 +1,144 @@
+----------------------------------------
+-- File: 'gklandraidertactic.ai'
+-- Edited by Thudmeizer @ 07.06.2016
+
+class 'GKLandRaiderTactic' (DaemonhuntVehicleTactic)
+
+GKLandRaider = {}
+
+function GKLandRaiderTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("GK LandRaider Tactic")
+
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 2
+	self.m_iTransportSlots = 4
+
+	self.delayedTimer = g_iGMT
+	self.phobosChance = math.random ( 1,100 )
+end
+
+function GKLandRaiderTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelGKLandRaider = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelGKLandRaider ~= nil) then
+			local addOnID = buildChannelGKLandRaider:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelGKLandRaider:IsBuilding() == 0 and buildChannelGKLandRaider:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelGKLandRaider:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function GKLandRaiderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (GKLandRaider.abilityrecharge_id == nil) then
+		GKLandRaider.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (GKLandRaider.heal_id == nil) then
+		GKLandRaider.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (GKLandRaider.reinforce_id == nil) then
+		GKLandRaider.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+
+	if (GKLandRaider.spirit_id == nil) then
+		GKLandRaider.spirit_id = cpu_manager.stats:GetAbilityID( "inquisition_machine_spirit" )
+	end
+
+	if (GKLandRaider.smoke_id == nil) then
+		GKLandRaider.smoke_id = cpu_manager.stats:GetAbilityID( "inquisition_smoke_launchers" )	
+	end
+end
+
+function GKLandRaiderTactic:DoAbilities()
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(GKLandRaider.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(GKLandRaider.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(GKLandRaider.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(GKLandRaider.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(GKLandRaider.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(GKLandRaider.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Check if I can use machine spirit while stationary
+	if (self.squad_ai:WasRecentlyHurt() and not self.squad_ai:IsInStateMove() and not self.squad_ai:IsInStateAttackMove()) then
+		
+		if (self.squad_ai:CanDoAbility(GKLandRaider.spirit_id)) then
+			self.squad_ai:DoSpecialAbility(GKLandRaider.spirit_id)
+		end	  
+	end
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(GKLandRaider.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(GKLandRaider.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(GKLandRaider.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Do basic abilities
+	DaemonhuntVehicleTactic.DoAbilities(self)
+end
+
+function GKLandRaiderTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+--	self:AutoBuildAddOn(9)	-- 	[addon_10] inquisition_landraider_addon			-- Attachment Option: Phobos Wargear
+--	self:AutoBuildAddOn(10)	-- 	[addon_11] inquisition_landraider_armor_addon		-- Attachment Option: Reinforced Armor
+--	self:AutoBuildAddOn(11)	-- 	[addon_12] inquisition_landraider_daemonsmite_addon	-- Attachment Option: Daemonsmite Aura
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+
+	-- Always build these addons
+	self:AutoBuildAddOn(10)		-- Reinforced Armor
+	self:AutoBuildAddOn(11)		-- Daemonsmite Aura
+
+	if g_iGMT > self.delayedTimer + 60 then	-- Re-evaluate every 60 secs
+        	self.phobosChance = math.random ( 1,100 )
+        	self.delayedTimer = g_iGMT
+    	end
+
+	-- Build Phobos Addon rarely as it causes top melta turret to be removed which is a staple of this IDH LandRaider
+	if (self.phobosChance <= 10) then
+		self:AutoBuildAddOn(9)		-- Phobos Wargear
+	end
+end
+

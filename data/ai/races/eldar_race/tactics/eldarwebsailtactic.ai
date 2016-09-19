@@ -1,0 +1,37 @@
+----------------------------------------
+-- File: 'eldarwebsailtactic.ai'
+-- Edited by Cylarne		@ 03/02/2011
+-- Edited by Thudmeizer		@ 09.04/2016
+
+class 'EldarWebSailTactic' (BaseTactic)
+
+EldarWebSail = {}
+
+function EldarWebSailTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Eldar WebSail Tactic")
+end
+
+function EldarWebSailTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (EldarWebSail.repair_id == nil) then
+		EldarWebSail.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function EldarWebSailTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( EldarWebSail.repair_id )) then
+			self.base_ai:DoSpecialAbility( EldarWebSail.repair_id )
+		end
+	end
+end
+--[[
+function EldarWebSailTactic:CanDeepStrikeTroops()
+	return true
+end
+]]

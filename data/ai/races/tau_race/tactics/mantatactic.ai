@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'mantatactic.ai'
 -- Created by Cylarne @ 2013
+-- Edited by Thudmeizer	@ 24.04.2016
 
 class 'MantaTactic' (TauVehicleTactic)
 
@@ -9,25 +10,69 @@ Manta = {}
 function MantaTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Manta Tactic")
+
+	-- Vehicle is a super heavy transport
+	self.m_iTransportVehicle = 2
+	self.m_iTransportSlots = 20
+end
+
+-- Manta is allowed to retreat even directly after a jump
+function MantaTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
 end
 
 function MantaTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Manta.strike == nil) then
-		Manta.strike = cpu_manager.stats:GetAbilityID( "tau_manta_strike" )
+	if (Manta.emp_id == nil) then
+		Manta.emp_id = cpu_manager.stats:GetAbilityID( "tau_emp_manta" )
 	end
-	if (Manta.emp == nil) then
-		Manta.emp = cpu_manager.stats:GetAbilityID( "tau_emp_manta" )
+	if (Manta.strike_id == nil) then
+		Manta.strike_id = cpu_manager.stats:GetAbilityID( "tau_manta_strike" )
 	end
 end
 
 function MantaTactic:DoAbilities()
 
-	if (self.squad_ai:GetHealthPercentage() > 0.5 and self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(Manta.strike)) then
-		Ability.DoAbilityTarget(self.squad_ai, Manta.strike, Ability.Filters.CloseSquadEnemy, 6)
+	if (self.squad_ai:CanDoAbility( Manta.emp_id )) then
+		Ability.DoAbilityPos(self.squad_ai, Manta.emp_id, Ability.Filters.CloseVehicleEnemy, 2)
+		Ability.DoAbilityPos(self.squad_ai, Manta.emp_id, Ability.EntityFilters.CloseBaseEntityEnemy, 4)
 	end
-	
-	Ability.DoAbilityTarget(self.squad_ai, Manta.emp, Ability.Filters.CloseVehicleEnemy, 2)
 
+	if (self.squad_ai:CanDoAbility( Manta.strike_id )) then
+
+		if (self.squad_ai:GetHealthPercentage() > 0.5 and self.squad_ai:IsInCombat()) then
+			Ability.DoAbilityPos(self.squad_ai, Manta.strike_id, Ability.Filters.CloseEnemy, 24)
+			Ability.DoAbilityPos(self.squad_ai, Manta.strike_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+		end
+	end
+end
+
+function MantaTactic:UnloadTroops()
+
+	local vSquadPos = self.squad_ai:GetPosition()
+	if (cpu_manager.terrain_analyzer:HasThreat(vSquadPos, 100) and self.squad_ai:CanUnload()) then
+
+		-- Unload all troops when enemy is in the distance
+		self.squad_ai:DoUnload()
+	end
+end
+
+function MantaTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+    	-- State machine
+    	if (not VehicleTactic.Update(self)) then
+        	return
+    	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

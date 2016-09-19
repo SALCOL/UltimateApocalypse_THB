@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'necronbiggeneratortactic.ai'
+-- Edited by Thudmeizer @ 04.05.2016
+
+class 'NecronBigGeneratorTactic' (BaseTactic)
+
+NecronBigGenerator = {}
+
+function NecronBigGeneratorTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Big Generator Tactic")
+end
+
+function NecronBigGeneratorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (NecronBigGenerator.repair_id == nil) then
+		NecronBigGenerator.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function NecronBigGeneratorTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( NecronBigGenerator.repair_id )) then
+			self.base_ai:DoSpecialAbility( NecronBigGenerator.repair_id )
+		end
+	end
+end

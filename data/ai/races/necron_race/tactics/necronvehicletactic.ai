@@ -1,12 +1,31 @@
 ----------------------------------------
 -- File: 'necronvehicletactic.ai'
--- Created by Thudmeizer @ 12.10.2006
+-- Created by Thudmeizer @ 20.06.2016
 
 class 'NecronVehicleTactic' (VehicleTactic)
 
 function NecronVehicleTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Necron Vehicle Tactic")
+
+-- Disabled as limited deepstriking/summoning range makes it impractical for the AI to use.
+--[[
+	-- Vehicles are able to deepstrike
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "necron_aeonic_orb_squad" or
+		sSquadName == "necron_annihilation_barge_squad" or
+		sSquadName == "necron_doomsday_ark_squad" or
+		sSquadName == "necron_doomsday_monolith_squad" or
+		sSquadName == "necron_ghost_ark_squad" or
+		sSquadName == "necron_night_scythe_squad" or
+		sSquadName == "necron_obelisk_squad" or
+		sSquadName == "necron_restored_monolith_squad" or
+		sSquadName == "necron_siege_monolith_squad") then
+
+		-- Vehicles are able to enter deepstrike building
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "necron_summoning_core_big" )
+	end
+]]
 end
 
 -- Check if the vehicle should dance away in melee
@@ -21,11 +40,20 @@ end
 
 function NecronVehicleTactic:DoAbilities()
 
-	if (self.squad_ai:IsInCombat()) then
-		-- Reassemble if squad strength is low.
-		local reassemble_id = cpu_manager.stats:GetAbilityID( "necron_reassemble" )	  	  
-		if (self.squad_ai:CanDoAbility( reassemble_id ) and self.squad_ai:GetNumTroopers() <= 2) then
-			Ability.DoAbility(self.squad_ai, reassemble_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = reassemble_id, min_bodies = 1 })
+	-- Gauss Weapon Overcharge: the squad will receive a boost in maximum damage, but a critical reduction in movement speed for a duration.
+	local truegauss_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )
+	if (self.squad_ai:CanDoAbility( truegauss_id )) then
+		if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.5) then
+			Ability.DoAbilityArea( self.squad_ai, truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
+		end
+	end
+
+	-- RAM!!! - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	local rammingspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( rammingspeed_id )) then
+			self.squad_ai:DoSpecialAbility( rammingspeed_id )
 		end
 	end
 

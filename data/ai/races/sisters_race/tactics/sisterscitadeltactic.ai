@@ -1,0 +1,63 @@
+----------------------------------------
+-- File: 'sistercitadeltactic.ai'
+-- Edited by Thudmeizer	@ 20.04.2016
+
+class 'SistersCitadelTactic' (BaseTactic)
+
+SistersCitadel = {}
+
+function SistersCitadelTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Sisters Citadel Tactic")
+end
+
+function SistersCitadelTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function SistersCitadelTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersCitadel.fire_id == nil) then
+		SistersCitadel.fire_id = cpu_manager.stats:GetAbilityID( "sisters_rein_of_fire" )
+	end
+	if (SistersCitadel.repair_id == nil) then
+		SistersCitadel.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function SistersCitadelTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Turret Emplacements	-- addon_sisters_krak_t2
+--	self:AutoBuildAddOn(1) -- Flamers		-- addon_sisters_krak_flamers
+--	self:AutoBuildAddOn(2) -- Probe			-- addon_sisters_krak_laser
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Activate the planet destroyer
+	if (iRequisition >= 20000 and iPower >= 20000) then
+		Ability.DoAbilityPos(self.base_ai, SistersCitadel.fire_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	end
+
+	--Always build this addon
+	self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())
+
+	-- Randomly choose between either of these Citadel weapon points
+	local addon_citadel_ports = math.random( 1,2 )
+	self:AutoBuildTurretAddOn(addon_citadel_ports, self.base_ai:GetEntity():GetID())	-- Randomly choose between one of these addons
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SistersCitadel.repair_id )) then
+			self.base_ai:DoSpecialAbility( SistersCitadel.repair_id )
+		end
+	end
+end

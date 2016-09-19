@@ -1,0 +1,59 @@
+----------------------------------------
+-- File: 'dreadknighttactic.ai'
+-- Edited by Thudmeizer @ 10.05.2016
+
+class 'DreadKnightTactic' (DaemonhuntVehicleTactic)
+
+DreadKnight = {}
+
+function DreadKnightTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DreadKnight Tactic")
+end
+
+-- Dread Knight is allowed to retreat even directly after a jump
+function DreadKnightTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function DreadKnightTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function DreadKnightTactic:InitAbilities()
+
+	if (DreadKnight.run_id == nil) then
+		DreadKnight.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function DreadKnightTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DreadKnight.run_id )) then
+			self.squad_ai:DoSpecialAbility( DreadKnight.run_id )
+		end
+	end
+end
+
+function DreadKnightTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not VehicleTactic.Update(self)) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

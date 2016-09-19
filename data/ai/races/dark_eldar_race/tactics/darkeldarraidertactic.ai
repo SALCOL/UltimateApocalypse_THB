@@ -1,8 +1,10 @@
 ----------------------------------------
 -- File: 'darkeldarraidertactic.ai'
--- Edited by Thudmeizer @ 15.11.2007
+-- Edited by Thudmeizer @ 02.04.2016
 
 class 'DarkEldarRaiderTactic' (DarkEldarVehicleTactic)
+
+DarkEldarRaider = {}
 
 function DarkEldarRaiderTactic:__init( squad_ai ) super( squad_ai )
 
@@ -11,4 +13,59 @@ function DarkEldarRaiderTactic:__init( squad_ai ) super( squad_ai )
 	-- Vehicle is a light transport
 	self.m_iTransportVehicle = 1
 	self.m_iTransportSlots = 1
+end
+
+function DarkEldarRaiderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarRaider.laymines_id == nil) then
+		DarkEldarRaider.laymines_id = cpu_manager.stats:GetAbilityID( "dark_eldar_laymines" )
+	end
+	if (DarkEldarRaider.abilityrecharge_id == nil) then
+		DarkEldarRaider.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+	if (DarkEldarRaider.heal_id == nil) then
+		DarkEldarRaider.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+	if (DarkEldarRaider.reinforce_id == nil) then
+		DarkEldarRaider.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+end
+
+function DarkEldarRaiderTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( DarkEldarRaider.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 3000 and iPower >= 3000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( DarkEldarRaider.laymines_id )
+		end
+	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(DarkEldarRaider.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(DarkEldarRaider.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(DarkEldarRaider.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(DarkEldarRaider.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(DarkEldarRaider.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(DarkEldarRaider.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Call standard method
+	DarkEldarVehicleTactic.DoAbilities(self)
 end

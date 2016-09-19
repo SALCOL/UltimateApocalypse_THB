@@ -1,0 +1,68 @@
+----------------------------------------
+-- File: 'lostsoultactic.ai'
+-- Edited by fuggles 27.05.2013
+-- Edited by corncobman 12.06.2013
+-- Edited by Thudmeizer	08.05.2016
+
+class 'DaemonsLostSoulTactic' (EngineerTactic)
+
+DaemonsLostSoul = {}
+
+function DaemonsLostSoulTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName( "Lost Soul Tactic" )
+end
+
+function DaemonsLostSoulTactic:IsSupportDetector()
+	return true
+end
+
+function DaemonsLostSoulTactic:IsEngineerWhoCanCapture()
+	return false
+end
+
+function DaemonsLostSoulTactic:IsAffectedByMorale()
+	return false
+end
+
+-- Should only attack when attached
+function DaemonsLostSoulTactic:IsAttacker()
+	return false
+end
+
+-- Should only defend when attached
+function DaemonsLostSoulTactic:IsDefender()
+	return false
+end
+
+function DaemonsLostSoulTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsLostSoul.shift_id == nil) then
+		DaemonsLostSoul.shift_id = cpu_manager.stats:GetAbilityID( "daemons_lost_soul_plane_shift" )
+	end
+end
+
+function DaemonsLostSoulTactic:DoAbilities()
+
+	Ability.DoAbilityArea(self.squad_ai, DaemonsLostSoul.shift_id, Ability.Filters.CloseInCombat, 10, 1)
+
+	--DaemonsInfantryTactic.DoAbilities(self)
+end
+
+function DaemonsLostSoulTactic:Update()
+--[[
+	if self:IsComplete() then
+		return
+	end
+]]
+	--state machine
+	if not EngineerTactic.Update( self ) then
+		return
+	end
+	
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+
+

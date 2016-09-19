@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarslavecaraveltactic.ai'
--- Edited by Thudmeizer		@ 22.03.2008
+-- Edited by Thudmeizer		@ 01.04.2016
 
 class 'DarkEldarSlaveCaravelTactic' (BaseTactic)
 
@@ -14,17 +14,29 @@ end
 function DarkEldarSlaveCaravelTactic:InitAbilities()
 	
 	-- Init abilities
-	if (DarkEldarSlaveCaravel.iSoulshockID == nil) then
-		DarkEldarSlaveCaravel.iSoulshockID = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_shock" )
+	if (DarkEldarSlaveCaravel.shock_id == nil) then
+		DarkEldarSlaveCaravel.shock_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_shock" )
 	end
-	if (DarkEldarSlaveCaravel.iSoulshock2ID == nil) then
-		DarkEldarSlaveCaravel.iSoulshock2ID = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_shock_2" )
+	if (DarkEldarSlaveCaravel.soulshock_id == nil) then
+		DarkEldarSlaveCaravel.soulshock_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_shock_2" )
+	end
+	if (DarkEldarPortal.repair_id == nil) then
+		DarkEldarPortal.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
 end
 
 function DarkEldarSlaveCaravelTactic:DoAbilities()
-	Ability.DoAbilityArea(self.base_ai, DarkEldarSlaveCaravel.iSoulshockID, Ability.Filters.CloseInfantryEnemy, 20, 4)
-	Ability.DoAbilityArea(self.base_ai, DarkEldarSlaveCaravel.iSoulshock2ID, Ability.Filters.CloseInfantryEnemy, 10, 8)
+
+	Ability.DoAbilityArea(self.base_ai, DarkEldarSlaveCaravel.shock_id, Ability.Filters.CloseInfantryEnemy, 20, 4)
+	Ability.DoAbilityArea(self.base_ai, DarkEldarSlaveCaravel.soulshock_id, Ability.Filters.CloseInfantryEnemy, 10, 8)
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DarkEldarPortal.repair_id )) then
+			self.base_ai:DoSpecialAbility( DarkEldarPortal.repair_id )
+		end
+	end
 end
 
 

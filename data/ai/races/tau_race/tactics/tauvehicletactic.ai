@@ -1,12 +1,32 @@
 ----------------------------------------
 -- File: 'tauvehicletactic.ai'
--- Edited by Thudmeizer         @ 13.10.2006
+-- Edited by Thudmeizer         @ 20.06.2016
 
 class 'TauVehicleTactic' (VehicleTactic)
 
 function TauVehicleTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Tau Vehicle Tactic")
+
+	-- Basic Tau vehciles is able to enter transport vehicles
+	local sSquadName = squad_ai:GetSquadName()
+
+	-- transport_terminator // transport_lieutenant // transport_tank
+	if (sSquadName == "tau_tetra_squad" or
+		sSquadName == "tau_drone_remora_squad" or
+		sSquadName == "tau_drone_squad" or
+		sSquadName == "tau_sniper_drone_squad" or
+		sSquadName == "tau_drone_harbinger_squad") then
+		self.m_iTransportable = 1 --or 2 -- Devilfish // Manta // Orca Dropship
+
+	elseif (sSquadName == "tau_hammerhead_gunship_squad" or
+		sSquadName == "tau_swordfish_squad" or
+		sSquadName == "tau_eel_battletank_squad" or
+		sSquadName == "tau_malo_squad" or
+		sSquadName == "tau_piranha_squad" or
+		sSquadName == "tau_skyray_squad") then
+		self.m_iTransportable = 2 -- Manta // Orca Dropship
+	end
 end
 
 -- Check if the vehicle should dance away in melee
@@ -15,7 +35,8 @@ function TauVehicleTactic:CheckVehicleDance(sName)
 	if (sName == "tau_devilfish_troop_carrier" or
 	    sName == "tau_skyray_squad" or
 	    sName == "tau_drone_harbinger_squad" or
-	    sName == "tau_hammerhead_gunship_squad") then
+	    sName == "tau_hammerhead_gunship_squad" or
+	    sName == "tau_swordfish_squad") then
 		return true
 	end
 	return false
@@ -23,9 +44,14 @@ end
 
 function TauVehicleTactic:DoAbilities()
 
-   -- Launch missile barrage
-   local barrage_id = cpu_manager.stats:GetAbilityID( "tau_skyray_missile_barrage" )
-   Ability.DoAbilityPos( self.squad_ai, barrage_id, Ability.Filters.CloseEnemy, 10 ) 
+	-- RAM!!: - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 30% movement speed increase and will knock down infantry continuously on contact.
+	local rammingspeed_id = cpu_manager.stats:GetAbilityID( "tau_bumpertank" )
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( rammingspeed_id )) then
+			self.squad_ai:DoSpecialAbility( rammingspeed_id )
+		end
+	end
 
 	-- Call standard method
 	VehicleTactic.DoAbilities(self)

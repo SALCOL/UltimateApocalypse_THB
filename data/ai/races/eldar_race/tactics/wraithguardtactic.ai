@@ -1,0 +1,72 @@
+----------------------------------------
+-- File: 'wraithguardtactic.ai'
+-- Edited by Thudmeizer		@ 22.02.2016
+
+class 'WraithGuardTactic' (EldarInfantryTactic)
+
+WraithGuard = {}
+
+function WraithGuardTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Wraith Guard Tactic")
+end
+
+function WraithGuardTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (WraithGuard.regeneration_id == nil) then
+		WraithGuard.regeneration_id = cpu_manager.stats:GetAbilityID( "eldar_wraithbone_regeneration" )
+	end
+
+	if (WraithGuard.entanglement_id == nil) then
+		WraithGuard.entanglement_id = cpu_manager.stats:GetAbilityID( "eldar_entanglement" )
+	end
+end
+
+function WraithGuardTactic:DoAbilities()
+
+	-- Wraithbone Regeneration: - The user will become disabled for a temporary duration in exchange for massive health regeneration.
+	if (not self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() < 0.3 ) then
+		if (self.squad_ai:CanDoAbility(WraithGuard.regeneration_id)) then
+			self.squad_ai:DoSpecialAbility(WraithGuard.regeneration_id)
+		end
+	end
+
+	-- Warlock Entanglement
+	if (self.squad_ai:CanDoAbility( WraithGuard.entanglement_id )) then
+	
+		local range = self.squad_ai:GetAbilityRange( WraithGuard.entanglement_id )
+		local squad_pos = self.squad_ai:GetPosition()
+		local target = nil
+		
+		melee = function( squad )
+		
+		 	local is_cc = false    
+			if (squad:GetMeleeStance() == SquadAI.MSTANCE_Assault) then
+				is_cc = true   
+			end
+			return is_cc and squad:GetNumTroopers() >= 4
+		end
+		
+		local target = cpu_manager:FindClosestEnemy( squad_pos, range, melee )
+		
+		if (target ~= nil) then
+			self.squad_ai:DoSpecialAbilitySquad( WraithGuard.entanglement_id, target:GetSquad() )
+		end
+	end
+
+	-- Call standard method
+	EldarInfantryTactic.DoAbilities(self)
+end
+
+function WraithGuardTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end
+

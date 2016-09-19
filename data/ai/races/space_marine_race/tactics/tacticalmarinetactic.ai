@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'tacticalmarinetactic.ai'
--- Edited by Thudmeizer @ 04.02.2016
+-- Edited by Thudmeizer @ 28.02.2016
 
 class 'TacticalMarineTactic' (SpaceMarineInfantryTactic)
 
@@ -77,9 +77,8 @@ function TacticalMarineTactic:DoAbilities()
 		end
 	end
 
-	-- Check to make sure if no threats are nearby
-	local vSquadPos = self.squad_ai:GetPosition()
-	if not (self.squad_ai:IsInCombat()) and not (self.squad_ai:IsUnderAttack()) then
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
 
 		-- If I am safe I can run
 		if (self.squad_ai:CanDoAbility( TacticalMarine.run_id )) then

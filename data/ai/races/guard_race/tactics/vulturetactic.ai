@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'Vulturetactic.ai'
+-- File: 'vulturetactic.ai'
 -- Created by Cylarne_04 2012
+-- Edited by Thudmeizer	@ 28.02.2016
 
 class 'VultureTactic' (GuardVehicleTactic)
 
@@ -16,31 +17,19 @@ function VultureTactic:InitAbilities()
 	if (Vulture.bombard_id == nil) then
 		Vulture.bombard_id = cpu_manager.stats:GetAbilityID( "guard_missilestrike" )
 	end
-	if (Vulture.teargas_id == nil) then
-		Vulture.teargas_id = cpu_manager.stats:GetAbilityID( "guard_nervegas_launchers" )	
-	end
-	
 end
 
 function VultureTactic:DoAbilities()
 
 	if (self.squad_ai:CanDoAbility(Vulture.bombard_id)) then
-		Ability.DoAbilityPos(self.squad_ai, Vulture.bombard_id, Ability.Filters.CloseInfiltratedEnemy, 2)
-		Ability.DoAbilityPos(self.squad_ai, Vulture.bombard_id, Ability.Filters.CloseEnemy, 4)
+		Ability.DoAbilityPos(self.squad_ai, Vulture.bombard_id, Ability.Filters.CloseEnemy, 8)
+		Ability.DoAbilityPos(self.squad_ai, Vulture.bombard_id, Ability.Filters.CloseVehicleEnemy, 2)
 	end
 	
-	-- Check if we can use Nervegas Launchers
-	if (self.squad_ai:CanDoAbility(Vulture.teargas_id)) then
-	
-		local iRange = self.squad_ai:GetAbilityRange(Vulture.teargas_id)
-		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 6)
-		if (oSquad ~= nil) then		
-			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
-				self.squad_ai:DoSpecialAbilitySquad(Vulture.teargas_id, oSquad:GetSquad())
-			end
-		end
-	end
+	-- Call standard method
+	GuardVehicleTactic.DoAbilities(self)
 end
+
 function VultureTactic:JumpAttackRanged()
 
 	-- Call standard method

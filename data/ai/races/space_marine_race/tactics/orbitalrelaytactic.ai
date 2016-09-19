@@ -2,7 +2,7 @@
 -- File: 'orbitalrelaytactic.ai'
 -- Edited by Arkhan		@ 15.01.2007
 -- Edited by Cylarne
--- Edited by Thudmeizer		@ 02.02.2016
+-- Edited by Thudmeizer		@ 21.02.2016
 
 class 'OrbitalRelayTactic' (BaseTactic)
 
@@ -13,6 +13,8 @@ function OrbitalRelayTactic:__init( base_ai ) super( base_ai )
 	self:SetName("Orbital Relay Tactic")
 
 	self.m_iArmouryID = cpu_manager.stats:GetBuildingID( "space_marine_interface_relay" )
+
+	self.m_abilitySelector = math.random(1, 100)
 end
 
 function OrbitalRelayTactic:InitAbilities()
@@ -35,20 +37,86 @@ function OrbitalRelayTactic:DoAbilities()
 	
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	
-	local abilitySelector = math.random(1, 100)
-	
-	if (abilitySelector <= 10) then
+
+	if (self.m_abilitySelector <= 25) then
+
 		-- Try to use orbital strike
 		if (iPower >= 1200) then
-			Ability.DoAbilityPos(self.base_ai, OrbitalRelay.orbital_s, Ability.Filters.CloseVehicleEnemy, 1)
+
+			-- Try to use orbital strike
+			if (self.base_ai:CanDoAbility(OrbitalRelay.orbital_s)) then
+
+				local iRange = self.base_ai:GetAbilityRange(OrbitalRelay.orbital_s)
+				local oSquad = Ability.Filters.CloseVehicleEnemy(self.base_ai:GetPosition(), iRange, 1)
+				if (oSquad ~= nil) then
+			
+					-- Only try to use orbital strike when enemy vehicle is attacking
+					if (oSquad:IsAttacking()) then
+						self.base_ai:DoSpecialAbilitySquad(OrbitalRelay.orbital_s, oSquad:GetSquad())
+					end
+				end
+			end
 		end
-		
+
 		if (iRequisition >= 750 and iPower >= 750) then
-			-- Try to use orbital bombardement
-			Ability.DoAbilityPos(self.base_ai, OrbitalRelay.orbital_b, Ability.Filters.CloseEnemy, 15)
-			if (abilitySelector <= 5) then
-				Ability.DoAbilityTargetEntity(self.base_ai, OrbitalRelay.orbital_b, Ability.EntityFilters.CloseBaseEntityEnemy, 20)
+
+			-- Try to use orbital bombardment
+			if (self.base_ai:CanDoAbility(OrbitalRelay.orbital_b)) then
+
+				local iRange = self.base_ai:GetAbilityRange(OrbitalRelay.orbital_b)
+				local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 15)
+				if (oSquad ~= nil) then
+			
+					-- Only try to use orbital bombardment when enemy armies are attacking
+					if (oSquad:IsAttacking()) then
+						self.base_ai:DoSpecialAbilitySquad(OrbitalRelay.orbital_b, oSquad:GetSquad())
+					end
+				end
+			end
+		end
+	end
+
+	if (self.m_abilitySelector <= 10) and (iRequisition >= 1000 and iPower >= 1000) then
+
+		-- Try to use orbital bombardment against enemy armour
+		if (self.base_ai:CanDoAbility(OrbitalRelay.orbital_b)) then
+		
+			-- Get closest squad in range
+			local iRange = self.base_ai:GetAbilityRange(OrbitalRelay.orbital_b)
+			local oSquad = cpu_manager.cpu_player:FindFirstEnemy(self.base_ai:GetPosition(), iRange, 3)
+			if (oSquad ~= nil) then
+		
+				-- Get stats
+				local oStats = oSquad:GetStats()
+				if (oStats ~= nil) then
+			
+					-- Check unit type
+					local eClass = oStats:GetClass()
+					if (eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh or eClass == UnitStatsAI.UC_MonsterHigh) then
+					
+						-- Only try to use orbital bombardment when enemy vehicle or monster is attacking
+						if (oSquad:IsAttacking()) then
+
+							-- Use the orbital bombardment on heavy targets
+							self.base_ai:DoSpecialAbilitySquad(OrbitalRelay.orbital_b, oSquad:GetSquad())
+						end
+					end
+				end	
+			end
+		end
+	end
+
+	if (self.m_abilitySelector <= 2) and (iRequisition >= 3000 and iPower >= 3000) then
+
+		-- Try to use orbital bombardment against enemy buildings
+		if (self.base_ai:CanDoAbility(OrbitalRelay.orbital_b)) then
+
+			local iRange = self.base_ai:GetAbilityRange(OrbitalRelay.orbital_b)
+			local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.base_ai:GetPosition(), iRange, 15)
+			if (oBuilding ~= nil) then
+
+				-- Only try to use orbital bombardment against distant enemy buildings
+				self.base_ai:DoSpecialAbilityEntity(OrbitalRelay.orbital_b, oBuilding) 
 			end
 		end
 	end

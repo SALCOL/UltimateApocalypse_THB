@@ -1,0 +1,136 @@
+----------------------------------------
+-- File: 'warlocktactic.ai'
+-- Edited by Thudmeizer		@ 23.04.2016
+
+class 'WarlockTactic' (EldarInfantryTactic)
+
+Warlock = {}
+
+function WarlockTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Warlock Tactic")
+
+	self.dance_time = 0
+end
+
+function WarlockTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Warlock.entanglement_id == nil) then
+		Warlock.entanglement_id = cpu_manager.stats:GetAbilityID( "eldar_entanglement" )
+	end
+	if (Warlock.embolden_id == nil) then
+		Warlock.embolden_id = cpu_manager.stats:GetAbilityID( "eldar_embolden" )
+	end
+	if (Warlock.run_id == nil) then
+		Warlock.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+	if (Warlock.foot_id == nil) then
+		Warlock.foot_id = cpu_manager.stats:GetAbilityID( "eldar_fleetoffoot" )	
+	end
+end
+
+function WarlockTactic:DoAbilities()
+
+	-- Warlock embolden
+	if (self.squad_ai:IsInCombat() and self.squad_ai:GetMoralePercentage() < 0.6) then
+		
+		-- Use Warlock Embolden if low morale
+		if (self.squad_ai:CanDoAbility( Warlock.embolden_id )) then
+			self.squad_ai:DoSpecialAbility( Warlock.embolden_id )
+		end
+	end
+
+	-- Warlock entanglement
+	if (self.squad_ai:CanDoAbility( Warlock.entanglement_id )) then
+	
+		local range = self.squad_ai:GetAbilityRange( Warlock.entanglement_id )
+		local squad_pos = self.squad_ai:GetPosition()
+		local target = nil
+		
+		melee = function( squad )
+		
+		 	local is_cc = false    
+			if (squad:GetMeleeStance() == SquadAI.MSTANCE_Assault) then
+				is_cc = true   
+			end
+			return is_cc and squad:GetNumTroopers() >= 4
+		end
+		
+		local target = cpu_manager:FindClosestEnemy( squad_pos, range, melee )
+		
+		if (target ~= nil) then
+			self.squad_ai:DoSpecialAbilitySquad( Warlock.entanglement_id, target:GetSquad() )
+		end
+	end
+
+	-- Check if I should enable/disable fleet of foot
+	--if (not self.squad_ai:IsAttached()) then
+		--self:DoAbilityFoF()
+	--end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Warlock.run_id )) then
+			self.squad_ai:DoSpecialAbility( Warlock.run_id )
+		elseif (self.squad_ai:CanDoAbility( Warlock.foot_id )) then
+			self.squad_ai:DoSpecialAbility( Warlock.foot_id )
+		end
+	end
+end
+
+function WarlockTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+    
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+    
+ 	-- Check for close commander
+    	local bSetRanged = false
+    	local bSetMelee = false
+	local vSquadPos = self.squad_ai:GetPosition()
+	local eStance = self.squad_ai:GetMeleeStance()
+	local oEnemyCommander = Ability.Filters.CloseCommanderEnemy(vSquadPos, 20, 1)
+   	if (oEnemyCommander ~= nil) then
+       
+        	-- Check health
+        	if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
+            		bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+           		self.dance_time = 0
+		else
+            		bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+        	end
+	else
+       		-- Check for close attached commander
+    		local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
+    		if (oSquad ~= nil and oSquad:IsAttached()) then
+    			bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+    		else
+    			bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+    		end
+	end
+
+	-- At leat 10 secs ranged stance/dancing
+    	if (bSetRanged) then
+        	self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+        	self.dance_time = g_iGMT
+	elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
+        	self.squad_ai:DoSetDefaultMeleeStance()
+        	self.dance_time = 0
+	end
+    
+	if (self.squad_ai:GetMeleeStance() == SquadAI.MSTANCE_Assault) then          
+		if (self.squad_ai:IsInCombat() or self.squad_ai:WasRecentlyHurt()) then
+            		if (self:TryAttachSquad(false, true, 50, 150, self.m_fCommanderAttachHealth) == nil) then
+                		self:TryAttachSquadMelee()
+           		end
+        	end
+    	end
+end

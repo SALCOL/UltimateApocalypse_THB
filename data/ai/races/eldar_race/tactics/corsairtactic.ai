@@ -1,0 +1,155 @@
+----------------------------------------
+-- File: 'corsairtactic.ai'
+-- Edited by Arkhan		@ 12.01.2006
+-- Edited by Thudmeizer		@ 21.02.2016
+
+class 'CorsairTactic' (EldarInfantryTactic)
+
+Corsair = {}
+
+function CorsairTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName( "Corsair Tactic" )
+end
+
+function CorsairTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Corsair.blind_id == nil) then
+		Corsair.blind_id = cpu_manager.stats:GetAbilityID( "eldar_blind_grenades" )
+	end
+	if (Corsair.gravitic_id == nil) then
+		Corsair.gravitic_id = cpu_manager.stats:GetAbilityID( "eldar_gravitic_grenades" )
+	end
+	if (Corsair.haywire_id == nil) then
+		Corsair.haywire_id = cpu_manager.stats:GetAbilityID( "eldar_haywire_bombs_2" )
+	end
+	if (Corsair.plasma_id == nil) then
+		Corsair.plasma_id = cpu_manager.stats:GetAbilityID( "eldar_plasma_grenades" )
+	end
+	if (Corsair.embolden_id == nil) then
+		Corsair.embolden_id = cpu_manager.stats:GetAbilityID( "eldar_embolden" )
+	end
+	if (Corsair.entanglement_id == nil) then
+		Corsair.entanglement_id = cpu_manager.stats:GetAbilityID( "eldar_entanglement" )
+	end
+end
+
+function CorsairTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat()) then
+		Ability.DoAbilityTarget( self.squad_ai, Corsair.blind_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Corsair.gravitic_id, Ability.Filters.CloseInfantryEnemy, 6 )
+		Ability.DoAbilityTarget( self.squad_ai, Corsair.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, Corsair.plasma_id, Ability.Filters.CloseSquadEnemy, 4 )
+	end
+
+	if (self.squad_ai:IsInCombat() and self.squad_ai:GetMoralePercentage() < 0.6) then
+		
+		-- Use Warlock Embolden if low morale
+		if (self.squad_ai:CanDoAbility( Corsair.embolden_id )) then
+			self.squad_ai:DoSpecialAbility( Corsair.embolden_id )
+		end
+	end
+
+	-- Warlock Entanglement
+	if (self.squad_ai:CanDoAbility( Corsair.entanglement_id )) then
+	
+		local range = self.squad_ai:GetAbilityRange( Corsair.entanglement_id )
+		local squad_pos = self.squad_ai:GetPosition()
+		local target = nil
+		
+		melee = function( squad )
+		
+		 	local is_cc = false    
+			if (squad:GetMeleeStance() == SquadAI.MSTANCE_Assault) then
+				is_cc = true   
+			end
+			return is_cc and squad:GetNumTroopers() >= 4
+		end
+		
+		local target = cpu_manager:FindClosestEnemy( squad_pos, range, melee )
+		
+		if (target ~= nil) then
+			self.squad_ai:DoSpecialAbilitySquad( Corsair.entanglement_id, target:GetSquad() )
+		end
+	end
+
+	-- Call basic DoAbilities methods
+	EldarInfantryTactic.DoAbilities(self)
+end
+
+function CorsairTactic:Reinforce()
+
+	-- Check if we are reinforcing
+	if (self.squad_ai:IsReinforcing()) then
+		return
+	end
+	
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- Don't reinforce squads in critical condition
+	if (self.squad_ai:GetNumTroopers() <= self.squad_ai:GetMaxTroopers() / 3 and self.squad_ai:IsUnderAttack()) then
+		return
+	end
+
+	if (not self.squad_ai:IsReinforcing()) then
+		
+		-- Try for different types of squad members
+		local WarlockIndex = 0
+		local PlatDcannonIndex = 1
+		local PlatVibrocannonIndex = 2
+		local PlatShadowweaverIndex = 3
+
+		-- Get current leader count
+		local numWarlock = self.squad_ai:GetLeaderCount( WarlockIndex )
+		local numPlatDcannon = self.squad_ai:GetLeaderCount( PlatDcannonIndex)
+		local numPlatVibrocannon = self.squad_ai:GetLeaderCount( PlatVibrocannonIndex )
+		local numPlatShadowweaver = self.squad_ai:GetLeaderCount( PlatShadowweaverIndex )
+
+		-- Desired number of each leader type
+		local desiredWarlock = math.random(0,1)
+		local desiredPlatDcannon = math.random(0,1)
+		local desiredPlatVibrocannon = math.random(0,1)
+		local desiredPlatShadowweaver = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if (numWarlock < desiredWarlock) then
+			if self.squad_ai:CanReinforce( true, WarlockIndex ) then
+				self.squad_ai:DoReinforce( true, WarlockIndex )
+			end
+		elseif (numPlatDcannon < desiredPlatDcannon) then
+			if self.squad_ai:CanReinforce( true, PlatDcannonIndex ) then
+				self.squad_ai:DoReinforce( true, PlatDcannonIndex )
+			end
+		elseif (numPlatVibrocannon < desiredPlatVibrocannon) then
+			if self.squad_ai:CanReinforce( true, PlatVibrocannonIndex ) then
+				self.squad_ai:DoReinforce( true, PlatVibrocannonIndex )
+			end
+		elseif (numPlatShadowweaver < desiredPlatShadowweaver) then
+			if self.squad_ai:CanReinforce( true, PlatShadowweaverIndex ) then
+				self.squad_ai:DoReinforce( true, PlatShadowweaverIndex )
+			end
+		end
+	end
+	
+	-- Always try to get the leader first
+	if (self.squad_ai:CanReinforce(true, 0)) then
+		self.squad_ai:DoReinforce(true, 0)
+		return
+	end
+
+	-- Check resources
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if ((iRequisition < 800 or self.m_bPowerCost) and not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	-- Always try to reinforce, as long as I have money
+	if (self.squad_ai:CanReinforce( false, 0 ) and self.squad_ai:HasLeader() and cpu_manager:GetTierLevel() >= 2) then
+		self.squad_ai:DoReinforce( false, 0 )
+	end
+end

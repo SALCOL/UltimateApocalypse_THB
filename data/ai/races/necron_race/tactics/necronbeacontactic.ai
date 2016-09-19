@@ -1,0 +1,146 @@
+----------------------------------------
+-- File: 'necronbeacontactic.ai'
+-- Edited by Thudmeizer         @ 09.03.2016
+
+class 'NecronBeaconTactic' (BaseTactic)
+
+NecronBeacon = {}
+
+function NecronBeaconTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Resurrection Beacon Tactic")
+end
+
+function NecronBeaconTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function NecronBeaconTactic:InitAbilities()
+--[[
+	-- Init Ability ID's and Addon ID's
+	NecronBeacon.resurrectionAddonID =  cpu_manager.stats:GetAddOnID( "addon_necron_beacon_resurrection" )
+	NecronBeacon.chronometronAddonID = cpu_manager.stats:GetAddOnID( "addon_necron_beacon_chronometron" )
+	NecronBeacon.phaseAddonID =  cpu_manager.stats:GetAddOnID( "addon_necron_beacon_phase" )
+	NecronBeacon.veilAddonID =  cpu_manager.stats:GetAddOnID( "addon_necron_beacon_veil" )
+
+	necron_chronometron_beacon (timed) -- All enemy units within a 35m radius are slowed down to a crawling speed.
+	necron_chronometron_beacon2 (timed) -- Global Chronometron
+	necron_mass_resurrection_beacon (timed) -- All fallen Necron armies within a 25m radius are resurrected at the cost of 75 power.
+	necron_mass_resurrection_beacon2 (timed) -- Global Mass Resurrection
+	necron_possession_beacon (timed)  -- Void Possession: - All enemy vehicles within a 35m radius will turn against the enemy and attack them. 
+	necron_possession_beacon2 (timed)  -- Global Void Possession
+	necron_veil_beacon (timed) -- All friendly Necron units and structures are infiltrated within a 35m radius.
+	necron_veil_beacon2 (timed)  -- Global Veil of Darkness
+]]
+	-- Chronometron: All enemy units within a 35m radius are slowed down to a crawling speed.
+	if (NecronBeacon.chronometron_id == nil) then
+		NecronBeacon.chronometron_id = cpu_manager.stats:GetAbilityID( "necron_chronometron_beacon" )
+	end
+
+	-- Global Chronometron: All enemy units within a 35m radius are slowed down to a crawling speed. This is a Global effect.
+	if (NecronBeacon.chronometron2_id == nil) then
+		NecronBeacon.chronometron2_id = cpu_manager.stats:GetAbilityID( "necron_chronometron_beacon2" )
+	end
+
+	-- Mass Resurrection: All fallen Necron armies within a 25m radius are resurrected at the cost of 75 power.
+	if (NecronBeacon.resurrection_id == nil) then
+		NecronBeacon.resurrection_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_beacon" )
+	end
+
+	-- Global Mass Resurrection: All fallen Necron armies within a 25m radius are resurrected at the cost of 75 power. This is a Global effect.
+	if (NecronBeacon.resurrection2_id == nil) then
+		NecronBeacon.resurrection2_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_beacon2" )
+	end
+
+	-- Void Possession: - All enemy vehicles within a 35m radius will turn against the enemy and attack them.
+	if (NecronBeacon.possession_id == nil) then
+		NecronBeacon.possession_id = cpu_manager.stats:GetAbilityID( "necron_possession_beacon" )
+	end
+
+	-- Global Void Possession: - All enemy vehicles within a 35m radius will turn against the enemy and attack them. This is a Global effect.
+	if (NecronBeacon.possession2_id == nil) then
+		NecronBeacon.possession2_id = cpu_manager.stats:GetAbilityID( "necron_possession_beacon2" )
+	end
+
+	-- Veil of Darkness: - All friendly Necron units and structures are infiltrated within a 35m radius.
+	if (NecronBeacon.veil_id == nil) then
+		NecronBeacon.veil_id = cpu_manager.stats:GetAbilityID( "necron_veil_beacon" )
+	end
+
+	-- Global Veil of Darkness: - All friendly Necron units and structures are infiltrated within a 35m radius.
+	if (NecronBeacon.veil2_id == nil) then
+		NecronBeacon.veil2_id = cpu_manager.stats:GetAbilityID( "necron_veil_beacon2" )
+	end
+
+	if (NecronBeacon.repair_id == nil) then
+		NecronBeacon.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function NecronBeaconTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Resurrection	-- addon_necron_beacon_resurrection
+--	self:AutoBuildAddOn(1) -- Chronometron	-- addon_necron_beacon_chronometron
+--	self:AutoBuildAddOn(2) -- Phase 	-- addon_necron_beacon_phase
+--	self:AutoBuildAddOn(3) -- Veil 		-- addon_necron_beacon_veil
+
+	-- Build but randomly choose all four possible addons
+	local random_beacon_addons = math.random( 0,3 )
+	self:AutoBuildTurretAddOn(random_beacon_addons, self.base_ai:GetEntity():GetID())
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Try to activate the Global Chronometron ability
+	if (self.base_ai:CanDoAbility(NecronBeacon.chronometron2_id)) and (iPower >= 250) then
+		Ability.DoAbilityArea(self.base_ai, NecronBeacon.chronometron2_id, Ability.Filters.CloseEnemy, 35, 20)
+	end
+
+	-- Try to activate the Chronometron ability
+	if (self.base_ai:CanDoAbility(NecronBeacon.chronometron_id)) then
+		Ability.DoAbilityArea(self.base_ai, NecronBeacon.chronometron_id, Ability.Filters.CloseEnemy, 35, 10)
+	end
+
+	-- Try to activate the Global Resurrection ability
+	if (self.base_ai:CanDoAbility(NecronBeacon.resurrection2_id)) and (iPower >= 600) then
+		Ability.DoAbility(self.base_ai, NecronBeacon.resurrection2_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronBeacon.resurrection2_id, min_bodies = 20 })
+	end
+
+	-- Try to activate the Resurrection ability
+	if (self.base_ai:CanDoAbility(NecronBeacon.resurrection_id)) then
+		Ability.DoAbility(self.base_ai, NecronBeacon.resurrection_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronBeacon.resurrection_id, min_bodies = 10 })
+	end
+
+	-- Try to activate the Global Vehicle Possession ability
+	if (self.base_ai:CanDoAbility(NecronBeacon.possession2_id)) and (iPower >= 500) then
+		Ability.DoAbilityArea(self.base_ai, NecronBeacon.possession2_id, Ability.Filters.CloseVehicleEnemy, 35, 5)
+	end
+
+	-- Try to activate the Vehicle Possession ability
+	if (self.base_ai:CanDoAbility(NecronBeacon.possession_id)) then
+		Ability.DoAbilityArea(self.base_ai, NecronBeacon.possession_id, Ability.Filters.CloseVehicleEnemy, 35, 2)
+	end
+
+	-- Try to activate the Global Veil of Darkness ability
+	if (self.base_ai:CanDoAbility(NecronBeacon.veil2_id)) and (iPower >= 400) then
+		Ability.DoAbilityArea(self.base_ai, NecronBeacon.veil2_id, Ability.Filters.CloseEnemy, 35, 20)
+	end
+
+	-- Try to activate the Veil of Darkness ability
+	if (self.base_ai:CanDoAbility(NecronBeacon.veil_id)) then
+		Ability.DoAbilityArea(self.base_ai, NecronBeacon.veil_id, Ability.Filters.CloseEnemy, 35, 10)
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( NecronBeacon.repair_id )) then
+			self.base_ai:DoSpecialAbility( NecronBeacon.repair_id )
+		end
+	end
+end

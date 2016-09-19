@@ -1,9 +1,12 @@
 ----------------------------------------
 -- File: 'battlefortresstactic.ai'
 -- Edited by Arkhan		@ 10.01.2007
+-- Edited by Thudmeizer		@ 20.06.2016
 -- Edited by Cylarne_04 2011
 
 class 'BattlefortressTactic' (OrkVehicleTactic)
+
+Battlefortress = {}
 
 function BattlefortressTactic:__init( squad_ai ) super( squad_ai )
 
@@ -11,9 +14,67 @@ function BattlefortressTactic:__init( squad_ai ) super( squad_ai )
 	
 	-- Vehicle is a heavy transport
 	self.m_iTransportVehicle = 1
-	self.m_iTransportSlots = 4
+	self.m_iTransportSlots = 2
 end
 
 function BattlefortressTactic:AlwaysAttack()
 	return true
+end
+
+function BattlefortressTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Battlefortress.laymines_id == nil) then
+		Battlefortress.laymines_id = cpu_manager.stats:GetAbilityID( "ork_laymines" )
+	end
+
+	if (Battlefortress.abilityrecharge_id == nil) then
+		Battlefortress.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (Battlefortress.heal_id == nil) then
+		Battlefortress.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (Battlefortress.reinforce_id == nil) then
+		Battlefortress.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+end
+
+function BattlefortressTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( Battlefortress.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 1000 and iPower >= 1000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( Battlefortress.laymines_id )
+		end
+	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(Battlefortress.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(Battlefortress.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(Battlefortress.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(Battlefortress.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(Battlefortress.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(Battlefortress.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Call standard method
+	OrkVehicleTactic.DoAbilities(self)
 end

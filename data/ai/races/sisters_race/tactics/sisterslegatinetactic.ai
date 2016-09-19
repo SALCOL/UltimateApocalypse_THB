@@ -1,0 +1,80 @@
+----------------------------------------
+-- File: 'sisterslegatinetactic.ai'
+-- Edited by Thudmeizer @ 12.04.2016
+
+class 'SistersLegatineTactic' (SistersInfantryTactic)
+
+SistersLegatine = {}
+
+function SistersLegatineTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Legatine Tactic")
+end
+
+function SistersLegatineTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function SistersLegatineTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Legatine are allowed to retreat even directly after a jump
+function SistersLegatineTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersLegatineTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function SistersLegatineTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersLegatine.invulnerability_id == nil) then
+		SistersLegatine.invulnerability_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_invulnerability_legatine_superiors" )
+	end
+
+	if (SistersLegatine.run_id == nil) then
+		SistersLegatine.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function SistersLegatineTactic:DoAbilities()
+
+	-- Invulnerability: Causes the user to phase out of the material universe, becoming invulnerable. While active, the user can attack and use abilities. (Faith cost: 300)
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+	
+		if (self.squad_ai:CanDoAbility(SistersLegatine.invulnerability_id)) then
+			self.squad_ai:DoSpecialAbility(SistersLegatine.invulnerability_id) 
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersLegatine.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersLegatine.run_id )
+		end
+	end
+end
+
+function SistersLegatineTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

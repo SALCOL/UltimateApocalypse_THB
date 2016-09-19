@@ -1,8 +1,9 @@
 ----------------------------------------
--- File: 'Civiliantactic.ai'
+-- File: 'civiliantactic.ai'
 -- Created by Cylarne
+-- Edited by Thudmeizer	18.04.2016
 
-class 'CivilianTactic' (DaemonhuntVehicleTactic)
+class 'CivilianTactic' (DaemonhuntInfantryTactic)
 
 Civilian = {}
 

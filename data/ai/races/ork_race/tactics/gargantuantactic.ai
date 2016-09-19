@@ -1,0 +1,67 @@
+----------------------------------------
+-- File: 'gargantuantactic.ai'
+-- Edited by Thudmeizer		@ 24.02.2016
+
+class 'GargantuanTactic' (OrkVehicleTactic)
+
+Gargantuan = {}
+
+function GargantuanTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Gargantuan Tactic")
+	
+	self.timedDirectSpawnAbility = Timer( GargantuanTactic.DoDirectSpawnAbility, self, 5 )
+
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 2
+end
+
+function GargantuanTactic:AlwaysAttack()
+	return true
+end
+
+function GargantuanTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Gargantuan.shield_id == nil) then
+		Gargantuan.shield_id = cpu_manager.stats:GetAbilityID( "ork_super_chargy" )
+	end
+
+	if (Gargantuan.run_id == nil) then
+		Gargantuan.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+	end
+end
+
+function GargantuanTactic:DoAbilities()
+	
+	if (self.squad_ai:IsInCombat() and self.squad_ai:WasRecentlyHurt()) then
+		if (self.squad_ai:CanDoAbility(Gargantuan.shield_id)) then 
+			self.squad_ai:DoSpecialAbility(Gargantuan.shield_id)
+		end
+	end
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Gargantuan.run_id )) then
+			self.squad_ai:DoSpecialAbility( Gargantuan.run_id )
+		end
+	end
+
+	-- Try to spawn Slugga Honor Guard
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		GargantuanTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function GargantuanTactic:DoDirectSpawnAbility()
+
+	-- Spawn Slugga Honor Guard in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end

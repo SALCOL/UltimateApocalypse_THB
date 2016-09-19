@@ -7,7 +7,7 @@
 -- Apocalypse Mod Team
 import("ScarUtil.scar");
 import("UA_SCARCore/K_04/Tiers&EndGamersList.scar");
-import("winconditions/restrict_tierv.scar");
+--import("winconditions/restrict_tierv.scar");
 
 function Rule_RestrictSupers()
 	
@@ -27,7 +27,9 @@ function Rule_RestrictSupers()
 			local restrict = _Actual.superstructure_list[i];
 		
 			local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Actual.superstructure_list[i])
+			local modifier2 = Modifier_Create(MAT_EntityType, "enable_general_combat", MUT_Enable, false, -1, _Actual.superstructure_list[i])
 			Modifier_ApplyToPlayer( modifier, player)
+			Modifier_ApplyToPlayer( modifier2, player)
 		end 
 		if (Mod_Includes_Tyranids == true) then
 			-- Restrict the structure.
@@ -35,7 +37,9 @@ function Rule_RestrictSupers()
 				local structure = _Tyranids.superstructure_list[i];
 				
 				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Tyranids.superstructure_list[i])
+				local modifier2 = Modifier_Create(MAT_EntityType, "enable_general_combat", MUT_Enable, false, -1, _Tyranids.superstructure_list[i])
 				Modifier_ApplyToPlayer( modifier, player)
+				Modifier_ApplyToPlayer( modifier2, player)
 			end 
 		end
 		if (Mod_Includes_Inquisition == true) then
@@ -44,7 +48,9 @@ function Rule_RestrictSupers()
 				local structure = _Inquisition.superstructure_list[i];
 				
 				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Inquisition.superstructure_list[i])
+				local modifier2 = Modifier_Create(MAT_EntityType, "enable_general_combat", MUT_Enable, false, -1, _Inquisition.superstructure_list[i])
 				Modifier_ApplyToPlayer( modifier, player)
+				Modifier_ApplyToPlayer( modifier2, player)
 			end 
 		end
 		if (Mod_Includes_Daemons == true) then
@@ -53,7 +59,9 @@ function Rule_RestrictSupers()
 				local structure = _Daemons.superstructure_list[i];
 				
 				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Daemons.superstructure_list[i])
+				local modifier2 = Modifier_Create(MAT_EntityType, "enable_general_combat", MUT_Enable, false, -1, _Daemons.superstructure_list[i])
 				Modifier_ApplyToPlayer( modifier, player)
+				Modifier_ApplyToPlayer( modifier2, player)
 			end 
 		end
 	end

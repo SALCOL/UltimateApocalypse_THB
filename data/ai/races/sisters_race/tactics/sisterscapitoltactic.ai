@@ -1,0 +1,114 @@
+----------------------------------------
+-- File: 'sisterscapitoltactic.ai'
+-- Edited by Thudmeizer @ 20.06.2016
+
+class 'SistersCapitolTactic' (SistersVehicleTactic)
+
+SistersCapitol = {}
+
+function SistersCapitolTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Capitol Tactic")
+	
+	-- Vehicle is a light transport
+	self.m_iTransportVehicle = 2
+	self.m_iTransportSlots = 6
+
+	SistersCapitol.detectDelay = -1
+end
+
+function SistersCapitolTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersCapitol.repair_id == nil) then
+		SistersCapitol.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+	if (SistersCapitol.deploy_id == nil) then
+		SistersCapitol.deploy_id = cpu_manager.stats:GetAbilityID( "sisters_capitol_imperialis_deploy" )
+	end
+	if (SistersCapitol.detection_id == nil) then
+		SistersCapitol.detection_id = cpu_manager.stats:GetAbilityID( "sisters_detection_field_capitol_imperialis" )
+	end
+end
+
+function SistersCapitolTactic:DoAbilities()
+	
+	-- Built vehicle are deployed immediately
+	if (self.squad_ai:GetHealthPercentage() > 0.5 and self.squad_ai:CanDoAbility(SistersCapitol.deploy_id)) then
+            	for e in self.squad_ai:GetEntities() do
+               	local buildChannel = build_manager:GetBuildChannelFromID(e:GetID())
+                	if (buildChannel ~= nil) then
+                		 if buildChannel:IsBuilding() ~= 0 then
+					-- Unload newly built vehicle
+                       			self.squad_ai:DoSpecialAbility(SistersCapitol.deploy_id)
+                        		break
+                    		end
+                	end
+            	end
+	end
+
+	-- Try to activate detection field
+	if (self.squad_ai:CanDoAbility(SistersCapitol.detection_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(SistersCapitol.detection_id)
+		local oSquad = Ability.Filters.CloseInfiltratedEnemy(self.squad_ai:GetPosition(), iRange, 1)
+		
+		if (oSquad ~= nil) then
+			if(SistersCapitol.detectDelay == -1) then
+				SistersCapitol.detectDelay = math.max(0, 30)
+				SistersCapitol.detectTime = g_iGMT + SistersCapitol.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < SistersCapitol.detectTime) then
+				return
+			end
+
+			-- Only try to detect if the infiltrated unit is attacking
+			if (oSquad:IsAttacking()) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.squad_ai:DoSpecialAbilityPos( SistersCapitol.detection_id, pos )
+
+				SistersCapitol.detectDelay = -1
+			end
+		else 
+			--if no infiltrated units within range, scan other enemies
+			local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 1)
+			if(SistersCapitol.detectDelay == -1) then
+				SistersCapitol.detectDelay = math.max(0, 30)
+				SistersCapitol.detectTime = g_iGMT + SistersCapitol.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < SistersCapitol.detectTime) then
+				return
+			end
+
+			if (oSquad ~= nil) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.squad_ai:DoSpecialAbilityPos( SistersCapitol.detection_id, pos )
+
+				SistersCapitol.detectDelay = -1
+			end
+		end
+	end
+
+	-- Vehicle Repair!
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		if (self.squad_ai:CanDoAbility( SistersCapitol.repair_id )) then
+			self.squad_ai:DoSpecialAbility( SistersCapitol.repair_id )
+		end
+	end
+
+	-- Call standard method
+	SistersVehicleTactic.DoAbilities(self)
+end

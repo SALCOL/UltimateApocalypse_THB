@@ -1,0 +1,14 @@
+----------------------------------------
+-- File: 'wagontactic.ai'
+-- Edited by Thudmeizer		@ 24.02.2016
+
+class 'WagonTactic' (OrkVehicleTactic)
+
+function WagonTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Wagon Tactic")
+	
+	-- Vehicle is a light transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 1
+end

@@ -1,0 +1,16 @@
+----------------------------------------
+-- File: 'deceiverillusiontactic.ai'
+-- Edited by Thudmeizer @ 09.03.2016
+
+class 'DeceiverIllusionTactic' (NecronInfantryTactic)
+
+DeceiverIllusion = {}
+
+function DeceiverIllusionTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Deceiver Illusion Tactic")
+end
+
+function DeceiverIllusionTactic:AlwaysAttack()
+	return true
+end

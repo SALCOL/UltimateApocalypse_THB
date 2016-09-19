@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'etherealtactic.ai'
--- Edited by Thudmeizer @ 26.10.2006
+-- Edited by Thudmeizer @ 17.03.2016
 -- Edited by Cylarne_04 2011
 
 class 'EtherealTactic' (TauInfantryTactic)
@@ -9,11 +9,25 @@ Ethereal = {}
 
 function EtherealTactic:__init( squad_ai ) super( squad_ai )
 	
-	self.timedDirectSpawnAbility = Timer( EtherealTactic.DoDirectSpawnAbility, self, 5 )
-
 	self:SetName("Ethereal Tactic")
+
+	self.timedDirectSpawnAbility = Timer( EtherealTactic.DoDirectSpawnAbility, self, 5 )
 	
 	self.m_bRecover = true
+end
+
+function EtherealTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelEthereal = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelEthereal ~= nil) then
+			local addOnID = buildChannelEthereal:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelEthereal:IsBuilding() == 0 and buildChannelEthereal:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelEthereal:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
 end
 
 function EtherealTactic:IsAttacker()
@@ -30,6 +44,18 @@ function EtherealTactic:InitAbilities()
 	if (Ethereal.deathpulse_id == nil) then
 		Ethereal.deathpulse_id = cpu_manager.stats:GetAbilityID( "tau_death_pulse" )
 	end
+
+	if (Ethereal.guide_id == nil) then
+		Ethereal.guide_id = cpu_manager.stats:GetAbilityID( "tau_ethereal_guide" )
+	end
+
+	if (Ethereal.mindwar_id == nil) then
+		Ethereal.mindwar_id = cpu_manager.stats:GetAbilityID( "tau_ethereal_mind_war" )
+	end
+
+	if (Ethereal.run_id == nil) then
+		Ethereal.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function EtherealTactic:DoAbilities()
@@ -41,6 +67,51 @@ function EtherealTactic:DoAbilities()
 	else
 		Ability.DoAbilityPos(self.squad_ai, Ethereal.deathpulse_id, Ability.Filters.CloseEnemy, 12)
 		Ability.DoAbilityPos(self.squad_ai, Ethereal.deathpulse_id, Ability.Filters.CloseVehicleEnemy, 4)
+	end
+
+	-- If we are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			
+		Ability.DoAbilityTarget( self.squad_ai, Ethereal.mindwar_id, Ability.Filters.CloseInfantryEnemy, 1 )
+
+		-- Try to activate the Guide
+		if (self.squad_ai:CanDoAbility(Ethereal.guide_id)) then
+			local range = self.squad_ai:GetAbilityRange( Ethereal.guide_id )	
+			local squad_filter = function( squad_ai )		
+				return squad_ai:IsInCombat() and squad_ai:IsInStateAttackMove() and 
+						squad_ai:GetNumTroopers() >= 2 and not squad_ai:IsBroken() and
+						not squad_ai:IsCapturing()
+			end	
+   			local target_squad = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), range, squad_filter )
+			if (target_squad ~= nil) then
+				self.squad_ai:DoSpecialAbilitySquad( Ethereal.guide_id, target_squad:GetSquad() )
+ 			end
+ 		end
+ 	else
+		-- Try to activate the Guide
+		if (self.squad_ai:CanDoAbility(Ethereal.guide_id)) then
+			local range = self.squad_ai:GetAbilityRange( Ethereal.guide_id )	
+			local squad_filter = function( squad_ai )		
+				return squad_ai:IsInCombat() and squad_ai:IsInStateAttackMove() and 
+						squad_ai:GetNumTroopers() >= 4 and not squad_ai:IsBroken() and
+						not squad_ai:IsCapturing()
+			end	
+   			local target_squad = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), range, squad_filter )
+			if (target_squad ~= nil) then
+				self.squad_ai:DoSpecialAbilitySquad( Ethereal.guide_id, target_squad:GetSquad() )
+ 			end
+		end
+
+		Ability.DoAbilityTarget( self.squad_ai, Ethereal.mindwar_id, Ability.Filters.CloseCommanderEnemy, 1 )	
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Ethereal.run_id )) then
+			self.squad_ai:DoSpecialAbility( Ethereal.run_id )
+		end
 	end
 
 	-- Try to spawn honor guards
@@ -59,24 +130,56 @@ function EtherealTactic:DoDirectSpawnAbility()
 	end
 end
 
+function EtherealTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
 function EtherealTactic:Update()
 
-    if (self:IsComplete()) then
-        return
-    end
+	if (self:IsComplete()) then
+        	return
+    	end
 
-    -- State machine
-    if (not InfantryTactic.Update(self)) then
-        return
-    end
+   	-- State machine
+    	if (not InfantryTactic.Update(self)) then
+        	return
+    	end
 
 	dbAssert( Ethereal.deathpulse_id ~= nil )
     
-    -- Check ethereal health
-    if (self.squad_ai:GetHealthPercentage() < 0.5 or not self.squad_ai:CanDoAbility(Ethereal.deathpulse_id)) then
-    	self.m_bRecover = true
-    elseif (self.squad_ai:GetHealthPercentage() > 0.9 and self.squad_ai:CanDoAbility(Ethereal.deathpulse_id)) then
+    	-- Check ethereal health
+    	if (self.squad_ai:GetHealthPercentage() < 0.5 or not self.squad_ai:CanDoAbility(Ethereal.deathpulse_id)) then
+    		self.m_bRecover = true
+    	elseif (self.squad_ai:GetHealthPercentage() > 0.9 and self.squad_ai:CanDoAbility(Ethereal.deathpulse_id)) then
 		self.m_bRecover = false
-    end
-end
+    	end
 
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+end

@@ -1,0 +1,28 @@
+----------------------------------------
+-- File: 'fightabommatactic.ai'
+-- Edited by Thudmeizer		@ 25.02.2016
+
+class 'FightaBommaTactic' (OrkVehicleTactic)
+
+FightaBomma = {}
+
+function FightaBommaTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Fighta Bommba Tactic")
+end
+
+function FightaBommaTactic:AlwaysAttack()
+	return true
+end
+
+function FightaBommaTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not VehicleTactic.Update( self )) then
+		return
+	end
+end

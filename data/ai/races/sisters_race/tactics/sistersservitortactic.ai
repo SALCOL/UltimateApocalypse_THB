@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersservitortactic.ai'
--- Created by Thudmeizer @ 15.11.2007
+-- Created by Thudmeizer @ 10.04.2016
 
 class 'SistersServitorTactic' (EngineerTactic)
 
@@ -11,18 +11,55 @@ function SistersServitorTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Sisters Servitor Tactic")
 end
 
+-- Servitor is allowed to retreat even directly after a jump
+function SistersServitorTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersServitorTactic:IsAffectedByMorale()
+	return false
+end
+
 function SistersServitorTactic:InitAbilities()
 
-	if SistersServitor.dismantle_id == nil then
-	   SistersServitor.dismantle_id = cpu_manager.stats:GetAbilityID( "sisters_dismantle" )	
-     end
+	if (SistersServitor.dismantle_id == nil) then
+		SistersServitor.dismantle_id = cpu_manager.stats:GetAbilityID( "sisters_dismantle" )	
+	end
+
+	if (SistersServitor.run_id == nil) then
+		SistersServitor.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function SistersServitorTactic:DoAbilities()
 
         Ability.DoAbilityTargetEntity( self.squad_ai, SistersServitor.dismantle_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersServitor.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersServitor.run_id )
+		end
+	end
 end
 
-function SistersServitorTactic:IsAffectedByMorale()
-	return false
+function SistersServitorTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+    
+	-- State machine
+	if (not EngineerTactic.Update( self )) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

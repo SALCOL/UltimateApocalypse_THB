@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'SistersPenitenttactic.ai'
+-- File: 'sisterspenitenttactic.ai'
 -- Created by Cylarne
+-- Edited by Thudmeizer	@ 11.04.2016
 
 class 'SistersPenitentTactic' (SistersVehicleTactic)
 
@@ -16,13 +17,25 @@ function SistersPenitentTactic:InitAbilities()
 	if (SistersPenitent.rage_id == nil) then
 		SistersPenitent.rage_id = cpu_manager.stats:GetAbilityID( "sisters_holy_rage" )
 	end
+
+	if (SistersPenitent.run_id == nil) then
+		SistersPenitent.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function SistersPenitentTactic:DoAbilities()
 
 	if (self.squad_ai:CanDoAbility(SistersPenitent.rage_id)) then
 		Ability.DoAbilityPos(self.squad_ai, SistersPenitent.rage_id, Ability.Filters.CloseEnemy, 4)
-		Ability.DoAbilityTargetEntity(self.squad_ai, SistersPenitent.rage_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+		Ability.DoAbilityPos(self.squad_ai, SistersPenitent.rage_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
 	end
 
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersPenitent.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersPenitent.run_id )
+		end
+	end
 end

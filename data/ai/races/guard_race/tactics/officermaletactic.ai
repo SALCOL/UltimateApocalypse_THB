@@ -1,0 +1,136 @@
+----------------------------------------
+-- File: 'officemaletactic.ai'
+-- Edited by Thudmeizer @ 27.02.2016
+
+class 'OfficerMaleTactic' (GuardInfantryTactic)
+
+OfficerMale = {}
+
+function OfficerMaleTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Office Male Tactic")
+
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+
+	-- Init execute delay time
+	OfficerMale.NextExecuteCheck = 0
+end
+
+function OfficerMaleTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelOfficerMale = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelOfficerMale ~= nil) then
+			local addOnID = buildChannelOfficerMale:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelOfficerMale:IsBuilding() == 0 and buildChannelOfficerMale:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelOfficerMale:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function OfficerMaleTactic:IsAttacker()	
+	return self:IsCommanderAttacker()
+end
+
+function OfficerMaleTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function OfficerMaleTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (OfficerMale.bomb_id == nil) then
+		OfficerMale.bomb_id = cpu_manager.stats:GetAbilityID( "guard_commander_bomb" )	
+	end
+	if (OfficerMale.execute_id == nil) then
+		OfficerMale.execute_id = cpu_manager.stats:GetAbilityID( "guard_lieutenant_execute" )	
+	end
+	if (OfficerMale.nervegas_id == nil) then
+		OfficerMale.nervegas_id = cpu_manager.stats:GetAbilityID( "guard_nervegas_grenades_lieutenant" )	
+	end
+	if (OfficerMale.strafingrun_id == nil) then
+		OfficerMale.strafingrun_id = cpu_manager.stats:GetAbilityID( "guard_strafing_run_tank" )	
+	end
+	if (OfficerMale.run_id == nil) then
+		OfficerMale.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function OfficerMaleTactic:DoAbilities()
+
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, OfficerMale.bomb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, OfficerMale.bomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Throw nerve gas grenades!
+	Ability.DoAbilityTarget(self.squad_ai, OfficerMale.nervegas_id, Ability.Filters.CloseSquadEnemy, 9)
+
+	-- Commence Strafing Run!
+	Ability.DoAbilityPos(self.squad_ai, OfficerMale.strafingrun_id, Ability.Filters.CloseEnemy, 8)
+
+	-- TargetSelf: Lieutenant executes one of his own men to increase their fighting potential
+	if (self.squad_ai:IsAttached() and self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(OfficerMale.execute_id) and
+		self.squad_ai:GetNumTroopers() > 6 and g_iGMT > OfficerMale.NextExecuteCheck) then
+		
+		-- Use execute ability
+		self.squad_ai:DoSpecialAbility(OfficerMale.execute_id) 
+		OfficerMale.NextExecuteCheck = g_iGMT + 20
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( OfficerMale.run_id )) then
+			self.squad_ai:DoSpecialAbility( OfficerMale.run_id )
+		end
+	end
+end
+
+function OfficerMaleTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function OfficerMaleTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+	
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+end

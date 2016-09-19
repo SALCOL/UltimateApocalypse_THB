@@ -1,0 +1,84 @@
+----------------------------------------
+-- File: 'necronampgeneratortactic.ai'
+-- Edited by Krronus @ 08.09.2010
+-- Edited by Cylarne @ 2014
+-- Edited by Thudmeizer	@ 24.05.2016
+
+class 'NecronAmpGeneratorTactic' (BaseTactic)
+
+NecronAmpGenerator = {}
+
+function NecronAmpGeneratorTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Amp Generator Tactic")
+
+	if Research1 == nil then
+    		self.done = false
+    	Research1 = math.random(0,8)
+    	Research2 = math.random(0,8)
+    	Research3 = math.random(0,8)
+    	repeat
+        if (Research1 == Research2) then
+            Research2 = math.random(0,8)
+        elseif (Research1 == Research3 or Research2 == Research3) then
+            Research3 = math.random(0,8)
+        else
+		self.done = true
+        end
+    		until self.done
+	end
+end
+
+function NecronAmpGeneratorTactic:AutoBuildResearch( researchSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local ResearchID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_Research, researchSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_Research, ResearchID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildResearch(ResearchID)
+		end
+	end
+end
+
+function NecronAmpGeneratorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (NecronAmpGenerator.selfdestruct_id == nil) then
+		NecronAmpGenerator.selfdestruct_id = cpu_manager.stats:GetAbilityID( "necron_amplifier_selfdestruct" )
+	end
+	if (NecronAmpGenerator.repair_id == nil) then
+		NecronAmpGenerator.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function NecronAmpGeneratorTactic:DoAbilities()
+--[[
+		-- Randomly choose a combo of 3 of these researches
+		self:AutoBuildResearch(0) -- Builders		-- necron_amplification_builders_research	-- Tier4	Power: 300
+		self:AutoBuildResearch(1) -- Infantry		-- necron_amplification_infantry_research	-- Tier4	Power: 800
+		self:AutoBuildResearch(2) -- Vehicle		-- necron_amplification_vehicles_research	-- Tier4	Power: 800
+		self:AutoBuildResearch(3) -- Time		-- necron_amplification_time_research		-- Tier4	Power: 1000
+		self:AutoBuildResearch(4) -- Power		-- necron_amplification_power_research		-- Tier4	Power: 3000
+		self:AutoBuildResearch(5) -- Commanders		-- necron_amplification_commanders_research	-- Tier5	Power: 2000
+		self:AutoBuildResearch(6) -- Living Metal	-- necron_amplification_living_metal_research	-- Tier5	Power: 3000
+		self:AutoBuildResearch(7) -- Bonus		-- necron_amplification_bonus_research		-- Tier5	Power: 3000
+		self:AutoBuildResearch(8) -- Superweapons	-- necron_amplification_superweapons_research	-- Tier5	Power: 5000
+]]
+	-- Randomize between nine possible researches but choose only three
+	self:AutoBuildResearch(Research1, self.base_ai:GetEntity():GetID())
+	self:AutoBuildResearch(Research2, self.base_ai:GetEntity():GetID())
+	self:AutoBuildResearch(Research3, self.base_ai:GetEntity():GetID())
+
+	if (self.base_ai:CanDoAbility(NecronAmpGenerator.selfdestruct_id) and self.base_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityArea(self.base_ai, NecronAmpGenerator.selfdestruct_id, Ability.Filters.CloseInfantryEnemy, 20, 5)
+	else
+		Ability.DoAbilityArea(self.base_ai, NecronAmpGenerator.selfdestruct_id, Ability.Filters.CloseInfantryEnemy, 30, 20)
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( NecronAmpGenerator.repair_id )) then
+			self.base_ai:DoSpecialAbility( NecronAmpGenerator.repair_id )
+		end
+	end
+end

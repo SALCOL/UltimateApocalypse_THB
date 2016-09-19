@@ -1,0 +1,81 @@
+----------------------------------------
+-- File: 'chaosattackbiketactic.ai'
+-- Created by Cylarne
+-- Edited by Thudmeizer		@ 03.03.2016
+
+class 'ChaosAttackbikeTactic' (ChaosMarineVehicleTactic)
+
+ChaosAttackbike = {}
+
+function ChaosAttackbikeTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chaos Attackbike Tactic")
+end
+
+function ChaosAttackbikeTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChaosAttackbike.flashbang_id == nil) then
+		ChaosAttackbike.flashbang_id = cpu_manager.stats:GetAbilityID( "chaos_flashbang_grenades" )	
+	end
+
+	if (ChaosAttackbike.frag_id == nil) then
+		ChaosAttackbike.frag_id = cpu_manager.stats:GetAbilityID( "chaos_frag_grenades" )	
+	end
+
+	if (ChaosAttackbike.inferno_id == nil) then
+		ChaosAttackbike.inferno_id = cpu_manager.stats:GetAbilityID( "chaos_inferno_grenades" )	
+	end
+
+	if (ChaosAttackbike.krak_id == nil) then
+		ChaosAttackbike.krak_id = cpu_manager.stats:GetAbilityID( "chaos_krak_grenades" )	
+	end
+
+	if (ChaosAttackbike.melta_id == nil) then
+		ChaosAttackbike.melta_id = cpu_manager.stats:GetAbilityID( "chaos_melta_bombs_havoc" )	
+	end
+
+	if (ChaosAttackbike.smoke_id == nil) then
+		ChaosAttackbike.smoke_id = cpu_manager.stats:GetAbilityID( "chaos_smoke_grenades" )
+	end
+end
+
+function ChaosAttackbikeTactic:DoAbilities()
+
+	-- Activate various targetted abilities
+        Ability.DoAbilityTarget( self.squad_ai, ChaosAttackbike.flashbang_id, Ability.Filters.CloseSquadEnemy, 4)
+	Ability.DoAbilityTarget( self.squad_ai, ChaosAttackbike.frag_id, Ability.Filters.CloseEnemy, 4)
+        Ability.DoAbilityTarget( self.squad_ai, ChaosAttackbike.inferno_id, Ability.Filters.CloseInfantryEnemy, 3)
+        Ability.DoAbilityTarget( self.squad_ai, ChaosAttackbike.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTarget( self.squad_ai, ChaosAttackbike.melta_id, Ability.Filters.CloseVehicleEnemy, 1)
+	
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(ChaosAttackbike.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(ChaosAttackbike.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 40) then
+			self.squad_ai:DoSpecialAbilitySquad(ChaosAttackbike.smoke_id, oUnit:GetSquad())
+		end
+	end
+end
+
+function ChaosAttackbikeTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end
+
+function ChaosAttackbikeTactic:AlwaysAttack()
+	return true
+end
+
+function ChaosAttackbikeTactic:CanOnlyDecap()
+	return true
+end

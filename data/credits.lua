@@ -1,10 +1,10 @@
 ---------------------------------------------------------------------
 -- File    : credits.lua
 -- 
--- (c) 2012 MOD Ultimate Apocalypse
+-- (c) 2016 MOD Ultimate Apocalypse
 -- 
 
 	movie = "credits"
-	locStrStart = 18210237
-	locStrEnd = 18210356
+	locStrStart = 18900000
+	locStrEnd = 18901450
 

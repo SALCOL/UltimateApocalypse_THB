@@ -1,0 +1,116 @@
+----------------------------------------
+-- File: 'warriortactic.ai'
+-- Created by Thudmeizer @ 25.04.2016
+
+class 'WarriorTactic' (TyranidInfantryTactic)
+
+Warrior = {}
+
+function WarriorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Warrior Tactic")
+
+	self.timedDirectSpawnAbility = Timer( WarriorTactic.DoDirectSpawnAbility, self, 5 )
+end
+
+function WarriorTactic:InitAbilities()
+
+	if (Warrior.run_id == nil) then
+		Warrior.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function WarriorTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Warrior.run_id )) then
+			self.squad_ai:DoSpecialAbility( Warrior.run_id )
+		end
+	end
+
+	-- Try to spawn Will of the Hive
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		WarriorTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function WarriorTactic:DoDirectSpawnAbility()
+
+	-- Spawn Will of the Hive in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+
+function WarriorTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no resources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	-- Only upgrade if not reinforcing
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		if (self.squad_ai:HasUpgradableTrooper()) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function WarriorTactic:Reinforce()
+
+	-- always try for the actual leader first
+	if not self.squad_ai:IsReinforcing() then
+		if self.squad_ai:CanReinforce( false, 0 ) then
+		   self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- try for different types of squad members
+		local iClawIndex = 0
+        	local iDeathspitterIndex = 1
+		
+		local iNumClaw = self.squad_ai:GetLeaderCount( iClawIndex )
+		local iNumDeathspitter = self.squad_ai:GetLeaderCount( iDeathspitterIndex )
+
+		-- Desired number of each leader type
+		local iDesiredClaw = 1
+		local iDesiredDeathspitter = 1
+		
+		-- Desired order of reinforcing
+		if iNumClaw < iDesiredClaw then
+			if self.squad_ai:CanReinforce( true, iClawIndex ) then
+				self.squad_ai:DoReinforce( true, iClawIndex )
+			end
+		elseif iNumDeathspitter < iDesiredDeathspitter then
+			if self.squad_ai:CanReinforce( true, iDeathspitterIndex ) then
+				self.squad_ai:DoReinforce( true, iDeathspitterIndex )
+			end
+		end
+	end
+end
+
+function WarriorTactic:Update()
+	
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

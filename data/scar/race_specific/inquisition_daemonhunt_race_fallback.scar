@@ -1,0 +1,7 @@
+FallbackSettings.raceInfo["inquisition_daemonhunt_race"] =
+{
+	"inquisition_rally",
+	"inquisition_rally_gk",
+	"inquisition_medikits",
+	"inquisition_medikits_exorcist",
+}

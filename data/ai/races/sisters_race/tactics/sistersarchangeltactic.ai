@@ -1,0 +1,77 @@
+----------------------------------------
+-- File: 'sistersarchangeltactic.ai'
+-- Edited by Thudmeizer @ 12.04.2016
+
+class 'SistersArchAngelTactic' (SistersInfantryTactic)
+
+SistersArchAngel = {}
+
+function SistersArchAngelTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Arch Angel Tactic")
+end
+
+function SistersArchAngelTactic:AlwaysAttack()
+	return true
+end
+
+-- Arch Angel is allowed to retreat even directly after a jump
+function SistersArchAngelTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersArchAngelTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function SistersArchAngelTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersArchAngel.ascension_id == nil) then
+		SistersArchAngel.ascension_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_ascension" )
+	end
+	if (SistersArchAngel.slaughter_id == nil) then
+		SistersArchAngel.slaughter_id = cpu_manager.stats:GetAbilityID( "sisters_arch_angel_divine_slaughter" )
+	end
+	if (SistersArchAngel.flame_id == nil) then
+		SistersArchAngel.flame_id = cpu_manager.stats:GetAbilityID( "sisters_ardent_flame_arch_angel" )
+	end
+	if (SistersArchAngel.holymurder_id == nil) then
+		SistersArchAngel.holymurder_id = cpu_manager.stats:GetAbilityID( "sisters_holy_murder" )
+	end
+end
+
+function SistersArchAngelTactic:DoAbilities()
+
+	-- Summons non-player controlled angels to fight for a short period (Faith cost: 200)
+	Ability.DoAbilityArea( self.squad_ai, SistersArchAngel.ascension_id, Ability.Filters.CloseEnemy, 10, 3 )
+
+	-- We are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityPos( self.squad_ai, SistersArchAngel.flame_id, Ability.Filters.CloseEnemy, 6 ) 
+		Ability.DoAbilityArea( self.squad_ai, SistersArchAngel.slaughter_id, Ability.Filters.CloseEnemy, 20, 4 )	-- (Faith cost: 400)
+		Ability.DoAbilityArea( self.squad_ai, SistersArchAngel.holymurder_id, Ability.Filters.CloseSquadEnemy, 10, 6 )
+	else
+		Ability.DoAbilityPos( self.squad_ai, SistersArchAngel.flame_id, Ability.Filters.CloseEnemy, 12 )
+		Ability.DoAbilityArea( self.squad_ai, SistersArchAngel.slaughter_id, Ability.Filters.CloseEnemy, 20, 8 )
+		Ability.DoAbilityArea( self.squad_ai, SistersArchAngel.holymurder_id, Ability.Filters.CloseSquadEnemy, 10, 10 )
+	end
+end
+
+function SistersArchAngelTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	if not InfantryTactic.Update( self ) then
+		return false
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

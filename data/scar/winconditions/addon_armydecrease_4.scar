@@ -22,7 +22,6 @@ function Armydecrease_AI_2_InitRule()
 	local oModMaxSupportCap	= Modifier_Create(MAT_Player, "max_support_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifierd4, "")
 	local oModSquadCap		= Modifier_Create(MAT_Player, "squad_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifierd4, "")
 	local oModSupportCap	= Modifier_Create(MAT_Player, "support_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifierd4, "")
-	
 	-- Compute all players
 	g_iPlayerCount = World_GetPlayerCount()
 	for iLoop1 = 0, g_iPlayerCount - 1 do
@@ -31,6 +30,11 @@ function Armydecrease_AI_2_InitRule()
 		local ePlayerID = World_GetPlayerAt(iLoop1)
 		
 		if (player_IsHuman_W2(ePlayerID) == false) then
+		
+			if (Player_GetRaceName(ePlayerID) == "ork_race") then
+				local oModPopulationCap	= Modifier_Create(MAT_Player, "population_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifierd4, "")
+				Modifier_ApplyToPlayer( oModPopulationCap, ePlayerID)
+			end
 		
 			-- Apply army cap modifiers
 			pcall(Modifier_ApplyToPlayer, oModMaxSquadCap, ePlayerID)

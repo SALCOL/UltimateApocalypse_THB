@@ -11,7 +11,7 @@ game_defaults =
 	{
 		"_apocalypse_rules",
 		"Annihilate",
-		"ai_donations",
+		"addon_legiotitanicus",
 		--"addon_startingarmy_builders",
 		"GameTimer"
 	},

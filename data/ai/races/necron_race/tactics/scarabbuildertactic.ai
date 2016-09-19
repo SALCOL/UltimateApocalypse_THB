@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'scarabbuildertactic.ai'
--- Edited by Thudmeizer @ 26.10.2006
+-- Edited by Thudmeizer @ 31.03.2016
 
 class 'ScarabBuilderTactic' (EngineerTactic)
 
@@ -26,10 +26,22 @@ function ScarabBuilderTactic:Reinforce()
 	-- Always try to reinforce
 	if (not self.squad_ai:IsReinforcing()) then
 			
-	   if (self.squad_ai:CanReinforce( true, 0 )) then
-		  self.squad_ai:DoReinforce( true, 0 )
-	   elseif (self.squad_ai:CanReinforce( false, 0 )) then
-		  self.squad_ai:DoReinforce( false, 0 )
-	   end	
+		if (self.squad_ai:CanReinforce( true, 0 )) then
+			self.squad_ai:DoReinforce( true, 0 )
+		elseif (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end	
+	end
+end
+
+function ScarabBuilderTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	-- State machine
+	if (not EngineerTactic.Update(self)) then
+		return
 	end
 end

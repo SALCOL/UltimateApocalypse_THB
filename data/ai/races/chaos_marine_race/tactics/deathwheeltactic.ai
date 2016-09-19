@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'deathwheeltactic.ai'
+-- Edited by Thudmeizer	@ 12.02.2016
+
+class 'DeathWheelTactic' (ChaosMarineVehicleTactic)
+
+DeathWheel = {}
+
+function DeathWheelTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Death Wheel Tactic")
+end
+
+function DeathWheelTactic:AlwaysAttack()
+	return true
+end
+
+function DeathWheelTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DeathWheel.selfdestruct_id == nil) then
+		DeathWheel.selfdestruct_id = cpu_manager.stats:GetAbilityID( "chaos_selfdestruct" )
+	end
+end
+
+function DeathWheelTactic:DoAbilities()
+
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.3) then
+		Ability.DoAbilityArea( self.squad_ai, DeathWheel.selfdestruct_id, Ability.Filters.CloseEnemy, 20, 10 ) 
+	end
+end

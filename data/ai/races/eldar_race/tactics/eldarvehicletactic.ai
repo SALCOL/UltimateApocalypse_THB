@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'eldarvehicletactic.ai'
 -- Created by Arkhan		@ 31.01.2006
--- Edited by Thudmeizer         @ 29.03.2007
+-- Edited by Thudmeizer         @ 20.06.2016
 -- Edited by Cylarne		@ 3/21/11
 
 class 'EldarVehicleTactic' (VehicleTactic)
@@ -11,86 +11,149 @@ EldarVehicle = {}
 function EldarVehicleTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Eldar Vehicle Tactic")
-	
-	if (--sName == "eldar_squad_grav_platform" or
-		--sName == "eldar_squad_grav_platform_brightlance" or
-		--sName == "eldar_squad_falcon_grav_tank" or
-		--sName == "eldar_squad_vypers" or
-		--sName == "eldar_squad_nightspinner" or
+
+	if (sName == "eldar_squad_vypers" or
+		sName == "eldar_squad_wave_serpent" or
+		sName == "eldar_squad_falcon_grav_tank" or
+		sName == "eldar_squad_war_walker" or
 		sName == "eldar_squad_wraithlord" or
-		sName == "eldar_squad_war_walker") then
-		
-		--self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("eldar_websail")
+		sName == "eldar_squad_nightspinner" or
+		sName == "eldar_squad_fire_prism" or
+		sName == "eldar_squad_wraithwalker" or
+		sName == "eldar_squad_wraithking" or
+		sName == "eldar_squad_titan_phantom" or
+		sName == "eldar_squad_titan_revenant") then
+
+		-- Vehicles can deepstrike
+		--self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "eldar_webway_sail" ) -- AI does not support inter-webway transit like IG bunkers.
+
+	elseif (sName == "eldar_squad_jetbikes" or 
+		sName == "eldar_squad_shining_spears") then
+		-- Squads are both transportable and can deepstrike
+		self.m_iTransportable = 1 or 2 -- Wave Serpent or Falcon // Storm Serpent
+	end
+
+	-- Set FoF range
+	self.m_iFoFRange = 40
+	if (sSquadName == "eldar_squad_wraithlord" or sSquadName == "eldar_squad_wraithwalker") then
+		self.m_iFoFRange = 25
 	end
 end
 
 -- Check if the vehicle should dance away in melee
 function EldarVehicleTactic:CheckVehicleDance(sName)
 
-	if (sName == "eldar_squad_grav_platform" or
-		sName == "eldar_squad_grav_platform_brightlance" or
-		sName == "eldar_squad_falcon_grav_tank" or
+	if (sName == "eldar_squad_falcon_grav_tank" or
+		sName == "eldar_squad_wave_serpent" or
 		sName == "eldar_squad_vypers" or
+		sName == "eldar_squad_hornet" or
+		sName == "eldar_squad_war_walker" or
+		sName == "eldar_squad_wraithlord" or
 		sName == "eldar_squad_nightspinner" or
-		sName == "eldar_squad_fire_prism") then
+		sName == "eldar_squad_fire_prism" or
+		sName == "eldar_squad_wraithwalker" or
+		sName == "eldar_squad_wraithking" or
+		sName == "eldar_squad_scorpion" or
+		sName == "eldar_squad_storm_serpent" or
+		sName == "eldar_squad_voidspinner" or
+		sName == "eldar_squad_cobra" or
+		sName == "eldar_squad_titan_revenant" or
+		sName == "eldar_squad_titan_phantom") then
 		return true
 	end
 	return false
 end
 
-function EldarVehicleTactic:InitAbilities()
-
-	-- Init ability ID's
-	if (EldarVehicle.boost_id == nil) then
-		EldarVehicle.boost_id = cpu_manager.stats:GetAbilityID( "eldar_graviticbooster" )
-	end
-	if (EldarVehicle.wraithbone_id == nil) then
-		EldarVehicle.wraithbone_id = cpu_manager.stats:GetAbilityID( "eldar_wraithbone_regeneration" )
-	end
-	if (EldarVehicle.eldritch_regen_id == nil) then
-		EldarVehicle.eldritch_regen_id = cpu_manager.stats:GetAbilityID( "eldar_wraithtomb_of_khaine" )
-	end
-	if (EldarVehicle.velociousweapons_id == nil) then
-		EldarVehicle.velociousweapons_id = cpu_manager.stats:GetAbilityID( "eldar_velocious_weapons" )
-	end
-	if (EldarVehicle.eldritchstorm_id == nil) then
-		EldarVehicle.eldritchstorm_id = cpu_manager.stats:GetAbilityID( "eldar_eldritchstorm_wraithlord" )
-	end
-end
-
 function EldarVehicleTactic:DoAbilities()
 	
-	-- Gravitic Boosters (if valid)
-	if (self.squad_ai:CanDoAbility(EldarVehicle.boost_id)) then
-		if ( not self.squad_ai:IsInCombat() and not self.squad_ai:IsUsingAbility(EldarVehicle.boost_id)) then
-			
-			-- Activate the Gravitic Boosters
-			self.squad_ai:DoSpecialAbility(EldarVehicle.boost_id)
-		end	
-		if (self.squad_ai:IsInCombat() and self.squad_ai:IsUsingAbility(EldarVehicle.boost_id)) then
-			
-			-- Deactivate the Gravitic Boosters
-			self.squad_ai:DoSpecialAbility(EldarVehicle.boost_id)
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		local foot_id = cpu_manager.stats:GetAbilityID( "eldar_fleetoffoot" )
+		if (self.squad_ai:CanDoAbility( foot_id )) then
+			self.squad_ai:DoSpecialAbility( foot_id )
 		end
 	end
-	
-	if (self.squad_ai:GetHealthPercentage() < 0.75 and self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(EldarVehicle.wraithbone_id)) then
-		
-		-- Activate Wraithbone Regeneration
-		self.squad_ai:DoSpecialAbility(EldarVehicle.wraithbone_id)
+
+	-- RAM!!! - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	local rammingspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( rammingspeed_id )) then
+			self.squad_ai:DoSpecialAbility( rammingspeed_id )
+		end
+	end
+
+	-- Check if I should enable/disable fleet of foot
+	self:DoAbilityVehicleFoF()
+end
+
+function EldarVehicleTactic:ToggleFoF( squad_ai, state )
+
+	-- Check if the squad can handle boost
+	--local id = cpu_manager.stats:GetAbilityID( "eldar_fleetoffoot" )
+	local id = cpu_manager.stats:GetAbilityID( "eldar_graviticbooster" )
+	if (not squad_ai:CanDoAbility(id)) then --or (not squad_ai:CanDoAbility(idB)) then
+		return
 	end
 	
-	if (self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(EldarVehicle.velociousweapons_id)) then
-		self.squad_ai:DoSpecialAbility(EldarVehicle.velociousweapons_id)
+	-- Check if it's already in desired state
+	if (squad_ai:IsUsingAbility(id) == state) then --or (squad_ai:IsUsingAbility(idB) == state) then
+		return 
 	end
 	
-	if (self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(EldarVehicle.eldritchstorm_id)) then
-		Ability.DoAbilityPos( self.squad_ai, EldarVehicle.eldritchstorm_id, Ability.Filters.CloseEnemy, 9 )
-	end
+	-- Activate boost
+	squad_ai:DoSpecialAbility(id)
+	--squad_ai:DoSpecialAbility(idB)
+end
+
+-- Dreddnott edit (April 16th)
+function EldarVehicleTactic:DoAbilityVehicleFoF()
+
+	-- Check if we should toggle FoF
+	--local iFoFID = cpu_manager.stats:GetAbilityID( "eldar_fleetoffoot" )
+	local iFoFID = cpu_manager.stats:GetAbilityID( "eldar_graviticbooster" )
+	local bToggleFoF = false
+	--local bToggleFoFB = false
+
+	-- Check whether we're using the ability
+	local bIsUsing = self.squad_ai:IsUsingAbility(iFoFID)
+	--local bIsUsingB = self.squad_ai:IsUsingAbility(iFoFIDB)
+
+	-- Check if we're attacking
+	local bIsAttacking = self.squad_ai:IsInStateAttackMove()
 	
-	if (not self.squad_ai:IsUsingAbility(EldarVehicle.eldritch_regen_id) and self.squad_ai:GetHealthPercentage() < 0.3 and self.squad_ai:CanDoAbility(EldarVehicle.eldritch_regen_id)) then
-		self.squad_ai:DoSpecialAbility(EldarVehicle.eldritch_regen_id)
-	elseif (self.squad_ai:IsUsingAbility(EldarVehicle.eldritch_regen_id) and self.squad_ai:GetHealthPercentage() > 0.8 and self.squad_ai:CanDoAbility(EldarVehicle.eldritch_regen_id)) then
-		self.squad_ai:DoSpecialAbility(EldarVehicle.eldritch_regen_id)
+	-- Check if we are shooting or fighting in melee
+	local bIsFighting = self.squad_ai:IsAttacking()
+	
+	-- Check if we're moving normally
+	local bIsMoving = (self.squad_ai:IsInStateMove() and not bIsAttacking)
+
+	-- Check if we're in a state that should FoF regardless of enemy presence
+	local bAvoidCombat = (self.squad_ai:IsBroken() or self:IsInSubState() or self.squad_ai:IsCapturing() or bIsMoving)
+
+	-- Check if we should slow down for enemies nearing range
+	local vSquadPos = self.squad_ai:GetPosition()
+	local oEnemy = cpu_manager.cpu_player:FindFirstEnemy(vSquadPos, self.m_iFoFRange, 1)
+	local bCloseEnemy = (oEnemy ~= nil)
+	
+	-- Helper flags
+	local bIsCharging = (bIsAttacking and bCloseEnemy)
+	local bIsDefending = (not bIsMoving and bCloseEnemy)
+	local bIsInCombat = (bIsFighting or bIsCharging or bIsDefending)
+
+	-- Check if FoF should be toggled
+	if ((bIsUsing and bIsInCombat and not bAvoidCombat) or (not bIsUsing and (not bIsInCombat or bAvoidCombat))) then        
+        	bToggleFoF = true
+	--elseif ((bIsUsingB and bIsInCombat and not bAvoidCombat) or (not bIsUsingB and (not bIsInCombat or bAvoidCombat))) then  
+		--bToggleFoFB = true
+	end
+
+	-- Toggle FoF
+	if (bToggleFoF and self.squad_ai:CanDoAbility(iFoFID)) then
+		self.squad_ai:DoSpecialAbility(iFoFID)
+	--elseif (bToggleFoFB and self.squad_ai:CanDoAbility(iFoFIDB)) then
+		--self.squad_ai:DoSpecialAbility(iFoFIDB)
 	end
 end

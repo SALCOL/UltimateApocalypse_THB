@@ -2,6 +2,7 @@
 -- File: 'tauarkacannontactic.ai'
 -- Edited by Krronus @ 08.18.2010
 -- Edited by Cylarne_04 2011
+-- Edited by Thudmeizer	@ 24.04.2016
 
 class 'TauArkaCannonTactic' (BaseTactic)
 
@@ -14,47 +15,45 @@ end
 
 function TauArkaCannonTactic:InitAbilities()
 
-	--[[ Init ability ID's
-	if (TauArkaCannon.deathpulse_id == nil) then
-		TauArkaCannon.deathpulse_id = cpu_manager.stats:GetAbilityID( "tau_arka_focused_ion_blast" )
-	end
-	
-	if (TauArkaCannon.superweapon2_id == nil) then
-		TauArkaCannon.superweapon2_id = cpu_manager.stats:GetAbilityID( "tau_arka_ion_strike" )
-	end]]
-	
 	if (TauArkaCannon.superweapon_id == nil) then
 		TauArkaCannon.superweapon_id = cpu_manager.stats:GetAbilityID( "tau_arka_ion_cannon" )
 	end
 	
-	if (TauArkaCannon.IonNuke_id == nil) then
-		TauArkaCannon.IonNuke_id = cpu_manager.stats:GetAbilityID( "tau_nuke" )
+	if (TauArkaCannon.ionnuke_id == nil) then
+		TauArkaCannon.ionnuke_id = cpu_manager.stats:GetAbilityID( "tau_nuke" )
+	end
+
+	if (TauArkaCannon.repair_id == nil) then
+		TauArkaCannon.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
 end
 
 function TauArkaCannonTactic:DoAbilities()
 
-	-- Activate Apocalyptic Superweapon.
-	Ability.DoAbilityPos(self.base_ai, TauArkaCannon.IonNuke_id, Ability.Filters.CloseEnemy, 35)
-	Ability.DoAbilityTargetEntity(self.base_ai, TauArkaCannon.IonNuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 20)
-
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	
-	-- Anti Aircraft weapon (if in combat, strike back!)
-	--Ability.DoAbility( self.base_ai, TauArkaCannon.deathpulse_id, Ability.Filters.IsInCombat )
-	
-	-- Try to activate all Ion Cannon Superweapons
-	if (self.base_ai:CanDoAbility(TauArkaCannon.superweapon_id) and iRequisition >= 10000 and iPower >= 10000) then
-	
-		Ability.DoAbility( self.base_ai, TauArkaCannon.superweapon_id, Ability.Filters.IsInCombat )
+
+	-- Activate the Ion Nuke: The Arka Ion Cannon charges up its main gun to full power, then after a delay it unleashes a MASSIVE burst of energy at the marked location.
+	-- Obliterates all armies and most structures within an approximate 50m radius plus an 70m radius shockwave that deals moderate damage to most objects.
+	if (self.base_ai:CanDoAbility(TauArkaCannon.ionnuke_id) and (iRequisition >= 5000 and iPower >= 5000)) then
+		Ability.DoAbilityPos( self.base_ai, TauArkaCannon.ionnuke_id, Ability.Filters.CloseEnemy, 35 )
+		Ability.DoAbilityPos( self.base_ai, TauArkaCannon.ionnuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10 )
 	end
-	--[[if (self.base_ai:CanDoAbility(TauArkaCannon.superweapon2_id)) then
-	
-		local iRange2 = self.base_ai:GetAbilityRange(TauArkaCannon.superweapon2_id)
-		local oSquad2 = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange2, 6)
-		if (oSquad2 ~= nil) then	
-			self.base_ai:DoSpecialAbilitySquad(TauArkaCannon.superweapon2_id, oSquad2:GetSquad())
+
+	-- Ion Cannon Overcharge Mode: Overcharges the Ion Cannon, allowing it to fire its ion blasts at rapid fire rates, critically damaging objects from across the map! Also decreases cooldown of the Ion Nuke by half.
+	-- Requires 50% health to operate, as the overcharge will melt the core of the Arka Cannon.
+	if (self.base_ai:CanDoAbility(TauArkaCannon.superweapon_id) and self.base_ai:CanDoAbility(TauArkaCannon.ionnuke_id)) or
+		(self.base_ai:CanDoAbility(TauArkaCannon.superweapon_id) and self.base_ai:IsUsingAbility(TauArkaCannon.ionnuke_id)) then
+		if (self.base_ai:GetHealthPercentage() > 0.5) then
+			self.base_ai:DoSpecialAbility( TauArkaCannon.superweapon_id )
 		end
-	end]]
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( TauArkaCannon.repair_id )) then
+			self.base_ai:DoSpecialAbility( TauArkaCannon.repair_id )
+		end
+	end
 end

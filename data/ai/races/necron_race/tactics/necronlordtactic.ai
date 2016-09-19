@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'necronlordtactic.ai'
--- Edited by Thudmeizer @ 02.11.2006
+-- Edited by Thudmeizer @ 10.03.2016
 -- Edited by Cylarne_04 2011
 
 class 'NecronLordTactic' (NecronInfantryTactic)
@@ -44,151 +44,65 @@ function NecronLordTactic:JumpAttack()
 	end
 end
 
+function NecronLordTactic:CheckForDance()
+	InfantryTactic.CheckForDance(self)
+end
+
+function NecronLordTactic:CheckForDeath()
+	InfantryTactic.CheckForDeath(self)
+end
+
 function NecronLordTactic:InitAbilities()
-	
-	-------------------------- Necron Lord
-	
+
 	-- Timed: Necron units advance normally while their opponents move in slow motion.
 	if (NecronLord.chronometron_id == nil) then
 		NecronLord.chronometron_id = cpu_manager.stats:GetAbilityID( "necron_chronometron" )
 	end
-	if (NecronLord.chronometron_deathlord_id == nil) then
-		NecronLord.chronometron_deathlord_id = cpu_manager.stats:GetAbilityID( "necron_chronometron_deathlord" )
-	end
-	
-	-- Timed: Lord and phase-shifted units are immune to all forms of damage, but cannot attack.	
-	if (NecronLord.phase_shifter_id == nil) then
-		NecronLord.phase_shifter_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter" )
-	end
-	
-	-- Target Pos: Infiltrated units revealed, blinds units causing them firing inaccuracies.
-	if (NecronLord.solar_pulse_id == nil) then
-		NecronLord.solar_pulse_id = cpu_manager.stats:GetAbilityID( "necron_solar_pulse" )
-	end
-	
+
 	-- Timed / Passive: Mass Resurrection / Necron units in the Necron Lord's vicinity have a chance of returning to life.
-	if (NecronLord.mass_resurrection_id == nil) then
-		NecronLord.mass_resurrection_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection" )
+	if (NecronLord.resurrection_id == nil) then
+		NecronLord.resurrection_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection" )
 	end
-	
-	-------------------------- Destroyer Lord
-	
-	if (NecronLord.mass_resurrection2_id == nil) then
-		NecronLord.mass_resurrection2_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_destroyer" )
-	end
-	
-	-- Timed / Passive: Lightning Storm
-	if (NecronLord.lightningstorm_id == nil) then
-		NecronLord.lightningstorm_id = cpu_manager.stats:GetAbilityID( "necron_lightning_storm" )
-	end
-	
-	-- Timed: Shroud of Antigravity
-	if (NecronLord.antigravity_id == nil) then
-		NecronLord.antigravity_id = cpu_manager.stats:GetAbilityID( "necron_shroud_of_antigravity_destroyer" )
-	end
-	
-	-------------------------- Overseer
-	
-	if (NecronLord.gauss_lightning_arc_overseer_id == nil) then
-		NecronLord.gauss_lightning_arc_overseer_id = cpu_manager.stats:GetAbilityID( "necron_gauss_lightning_arc" )
-	end
-	if (NecronLord.gauss_lightning_arc_overseer2_id == nil) then
-		NecronLord.gauss_lightning_arc_overseer2_id = cpu_manager.stats:GetAbilityID( "necron_gauss_lightning_arc_improved" )
-	end
-	
-	if (NecronLord.hfhs == nil) then
-		NecronLord.hfhs = cpu_manager.stats:GetAbilityID( "necron_hfhs_overseer" )
-	end
-	if (NecronLord.seekanddestroy == nil) then
-		NecronLord.seekanddestroy = cpu_manager.stats:GetAbilityID( "necron_search_and_destroy" )
-	end
-	
+
 	-- Timed: Lord and phase-shifted units are immune to all forms of damage, but cannot attack.	
-	if (NecronLord.phase_shifter_overseer_id == nil) then
-		NecronLord.phase_shifter_overseer_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter_overseer" )
+	if (NecronLord.shifter_id == nil) then
+		NecronLord.shifter_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter" )
 	end
-	
-	if (NecronLord.solar_pulse_overseer_id == nil) then
-		NecronLord.solar_pulse_overseer_id = cpu_manager.stats:GetAbilityID( "necron_solar_pulse_overseer" )
-	end
-	
-	-- Timed / Passive: Lightning Storm
-	if (NecronLord.lightningstorm_overseer_id == nil) then
-		NecronLord.lightningstorm_overseer_id = cpu_manager.stats:GetAbilityID( "necron_lightning_storm_overseer" )
-	end
-	
-	-- Homeworld Portal
-	if (NecronLord.Portal_id == nil) then
-		NecronLord.Portal_id = cpu_manager.stats:GetAbilityID( "necron_homeworld_portal_overseer" )
+
+	-- Target Pos: Infiltrated units revealed, blinds units causing them firing inaccuracies.
+	if (NecronLord.solarpulse_id == nil) then
+		NecronLord.solarpulse_id = cpu_manager.stats:GetAbilityID( "necron_solar_pulse" )
 	end
 end
 
 function NecronLordTactic:DoAbilities()
 
-	--Try to possess
-	if (self.squad_ai:IsInCombat() and self.squad_ai:CanPossess()) then
-		self.squad_ai:DoPossess()
+	-- Try to activate the Chronometron ability
+	if (self.squad_ai:CanDoAbility( NecronLord.chronometron_id )) then
+		Ability.DoAbilityArea(self.squad_ai, NecronLord.chronometron_id, Ability.Filters.CloseEnemy, 20, 5)
 	end
-	
-	-- Try abilities
-	
-	----------- Necron Lord
-	Ability.DoAbility(self.squad_ai, NecronLord.chronometron_id, Ability.PredicateFilters.IsInCombat)
-	Ability.DoAbility(self.squad_ai, NecronLord.phase_shifter_id, Ability.PredicateFilters.IsLowHealthAndUnderAttack, { min_health = 0.3 })
-	Ability.DoAbilityPos(self.squad_ai, NecronLord.solar_pulse_id, Ability.Filters.CloseInfiltratedEnemy, 1)
-	Ability.DoAbilityPos(self.squad_ai, NecronLord.solar_pulse_id, Ability.Filters.CloseEnemy, 6)
-	
-	----------- Death Lord
-	Ability.DoAbility(self.squad_ai, NecronLord.chronometron_deathlord_id, Ability.PredicateFilters.IsInCombat)
-	
-	----------- Destroyer Lord
-	Ability.DoAbility(self.squad_ai, NecronLord.antigravity_id, Ability.PredicateFilters.IsLowHealthAndUnderAttack, { min_health = 0.3 })
-	Ability.DoAbility(self.squad_ai, NecronLord.lightningstorm_id, Ability.PredicateFilters.IsInCombat)
-	
-	----------- Overseer
-	Ability.DoAbilityPos(self.squad_ai, NecronLord.gauss_lightning_arc_overseer_id, Ability.Filters.CloseEnemy, 6)
-	Ability.DoAbilityPos(self.squad_ai, NecronLord.gauss_lightning_arc_overseer2_id, Ability.Filters.CloseEnemy, 12)
-	Ability.DoAbility(self.squad_ai, NecronLord.phase_shifter_overseer_id, Ability.PredicateFilters.IsLowHealthAndUnderAttack, { min_health = 0.3 })
-	Ability.DoAbilityPos(self.squad_ai, NecronLord.solar_pulse_overseer_id, Ability.Filters.CloseInfiltratedEnemy, 1)
-	Ability.DoAbilityPos(self.squad_ai, NecronLord.solar_pulse_overseer_id, Ability.Filters.CloseEnemy, 6)
-	Ability.DoAbility(self.squad_ai, NecronLord.lightningstorm_overseer_id, Ability.PredicateFilters.IsInCombat)
-	Ability.DoAbility(self.squad_ai, NecronLord.seekanddestroy, Ability.PredicateFilters.IsInCombat)
-	
-	--[[ Hunters From Hyper Space
-	if ((self:IsMoving() or self:IsInSubState()) and self.squad_ai:CanDoAbility( NecronLord.hfhs )) then
-		if (self.squad_ai:GetHealthPercentage() > 0.4 and not self.squad_ai:IsInCombat()) then
-			self.squad_ai:DoSpecialAbility(NecronLord.hfhs)
-		elseif (self.squad_ai:GetHealthPercentage() <= 0.4 and self.squad_ai:IsInCombat()) then
-			self.squad_ai:DoSpecialAbility(NecronLord.hfhs)
-		end
-	end]]
-	
-	--[[ Try to use the Homeworld Portal
-    if (self.squad_ai:CanDoAbility(NecronLord.Portal_id)) then
-    
-        local oTarget = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), 45, 6)
-        if (oTarget ~= nil and iPower >= 1000) then
 
-        	-- Get distance to enemy unit
-            local vSquadPos = self.squad_ai:GetPosition()
-            local vEnemyPos = oTarget:GetPosition()
-            local iDistance = distance(vSquadPos, vEnemyPos)
-            
-            -- If target is too far away launch auspex in range
-            local vTargetPos = Vector3f(vSquadPos)
-            local iRange = self.squad_ai:GetAbilityRange(NecronLord.Portal_id)
-            if (iDistance > iRange) then
-                local fThrowFactor = iRange / iDistance
-                vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
-                vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
-            else
-                vTargetPos = Vector3f(vEnemyPos)
-            end
-            self.squad_ai:DoSpecialAbilityPos(NecronLord.Portal_id, vTargetPos)
-        end
-    end]]
-	
-	
+	-- Shadow Shifter: Cloaks and disables the squad for several seconds, enabling quick regeneration and recovery from battle.
+	-- Infiltrated squad will also receive no damage from incoming attacks (if at all revealed), but cannot attack either.
+	if (self.squad_ai:IsInCombat()) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			self.squad_ai:DoSpecialAbility( NecronLord.shifter_id )
+		end
+	end
+
+	-- Solar Pulse: Allows the Necron Lord to periodically unleash photon bursts. Infiltrated units in a large area are revealed and blinds others for several seconds.
+	if (self.squad_ai:CanDoAbility(Overseer.solarpulse_id)) then
+		Ability.DoAbilityPos(self.squad_ai, NecronLord.solarpulse_id, Ability.Filters.CloseInfiltratedEnemy, 1)
+		Ability.DoAbilityPos(self.squad_ai, NecronLord.solarpulse_id, Ability.Filters.CloseEnemy, 6)
+	end
+
+	-- Try to possess if not using Assassinate win condition and when in combat
+	if (not cpu_manager.assassinate) then
+		if (self.squad_ai:IsInCombat() and self.squad_ai:CanPossess()) then
+			self.squad_ai:DoPossess()
+		end
+	end
+
 	-- Try to use mass resurrection ability
 	if (self.m_oTimedSpecialAbilities ~= nil) then
 		self.m_oTimedSpecialAbilities:Call()
@@ -200,28 +114,19 @@ end
 function NecronLordTactic:DoTimedSpecialAbilities()
 
 	-- Try to use mass resurrection ability
-	Ability.DoAbility(self.squad_ai, NecronLord.mass_resurrection_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronLord.mass_resurrection_id, min_bodies = 5 })
-	Ability.DoAbility(self.squad_ai, NecronLord.mass_resurrection2_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronLord.mass_resurrection2_id, min_bodies = 5 })
-end
-
-function NecronLordTactic:CheckForDance()
-	InfantryTactic.CheckForDance(self)
-end
-
-function NecronLordTactic:CheckForDeath()
-	InfantryTactic.CheckForDeath(self)
+	Ability.DoAbility(self.squad_ai, NecronLord.resurrection_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronLord.resurrection_id, min_bodies = 5 })
 end
 
 function NecronLordTactic:Update()
 
-    if (self:IsComplete()) then
-        return
-    end
+	if (self:IsComplete()) then
+		return
+	end
 
-    -- State machine
-    if (not InfantryTactic.Update(self)) then
-        return
-    end
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
     
 	-- Check if we are in serious trouble
 	self:EmergencyRetreat()

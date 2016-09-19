@@ -1,0 +1,35 @@
+----------------------------------------
+-- File: 'sisterslisteningposttactic.ai'
+-- Edited by Thudmeizer	@ 10.04.2016
+
+class 'SistersListeningPostTactic' (BaseTactic)
+
+SistersListeningPost = {}
+
+function SistersListeningPostTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Sisters Listening Post Tactic")
+end
+
+function SistersListeningPostTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersListeningPost.repair_id == nil) then
+		SistersListeningPost.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function SistersListeningPostTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SistersListeningPost.repair_id )) then
+			self.base_ai:DoSpecialAbility( SistersListeningPost.repair_id )
+		end
+	end
+end
+
+function SistersListeningPostTactic:CanDeepStrikeTroops()
+	return true
+end

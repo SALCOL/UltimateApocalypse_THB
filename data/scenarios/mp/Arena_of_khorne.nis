@@ -1,0 +1,110 @@
+-- Created by Cylarne 2013
+-- Daemons mod team.
+
+EVENTS = {}
+
+-------------------------------------------------
+--[[ INTEL EVENTS ]]
+-------------------------------------------------
+EVENTS.AOK_Opening = function()	
+	
+	CTRL.Event_Delay( 2 )
+	CTRL.WAIT()
+	CTRL.Event_Delay( 7 )
+		Util_MissionTitle("Welcome to the Arena of Khorne")
+	CTRL.WAIT()
+	CTRL.Event_Delay( 5 )
+		Util_MissionTitle("Developed and created by Jaguar-Lord; scripted by Cylarne_04")
+	CTRL.WAIT()
+
+	Util_SetIE( true )
+	
+	CTRL.Actor_PlaySpeech( ACT.Daemon_Prince, 16003552)
+	CTRL.WAIT()
+	CTRL.Actor_PlaySpeech( ACT.Daemon_Prince, 16003553)
+	CTRL.WAIT()
+	CTRL.Actor_PlaySpeech( ACT.Daemon_Prince, 16003554)
+	CTRL.WAIT()
+	
+	Util_SetIE( false )
+end
+
+EVENTS.AOK_DelayedNIS1 = function()	
+
+	Util_SetIE( true )
+	
+	CTRL.Actor_PlaySpeech( ACT.Daemon_Prince, 16003555)
+	CTRL.WAIT()
+	
+	Util_SetIE( false )
+end
+
+EVENTS.AOK_DelayedNIS2 = function()	
+
+	Util_SetIE( true )
+	
+	CTRL.Actor_PlaySpeech( ACT.Daemon_Prince, 16003557)
+	CTRL.WAIT()
+	
+	Util_SetIE( false )
+end
+
+EVENTS.AOK_Ownership = function()	
+
+	Util_SetIE( true )
+	
+	CTRL.Actor_PlaySpeech( ACT.Daemon_Prince, 16003556)
+	CTRL.WAIT()
+	
+	Util_SetIE( false )
+end
+
+EVENTS.AOK_DaemonPrinceChallenge = function()	
+
+	Util_SetIE( true )
+	local playerRace = Player_GetRaceName(g_challengedplayer)
+	CTRL.Actor_PlaySpeech( ACT.Daemon_Prince, 16003559)
+	CTRL.WAIT()
+	if (Player_GetRace(g_challengedplayer) == "chaos_marine_race") then
+		CTRL.Actor_PlaySpeech(  ACT.FirraeveusCarron, 5300138 )
+		CTRL.WAIT()
+	elseif (Player_GetRace(g_challengedplayer) == "dark_eldar_race") then
+		CTRL.Actor_PlaySpeech( ACT.Archon, 5300721)	
+		CTRL.WAIT()
+	elseif (Player_GetRace(g_challengedplayer) == "eldar_race") then
+		CTRL.Actor_PlaySpeech( ACT.Taldeer, 5200082)	
+		CTRL.WAIT()
+		CTRL.Actor_PlaySpeech(  ACT.Taldeer, 5200075)
+		CTRL.WAIT()
+	elseif (Player_GetRace(g_challengedplayer) == "guard_race") then
+		CTRL.Actor_PlaySpeech(  ACT.Stubbs, 5200044)					
+		CTRL.WAIT()	
+		CTRL.Actor_PlaySpeech( ACT.Stubbs, 5300741)	
+		CTRL.WAIT()
+		CTRL.Actor_PlaySpeech( ACT.Stubbs, 5300079)	
+	CTRL.WAIT()
+	elseif (Player_GetRace(g_challengedplayer) == "necron_race") then
+		CTRL.Actor_PlaySpeech(  ACT.Necron_Lord, 5300523 )	
+		CTRL.WAIT()
+		CTRL.Actor_PlaySpeech(  ACT.Necron_Lord, 5300524 )	
+	CTRL.WAIT()
+	elseif (Player_GetRace(g_challengedplayer) == "ork_race") then
+		CTRL.Actor_PlaySpeech(  ACT.Gorgutz, 5300404 )
+		CTRL.WAIT()
+	elseif (Player_GetRace(g_challengedplayer) == "sisters_race") then
+		CTRL.Actor_PlaySpeech(  ACT.Canoness, 5300587 )
+		CTRL.WAIT()
+	elseif (Player_GetRace(g_challengedplayer) == "space_marine_race") then
+		CTRL.Actor_PlaySpeech( ACT.Boreale, 5300176)	
+		CTRL.WAIT()
+		CTRL.Actor_PlaySpeech( ACT.Boreale, 5300170)	
+		CTRL.WAIT()
+		
+	elseif (Player_GetRace(g_challengedplayer) == "tau_race") then
+		CTRL.Actor_PlaySpeech( ACT.Shas, 5300400)	
+		CTRL.WAIT()
+	end
+	
+	
+	Util_SetIE( false )
+end

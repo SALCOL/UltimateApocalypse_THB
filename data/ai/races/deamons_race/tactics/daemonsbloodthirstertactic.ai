@@ -1,0 +1,16 @@
+----------------------------------------
+-- File: 'daemonsbloodthirstertactic.ai'
+-- Edited by Thudmeizer	08.05.2016
+
+class 'DaemonsBloodThirsterTactic' (DaemonsInfantryTactic)
+
+DaemonsBloodThirster = {}
+
+function DaemonsBloodThirsterTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Blood Thirster Tactic")
+end
+
+function DaemonsBloodThirsterTactic:AlwaysAttack()
+	return true
+end

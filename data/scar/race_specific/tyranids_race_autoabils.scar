@@ -5,11 +5,14 @@ AutoAbilsSettings.AbilsThem["tyranids_race"] =
 {
 	{ "tyranids_bioplasma", 45 },
 	{ "tyranids_bioplasma_trygon", 45 },
-	{ "tyranids_carnifex_scream", 10 },
 }
-
 -- AbilsUs are abilities used on self
 AutoAbilsSettings.AbilsUs["tyranids_race"] =
 {
-
+	{ "tyranids_hivetyrant_catalyst", 10 },
+	{ "tyranids_zohan_catalyst", 10 },
+	{ "tyranids_trygon_storm", 15 },
+	{ "tyranids_swarmlord_scream", 10 },
+	{ "tyranids_hierophant_infest", 10 },
+	{ "tyranids_carnifex_scream", 10 }
 }

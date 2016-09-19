@@ -1,15 +1,45 @@
 ----------------------------------------
 -- File: 'necronlisteningposttactic.ai'
 -- Edited by Arkhan		@ 24.10.2006
+-- Edited by Thudmeizer		@ 08.03.2016
 
 class 'NecronListeningPostTactic' (BaseTactic)
+
+NecronListeningPost = {}
 
 function NecronListeningPostTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Necron Listening Post Tactic")
+end
+
+function NecronListeningPostTactic:InitAbilities()
+
+	if (NecronListeningPost.listening_id == nil) then
+		NecronListeningPost.listening_id = cpu_manager.stats:GetAbilityID( "necron_listening_post" )
+	end
+	if (NecronListeningPost.improved_id == nil) then
+		NecronListeningPost.improved_id = cpu_manager.stats:GetAbilityID( "necron_listening_post_improved" )
+	end
+	if (NecronListeningPost.repair_id == nil) then
+		NecronListeningPost.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function NecronListeningPostTactic:DoAbilities()
 	
-	-- Init abilities
-	table.insert(BaseTactic.TargetAbilities, { nil, "necron_listening_post", Ability.Filters.CloseEnemy, 3 })
-	table.insert(BaseTactic.TargetAbilities, { nil, "necron_listening_post_improved", Ability.Filters.CloseEnemy, 6 })
-	self:InitAbilities()
+	if (self.base_ai:CanDoAbility(NecronListeningPost.improved_id)) then
+		Ability.DoAbilityPos(self.base_ai, NecronListeningPost.improved_id, Ability.Filters.CloseEnemy, 6)
+	end
+
+	if (self.base_ai:CanDoAbility(NecronListeningPost.listening_id)) then
+		Ability.DoAbilityPos(self.base_ai, NecronListeningPost.listening_id, Ability.Filters.CloseEnemy, 3)
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( NecronListeningPost.repair_id )) then
+			self.base_ai:DoSpecialAbility( NecronListeningPost.repair_id )
+		end
+	end
 end

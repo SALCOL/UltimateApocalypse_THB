@@ -3,20 +3,35 @@
 -- AbilsThem are abilities used against enemy targets
 AutoAbilsSettings.AbilsThem["deamons_race"] =
 {
+	{ "daemons_warp_storm_mini", 90 },
 	{ "daemons_bolt_of_change_loc", 45 },
 	{ "daemons_guo_spit", 45 },
 	{ "daemons_warpfire_roar", 35 },
+	{ "daemons_gift_of_tzeentch", 30 },
 	{ "daemons_curse_slaanesh", 30 },
 	{ "daemons_guo_puke", 15 },
 	{ "daemons_fear_roar", 14 },
 	{ "daemons_warpfire", 10 },
 	{ "daemons_warpfire_loc", 10 },
-	{ "daemons_warpfire_lord", 10 },
 	{ "daemons_warpfire_prince", 10 },
+	{ "daemons_warpfire_lord", 10 },
+	{ "daemons_jugg_head_butt", 3 }
 }
 
 -- AbilsUs are abilities used on self
 AutoAbilsSettings.AbilsUs["deamons_race"] =
 {
-	{ "daemons_winds_of_chaos", 8 },
+	{ "daemons_power_of_change", 30 },
+	{ "daemons_nurgles_rot", 30 },
+	{ "daemons_nurgles_rot_prince", 30 },
+	{ "daemons_mark_of_blood", 10 },
+	{ "daemons_warp_scream", 20 },
+	{ "daemons_divine_obliteration", 10 },
+	{ "daemons_blood_haste", 25 },
+	{ "daemons_blood_frenzy", 25 },
+	{ "daemons_dark_speech", 15 },
+	{ "daemons_warp_time_prince", 12 },
+	{ "daemons_fear_roar", 10 },
+	{ "daemons_pavane_of_slaanesh", 10 },
+	{ "daemons_winds_of_chaos", 10 }
 }

@@ -1,0 +1,67 @@
+----------------------------------------
+-- File: 'darkeldarincubustactic.ai'
+-- Edited by Thudmeizer @ 31.03.2016
+
+class 'DarkEldarIncubusTactic' (DarkEldarInfantryTactic)
+
+DarkEldarIncubus = {}
+
+function DarkEldarIncubusTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Dark Eldar Incubus Tactic")
+end
+
+function DarkEldarIncubusTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function DarkEldarIncubusTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function DarkEldarIncubusTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarIncubus.leach_id == nil) then
+		DarkEldarIncubus.leach_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_leach" )
+	end
+
+	if (DarkEldarIncubus.run_id == nil) then
+		DarkEldarIncubus.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function DarkEldarIncubusTactic:DoAbilities()
+
+	-- Luster of Souls: Restore the strength of your squad by concealing them and regaining their health. Exchange this great ritual in exchange for souls.
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarIncubus.leach_id, Ability.Filters.CloseSquadEnemy, 15, 4)
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarIncubus.leach_id, Ability.Filters.CloseCommanderEnemy, 15, 1)
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DarkEldarIncubus.run_id )) then
+			self.squad_ai:DoSpecialAbility( DarkEldarIncubus.run_id )
+		end
+	end
+
+	-- Check if I should enable/disable foot on fire
+	self:DoAbilityFoF()
+end
+
+function DarkEldarIncubusTactic:Reinforce()
+	
+	-- Always try to reinforce
+	if (not self.squad_ai:IsReinforcing()) then
+			
+		if (self.squad_ai:CanReinforce( true, 0 )) then
+			self.squad_ai:DoReinforce( true, 0 )
+		elseif (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end	
+	end
+end

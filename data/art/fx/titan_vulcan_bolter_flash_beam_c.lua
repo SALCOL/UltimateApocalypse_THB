@@ -11,31 +11,31 @@ fxtypes =
 				{
 					name = "Fx1",
 					type = "VARTYPE_STRING",
-					value = "muzzle_battlecannon_beam_1",
+					value = "",
 				},
 				property_01 =  
 				{
 					name = "Fx2",
 					type = "VARTYPE_STRING",
-					value = "muzzle_battlecannon_beam_2",
+					value = "",
 				},
 				property_02 =  
 				{
 					name = "FX3",
 					type = "VARTYPE_STRING",
-					value = "muzzle_battlecannon_beam_3",
+					value = "heavy_bolter_flash_beam_3",
 				},
 				property_03 =  
 				{
 					name = "FX4",
 					type = "VARTYPE_STRING",
-					value = "muzzle_battlecannon_glow_ring",
+					value = "muzzle_autocannon_fire_combo",
 				},
 				property_04 =  
 				{
 					name = "FX5",
 					type = "VARTYPE_STRING",
-					value = "muzzle_battlecannon_dark_ring_spray",
+					value = "",
 				},
 				property_05 =  
 				{
@@ -47,13 +47,13 @@ fxtypes =
 				{
 					name = "FX7",
 					type = "VARTYPE_STRING",
-					value = "a_blank_ring",
+					value = "",
 				},
 				property_07 =  
 				{
 					name = "FX8",
 					type = "VARTYPE_STRING",
-					value = "muzzle_battlecannon_flash_ring_1",
+					value = "",
 				},
 				property_08 =  
 				{
@@ -73,7 +73,7 @@ fxtypes =
 	},
 	 
 	{
-		effect = "root>muzzle_battlecannon_beam_1",
+		effect = "root>heavy_bolter_flash_beam_3",
 		fx =  
 		{
 			properties =  
@@ -82,13 +82,346 @@ fxtypes =
 				{
 					name = "Duration",
 					type = "VARTYPE_FLOAT",
-					value = 0.30000,
+					value = 0.60000,
 				},
 				property_01 =  
 				{
 					name = "Loop",
 					type = "VARTYPE_BOOL",
+					value = 1,
+				},
+				property_02 =  
+				{
+					name = "Blending",
+					type = "VARTYPE_INT",
+					value = 2,
+				},
+				property_03 =  
+				{
+					name = "Texture",
+					type = "VARTYPE_STRING",
+					value = "DATA:ART/FX/GENERIC_EFFECTS_ALL/FIRING_COMBOS/TEXTURES/W40K_MUZZLE_FLASH.TGA",
+				},
+				property_04 =  
+				{
+					name = "Offset",
+					type = "VARTYPE_ARRAY_TIMEVECTOR3",
+					value =  
+					{
+						entry_00 =  
+						{
+							0,
+							0,
+							0,
+							0,
+						},
+						entry_01 =  
+						{
+							1,
+							0,
+							0,
+							0,
+						},
+					},
+				},
+				property_05 =  
+				{
+					name = "Length",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						2,
+						0.05500,
+						2,
+						0.06250,
+						3,
+						0.16125,
+						3,
+						0.17000,
+						2,
+						0.54250,
+						2,
+						0.54750,
+						3,
+						0.64125,
+						3,
+						0.64625,
+						2,
+						1,
+						2,
+					},
+				},
+				property_06 =  
+				{
+					name = "Noise",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0,
+						1,
+						0,
+					},
+				},
+				property_07 =  
+				{
+					name = "Segments",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						1,
+						1,
+						1,
+					},
+				},
+				property_08 =  
+				{
+					name = "Texture_U_Offset",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0,
+						1,
+						0,
+					},
+				},
+				property_09 =  
+				{
+					name = "Texture_U_Repeat",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0.99000,
+						1,
+						0.99000,
+					},
+				},
+				property_10 =  
+				{
+					name = "Width",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						1,
+						1,
+						0.80000,
+					},
+				},
+				property_11 =  
+				{
+					name = "Colour",
+					type = "VARTYPE_ARRAY_TIMECOLOUR",
+					value =  
+					{
+						entry_00 =  
+						{
+							0,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_01 =  
+						{
+							0.01307,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_02 =  
+						{
+							0.10634,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_03 =  
+						{
+							0.17615,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_04 =  
+						{
+							1,
+							0,
+							0,
+							0,
+							255,
+						},
+					},
+				},
+				property_12 =  
+				{
+					name = "Arc",
+					type = "VARTYPE_ARRAY_TIMEVECTOR3",
+					value =  
+					{
+						entry_00 =  
+						{
+							0,
+							0,
+							0,
+							0,
+						},
+						entry_01 =  
+						{
+							1,
+							0,
+							0,
+							0,
+						},
+					},
+				},
+				property_13 =  
+				{
+					name = "LengthEpsilon",
+					type = "VARTYPE_FLOAT",
 					value = 0,
+				},
+				property_14 =  
+				{
+					name = "WidthEpsilon",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_15 =  
+				{
+					name = "WorldAlignAxis",
+					type = "VARTYPE_VECTOR3",
+					value =  
+					{
+						0,
+						0,
+						0,
+					},
+				},
+				property_16 =  
+				{
+					name = "UseDepthTest",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
+				property_17 =  
+				{
+					name = "SortOrder",
+					type = "VARTYPE_INT",
+					value = 0,
+				},
+				property_18 =  
+				{
+					name = "Detail_From",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_19 =  
+				{
+					name = "Detail_To",
+					type = "VARTYPE_FLOAT",
+					value = 1,
+				},
+			},
+			style = "STYLE_BEAM",
+		},
+	},
+	 
+	{
+		effect = "root>muzzle_autocannon_fire_combo",
+		fx =  
+		{
+			properties =  
+			{
+				property_00 =  
+				{
+					name = "Fx1",
+					type = "VARTYPE_STRING",
+					value = "muzzle_autocannon_beam",
+				},
+				property_01 =  
+				{
+					name = "Fx2",
+					type = "VARTYPE_STRING",
+					value = "muzzle_autocannon_beam_2",
+				},
+				property_02 =  
+				{
+					name = "FX3",
+					type = "VARTYPE_STRING",
+					value = "muzzle_autocannon_beam_3",
+				},
+				property_03 =  
+				{
+					name = "FX4",
+					type = "VARTYPE_STRING",
+					value = "muzzle_autocannon_glow_ring",
+				},
+				property_04 =  
+				{
+					name = "FX5",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_05 =  
+				{
+					name = "FX6",
+					type = "VARTYPE_STRING",
+					value = "muzzle_autocannon_beam_4",
+				},
+				property_06 =  
+				{
+					name = "FX7",
+					type = "VARTYPE_STRING",
+					value = "muzzle_autocannon_muzzle_glow_ring",
+				},
+				property_07 =  
+				{
+					name = "FX8",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_08 =  
+				{
+					name = "Detail_From",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_09 =  
+				{
+					name = "Detail_To",
+					type = "VARTYPE_FLOAT",
+					value = 1,
+				},
+			},
+			style = "STYLE_COMBO",
+		},
+	},
+	 
+	{
+		effect = "root>muzzle_autocannon_fire_combo>muzzle_autocannon_beam",
+		fx =  
+		{
+			properties =  
+			{
+				property_00 =  
+				{
+					name = "Duration",
+					type = "VARTYPE_FLOAT",
+					value = 0.57000,
+				},
+				property_01 =  
+				{
+					name = "Loop",
+					type = "VARTYPE_BOOL",
+					value = 1,
 				},
 				property_02 =  
 				{
@@ -104,12 +437,6 @@ fxtypes =
 				},
 				property_04 =  
 				{
-					name = "SelfIlluminated",
-					type = "VARTYPE_BOOL",
-					value = 1,
-				},
-				property_05 =  
-				{
 					name = "Offset",
 					type = "VARTYPE_ARRAY_TIMEVECTOR3",
 					value =  
@@ -130,27 +457,31 @@ fxtypes =
 						},
 					},
 				},
-				property_06 =  
+				property_05 =  
 				{
 					name = "Length",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
 					value =  
 					{
 						0,
-						0.86667,
-						0.03375,
-						1.20000,
-						0.08875,
-						1.40000,
-						0.13750,
-						1.40000,
-						0.20125,
+						2,
+						0.40000,
+						2,
+						0.44125,
+						3.80000,
+						0.48875,
+						2.06667,
+						0.66750,
+						2,
+						0.72500,
+						3.13333,
+						0.78000,
+						2,
 						1,
-						1,
-						1,
+						2,
 					},
 				},
-				property_07 =  
+				property_06 =  
 				{
 					name = "Noise",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
@@ -162,7 +493,7 @@ fxtypes =
 						0,
 					},
 				},
-				property_08 =  
+				property_07 =  
 				{
 					name = "Segments",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
@@ -171,10 +502,10 @@ fxtypes =
 						0,
 						1,
 						1,
-						1,
+						10,
 					},
 				},
-				property_09 =  
+				property_08 =  
 				{
 					name = "Texture_U_Offset",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
@@ -186,9 +517,21 @@ fxtypes =
 						0,
 					},
 				},
-				property_10 =  
+				property_09 =  
 				{
 					name = "Texture_U_Repeat",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0.99000,
+						1,
+						0.99000,
+					},
+				},
+				property_10 =  
+				{
+					name = "Width",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
 					value =  
 					{
@@ -199,24 +542,6 @@ fxtypes =
 					},
 				},
 				property_11 =  
-				{
-					name = "Width",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0,
-						0.01375,
-						0.20000,
-						0.04750,
-						0.53333,
-						0.09375,
-						0.66667,
-						1,
-						1.06667,
-					},
-				},
-				property_12 =  
 				{
 					name = "Colour",
 					type = "VARTYPE_ARRAY_TIMECOLOUR",
@@ -232,15 +557,15 @@ fxtypes =
 						},
 						entry_01 =  
 						{
-							0.03600,
-							255,
-							255,
-							255,
+							0.20320,
+							0,
+							0,
+							0,
 							255,
 						},
 						entry_02 =  
 						{
-							0.09111,
+							0.20767,
 							255,
 							255,
 							255,
@@ -248,13 +573,85 @@ fxtypes =
 						},
 						entry_03 =  
 						{
-							0.56580,
-							23,
-							23,
-							23,
+							0.25056,
+							255,
+							255,
+							255,
 							255,
 						},
 						entry_04 =  
+						{
+							0.29345,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_05 =  
+						{
+							0.40064,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_06 =  
+						{
+							0.40490,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_07 =  
+						{
+							0.43905,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_08 =  
+						{
+							0.50564,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_09 =  
+						{
+							0.70299,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_10 =  
+						{
+							0.70746,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_11 =  
+						{
+							0.73476,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_12 =  
+						{
+							0.79345,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_13 =  
 						{
 							1,
 							0,
@@ -264,7 +661,7 @@ fxtypes =
 						},
 					},
 				},
-				property_13 =  
+				property_12 =  
 				{
 					name = "Arc",
 					type = "VARTYPE_ARRAY_TIMEVECTOR3",
@@ -286,19 +683,19 @@ fxtypes =
 						},
 					},
 				},
-				property_14 =  
+				property_13 =  
 				{
 					name = "LengthEpsilon",
 					type = "VARTYPE_FLOAT",
-					value = 0,
+					value = 0.20000,
 				},
-				property_15 =  
+				property_14 =  
 				{
 					name = "WidthEpsilon",
 					type = "VARTYPE_FLOAT",
-					value = 0,
+					value = 0.10000,
 				},
-				property_16 =  
+				property_15 =  
 				{
 					name = "WorldAlignAxis",
 					type = "VARTYPE_VECTOR3",
@@ -309,13 +706,25 @@ fxtypes =
 						0,
 					},
 				},
+				property_16 =  
+				{
+					name = "UseDepthTest",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
 				property_17 =  
+				{
+					name = "SortOrder",
+					type = "VARTYPE_INT",
+					value = 0,
+				},
+				property_18 =  
 				{
 					name = "Detail_From",
 					type = "VARTYPE_FLOAT",
 					value = 0,
 				},
-				property_18 =  
+				property_19 =  
 				{
 					name = "Detail_To",
 					type = "VARTYPE_FLOAT",
@@ -327,7 +736,7 @@ fxtypes =
 	},
 	 
 	{
-		effect = "root>muzzle_battlecannon_beam_2",
+		effect = "root>muzzle_autocannon_fire_combo>muzzle_autocannon_beam_2",
 		fx =  
 		{
 			properties =  
@@ -336,13 +745,13 @@ fxtypes =
 				{
 					name = "Duration",
 					type = "VARTYPE_FLOAT",
-					value = 0.30000,
+					value = 0.57000,
 				},
 				property_01 =  
 				{
 					name = "Loop",
 					type = "VARTYPE_BOOL",
-					value = 0,
+					value = 1,
 				},
 				property_02 =  
 				{
@@ -358,12 +767,6 @@ fxtypes =
 				},
 				property_04 =  
 				{
-					name = "SelfIlluminated",
-					type = "VARTYPE_BOOL",
-					value = 1,
-				},
-				property_05 =  
-				{
 					name = "Offset",
 					type = "VARTYPE_ARRAY_TIMEVECTOR3",
 					value =  
@@ -384,25 +787,19 @@ fxtypes =
 						},
 					},
 				},
-				property_06 =  
+				property_05 =  
 				{
 					name = "Length",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
 					value =  
 					{
 						0,
-						0,
-						0.03625,
-						0.46667,
-						0.13875,
-						1.13333,
-						0.29375,
-						1.46667,
+						2,
 						1,
-						1.86667,
+						2,
 					},
 				},
-				property_07 =  
+				property_06 =  
 				{
 					name = "Noise",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
@@ -414,7 +811,7 @@ fxtypes =
 						0,
 					},
 				},
-				property_08 =  
+				property_07 =  
 				{
 					name = "Segments",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
@@ -423,10 +820,10 @@ fxtypes =
 						0,
 						1,
 						1,
-						1,
+						10,
 					},
 				},
-				property_09 =  
+				property_08 =  
 				{
 					name = "Texture_U_Offset",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
@@ -438,9 +835,21 @@ fxtypes =
 						0,
 					},
 				},
-				property_10 =  
+				property_09 =  
 				{
 					name = "Texture_U_Repeat",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0.99000,
+						1,
+						0.99000,
+					},
+				},
+				property_10 =  
+				{
+					name = "Width",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
 					value =  
 					{
@@ -451,22 +860,6 @@ fxtypes =
 					},
 				},
 				property_11 =  
-				{
-					name = "Width",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0.40000,
-						0.06375,
-						0.73333,
-						0.19000,
-						0.86667,
-						1,
-						1,
-					},
-				},
-				property_12 =  
 				{
 					name = "Colour",
 					type = "VARTYPE_ARRAY_TIMECOLOUR",
@@ -482,7 +875,7 @@ fxtypes =
 						},
 						entry_01 =  
 						{
-							0.04499,
+							0.30474,
 							0,
 							0,
 							0,
@@ -490,7 +883,7 @@ fxtypes =
 						},
 						entry_02 =  
 						{
-							0.08211,
+							0.30921,
 							255,
 							255,
 							255,
@@ -498,7 +891,7 @@ fxtypes =
 						},
 						entry_03 =  
 						{
-							0.15411,
+							0.36569,
 							255,
 							255,
 							255,
@@ -506,13 +899,45 @@ fxtypes =
 						},
 						entry_04 =  
 						{
-							0.45219,
+							0.38262,
 							0,
 							0,
 							0,
 							255,
 						},
 						entry_05 =  
+						{
+							0.79462,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_06 =  
+						{
+							0.79910,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_07 =  
+						{
+							0.83747,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_08 =  
+						{
+							0.90181,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_09 =  
 						{
 							1,
 							0,
@@ -522,7 +947,7 @@ fxtypes =
 						},
 					},
 				},
-				property_13 =  
+				property_12 =  
 				{
 					name = "Arc",
 					type = "VARTYPE_ARRAY_TIMEVECTOR3",
@@ -544,19 +969,19 @@ fxtypes =
 						},
 					},
 				},
-				property_14 =  
+				property_13 =  
 				{
 					name = "LengthEpsilon",
 					type = "VARTYPE_FLOAT",
-					value = 0,
+					value = 0.20000,
 				},
-				property_15 =  
+				property_14 =  
 				{
 					name = "WidthEpsilon",
 					type = "VARTYPE_FLOAT",
-					value = 0,
+					value = 0.10000,
 				},
-				property_16 =  
+				property_15 =  
 				{
 					name = "WorldAlignAxis",
 					type = "VARTYPE_VECTOR3",
@@ -567,13 +992,25 @@ fxtypes =
 						0,
 					},
 				},
+				property_16 =  
+				{
+					name = "UseDepthTest",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
 				property_17 =  
+				{
+					name = "SortOrder",
+					type = "VARTYPE_INT",
+					value = 0,
+				},
+				property_18 =  
 				{
 					name = "Detail_From",
 					type = "VARTYPE_FLOAT",
 					value = 0,
 				},
-				property_18 =  
+				property_19 =  
 				{
 					name = "Detail_To",
 					type = "VARTYPE_FLOAT",
@@ -585,7 +1022,7 @@ fxtypes =
 	},
 	 
 	{
-		effect = "root>muzzle_battlecannon_beam_3",
+		effect = "root>muzzle_autocannon_fire_combo>muzzle_autocannon_beam_3",
 		fx =  
 		{
 			properties =  
@@ -594,13 +1031,13 @@ fxtypes =
 				{
 					name = "Duration",
 					type = "VARTYPE_FLOAT",
-					value = 0.30000,
+					value = 0.57000,
 				},
 				property_01 =  
 				{
 					name = "Loop",
 					type = "VARTYPE_BOOL",
-					value = 0,
+					value = 1,
 				},
 				property_02 =  
 				{
@@ -616,12 +1053,6 @@ fxtypes =
 				},
 				property_04 =  
 				{
-					name = "SelfIlluminated",
-					type = "VARTYPE_BOOL",
-					value = 1,
-				},
-				property_05 =  
-				{
 					name = "Offset",
 					type = "VARTYPE_ARRAY_TIMEVECTOR3",
 					value =  
@@ -637,28 +1068,40 @@ fxtypes =
 						{
 							1,
 							0,
-							0.30000,
+							0,
 							0,
 						},
 					},
 				},
-				property_06 =  
+				property_05 =  
 				{
 					name = "Length",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
 					value =  
 					{
 						0,
-						1.06667,
-						0.10375,
-						1.86667,
-						0.27125,
-						2.60000,
+						2,
+						0.05500,
+						2,
+						0.06250,
+						3,
+						0.16125,
+						3,
+						0.17000,
+						2,
+						0.54250,
+						2,
+						0.54750,
+						3,
+						0.64125,
+						3,
+						0.64625,
+						2,
 						1,
-						3.40000,
+						2,
 					},
 				},
-				property_07 =  
+				property_06 =  
 				{
 					name = "Noise",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
@@ -670,7 +1113,7 @@ fxtypes =
 						0,
 					},
 				},
-				property_08 =  
+				property_07 =  
 				{
 					name = "Segments",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
@@ -682,7 +1125,7 @@ fxtypes =
 						1,
 					},
 				},
-				property_09 =  
+				property_08 =  
 				{
 					name = "Texture_U_Offset",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
@@ -694,37 +1137,31 @@ fxtypes =
 						0,
 					},
 				},
-				property_10 =  
+				property_09 =  
 				{
 					name = "Texture_U_Repeat",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
 					value =  
 					{
 						0,
+						0.99000,
 						1,
-						1,
-						1,
+						0.99000,
 					},
 				},
-				property_11 =  
+				property_10 =  
 				{
 					name = "Width",
 					type = "VARTYPE_ARRAY_TIMEFLOAT",
 					value =  
 					{
 						0,
-						0.33333,
-						0.09000,
-						0.60000,
-						0.39375,
-						1.13333,
-						0.63000,
-						0.86667,
+						1.20000,
 						1,
-						0.60000,
+						1.20000,
 					},
 				},
-				property_12 =  
+				property_11 =  
 				{
 					name = "Colour",
 					type = "VARTYPE_ARRAY_TIMECOLOUR",
@@ -740,7 +1177,7 @@ fxtypes =
 						},
 						entry_01 =  
 						{
-							0.05849,
+							0.10045,
 							0,
 							0,
 							0,
@@ -748,7 +1185,7 @@ fxtypes =
 						},
 						entry_02 =  
 						{
-							0.16310,
+							0.10497,
 							255,
 							255,
 							255,
@@ -756,7 +1193,7 @@ fxtypes =
 						},
 						entry_03 =  
 						{
-							0.23172,
+							0.17833,
 							255,
 							255,
 							255,
@@ -764,13 +1201,37 @@ fxtypes =
 						},
 						entry_04 =  
 						{
-							0.64567,
+							0.19977,
 							0,
 							0,
 							0,
 							255,
 						},
 						entry_05 =  
+						{
+							0.50113,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_06 =  
+						{
+							0.50564,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_07 =  
+						{
+							0.61625,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_08 =  
 						{
 							1,
 							0,
@@ -780,7 +1241,7 @@ fxtypes =
 						},
 					},
 				},
-				property_13 =  
+				property_12 =  
 				{
 					name = "Arc",
 					type = "VARTYPE_ARRAY_TIMEVECTOR3",
@@ -802,19 +1263,19 @@ fxtypes =
 						},
 					},
 				},
-				property_14 =  
+				property_13 =  
 				{
 					name = "LengthEpsilon",
 					type = "VARTYPE_FLOAT",
-					value = 0.10000,
+					value = 0.20000,
 				},
-				property_15 =  
+				property_14 =  
 				{
 					name = "WidthEpsilon",
 					type = "VARTYPE_FLOAT",
 					value = 0.10000,
 				},
-				property_16 =  
+				property_15 =  
 				{
 					name = "WorldAlignAxis",
 					type = "VARTYPE_VECTOR3",
@@ -825,13 +1286,25 @@ fxtypes =
 						0,
 					},
 				},
+				property_16 =  
+				{
+					name = "UseDepthTest",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
 				property_17 =  
+				{
+					name = "SortOrder",
+					type = "VARTYPE_INT",
+					value = 0,
+				},
+				property_18 =  
 				{
 					name = "Detail_From",
 					type = "VARTYPE_FLOAT",
 					value = 0,
 				},
-				property_18 =  
+				property_19 =  
 				{
 					name = "Detail_To",
 					type = "VARTYPE_FLOAT",
@@ -843,7 +1316,7 @@ fxtypes =
 	},
 	 
 	{
-		effect = "root>muzzle_battlecannon_glow_ring",
+		effect = "root>muzzle_autocannon_fire_combo>muzzle_autocannon_glow_ring",
 		fx =  
 		{
 			properties =  
@@ -855,17 +1328,9 @@ fxtypes =
 					value =  
 					{
 						0,
-						0.40000,
-						0.07750,
-						0.80000,
-						0.16250,
-						0.93333,
-						0.28625,
-						0.80000,
-						0.49375,
-						0.80000,
+						2,
 						1,
-						0.53333,
+						2,
 					},
 				},
 				property_01 =  
@@ -878,14 +1343,14 @@ fxtypes =
 						{
 							0,
 							0,
-							0.50000,
+							0.70000,
 							0,
 						},
 						entry_01 =  
 						{
 							1,
 							0,
-							0.50000,
+							0.70000,
 							0,
 						},
 					},
@@ -938,41 +1403,772 @@ fxtypes =
 							0,
 							0,
 							0,
+							255,
+						},
+						entry_01 =  
+						{
+							0.00447,
+							120,
+							120,
+							120,
+							255,
+						},
+						entry_02 =  
+						{
+							0.07449,
+							62,
+							62,
+							62,
+							255,
+						},
+						entry_03 =  
+						{
+							0.10722,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_04 =  
+						{
+							0.13427,
+							89,
+							89,
+							89,
+							255,
+						},
+						entry_05 =  
+						{
+							0.21558,
+							40,
+							40,
+							40,
+							255,
+						},
+						entry_06 =  
+						{
+							0.24379,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_07 =  
+						{
+							0.27540,
+							84,
+							84,
+							84,
+							255,
+						},
+						entry_08 =  
+						{
+							0.36569,
+							79,
+							79,
+							79,
+							255,
+						},
+						entry_09 =  
+						{
+							0.40181,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_10 =  
+						{
+							0.43454,
+							38,
+							38,
+							38,
+							255,
+						},
+						entry_11 =  
+						{
+							0.52709,
+							31,
+							31,
+							31,
+							255,
+						},
+						entry_12 =  
+						{
+							0.55869,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_13 =  
+						{
+							0.59368,
+							33,
+							33,
+							33,
+							255,
+						},
+						entry_14 =  
+						{
+							0.68736,
+							38,
+							38,
+							38,
+							255,
+						},
+						entry_15 =  
+						{
+							0.72460,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_16 =  
+						{
+							0.76688,
+							55,
+							55,
+							55,
+							255,
+						},
+						entry_17 =  
+						{
+							0.86788,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_18 =  
+						{
+							1,
+							0,
+							0,
+							0,
+							255,
+						},
+					},
+				},
+				property_06 =  
+				{
+					name = "RadiusEpsilon",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_07 =  
+				{
+					name = "RateEpsilon",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_08 =  
+				{
+					name = "SpinEpsilonX",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_09 =  
+				{
+					name = "SpinEpsilonY",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_10 =  
+				{
+					name = "SpinEpsilonZ",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_11 =  
+				{
+					name = "SpinRandom",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
+				property_12 =  
+				{
+					name = "Duration",
+					type = "VARTYPE_FLOAT",
+					value = 0.57000,
+				},
+				property_13 =  
+				{
+					name = "UseMesh",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
+				property_14 =  
+				{
+					name = "UseDepthTest",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
+				property_15 =  
+				{
+					name = "UseDepthSort",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
+				property_16 =  
+				{
+					name = "Loop",
+					type = "VARTYPE_BOOL",
+					value = 1,
+				},
+				property_17 =  
+				{
+					name = "Billboard",
+					type = "VARTYPE_BOOL",
+					value = 1,
+				},
+				property_18 =  
+				{
+					name = "SelfIlluminated",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
+				property_19 =  
+				{
+					name = "Blending",
+					type = "VARTYPE_INT",
+					value = 2,
+				},
+				property_20 =  
+				{
+					name = "Texture",
+					type = "VARTYPE_STRING",
+					value = "ENV_FLASH_BIG_1.TGA",
+				},
+				property_21 =  
+				{
+					name = "Mesh",
+					type = "VARTYPE_STRING",
+					value = "Data:art/fx/box.sgm",
+				},
+				property_22 =  
+				{
+					name = "Spawn_Fx",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_23 =  
+				{
+					name = "BirthSpawn_Fx",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_24 =  
+				{
+					name = "SortOrder",
+					type = "VARTYPE_INT",
+					value = 0,
+				},
+				property_25 =  
+				{
+					name = "DepthOffset",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_26 =  
+				{
+					name = "Detail_From",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_27 =  
+				{
+					name = "Detail_To",
+					type = "VARTYPE_FLOAT",
+					value = 1,
+				},
+			},
+			style = "STYLE_RING",
+		},
+	},
+	 
+	{
+		effect = "root>muzzle_autocannon_fire_combo>muzzle_autocannon_beam_4",
+		fx =  
+		{
+			properties =  
+			{
+				property_00 =  
+				{
+					name = "Duration",
+					type = "VARTYPE_FLOAT",
+					value = 0.57000,
+				},
+				property_01 =  
+				{
+					name = "Loop",
+					type = "VARTYPE_BOOL",
+					value = 1,
+				},
+				property_02 =  
+				{
+					name = "Blending",
+					type = "VARTYPE_INT",
+					value = 2,
+				},
+				property_03 =  
+				{
+					name = "Texture",
+					type = "VARTYPE_STRING",
+					value = "MUZZLE_AUTOCANNON_4.TGA",
+				},
+				property_04 =  
+				{
+					name = "Offset",
+					type = "VARTYPE_ARRAY_TIMEVECTOR3",
+					value =  
+					{
+						entry_00 =  
+						{
+							0,
+							0,
+							0,
+							0,
+						},
+						entry_01 =  
+						{
+							1,
+							0,
+							0,
+							0,
+						},
+					},
+				},
+				property_05 =  
+				{
+					name = "Length",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						2,
+						0.05500,
+						2,
+						0.06250,
+						3,
+						0.16125,
+						3,
+						0.17000,
+						2,
+						0.54250,
+						2,
+						0.54750,
+						3,
+						0.64125,
+						3,
+						0.64625,
+						2,
+						1,
+						2,
+					},
+				},
+				property_06 =  
+				{
+					name = "Noise",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0,
+						1,
+						0,
+					},
+				},
+				property_07 =  
+				{
+					name = "Segments",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						1,
+						1,
+						1,
+					},
+				},
+				property_08 =  
+				{
+					name = "Texture_U_Offset",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0,
+						1,
+						0,
+					},
+				},
+				property_09 =  
+				{
+					name = "Texture_U_Repeat",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0.99000,
+						1,
+						0.99000,
+					},
+				},
+				property_10 =  
+				{
+					name = "Width",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						1.20000,
+						1,
+						1.20000,
+					},
+				},
+				property_11 =  
+				{
+					name = "Colour",
+					type = "VARTYPE_ARRAY_TIMECOLOUR",
+					value =  
+					{
+						entry_00 =  
+						{
+							0,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_01 =  
+						{
+							0.00426,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_02 =  
+						{
+							0.01806,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_03 =  
+						{
+							0.08578,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_04 =  
+						{
+							0.36842,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_05 =  
+						{
+							0.37379,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_06 =  
+						{
+							0.38375,
+							255,
+							255,
+							255,
+							255,
+						},
+						entry_07 =  
+						{
+							0.46275,
+							0,
+							0,
+							0,
+							255,
+						},
+						entry_08 =  
+						{
+							1,
+							0,
+							0,
+							0,
+							255,
+						},
+					},
+				},
+				property_12 =  
+				{
+					name = "Arc",
+					type = "VARTYPE_ARRAY_TIMEVECTOR3",
+					value =  
+					{
+						entry_00 =  
+						{
+							0,
+							0,
+							0,
+							0,
+						},
+						entry_01 =  
+						{
+							1,
+							0,
+							0,
+							0,
+						},
+					},
+				},
+				property_13 =  
+				{
+					name = "LengthEpsilon",
+					type = "VARTYPE_FLOAT",
+					value = 0.20000,
+				},
+				property_14 =  
+				{
+					name = "WidthEpsilon",
+					type = "VARTYPE_FLOAT",
+					value = 0.10000,
+				},
+				property_15 =  
+				{
+					name = "WorldAlignAxis",
+					type = "VARTYPE_VECTOR3",
+					value =  
+					{
+						0,
+						0,
+						0,
+					},
+				},
+				property_16 =  
+				{
+					name = "UseDepthTest",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
+				property_17 =  
+				{
+					name = "SortOrder",
+					type = "VARTYPE_INT",
+					value = 0,
+				},
+				property_18 =  
+				{
+					name = "Detail_From",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_19 =  
+				{
+					name = "Detail_To",
+					type = "VARTYPE_FLOAT",
+					value = 1,
+				},
+			},
+			style = "STYLE_BEAM",
+		},
+	},
+	 
+	{
+		effect = "root>muzzle_autocannon_fire_combo>muzzle_autocannon_muzzle_glow_ring",
+		fx =  
+		{
+			properties =  
+			{
+				property_00 =  
+				{
+					name = "Radius",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0.46667,
+						0.14250,
+						0.46667,
+						0.15500,
+						0.33333,
+						0.68875,
+						0.33333,
+						0.69750,
+						0.37000,
+						1,
+						0.37000,
+					},
+				},
+				property_01 =  
+				{
+					name = "Offset",
+					type = "VARTYPE_ARRAY_TIMEVECTOR3",
+					value =  
+					{
+						entry_00 =  
+						{
+							0,
+							0,
+							0.40000,
+							0,
+						},
+						entry_01 =  
+						{
+							1,
+							0,
+							0.40000,
+							0,
+						},
+					},
+				},
+				property_02 =  
+				{
+					name = "SpinX",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0,
+						1,
+						0,
+					},
+				},
+				property_03 =  
+				{
+					name = "SpinY",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						0,
+						1,
+						0,
+					},
+				},
+				property_04 =  
+				{
+					name = "SpinZ",
+					type = "VARTYPE_ARRAY_TIMEFLOAT",
+					value =  
+					{
+						0,
+						3,
+						1,
+						3,
+					},
+				},
+				property_05 =  
+				{
+					name = "Colour",
+					type = "VARTYPE_ARRAY_TIMECOLOUR",
+					value =  
+					{
+						entry_00 =  
+						{
+							0,
+							0,
+							0,
+							0,
 							127,
 						},
 						entry_01 =  
 						{
-							0.07492,
-							0,
-							0,
-							0,
-							122,
+							0.00437,
+							255,
+							255,
+							255,
+							125,
 						},
 						entry_02 =  
 						{
-							0.14270,
+							0.03634,
 							255,
 							255,
 							255,
-							114,
+							124,
 						},
 						entry_03 =  
 						{
-							0.24728,
-							216,
-							216,
-							216,
-							92,
+							0.13767,
+							0,
+							0,
+							0,
+							100,
 						},
 						entry_04 =  
 						{
-							0.64924,
+							0.38656,
 							0,
 							0,
 							0,
-							48,
+							79,
 						},
 						entry_05 =  
+						{
+							0.39097,
+							255,
+							255,
+							255,
+							77,
+						},
+						entry_06 =  
+						{
+							0.41850,
+							255,
+							255,
+							255,
+							73,
+						},
+						entry_07 =  
+						{
+							0.47026,
+							0,
+							0,
+							0,
+							45,
+						},
+						entry_08 =  
+						{
+							0.72907,
+							0,
+							0,
+							0,
+							19,
+						},
+						entry_09 =  
+						{
+							0.73344,
+							255,
+							255,
+							255,
+							16,
+						},
+						entry_10 =  
+						{
+							0.75330,
+							255,
+							255,
+							255,
+							15,
+						},
+						entry_11 =  
+						{
+							0.82489,
+							0,
+							0,
+							0,
+							9,
+						},
+						entry_12 =  
 						{
 							1,
 							0,
@@ -1010,19 +2206,19 @@ fxtypes =
 				{
 					name = "SpinEpsilonZ",
 					type = "VARTYPE_FLOAT",
-					value = 0,
+					value = 1,
 				},
 				property_11 =  
 				{
 					name = "SpinRandom",
 					type = "VARTYPE_BOOL",
-					value = 0,
+					value = 1,
 				},
 				property_12 =  
 				{
 					name = "Duration",
 					type = "VARTYPE_FLOAT",
-					value = 0.30000,
+					value = 0.57000,
 				},
 				property_13 =  
 				{
@@ -1046,7 +2242,7 @@ fxtypes =
 				{
 					name = "Loop",
 					type = "VARTYPE_BOOL",
-					value = 0,
+					value = 1,
 				},
 				property_17 =  
 				{
@@ -1092,1086 +2288,23 @@ fxtypes =
 				},
 				property_24 =  
 				{
-					name = "RandomBitmap",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_25 =  
-				{
-					name = "SortOrder",
-					type = "VARTYPE_INT",
-					value = 0,
-				},
-				property_26 =  
-				{
-					name = "DepthOffset",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_27 =  
-				{
-					name = "Detail_From",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_28 =  
-				{
-					name = "Detail_To",
-					type = "VARTYPE_FLOAT",
-					value = 1,
-				},
-			},
-			style = "STYLE_RING",
-		},
-	},
-	 
-	{
-		effect = "root>muzzle_battlecannon_dark_ring_spray",
-		fx =  
-		{
-			properties =  
-			{
-				property_00 =  
-				{
-					name = "Emitter_Duration",
-					type = "VARTYPE_FLOAT",
-					value = 0.70000,
-				},
-				property_01 =  
-				{
-					name = "Emitter_Loop",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_02 =  
-				{
-					name = "Emitter_RandomStartTime",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_03 =  
-				{
-					name = "Emitter_ScaleSpeed",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_04 =  
-				{
-					name = "Emitter_Direction",
-					type = "VARTYPE_INT",
-					value = 0,
-				},
-				property_05 =  
-				{
-					name = "Emitter_InheritVelocity",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_06 =  
-				{
-					name = "Emitter_Drag",
-					type = "VARTYPE_FLOAT",
-					value = 0.70000,
-				},
-				property_07 =  
-				{
-					name = "Emitter_Rate",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						23.20000,
-						0.14500,
-						19.93333,
-						0.25500,
-						10.46667,
-						0.32250,
-						0,
-						1,
-						0,
-					},
-				},
-				property_08 =  
-				{
-					name = "Emitter_Rate_LOD%",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0,
-						1,
-						0,
-					},
-				},
-				property_09 =  
-				{
-					name = "Emitter_Deviation",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						85.13333,
-						0.06875,
-						88.26667,
-						0.29500,
-						89.66666,
-						1,
-						90,
-					},
-				},
-				property_10 =  
-				{
-					name = "Emitter_Volume",
-					type = "VARTYPE_ARRAY_TIMEVECTOR3",
-					value =  
-					{
-						entry_00 =  
-						{
-							0,
-							1,
-							0,
-							1,
-						},
-						entry_01 =  
-						{
-							1,
-							1,
-							0,
-							1,
-						},
-					},
-				},
-				property_11 =  
-				{
-					name = "Emitter_Offset",
-					type = "VARTYPE_ARRAY_TIMEVECTOR3",
-					value =  
-					{
-						entry_00 =  
-						{
-							0,
-							0,
-							0,
-							0,
-						},
-						entry_01 =  
-						{
-							0.24179,
-							0,
-							2,
-							0,
-						},
-						entry_02 =  
-						{
-							1,
-							0,
-							2,
-							0,
-						},
-					},
-				},
-				property_12 =  
-				{
-					name = "Particle_Speed",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						9.13333,
-						0.15000,
-						8.93333,
-						0.33375,
-						7.13333,
-						0.52000,
-						3,
-						1,
-						0,
-					},
-				},
-				property_13 =  
-				{
-					name = "Emitter_RotRate",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						2,
-						1,
-						0,
-					},
-				},
-				property_14 =  
-				{
-					name = "Particle_Fx",
-					type = "VARTYPE_STRING",
-					value = "muzzle_battlecannon_dark_ring",
-				},
-				property_15 =  
-				{
-					name = "Particle_Dynamics",
-					type = "VARTYPE_INT",
-					value = 0,
-				},
-				property_16 =  
-				{
-					name = "Gravwell_Strength",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						9.81000,
-						1,
-						9.81000,
-					},
-				},
-				property_17 =  
-				{
-					name = "Particle_Scale",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0.60000,
-						0.10750,
-						1.53333,
-						0.25750,
-						1.06667,
-						0.42250,
-						2,
-						1,
-						1,
-					},
-				},
-				property_18 =  
-				{
-					name = "Detail_From",
-					type = "VARTYPE_FLOAT",
-					value = 1,
-				},
-				property_19 =  
-				{
-					name = "Detail_To",
-					type = "VARTYPE_FLOAT",
-					value = 1,
-				},
-			},
-			style = "STYLE_SPRAY",
-		},
-	},
-	 
-	{
-		effect = "root>muzzle_battlecannon_dark_ring_spray>muzzle_battlecannon_dark_ring",
-		fx =  
-		{
-			properties =  
-			{
-				property_00 =  
-				{
-					name = "Radius",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0.26667,
-						0.04375,
-						0.73333,
-						0.14000,
-						1.26667,
-						0.36375,
-						1.73333,
-						1,
-						2.60000,
-					},
-				},
-				property_01 =  
-				{
-					name = "Offset",
-					type = "VARTYPE_ARRAY_TIMEVECTOR3",
-					value =  
-					{
-						entry_00 =  
-						{
-							0,
-							0,
-							0,
-							0,
-						},
-						entry_01 =  
-						{
-							1,
-							0,
-							0,
-							0,
-						},
-					},
-				},
-				property_02 =  
-				{
-					name = "SpinX",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0,
-						1,
-						0,
-					},
-				},
-				property_03 =  
-				{
-					name = "SpinY",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0,
-						1,
-						0,
-					},
-				},
-				property_04 =  
-				{
-					name = "SpinZ",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						1.80000,
-						0.24750,
-						1.53333,
-						0.52625,
-						1,
-						1,
-						0,
-					},
-				},
-				property_05 =  
-				{
-					name = "Colour",
-					type = "VARTYPE_ARRAY_TIMECOLOUR",
-					value =  
-					{
-						entry_00 =  
-						{
-							0,
-							0,
-							0,
-							0,
-							0,
-						},
-						entry_01 =  
-						{
-							0.01852,
-							206,
-							204,
-							202,
-							156,
-						},
-						entry_02 =  
-						{
-							0.15577,
-							129,
-							129,
-							129,
-							50,
-						},
-						entry_03 =  
-						{
-							0.28649,
-							137,
-							137,
-							137,
-							12,
-						},
-						entry_04 =  
-						{
-							1,
-							50,
-							50,
-							50,
-							0,
-						},
-					},
-				},
-				property_06 =  
-				{
-					name = "RadiusEpsilon",
-					type = "VARTYPE_FLOAT",
-					value = 1,
-				},
-				property_07 =  
-				{
-					name = "RateEpsilon",
-					type = "VARTYPE_FLOAT",
-					value = 0.50000,
-				},
-				property_08 =  
-				{
-					name = "SpinEpsilonX",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_09 =  
-				{
-					name = "SpinEpsilonY",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_10 =  
-				{
-					name = "SpinEpsilonZ",
-					type = "VARTYPE_FLOAT",
-					value = 1,
-				},
-				property_11 =  
-				{
-					name = "SpinRandom",
-					type = "VARTYPE_BOOL",
-					value = 1,
-				},
-				property_12 =  
-				{
-					name = "Duration",
-					type = "VARTYPE_FLOAT",
-					value = 3,
-				},
-				property_13 =  
-				{
-					name = "UseMesh",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_14 =  
-				{
-					name = "UseDepthTest",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_15 =  
-				{
-					name = "UseDepthSort",
-					type = "VARTYPE_BOOL",
-					value = 1,
-				},
-				property_16 =  
-				{
-					name = "Loop",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_17 =  
-				{
-					name = "Billboard",
-					type = "VARTYPE_BOOL",
-					value = 1,
-				},
-				property_18 =  
-				{
-					name = "SelfIlluminated",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_19 =  
-				{
-					name = "Blending",
-					type = "VARTYPE_INT",
-					value = 1,
-				},
-				property_20 =  
-				{
-					name = "Texture",
-					type = "VARTYPE_STRING",
-					value = "ENV_DUST_CLOUD.TGA",
-				},
-				property_21 =  
-				{
-					name = "Mesh",
-					type = "VARTYPE_STRING",
-					value = "model.sgm",
-				},
-				property_22 =  
-				{
-					name = "Spawn_Fx",
-					type = "VARTYPE_STRING",
-					value = "",
-				},
-				property_23 =  
-				{
-					name = "BirthSpawn_Fx",
-					type = "VARTYPE_STRING",
-					value = "",
-				},
-				property_24 =  
-				{
-					name = "RandomBitmap",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_25 =  
-				{
-					name = "SortOrder",
-					type = "VARTYPE_INT",
-					value = 10,
-				},
-				property_26 =  
-				{
-					name = "DepthOffset",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_27 =  
-				{
-					name = "Detail_From",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_28 =  
-				{
-					name = "Detail_To",
-					type = "VARTYPE_FLOAT",
-					value = 1,
-				},
-			},
-			style = "STYLE_RING",
-		},
-	},
-	 
-	{
-		effect = "root>a_blank_ring",
-		fx =  
-		{
-			properties =  
-			{
-				property_00 =  
-				{
-					name = "Radius",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						2.53333,
-						0.04125,
-						1.46667,
-						0.12625,
-						0.73333,
-						0.31750,
-						0.53333,
-						1,
-						0.46667,
-					},
-				},
-				property_01 =  
-				{
-					name = "Offset",
-					type = "VARTYPE_ARRAY_TIMEVECTOR3",
-					value =  
-					{
-						entry_00 =  
-						{
-							0,
-							0,
-							0,
-							0,
-						},
-						entry_01 =  
-						{
-							1,
-							0,
-							0,
-							0,
-						},
-					},
-				},
-				property_02 =  
-				{
-					name = "SpinX",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0,
-						1,
-						0,
-					},
-				},
-				property_03 =  
-				{
-					name = "SpinY",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0,
-						1,
-						0,
-					},
-				},
-				property_04 =  
-				{
-					name = "SpinZ",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0.10000,
-						1,
-						0.10000,
-					},
-				},
-				property_05 =  
-				{
-					name = "Colour",
-					type = "VARTYPE_ARRAY_TIMECOLOUR",
-					value =  
-					{
-						entry_00 =  
-						{
-							0,
-							255,
-							208,
-							180,
-							0,
-						},
-						entry_01 =  
-						{
-							0.03922,
-							255,
-							93,
-							102,
-							0,
-						},
-						entry_02 =  
-						{
-							0.17647,
-							139,
-							52,
-							52,
-							0,
-						},
-						entry_03 =  
-						{
-							0.75599,
-							0,
-							0,
-							0,
-							0,
-						},
-						entry_04 =  
-						{
-							1,
-							0,
-							0,
-							0,
-							0,
-						},
-					},
-				},
-				property_06 =  
-				{
-					name = "RadiusEpsilon",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_07 =  
-				{
-					name = "RateEpsilon",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_08 =  
-				{
-					name = "SpinEpsilonX",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_09 =  
-				{
-					name = "SpinEpsilonY",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_10 =  
-				{
-					name = "SpinEpsilonZ",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_11 =  
-				{
-					name = "SpinRandom",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_12 =  
-				{
-					name = "Duration",
-					type = "VARTYPE_FLOAT",
-					value = 1,
-				},
-				property_13 =  
-				{
-					name = "UseMesh",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_14 =  
-				{
-					name = "UseDepthTest",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_15 =  
-				{
-					name = "UseDepthSort",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_16 =  
-				{
-					name = "Loop",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_17 =  
-				{
-					name = "Billboard",
-					type = "VARTYPE_BOOL",
-					value = 1,
-				},
-				property_18 =  
-				{
-					name = "SelfIlluminated",
-					type = "VARTYPE_BOOL",
-					value = 1,
-				},
-				property_19 =  
-				{
-					name = "Blending",
-					type = "VARTYPE_INT",
-					value = 2,
-				},
-				property_20 =  
-				{
-					name = "Texture",
-					type = "VARTYPE_STRING",
-					value = "LASCANNON_BIG_FLASH.TGA",
-				},
-				property_21 =  
-				{
-					name = "Mesh",
-					type = "VARTYPE_STRING",
-					value = "Data:art/fx/box.sgm",
-				},
-				property_22 =  
-				{
-					name = "Spawn_Fx",
-					type = "VARTYPE_STRING",
-					value = "",
-				},
-				property_23 =  
-				{
-					name = "BirthSpawn_Fx",
-					type = "VARTYPE_STRING",
-					value = "",
-				},
-				property_24 =  
-				{
-					name = "RandomBitmap",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_25 =  
-				{
 					name = "SortOrder",
 					type = "VARTYPE_INT",
 					value = 3,
 				},
-				property_26 =  
-				{
-					name = "DepthOffset",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_27 =  
-				{
-					name = "Detail_From",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_28 =  
-				{
-					name = "Detail_To",
-					type = "VARTYPE_FLOAT",
-					value = 1,
-				},
-			},
-			style = "STYLE_RING",
-		},
-	},
-	 
-	{
-		effect = "root>muzzle_battlecannon_flash_ring_1",
-		fx =  
-		{
-			properties =  
-			{
-				property_00 =  
-				{
-					name = "Radius",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						4,
-						0.06625,
-						4.53333,
-						0.16875,
-						4.93333,
-						0.33375,
-						4.40000,
-						1,
-						4,
-					},
-				},
-				property_01 =  
-				{
-					name = "Offset",
-					type = "VARTYPE_ARRAY_TIMEVECTOR3",
-					value =  
-					{
-						entry_00 =  
-						{
-							0,
-							0,
-							1,
-							0,
-						},
-						entry_01 =  
-						{
-							1,
-							0,
-							1,
-							0,
-						},
-					},
-				},
-				property_02 =  
-				{
-					name = "SpinX",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0,
-						1,
-						0,
-					},
-				},
-				property_03 =  
-				{
-					name = "SpinY",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0,
-						1,
-						0,
-					},
-				},
-				property_04 =  
-				{
-					name = "SpinZ",
-					type = "VARTYPE_ARRAY_TIMEFLOAT",
-					value =  
-					{
-						0,
-						0,
-						1,
-						0,
-					},
-				},
-				property_05 =  
-				{
-					name = "Colour",
-					type = "VARTYPE_ARRAY_TIMECOLOUR",
-					value =  
-					{
-						entry_00 =  
-						{
-							0,
-							0,
-							0,
-							0,
-							255,
-						},
-						entry_01 =  
-						{
-							0.05556,
-							76,
-							76,
-							76,
-							255,
-						},
-						entry_02 =  
-						{
-							0.11438,
-							190,
-							162,
-							145,
-							255,
-						},
-						entry_03 =  
-						{
-							0.29739,
-							161,
-							93,
-							68,
-							255,
-						},
-						entry_04 =  
-						{
-							1,
-							0,
-							0,
-							0,
-							255,
-						},
-					},
-				},
-				property_06 =  
-				{
-					name = "RadiusEpsilon",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_07 =  
-				{
-					name = "RateEpsilon",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_08 =  
-				{
-					name = "SpinEpsilonX",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_09 =  
-				{
-					name = "SpinEpsilonY",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_10 =  
-				{
-					name = "SpinEpsilonZ",
-					type = "VARTYPE_FLOAT",
-					value = 0,
-				},
-				property_11 =  
-				{
-					name = "SpinRandom",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_12 =  
-				{
-					name = "Duration",
-					type = "VARTYPE_FLOAT",
-					value = 0.30000,
-				},
-				property_13 =  
-				{
-					name = "UseMesh",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_14 =  
-				{
-					name = "UseDepthTest",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_15 =  
-				{
-					name = "UseDepthSort",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_16 =  
-				{
-					name = "Loop",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_17 =  
-				{
-					name = "Billboard",
-					type = "VARTYPE_BOOL",
-					value = 1,
-				},
-				property_18 =  
-				{
-					name = "SelfIlluminated",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
-				property_19 =  
-				{
-					name = "Blending",
-					type = "VARTYPE_INT",
-					value = 2,
-				},
-				property_20 =  
-				{
-					name = "Texture",
-					type = "VARTYPE_STRING",
-					value = "ENV_FLASH_BIG_1.TGA",
-				},
-				property_21 =  
-				{
-					name = "Mesh",
-					type = "VARTYPE_STRING",
-					value = "model.sgm",
-				},
-				property_22 =  
-				{
-					name = "Spawn_Fx",
-					type = "VARTYPE_STRING",
-					value = "",
-				},
-				property_23 =  
-				{
-					name = "BirthSpawn_Fx",
-					type = "VARTYPE_STRING",
-					value = "",
-				},
-				property_24 =  
-				{
-					name = "RandomBitmap",
-					type = "VARTYPE_BOOL",
-					value = 0,
-				},
 				property_25 =  
 				{
-					name = "SortOrder",
-					type = "VARTYPE_INT",
-					value = 0,
-				},
-				property_26 =  
-				{
 					name = "DepthOffset",
 					type = "VARTYPE_FLOAT",
 					value = 0,
 				},
-				property_27 =  
+				property_26 =  
 				{
 					name = "Detail_From",
 					type = "VARTYPE_FLOAT",
 					value = 0,
 				},
-				property_28 =  
+				property_27 =  
 				{
 					name = "Detail_To",
 					type = "VARTYPE_FLOAT",

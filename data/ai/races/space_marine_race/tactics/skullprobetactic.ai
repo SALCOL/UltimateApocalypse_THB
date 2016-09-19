@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'skullprobetactic.ai'
--- Edited by Thudmeizer   @ 03.02.2016
+-- Edited by Thudmeizer   @ 22.04.2016
 
 class 'SkullProbeTactic' (SpaceMarineInfantryTactic)
 
@@ -40,18 +40,17 @@ end
 
 function SkullProbeTactic:Update()
 
-   if self:IsComplete() then
-      return
-   end
+	if self:IsComplete() then
+		return
+	end
    
 	--state machine
 	if not InfantryTactic.Update( self ) then
 		return
 	end
 
-   --attach to squad
-   self:TryAttachSquad( false, false, 1000, 200, nil )
-	
+	--attach to squad
+	self:TryAttachSquad( false, false, 1000, 200, nil )
 end
 
 

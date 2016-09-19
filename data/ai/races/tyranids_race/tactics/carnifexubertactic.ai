@@ -1,0 +1,43 @@
+----------------------------------------
+-- File: 'carnifexubertactic.ai'
+-- Edited by Thudmeizer	@ 25.04.2016
+
+class 'CarnifexUberTactic' (TyranidVehicleTactic)
+
+CarnifexUber = {}
+
+function CarnifexUberTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Carnifex Uber Tactic")
+	
+	-- Add a choice to stay in ranged or melee combat
+	self.choice_ranged_melee = math.random(1, 100)
+end
+
+function CarnifexUberTactic:AlwaysAttack()
+	return true
+end
+
+function CarnifexUberTactic:Upgrade()
+
+ 	-- If I chose melee combat, don't upgrade!
+	if (self.choice_ranged_melee <= 10) then
+		return
+	else
+		local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+	end	
+end
+
+function CarnifexUberTactic:Update()
+	
+	--state machine
+	if not VehicleTactic.Update( self ) then
+		return
+	end
+
+	-- Set unit on ranged stance by a 10% chance (setting Melee tends to make unit stand around more however)
+	if (self.squad_ai:GetMeleeStance() ~= SquadAI.MSTANCE_Assault and self.choice_ranged_melee <= 10) then
+		self.squad_ai:DoSetMeleeStance(SquadAI.MSTANCE_Assault)
+	end
+end

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonhuntvehicletactic.ai'
--- Edited by Thudmeizer         @ 27.11.2006
+-- Edited by Thudmeizer         @ 20.06.2016
 
 class 'DaemonhuntVehicleTactic' (VehicleTactic)
 
@@ -8,13 +8,33 @@ function DaemonhuntVehicleTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Daemonhunt Vehicle Tactic")
 	
-	local sName = squad_ai:GetSquadName()
-	if (sName == "inquisition_squad_rhino" or
-	    sName == "inquisition_squad_chimera_transport") then
-		
-		-- Vehicle is a light transport
-		self.m_iTransportVehicle = 1
-		self.m_iTransportSlots = 2
+	-- Set vehicle options
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "inquisition_squad_damocles" or
+	    sSquadName == "inquisition_squad_predator" or
+	    sSquadName == "inquisition_squad_thunderfire_cannon" or
+	    sSquadName == "inquisition_squad_whirlwind") then 
+
+		-- Vehicles are transportable
+		self.m_iTransportable = 1	-- Valkyrie
+
+	elseif (sSquadName == "inquisition_squad_dreadknight_titan" or
+		sSquadName == "inquisition_squad_dreadnought" or
+		sSquadName == "inquisition_squad_dreadnought_assault" or
+		sSquadName == "inquisition_squad_dreadnought_support" or
+		sSquadName == "inquisition_squad_dreadnought_venerable") then
+
+		-- Vehicles can deepstrike and are transportable
+		self.m_iTransportable = 1	-- Valkyrie
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "inquisition_grey_knights_teleporter" )
+
+	elseif (sSquadName == "inquisition_squad_land_raider" or
+		sSquadName == "inquisition_squad_land_raider_crusader" or
+		sSquadName == "inquisition_squad_land_raider_daemonhunter" or
+		sSquadName == "inquisition_squad_land_raider_redeemer") then
+
+		-- Vehicles are transportable
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "inquisition_watch" )
 	end
 end
 
@@ -22,13 +42,20 @@ end
 function DaemonhuntVehicleTactic:CheckVehicleDance(sName)
 
 	if (sName == "inquisition_squad_rhino" or
-	  --sName == "inquisition_squad_chimera_support" or
-	    sName == "inquisition_squad_chimera_transport" or	    
-		sName == "inquisition_squad_thunderfire_cannon" or	 
+		sName == "inquisition_squad_damocles" or
+		sName == "inquisition_squad_razorback" or
+		sName == "inquisition_squad_chimera_transport" or
+		sName == "inquisition_squad_dreadnought" or
+		sName == "inquisition_squad_dreadnought_assault" or
+		sName == "inquisition_squad_dreadnought_support" or
+		sName == "inquisition_squad_dreadnought_venerable" or
 		sName == "inquisition_squad_predator" or
-		sName == "inquisition_squad_whirlwind" or	
-	    --sName == "inquisition_squad_dreadnought_assault" or
-	    sName == "inquisition_squad_dreadnought_support") then
+		sName == "inquisition_squad_whirlwind" or
+		sName == "inquisition_squad_land_raider" or
+		sName == "inquisition_squad_land_raider_crusader" or
+		sName == "inquisition_squad_land_raider_redeemer" or
+		sName == "inquisition_squad_land_raider_daemonhunter" or
+		sName == "inquisition_squad_dreadknight_titan") then
 		return true
 	end
 	return false
@@ -36,32 +63,12 @@ end
 
 function DaemonhuntVehicleTactic:DoAbilities()
 
-	-- Check if I can use machine spirit while stationary
-	if (self.squad_ai:WasRecentlyHurt() and not self.squad_ai:IsInStateMove() and not self.squad_ai:IsInStateAttackMove()) then
-		
-		local spirit_id = cpu_manager.stats:GetAbilityID( "inquisition_machine_spirit" )	  
-		if (self.squad_ai:CanDoAbility(spirit_id)) then
-			self.squad_ai:DoSpecialAbility(spirit_id)
-		end	  
-	end
-
-	-- Rhino Repair!
-	if self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 then
-		selfrepair_id = cpu_manager.stats:GetAbilityID( "inquisition_rhino_self_repair" )
-		if (self.squad_ai:CanDoAbility( selfrepair_id )) then
-			self.squad_ai:DoSpecialAbility( selfrepair_id )
-		end
-	end
-
-	-- Check if we can throw smoke
-	local smoke_launchers = cpu_manager.stats:GetAbilityID( "inquisition_smoke_launchers" )
-	if (self.squad_ai:CanDoAbility(smoke_launchers)) then
-	
-		-- Search a squad
-		local iRange = self.squad_ai:GetAbilityRange(smoke_launchers)
-		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
-		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
-			self.squad_ai:DoSpecialAbilitySquad(smoke_launchers, oUnit:GetSquad())
+	-- RAM!!! - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	local rammingspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( rammingspeed_id )) then
+			self.squad_ai:DoSpecialAbility( rammingspeed_id )
 		end
 	end
 

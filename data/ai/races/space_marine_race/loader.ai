@@ -2,7 +2,7 @@
 -- File: 'smloader.ai'
 -- Edited by Arkhan	@ 23.10.2006
 -- Renamed by Corsix    @ 13.02.2006
--- Edited by Thudmeizer @ 04.02.2016
+-- Edited by Thudmeizer @ 20.06.2016
 -- Edited by Cylarne_04 2011
 
 class 'space_marine_race'
@@ -37,6 +37,7 @@ function space_marine_race:LoadRace( eDifficulty )
 	import( 'Races/space_marine_race/Tactics/ThunderfireCannonTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/TacticalMarineTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/DevastatorTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/DeathwatchTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/SternguardTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/VanguardTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/TerminatorTactic.ai' )
@@ -44,18 +45,25 @@ function space_marine_race:LoadRace( eDifficulty )
 	import( 'Races/space_marine_race/Tactics/ApothecaryTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/BannerBearerTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/ChaplainTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ChaplainTerminatorTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/LibrarianTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/ForceCommanderTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ForceCommanderTerminatorTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ForceCommanderAdvancedTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ForceCommanderCampaignTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/ChapterMasterTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/HonourGuardTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ThunderhawkTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/RhinoTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/RazorbackTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/DamoclesTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/StalkerTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/LandspeederTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/VindicatorTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/DreadnoughtTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/WhirlwindTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/LandRaiderTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/LandRaiderTerminusTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/TitanTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/MarinesHQTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/MarinesBuildingTactic.ai' )
@@ -63,6 +71,7 @@ function space_marine_race:LoadRace( eDifficulty )
 	import( 'Races/space_marine_race/Tactics/MarineBarracksTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/OrbitalRelayTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/MarinesBombTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/MarinesBigGeneratorTactic.ai' )
 	return true
 end
 
@@ -102,6 +111,8 @@ function space_marine_race:CreateTactic(oSquadAI)
 		return TacticalMarineTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_devastator") then
 		return DevastatorTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_lotd_tactical") then
+		return DeathwatchTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_sternguard_veteran") then
 		return SternguardTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_vanguard_veteran") then
@@ -114,15 +125,23 @@ function space_marine_race:CreateTactic(oSquadAI)
 		return ApothecaryTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_banner_bearer") then
 		return BannerBearerTactic(oSquadAI)
-	elseif (sUnitName == "space_marine_squad_chaplain") or (sUnitName == "space_marine_squad_chaplain_advance_sp") then
+	elseif (sUnitName == "space_marine_squad_chaplain") then
 		return ChaplainTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_chaplain_advance_sp") then
+		return ChaplainTerminatorTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_librarian") then
 		return LibrarianTactic(oSquadAI)
 	elseif (sUnitName == "npc_squad_civilian_group") then
 		return ForceCommanderTactic(oSquadAI)
-	elseif (sUnitName == "space_marine_squad_force_commander_killeus") or (sUnitName == "space_marine_squad_force_commander_advance_sp") or (sUnitName == "space_marine_squad_force_commander_terminator") then
+	elseif (sUnitName == "space_marine_squad_force_commander_killeus") then
 		return ForceCommanderTactic(oSquadAI)
-	elseif (sUnitName == "space_marine_squad_force_commander") or (sUnitName == "space_marine_squad_chapter_master") then
+	elseif (sUnitName == "space_marine_squad_force_commander_terminator") then
+		return ForceCommanderTerminatorTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_force_commander_advance_sp") then
+		return ForceCommanderCampaignTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_force_commander") then
+		return ForceCommanderAdvancedTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_chapter_master") then
 		return ChapterMasterTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_honor_guard_gladiator") then
 		return HonourGuardTactic(oSquadAI)
@@ -130,10 +149,14 @@ function space_marine_race:CreateTactic(oSquadAI)
 		return AttackbikeTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_thunderfire_cannon") then
 		return ThunderfireCannonTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_thunderhawk_uamod") then
+		return ThunderhawkTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_rhino") then
 		return RhinoTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_razorback") then
 		return RazorbackTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_rhino_stalker") then
+		return StalkerTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_land_speeder") then
 		return LandspeederTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_damocles") then
@@ -149,9 +172,10 @@ function space_marine_race:CreateTactic(oSquadAI)
 		(sUnitName == "space_marine_squad_land_raider_helios") or 
 		(sUnitName == "space_marine_squad_land_raider_prometheus") or
 		(sUnitName == "space_marine_squad_land_raider_redeemer") or
-		(sUnitName == "space_marine_squad_land_raider_ares") or 
-		(sUnitName == "space_marine_squad_land_raider_terminus") then
+		(sUnitName == "space_marine_squad_land_raider_ares") then
 		return LandRaiderTactic(oSquadAI)
+	elseif 	(sUnitName == "space_marine_squad_land_raider_terminus") then
+		return LandRaiderTerminusTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_warhound_titan") or (sUnitName == "space_marine_squad_reaver_titan") then
 		return TitanTactic(oSquadAI)
 	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
@@ -183,13 +207,15 @@ function space_marine_race:CreateBaseTactic(oBuilding)
 		(sBuildingName == "space_marine_generator") or 
 		(sBuildingName == "space_marine_landraider_building") or 
 		(sBuildingName == "space_marine_titan_facility") or 
+		(sBuildingName == "space_marine_armoury_emperor") or 
 		(sBuildingName == "space_marine_listening_post") or
-		(sBuildingName == "space_marine_thermo_generator") or
 		(sBuildingName == "space_marine_titan_facility") or
 		(sBuildingName == "space_marine_turret_bolter") or
 		(sBuildingName == "space_marine_turret_missile_sp") or
 		(sBuildingName == "space_marine_wall") then
 		return MarinesBuildingTactic(oBuilding)
+	elseif (sBuildingName == "space_marine_thermo_generator") or (sBuildingName == "space_marine_thermonuclear_generator") then
+		return MarinesBigGeneratorTactic(oBuilding)
 	end
 	return nil
 end

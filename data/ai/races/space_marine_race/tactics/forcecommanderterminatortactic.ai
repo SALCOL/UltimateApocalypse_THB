@@ -1,0 +1,228 @@
+----------------------------------------
+-- File: 'forcecommanderterminatortactic.ai'
+-- Edited by Thudmeizer @ 07.06.2016
+-- Edited by LarkinVB   @ 16.08.2005
+-- Edited by Cylarne_04 2011
+
+class 'ForceCommanderTerminatorTactic' (SpaceMarineInfantryTactic)
+
+ForceCommanderTerminator = {}
+
+function ForceCommanderTerminatorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Force Commander Terminator Tactic")
+
+	self.m_iForceCommanderTerminatorUpgradePath = math.random(0, 2)
+end
+
+function ForceCommanderTerminatorTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelForceCommanderTerminator = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelForceCommanderTerminator ~= nil) then
+			local addOnID = buildChannelForceCommanderTerminator:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelForceCommanderTerminator:IsBuilding() == 0 and buildChannelForceCommanderTerminator:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelForceCommanderTerminator:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+-- Assassinate win condition -- never attack
+function ForceCommanderTerminatorTactic:IsAttacker()
+	return (not cpu_manager.assassinate and self:IsCommanderAttacker())
+end
+
+-- Assassinate win condition -- never defend
+function ForceCommanderTerminatorTactic:IsDefender()
+	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+end
+
+-- Force Commander is allowed to retreat even directly after a jump
+function ForceCommanderTerminatorTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Assassinate win condition -- never jump into combat
+function ForceCommanderTerminatorTactic:JumpAttack()
+
+	if (not cpu_manager.assassinate) then
+		Tactic.JumpAttack(self)
+	end
+end
+
+function ForceCommanderTerminatorTactic:CanJumpAttached()
+	return true
+end
+
+function ForceCommanderTerminatorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ForceCommanderTerminator.orbital_b == nil) then
+		ForceCommanderTerminator.orbital_b = cpu_manager.stats:GetAbilityID( "marines_orbital_bombardment_terminator" )
+	end
+	if (ForceCommanderTerminator.battlecry == nil) then
+		ForceCommanderTerminator.battlecry = cpu_manager.stats:GetAbilityID( "marines_battlecry" )
+	end
+	if (ForceCommanderTerminator.bomb == nil) then
+		ForceCommanderTerminator.bomb = cpu_manager.stats:GetAbilityID( "marines_commander_bomb" )
+	end
+	if (ForceCommanderTerminator.hellstorm == nil) then
+		ForceCommanderTerminator.hellstorm = cpu_manager.stats:GetAbilityID( "marines_hellstorm" )
+	end
+	if (ForceCommanderTerminator.run == nil) then
+		ForceCommanderTerminator.run = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function ForceCommanderTerminatorTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Try to use battlecry
+	Ability.DoAbilityArea( self.squad_ai, ForceCommanderTerminator.battlecry, Ability.Filters.CloseInCombat, 10 )
+	
+	-- Try to use orbital bombardement
+	Ability.DoAbilityPos(self.squad_ai, ForceCommanderTerminator.orbital_b, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ForceCommanderTerminator.orbital_b, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+	
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, ForceCommanderTerminator.bomb, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ForceCommanderTerminator.bomb, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Try to call down a hellstorm turret farm
+	if (iRequisition >= 1000 and iPower >= 1000) then
+		Ability.DoAbilityPos(self.squad_ai, ForceCommanderTerminator.hellstorm, Ability.Filters.CloseEnemy, 25)
+		Ability.DoAbilityPos(self.squad_ai, ForceCommanderTerminator.hellstorm, Ability.EntityFilters.CloseBaseEntityEnemy, 5)
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( ForceCommanderTerminator.run )) then
+			self.squad_ai:DoSpecialAbility( ForceCommanderTerminator.run )
+		end
+	end
+end
+
+function ForceCommanderTerminatorTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] space_marine_commander_thunderhammer_addon		-- 1/3 Mutual Melee Weapon
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] space_marine_commander_lightningclaws_addon		-- 2/3 Mutual Melee Weapon  
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] space_marine_commander_flamer_addon			-- 1/2 Mutual Ranged Weapon  
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] space_marine_commander_assaultcannon_addon		-- 2/2 Mutual Ranged Weapon  
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] space_marine_commander_missile_launcher_addon	-- Build only if Thunderhammer or Lightning Claws are NOT built  
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] space_marine_commander_chainfist_addon		-- 3/3 Mutual Melee Weapon allows flamer or assault cannon 
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] space_marine_commander_teleporter_addon		-- Always build
+
+--	self:AutoBuildAddOn(7)	--	[addon_08] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(9)	-- 	[addon_10] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(10)	-- 	[addon_11] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(11)	-- 	[addon_12] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(12)	-- 	[addon_13] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(13)	-- 	[addon_14] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(14)	-- 	[addon_15] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(15)	-- 	[addon_16] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 7,15 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(9)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+--[[
+	-- Figure out my enemy's favourite class
+	local enemy = cpu_manager:FindClosestEnemyPlayer()
+	if (enemy == nil) then
+		return
+	end
+	
+	local class_type = enemy:GetMajorityClassType()
+	
+	-- Hard counter upgrade for infantry
+	if (class_type == UnitStatsAI.UC_LightInfantryLow) or 
+		(class_type == UnitStatsAI.UC_LightInfantryMed) or 
+		(class_type == UnitStatsAI.UC_LightInfantryHigh) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryMed) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryHigh) or
+		(class_type == UnitStatsAI.UC_MonsterMed) then 
+   		if (cpu_manager:GetTierLevel() >= 2) then 
+			local addon_random_infantry_wargear = math.random( 0,1 )
+			self:AutoBuildAddOn(addon_random_infantry_wargear )
+		end
+	-- Hard counter upgrade for Vehicles
+	elseif (class_type == UnitStatsAI.UC_VehicleLow) or 
+		(class_type == UnitStatsAI.UC_VehicleMed) or
+		(class_type == UnitStatsAI.UC_VehicleHigh) or
+		(class_type == UnitStatsAI.UC_MonsterHigh) then
+   		if (cpu_manager:GetTierLevel() >= 2) then 
+			local addon_random_vehicle_wargear = math.random( 2,3 )
+			self:AutoBuildAddOn(addon_random_vehicle_wargear )
+		end
+	end
+]]
+	--local ForceCommanderTerminatorUpgradePath = math.random( 0,2 )
+
+	-- Choose a Wargear Path
+	if (self.m_iForceCommanderTerminatorUpgradePath == 0) then
+	--if (ForceCommanderTerminatorUpgradePath == 0) then
+		self:AutoBuildAddOn(2)	-- Flamer
+		self:AutoBuildAddOn(4)	-- Missile Launcher
+		self:AutoBuildAddOn(5)	-- Chainfist
+	elseif (self.m_iForceCommanderTerminatorUpgradePath == 1) then
+	--elseif (ForceCommanderTerminatorUpgradePath == 1) then
+		self:AutoBuildAddOn(3)	-- Assault Cannon
+		self:AutoBuildAddOn(4)	-- Missile Launcher
+		self:AutoBuildAddOn(5)	-- Chainfist
+	elseif (self.m_iForceCommanderTerminatorUpgradePath == 2) then
+	--elseif (ForceCommanderTerminatorUpgradePath == 2) then
+		local addon_random_melee_weapons = math.random( 0,1 )	-- Randomize between Thunder Hammer or Lightning Claws
+		self:AutoBuildAddOn(addon_random_melee_weapons)
+	end
+
+	-- Always build missile launcher addon
+	--self:AutoBuildAddOn(4)
+
+	-- Always build teleport addon
+	self:AutoBuildAddOn(6)
+end
+
+function ForceCommanderTerminatorTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Assassinate win condition -- never attach to a squad
+	if (not cpu_manager.assassinate) then
+		
+		-- Attach to melee in tier3+
+		if (cpu_manager:GetTierLevel() > 2) then
+		
+			if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+				return
+			end
+		end
+		if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+			self:TryAttachSquadMelee()
+		end
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

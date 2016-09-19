@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'nukklearbommatactic.ai'
 -- Created by Cylarne_04 2015
+-- Edited by Thudmeizer		@ 26.02.2016
 
 class 'NukklearBommaTactic' (OrkVehicleTactic)
 
@@ -8,8 +9,11 @@ NukklearBomma = {}
 
 function NukklearBommaTactic:__init( squad_ai ) super( squad_ai )
 
-	self:SetName("NukklearBommba Tactic")
-	
+	self:SetName("Nukklear Bommba Tactic")
+end
+
+function NukklearBommaTactic:AlwaysAttack()
+	return true
 end
 
 function NukklearBommaTactic:InitAbilities()
@@ -20,16 +24,29 @@ function NukklearBommaTactic:InitAbilities()
 	end
 end
 
-function MekBoyTactic:DoAbilities()
+function NukklearBommaTactic:DoAbilities()
 
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 		
 	-- Activate the nuke.
-	if (iRequisition >= 2000 and iPower >= 2000) then
+	if (iRequisition >= 5000 and iPower >= 5000) then
 		if (self.squad_ai:CanDoAbility(NukklearBomma.bombard_id)) then
 			Ability.DoAbilityPos( self.squad_ai, NukklearBomma.bombard_id, Ability.Filters.CloseVehicleEnemy, 4 ) 
 			Ability.DoAbilityPos( self.squad_ai, NukklearBomma.bombard_id, Ability.Filters.CloseEnemy, 15 ) 
+			Ability.DoAbilityPos( self.squad_ai, NukklearBomma.bombard_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3 )
 		end
+	end
+end
+
+function NukklearBommaTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not VehicleTactic.Update( self )) then
+		return
 	end
 end

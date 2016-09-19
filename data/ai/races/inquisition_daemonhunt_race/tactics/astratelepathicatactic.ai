@@ -1,88 +1,100 @@
 ----------------------------------------
 -- File: 'astratelepathicatactic.ai'
--- Edited by Thudmeizer		@ 03.05.2008
+-- Edited by Thudmeizer		@ 07.06.2016
 -- Edited by Cylarne
 
-
 class 'AstraTelepathicaTactic' (BaseTactic)
+
+AstraTelepathica = {}
 
 function AstraTelepathicaTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Astra Telepathica Tactic")
-	
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
 end
 
 function AstraTelepathicaTactic:InitAbilities()
 	
 	-- Init abilities
-	if (self.m_iExterminatusID == nil) then
-		self.m_iExterminatusID = cpu_manager.stats:GetAbilityID("inquisition_exterminatus")
+	if (AstraTelepathica.psycannon_id == nil) then
+		AstraTelepathica.psycannon_id = cpu_manager.stats:GetAbilityID( "inquisition_psycannon_bombard" )
 	end
 
-	if (self.m_iMegameltaID == nil) then
-		self.m_iMegameltaID = cpu_manager.stats:GetAbilityID("inquisition_mega_melta")
+	if (AstraTelepathica.megamelta_id == nil) then
+		AstraTelepathica.megamelta_id = cpu_manager.stats:GetAbilityID( "inquisition_mega_melta" )
+	end
+
+	if (AstraTelepathica.repair_id == nil) then
+		AstraTelepathica.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
 end
 
 function AstraTelepathicaTactic:DoAbilities()
 
 	-- Try to activate the exterminatus orbital attack - monsters
-	if (self.base_ai:CanDoAbility(self.m_iExterminatusID)) then
+	if (self.base_ai:CanDoAbility(AstraTelepathica.psycannon_id)) then
 	
-		local iRange = self.base_ai:GetAbilityRange(self.m_iExterminatusID)
+		local iRange = self.base_ai:GetAbilityRange(AstraTelepathica.psycannon_id)
 		local oSquad = Ability.Filters.CloseMonsterEnemy(self.base_ai:GetPosition(), iRange, 6)
 		if (oSquad ~= nil) then
 			
 			-- Only try to detect if the unit is attacking or capturing
 			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
-				self.base_ai:DoSpecialAbilitySquad(self.m_iExterminatusID, oSquad:GetSquad())
+				self.base_ai:DoSpecialAbilitySquad(AstraTelepathica.psycannon_id, oSquad:GetSquad())
 			end
 		end
 	end
 	
 	-- Try to activate the exterminatus orbital attack - infantry
-	if (self.base_ai:CanDoAbility(self.m_iExterminatusID)) then
+	if (self.base_ai:CanDoAbility(AstraTelepathica.psycannon_id)) then
 	
-		local iRange = self.base_ai:GetAbilityRange(self.m_iExterminatusID)
+		local iRange = self.base_ai:GetAbilityRange(AstraTelepathica.psycannon_id)
 		local oSquad = Ability.Filters.CloseInfantryEnemy(self.base_ai:GetPosition(), iRange, 10)
 		if (oSquad ~= nil) then
 			
 			-- Only try to detect if the unit is attacking or capturing
 			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
-				self.base_ai:DoSpecialAbilitySquad(self.m_iExterminatusID, oSquad:GetSquad())
+				self.base_ai:DoSpecialAbilitySquad(AstraTelepathica.psycannon_id, oSquad:GetSquad())
 			end
 		end
 	end
 	
 	-- Try to activate the mega melta torpedo attack - monsters
-	if (self.base_ai:CanDoAbility(self.m_iMegameltaID)) then
+	if (self.base_ai:CanDoAbility(AstraTelepathica.megamelta_id)) then
 	
-		local iRange = self.base_ai:GetAbilityRange(self.m_iMegameltaID)
+		local iRange = self.base_ai:GetAbilityRange(AstraTelepathica.megamelta_id)
 		local oSquad = Ability.Filters.CloseMonsterEnemy(self.base_ai:GetPosition(), iRange, 1)
 		if (oSquad ~= nil) then
 			
 			-- Only try to detect if the unit is attacking
 			if (oSquad:IsInCombat()) then
-				self.base_ai:DoSpecialAbilitySquad(self.m_iMegameltaID, oSquad:GetSquad())
+				self.base_ai:DoSpecialAbilitySquad(AstraTelepathica.megamelta_id, oSquad:GetSquad())
 			end
 		end
 	end
 
 	-- Try to activate the mega melta torpedo attack - vehicles
-	if (self.base_ai:CanDoAbility(self.m_iMegameltaID)) then
+	if (self.base_ai:CanDoAbility(AstraTelepathica.megamelta_id)) then
 	
-		local iRange = self.base_ai:GetAbilityRange(self.m_iMegameltaID)
+		local iRange = self.base_ai:GetAbilityRange(AstraTelepathica.megamelta_id)
 		local oSquad = Ability.Filters.CloseVehicleEnemy(self.base_ai:GetPosition(), iRange, 1)
 		if (oSquad ~= nil) then
 			
 			-- Only try to detect if the unit is attacking
 			if (oSquad:IsInCombat()) then
-				self.base_ai:DoSpecialAbilitySquad(self.m_iMegameltaID, oSquad:GetSquad())
+				self.base_ai:DoSpecialAbilitySquad(AstraTelepathica.megamelta_id, oSquad:GetSquad())
 			end
 		end
 	end
 
-	
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( AstraTelepathica.repair_id )) then
+			self.base_ai:DoSpecialAbility( AstraTelepathica.repair_id )
+		end
+	end
+end
+
+function AstraTelepathicaTactic:CanDeepStrikeTroops()
+	return true
 end

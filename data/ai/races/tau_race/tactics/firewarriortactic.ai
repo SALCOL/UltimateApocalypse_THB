@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'firewarriortactic.ai'
--- Edited by Thudmeizer @ 18.10.2006
+-- Edited by Thudmeizer @ 18.03.2016
 
 class 'FirewarriorTactic' (TauInfantryTactic)
 
@@ -9,73 +9,211 @@ Firewarrior = {}
 function FirewarriorTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Firewarrior Tactic")
+
+	self:InitAbilities()
+	self.lastused_ability_snaretrap_time = g_iGMT
+	self.lastused_ability_snaretrap_position = squad_ai:GetPosition()
+	self.min_snaretrap_requisition = 400 -- amount of requisition to have before typical use
+	self.min_snaretrap_time = 240 -- 30 seconds to wait between use, in possibly same location
+	self.min_snaretrap_distance = squad_ai:GetAbilityRange(Firewarrior.snaretrap_id) * 2 -- min distance between consecutive throws
 end
 
 function FirewarriorTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Firewarrior.photon == nil) then
-		Firewarrior.photon = cpu_manager.stats:GetAbilityID( "tau_photon_grenade" )
+	if (Firewarrior.emp_id == nil) then
+		Firewarrior.emp_id = cpu_manager.stats:GetAbilityID( "tau_emp_grenade" )	
 	end
-	if (Firewarrior.shield == nil) then
-		Firewarrior.shield = cpu_manager.stats:GetAbilityID( "tau_personal_shield" )
+	if (Firewarrior.empshasui_id == nil) then
+		Firewarrior.empshasui_id = cpu_manager.stats:GetAbilityID( "tau_emp_grenade_shasui" )	
+	end
+	if (Firewarrior.photon_id == nil) then
+		Firewarrior.photon_id = cpu_manager.stats:GetAbilityID( "tau_photon_grenade" )
+	end
+	if (Firewarrior.photonshasui_id == nil) then
+		Firewarrior.photonshasui_id = cpu_manager.stats:GetAbilityID( "tau_photon_grenade_shasui" )
+	end
+	if (Firewarrior.snaretrap_id == nil) then
+		Firewarrior.snaretrap_id = cpu_manager.stats:GetAbilityID( "tau_snare_trap" )	
+	end
+	if (Firewarrior.mark_id == nil) then
+		Firewarrior.mark_id = cpu_manager.stats:GetAbilityID( "tau_mark_squad" )	
+	end
+	if (Firewarrior.run_id == nil) then
+		Firewarrior.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function FirewarriorTactic:DoAbilities()
 
-	Ability.DoAbilityTarget(self.squad_ai, Firewarrior.photon, Ability.Filters.CloseSquadEnemy, 4)
-	--if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.8) then
-		--Ability.DoAbility( self.squad_ai, Firewarrior.shield, Ability.PredicateFilters.IsInCombat ) 
-	--end
+	if (self.squad_ai:IsInCombat()) then
+
+		Ability.DoAbilityTarget( self.squad_ai, Firewarrior.photon_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Firewarrior.photonshasui_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Firewarrior.emp_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, Firewarrior.empshasui_id, Ability.Filters.CloseVehicleEnemy, 1 )
+	end
+
+	-- Check if we can use snare trap ability
+	if (self.squad_ai:CanDoAbility(Firewarrior.snaretrap_id)) then
 	
+		-- Get ability range
+		local iRange = self.squad_ai:GetAbilityRange(Firewarrior.snaretrap_id)
+	
+		-- If surrounded, try to use the snare trap
+		if (self.squad_ai:IsInCombat()) then
+	
+			local vSquadPos = self.squad_ai:GetPosition()
+			local fThrowFactor = 1 / 3
+			local oEnemy = Ability.Filters.CloseEnemy(vSquadPos, iRange, 4)
+			if (oEnemy ~= nil) then
+			
+				local vEnemyPos = oEnemy:GetPosition()
+				local vTargetPos = Vector3f(vSquadPos)
+				vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
+				vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
+				self:DoSpecialAbilitySnareTrap(vTargetPos, true)
+			end
+		else
+			-- Check for close strategic point
+			local oTarget = Ability.Filters.CloseStrategicPoint(self.squad_ai:GetPosition(), iRange)
+			if (oTarget ~= nil) then
+			
+				-- Modify position
+				local vTargetPos = oTarget:GetPosition()
+				local vDir = cpu_manager:GetDirectionToEnemy(vTargetPos)
+				local iOffset = math.random(1, 5)		
+				vTargetPos.x = vTargetPos.x + vDir.x * iOffset
+				vTargetPos.z = vTargetPos.z + vDir.z * iOffset
+				local iDistanceSqr = distance_sqr(vTargetPos, self.squad_ai:GetPosition())
+				if (iDistanceSqr < sqr(iRange) and iDistanceSqr > 1) then
+					self:DoSpecialAbilitySnareTrap(vTargetPos, false)
+				end
+			end
+		end
+	end
+
+	-- Check if we can use mark squad ability
+	if (self.squad_ai:CanDoAbility(Firewarrior.mark_id) and self.squad_ai:IsInCombat()) then
+	
+		-- Get closest squad in range
+		local iRange = self.squad_ai:GetAbilityRange(Firewarrior.mark_id)
+		local oSquad = cpu_manager.cpu_player:FindFirstEnemy(self.squad_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil) then
+		
+			-- Get stats
+			local oStats = oSquad:GetStats()
+			if (oStats ~= nil) then
+			
+				-- Check unit type
+				local eClass = oStats:GetClass()
+				if (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or
+					eClass == UnitStatsAI.UC_VehicleHigh or eClass == UnitStatsAI.UC_Commander or
+					eClass == UnitStatsAI.UC_MonsterHigh or oSquad:GetNumTroopers() >= 4) then
+					
+					-- Use mark ability on squad
+					self.squad_ai:DoSpecialAbilitySquad(Firewarrior.mark_id, oSquad:GetSquad())
+				end
+			end	
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Firewarrior.run_id )) then
+			self.squad_ai:DoSpecialAbility( Firewarrior.run_id )
+		end
+	end
+
 	-- Call basic DoAbilities methods
-	InfantryTactic.DoAbilities(self)
+	TauInfantryTactic.DoAbilities(self)
+end
+
+function FirewarriorTactic:DoSpecialAbilitySnareTrap(position,skip_prereqs)
+
+	local current_time = g_iGMT
+	local current_requisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	local last_time = self.lastused_ability_snaretrap_time
+	local last_pos = self.lastused_ability_snaretrap_position
+	local min_requisition = self.min_snaretrap_requisition
+	local min_time = self.min_snaretrap_time 
+	local min_distance = self.min_snaretrap_distance
+	
+	-- Check situation
+	if (skip_prereqs or (current_requisition > min_requisition and current_time - last_time > min_time) or 
+		(current_requisition > min_requisition and distance(position,last_pos) > min_distance)) then
+
+		-- Use snare trap ability
+		self.squad_ai:DoSpecialAbilityPos(Firewarrior.snaretrap_id, position)
+		self.lastused_ability_snaretrap_time = current_time
+		self.lastused_ability_snaretrap_position = position
+	end
 end
 
 function FirewarriorTactic:Reinforce()
 
-	-- If I am broken, don't upgrade!
+	if not self.squad_ai:IsReinforcing() then
+
+		-- Always try for the actual leader first
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+			return
+		end
+
+		-- Try for different types of squad members
+		local shieldIndex = 0
+		local healerIndex = 1
+		local markerIndex = 2
+	
+		-- Get current leader count
+		local numShields = self.squad_ai:GetLeaderCount( shieldIndex )
+		local numHealers = self.squad_ai:GetLeaderCount( healerIndex)
+		local numMarkers = self.squad_ai:GetLeaderCount( markerIndex )
+
+		-- Desired number of each leader type
+		local desiredShields = math.random(0,1)
+		local desiredHealers = math.random(0,1)
+		local desiredMarkers = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if (numShields < desiredShields) then
+			if self.squad_ai:CanReinforce( true, shieldIndex ) then
+				self.squad_ai:DoReinforce( true, shieldIndex )
+			end
+		elseif (numHealers < desiredHealers) then
+			if self.squad_ai:CanReinforce( true, healerIndex ) then
+				self.squad_ai:DoReinforce( true, healerIndex )
+			end
+		elseif (numMarkers < desiredMarkers) then
+			if self.squad_ai:CanReinforce( true, markerIndex ) then
+				self.squad_ai:DoReinforce( true, markerIndex )
+			end
+		end
+	end
+
+	-- if I am broken, don't reinforce!
 	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
 		return
 	end
 	
-	-- If there are no ressources available, don't upgrade!
+	-- If there are no resources available, don't upgrade!
 	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
-	if (iRequisition < 800 and not Tactic.Options.can_reinforce) then
+	if (iRequisition < 200 and not Tactic.Options.can_reinforce) then
 		return
 	end
-
-	--always try for the actual leader first
-	if (not self.squad_ai:IsReinforcing()) then
-		if (self.squad_ai:CanReinforce( false, 0 )) then
-			self.squad_ai:DoReinforce( false, 0 )
-		end
-	end
-
-	if (not self.squad_ai:IsReinforcing()) then
-
-		-- try for different types of squad members
-		local shasuiIndex = 0
-		local shieldIndex = 1
 	
-		local numShasui = self.squad_ai:GetLeaderCount( shasuiIndex )
-		local numShield = self.squad_ai:GetLeaderCount( shieldIndex )
+	-- Try for leader
+	if (not self.squad_ai:IsReinforcing()) then
+	  
+		if (self.squad_ai:CanReinforce(true, 0)) then
+			self.squad_ai:DoReinforce(true, 0)
+		elseif (self.squad_ai:CanReinforce(false, 0)) then
 
-		-- Desired number of each leader type
-		local desiredShasui = 1 
-		local desiredShield = 1
-
-		-- Desired order of reinforcing
-		if (numShasui < desiredShasui) then
-		
-			if (self.squad_ai:CanReinforce( true, shasuiIndex )) then
-				self.squad_ai:DoReinforce( true, shasuiIndex )
-			end
-		elseif (numShield < desiredShield) then
-		
-			if (self.squad_ai:CanReinforce( true, shieldIndex )) then
-				self.squad_ai:DoReinforce( true, shieldIndex )
+			-- Don't reinforce more than 6 firewarriors without a leader
+			if (self.squad_ai:HasLeader() or self.squad_ai:GetNumTroopers() < 6) then
+				self.squad_ai:DoReinforce(false, 0)
 			end
 		end
 	end

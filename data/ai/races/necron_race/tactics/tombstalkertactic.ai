@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'tombstalkertactic.ai'
--- Createde by Cylarne @ 2011
+-- Created by Cylarne @ 2011
+-- Edited by Thudmeizer	@ 09.03.2016
 
 class 'TombStalkerTactic' (NecronVehicleTactic)
 
@@ -9,32 +10,35 @@ TombStalker = {}
 function TombStalkerTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Tomb Stalker Tactic")
+
+	self.timedDirectSpawnAbility = Timer( TombStalkerTactic.DoDirectSpawnAbility, self, 5 )
 end
 
 function TombStalkerTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (TombStalker.invisibility_id == nil) then
-		TombStalker.invisibility_id = cpu_manager.stats:GetAbilityID( "necron_invisibility" )	
+	if (TombStalker.truegauss_id == nil) then
+		TombStalker.truegauss_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )
 	end
 
 	if (TombStalker.phaseshift_id == nil) then
-		TombStalker.phaseshift_id = cpu_manager.stats:GetAbilityID("necron_wraith_phase_shift")	
+		TombStalker.phaseshift_id = cpu_manager.stats:GetAbilityID( "necron_wraith_phase_shift" )	
 	end	
 end
 
 function TombStalkerTactic:DoAbilities()
 
-	if (self.squad_ai:CanDoAbility(TombStalker.invisibility_id)) then
-		if (not self.squad_ai:IsUsingAbility(TombStalker.invisibility_id) and not self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.7) then
-			self.squad_ai:DoSpecialAbility(TombStalker.invisibility_id)
-			
-		elseif (self.squad_ai:IsUsingAbility(TombStalker.invisibility_id) and self.squad_ai:IsInCombat()) then
-			self.squad_ai:DoSpecialAbility(TombStalker.invisibility_id)
-		end
+	-- Gauss Weapon Overcharge: the squad will receive a boost in maximum damage, but a critical reduction in movement speed for a duration.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.5) then
+		Ability.DoAbilityArea( self.squad_ai, TombStalker.truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
 	end
-	if (self.squad_ai:CanDoAbility(TombStalker.phaseshift_id) and self.squad_ai:GetHealthPercentage() < 0.2) then
-		Ability.DoAbility(self.squad_ai, TombStalker.phaseshift_id, Ability.PredicateFilters.IsInCombat)
+
+	--Shadow Shifter: Cloaks and disables the squad for several seconds, enabling quick regeneration and recovery from battle.
+	-- Infiltrated squad will also receive no damage from incoming attacks (if at all revealed), but cannot attack either.
+	if (self.squad_ai:IsInCombat()) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			self.squad_ai:DoSpecialAbility(TombStalker.phaseshift_id)
+		end
 	end
 	
 	-- Try to spawn Scarabs
@@ -47,7 +51,7 @@ end
 
 function TombStalkerTactic:DoDirectSpawnAbility()
 
-	-- Spawn Horblu Support in combat
+	-- Spawn Scarabs in combat
 	if (self.squad_ai:CanDirectSpawn() and self.squad_ai:IsInCombat()) then 
 		self.squad_ai:DoDirectSpawn()
 	end

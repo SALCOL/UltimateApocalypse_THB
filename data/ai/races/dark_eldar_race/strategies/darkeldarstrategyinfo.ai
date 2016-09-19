@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarstrategyinfo.ai'
--- Edited by Thudmeizer    @ 02.02.2016
+-- Edited by Thudmeizer    @ 20.06.2016
 
 BuildBaseStrategyInfo = 
 {
@@ -22,7 +22,7 @@ BuildBaseStrategyInfo =
 		Engineers =
 		{
 			--number of engineers we're aiming for
-			want = 2,
+			want = 8,
 		},
 		
 		-- Is used to modify the army strength in the build programs (Allows faster balancing adjustments)
@@ -34,55 +34,91 @@ BuildBaseStrategyInfo =
 			-- Research Total: 24
 			-- Allround strategy
 			{
-				{ 1, 180, 40, 0, 1,	"Unit",		"dark_eldar_squad_archon" },
-				{ 1, 50, 25, 0, 1,	"Research",	"dark_eldar_infiltration_mandrake_research" },
+				{ 1, 240, 40, 0, 1,	"Unit",		"dark_eldar_squad_archon" },
 				{ 1, 450, 0, 0, 1,	"Building",	"dark_eldar_hq" },
 				{ 1, 225, 0, 0, 1,	"Building",	"dark_eldar_hall_of_blood" },
 				{ 1, 150, 0, 0, 1,	"Building",	"dark_eldar_plasma_generator" },
+				{ 1, 50, 25, 0, 1,	"Research",	"dark_eldar_infiltration_mandrake_research" },
 				{ 1, 90, 80, 0, 100,	"TurretAddon",	"addon_dark_eldar_list_post_1" },
-				{ 1, 0, 0, 0, 1,	"Building",	"dark_eldar_slave_caravel_ai" },
+			        { 1, 0, 0, 0, 1,	"Building",	"dark_eldar_slave_caravel_ai" },
 				{ 1, 150, 0, 0, 3,	"Building",	"dark_eldar_plasma_generator" },
-				{ 1, 0, 0, 0, 40,	"TurretAddon",	"addon_dark_eldar_slave_graveyard" },
-				{ 1, 0, 0, 0, 40,	"TurretAddon",	"addon_dark_eldar_gruesome_display" },
 				{ 1, 75, 25, 0, 1,	"Building",	"dark_eldar_slave_caravel" },
+				{ 1, 0, 0, 0, 50,	"Addon",	"addon_dark_eldar_slave_graveyard" },
+				{ 1, 0, 0, 0, 50,	"Addon",	"addon_dark_eldar_gruesome_display" },
 				{ 1, 175, 50, 0, 1,	"Building",	"dark_eldar_haemonculus_laboratory" },
-				{ 1, 125, 0, 0, 1,	"Building",	"dark_eldar_portal" },
-				{ 1, 100, 30, 0, 1,	"Building",	"dark_eldar_turret" },
-				{ 1, 400, 130, 0, 1,	"Addon",	"addon_dark_eldar_hq_1" },
+				{ 1, 100, 0, 0, 1,	"Building",	"dark_eldar_portal" },
+				{ 1, 120, 50, 0, 1,	"Building",	"dark_eldar_turret" },
+			        { 1, 0, 0, 0, 100,	"Addon",	"addon_dark_eldar_gruesome_display_building" },
 				{ 1, 150, 0, 0, 4,	"Building",	"dark_eldar_plasma_generator" },
-				{ 1, 100, 30, 0, 2,	"Building",	"dark_eldar_turret" },
+				{ 1, 120, 50, 0, 2,	"Building",	"dark_eldar_turret" },
+				{ 1, 400, 130, 950, 1,	"Addon",	"addon_dark_eldar_hq_1" },
 				
-				{ 2, 200, 65, 0, 1,	"Building",	"dark_eldar_skimmer_shop" },
+				{ 2, 75, 125, 0, 1,	"Unit",		"dark_eldar_squad_haemonculus" },
+				{ 2, 240, 40, 0, 1,	"Unit",		"dark_eldar_squad_archon" },
+				{ 2, 150, 250, 0, 1,	"Unit",		"dark_eldar_squad_raider" },
+				{ 2, 250, 75, 0, 1,	"Building",	"dark_eldar_skimmer_shop" },
 				{ 2, 150, 0, 0, 6,	"Building",	"dark_eldar_plasma_generator" },
 				{ 2, 150, 75, 0, 1,	"Building",	"dark_eldar_wych_cult_arena" },
-				{ 2, 100, 30, 0, 3,	"Building",	"dark_eldar_turret" },
-				{ 2, 85, 0, 0, 50,	"TurretAddon",	"addon_dark_eldar_turret" },
-				{ 2, 50, 25, 500, 50,	"TurretAddon",	"addon_dark_eldar_list_post_dark_lance" },
-				{ 2, 240, 160, 0, 1,	"TurretAddon",	"addon_dark_eldar_list_post_2" },
-			      --{ 2, 50, 15, 0, 100,	"TurretAddon",	"addon_dark_eldar_gruesome_display_building" },
-				{ 2, 500, 500, 500, 1,	"Addon",	"addon_dark_eldar_hq_2" },
-				{ 2, 100, 30, 0, 5,	"Building",	"dark_eldar_turret" },
+				{ 2, 120, 50, 0, 3,	"Building",	"dark_eldar_turret" },
+				{ 2, 25, 90, 0, 75,	"TurretAddon",	"addon_dark_eldar_turret" },
+			        { 2, 0, 0, 500, 2,	"Building",	"dark_eldar_slave_caravel_ai" },
+				{ 2, 50, 25, 500, 75,	"TurretAddon",	"addon_dark_eldar_list_post_dark_lance" },
+				{ 2, 240, 160, 0, 50,	"TurretAddon",	"addon_dark_eldar_list_post_2" },
+				{ 2, 700, 150, 1000, 2,	"Building",	"dark_eldar_hq" },
+				{ 2, 120, 50, 0, 5,	"Building",	"dark_eldar_turret" },
+				{ 2, 500, 500, 1000, 1,	"Addon",	"addon_dark_eldar_hq_2" },
 				
-				{ 3, 240, 60, 0, 1,	"Unit",		"dark_eldar_squad_incubus" },
+				{ 3, 240, 105, 0, 1,	"Unit",		"dark_eldar_squad_incubus" },
 				{ 3, 240, 160, 500, 100,"TurretAddon",	"addon_dark_eldar_list_post_2" },
-				{ 3, 35, 0, 0, 100,	"TurretAddon",	"addon_dark_eldar_slave_graveyard" },
-				{ 3, 1000, 1000, 500, 1,"Research",	"dark_eldar_tier3_research" },
-				{ 3, 700, 150, 1500, 2,	"Building",	"dark_eldar_hq" },
+				{ 3, 25, 90, 0, 75,	"TurretAddon",	"addon_dark_eldar_turret" },
+			        { 3, 0, 0, 500, 3,	"Building",	"dark_eldar_slave_caravel_ai" },
+				{ 3, 50, 25, 0, 75,	"TurretAddon",	"addon_dark_eldar_list_post_dark_lance" },
+				{ 3, 0, 0, 0, 100,	"Addon",	"addon_dark_eldar_slave_graveyard" },
+				{ 3, 1000, 1000, 1500, 1,"Research",	"dark_eldar_tier3_research" },
 				
+				{ 4, 180, 360, 0, 1,	"Unit",		"dark_eldar_squad_ravager" },
 				{ 4, 300, 100, 0, 1,	"Building",	"dark_eldar_soul_cage" },
-				{ 4, 1500, 1500, 500, 1,"Research",	"dark_eldar_tier4_research" },
+			        { 4, 25, 90, 0, 100,	"TurretAddon",	"addon_dark_eldar_turret" },
+			        { 4, 50, 25, 0, 100,	"TurretAddon",	"addon_dark_eldar_list_post_dark_lance" },
+				{ 4, 1500, 1500, 2000, 1,"Research",	"dark_eldar_tier4_research" },
 				
-				{ 5, 600, 280, 0, 1,	"Building",	"dark_eldar_corruptedgate" },
-				{ 5, 2000, 2000, 0, 1,	"Building",	"dark_eldar_hq_sp_dxp3" },
-				{ 5, 3000, 3000, 0, 1,	"Research",	"dark_eldar_apocalypse_research" }
+				{ 5, 550, 260, 0, 1,	"Building",	"dark_eldar_corruptedgate" },
+				{ 5, 5500, 5500, 0, 1,	"Building",	"dark_eldar_hq_sp_dxp3" },
+				{ 5, 3000, 3000, 2500, 1,"Research",	"dark_eldar_apocalypse_research" },
+
+				{ 6, 240, 40, 0, 1,	"Unit",		"dark_eldar_squad_archon" },
+				{ 6, 75, 125, 0, 1,	"Unit",		"dark_eldar_squad_haemonculus" },
+				{ 6, 8000, 8000, 4000, 3,"Building",	"dark_eldar_hq_sp_dxp3" }
 			},
 		},
 		SquadLimits = 
 		{
 			standard =
 			{
-
-				
+				dark_eldar_squad_mandrake = 2,
+				dark_eldar_squad_warrior = 3,
+				dark_eldar_squad_hellion = 3,
+				dark_eldar_squad_scourge = 3,
+				dark_eldar_squad_wych = 3,
+				dark_eldar_squad_warp_beast = 2,
+				dark_eldar_squad_wrack = 3,
+				dark_eldar_squad_warrior_trueborn = 3,
+				dark_eldar_squad_clawed_warp_beast = 3,
+				dark_eldar_squad_araspida = 3,
+				dark_eldar_squad_reaver = 2,
+				dark_eldar_squad_raider = 2,
+				dark_eldar_squad_talos = 2,
+				dark_eldar_squad_reaper = 2,
+				dark_eldar_squad_raven = 2,
+				dark_eldar_squad_ravager = 2,
+				dark_eldar_squad_rampage = 2,
+				dark_eldar_squad_shadow = 2,
+				dark_eldar_squad_tormentor = 1,
+				dark_eldar_squad_tormentor_assault = 1,
+				dark_eldar_squad_instigator = 1,
+				dark_eldar_squad_phoenix = 1,
+				dark_eldar_squad_voidraven = 1,
+				dark_eldar_squad_voidraven_variant = 1,
 			}
 		}
 	},
@@ -96,12 +132,14 @@ BuildOrderStrategyInfo =
 		{
 			{ "flag_capture" }, { "flag_capture" },
 			{ "squad", "dark_eldar_squad_mandrake" },
-			{ "squad", "dark_eldar_squad_mandrake" },
 			{ "squad", "dark_eldar_squad_slave" },
-			{ "squad", "dark_eldar_squad_archon" },
+			{ "squad", "dark_eldar_squad_mandrake" },
+			{ "squad", "dark_eldar_squad_mandrake" },
+			{ "squad", "dark_eldar_squad_mandrake" },
+			{ "squad", "dark_eldar_squad_mandrake" },
 			{ "post_builder" },
 			{ "building", "dark_eldar_hall_of_blood", true },
-		      --{ "building", "dark_eldar_turret", true },
+			{ "building", "dark_eldar_slave_caravel_ai"},
 			{ "building", "dark_eldar_plasma_generator"}
 		},
 		
@@ -149,9 +187,11 @@ BuildOrderStrategyInfo =
 			{ "flag_capture" }, { "flag_capture" }, 
 			{ "flag_capture" },
 			{ "squad", "dark_eldar_squad_mandrake" },
-			{ "squad", "dark_eldar_squad_mandrake" },
-			{ "squad", "dark_eldar_squad_mandrake" },
 			{ "squad", "dark_eldar_squad_slave" },
+			{ "squad", "dark_eldar_squad_mandrake" },
+			{ "squad", "dark_eldar_squad_mandrake" },
+			{ "squad", "dark_eldar_squad_mandrake" },
+			{ "squad", "dark_eldar_squad_mandrake" },
 			{ "post_builder" }, { "post_builder" },
 			{ "building", "dark_eldar_hall_of_blood", true },
 			{ "building", "dark_eldar_plasma_generator", true },

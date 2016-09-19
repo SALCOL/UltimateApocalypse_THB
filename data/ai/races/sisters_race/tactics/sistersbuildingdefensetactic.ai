@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersbuildingdefensetactic.ai'
--- Edited by Thudmeizer		@ 22.03.2008
+-- Edited by Thudmeizer		@ 20.06.2016
 
 class 'SistersBuildingDefenseTactic' (BaseTactic)
 
@@ -14,34 +14,60 @@ end
 function SistersBuildingDefenseTactic:InitAbilities()
 	
 	-- Init abilities
-	if (self.m_iReliquaryhailersID == nil) then
-		self.m_iReliquaryhailersID = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_reliquary" )
+	if (SistersBuildingDefense.reliquary_id == nil) then
+		SistersBuildingDefense.reliquary_id = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_reliquary" )
 	end
 
-	if (self.m_iChapelhailersID == nil) then
-		self.m_iChapelhailersID = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_ecclesiarchal_chapel" )
+	if (SistersBuildingDefense.chapel_id == nil) then
+		SistersBuildingDefense.chapel_id = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_ecclesiarchal_chapel" )
 	end
 
-	if (self.m_iConventhailersID == nil) then
-		self.m_iConventhailersID = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_as_convent" )
+	if (SistersBuildingDefense.convent_id == nil) then
+		SistersBuildingDefense.convent_id = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_as_convent" )
 	end
 
-	if (self.m_iSanctuaryhailersID == nil) then
-		self.m_iSanctuaryhailersID = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_pristine_sanctuary" )
+	if (SistersBuildingDefense.sanctuary_id == nil) then
+		SistersBuildingDefense.sanctuary_id = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_pristine_sanctuary" )
 	end
 
-	if (self.m_iWorkshophailersID == nil) then
-		self.m_iWorkshophailersID = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_am_workshop" )
+	if (SistersBuildingDefense.workshop_id == nil) then
+		SistersBuildingDefense.workshop_id = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_am_workshop" )
+	end
+
+	if (SistersBuildingDefense.repair_id == nil) then
+		SistersBuildingDefense.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
 end
 
 function SistersBuildingDefenseTactic:DoAbilities()
 
-       Ability.DoAbilityArea( self.base_ai, self.m_iReliquaryhailersID, Ability.Filters.CloseInfantryEnemy, 20, 2)
-       Ability.DoAbilityArea( self.base_ai, self.m_iChapelhailersID, Ability.Filters.CloseInfantryEnemy, 20, 2)
-       Ability.DoAbilityArea( self.base_ai, self.m_iConventhailersID, Ability.Filters.CloseInfantryEnemy, 20, 2)
-       Ability.DoAbilityArea( self.base_ai, self.m_iSanctuaryhailersID, Ability.Filters.CloseInfantryEnemy, 20, 2)
-       Ability.DoAbilityArea( self.base_ai, self.m_iWorkshophailersID, Ability.Filters.CloseInfantryEnemy, 20, 2)
+	if (self.base_ai:CanDoAbility( SistersBuildingDefense.reliquary_id )) then
+		Ability.DoAbilityArea( self.base_ai, SistersBuildingDefense.reliquary_id, Ability.Filters.CloseInfantryEnemy, 20, 2)
+	end
+
+	if (self.base_ai:CanDoAbility( SistersBuildingDefense.chapel_id )) then
+		Ability.DoAbilityArea( self.base_ai, SistersBuildingDefense.chapel_id, Ability.Filters.CloseInfantryEnemy, 20, 2)
+	end
+
+	if (self.base_ai:CanDoAbility( SistersBuildingDefense.convent_id )) then
+		Ability.DoAbilityArea( self.base_ai, SistersBuildingDefense.convent_id, Ability.Filters.CloseInfantryEnemy, 20, 2)
+	end
+
+	if (self.base_ai:CanDoAbility( SistersBuildingDefense.sanctuary_id )) then
+		Ability.DoAbilityArea( self.base_ai, SistersBuildingDefense.sanctuary_id, Ability.Filters.CloseInfantryEnemy, 20, 2)
+	end
+
+	if (self.base_ai:CanDoAbility( SistersBuildingDefense.workshop_id )) then
+		Ability.DoAbilityArea( self.base_ai, SistersBuildingDefense.workshop_id, Ability.Filters.CloseInfantryEnemy, 20, 2)
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SistersBuildingDefense.repair_id )) then
+			self.base_ai:DoSpecialAbility( SistersBuildingDefense.repair_id )
+		end
+	end
 end
 
 

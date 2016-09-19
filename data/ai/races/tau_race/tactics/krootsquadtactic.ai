@@ -1,0 +1,85 @@
+----------------------------------------
+-- File: 'krootsquadtactic.ai'
+-- Edited by Thudmeizer @ 03.05.2016
+
+class 'KrootSquadTactic' (TauInfantryTactic)
+
+KrootSquad = {}
+
+function KrootSquadTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Kroot Squad Tactic")
+end
+
+function KrootSquadTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (KrootSquad.charge_id == nil) then
+		KrootSquad.charge_id = cpu_manager.stats:GetAbilityID( "tau_bumpertank_kroot" )	
+	end
+	if (KrootSquad.devour_id == nil) then
+		KrootSquad.devour_id = cpu_manager.stats:GetAbilityID( "tau_devour" )	
+	end
+	if (KrootSquad.run_id == nil) then
+		KrootSquad.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function KrootSquadTactic:DoAbilities()
+
+	-- Charge: For a duration, all kroot charging at the enemy will gain a 100% movement speed bonus with a medium knockback range wherever the units may go.
+	if (self.squad_ai:CanDoAbility( KrootSquad.charge_id )) then
+		if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+			self.squad_ai:DoSpecialAbility( KrootSquad.charge_id )
+		end
+	end
+
+	-- Hunt: For a duration, the squad gains a boost in sight, keen sight, movement speed, and morale bonuses.
+	if (self.squad_ai:CanDoAbility( KrootSquad.devour_id )) then
+		Ability.DoAbilityArea(self.squad_ai, KrootSquad.devour_id, Ability.Filters.CloseEnemy, 20, 4)
+		Ability.DoAbilityArea(self.squad_ai, KrootSquad.devour_id, Ability.Filters.CloseInfiltratedEnemy, 30, 1)
+	end
+
+	-- Check if we can cannibalize
+	local vSquadPos = self.squad_ai:GetPosition()
+	if (not self.squad_ai:IsInCombat() and self.squad_ai:IsIdle() and not cpu_manager.terrain_analyzer:HasThreat(vSquadPos, 50)) then
+
+		-- Check if we have corpses in range
+		local numCorpses = self.squad_ai:GetNumCorpses(20);
+		if (numCorpses > 0) then
+			self.squad_ai:DoCannibalize();
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( KrootSquad.run_id )) then
+			self.squad_ai:DoSpecialAbility( KrootSquad.run_id )
+		end
+	end
+end
+
+function KrootSquadTactic:Reinforce()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+   
+	-- If there are no resources available, don't upgrade!
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (iRequisition < 600 and not Tactic.Options.can_reinforce) then
+		return
+	end
+			
+	-- Don't reinforce more than 12 squad members -- they both get stuck or don't capture points properly
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 12) then
+        	if (self.squad_ai:CanReinforce(true, 0)) then            
+            		self.squad_ai:DoReinforce(true, 0)
+       		elseif (self.squad_ai:CanReinforce(false, 0)) then
+            		self.squad_ai:DoReinforce(false, 0)
+		end
+	end
+end

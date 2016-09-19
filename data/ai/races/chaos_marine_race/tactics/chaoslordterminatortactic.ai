@@ -1,0 +1,229 @@
+----------------------------------------
+-- File: 'chaoslordterminatortactic.ai'
+-- Edited by Thudmeizer @ 28.02.2016
+-- Edited by LarkinVB   @ 31.07.2005
+
+class 'ChaosLordTerminatorTactic' (ChaosMarineInfantryTactic)
+
+ChaosLordTerminator = {}
+
+function ChaosLordTerminatorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chaos Lord Tactic")
+
+	self.m_oTimedSpecialAbilities = Timer( ChaosLordTerminatorTactic.DoTimedSpecialAbilities, self, 7 )
+end
+
+function ChaosLordTerminatorTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelChaosLordTerminator = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelChaosLordTerminator ~= nil) then
+			local addOnID = buildChannelChaosLordTerminator:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelChaosLordTerminator:IsBuilding() == 0 and buildChannelChaosLordTerminator:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelChaosLordTerminator:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+-- Assassinate win condition -- never attack
+function ChaosLordTerminatorTactic:IsAttacker()
+	return (not cpu_manager.assassinate and self:IsCommanderAttacker())
+end
+
+-- Assassinate win condition -- never defend
+function ChaosLordTerminatorTactic:IsDefender()
+	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+end
+
+-- Chaos Lord is allowed to retreat even directly after a jump
+function ChaosLordTerminatorTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Assassinate win condition -- never jump into combat
+function ChaosLordTerminatorTactic:JumpAttack()
+
+	if (not cpu_manager.assassinate) then
+		Tactic.JumpAttack(self)
+	end
+end
+
+function ChaosLordTerminatorTactic:CanJumpAttached()
+	return true
+end
+
+function ChaosLordTerminatorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChaosLordTerminator.strength_id == nil) then
+		ChaosLordTerminator.strength_id = cpu_manager.stats:GetAbilityID( "chaos_daemon_strength" )	
+	end
+	if (ChaosLordTerminator.detector_id == nil) then
+		ChaosLordTerminator.detector_id = cpu_manager.stats:GetAbilityID( "chaos_detector" )	
+	end
+	if (ChaosLordTerminator.bomb_id == nil) then
+		ChaosLordTerminator.bomb_id = cpu_manager.stats:GetAbilityID( "chaos_commander_bomb" )
+	end
+	if (ChaosLordTerminator.run_id == nil) then
+		ChaosLordTerminator.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function ChaosLordTerminatorTactic:DoAbilities()
+
+	Ability.DoAbility( self.squad_ai, ChaosLordTerminator.strength_id, Ability.Filters.IsInCombat )
+	
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, ChaosLordTerminator.bomb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ChaosLordTerminator.bomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( ChaosLordTerminator.run_id )) then
+			self.squad_ai:DoSpecialAbility( ChaosLordTerminator.run_id )
+		end
+	end
+
+	if (self.m_oTimedSpecialAbilities ~= nil) then
+		self.m_oTimedSpecialAbilities:Call()
+	else
+		ChaosLordTerminatorTactic.DoTimedSpecialAbilities(self)
+	end
+end
+
+function ChaosLordTerminatorTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] chaos_lord_flamer_combo_addon	-- 1/4 Ranged Weapon
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] chaos_lord_plasma_combo_addon	-- 2/4 Ranged Weapon
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] chaos_lord_melta_combo_addon		-- 3/4 Ranged Weapon
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] chaos_lord_reapercannon_addon	-- 4/4 Ranged Weapon
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] chaos_lord_chainfist_addon		-- Build first then..
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] chaos_lord_lightningclaw_addon	-- build second.
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] chaos_lord_teleporter_addon		-- Always build
+
+--	self:AutoBuildAddOn(7)	--	[addon_08] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(9)	-- 	[addon_10] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(10)	-- 	[addon_11] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(11)	-- 	[addon_12] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(12)	-- 	[addon_13] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(13)	-- 	[addon_14] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(14)	-- 	[addon_15] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(15)	-- 	[addon_16] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 7,15 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(9)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+
+	-- Figure out my enemy's favourite class
+	local enemy = cpu_manager:FindClosestEnemyPlayer()
+	if (enemy == nil) then
+		return
+	end
+	
+	local class_type = enemy:GetMajorityClassType()
+	
+	-- Hard counter upgrade for infantry
+	if (class_type == UnitStatsAI.UC_LightInfantryLow) or 
+		(class_type == UnitStatsAI.UC_LightInfantryMed) or 
+		(class_type == UnitStatsAI.UC_LightInfantryHigh) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryMed) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryHigh) or
+		(class_type == UnitStatsAI.UC_MonsterMed) then 
+   		if (cpu_manager:GetTierLevel() >= 2) then 
+			local addon_random_infantry_wargear = math.random( 0,1 )
+			self:AutoBuildAddOn(addon_random_infantry_wargear )	-- Randomize between Combo Flamers and Plasma weapons
+		end
+	-- Hard counter upgrade for Vehicles
+	elseif (class_type == UnitStatsAI.UC_VehicleLow) or 
+		(class_type == UnitStatsAI.UC_VehicleMed) or
+		(class_type == UnitStatsAI.UC_VehicleHigh) or
+		(class_type == UnitStatsAI.UC_MonsterHigh) then
+   		if (cpu_manager:GetTierLevel() >= 2) then 
+			local addon_random_vehicle_wargear = math.random( 2,3 )
+			self:AutoBuildAddOn(addon_random_vehicle_wargear )	-- Randomize between Combo Melta and Reaper weapons
+		end
+	end
+
+	-- Build Chainfist wargear first then..
+	self:AutoBuildAddOn(4)
+
+	-- Build Lightning Claws wargear next..
+	self:AutoBuildAddOn(5)
+
+	-- Always build teleport addon
+	self:AutoBuildAddOn(6)
+end
+
+function ChaosLordTerminatorTactic:DoTimedSpecialAbilities()
+
+	-- Try to use detection ability
+    if (self.squad_ai:CanDoAbility(ChaosLordTerminator.detector_id)) then
+    
+    	-- Check for infiltrated enemy
+        local oEnemy = Ability.Filters.CloseInfiltratedEnemy(self.squad_ai:GetPosition(), 35, 1)
+        if (oEnemy ~= nil) then
+
+        	-- Get distance to enemy unit
+            local vSquadPos = self.squad_ai:GetPosition()
+            local vEnemyPos = oEnemy:GetPosition()
+            local iDistance = distance(vSquadPos, vEnemyPos)
+            
+            -- If target is too far away launch auspex in range
+            local vTargetPos = Vector3f(vSquadPos)
+            local iRange = self.squad_ai:GetAbilityRange(ChaosLordTerminator.detector_id)
+            if (iDistance > iRange) then
+                local fThrowFactor = iRange / iDistance
+                vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
+                vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
+            else
+                vTargetPos = Vector3f(vEnemyPos)
+            end
+            self.squad_ai:DoSpecialAbilityPos(ChaosLordTerminator.detector_id, vTargetPos)
+        end
+    end
+end
+
+function ChaosLordTerminatorTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Assassinate win condition -- never attach to a squad
+	if (not cpu_manager.assassinate) then
+				
+		-- Attach to melee in tier2+
+		if (cpu_manager:GetTierLevel() > 1) then
+		
+			if (self:TryAttachSquad(true, true, 50, 150, nil) ~= nil) then
+				return
+			end
+		end
+		if (self:TryAttachSquad(false, true, 50, nil, self.m_fCommanderAttachHealth) == nil) then
+			self:TryAttachSquadMelee()
+		end
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

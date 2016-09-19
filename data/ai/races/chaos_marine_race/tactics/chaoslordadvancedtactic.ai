@@ -1,0 +1,105 @@
+----------------------------------------
+-- File: 'chaoslordadvancedtactic.ai'
+-- Edited by Thudmeizer @ 12.02.2016
+
+class 'ChaosLordAdvancedTactic' (ChaosMarineInfantryTactic)
+
+ChaosLordAdvanced = {}
+
+function ChaosLordAdvancedTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chaos Lord Advanced Tactic")
+
+	self.m_oTimedSpecialAbilities = Timer( ChaosLordAdvancedTactic.DoTimedSpecialAbilities, self, 7 )
+end
+
+function ChaosLordAdvancedTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function ChaosLordAdvancedTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function ChaosLordAdvancedTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChaosLordAdvanced.strength_id == nil) then
+		ChaosLordAdvanced.strength_id = cpu_manager.stats:GetAbilityID( "chaos_daemon_strength" )	
+	end
+	if (ChaosLordAdvanced.detector_id == nil) then
+		ChaosLordAdvanced.detector_id = cpu_manager.stats:GetAbilityID( "chaos_detector" )	
+	end
+end
+
+function ChaosLordAdvancedTactic:DoAbilities()
+
+	Ability.DoAbility( self.squad_ai, ChaosLordAdvanced.strength_id, Ability.Filters.IsInCombat )
+	
+	if (self.m_oTimedSpecialAbilities ~= nil) then
+		self.m_oTimedSpecialAbilities:Call()
+	else
+		ChaosLordAdvancedTactic.DoTimedSpecialAbilities(self)
+	end
+
+	-- Check if we can possess
+	if (self.squad_ai:CanPossess()) then
+	
+		-- Check if we are in combat
+		if (self.squad_ai:IsInCombat() or cpu_manager.terrain_analyzer:HasThreat(self.squad_ai:GetPosition(), 35)) then
+			self.squad_ai:DoPossess()
+		end
+	end
+end
+
+function ChaosLordAdvancedTactic:DoTimedSpecialAbilities()
+
+	-- Try to use detection ability
+    if (self.squad_ai:CanDoAbility(ChaosLordAdvanced.detector_id)) then
+    
+    	-- Check for infiltrated enemy
+        local oEnemy = Ability.Filters.CloseInfiltratedEnemy(self.squad_ai:GetPosition(), 35, 1)
+        if (oEnemy ~= nil) then
+
+        	-- Get distance to enemy unit
+            local vSquadPos = self.squad_ai:GetPosition()
+            local vEnemyPos = oEnemy:GetPosition()
+            local iDistance = distance(vSquadPos, vEnemyPos)
+            
+            -- If target is too far away launch auspex in range
+            local vTargetPos = Vector3f(vSquadPos)
+            local iRange = self.squad_ai:GetAbilityRange(ChaosLordAdvanced.detector_id)
+            if (iDistance > iRange) then
+                local fThrowFactor = iRange / iDistance
+                vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
+                vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
+            else
+                vTargetPos = Vector3f(vEnemyPos)
+            end
+            self.squad_ai:DoSpecialAbilityPos(ChaosLordAdvanced.detector_id, vTargetPos)
+        end
+    end
+end
+
+function ChaosLordAdvancedTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+
+	-- Attach to melee in tier2+
+	if (cpu_manager:GetTierLevel() > 1) then
+	
+		if (self:TryAttachSquad(true, true, 50, 150, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, nil, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+end

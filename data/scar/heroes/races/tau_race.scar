@@ -106,9 +106,6 @@ UnitTypes.tau_race =
 		UpgradeFunction = UpgradeRangedSquad,
 		FXType = "Vehicle",
 	},
-
-
-
 	tau_xv81_crisis_suit_squad =
 	{
 		Title = "XV81 Crisis Suit",
@@ -355,6 +352,13 @@ UnitTypes.tau_race =
 		CanMorph = true,
 		Summoned = true,
 		MorphID = 2,
+	},
+	tau_eel_battletank_squad = 
+	{
+		Title = "Hazard-Eel Reclamation Vehicle",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
 	},
 	tau_hammerhead_gunship_squad =
 	{

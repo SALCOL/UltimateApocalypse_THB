@@ -1,0 +1,61 @@
+----------------------------------------
+-- File: 'darkeldarmobileshieldtactic.ai'
+-- Edited by Thudmeizer         @ 21.04.2016
+
+class 'DarkEldarMobileShieldTactic' (DarkEldarVehicleTactic)
+
+DarkEldarMobileShield = {}
+
+function DarkEldarMobileShieldTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Dark Eldar Mobile Shield Tactic")
+end
+
+function DarkEldarMobileShieldTactic:IsAttacker()
+	return false
+end
+
+function DarkEldarMobileShieldTactic:IsDefender()
+	return true
+end
+
+function DarkEldarMobileShieldTactic:InitAbilities()
+
+	if (DarkEldarMobileShield.energyfield_id == nil) then
+		DarkEldarMobileShield.energyfield_id = cpu_manager.stats:GetAbilityID( "dark_eldar_energy_field_araspida_operative" )	
+	end
+
+	if (DarkEldarMobileShield.soulshock_id == nil) then
+		DarkEldarMobileShield.soulshock_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_shock_araspida" )	
+	end
+end
+
+function DarkEldarMobileShieldTactic:DoAbilities()
+
+	-- Can we activate Energy Shield when enemy is nearby
+	if (self.squad_ai:IsUsingAbility(DarkEldarMobileShield.energyfield_id)) then
+		-- Turn Shield on only when enemy is nearby
+		if (Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), 20, 1) == nil) then
+			self.squad_ai:DoSpecialAbility(DarkEldarMobileShield.energyfield_id)
+		end
+	elseif (Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), 20, 1) ~= nil) then
+		self.squad_ai:DoSpecialAbility(DarkEldarMobileShield.energyfield_id)
+	end
+
+	Ability.DoAbilityArea(self.squad_ai, DarkEldarMobileShield.soulshock_id, Ability.Filters.CloseInfantryEnemy, 20, 4)
+end
+
+function DarkEldarMobileShieldTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+    	-- State machine
+    	if not VehicleTactic.Update(self) then
+		return
+    	end
+
+	-- Attach to squad
+	self:TryAttachSquad( false, false, 1000, 200, nil )
+end

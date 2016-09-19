@@ -1,0 +1,68 @@
+----------------------------------------
+-- File: 'librariumtactic.ai'
+-- Edited by Thudmeizer         @ 09.06.2016
+
+class 'LibrariumTactic' (BaseTactic)
+
+Librarium = {}
+
+function LibrariumTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Librarium Tactic")
+end
+
+function LibrariumTactic:AutoBuildAddOn( addonSlot )
+	local buildChannel = build_manager:GetBuildChannelFromID(self.base_ai:GetEntity():GetID())
+    		if buildChannel ~= nil then
+        	local addOnID = buildChannel:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+        		if (buildChannel:IsBuilding() == 0 and buildChannel:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+            		buildChannel:BuildAddOn(addOnID)
+        	end
+	end
+end
+
+function LibrariumTactic:InitAbilities()
+
+	-- Init abilities
+	if (Librarium.repair_id == nil) then
+        	Librarium.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+    	end
+
+    	-- Init Ability ID's and Addon ID's
+    	Librarium.mainAddonID = cpu_manager.stats:GetAddOnID( "inquisition_dedication_research_addon" )
+    	Librarium.secondAddonID = cpu_manager.stats:GetAddOnID( "inquisition_dedication_tomes_addon" )
+end
+
+function LibrariumTactic:DoAbilities()
+
+    	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( Librarium.repair_id )) then
+           		self.base_ai:DoSpecialAbility( Librarium.repair_id )
+       		end
+	end
+
+	--    self:AutoBuildAddOn(0) -- Research    -- inquisition_dedication_research_addon
+	--    self:AutoBuildAddOn(1) -- Tomes        -- inquisition_dedication_tomes_addon
+
+	-- Return if we have already upgraded to one of the Addons
+	-- And make sure the 2nd Librarium will get the other Addon
+	if self.base_ai:HasAddOn(Librarium.mainAddonID) then
+        	GlobalLibrariumSwitch = true
+        	return
+    	elseif self.base_ai:HasAddOn(Librarium.secondAddonID) then
+        	GlobalLibrariumSwitch = false
+        	return
+    	end
+    	if GlobalLibrariumSwitch == true then
+        	GlobalLibrariumSwitch = false
+    	else
+        	GlobalLibrariumSwitch = true
+   	end
+	if GlobalLibrariumSwitch then
+        	self:AutoBuildAddOn(0)
+    	else
+	self:AutoBuildAddOn(1)
+    	end
+end

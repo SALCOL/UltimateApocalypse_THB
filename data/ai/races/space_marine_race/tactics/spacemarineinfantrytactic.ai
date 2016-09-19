@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'spacemarineinfantrytactic.ai'
 -- Created by Arkhan		@ 12.01.2006
--- Edited by Thudmeizer         @ 03.02.2016
+-- Edited by Thudmeizer         @ 20.06.2016
 -- Edited by Cylarne 2013
 
 class 'SpaceMarineInfantryTactic' (InfantryTactic)
@@ -16,6 +16,7 @@ function SpaceMarineInfantryTactic:__init( squad_ai ) super( squad_ai )
 		sSquadName == "space_marine_squad_scout" or
 		sSquadName == "space_marine_squad_tactical" or
 		sSquadName == "space_marine_squad_devastator" or
+		sSquadName == "space_marine_squad_lotd_tactical" or
 		sSquadName == "space_marine_squad_sternguard_veteran" or
 		sSquadName == "space_marine_squad_vanguard_veteran" or
 		sSquadName == "space_marine_squad_apothecary" or
@@ -55,6 +56,7 @@ function SpaceMarineInfantryTactic:AddCommanders()
 	table.insert(self.commander, { "space_marine_squad_force_commander", true })
 	table.insert(self.commander, { "space_marine_squad_force_commander_killeus", true })
 	table.insert(self.commander, { "space_marine_squad_force_commander_terminator", true })
+	table.insert(self.commander, { "space_marine_squad_force_commander_advance_sp", true })
 	table.insert(self.commander, { "space_marine_squad_chapter_master", true })
 	table.insert(self.commander, { "space_marine_squad_honor_guard_gladiator", false })
 	table.insert(self.commander, { "space_marine_squad_librarian", false })
@@ -64,9 +66,8 @@ end
 
 function SpaceMarineInfantryTactic:DoAbilities()
 
-	-- Check to make sure if no threats are nearby
-	local vSquadPos = self.squad_ai:GetPosition()
-	if not (self.squad_ai:IsInCombat()) and not (self.squad_ai:IsUnderAttack()) then
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
 
 		-- If I am safe I can run
 		local run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
@@ -88,18 +89,30 @@ function SpaceMarineInfantryTactic:DoAbilities()
 	-- I might have these attached
 	if (self.squad_ai:IsAttached()) then
 	
-		if (self.squad_ai:HasSquadAttached("space_marine_squad_force_commander_killeus")) or (self.squad_ai:HasSquadAttached("space_marine_squad_force_commander_terminator")) then
+		if (self.squad_ai:HasSquadAttached("space_marine_squad_force_commander_killeus")) then
 			ForceCommanderTactic.InitAbilities( self )
 			ForceCommanderTactic.DoAbilities( self )
- 		elseif (self.squad_ai:HasSquadAttached("space_marine_squad_force_commander")) or (self.squad_ai:HasSquadAttached("space_marine_squad_chapter_master")) then
+		elseif (self.squad_ai:HasSquadAttached("space_marine_squad_force_commander_terminator")) then
+			ForceCommanderTerminatorTactic.InitAbilities( self )
+			ForceCommanderTerminatorTactic.DoAbilities( self )
+ 		elseif (self.squad_ai:HasSquadAttached("space_marine_squad_force_commander")) then
+			ForceCommanderAdvancedTactic.InitAbilities( self )
+			ForceCommanderAdvancedTactic.DoAbilities( self )
+ 		elseif (self.squad_ai:HasSquadAttached("space_marine_squad_force_commander_advance_sp")) then
+			ForceCommanderCampaignTactic.InitAbilities( self )
+			ForceCommanderCampaignTactic.DoAbilities( self )
+ 		elseif (self.squad_ai:HasSquadAttached("space_marine_squad_chapter_master")) then
 			ChapterMasterTactic.InitAbilities( self )
 			ChapterMasterTactic.DoAbilities( self )
 		elseif (self.squad_ai:HasSquadAttached("space_marine_squad_librarian")) then
 			LibrarianTactic.InitAbilities( self )
 			LibrarianTactic.DoAbilities( self )
-		elseif (self.squad_ai:HasSquadAttached("space_marine_squad_chaplain")) or (self.squad_ai:HasSquadAttached("space_marine_squad_chaplain_advance_sp")) then
+		elseif (self.squad_ai:HasSquadAttached("space_marine_squad_chaplain")) then
 			ChaplainTactic.InitAbilities( self )
 			ChaplainTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("space_marine_squad_chaplain_advance_sp")) then
+			ChaplainTerminatorTactic.InitAbilities( self )
+			ChaplainTerminatorTactic.DoAbilities( self )
 		end
 	end
 

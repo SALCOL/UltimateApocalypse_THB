@@ -1,0 +1,105 @@
+----------------------------------------
+-- File: 'chimerakronustactic.ai'
+-- Edited by Thudmeizer		@ 20.06.2016
+
+class 'ChimeraKronusTactic' (GuardVehicleTactic)
+
+ChimeraKronus = {}
+
+function ChimeraKronusTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chimera Kronus Tactic")
+
+	-- Vehicle is a light transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 1
+end
+
+function ChimeraKronusTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChimeraKronus.smoke_id == nil) then
+		ChimeraKronus.smoke_id = cpu_manager.stats:GetAbilityID( "guard_smoke_launchers" )	
+	end
+
+	if (ChimeraKronus.teargas_id == nil) then
+		ChimeraKronus.teargas_id = cpu_manager.stats:GetAbilityID( "guard_nervegas_launchers" )	
+	end
+
+	if (ChimeraKronus.abilityrecharge_id == nil) then
+		ChimeraKronus.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (ChimeraKronus.heal_id == nil) then
+		ChimeraKronus.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (ChimeraKronus.reinforce_id == nil) then
+		ChimeraKronus.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+
+	if (ChimeraKronus.laymines_id == nil) then
+		ChimeraKronus.laymines_id = cpu_manager.stats:GetAbilityID( "guard_laymines" )
+	end
+end
+
+function ChimeraKronusTactic:DoAbilities()
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(ChimeraKronus.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(ChimeraKronus.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(ChimeraKronus.smoke_id, oUnit:GetSquad())
+		end
+	end
+	
+	-- Check if we can use Nervegas Launchers
+	if (self.squad_ai:CanDoAbility(ChimeraKronus.teargas_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(ChimeraKronus.teargas_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 6)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.squad_ai:DoSpecialAbilitySquad(ChimeraKronus.teargas_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( ChimeraKronus.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 1000 and iPower >= 1000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( ChimeraKronus.laymines_id )
+		end
+	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(ChimeraKronus.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(ChimeraKronus.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(ChimeraKronus.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(ChimeraKronus.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(ChimeraKronus.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(ChimeraKronus.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Call standard method
+	GuardVehicleTactic.DoAbilities(self)
+end

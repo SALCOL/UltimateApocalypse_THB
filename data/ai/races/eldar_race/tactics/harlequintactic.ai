@@ -1,8 +1,8 @@
 ----------------------------------------
 -- File: 'harlequintactic.ai'
--- Edited by Thudmeizer @ 12.11.2006
+-- Edited by Thudmeizer @ 22.02.2016
 
-class 'HarlequinTactic' (InfantryTactic)
+class 'HarlequinTactic' (EldarInfantryTactic)
 
 Harlequin = {}
 
@@ -31,8 +31,23 @@ function HarlequinTactic:DoAbilities()
 
 	Ability.DoAbilityTarget( self.squad_ai, Harlequin.liquefy_id, Ability.Filters.CloseSquadEnemy, 4 )
 	
-	-- Try to activate harlequin dance (Bugged in SS 1.0)
+	-- Try to activate harlequin dance
 	if (self.squad_ai:IsInCombat() and self.squad_ai:CanMeleeDance()) then
 		self.squad_ai:DoMeleeDance()
+	end
+
+	-- Call standard method
+	EldarInfantryTactic.DoAbilities(self)
+end
+
+function HarlequinTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
 	end
 end

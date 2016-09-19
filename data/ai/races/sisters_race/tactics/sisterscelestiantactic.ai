@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sisterscelestiantactic.ai'
--- Edited by Thudmeizer @ 22.03.2008
+-- Edited by Thudmeizer @ 11.04.2016
 
 class 'SistersCelestianTactic' (SistersInfantryTactic)
 
@@ -11,49 +11,130 @@ function SistersCelestianTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Sisters Celestian Tactic")
 end
 
+-- Celestians are allowed to retreat even directly after a jump
+function SistersCelestianTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersCelestianTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
 function SistersCelestianTactic:InitAbilities()
 
 	-- Init ability ID's
+	if (SistersCelestian.touch_id == nil) then
+		SistersCelestian.touch_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_an_emperors_touch" )
+	end
+
+	if (SistersCelestian.retribution_id == nil) then
+		SistersCelestian.retribution_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_divine_retribution" )
+	end
+
+	if (SistersCelestian.passion_id == nil) then
+		SistersCelestian.passion_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_holy_passion" )
+	end
+
+	if (SistersCelestian.medics_id == nil) then
+		SistersCelestian.medics_id = cpu_manager.stats:GetAbilityID( "sisters_battlefield_medics" )
+	end
+
+	if (SistersCelestian.flashbang_id == nil) then
+		SistersCelestian.flashbang_id = cpu_manager.stats:GetAbilityID( "sisters_flashbang_grenades" )
+	end
+
 	if (SistersCelestian.krak_id == nil) then
 		SistersCelestian.krak_id = cpu_manager.stats:GetAbilityID( "sisters_krak_grenades" )
+	end
+
+	if (SistersCelestian.phosphor_id == nil) then
+		SistersCelestian.phosphor_id = cpu_manager.stats:GetAbilityID( "sisters_phosphor_grenades" )
+	end
+
+	if (SistersCelestian.smoke_id == nil) then
+		SistersCelestian.smoke_id = cpu_manager.stats:GetAbilityID( "sisters_smoke_grenades" )
+	end
+
+	if (SistersCelestian.run_id == nil) then
+		SistersCelestian.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function SistersCelestianTactic:DoAbilities()
 
-	Ability.DoAbilityTarget( self.squad_ai, SistersCelestian.krak_id, Ability.Filters.CloseVehicleEnemy, 1 )
-       	Ability.DoAbilityTargetEntity( self.squad_ai, SistersCelestian.krak_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-end
+	-- Ranged squads do extra damage (Faith cost: 165) 
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsAttacking()) then
 
-function SistersCelestianTactic:Reinforce()
+		if (self.squad_ai:CanDoAbility(SistersCelestian.touch_id)) then
+			self.squad_ai:DoSpecialAbility(SistersCelestian.touch_id) 
+		end
+	end
 
-	-- Check if we are reinforcing
-	if (not self.squad_ai:IsReinforcing()) then
+	-- Enemies take additional damage when they attack the squad (Faith cost: 120)
+	if (self.squad_ai:IsUnderAttack()) then
 
-		-- try for different types of squad members
-		local superiorIndex = 0
-		local imagiferIndex = 1
+		if (self.squad_ai:CanDoAbility(SistersCelestian.retribution_id)) then
+			self.squad_ai:DoSpecialAbility(SistersCelestian.retribution_id) 
+		end
+	end
+
+	-- Recover morale immediately (Faith cost: 60)
+	if (self.squad_ai:IsBroken()) then
+
+		 if (self.squad_ai:CanDoAbility(SistersCelestian.passion_id)) then
+			self.squad_ai:DoSpecialAbility(SistersCelestian.passion_id) 
+		end
+	end
+
+	-- Heals squad (Faith cost: 50)
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
 	
-		local numSuperiors = self.squad_ai:GetLeaderCount( superiorIndex )
-		local numImagifers = self.squad_ai:GetLeaderCount( imagiferIndex )
+		if (self.squad_ai:CanDoAbility(SistersCelestian.medics_id)) then
+			self.squad_ai:DoSpecialAbility(SistersCelestian.medics_id) 
+		end
+	end
 
-		-- Desired number of each leader type
-		local desiredSuperiors = 1
-		local desiredImagifers = 1 
+	-- Throw flashbang grenades!
+	if (self.squad_ai:CanDoAbility( SistersCelestian.flashbang_id )) then
+		Ability.DoAbilityPos( self.squad_ai, SistersCelestian.flashbang_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, SistersCelestian.flashbang_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, SistersCelestian.flashbang_id, Ability.Filters.CloseMonsterEnemy, 2 )
+	end
 
-		-- Desired order of reinforcing
-		if (numSuperiors < desiredSuperiors) then
-			if (self.squad_ai:CanReinforce( true, superiorIndex )) then
-				self.squad_ai:DoReinforce( true, superiorIndex )
-			end
-		elseif (numImagifers < desiredImagifers) then
-			if (self.squad_ai:CanReinforce( true, imagiferIndex )) then
-				self.squad_ai:DoReinforce( true, imagiferIndex )
-			end
-		else
-			if (self.squad_ai:CanReinforce( false, 0 )) then
-				self.squad_ai:DoReinforce( false, 0 )
-			end			
+	-- Throw krak grenades!
+	if (self.squad_ai:CanDoAbility( SistersCelestian.krak_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, SistersCelestian.krak_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, SistersCelestian.krak_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1 )
+	end
+
+	-- Throw phosphor grenades!
+	if (self.squad_ai:CanDoAbility( SistersCelestian.phosphor_id )) then
+		Ability.DoAbilityPos( self.squad_ai, SistersCelestian.phosphor_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, SistersCelestian.phosphor_id, Ability.Filters.CloseMonsterEnemy, 2 )
+		Ability.DoAbilityPos( self.squad_ai, SistersCelestian.phosphor_id, Ability.Filters.CloseInfantryEnemy, 4 )
+	end
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility( SistersCelestian.smoke_id )) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange( SistersCelestian.smoke_id )
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad( SistersCelestian.smoke_id, oUnit:GetSquad() )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersCelestian.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersCelestian.run_id )
 		end
 	end
 end
@@ -79,4 +160,68 @@ function SistersCelestianTactic:Upgrade()
 			self.squad_ai:DoBestUpgrade(oEnemy:GetMajorityClassType())
 		end
 	end
+end
+
+function SistersCelestianTactic:Reinforce()
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- Always try for the actual leader first
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+			return
+		end
+
+		-- Try for different types of squad members
+		local veteranIndex = 0
+		local imagiferIndex = 1
+		local curiaIndex = 2
+		local missionaryIndex = 3
+	
+		-- Get current leader count
+		local numVeterans = self.squad_ai:GetLeaderCount( veteranIndex )
+		local numImagifers = self.squad_ai:GetLeaderCount( imagiferIndex)
+		local numCurias = self.squad_ai:GetLeaderCount( curiaIndex )
+		local numMissionaries = self.squad_ai:GetLeaderCount( missionaryIndex )
+
+		-- Desired number of each leader type
+		local desiredVeterans = math.random(0,1)
+		local desiredImagifers = math.random(0,1)
+		local desiredCurias = math.random(0,1)
+		local desiredMissionaries = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if (numVeterans < desiredVeterans) then
+			if self.squad_ai:CanReinforce( true, veteranIndex ) then
+				self.squad_ai:DoReinforce( true, veteranIndex )
+			end
+		elseif (numImagifers < desiredImagifers) then
+			if self.squad_ai:CanReinforce( true, imagiferIndex ) then
+				self.squad_ai:DoReinforce( true, imagiferIndex )
+			end
+		elseif (numCurias < desiredCurias) then
+			if self.squad_ai:CanReinforce( true, curiaIndex ) then
+				self.squad_ai:DoReinforce( true, curiaIndex )
+			end
+		elseif (numMissionaries < desiredMissionaries) then
+			if self.squad_ai:CanReinforce( true, missionaryIndex ) then
+				self.squad_ai:DoReinforce( true, missionaryIndex )
+			end
+		end
+	end
+end
+
+function SistersCelestianTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

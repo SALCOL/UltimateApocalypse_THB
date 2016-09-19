@@ -1,0 +1,65 @@
+----------------------------------------
+-- File: 'daemonspinkhorrortactic.ai'
+-- Edited by fuggles 27.05.2013
+-- Edited by Thudmeizer	@ 09.05.2016
+
+class 'DaemonsPinkHorrorTactic' (DaemonsInfantryTactic)
+
+DaemonsPinkHorror  = {}
+
+function DaemonsPinkHorrorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Horror Squad Tactic")
+end
+
+function DaemonsPinkHorrorTactic:AddCommanders()
+	table.insert(self.commander, { "daemon_squad_lord", true })
+	table.insert(self.commander, { "daemon_squad_khorne_herald", true })
+	table.insert(self.commander, { "daemon_squad_nurgle_herald", true })
+	table.insert(self.commander, { "daemon_squad_slaanesh_herald", true })
+	table.insert(self.commander, { "daemon_squad_tzeentch_herald", true })
+end
+
+function DaemonsPinkHorrorTactic:InitAbilities()
+
+	if (DaemonsPinkHorror.run_id == nil) then
+		DaemonsPinkHorror.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function DaemonsPinkHorrorTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DaemonsPinkHorror.run_id )) then
+			self.squad_ai:DoSpecialAbility( DaemonsPinkHorror.run_id )
+		end
+	end
+
+	-- Call basic DoAbilities methods
+	DaemonsInfantryTactic.DoAbilities(self)
+end
+
+function DaemonsPinkHorrorTactic:Upgrade()
+
+ 	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no resources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+   
+	if (not self.squad_ai:IsReinforcing() and cpu_manager:GetTierLevel() >= 2) then
+	  
+		-- Try for upgrade if we've got more than 2 troopers
+		if (self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetNumTroopers() > 2 ) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end

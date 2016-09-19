@@ -1,0 +1,135 @@
+----------------------------------------
+-- File: 'heavyweaponstactic.ai'
+-- Edited by Thudmeizer	@ 20.06.2016
+
+class 'HeavyWeaponsTactic' (GuardInfantryTactic)
+
+HeavyWeapons = {}
+
+function HeavyWeaponsTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Heavy Weapons Tactic")
+
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+end
+
+function HeavyWeaponsTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (HeavyWeapons.bolster_id == nil) then
+		HeavyWeapons.bolster_id = cpu_manager.stats:GetAbilityID( "guard_bolster_defenses" )	
+	end
+	if (HeavyWeapons.rally_id == nil) then
+		HeavyWeapons.rally_id = cpu_manager.stats:GetAbilityID( "guard_vox_rally" )	
+	end
+	if (HeavyWeapons.run_id == nil) then
+		HeavyWeapons.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function HeavyWeaponsTactic:DoAbilities()
+
+	-- Check if we can Bolster Defenses
+	if (self.squad_ai:CanDoAbility(HeavyWeapons.bolster_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(HeavyWeapons.bolster_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(HeavyWeapons.bolster_id, oUnit:GetSquad())
+		end
+	end
+
+	if (self.squad_ai:IsBroken()) or (self.squad_ai:GetMoralePercentage() < 0.6) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( HeavyWeapons.rally_id )) then
+			self.squad_ai:DoSpecialAbility( HeavyWeapons.rally_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( HeavyWeapons.run_id )) then
+			self.squad_ai:DoSpecialAbility( HeavyWeapons.run_id )
+		end
+	end	
+end
+
+function HeavyWeaponsTactic:Reinforce()
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- Always try for the actual leader first
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+			return
+		end
+
+		-- Try for different types of squad members
+		local voxcasterIndex = 0
+		local sergeantIndex = 1
+		local bannerIndex = 2
+		local medicIndex = 3
+	
+		-- Get current leader count
+		local numVoxcasters = self.squad_ai:GetLeaderCount( voxcasterIndex )
+		local numSergeants = self.squad_ai:GetLeaderCount( sergeantIndex)
+		local numBanners = self.squad_ai:GetLeaderCount( bannerIndex )
+		local numMedics = self.squad_ai:GetLeaderCount( medicIndex )
+
+		-- Desired number of each leader type
+		local desiredVoxcasters = math.random(0,1)
+		local desiredSergeants = math.random(0,1)
+		local desiredBanners = math.random(0,1)
+		local desiredMedics = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if (numVoxcasters < desiredVoxcasters) then
+			if self.squad_ai:CanReinforce( true, voxcasterIndex ) then
+				self.squad_ai:DoReinforce( true, voxcasterIndex )
+			end
+		elseif (numSergeants < desiredSergeants) then
+			if self.squad_ai:CanReinforce( true, sergeantIndex ) then
+				self.squad_ai:DoReinforce( true, sergeantIndex )
+			end
+		elseif (numBanners < desiredBanners) then
+			if self.squad_ai:CanReinforce( true, bannerIndex ) then
+				self.squad_ai:DoReinforce( true, bannerIndex )
+			end
+		elseif (numMedics < desiredMedics) then
+			if self.squad_ai:CanReinforce( true, medicIndex ) then
+				self.squad_ai:DoReinforce( true, medicIndex )
+			end
+		end
+	end
+
+	-- if I am broken, don't reinforce!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no ressources available, don't upgrade!
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (iRequisition < 800 and not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	-- Try for leader
+	if (not self.squad_ai:IsReinforcing()) then
+	  
+		if (self.squad_ai:CanReinforce(true, 0)) then
+			self.squad_ai:DoReinforce(true, 0)
+		elseif (self.squad_ai:CanReinforce(false, 0)) then
+
+			-- Don't reinforce more than 7 guards without a leader
+			if (self.squad_ai:HasLeader() or self.squad_ai:GetNumTroopers() < 7) then
+				self.squad_ai:DoReinforce(false, 0)
+			end
+		end
+	end
+end
+

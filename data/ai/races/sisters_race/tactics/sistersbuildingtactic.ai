@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'sistersbuildingtactic.ai'
+-- Edited by Thudmeizer	@ 10.04.2016
+
+class 'SistersBuildingTactic' (BaseTactic)
+
+SistersBuilding = {}
+
+function SistersBuildingTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Sisters Building Tactic")
+end
+
+function SistersBuildingTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersBuilding.repair_id == nil) then
+		SistersBuilding.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function SistersBuildingTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SistersBuilding.repair_id )) then
+			self.base_ai:DoSpecialAbility( SistersBuilding.repair_id )
+		end
+	end
+end

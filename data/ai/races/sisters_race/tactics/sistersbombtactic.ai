@@ -1,0 +1,34 @@
+----------------------------------------
+-- File: 'sistersbombtactic.ai'
+-- Edited by Thudmeizer	@ 11.04.2016
+
+class 'SistersBombTactic' (BaseTactic)
+
+SistersBomb = {}
+
+function SistersBombTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Sisters Bomb Tactic")
+end
+
+function SistersBombTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersBomb.detonate_id == nil) then
+		SistersBomb.detonate_id = cpu_manager.stats:GetAbilityID( "nuke_detonate" )
+	end
+end
+
+function SistersBombTactic:DoAbilities()
+	
+	-- Detonate Bomb with enemies in vicinity!
+	Ability.DoAbilityArea(self.base_ai, SistersBomb.detonate_id, Ability.Filters.CloseEnemy, 10, 5)
+
+	-- Search a building
+	local iRange = self.base_ai:GetAbilityRange(SistersBomb.detonate_id)
+	local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.base_ai:GetPosition(), iRange, 1)
+	if (oBuilding ~= nil) then
+		-- Detonate the Bomb!
+		self.base_ai:DoSpecialAbilityEntity(SistersBomb.detonate_id, oBuilding) 
+	end
+end

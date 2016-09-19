@@ -2,6 +2,7 @@
 -- File: 'guardhqtactic.ai'
 -- Edited by Arkhan		@ 24.10.2006
 -- Edited by Cylarne_04 2011
+-- Edited by Thudmeizer		@ 28.02.2016
 
 class 'GuardHQTactic' (BaseTactic)
 
@@ -19,16 +20,12 @@ function GuardHQTactic:InitAbilities()
 
 	--Init ability ID's
 	if (GuardHQ.detection_id == nil) then
-		GuardHQ.detection_id = cpu_manager.stats:GetAbilityID("guard_detection_field")
+		GuardHQ.detection_id = cpu_manager.stats:GetAbilityID( "guard_detection_field" )
 	end
-	--[[if (GuardHQ.bombingrun_id == nil) then
-		GuardHQ.bombingrun_id = cpu_manager.stats:GetAbilityID("guard_valkyrie_strike_doctrine")
+
+	if (GuardHQ.repair_id == nil) then
+		GuardHQ.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
-	if (GuardHQ.bombingrun2_id == nil) then
-		GuardHQ.bombingrun2_id = cpu_manager.stats:GetAbilityID("guard_vulture_strike_doctrine")
-	end]]
-	
-	
 end
 
 function GuardHQTactic:DoAbilities()
@@ -37,7 +34,7 @@ function GuardHQTactic:DoAbilities()
 	if (self.base_ai:CanDoAbility(GuardHQ.detection_id)) then
 		
 		local abilitySelector = math.random(1, 100)
-		self.m_iBM = cpu_manager.stats:GetBuildingID("guard_basilisk_magnus")
+		self.m_iBM = cpu_manager.stats:GetBuildingID( "guard_basilisk_magnus" )
 		if (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iBM, true) > 0 and abilitySelector <= 10) then -- 10% chance to use on bases if a Basilisk Magnus is valid.
 			Ability.DoAbilityTargetEntity(self.base_ai, GuardHQ.detection_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
 		end
@@ -52,24 +49,12 @@ function GuardHQTactic:DoAbilities()
 			end
 		end
 	end
-	--[[if (self.base_ai:CanDoAbility(GuardHQ.bombingrun_id)) then
-	
-		local iRange = self.base_ai:GetAbilityRange(GuardHQ.bombingrun_id)
-		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 6)
-		if (oSquad ~= nil) then		
-			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
-				self.base_ai:DoSpecialAbilitySquad(GuardHQ.bombingrun_id, oSquad:GetSquad())
-			end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( GuardHQ.repair_id )) then
+			self.base_ai:DoSpecialAbility( GuardHQ.repair_id )
 		end
 	end
-	if (self.base_ai:CanDoAbility(GuardHQ.bombingrun2_id)) then
-	
-		local iRange = self.base_ai:GetAbilityRange(GuardHQ.bombingrun2_id)
-		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 3)
-		if (oSquad ~= nil) then		
-			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
-				self.base_ai:DoSpecialAbilitySquad(GuardHQ.bombingrun2_id, oSquad:GetSquad())
-			end
-		end
-	end]]
 end

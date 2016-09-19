@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarhaemonculustactic.ai'
--- Edited by Thudmeizer @ 23.03.2008
+-- Edited by Thudmeizer @ 22.04.2016
 
 class 'DarkEldarHaemonculusTactic' (DarkEldarInfantryTactic)
 
@@ -11,6 +11,34 @@ function DarkEldarHaemonculusTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Dark Eldar Haemonculus Tactic")
 
 	self.dance_time = 0
+end
+
+function DarkEldarHaemonculusTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDarkEldarHaemonculus = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDarkEldarHaemonculus ~= nil) then
+			local addOnID = buildChannelDarkEldarHaemonculus:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelDarkEldarHaemonculus:IsBuilding() == 0 and buildChannelDarkEldarHaemonculus:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelDarkEldarHaemonculus:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function DarkEldarHaemonculusTactic:AutoBuildResearch( researchSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDarkEldarHaemonculus = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDarkEldarHaemonculus ~= nil) then
+			local ResearchID = buildChannelDarkEldarHaemonculus:GetItemIDAt(BuildChannelAI.PQ_Research, researchSlot)
+			if (buildChannelDarkEldarHaemonculus:IsBuilding() == 0 and buildChannelDarkEldarHaemonculus:CanAddToQueue(BuildChannelAI.PQ_Research, ResearchID) == BuildChannelAI.CANBUILD_Ok) then			
+				buildChannelDarkEldarHaemonculus:BuildResearch(ResearchID)
+				return
+			end
+		end
+	end
+	return
 end
 
 function DarkEldarHaemonculusTactic:IsAttacker()
@@ -24,12 +52,32 @@ end
 function DarkEldarHaemonculusTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (DarkEldarHaemonculus.torture_id == nil) then
-		DarkEldarHaemonculus.torture_id = cpu_manager.stats:GetAbilityID( "dark_eldar_torture_amp" )
+	if (DarkEldarHaemonculus.crucible_id == nil) then
+		DarkEldarHaemonculus.crucible_id = cpu_manager.stats:GetAbilityID( "dark_eldar_crucible_haemonculus" )
+	end
+
+	if (DarkEldarHaemonculus.leach_id == nil) then
+		DarkEldarHaemonculus.leach_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_leach" )
 	end
 
 	if (DarkEldarHaemonculus.stinger_id == nil) then
 		DarkEldarHaemonculus.stinger_id = cpu_manager.stats:GetAbilityID( "dark_eldar_stinger" )
+	end
+
+	if (DarkEldarHaemonculus.torture_id == nil) then
+		DarkEldarHaemonculus.torture_id = cpu_manager.stats:GetAbilityID( "dark_eldar_torture_amp" )
+	end
+
+	if (DarkEldarHaemonculus.trackingdevice_id == nil) then
+		DarkEldarHaemonculus.trackingdevice_id = cpu_manager.stats:GetAbilityID( "dark_eldar_tracking_device_haemonculus" )	
+	end
+
+	if (DarkEldarHaemonculus.run_id == nil) then
+		DarkEldarHaemonculus.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+
+	if (DarkEldarHaemonculus.foot_id == nil) then
+		DarkEldarHaemonculus.foot_id = cpu_manager.stats:GetAbilityID( "dark_eldar_footonfire" )	
 	end
 end
 
@@ -37,59 +85,128 @@ function DarkEldarHaemonculusTactic:DoAbilities()
 
 	-- We are dying, lower requisites for attacks
 	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityTarget(self.squad_ai, DarkEldarHaemonculus.crucible_id, Ability.Filters.CloseSquadEnemy, 4)
 		Ability.DoAbilityPos( self.squad_ai, DarkEldarHaemonculus.torture_id, Ability.Filters.CloseEnemy, 3 )
 		Ability.DoAbilityTarget( self.squad_ai, DarkEldarHaemonculus.stinger_id, Ability.Filters.CloseInfantryEnemy, 3 )
 	else
+		Ability.DoAbilityTarget(self.squad_ai, DarkEldarHaemonculus.crucible_id, Ability.Filters.CloseSquadEnemy, 8)
 		Ability.DoAbilityPos( self.squad_ai, DarkEldarHaemonculus.torture_id, Ability.Filters.CloseEnemy, 6 )
 		Ability.DoAbilityTarget( self.squad_ai, DarkEldarHaemonculus.stinger_id, Ability.Filters.CloseInfantryEnemy, 6 )		
+	end
+
+	-- Luster of Souls: Restore the strength of your squad by concealing them and regaining their health. Exchange this great ritual in exchange for souls.
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarHaemonculus.leach_id, Ability.Filters.CloseSquadEnemy, 15, 4)
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarHaemonculus.leach_id, Ability.Filters.CloseCommanderEnemy, 15, 1)
+	end
+--[[
+	-- Deploy tracking device to enemy infantry/vehicles -- SS 1.10: Still crashes the game
+	if (self.squad_ai:CanDoAbility(DarkEldarHaemonculus.trackingdevice_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(DarkEldarHaemonculus.trackingdevice_id)
+		local oUnit = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil) then
+			self.squad_ai:DoSpecialAbilitySquad(DarkEldarHaemonculus.trackingdevice_id, oUnit:GetSquad())
+		end
+	end
+]]
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DarkEldarHaemonculus.run_id )) then
+			self.squad_ai:DoSpecialAbility( DarkEldarHaemonculus.run_id )
+		elseif (self.squad_ai:CanDoAbility( DarkEldarHaemonculus.foot_id )) then
+			self.squad_ai:DoSpecialAbility( DarkEldarHaemonculus.foot_id )
+		end
+	end
+
+	-- Check if I should enable/disable foot on fire
+	--if (not self.squad_ai:IsAttached()) then
+		--self:DoAbilityFoF()
+	--end
+end
+
+function DarkEldarHaemonculusTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_souls			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+--	self:AutoBuildResearch(0)	-- [research_01] dark_eldar_stinger_research
+--	self:AutoBuildResearch(1)	-- [research_02] dark_eldar_soul_destruction_research
+--	self:AutoBuildResearch(2)	-- [research_03] dark_eldar_soul_shields_research
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+
+	if not (cpu_manager.cpu_player:IsResearchComplete("dark_eldar_stinger_research")) then
+		self:AutoBuildResearch(0) -- Stinger
+	elseif not (cpu_manager.cpu_player:IsResearchComplete("dark_eldar_soul_destruction_research")) then
+		self:AutoBuildResearch(1) -- Soul Destruction
+	elseif not (cpu_manager.cpu_player:IsResearchComplete("dark_eldar_soul_shields_research")) then
+		self:AutoBuildResearch(2) -- Soul Shield
 	end
 end
 
 function DarkEldarHaemonculusTactic:Update()
 
-    if (self:IsComplete()) then
-        return
-    end
+	if (self:IsComplete()) then
+        	return
+    	end
     
-    -- State machine
-    if (not InfantryTactic.Update( self )) then
-        return
-    end
+    	-- State machine
+    	if (not InfantryTactic.Update( self )) then
+        	return
+    	end
     
 	-- Check for close commander
-    local bSetRanged = false
-    local bSetMelee = false
+    	local bSetRanged = false
+    	local bSetMelee = false
 	local vSquadPos = self.squad_ai:GetPosition()
 	local eStance = self.squad_ai:GetMeleeStance()
 	local oEnemyCommander = Ability.Filters.CloseCommanderEnemy(vSquadPos, 20, 1)
-    if (oEnemyCommander ~= nil) then
+    	if (oEnemyCommander ~= nil) then
        
-        -- Check health
-        if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
-            bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
-            self.dance_time = 0
+		-- Check health
+        	if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
+            		bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+            		self.dance_time = 0
 		else
-            bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
-        end
+            		bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+        	end
 	else
-    
-    	-- Check for close attached commander
-    	local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
-    	if (oSquad ~= nil and oSquad:IsAttached()) then
-    		bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
-    	else
-    		bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
-    	end
-    end
+       		-- Check for close attached commander
+    		local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
+    		if (oSquad ~= nil and oSquad:IsAttached()) then
+    			bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+    		else
+    			bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+    		end
+	end
 
-    -- At leat 10 secs ranged stance/dancing
-    if (bSetRanged) then
-        self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
-        self.dance_time = g_iGMT
-    elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
-        self.squad_ai:DoSetDefaultMeleeStance()
-        self.dance_time = 0
-    end
+	-- At leat 10 secs ranged stance/dancing
+    	if (bSetRanged) then
+        	self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+        	self.dance_time = g_iGMT
+    	elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
+        	self.squad_ai:DoSetDefaultMeleeStance()
+        	self.dance_time = 0
+    	end
     
 	-- Check if we are in serious trouble
 	self:EmergencyRetreat()

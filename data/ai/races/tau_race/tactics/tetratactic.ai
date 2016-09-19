@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'Tetratactic.ai'
+-- File: 'tetratactic.ai'
 -- Created by Cylarne @ 2013
+-- Edited by Thudmeizer	@ 18.03.2016
 
 class 'TetraTactic' (TauVehicleTactic)
 
@@ -14,20 +15,25 @@ end
 function TetraTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Tetra.booster == nil) then
-		Tetra.booster = cpu_manager.stats:GetAbilityID( "tau_tetra_booster" )
+	if (Tetra.booster_id == nil) then
+		Tetra.booster_id = cpu_manager.stats:GetAbilityID( "tau_tetra_booster" )
 	end
-	if (Tetra.strike == nil) then
-		Tetra.strike = cpu_manager.stats:GetAbilityID( "tau_tetra_missile_barrage" )
+	if (Tetra.strike_id == nil) then
+		Tetra.strike_id = cpu_manager.stats:GetAbilityID( "tau_tetra_missile_barrage" )
 	end
 end
 
 function TetraTactic:DoAbilities()
 
-	if (self:IsMoving() or self:IsInSubState() and self.squad_ai:CanDoAbility(Tetra.booster)) then
-		self.squad_ai:DoSpecialAbility(Tetra.booster)
+	if not self.squad_ai:IsInCombat() and (self:IsMoving() or self:IsInSubState()) then
+		if (self.squad_ai:CanDoAbility(Tetra.booster_id)) then
+			self.squad_ai:DoSpecialAbility(Tetra.booster_id)
+		end
 	end
-	
-	Ability.DoAbilityTarget(self.squad_ai, Tetra.strike, Ability.Filters.CloseEnemy, 3)
 
+	Ability.DoAbilityPos(self.squad_ai, Tetra.strike_id, Ability.Filters.CloseEnemy, 5)
+end
+
+function TetraTactic:CanOnlyDecap()
+	return true
 end

@@ -1,0 +1,177 @@
+----------------------------------------------------------------------------------
+-- Race-specific UI code                                                        --
+-- Created by Miros  @ 11.Oct.2013                                              --
+--                                                                              --
+--  It's alive!                                                                 --
+--                                                                              --
+-- (c) 2003 Relic Entertainment Inc.                                            --
+----------------------------------------------------------------------------------
+
+import("Player.scar");
+import("GroupCallers.scar");
+import("Command.scar");
+import("Groups.scar");
+import("WCUtil.scar");
+import("WXPScarUtil.scar");
+import("WXPGroups.scar");
+--import("Tyranids.scar");
+
+--------------------------------------------------
+--           Overall Rule managing              --
+--------------------------------------------------
+
+function FreeUI()
+
+	-- Set everything up
+	FreeUI_SetUp()
+	
+	-- Exclusive UI Rule
+	Rule_Add( ShowSpecificUI )
+	
+end
+
+--------------------------------------------------
+--                SetUp Rule                    --
+--------------------------------------------------
+
+function FreeUI_SetUp()
+
+	-- Race-exclusive UI bindings (thanks EvilIsador!)
+
+	--[[ Tyranids
+	g_toggleTooltipTyranids = Button_Add( "ScarTooltipTyranids", false, true, false )
+	g_toggleCustomResourceTyranids = Button_Add( "ScarCustomResourceTyranids", false, true, false )
+	g_toggleNextBuilderTyranids = Button_Add( "ScarNextBuilderTyranids", false, true, false )
+	g_toggleSubmenuStructuresTyranids = Button_Add( "ScarSubmenuStructuresTyranids", false, true, false )
+	g_toggleCmdMenuTyranids = Button_Add( "ScarCmdMenuTyranids", false, true, false )
+	g_toggleSquadCmdMenuTyranids = Button_Add( "ScarSquadCmdMenuTyranids", false, true, false )]]
+
+	-- OrkA
+	g_toggleCustomResourceOrka = Button_Add( "ScarCustomResourceOrka", false, true, false )
+
+	-- Thousand Sons
+	g_toggleCmdMenuTS = Button_Add( "ScarCmdMenuTS", false, true, false )
+
+	-- Daemons
+	g_toggleTooltipDaemons = Button_Add( "ScarTooltipDaemons", false, true, false )
+	g_toggleCmdMenuDaemons = Button_Add( "ScarCmdMenuDaemons", false, true, false )
+	g_toggleCustomResourceDaemons = Button_Add( "ScarCustomResourceDaemons", false, true, false )
+
+	-- Black Templars
+	g_toggleSquadCmdMenuTemplars = Button_Add( "ScarSquadCmdMenuTemplars", false, true, false )
+	g_toggleHeroPanelTemplars = Button_Add( "HeroPanelTemplars", false, true, false )
+
+	-- Default
+	g_toggleTooltipDefault = Button_Add( "ScarTooltipDefault", false, true, false )
+	g_toggleCustomResourceDefault = Button_Add( "ScarCustomResourceDefault", false, true, false )
+	g_toggleNextBuilderDefault = Button_Add( "ScarNextBuilderDefault", false, true, false )
+	g_toggleSubmenuStructuresDefault = Button_Add( "ScarSubmenuStructuresDefault", false, true, false )
+	g_toggleCmdMenuDefault = Button_Add( "ScarCmdMenuDefault", false, true, false )
+	g_toggleSquadCmdMenuDefault = Button_Add( "ScarSquadCmdMenuDefault", false, true, false )
+	g_toggleHeroPanelDefault = Button_Add( "HeroPanelDefault", false, true, false )
+
+end
+
+--------------------------------------------------
+--              Specific UI Rule                --
+--------------------------------------------------
+
+function ShowSpecificUI()
+
+	ShowSpecificUI_Templars( false )
+	ShowSpecificUI_Orka( false )
+	--ShowSpecificUI_Tyranids( false )
+	ShowSpecificUI_TS( false )
+	ShowSpecificUI_Daemons( false )
+	ShowSpecificUI_Default( false )
+
+	--if     ( Player_GetRaceName( World_GetPlayerAt(Tut_GetLocalPlayerIndex()) ) ) == "tyranids_race" then
+	--	ShowSpecificUI_Tyranids( true )
+	if     ( Player_GetRaceName( World_GetPlayerAt(Tut_GetLocalPlayerIndex()) ) ) == "orka_race" then
+		ShowSpecificUI_Orka( true )
+	elseif     ( Player_GetRaceName( World_GetPlayerAt(Tut_GetLocalPlayerIndex()) ) ) == "templar_race" then
+		ShowSpecificUI_Templars( true )
+	elseif     ( Player_GetRaceName( World_GetPlayerAt(Tut_GetLocalPlayerIndex()) ) ) == "thousand_sons_race" then
+		ShowSpecificUI_TS( true )
+	elseif     ( Player_GetRaceName( World_GetPlayerAt(Tut_GetLocalPlayerIndex()) ) ) == "deamons_race" then
+		ShowSpecificUI_Daemons( true )
+	else
+		ShowSpecificUI_Default( true )
+	end
+end
+
+function ShowSpecificUI_Tyranids( true_or_false )
+		Button_SetVisible( g_toggleTooltipTyranids, true_or_false )
+		Button_SetVisible( g_toggleCustomResourceTyranids, true_or_false )
+		Button_SetVisible( g_toggleNextBuilderTyranids, true_or_false )
+		Button_SetVisible( g_toggleSubmenuStructuresTyranids, true_or_false )
+		Button_SetVisible( g_toggleCmdMenuTyranids, true_or_false )
+		Button_SetVisible( g_toggleSquadCmdMenuTyranids, true_or_false )
+
+	--	Button_SetVisible( g_toggleHeroPanelDefault, true_or_false )	-- 4 Hero slots
+		Button_SetVisible( g_toggleHeroPanelTemplars, true_or_false )	-- 9 Hero slots
+		
+		Button_SetVisible( Influence_BG, true_or_false )
+		Button_SetVisible( Influence_FG, true_or_false )
+		Button_SetVisible( Influence_Percent, true_or_false )
+		Button_SetVisible( Taskbar_BG, true_or_false )
+		Button_SetVisible( Brain_Button, true_or_false )
+end
+
+function ShowSpecificUI_Templars( true_or_false )
+		Button_SetVisible( g_toggleTooltipDefault, true_or_false )
+		Button_SetVisible( g_toggleCustomResourceDefault, true_or_false )
+		Button_SetVisible( g_toggleNextBuilderDefault, true_or_false )
+		Button_SetVisible( g_toggleSubmenuStructuresDefault, true_or_false )
+		Button_SetVisible( g_toggleCmdMenuDefault, true_or_false )
+		Button_SetVisible( g_toggleSquadCmdMenuTemplars, true_or_false )
+		Button_SetVisible( g_toggleHeroPanelTemplars, true_or_false )
+end
+
+function ShowSpecificUI_Orka( true_or_false )
+		Button_SetVisible( g_toggleTooltipDefault, true_or_false )
+		Button_SetVisible( g_toggleCustomResourceOrka, true_or_false )
+		Button_SetVisible( g_toggleNextBuilderDefault, true_or_false )
+		Button_SetVisible( g_toggleSubmenuStructuresDefault, true_or_false )
+		Button_SetVisible( g_toggleCmdMenuDefault, true_or_false )
+		Button_SetVisible( g_toggleSquadCmdMenuTemplars, true_or_false )
+		Button_SetVisible( g_toggleHeroPanelTemplars, true_or_false )
+end
+
+function ShowSpecificUI_TS( true_or_false )
+		Button_SetVisible( g_toggleTooltipDefault, true_or_false )
+		Button_SetVisible( g_toggleCustomResourceDefault, true_or_false )
+		Button_SetVisible( g_toggleNextBuilderDefault, true_or_false )
+		Button_SetVisible( g_toggleSubmenuStructuresDefault, true_or_false )
+		Button_SetVisible( g_toggleCmdMenuTS, true_or_false )
+		Button_SetVisible( g_toggleSquadCmdMenuTemplars, true_or_false )
+		Button_SetVisible( g_toggleHeroPanelTemplars, true_or_false )
+end
+
+function ShowSpecificUI_Daemons( true_or_false )
+		Button_SetVisible( g_toggleTooltipDaemons, true_or_false )
+		Button_SetVisible( g_toggleCustomResourceDaemons, true_or_false )
+		Button_SetVisible( g_toggleNextBuilderDefault, true_or_false )
+		Button_SetVisible( g_toggleSubmenuStructuresDefault, true_or_false )
+		Button_SetVisible( g_toggleCmdMenuDaemons, true_or_false )
+		Button_SetVisible( g_toggleSquadCmdMenuTemplars, true_or_false )
+		Button_SetVisible( g_toggleHeroPanelTemplars, true_or_false )
+end
+
+function ShowSpecificUI_Default( true_or_false )
+		Button_SetVisible( g_toggleTooltipDefault, true_or_false )
+		Button_SetVisible( g_toggleCustomResourceDefault, true_or_false )
+		Button_SetVisible( g_toggleNextBuilderDefault, true_or_false )
+		Button_SetVisible( g_toggleSubmenuStructuresDefault, true_or_false )
+		Button_SetVisible( g_toggleCmdMenuDefault, true_or_false )
+	--	Button_SetVisible( g_toggleSquadCmdMenuDefault, true_or_false )		-- 4 Weapon Upgrades (disabled, as most custom races need 6 - like DA, HRM, AM)
+		Button_SetVisible( g_toggleSquadCmdMenuTemplars, true_or_false )	-- 6 Weapon Upgrades
+	--	Button_SetVisible( g_toggleHeroPanelDefault, true_or_false )		-- 4 Hero Slots (disabled, because of Change Players wincondition Buttons)
+		Button_SetVisible( g_toggleHeroPanelTemplars, true_or_false )		-- 9 Hero slots
+end
+
+--------------------------------------------------
+--              Start the show!                 --
+--------------------------------------------------
+
+Scar_AddInit(FreeUI)

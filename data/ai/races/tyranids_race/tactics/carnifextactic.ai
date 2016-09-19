@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'carnifextactic.ai'
 -- Created by Cylarne @ 2014
--- Edited @ 2015
+-- Edited by Thudmeizer	@ 25.04.2016
 
 class 'CarnifexTactic' (TyranidVehicleTactic)
 
@@ -10,50 +10,20 @@ Carnifex = {}
 function CarnifexTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Carnifex Tactic")
-	
-	-- Add a choice to stay in ranged or melee combat (Uberfex).
-	self.choice_ranged_melee = math.random(1, 100)
-	
 end
 
 function CarnifexTactic:InitAbilities()
 
-	if (Carnifex.bioplasma == nil) then
-		Carnifex.bioplasma = cpu_manager.stats:GetAbilityID( "tyranids_bioplasma" )
-	end
-	if (Carnifex.scream == nil) then
-		Carnifex.scream = cpu_manager.stats:GetAbilityID( "tyranids_carnifex_scream" )
+	if (Carnifex.bioplasma_id == nil) then
+		Carnifex.bioplasma_id = cpu_manager.stats:GetAbilityID( "tyranids_bioplasma" )
 	end
 end
 
 function CarnifexTactic:DoAbilities()
 	
-	Ability.DoAbilityPos( self.squad_ai, Carnifex.bioplasma, Ability.Filters.CloseEnemy, 6 ) 
-	
-	Ability.DoAbility( self.squad_ai, Carnifex.scream, Ability.Filters.IsInCombat )
-
-end
-
-function CarnifexTactic:Upgrade()
-
- 	-- If I chose melee combat, don't upgrade!
-	local sSquadName = self.squad_ai:GetSquadName()
-	if (sSquadName == "tyranids_squad_carnifex_uber") then
-		if (self.choice_ranged_melee <= 25) then
-			return
-		end
-	end
-	
-end
-
-function CarnifexTactic:Update()
-	
-	local sSquadName = self.squad_ai:GetSquadName()
-	if (sSquadName == "tyranids_squad_carnifex_uber") then
-		
-		-- Set unit on ranged stance by a 50/50 chance.
-		if (self.squad_ai:GetMeleeStance() ~= SquadAI.MSTANCE_Assault and self.choice_ranged_melee <= 25) then
-			self.squad_ai:DoSetMeleeStance(SquadAI.MSTANCE_Assault)
-		end
+	-- Bio Plasma: Horrific acid, devours through most material and eats away armor. Bio Plasma is very effective against infantry and devours the target's health over time.
+	if (self.squad_ai:CanDoAbility(Carnifex.bioplasma_id)) then
+		Ability.DoAbilityPos( self.squad_ai, Carnifex.bioplasma_id, Ability.Filters.CloseEnemy, 6 ) 
+		Ability.DoAbilityPos( self.squad_ai, Carnifex.bioplasma_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
 	end
 end

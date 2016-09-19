@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'chaosmarineinfantrytactic.ai'
 -- Created by Arkhan		@ 12.01.2006
--- Edited by Thudmeizer         @ 11.10.2006
+-- Edited by Thudmeizer         @ 28.02.2016
 -- Edited by Cylarne_04 2011
 
 class 'ChaosMarineInfantryTactic' (InfantryTactic)
@@ -13,39 +13,53 @@ function ChaosMarineInfantryTactic:__init( squad_ai ) super( squad_ai )
 	-- Basic chaos infantry is able to enter transport vehicles
 	local sSquadName = squad_ai:GetSquadName()
 	if (sSquadName == "chaos_squad_cultist" or
+		sSquadName == "chaos_squad_renegades" or
 		sSquadName == "chaos_marine_squad" or
 		sSquadName == "chaos_havoc_marine_squad" or
+		sSquadName == "chaos_marine_bike_squad" or
+		sSquadName == "chaos_squad_khorne_berserker" or
+		sSquadName == "chaos_noise_marine_squad" or
 		sSquadName == "chaos_plague_marine_squad" or
 		sSquadName == "chaos_rubric_marine_squad" or
-		sSquadName == "chaos_squad_khorne_berserker" or
-		sSquadName == "chaos_squad_psyker" or
-		sSquadName == "chaos_squad_sorcerer" or
 		sSquadName == "chaos_squad_lord" or
+		sSquadName == "chaos_squad_lord_advance_sp" or
 		sSquadName == "chaos_squad_lord_khorne" or
 		sSquadName == "chaos_squad_lord_nurgle" or
 		sSquadName == "chaos_squad_lord_slaanesh" or
-		sSquadName == "chaos_squad_lord_tzeentch" or
-		sSquadName == "chaos_squad_lord_undivided") then
-		self.m_iTransportable = 1
-		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("chaos_warpforge")
-	elseif (sSquadName == "chaos_squad_horror" or
+		sSquadName == "chaos_squad_lord_terminator") then
+		self.m_iTransportable = 1 or 3 -- Rhino / Assault Pod
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "chaos_warpforge" )
+
+	elseif (sSquadName == "chaos_squad_raptor" or
+		sSquadName == "chaos_terminator_khorne_squad" or
+		sSquadName == "chaos_terminator_squad") then
+		self.m_iTransportable = 2 -- Land Raider
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "chaos_temple" )
+
+	elseif (sSquadName == "chaos_marine_icon_bearer_squad" or
+		sSquadName == "chaos_squad_horror" or
 		sSquadName == "chaos_squad_bloodletters" or
 		sSquadName == "chaos_squad_daemonettes" or
 		sSquadName == "chaos_squad_screamers" or
-		sSquadName == "chaos_squad_plague_bearers") then
-		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("chaos_sacrificial_circle")
-	elseif (sSquadName == "chaos_squad_obliterator" or
+		sSquadName == "chaos_squad_plague_bearers" or
+		sSquadName == "chaos_squad_mutilator" or
+		sSquadName == "chaos_squad_obliterator" or
 		sSquadName == "chaos_squad_possessed_marine" or
-		sSquadName == "chaos_squad_terminator" or
-		sSquadName == "chaos_squad_terminator_khorne") then
-		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("chaos_greater_sacrificial_circle")
+		sSquadName == "chaos_squad_psyker" or
+		sSquadName == "chaos_squad_sorcerer" or
+		sSquadName == "chaos_squad_sorcerer_advance_sp") then
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "chaos_sacrificial_circle" )
+
+	elseif (sSquadName == "chaos_squad_lord_of_change" or
+		sSquadName == "chaos_squad_guo" or
+		sSquadName == "chaos_squad_keeper_of_secrets") then
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "chaos_greater_sacrificial_circle" )
 	end
 end
 
 function ChaosMarineInfantryTactic:AddTargetAbilities()
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_frag_grenades", Ability.Filters.CloseSquadEnemy, 6, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_flashbang_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
-	--table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_smoke_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_blight_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_noise_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_bolt_of_change_aspiringsorcerer", Ability.Filters.CloseSquadEnemy, 4, 0 })
@@ -59,7 +73,10 @@ end
 
 function ChaosMarineInfantryTactic:AddCommanders()
 	table.insert(self.commander, { "chaos_squad_lord", true })
-	table.insert(self.commander, { "chaos_squad_lord_undivided", false })
+	table.insert(self.commander, { "chaos_squad_lord_terminator", true })
+	table.insert(self.commander, { "chaos_squad_lord_khorne", true })
+	table.insert(self.commander, { "chaos_squad_lord_nurgle", true })
+	table.insert(self.commander, { "chaos_squad_lord_slaanesh", true })
 	table.insert(self.commander, { "chaos_squad_sorcerer", false })
 	table.insert(self.commander, { "chaos_squad_sorcerer_advance_sp", false })
 end
@@ -86,21 +103,50 @@ function ChaosMarineInfantryTactic:DoAbilities()
 		end
 	end
 
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		local run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+		if (self.squad_ai:CanDoAbility( run_id )) then
+			self.squad_ai:DoSpecialAbility( run_id )
+		end
+	end
+
+	-- Check if we can launch smoke
+	local smoke_id = cpu_manager.stats:GetAbilityID( "chaos_smoke_grenades" )
+
+	-- Search a squad
+	local iRange = self.squad_ai:GetAbilityRange(smoke_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbilitySquad(smoke_id, oUnit:GetSquad())
+	end
+
 	-- I might have these attached
 	if (self.squad_ai:IsAttached()) then
 	
 		if (self.squad_ai:HasSquadAttached("chaos_squad_lord")) then
 			ChaosLordTactic.InitAbilities( self )
 			ChaosLordTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("chaos_squad_lord_terminator")) then
+			ChaosLordTerminatorTactic.InitAbilities( self )
+			ChaosLordTerminatorTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("chaos_squad_lord_advance_sp")) then
+			ChaosLordAdvancedTactic.InitAbilities( self )
+			ChaosLordAdvancedTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("chaos_squad_lord_khorne")) or (self.squad_ai:HasSquadAttached("chaos_squad_lord_nurgle")) or (self.squad_ai:HasSquadAttached("chaos_squad_lord_slaanesh")) then
+			ChaosLordsTactic.InitAbilities( self )
+			ChaosLordsTactic.DoAbilities( self )
 		elseif (self.squad_ai:HasSquadAttached("chaos_squad_sorcerer")) then
 			SorcererTactic.InitAbilities( self )
 			SorcererTactic.DoAbilities( self )
 		elseif (self.squad_ai:HasSquadAttached("chaos_squad_sorcerer_advance_sp")) then
-			SorcererTactic.InitAbilities( self )
-			SorcererTactic.DoAbilities( self )
-		elseif (self.squad_ai:HasSquadAttached("chaos_squad_lord_undivided")) then
-			SorcererTactic.InitAbilities( self )
-			SorcererTactic.DoAbilities( self )
+			SorcererAdvancedTactic.InitAbilities( self )
+			SorcererAdvancedTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("chaos_squad_psyker")) then
+			ChaosPsykerTactic.InitAbilities( self )
+			ChaosPsykerTactic.DoAbilities( self )
 		end
 	end
 	

@@ -1,0 +1,50 @@
+----------------------------------------
+-- File: 'capillaryveintactic.ai'
+-- Edited by Thudmeizer		@ 25.04.2016
+
+class 'CapillaryVeinTactic' (BaseTactic)
+
+CapillaryVein = {}
+
+function CapillaryVeinTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Capillary Vein Tactic")
+
+	self.delayedTimer = g_iGMT
+	self.addonChance = math.random ( 1,100 )
+end
+
+function CapillaryVeinTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function CapillaryVeinTactic:InitAbilities()
+
+end
+
+function CapillaryVeinTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Sight Addon		-- tyranids_structure_sight_addon
+--	self:AutoBuildAddOn(1) -- Regeneration Addon	-- tyranids_structure_regeneration_addon
+--	self:AutoBuildAddOn(2) -- Production Addon	-- tyranids_structure_production_addon
+--	self:AutoBuildAddOn(3) -- Shield Addon		-- tyranids_structure_shield_addon
+
+	if g_iGMT > self.delayedTimer + 60 then
+        	self.addonChance = math.random ( 1,100 )
+        	self.delayedTimer = g_iGMT
+    	end
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if (iPower >= 15000 and self.addonChance <= 15) then
+		-- Always build these addons
+		local random_capillary_vein_addon = math.random( 0,3 )
+		self:AutoBuildTurretAddOn(random_capillary_vein_addon, self.base_ai:GetEntity():GetID())	-- Build all these addons
+	end
+end
+

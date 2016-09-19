@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'chaosmarinevehicletactic.ai'
--- Edited by Thudmeizer         @ 08.08.2006
+-- Edited by Thudmeizer         @ 20.06.2016
 -- Edited by Cylarne_04 2011
 
 class 'ChaosMarineVehicleTactic' (VehicleTactic)
@@ -8,13 +8,25 @@ class 'ChaosMarineVehicleTactic' (VehicleTactic)
 function ChaosMarineVehicleTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Chaos Marine Vehicle Tactic")
+
+	-- Basic chaos vehicles are able to be transported or deepstrike
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "chaos_squad_dreadnought") then
+		self.m_iTransportable = 3 -- Assault Pod
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "chaos_warpforge" ) or cpu_manager.stats:GetBuildingID( "chaos_warpgate" )
+	end
 end
 
 -- Check if the vehicle should dance away in melee
 function ChaosMarineVehicleTactic:CheckVehicleDance(sName)
 
-	if (sName == "chaos_squad_predator" or
-		sName == "chaos_squad_rhino") then
+	if (sName == "chaos_squad_rhino" or
+		sName == "chaos_squad_dreadnought" or
+		sName == "chaos_squad_deathwheel" or
+		sName == "chaos_squad_defiler" or
+		sName == "chaos_squad_predator" or
+		sName == "chaos_squad_vindicator" or
+		sName == "chaos_squad_landraider") then
 		return true
 	end
 	return false
@@ -22,17 +34,23 @@ end
 
 function ChaosMarineVehicleTactic:DoAbilities()
 
-	-- Check for SearchLight (Combat = On, No Combat = On, Retreating = Off)
-    if (playing_night_map == 1) then
+	-- Check if we can launch smoke
+	local vehiclesmoke_id = cpu_manager.stats:GetAbilityID( "chaos_smoke_launchers" )
 
-		local light1_id = cpu_manager.stats:GetAbilityID( "chaos_searchlight_rhino" )
-		Ability.DoAbilitySearchLight( self.squad_ai, light1_id, " vehicle" )
-	
-		local light2_id = cpu_manager.stats:GetAbilityID( "chaos_searchlight_predator" )
-		Ability.DoAbilitySearchLight( self.squad_ai, light2_id, " vehicle" )
-	
-		local light3_id = cpu_manager.stats:GetAbilityID( "chaos_searchlight_defiler" )
-		Ability.DoAbilitySearchLight( self.squad_ai, light3_id, " vehicle" )
+	-- Search a squad
+	local iRange = self.squad_ai:GetAbilityRange(vehiclesmoke_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbilitySquad(vehiclesmoke_id, oUnit:GetSquad())
+	end
+
+	-- RAM!!! - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	local rammingspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( rammingspeed_id )) then
+			self.squad_ai:DoSpecialAbility( rammingspeed_id )
+		end
 	end
 	
 	-- Call standard method

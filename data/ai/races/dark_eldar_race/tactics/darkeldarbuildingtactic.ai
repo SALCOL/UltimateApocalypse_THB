@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'darkeldarbuildingtactic.ai'
+-- Edited by Thudmeizer	@ 01.04.2016
+
+class 'DarkEldarBuildingTactic' (BaseTactic)
+
+DarkEldarBuilding = {}
+
+function DarkEldarBuildingTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Dark Eldar Building Tactic")
+end
+
+function DarkEldarBuildingTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarBuilding.repair_id == nil) then
+		DarkEldarBuilding.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function DarkEldarBuildingTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DarkEldarBuilding.repair_id )) then
+			self.base_ai:DoSpecialAbility( DarkEldarBuilding.repair_id )
+		end
+	end
+end

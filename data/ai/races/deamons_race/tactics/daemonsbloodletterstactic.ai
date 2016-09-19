@@ -2,6 +2,7 @@
 -- File: 'daemonsbloodletterstactic.ai'
 -- Edited by CornCobMan 03.06.2013
 -- Edited by Cylarne 6/16/2014
+-- Edited by Thudmeizer	09.05.2016
 
 class 'DaemonsBloodlettersTactic' (DaemonsInfantryTactic)
 
@@ -10,10 +11,9 @@ DaemonsBloodletters = {}
 function DaemonsBloodlettersTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Daemons Bloodletters Tactic")
-	
 end
 
-function DaemonsInfantryTactic:AddCommanders()
+function DaemonsBloodlettersTactic:AddCommanders()
 	table.insert(self.commander, { "daemon_squad_lord", true })
 	table.insert(self.commander, { "daemon_squad_khorne_herald", true })
 	table.insert(self.commander, { "daemon_squad_nurgle_herald", true })
@@ -25,12 +25,25 @@ function DaemonsBloodlettersTactic:InitAbilities()
 	if (DaemonsBloodletters.haste_id == nil) then
 		DaemonsBloodletters.haste_id = cpu_manager.stats:GetAbilityID( "daemons_blood_haste" )
 	end
+
+	if (DaemonsBloodletters.run_id == nil) then
+		DaemonsBloodletters.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function DaemonsBloodlettersTactic:DoAbilities()
 
 	if (self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(DaemonsBloodletters.haste_id)) then
-		Ability.DoAbility( self.squad_ai, DaemonsBloodletters.haste_id, Ability.Filters.IsInCombat )
+		Ability.DoAbilityArea( self.squad_ai, DaemonsBloodletters.haste_id, Ability.Filters.CloseEnemy, 20, 1  )
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DaemonsBloodletters.run_id )) then
+			self.squad_ai:DoSpecialAbility( DaemonsBloodletters.run_id )
+		end
 	end
 
 	-- Call basic DoAbilities methods

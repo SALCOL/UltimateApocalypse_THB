@@ -1,0 +1,67 @@
+----------------------------------------
+-- File: 'roughridertactic.ai'
+-- Edited by Thudmeizer	@ 29.02.2016
+
+class 'RoughRiderTactic' (GuardInfantryTactic)
+
+RoughRider = {}
+
+function RoughRiderTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Special Weapons Tactic")
+	
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+end
+
+function RoughRiderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (RoughRider.flashbang_id == nil) then
+		RoughRider.flashbang_id = cpu_manager.stats:GetAbilityID( "guard_flashbang_grenades" )	
+	end
+	if (RoughRider.frag_id == nil) then
+		RoughRider.frag_id = cpu_manager.stats:GetAbilityID( "guard_frag_grenades" )	
+	end
+	if (RoughRider.krak_id == nil) then
+		RoughRider.krak_id = cpu_manager.stats:GetAbilityID( "guard_krak_grenades" )	
+	end
+	if (RoughRider.smoke_id == nil) then
+		RoughRider.smoke_id = cpu_manager.stats:GetAbilityID( "guard_smoke_grenades" )	
+	end
+	if (RoughRider.run_id == nil) then
+		RoughRider.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function RoughRiderTactic:DoAbilities()
+
+	-- Throw flashbang grenades!
+	Ability.DoAbilityTarget(self.squad_ai, RoughRider.flashbang_id, Ability.Filters.CloseSquadEnemy, 6)
+
+	-- Throw frag grenades!
+	Ability.DoAbilityTarget(self.squad_ai, RoughRider.frag_id, Ability.Filters.CloseInfantryEnemy, 4)
+
+	-- Throw melta grenades!
+	Ability.DoAbilityTarget(self.squad_ai, RoughRider.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(RoughRider.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(RoughRider.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(RoughRider.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( RoughRider.run_id )) then
+			self.squad_ai:DoSpecialAbility( RoughRider.run_id )
+		end
+	end
+end

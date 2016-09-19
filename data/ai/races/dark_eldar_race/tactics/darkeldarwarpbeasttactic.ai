@@ -1,12 +1,25 @@
 ----------------------------------------
 -- File: 'darkeldarwarpbeasttactic.ai'
 -- Created by Arkhan		@ 06.04.2008
+-- Edited by Thudmeizer		@ 05.04.2014
 
 class 'DarkEldarWarpBeastTactic' (DarkEldarInfantryTactic)
+
+DarkEldarWarpBeast = {}
 
 function DarkEldarWarpBeastTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Warp Beast Tactic")
+end
+
+function DarkEldarWychTactic:InitAbilities()
+
+end
+
+function DarkEldarWychTactic:DoAbilities()
+
+	-- Call basic DoAbilities methods
+	DarkEldarInfantryTactic.DoAbilities(self)
 end
 
 function DarkEldarWarpBeastTactic:CheckForBroken()

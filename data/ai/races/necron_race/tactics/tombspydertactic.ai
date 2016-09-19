@@ -1,8 +1,10 @@
 ----------------------------------------
 -- File: 'tombspydertactic.ai'
--- Edited by Thudmeizer @ 28.03.2007
+-- Edited by Thudmeizer @ 09.03.2016
 
 class 'TombSpyderTactic' (NecronVehicleTactic)
+
+TombSpyder = {}
 
 function TombSpyderTactic:__init( squad_ai ) super( squad_ai )
 	
@@ -24,7 +26,20 @@ function TombSpyderTactic:Upgrade()
 
 end
 
+function TombSpyderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TombSpyder.truegauss_id == nil) then
+		TombSpyder.truegauss_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )
+	end
+end
+
 function TombSpyderTactic:DoAbilities()
+
+	-- Gauss Weapon Overcharge: the squad will receive a boost in maximum damage, but a critical reduction in movement speed for a duration.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.5) then
+		Ability.DoAbilityArea( self.squad_ai, TombSpyder.truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
+	end
 
 	-- Try to spawn harvest units
 	if (self.timedHarvestAbility ~= nil) then
@@ -40,7 +55,7 @@ function TombSpyderTactic:DoAbilities()
 		if (self.squad_ai:CanDirectSpawn()) then
 			self.squad_ai:DoDirectSpawn()
 		end
-    end
+    	end
 end
 
 function TombSpyderTactic:DoHarvestAbility()
@@ -134,18 +149,18 @@ end
 
 function TombSpyderTactic:Update()
 
-    if (self:IsComplete()) then
-        return
-    end
+	if (self:IsComplete()) then
+		return
+	end
 
-    -- State machine
-    if (not VehicleTactic.Update(self)) then
-        return
-    end
+    	-- State machine
+	if (not VehicleTactic.Update(self)) then
+		return
+	end
     
-    -- Check scarab spawners
-    --TombSpyderTactic.CheckScarabSpawners(self)
-    if (self.m_bScarabSpawner) then
-    	self.m_bNeedRepair = true
-    end
+	-- Check scarab spawners
+	--TombSpyderTactic.CheckScarabSpawners(self)
+	if (self.m_bScarabSpawner) then
+		self.m_bNeedRepair = true
+    	end
 end

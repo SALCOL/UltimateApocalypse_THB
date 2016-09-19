@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'scholarstactic.ai'
--- Edited by Thudmeizer @ 03.04.2007
+-- Edited by Thudmeizer @ 24.05.2016
 
 class 'ScholarsTactic' (DaemonhuntInfantryTactic)
 
@@ -11,16 +11,93 @@ function ScholarsTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Scholars Tactic")
 end
 
+function ScholarsTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function ScholarsTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
 function ScholarsTactic:InitAbilities()
 
-	if (Scholars_prayer_id) == nil then
-	   Scholars_prayer_id = cpu_manager.stats:GetAbilityID( "inquisition_scholar_prayer_of_miracle" )	
+	if (Scholars.prayer_id == nil) then
+		Scholars.prayer_id = cpu_manager.stats:GetAbilityID( "inquisition_scholar_prayer_of_miracle" )	
+	end
+
+	if (Scholars.medikits_id == nil) then
+	    	Scholars.medikits_id = cpu_manager.stats:GetAbilityID( "inquisition_medikits" )	
+	end
+
+	if (Scholars.rally_id == nil) then
+	    	Scholars.rally_id = cpu_manager.stats:GetAbilityID( "inquisition_rally" )	
+	end
+
+	if (Scholars.run_id == nil) then
+		Scholars.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function ScholarsTactic:DoAbilities()
-	if (self.squad_ai:CanDoAbility(Scholars.Scholars_prayer_id)) then
-		Ability.DoAbility( self.squad_ai, Scholars.Scholars_prayer_id, Ability.Filters.IsInCombat)
+
+	if (self.squad_ai:CanDoAbility(Scholars.prayer_id)) then
+		Ability.DoAbilityArea( self.squad_ai, Scholars.prayer_id, Ability.Filters.CloseEnemy, 20, 1)
 	end
+
+	-- Use Medkits if low on health
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		
+		if (self.squad_ai:CanDoAbility( Scholars.medikits_id )) then
+			self.squad_ai:DoSpecialAbility( Scholars.medikits_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Scholars.run_id )) then
+			self.squad_ai:DoSpecialAbility( Scholars.run_id )
+		end
+	end
+
+	-- Do basic abilities
+	DaemonhuntInfantryTactic.DoAbilities(self)
 end
 
+function ScholarsTactic:CheckForBroken()
+
+	if (self.squad_ai:IsBroken()) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( Scholars.rally_id )) then
+			self.squad_ai:DoSpecialAbility( Scholars.rally_id )
+		end
+	end
+   
+	-- Call basic broken check method
+	InfantryTactic.CheckForBroken(self)
+end
+
+function ScholarsTactic:Reinforce()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+   
+	-- If there are no resources available, don't upgrade!
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (iRequisition < 600 and not Tactic.Options.can_reinforce) then
+		return
+	end
+			
+	-- Don't reinforce more than 12 squad members -- they both get stuck or don't capture points properly
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 12) then
+        	if (self.squad_ai:CanReinforce(true, 0)) then            
+            		self.squad_ai:DoReinforce(true, 0)
+       		elseif (self.squad_ai:CanReinforce(false, 0)) then
+            		self.squad_ai:DoReinforce(false, 0)
+		end
+	end
+end

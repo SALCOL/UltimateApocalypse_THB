@@ -1,0 +1,72 @@
+----------------------------------------
+-- File: 'chaosrubricsquadtactic.ai'
+-- Edited by Thudmeizer	@ 04.05.2016
+
+class 'ChaosRubricSquadTactic' (ChaosMarineInfantryTactic)
+
+ChaosRubricSquad = {}
+
+function ChaosRubricSquadTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chaos Rubric Squad Tactic")
+end
+
+function ChaosRubricSquadTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChaosRubricSquad.boltchange_id == nil) then
+		ChaosRubricSquad.boltchange_id = cpu_manager.stats:GetAbilityID( "chaos_bolt_of_change_aspiringsorcerer" )	
+	end
+
+	if (ChaosRubricSquad.warptime_id == nil) then
+		ChaosRubricSquad.warptime_id = cpu_manager.stats:GetAbilityID( "chaos_warp_time_aspiringsorcerer" )	
+	end
+
+	if (ChaosRubricSquad.run_id == nil) then
+		ChaosRubricSquad.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function ChaosRubricSquadTactic:DoAbilities()
+
+	-- Activate bolt of change
+        Ability.DoAbilityPos( self.squad_ai, ChaosRubricSquad.boltchange_id, Ability.Filters.CloseEnemy, 4)
+	Ability.DoAbilityPos( self.squad_ai, ChaosRubricSquad.boltchange_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+
+	-- Activate warp time
+	Ability.DoAbilityArea( self.squad_ai, ChaosRubricSquad.warptime_id, Ability.Filters.CloseEnemy, 15, 6 ) 
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( ChaosRubricSquad.run_id )) then
+			self.squad_ai:DoSpecialAbility( ChaosRubricSquad.run_id )
+		end
+	end
+
+	-- Call basic DoAbilities methods
+	ChaosMarineInfantryTactic.DoAbilities(self)
+end
+
+function ChaosRubricSquadTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	-- Only upgrade if not reinforcing
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		if (self.squad_ai:HasUpgradableTrooper()) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end

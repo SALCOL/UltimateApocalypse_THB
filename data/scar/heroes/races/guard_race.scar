@@ -657,8 +657,8 @@ UnitTypes.guard_race =
 		Weapons =
 		{
 			"guard_demolisher_cannon_stormsword",
-			"space_marine_flamestorm_cannon_right",
-			"space_marine_flamestorm_cannon_left",
+			"guard_flamestorm_cannon_right",
+			"guard_flamestorm_cannon_left",
 			"guard_stormblade_hull_heavybolter",
 			"guard_stormblade_left_heavybolter",
 			"guard_stormblade_right_heavybolter",

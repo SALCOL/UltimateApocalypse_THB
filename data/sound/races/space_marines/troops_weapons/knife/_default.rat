@@ -3,8 +3,8 @@
 version = 9
 
 priority = 31
-volume = 0.480000
-maxPolyphony = 7
+volume = 0.500000
+maxPolyphony = 10
 type3D = 1
 cardiodScale = 0.000000
 cardiodLowFreq = 0
