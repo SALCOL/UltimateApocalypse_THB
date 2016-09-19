@@ -47,7 +47,6 @@ Temporary Items
 .apdisk
 
 # dds, psd and other source files can be ignored
-*.dds
 *.psd
 *.max
 *.wav
