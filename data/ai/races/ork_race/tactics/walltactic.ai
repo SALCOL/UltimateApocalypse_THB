@@ -1,0 +1,36 @@
+----------------------------------------
+-- File: 'walltactic.ai'
+-- Edited by Thudmeizer         @ 27.02.2016
+
+class 'WallTactic' (BaseTactic)
+
+Wall = {}
+
+function WallTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Wall Tactic")
+end
+
+function WallTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function WallTactic:InitAbilities()
+
+	-- Init Ability ID's and Addon ID's
+	Wall.mainAddonID = cpu_manager.stats:GetAddOnID( "ork_wall_gunzaddon" )
+end
+
+function WallTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Twin Shootas		-- ork_wall_gunzaddon
+
+	-- Always build the main twin shoota addon as late game they aren't built for some reason.
+	self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())	-- Twin Shootas
+end

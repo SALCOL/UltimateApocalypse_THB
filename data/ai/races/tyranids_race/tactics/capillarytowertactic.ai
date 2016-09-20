@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'capillarytowertactic.ai'
 -- Edited by Cylarne		@ 10/12/15
+-- Edited by Thudmeizer		@ 25.04.2016
 
 class 'CapillaryTowerTactic' (BaseTactic)
 
@@ -10,21 +11,22 @@ function CapillaryTowerTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Capillary Tower Tactic")
 
+	self.delayedTimer = g_iGMT
+	self.abilitySelection = math.random ( 1,100 )
 end
 
 function CapillaryTowerTactic:InitAbilities()
 
-	------------------------- SUPERWEAPONS
-	
-	if (CapillaryTower.superweapon2_id == nil) then
-		CapillaryTower.superweapon2_id = cpu_manager.stats:GetAbilityID("tyranids_summon_hive_fleet")
+	if (CapillaryTower.bombardment_id == nil) then
+		CapillaryTower.bombardment_id = cpu_manager.stats:GetAbilityID( "tyranids_planetary_bombardment" )
 	end
-	if (CapillaryTower.superweapon1_id == nil) then
-		CapillaryTower.superweapon1_id = cpu_manager.stats:GetAbilityID("tyranids_planetary_bombardment")
+
+	if (CapillaryTower.summonfleet_id == nil) then
+		CapillaryTower.summonfleet_id = cpu_manager.stats:GetAbilityID( "tyranids_summon_hive_fleet" )
 	end
 	
 	if (CapillaryTower.errect_id == nil) then
-		CapillaryTower.errect_id = cpu_manager.stats:GetAbilityID("tyranids_summon_vein")
+		CapillaryTower.errect_id = cpu_manager.stats:GetAbilityID( "tyranids_summon_vein" )
 	end
 end
 
@@ -32,21 +34,32 @@ function CapillaryTowerTactic:DoAbilities()
 
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 
-	if (self.base_ai:CanDoAbility(CapillaryTower.superweapon2_id) and iPower >= 10000) then
-		-- Activate the Hive Fleet.
-		Ability.DoAbilityTargetEntity(self.base_ai, CapillaryTower.superweapon2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-	end
-	if (self.base_ai:CanDoAbility(CapillaryTower.superweapon1_id) and iPower >= 7000) then
+	-- Planetary Bombardment: Unleash hundreds of Tyranid infested meteors at the designated target.
+	-- The entire planet side is covered in meteors and scarred surfaces all over, eventually affecting the battlefield with toxic miasma and summoning critical Tyranid hardpoints.
+	-- Within 200m of the designated target, meteors strike at random dealing moderate to severe damage to most objects, and then the critical points (Capillary Towers) are summoned from the ground, ripping apart structures in their path.
+	-- Finally, one more massive meteor is unleashed, destroying most objects in a 35m radius.
+	if (self.base_ai:CanDoAbility(CapillaryTower.bombardment_id) and iPower >= 7000) then
 		-- Activate the Meteor Strike.
-		Ability.DoAbilityTargetEntity(self.base_ai, CapillaryTower.superweapon1_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-		
+		Ability.DoAbilityTargetEntity(self.base_ai, CapillaryTower.bombardment_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)	
+	end
+
+	-- Spawn the Hive Fleet: Call down the essence of the Hive Fleet at the designated target.
+	-- All structures and heavily armored vehicles immediately get enveloped upon the arrival of the Hive Fleet, knocking back infantry in its path.
+	-- The Hive Fleet will last on the battlefield until it dies (unable to be fed), enveloping everything slowly in a 60m radius while also summoning forth all Tyranid units.
+	if (self.base_ai:CanDoAbility(CapillaryTower.summonfleet_id) and iPower >= 20000) then
+		-- Activate the Hive Fleet.
+		Ability.DoAbilityTargetEntity(self.base_ai, CapillaryTower.summonfleet_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
 	end
 	
-	if (self.base_ai:CanDoAbility(CapillaryTower.errect_id) and iPower >= 1000) then
+	if g_iGMT > self.delayedTimer + 60 then
+        	self.abilitySelection = math.random ( 1,100 )
+        	self.delayedTimer = g_iGMT
+    	end
+
+	-- Errect Ground: Allows the tyranoforming of the ground nearby a capillary tower, creating Capillary Veins.
+	if (self.base_ai:CanDoAbility(CapillaryTower.errect_id) and iPower >= 10000 and self.abilitySelection <= 25) then
 		-- Activate the Errect Ground ability.
-		self.base_ai:DoSpecialAbility(CapillaryTower.errect_id)
-		
+		self.base_ai:DoSpecialAbility(CapillaryTower.errect_id)	
 	end
-	
 end
 

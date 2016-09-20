@@ -1,6 +1,6 @@
 ----------------------------------------
--- File: 'SistersLivingSainttactic.ai'
--- Edited by Thudmeizer @ 22.03.2008
+-- File: 'sisterslivingsainttactic.ai'
+-- Edited by Thudmeizer @ 12.04.2016
 
 class 'SistersLivingSaintTactic' (SistersInfantryTactic)
 
@@ -15,61 +15,53 @@ function SistersLivingSaintTactic:AlwaysAttack()
 	return true
 end
 
+-- Saint is allowed to retreat even directly after a jump
+function SistersLivingSaintTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersLivingSaintTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
 function SistersLivingSaintTactic:InitAbilities()
 
 	-- Init ability ID's
 	if (SistersLivingSaint.flame_id == nil) then
 		SistersLivingSaint.flame_id = cpu_manager.stats:GetAbilityID( "sisters_ardent_flame" )
 	end
-	if (SistersLivingSaint.flame2_id == nil) then
-		SistersLivingSaint.flame2_id = cpu_manager.stats:GetAbilityID( "sisters_ardent_flame_arch_angel" )
-	end
 	if (SistersLivingSaint.ascension_id == nil) then
 		SistersLivingSaint.ascension_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_ascension" )
-	end
-	if (SistersLivingSaint.aura_id == nil) then
-		SistersLivingSaint.aura_id = cpu_manager.stats:GetAbilityID( "sisters_invincibility_aura" )
-	end
-	if (SistersLivingSaint.holymurder_id == nil) then
-		SistersLivingSaint.holymurder_id = cpu_manager.stats:GetAbilityID( "sisters_holy_murder" )
-	end
-	
-	if (SistersLivingSaint.divine_slaughter_id == nil) then
-		SistersLivingSaint.divine_slaughter_id = cpu_manager.stats:GetAbilityID( "sisters_arch_angel_divine_slaughter" )
 	end
 end
 
 function SistersLivingSaintTactic:DoAbilities()
 
-	Ability.DoAbilityPos( self.squad_ai, SistersLivingSaint.flame_id, Ability.Filters.CloseEnemy, 12 ) 
-	Ability.DoAbilityPos( self.squad_ai, SistersLivingSaint.flame2_id, Ability.Filters.CloseEnemy, 12 ) 
-	Ability.DoAbility( self.squad_ai, SistersLivingSaint.holymurder_id, Ability.Filters.IsInCombat )
-	Ability.DoAbility( self.squad_ai, SistersLivingSaint.divine_slaughter_id, Ability.Filters.IsInCombat )
-	-- summons non-player controlled angels to fight for a short period (Faith cost: 90)
-	Ability.DoAbilityArea( self.squad_ai, SistersLivingSaint.ascension_id, Ability.Filters.CloseEnemy, 10, 4 )
-
 	-- We are dying, lower requisites for attacks
 	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
-
 		Ability.DoAbilityPos( self.squad_ai, SistersLivingSaint.flame_id, Ability.Filters.CloseEnemy, 6 ) 
-		Ability.DoAbilityPos( self.squad_ai, SistersLivingSaint.flame2_id, Ability.Filters.CloseEnemy, 6 ) 
+	else
+		Ability.DoAbilityPos( self.squad_ai, SistersLivingSaint.flame_id, Ability.Filters.CloseEnemy, 12 ) 
 	end
-	
-	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	
-	if (self.squad_ai:CanDoAbility(SistersLivingSaint.aura_id)) then
-	
-		if (self.squad_ai:IsInCombat() and not self.squad_ai:IsUsingAbility(SistersLivingSaint.aura_id)) then
 
-			-- Activate the AOI
-			self.squad_ai:DoSpecialAbility(SistersLivingSaint.aura_id)
-			
-		elseif (not self.squad_ai:IsInCombat() and self.squad_ai:IsUsingAbility(SistersLivingSaint.aura_id)) then
-
-			-- Deactivate the AOI
-			self.squad_ai:DoSpecialAbility(SistersLivingSaint.aura_id)
-		end
-	end
+	-- Summons non-player controlled angels to fight for a short period (Faith cost: 200)
+	Ability.DoAbilityArea( self.squad_ai, SistersLivingSaint.ascension_id, Ability.Filters.CloseEnemy, 10, 4 )
 end
 
+function SistersLivingSaintTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	if not InfantryTactic.Update( self ) then
+		return false
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

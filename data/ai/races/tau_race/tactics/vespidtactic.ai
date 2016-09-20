@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'vespidtactic.ai'
 -- Created by Arkhan		@ 21.03.2008
+-- Edited by Thudmeizer		@ 18.03.2016
 
 class 'VespidTactic' (TauInfantryTactic)
 
@@ -14,22 +15,37 @@ end
 function VespidTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Vespid.iSonicPulseID == nil) then
-		Vespid.iSonicPulseID = cpu_manager.stats:GetAbilityID( "tau_sonic_pulse" )	
+	if (Vespid.pulse_id == nil) then
+		Vespid.pulse_id = cpu_manager.stats:GetAbilityID( "tau_sonic_pulse" )	
 	end
-	if (Vespid.iDevourID == nil) then
-		Vespid.iDevourID = cpu_manager.stats:GetAbilityID( "tau_devour" )	
+	if (Vespid.devour_id == nil) then
+		Vespid.devour_id = cpu_manager.stats:GetAbilityID( "tau_devour" )	
+	end
+	if (Vespid.run_id == nil) then
+		Vespid.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function VespidTactic:DoAbilities()
 
 	-- Check if I can activate sonic pulse
-	--Ability.DoAbility(self.squad_ai, Vespid.iSonicPulseID, Ability.PredicateFilters.IsInCombat)
+	Ability.DoAbilityArea(self.squad_ai, Vespid.pulse_id, Ability.Filters.CloseEnemy, 5)
 
-	-- Check if we can use "Hunt"
-	Ability.DoAbility( self.squad_ai, Vespid.iDevourID, Ability.PredicateFilters.IsInCombat )
-	
+	-- Hunt: For a duration, the squad gains a boost in sight, keen sight, movement speed, and morale bonuses.
+	if (self.squad_ai:CanDoAbility( Vespid.devour_id )) then
+		Ability.DoAbilityArea(self.squad_ai, Vespid.devour_id, Ability.Filters.CloseEnemy, 20, 4)
+		Ability.DoAbilityArea(self.squad_ai, Vespid.devour_id, Ability.Filters.CloseInfiltratedEnemy, 30, 1)
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Vespid.run_id )) then
+			self.squad_ai:DoSpecialAbility( Vespid.run_id )
+		end
+	end
+
 	-- Call basic DoAbilities methods
-	InfantryTactic.DoAbilities(self)
+	TauInfantryTactic.DoAbilities(self)
 end

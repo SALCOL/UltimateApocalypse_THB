@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'darkeldarmandraketactic.ai'
 -- Created by Arkhan		@ 06.04.2008
+-- Edited by Thudmeizer		@ 05.04.2016
 
 class 'DarkEldarMandrakeTactic' (DarkEldarInfantryTactic)
 
@@ -13,17 +14,36 @@ end
 
 function DarkEldarMandrakeTactic:InitAbilities()
 
-	if (DarkEldarMandrake.infiltration_id == nil) then
-		DarkEldarMandrake.infiltration_id = cpu_manager.stats:GetAbilityID( "dark_eldar_infiltration" )	
+	-- Init ability ID's
+	if (DarkEldarMandrake.leach_id == nil) then
+		DarkEldarMandrake.leach_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_leach" )
+	end
+
+	if (DarkEldarMandrake.run_id == nil) then
+		DarkEldarMandrake.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function DarkEldarMandrakeTactic:DoAbilities()
 
-	if (self.squad_ai:CanDoAbility(DarkEldarMandrake.infiltration_id) and not self.squad_ai:IsUsingAbility(DarkEldarMandrake.infiltration_id)) then
-		self.squad_ai:DoSpecialAbility(DarkEldarMandrake.infiltration_id)
+	-- Luster of Souls: Restore the strength of your squad by concealing them and regaining their health. Exchange this great ritual in exchange for souls.
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarMandrake.leach_id, Ability.Filters.CloseSquadEnemy, 15, 4)
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarMandrake.leach_id, Ability.Filters.CloseCommanderEnemy, 15, 1)
 	end
 
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DarkEldarMandrake.run_id )) then
+			self.squad_ai:DoSpecialAbility( DarkEldarMandrake.run_id )
+		end
+	end
+
+	-- Call basic DoAbilities methods
+	DarkEldarInfantryTactic.DoAbilities(self)
 end
 
 function DarkEldarMandrakeTactic:Reinforce()

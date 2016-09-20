@@ -2,6 +2,7 @@
 -- File: 'daemonsdaemonettestactic.ai'
 -- Edited by CornCobMan 30.05.2013
 -- Edited by Cylarne 6/16/2014
+-- Edited by Thudmeizer	@ 09.05.2016
 
 class 'DaemonsDaemonettesTactic' (DaemonsInfantryTactic)
 
@@ -10,18 +11,15 @@ DaemonsDaemonettes = {}
 function DaemonsDaemonettesTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Daemons Daemonettes Tactic")
-	
 end
 
-function DaemonsInfantryTactic:AddCommanders()
+function DaemonsDaemonettesTactic:AddCommanders()
 	table.insert(self.commander, { "daemon_squad_lord", true })
 	table.insert(self.commander, { "daemon_squad_khorne_herald", true })
 	table.insert(self.commander, { "daemon_squad_nurgle_herald", true })
 	table.insert(self.commander, { "daemon_squad_slaanesh_herald", true })
 	table.insert(self.commander, { "daemon_squad_tzeentch_herald", true })
 end
-
-
 
 function DaemonsDaemonettesTactic:InitAbilities()
 
@@ -32,14 +30,29 @@ function DaemonsDaemonettesTactic:InitAbilities()
 	if (DaemonsDaemonettes.allure_id == nil) then
 		DaemonsDaemonettes.allure_id = cpu_manager.stats:GetAbilityID( "daemons_allure" )
 	end
+
+	if (DaemonsDaemonettes.run_id == nil) then
+		DaemonsDaemonettes.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function DaemonsDaemonettesTactic:DoAbilities()
 
-	Ability.DoAbility( self.squad_ai, DaemonsDaemonettes.pavane_id, Ability.Filters.IsInCombat )
+	Ability.DoAbilityArea( self.squad_ai, DaemonsDaemonettes.pavane_id, Ability.Filters.CloseEnemy, 10, 1 )
 	
 	if (self.squad_ai:CanDoAbility(DaemonsDaemonettes.allure_id) and self.squad_ai:IsInCombat()) then
 		Ability.DoAbilityTarget( self.squad_ai, DaemonsDaemonettes.allure_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsDaemonettes.allure_id, Ability.Filters.CloseMonsterEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsDaemonettes.allure_id, Ability.Filters.CloseCommanderEnemy, 1 )
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DaemonsDaemonettes.run_id )) then
+			self.squad_ai:DoSpecialAbility( DaemonsDaemonettes.run_id )
+		end
 	end
 
 	-- Call basic DoAbilities methods

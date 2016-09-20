@@ -1,6 +1,6 @@
 ----------------------------------------
--- File: 'Commissartactic.ai'
--- Edited by Thudmeizer @ 12.10.2005
+-- File: 'commissartactic.ai'
+-- Edited by Thudmeizer @ 29.02.2016
 -- Edited by Arkhan 	@ 02.12.2005
 
 class 'CommissarTactic' (GuardInfantryTactic)
@@ -33,6 +33,9 @@ function CommissarTactic:InitAbilities()
 		Commissar.execute_id = cpu_manager.stats:GetAbilityID( "guard_commissar_execute" )
 		Commissar.NextExecuteCheck = iGMT
 	end
+	if (Commissar.run_id == nil) then
+		Commissar.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function CommissarTactic:DoAbilities()
@@ -44,6 +47,15 @@ function CommissarTactic:DoAbilities()
 			-- Use execute ability
 			self.squad_ai:DoSpecialAbility(Commissar.execute_id) 
 			--Commissar.NextExecuteCheck = g_iGMT + 20
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Commissar.run_id )) then
+			self.squad_ai:DoSpecialAbility( Commissar.run_id )
 		end
 	end
 end

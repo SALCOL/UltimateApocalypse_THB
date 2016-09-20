@@ -1,0 +1,191 @@
+----------------------------------------
+-- File: 'gkherotactic.ai'
+-- Edited by Thudmeizer @ 18.04.2016
+
+class 'GKHeroTactic' (DaemonhuntInfantryTactic)
+
+GKHero = {}
+
+function GKHeroTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Grey Knight Hero Tactic")
+
+	self.timedDirectSpawnAbility = Timer( GKHeroTactic.DoDirectSpawnAbility, self, 5 )
+end
+
+function GKHeroTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelGKHero = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelGKHero ~= nil) then
+			local addOnID = buildChannelGKHero:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelGKHero:IsBuilding() == 0 and buildChannelGKHero:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelGKHero:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function GKHeroTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function GKHeroTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- GK Hero is allowed to retreat even directly after a jump
+function GKHeroTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function GKHeroTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function GKHeroTactic:CanJumpAttached()
+	return true
+end
+
+function GKHeroTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (GKHero.bomb_id == nil) then
+		GKHero.bomb_id = cpu_manager.stats:GetAbilityID( "inquisition_commander_bomb" )
+	end
+
+	if (GKHero.purify_id == nil) then
+		GKHero.purify_id = cpu_manager.stats:GetAbilityID( "inquisition_grey_knight_hero_purify" )	
+	end
+
+	if (GKHero.purge_id == nil) then
+		GKHero.purge_id = cpu_manager.stats:GetAbilityID( "inquisition_grey_knight_hero_purge" )	
+	end
+
+	if (GKHero.bombard_id == nil) then
+		GKHero.bombard_id = cpu_manager.stats:GetAbilityID( "inquisition_psycannon_bombard_hero" )	
+	end
+
+	if (GKHero.medikits_id == nil) then
+	    	GKHero.medikits_id = cpu_manager.stats:GetAbilityID( "inquisition_medikits" )	
+	end
+
+	if (GKHero.run_id == nil) then
+		GKHero.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function GKHeroTactic:DoAbilities()
+
+	-- If we are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		if (self.squad_ai:CanDoAbility( GKHero.purify_id )) then
+			Ability.DoAbilityPos( self.squad_ai, GKHero.purify_id, Ability.Filters.CloseMonsterEnemy, 2 )
+			Ability.DoAbilityPos( self.squad_ai, GKHero.purify_id, Ability.Filters.CloseInfantryEnemy, 4 )
+			Ability.DoAbilityPos( self.squad_ai, GKHero.purify_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		end
+
+		Ability.DoAbilityPos( self.squad_ai, GKHero.purge_id, Ability.Filters.CloseEnemy, 3 )
+		Ability.DoAbilityPos( self.squad_ai, GKHero.bombard_id, Ability.Filters.CloseEnemy, 12)
+	else
+		if (self.squad_ai:CanDoAbility( GKHero.purify_id )) then
+			Ability.DoAbilityPos( self.squad_ai, GKHero.purify_id, Ability.Filters.CloseMonsterEnemy, 4 )
+			Ability.DoAbilityPos( self.squad_ai, GKHero.purify_id, Ability.Filters.CloseInfantryEnemy, 8 )
+			Ability.DoAbilityPos( self.squad_ai, GKHero.purify_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		end
+
+		Ability.DoAbilityPos( self.squad_ai, GKHero.purge_id, Ability.Filters.CloseEnemy, 6 )
+		Ability.DoAbilityPos( self.squad_ai, GKHero.bombard_id, Ability.Filters.CloseEnemy, 24)
+	end
+
+	-- Use Medkits if low on health
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		
+		if (self.squad_ai:CanDoAbility( GKHero.medikits_id )) then
+			self.squad_ai:DoSpecialAbility( GKHero.medikits_id )
+		end
+	end
+
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, GKHero.bomb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, GKHero.bomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( GKHero.run_id )) then
+			self.squad_ai:DoSpecialAbility( GKHero.run_id )
+		end
+	end
+
+	-- Try to spawn Terminator Paladins
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		GKHeroTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function GKHeroTactic:DoDirectSpawnAbility()
+
+	-- Spawn Terminator Paladins in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+
+function GKHeroTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function GKHeroTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+	
+	-- Attach to melee in tier2+
+	if (cpu_manager:GetTierLevel() > 1) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

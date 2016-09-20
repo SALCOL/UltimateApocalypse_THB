@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'forcecommandertactic.ai'
--- Edited by Thudmeizer @ 02.02.2016
+-- Edited by Thudmeizer @ 13.05.2016
 -- Edited by LarkinVB   @ 16.08.2005
 -- Edited by Cylarne_04 2011
 
@@ -13,38 +13,18 @@ function ForceCommanderTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Force Commander Tactic")
 end
 
-function ForceCommanderTactic:InitAbilities()
-
-	-- Init ability ID's
-	if (ForceCommander.orbital_b == nil) then
-		ForceCommander.orbital_b = cpu_manager.stats:GetAbilityID( "marines_orbital_bombardment" )
+function ForceCommanderTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelForceCommander = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelForceCommander ~= nil) then
+			local addOnID = buildChannelForceCommander:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelForceCommander:IsBuilding() == 0 and buildChannelForceCommander:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelForceCommander:BuildAddOn(addOnID)
+				return
+			end
+		end
 	end
-	if (ForceCommander.battlecry == nil) then
-		ForceCommander.battlecry = cpu_manager.stats:GetAbilityID( "marines_battlecry" )
-	end
-	if (ForceCommander.alloutwar == nil) then
-		ForceCommander.alloutwar = cpu_manager.stats:GetAbilityID( "marines_all_out_war" )
-	end
-	if (ForceCommander.bomb == nil) then
-		ForceCommander.bomb = cpu_manager.stats:GetAbilityID( "marines_commander_bomb" )
-	end
-end
-
-function ForceCommanderTactic:DoAbilities()
-
-	-- Try to use battlecry
-	Ability.DoAbilityArea( self.squad_ai, ForceCommander.battlecry, Ability.Filters.CloseInCombat, 10 )
-	
-	-- Try to use orbital bombardement
-	Ability.DoAbilityPos(self.squad_ai, ForceCommander.orbital_b, Ability.Filters.CloseEnemy, 24)
-	Ability.DoAbilityPos(self.squad_ai, ForceCommander.orbital_b, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
-	
-	-- Try to use All Out War
-	Ability.DoAbility( self.squad_ai, ForceCommander.alloutwar, Ability.Filters.IsInCombat )
-
-	-- Try to place bomb
-	Ability.DoAbilityPos(self.squad_ai, ForceCommander.bomb, Ability.Filters.CloseEnemy, 24)
-	Ability.DoAbilityPos(self.squad_ai, ForceCommander.bomb, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+	return
 end
 
 -- Assassinate win condition -- never attack
@@ -55,6 +35,101 @@ end
 -- Assassinate win condition -- never defend
 function ForceCommanderTactic:IsDefender()
 	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+end
+
+-- Force Commander is allowed to retreat even directly after a jump
+function ForceCommanderTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Assassinate win condition -- never jump into combat
+function ForceCommanderTactic:JumpAttack()
+
+	if (not cpu_manager.assassinate) then
+		Tactic.JumpAttack(self)
+	end
+end
+
+function ForceCommanderTactic:CanJumpAttached()
+	return true
+end
+
+function ForceCommanderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ForceCommander.orbital_b == nil) then
+		ForceCommander.orbital_b = cpu_manager.stats:GetAbilityID( "marines_orbital_bombardment" )
+	end
+	if (ForceCommander.battlecry == nil) then
+		ForceCommander.battlecry = cpu_manager.stats:GetAbilityID( "marines_battlecry" )
+	end
+	if (ForceCommander.bomb == nil) then
+		ForceCommander.bomb = cpu_manager.stats:GetAbilityID( "marines_commander_bomb" )
+	end
+	if (ForceCommander.hellstorm == nil) then
+		ForceCommander.hellstorm = cpu_manager.stats:GetAbilityID( "marines_hellstorm" )
+	end
+	if (ForceCommander.run == nil) then
+		ForceCommander.run = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function ForceCommanderTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Try to use battlecry
+	Ability.DoAbilityArea( self.squad_ai, ForceCommander.battlecry, Ability.Filters.CloseInCombat, 10 )
+	
+	-- Try to use orbital bombardement
+	Ability.DoAbilityPos(self.squad_ai, ForceCommander.orbital_b, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ForceCommander.orbital_b, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, ForceCommander.bomb, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ForceCommander.bomb, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Try to call down a hellstorm turret farm
+	if (iRequisition >= 1000 and iPower >= 1000) then
+		Ability.DoAbilityPos(self.squad_ai, ForceCommander.hellstorm, Ability.Filters.CloseEnemy, 25)
+		Ability.DoAbilityPos(self.squad_ai, ForceCommander.hellstorm, Ability.EntityFilters.CloseBaseEntityEnemy, 5)
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( ForceCommander.run )) then
+			self.squad_ai:DoSpecialAbility( ForceCommander.run )
+		end
+	end
+end
+
+function ForceCommanderTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
 end
 
 function ForceCommanderTactic:Update()
@@ -82,4 +157,7 @@ function ForceCommanderTactic:Update()
 			self:TryAttachSquadMelee()
 		end
 	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

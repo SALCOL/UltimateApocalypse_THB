@@ -1,0 +1,55 @@
+----------------------------------------
+-- File: 'skyraytactic.ai'
+-- Edited by Thudmeizer		@ 24.04.2016
+
+class 'SkyrayTactic' (TauVehicleTactic)
+
+Skyray = {}
+
+function SkyrayTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Skyray Tactic")
+end
+
+-- Skyray is allowed to retreat even directly after a jump
+function SkyrayTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SkyrayTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Skyray.barrage_id == nil) then
+		Skyray.barrage_id = cpu_manager.stats:GetAbilityID( "tau_skyray_missile_barrage" )	
+	end
+end
+
+function SkyrayTactic:DoAbilities()
+
+    	-- Check if I can launch a barrage but lower requirements if badly damaged
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+ 		Ability.DoAbilityPos( self.squad_ai, Skyray.barrage_id, Ability.Filters.CloseEnemy, 4 ) 
+	else
+ 		Ability.DoAbilityPos( self.squad_ai, Skyray.barrage_id, Ability.Filters.CloseEnemy, 8 ) 
+	end
+end
+
+function SkyrayTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+    	-- State machine
+    	if (not VehicleTactic.Update(self)) then
+        	return
+    	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

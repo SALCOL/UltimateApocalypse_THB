@@ -1,0 +1,106 @@
+----------------------------------------
+-- File: 'daemonsprinceslaaneshtactic.ai'
+-- Edited by Thudmeizer @ 08.05.2016
+
+class 'DaemonsPrinceSlaaneshTactic' (DaemonsInfantryTactic)
+
+DaemonsPrinceSlaanesh = {}
+
+function DaemonsPrinceSlaaneshTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Prince Slaanesh Tactic")
+end
+
+function DaemonsPrinceSlaaneshTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDaemonsPrinceSlaanesh = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDaemonsPrinceSlaanesh ~= nil) then
+			local addOnID = buildChannelDaemonsPrinceSlaanesh:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelDaemonsPrinceSlaanesh:IsBuilding() == 0 and buildChannelDaemonsPrinceSlaanesh:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelDaemonsPrinceSlaanesh:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function DaemonsPrinceSlaaneshTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function DaemonsPrinceSlaaneshTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Daemon Prince is allowed to retreat even directly after a jump
+function DaemonsPrinceSlaaneshTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function DaemonsPrinceSlaaneshTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function DaemonsPrinceSlaaneshTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsPrinceSlaanesh.fear_id == nil) then
+		DaemonsPrinceSlaanesh.fear_id = cpu_manager.stats:GetAbilityID( "daemons_fear_roar" )	
+	end
+		
+	if (DaemonsPrinceSlaanesh.curse_id == nil) then
+		DaemonsPrinceSlaanesh.curse_id = cpu_manager.stats:GetAbilityID( "daemons_curse_slaanesh" )	
+	end
+end
+
+function DaemonsPrinceSlaaneshTactic:DoAbilities()
+
+	-- If we are dying, lower requisites for attacks
+	if ( self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 ) then
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrinceSlaanesh.fear_id, Ability.Filters.CloseSquadEnemy, 3 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrinceSlaanesh.fear_id, Ability.Filters.CloseMonsterEnemy, 3 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrinceSlaanesh.curse_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrinceSlaanesh.curse_id, Ability.Filters.CloseMonsterEnemy, 4 )
+	else
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrinceSlaanesh.fear_id, Ability.Filters.CloseSquadEnemy, 6 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrinceSlaanesh.fear_id, Ability.Filters.CloseMonsterEnemy, 6 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrinceSlaanesh.curse_id, Ability.Filters.CloseSquadEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrinceSlaanesh.curse_id, Ability.Filters.CloseMonsterEnemy, 8 )
+	end
+end
+
+function DaemonsPrinceSlaaneshTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_increase_production_2	8
+
+	local addon_random_commander_upgrades = math.random( 0,7 )	-- Randomize these addons
+	self:AutoBuildAddOn(addon_random_commander_upgrades)
+end
+
+function DaemonsPrinceSlaaneshTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+	
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

@@ -1,0 +1,60 @@
+(1) Weapons:
+===========================================
+
+mp_borer.lua                 Fleshborer, muzzle flash + projectile
+
+-------------------------------------------
+
+mp_deathspitter.lua          Deathspitter, muzzle flash + projectile
+ex_deathspitter.lua          Deathspitter, explosion
+
+-------------------------------------------
+
+mp_devourer.lua              Devourer, muzzle flash + projectile
+
+-------------------------------------------           
+
+fx_miasma.lua                Toxic Miasma
+
+-------------------------------------------
+
+ch_warpblast.lua              Warpblast, charge before blast is fired
+ex_warpblast.lua              Warpblast, explosion
+
+-------------------------------------------
+
+ex_sporemine.lua             Sporemine, explosion
+
+-------------------------------------------
+
+mp_strangler.lua             Barbed Strangler, muzzle flash + projectile
+ex_strangler.lua             Barbed Strangler, explosion
+
+-------------------------------------------
+
+fx_synapse01.lua             Synapse, marker beneath synapse-creature
+fx_synapse02.lua             Synapse, marker beneath creature with synapse effect
+
+-------------------------------------------
+
+mp_venom.lua                 Venom Cannon, muzzle flash + projectile
+
+-------------------------------------------
+
+ch_trygon.lua                Trygon, charge 
+pr_trygon.lua                Trygon, projectile
+ex_trygon.lua                Trygon, explosion
+
+
+
+
+(2) Buildings:
+===========================================
+
+bd_explosion.lua             Building, death
+
+
+
+
+(3) Maps:
+===========================================

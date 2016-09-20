@@ -1,0 +1,103 @@
+----------------------------------------
+-- File: 'aeonicorbtactic.ai'
+-- Edited by Cylarne @ 12-31-2010
+-- Edited by Thudmeizer	@ 09.03.2016
+
+class 'AeonicOrbTactic' (NecronVehicleTactic)
+
+AeonicOrb = {}
+
+function AeonicOrbTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Aeonic Orb Tactic")
+end
+
+function AeonicOrbTactic:AlwaysAttack()
+	return true
+end
+
+-- Orb is allowed to retreat even directly after a jump
+function AeonicOrbTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function AeonicOrbTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (AeonicOrb.whips_id == nil) then
+		AeonicOrb.whips_id = cpu_manager.stats:GetAbilityID( "necron_doomsday_whips" )	
+	end
+
+	if (AeonicOrb.annihilator_id == nil) then
+		AeonicOrb.annihilator_id = cpu_manager.stats:GetAbilityID( "necron_solar_annihilator" )	
+	end
+	
+	if (AeonicOrb.annihilator2_id == nil) then
+		AeonicOrb.annihilator2_id = cpu_manager.stats:GetAbilityID( "necron_solar_annihilator_alternative1" )	
+	end
+	
+	if (AeonicOrb.beam_id == nil) then
+		AeonicOrb.beam_id = cpu_manager.stats:GetAbilityID( "necron_destructor_beam" )	
+	end
+end
+
+function AeonicOrbTactic:DoAbilities()
+
+	-- Necrodermic Energies: Orb's abilities will recharge over time, and all three solar weapon types will be instantly recharged for 15 seconds.
+	-- The hull of this unit will be instantly repaired as well.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility( AeonicOrb.whips_id )) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.5) then
+			self.squad_ai:DoSpecialAbility(AeonicOrb.whips_id)
+		end
+	end
+
+	-- Split Solar Flare Beam: Short ranged split beam cutting in half all enemies 70m away from the Orb in a fixed direction. Ultimately destructive.
+	Ability.DoAbilityPos( self.squad_ai, AeonicOrb.beam_id, Ability.Filters.CloseEnemy, 10 )
+	Ability.DoAbilityPos( self.squad_ai, AeonicOrb.beam_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Solar Annihilator (Expanded Impact)
+	-- Long ranged devastating weapon that destroys everything within a VERY large area of effect; does not harm Living Metal Necron units.
+	if (iPower >= 8000) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.5) then
+			Ability.DoAbilityPos( self.squad_ai, AeonicOrb.annihilator2_id, Ability.Filters.CloseEnemy, 20 )
+			Ability.DoAbilityPos( self.squad_ai, AeonicOrb.annihilator2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 8)
+		else
+			Ability.DoAbilityPos( self.squad_ai, AeonicOrb.annihilator2_id, Ability.Filters.CloseEnemy, 30 )
+			Ability.DoAbilityPos( self.squad_ai, AeonicOrb.annihilator2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 12)
+		end
+	end
+
+	-- Solar Annihilator (Standard)
+	-- Long ranged devastating weapon that destroys everything within an area of effect; does not harm Living Metal Necron units. 
+	if (iPower >= 3000) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.5) then
+			Ability.DoAbilityPos( self.squad_ai, AeonicOrb.annihilator_id, Ability.Filters.CloseEnemy, 10 )
+			Ability.DoAbilityPos( self.squad_ai, AeonicOrb.annihilator_id, Ability.EntityFilters.CloseBaseEntityEnemy, 4)
+		else
+			Ability.DoAbilityPos( self.squad_ai, AeonicOrb.annihilator_id, Ability.Filters.CloseEnemy, 14 )
+			Ability.DoAbilityPos( self.squad_ai, AeonicOrb.annihilator_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+		end
+	end
+end
+
+function AeonicOrbTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not VehicleTactic.Update(self)) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

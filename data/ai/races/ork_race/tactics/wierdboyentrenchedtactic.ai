@@ -1,0 +1,143 @@
+----------------------------------------
+-- File: 'wierdboyentrenchedtactic.ai'
+-- Edited by LarkinVB   @ 31.07.2005
+-- Edited by Thudmeizer   @ 23.02.2016
+
+class 'WierdBoyEntrenchedTactic' (OrkInfantryTactic)
+
+WierdBoyEntrenched = {}
+
+function WierdBoyEntrenchedTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Wierd Boy Tactic")
+
+	-- Assume squad just entrenched/retrenched
+	self.m_iLastEntrenchTime = g_iGMT
+end
+
+function WierdBoyEntrenchedTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelWierdBoyEntrenched = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelWierdBoyEntrenched ~= nil) then
+			local addOnID = buildChannelWierdBoyEntrenched:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelWierdBoyEntrenched:IsBuilding() == 0 and buildChannelWierdBoyEntrenched:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelWierdBoyEntrenched:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function WierdBoyEntrenchedTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function WierdBoyEntrenchedTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function WierdBoyEntrenchedTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (WierdBoyEntrenched.waagh == nil) then
+		WierdBoyEntrenched.waagh = cpu_manager.stats:GetAbilityID( "ork_waagh!!!" )
+	end
+end
+
+function WierdBoyEntrenchedTactic:DoAbilities()
+
+	-- Charge if in combat and enemy is not adjacent or while broken
+	-- Don't waagh if health is too low or we are not moving !
+	local squad_pos = self.squad_ai:GetPosition()
+	if (((self.squad_ai:IsInCombat() and Ability.Filters.CloseEnemy( squad_pos, 20, 1 ) == nil) or
+	   	self.squad_ai:IsBroken()) and self.squad_ai:GetHealthPercentage() > 0.8 and self:IsMoving()) then 
+		if (self.squad_ai:CanDoAbility(WierdBoyEntrenched.waagh)) then
+			self.squad_ai:DoSpecialAbility(WierdBoyEntrenched.waagh)
+		end
+	end
+
+	-- Try to entrench
+	self:DoEntrenchAbility()
+end
+
+function WierdBoyEntrenchedTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_population.lua			5/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support.lua			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_04] addon_commanders_increase_production.lua		5/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_05] addon_commanders_increase_health.lua			6/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_06] addon_commanders_increase_morale.lua			6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_07] addon_commanders_cap_population_2.lua		8
+--	self:AutoBuildAddOn(6)	-- 	[addon_08] addon_commanders_cap_support_2.lua			8
+--	self:AutoBuildAddOn(7)	-- 	[addon_09] addon_commanders_increase_production_2.lua		8
+
+	local addon_random_commander_upgrades = math.random( 0,7 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+end
+
+function WierdBoyEntrenchedTactic:DoEntrenchAbility()
+
+	-- Don't entrench/retrench too fast after a retrench/entrench
+	if (g_iGMT < self.m_iLastEntrenchTime + 5) then
+		return
+	end
+
+	-- Calculate distance to target position
+	local iDistance = distance_sqr(self.target, self.squad_ai:GetPosition())
+	
+	-- Check unit state
+	local bAttackState = (self:GetState() == Tactic.States.Attack)
+	
+	-- Check if we can entrench
+	if (self.squad_ai:CanEntrench(true)) then
+	
+		-- Check situation
+		local bDoEntrench = false
+		if (self.squad_ai:IsInCombat()) then
+		
+			-- Check state
+			if (bAttackState or iDistance < sqr(25)) then
+				bDoEntrench = true
+			end
+		 
+		elseif (not bAttackState and iDistance < sqr(20) and not cpu_manager.terrain_analyzer:HasThreat(self.target, 25)) then
+			bDoEntrench = true
+		end
+		
+		-- Try to entrench
+		if (bDoEntrench) then
+			self.squad_ai:DoEntrench(true)
+			self.m_iLastEntrenchTime = g_iGMT
+		end
+	end
+	
+	-- Check if we can retrench
+	if (self.squad_ai:CanEntrench(false)) then
+	
+		-- Check situation
+		local bDoRetrench = false
+		if (self.squad_ai:IsAttacking()) then
+		
+			-- Check state
+			if (not bAttackState and iDistance > sqr(25)) then
+				bDoRetrench = true
+			end
+			self.m_iLastEntrenchTime = g_iGMT
+	
+		elseif (bAttackState or iDistance > sqr(20) or cpu_manager.terrain_analyzer:HasThreat(self.target, 25)) then
+			bDoRetrench = true
+		end
+	
+		-- Try to retrench
+		if (bDoRetrench) then
+			self.squad_ai:DoEntrench(false)
+			self.m_iLastEntrenchTime = g_iGMT
+		end
+	end
+
+	-- Retrench if low on health
+	if (self.squad_ai:GetHealthPercentage() < 0.5) then 
+		self.squad_ai:DoEntrench(false)
+	end
+end

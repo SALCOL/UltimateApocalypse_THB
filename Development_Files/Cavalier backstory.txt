@@ -1,0 +1,5 @@
+Non-canon titan, Cavalier class backstory:
+
+The Cavalier class light battle titan is a recent innovation resulting from a century of testing of STC data recovered from the Death of Integrity, a spacehulk that was destroyed by the Blood Drinkers and Nova Marines Chapters of Space Marines. With the STC data turned over to the magos of The Hollow Forge, this Lucius Pattern titan underwent a century of testing under the strict guidance of Legio Astorum before being approved for general production. Loosely based on the same basic frame as the Lucius Pattern Reaver, but built to smaller dimensions, this light titan quickly proved it's worth on the battlefield. Taking more punishment then a Warhound and hitting nearly as hard as a Reaver, the Cavalier quickly found itself replacing Warhounds in escort duties, freeing up Warhounds for their original purpose, scouting ahead in force.
+
+The Cavalier's place fills the gap between scout titan (Warhound) and medium titan (Reaver) with a dedicated light titan class, optimized for escorting larger titans or supporting Warhounds with heavier firepower when no heavier titans are present.

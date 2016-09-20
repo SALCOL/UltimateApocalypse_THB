@@ -1,0 +1,55 @@
+----------------------------------------
+-- File: 'necronbatterytactic.ai'
+-- Edited by Cylarne @ 2014
+-- Edited by Thudmeizer	@ 09.03.2016
+
+class 'NecronBatteryTactic' (BaseTactic)
+
+NecronBattery = {}
+
+function NecronBatteryTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Battery Tactic")
+end
+
+function NecronBatteryTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function NecronBatteryTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (NecronBattery.shield_id == nil) then
+		NecronBattery.shield_id = cpu_manager.stats:GetAbilityID( "necron_shield_spike" )
+	end
+end
+
+function NecronBatteryTactic:DoAbilities()
+	
+--	self:AutoBuildAddOn(0) -- Particle Whip		-- addon_necron_turret_battery
+--	self:AutoBuildAddOn(1) -- Particle Accelerator	-- addon_necron_turret_battery_accelerator
+
+	-- Randomly choose either weapon addons
+	local random_battery_addons = math.random( 0,1 )
+	self:AutoBuildTurretAddOn(random_battery_addons, self.base_ai:GetEntity():GetID())
+
+	if (self.base_ai:CanDoAbility(NecronBattery.shield_id)) then
+	
+		if (self.base_ai:GetHealthPercentage() < 0.9 and not self.base_ai:IsUsingAbility(NecronBattery.shield_id)) then
+
+			-- Activate the Base Battery
+			self.base_ai:DoSpecialAbility(NecronBattery.shield_id)
+			
+		elseif (not self.base_ai:IsInCombat() and self.base_ai:IsUsingAbility(NecronBattery.shield_id)) then
+
+			-- Deactivate the Base Battery
+			self.base_ai:DoSpecialAbility(NecronBattery.shield_id)
+		end
+	end
+end

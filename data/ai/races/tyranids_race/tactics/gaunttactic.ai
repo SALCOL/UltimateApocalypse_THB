@@ -1,0 +1,65 @@
+----------------------------------------
+-- File: 'gaunttactic.ai'
+-- Created by Cylarne
+-- Edited by Thudmeizer	@ 25.04.2016
+
+class 'GauntTactic' (TyranidInfantryTactic)
+
+Gaunt = {}
+
+function GauntTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Gaunt Tactic")
+
+	self.m_iTacticaID = cpu_manager.stats:GetBuildingID( "tyranids_biomorph_hive" )
+end
+
+function GauntTactic:AlwaysAttack()
+	return (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iTacticaID, true) > 0)
+end
+
+function GauntTactic:InitAbilities()
+
+	if (Gaunt.run_id == nil) then
+		Gaunt.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function GauntTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Gaunt.run_id )) then
+			self.squad_ai:DoSpecialAbility( Gaunt.run_id )
+		end
+	end
+end
+
+function GauntTactic:Reinforce()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+
+	-- Don't reinforce more than 12 squad members -- they both get stuck or don't capture points properly
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 12) then
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+end
+
+function GauntTactic:Update()
+
+    	-- State machine
+    	if (not InfantryTactic.Update(self)) then
+        	return
+    	end
+    
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

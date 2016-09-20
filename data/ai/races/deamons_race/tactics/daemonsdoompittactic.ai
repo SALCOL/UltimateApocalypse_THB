@@ -2,6 +2,7 @@
 -- File: 'daemonsdoompittactic.ai'
 -- Created by CornCobMan 03/06/2013
 -- Edited by Cylarne 6/16/2014
+-- Edited by Thudmeizer 09.05.2016
 
 class 'DaemonsDoomPitTactic' (BaseTactic)
 
@@ -15,20 +16,24 @@ end
 function DaemonsDoomPitTactic:InitAbilities()
 	
 	-- Init abilities	
-	if (DaemonsDoomPit.pit_khorne_id == nil) then
-		DaemonsDoomPit.pit_khorne_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_khorne" )
+	if (DaemonsDoomPit.khorne_id == nil) then
+		DaemonsDoomPit.khorne_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_khorne" )
 	end
 	
-	if (DaemonsDoomPit.pit_nurgle_id == nil) then
-		DaemonsDoomPit.pit_nurgle_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_nurgle" )
+	if (DaemonsDoomPit.nurgle_id == nil) then
+		DaemonsDoomPit.nurgle_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_nurgle" )
 	end
 	
-	if (DaemonsDoomPit.pit_slaanesh_id == nil) then
-		DaemonsDoomPit.pit_slaanesh_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_slaanesh" )
+	if (DaemonsDoomPit.slaanesh_id == nil) then
+		DaemonsDoomPit.slaanesh_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_slaanesh" )
 	end
 	
-	if (DaemonsDoomPit.pit_tzeentch_id == nil) then
-		DaemonsDoomPit.pit_tzeentch_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_tzeentch" )
+	if (DaemonsDoomPit.tzeentch_id == nil) then
+		DaemonsDoomPit.tzeentch_id = cpu_manager.stats:GetAbilityID( "daemons_pit_ability_tzeentch" )
+	end
+
+	if (DaemonsDoomPit.repair_id == nil) then
+		DaemonsDoomPit.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
 end
 
@@ -38,20 +43,29 @@ function DaemonsDoomPitTactic:DoAbilities()
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	
 	if( abilitySelector <= 25) then
-		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.pit_khorne_id) and iPower >= 200 ) then
-			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.pit_khorne_id, Ability.Filters.CloseInCombat, 4 )
+		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.khorne_id) and iPower >= 200 ) then
+			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.khorne_id, Ability.Filters.CloseInCombat, 4 )
 		end
 	elseif( abilitySelector <= 50) then
-		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.pit_nurgle_id) and iPower >= 200 ) then
-			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.pit_nurgle_id, Ability.Filters.CloseInCombat, 4 )
+		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.nurgle_id) and iPower >= 200 ) then
+			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.nurgle_id, Ability.Filters.CloseInCombat, 4 )
 		end
 	elseif( abilitySelector <= 50) then
-		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.pit_slaanesh_id) and iPower >= 200 ) then
-			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.pit_slaanesh_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.slaanesh_id) and iPower >= 200 ) then
+			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.slaanesh_id, Ability.Filters.CloseInfantryEnemy, 4 )
+			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.slaanesh_id, Ability.Filters.CloseMonsterEnemy, 4 )
 		end
 	else
-		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.pit_tzeentch_id) and iPower >= 200 ) then
-			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.pit_tzeentch_id, Ability.Filters.CloseInCombat, 4 )
+		if ( self.base_ai:CanDoAbility(DaemonsDoomPit.tzeentch_id) and iPower >= 200 ) then
+			Ability.DoAbilityTarget( self.base_ai, DaemonsDoomPit.tzeentch_id, Ability.Filters.CloseInCombat, 4 )
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DaemonsDoomPit.repair_id )) then
+			self.base_ai:DoSpecialAbility( DaemonsDoomPit.repair_id )
 		end
 	end
 end

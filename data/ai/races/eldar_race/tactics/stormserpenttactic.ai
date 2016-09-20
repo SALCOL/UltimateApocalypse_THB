@@ -1,0 +1,107 @@
+----------------------------------------
+-- File: 'stormserpenttactic.ai'
+-- Created by Krronus		@ 25.6.2010
+-- Edited by Cylarne		@ 3/21/11
+-- Edited by Thudmeizer		@ 04.05.2016
+
+class 'StormSerpentTactic' (EldarVehicleTactic)
+
+StormSerpent = {}
+
+function StormSerpentTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Storm Serpent Tactic")
+	
+	-- Vehicle is a super heavy transport
+	self.m_iTransportVehicle = 2
+	self.m_iTransportSlots = 10
+end
+
+function StormSerpentTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (StormSerpent.laymines_id == nil) then
+		StormSerpent.laymines_id = cpu_manager.stats:GetAbilityID( "eldar_laymines" )
+	end
+	if (StormSerpent.abilityrecharge_id == nil) then
+		StormSerpent.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+	if (StormSerpent.heal_id == nil) then
+		StormSerpent.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+	if (StormSerpent.reinforce_id == nil) then
+		StormSerpent.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+end
+
+function StormSerpentTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( StormSerpent.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 2000 and iPower >= 2000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( StormSerpent.laymines_id )
+		end
+	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(StormSerpent.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(StormSerpent.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(StormSerpent.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(StormSerpent.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(StormSerpent.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(StormSerpent.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Call standard method
+	EldarVehicleTactic.DoAbilities(self)
+end
+
+function StormSerpentTactic:Upgrade()
+
+	-- Try for upgrade
+	if (self.squad_ai:HasUpgradableTrooper()) then
+		local class_type = cpu_manager:GetFirstEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+	end
+end
+
+function StormSerpentTactic:UnloadTroops()
+
+	local vSquadPos = self.squad_ai:GetPosition()
+	if (cpu_manager.terrain_analyzer:HasThreat(vSquadPos, 100) and self.squad_ai:CanUnload()) then
+
+		-- Unload all troops when enemy is in the distance
+		self.squad_ai:DoUnload()
+	end
+end
+
+function StormSerpentTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+    	-- State machine
+    	if (not VehicleTactic.Update(self)) then
+        	return
+    	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

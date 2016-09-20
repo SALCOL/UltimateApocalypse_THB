@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'baddoktactic.ai'
 -- Edited by LarkinVB   @ 31.07.2005
+-- Edited by Thudmeizer   @ 24.02.2016
 
 class 'BadDokTactic' (OrkInfantryTactic)
 
@@ -9,6 +10,29 @@ BadDok = {}
 function BadDokTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("BadDok Tactic")
+end
+
+function BadDokTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelBadDok = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelBadDok ~= nil) then
+			local addOnID = buildChannelBadDok:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelBadDok:IsBuilding() == 0 and buildChannelBadDok:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelBadDok:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+-- Should only attack/defend when attached
+function BadDokTactic:IsAttacker()
+	return (self.squad_ai:CanDoAbility(BadDok.nuke) or self:IsCommanderAttacker())
+end
+
+function BadDokTactic:IsDefender()
+	return (self.squad_ai:CanDoAbility(BadDok.nuke) or self:IsCommanderDefender())
 end
 
 function BadDokTactic:InitAbilities()
@@ -20,11 +44,15 @@ function BadDokTactic:InitAbilities()
 	if (BadDok.nuke == nil) then
 		BadDok.nuke = cpu_manager.stats:GetAbilityID( "ork_nuke_boyz" )
 	end
+	if (BadDok.run == nil) then
+		BadDok.run = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function BadDokTactic:DoAbilities()
 
 	Ability.DoAbilityTarget( self.squad_ai, BadDok.fightin_juice, Ability.Filters.CloseHurt )
+
 	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
 		Ability.DoAbilityPos(self.squad_ai, BadDok.nuke, Ability.Filters.CloseEnemy, 8)
 		Ability.DoAbilityPos(self.squad_ai, BadDok.nuke, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
@@ -32,15 +60,30 @@ function BadDokTactic:DoAbilities()
 		Ability.DoAbilityPos(self.squad_ai, BadDok.nuke, Ability.Filters.CloseEnemy, 12)
 		Ability.DoAbilityPos(self.squad_ai, BadDok.nuke, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
 	end
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( BadDok.run )) then
+			self.squad_ai:DoSpecialAbility( BadDok.run )
+		end
+	end
 end
 
--- Should only attack/defend when attached
-function BadDokTactic:IsAttacker()
-	return (self.squad_ai:CanDoAbility(BadDok.nuke) or self:IsCommanderAttacker())
-end
+function BadDokTactic:Upgrade()
 
-function BadDokTactic:IsDefender()
-	return (self.squad_ai:CanDoAbility(BadDok.nuke) or self:IsCommanderDefender())
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_population.lua			5/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support.lua			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_04] addon_commanders_increase_production.lua		5/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_05] addon_commanders_increase_health.lua			6/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_06] addon_commanders_increase_morale.lua			6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_07] addon_commanders_cap_population_2.lua		8
+--	self:AutoBuildAddOn(6)	-- 	[addon_08] addon_commanders_cap_support_2.lua			8
+--	self:AutoBuildAddOn(7)	-- 	[addon_09] addon_commanders_increase_production_2.lua		8
+
+	local addon_random_commander_upgrades = math.random( 0,7 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
 end
 
 function BadDokTactic:Update()

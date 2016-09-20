@@ -1,0 +1,154 @@
+----------------------------------------
+-- File: 'officefemaletactic.ai'
+-- Edited by Thudmeizer @ 27.02.2016
+
+class 'OfficerFemaleTactic' (GuardInfantryTactic)
+
+OfficerFemale = {}
+
+function OfficerFemaleTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Office Female Tactic")
+
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+end
+
+function OfficerFemaleTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelOfficerFemale = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelOfficerFemale ~= nil) then
+			local addOnID = buildChannelOfficerFemale:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelOfficerFemale:IsBuilding() == 0 and buildChannelOfficerFemale:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelOfficerFemale:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function OfficerFemaleTactic:IsAttacker()	
+	return self:IsCommanderAttacker()
+end
+
+function OfficerFemaleTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function OfficerFemaleTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (OfficerFemale.bolster_id == nil) then
+		OfficerFemale.bolster_id = cpu_manager.stats:GetAbilityID( "guard_bolster_defenses" )	
+	end
+	if (OfficerFemale.demo_id == nil) then
+		OfficerFemale.demo_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge" )	
+	end
+	if (OfficerFemale.detonate_id == nil) then
+		OfficerFemale.detonate_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge_detonate" )	
+	end
+	if (OfficerFemale.frag_id == nil) then
+		OfficerFemale.frag_id = cpu_manager.stats:GetAbilityID( "guard_frag_grenades_lieutenant" )	
+	end
+	if (OfficerFemale.melta_id == nil) then
+		OfficerFemale.melta_id = cpu_manager.stats:GetAbilityID( "guard_melta_bombs_lieutenant" )	
+	end
+	if (OfficerFemale.nervegas_id == nil) then
+		OfficerFemale.nervegas_id = cpu_manager.stats:GetAbilityID( "guard_nervegas_grenades_lieutenant" )	
+	end
+	if (OfficerFemale.run_id == nil) then
+		OfficerFemale.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function OfficerFemaleTactic:DoAbilities()
+
+	-- Check if we can Bolster Defenses
+	if (self.squad_ai:CanDoAbility(OfficerFemale.bolster_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(OfficerFemale.bolster_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(OfficerFemale.bolster_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Place Demo Charge
+	if (self.squad_ai:CanDoAbility(OfficerFemale.demo_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, OfficerFemale.demo_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, OfficerFemale.demo_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, OfficerFemale.demo_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Detonate Charge!
+	if (self.squad_ai:CanDoAbility(OfficerFemale.detonate_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, OfficerFemale.detonate_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, OfficerFemale.detonate_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, OfficerFemale.detonate_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Throw frag grenades!
+	Ability.DoAbilityTarget(self.squad_ai, OfficerFemale.frag_id, Ability.Filters.CloseInfantryEnemy, 4)
+
+	-- Throw melta grenades!
+	Ability.DoAbilityTarget(self.squad_ai, OfficerFemale.melta_id, Ability.Filters.CloseVehicleEnemy, 1)
+
+	-- Throw nerve gas grenades!
+	Ability.DoAbilityTarget(self.squad_ai, OfficerFemale.nervegas_id, Ability.Filters.CloseSquadEnemy, 9)
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( OfficerFemale.run_id )) then
+			self.squad_ai:DoSpecialAbility( OfficerFemale.run_id )
+		end
+	end
+end
+
+function OfficerFemaleTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function OfficerFemaleTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+	
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+end

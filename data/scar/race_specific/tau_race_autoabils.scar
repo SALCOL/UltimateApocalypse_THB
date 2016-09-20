@@ -3,22 +3,34 @@
 -- AbilsThem are abilities used against enemy targets
 AutoAbilsSettings.AbilsThem["tau_race"] =
 {
-	{ "tau_skyray_missile_barrage", 40 },
-	{ "tau_death_pulse", 40 },
+	{ "tau_titan_missile_barrage", 70 },
+	{ "tau_malo_missile_barrage", 60 },
+	{ "tau_commander_missile_barrage", 60 },
+	{ "tau_tigershark_missile_barrage", 60 },
+	{ "tau_skyray_missile_barrage", 60 },
+	{ "tau_death_pulse", 60 },
+	{ "tau_ethereal_mind_war", 50 },
+	{ "tau_photon_grenade_shasui", 50 },
+	{ "tau_death_pulse_child1_inner_damage", 40 },
+	{ "tau_lasergun_ethereal", 40 },
+	{ "tau_tetra_missile_barrage", 40 },
 	{ "tau_mark_squad", 35 },
 	{ "tau_target_acquired", 35 },
-	{ "tau_emp_grenade", 25 },
-	{ "tau_photon_grenade", 25 },
-    	{ "tau_snare_trap", 20 },
+	{ "tau_photon_grenade", 30 },
+	{ "tau_photon_grenade_commander", 30 },
+	{ "tau_pulse_grenade", 25 },
 	{ "tau_kinetic_energy_blast", 20 },
-	{ "tau_devour", 3 },
-	{ "tau_nuke", 3 },
-	{ "tau_blade_storm", 1 },
+	{ "tau_snare_trap", 20 },
+	{ "tau_snare_trap_commander", 20 },
+	{ "tau_sonic_pulse", 5 },
+	{ "tau_manta_strike", 4 }
 }
 
 -- AbilsUs are abilities used on self
 AutoAbilsSettings.AbilsUs["tau_race"] =
 {
-	{ "tau_personal_shield", 25 },
-	{ "tau_sonic_pulse", 10 }
+	{ "tau_devour", 10 },
+	{ "tau_guide", 10 },
+	{ "tau_xv9_pulse", 10 },
+	{ "tau_personal_shield", 5 },
 }

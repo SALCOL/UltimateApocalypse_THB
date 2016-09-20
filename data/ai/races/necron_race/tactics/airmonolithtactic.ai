@@ -1,0 +1,28 @@
+----------------------------------------
+-- File: 'airmonolithtactic.ai'
+-- Edited by Thudmeizer	@ 09.03.2016
+
+class 'AirMonolithTactic' (NecronVehicleTactic)
+
+AirMonolith = {}
+
+function AirMonolithTactic:__init( squad_ai ) super( squad_ai )
+	
+	self:SetName("Air Monolith Tactic")
+end
+
+function AirMonolithTactic:InitAbilities()
+
+end
+
+function AirMonolithTactic:DoAbilities()
+
+	-- Try to Descend back to the surface if we're low on health and safe (activate standard Siege Monolith Possession)
+	if not (self.squad_ai:IsInCombat() and self.squad_ai:IsUnderAttack()) then
+		if (self.squad_ai:GetHealthPercentage() < 0.3) then
+			if (self.squad_ai:CanPossess()) then
+				self.squad_ai:DoPossess()
+			end
+		end
+	end
+end

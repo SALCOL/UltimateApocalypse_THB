@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'devilfishtactic.ai'
 -- Edited by Arkhan         @ 23.11.2007
+-- Edited by Thudmeizer	    @ 24.03.2016
 
 class 'DevilfishTactic' (TauVehicleTactic)
 
@@ -13,30 +14,115 @@ function DevilfishTactic:__init( squad_ai ) super( squad_ai )
 	-- Vehicle is a light transport
 	self.m_iTransportVehicle = 1
 	self.m_iTransportSlots = 2
+
+	self:InitAbilities()
+	self.lastused_ability_snaretrap_time = g_iGMT
+	self.lastused_ability_snaretrap_position = squad_ai:GetPosition()
+	self.min_snaretrap_requisition = 400 -- amount of requisition to have before typical use
+	self.min_snaretrap_time = 240 -- 30 seconds to wait between use, in possibly same location
+	self.min_snaretrap_distance = squad_ai:GetAbilityRange(Devilfish.snaretrap_id) * 2 -- min distance between consecutive throws
 end
 
 function DevilfishTactic:InitAbilities()
 
-	if (Devilfish.infiltration == nil) then
-		Devilfish.infiltration = cpu_manager.stats:GetAbilityID( "all_infiltration" )
+	if (Devilfish.abilityrecharge_id == nil) then
+		Devilfish.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+	if (Devilfish.heal_id == nil) then
+		Devilfish.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+	if (Devilfish.reinforce_id == nil) then
+		Devilfish.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+	if (Devilfish.snaretrap_id == nil) then
+		Devilfish.snaretrap_id = cpu_manager.stats:GetAbilityID( "tau_snare_trap_volley" )
 	end
 end
 
 function DevilfishTactic:DoAbilities()
 	
-	-- Infiltration
-	--[[ Not using infiltration
-	if (self.squad_ai:CanDoAbility(Devilfish.infiltration) and (self.squad_ai:GetHealthPercentage() <= 0.3) and not self.squad_ai:IsUsingAbility(Devilfish.infiltration)) then
-	if (self.squad_ai:CanDoAbility(StealthTeam.infiltration) and (self.squad_ai:GetHealthPercentage() <= 0.9) and not self.squad_ai:IsUsingAbility(StealthTeam.infiltration)) then
-		self.squad_ai:DoSpecialAbility(Devilfish.infiltration)
-		
-	-- Using infiltration 
-	elseif (self.squad_ai:IsInCombat() and self.squad_ai:IsUsingAbility(Devilfish.infiltration)) then
-		self.squad_ai:DoSpecialAbility(Devilfish.infiltration)
-	end]]
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(Devilfish.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(Devilfish.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(Devilfish.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(Devilfish.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(Devilfish.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(Devilfish.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Check if we can use snare trap ability
+	if (self.squad_ai:CanDoAbility(Devilfish.snaretrap_id)) then
 	
-	-- Call basic DoAbilities methods
-	--DevilfishTactic.DoAbilities(self)
+		-- Get ability range
+		local iRange = self.squad_ai:GetAbilityRange(Devilfish.snaretrap_id)
+	
+		-- If surrounded, try to use the snare trap
+		if (self.squad_ai:IsInCombat()) then
+	
+			local vSquadPos = self.squad_ai:GetPosition()
+			local fThrowFactor = 1 / 3
+			local oEnemy = Ability.Filters.CloseEnemy(vSquadPos, iRange, 4)
+			if (oEnemy ~= nil) then
+			
+				local vEnemyPos = oEnemy:GetPosition()
+				local vTargetPos = Vector3f(vSquadPos)
+				vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
+				vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
+				self:DoSpecialAbilitySnareTrap(vTargetPos, true)
+			end
+		else
+			-- Check for close strategic point
+			local oTarget = Ability.Filters.CloseStrategicPoint(self.squad_ai:GetPosition(), iRange)
+			if (oTarget ~= nil) then
+			
+				-- Modify position
+				local vTargetPos = oTarget:GetPosition()
+				local vDir = cpu_manager:GetDirectionToEnemy(vTargetPos)
+				local iOffset = math.random(1, 5)		
+				vTargetPos.x = vTargetPos.x + vDir.x * iOffset
+				vTargetPos.z = vTargetPos.z + vDir.z * iOffset
+				local iDistanceSqr = distance_sqr(vTargetPos, self.squad_ai:GetPosition())
+				if (iDistanceSqr < sqr(iRange) and iDistanceSqr > 1) then
+					self:DoSpecialAbilitySnareTrap(vTargetPos, false)
+				end
+			end
+		end
+	end
+
+	-- Call standard method
+	TauVehicleTactic.DoAbilities(self)
 end
 
+function DevilfishTactic:DoSpecialAbilitySnareTrap(position,skip_prereqs)
+
+	local current_time = g_iGMT
+	local current_requisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	local last_time = self.lastused_ability_snaretrap_time
+	local last_pos = self.lastused_ability_snaretrap_position
+	local min_requisition = self.min_snaretrap_requisition
+	local min_time = self.min_snaretrap_time 
+	local min_distance = self.min_snaretrap_distance
+	
+	-- Check situation
+	if (skip_prereqs or (current_requisition > min_requisition and current_time - last_time > min_time) or 
+		(current_requisition > min_requisition and distance(position,last_pos) > min_distance)) then
+
+		-- Use snare trap ability
+		self.squad_ai:DoSpecialAbilityPos(Devilfish.snaretrap_id, position)
+		self.lastused_ability_snaretrap_time = current_time
+		self.lastused_ability_snaretrap_position = position
+	end
+end
 

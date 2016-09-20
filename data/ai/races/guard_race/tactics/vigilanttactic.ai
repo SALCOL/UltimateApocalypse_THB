@@ -1,0 +1,52 @@
+----------------------------------------
+-- File: 'vigilanttactic.ai'
+-- Created by Cylarne_04
+-- Edited by Thudmeizer @ 05.05.2016
+
+class 'VigilantTactic' (GuardVehicleTactic)
+
+Vigilant = {}
+
+function VigilantTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Vigilant Tactic")
+end
+
+function VigilantTactic:IsAttacker()
+	return false
+end
+
+function VigilantTactic:IsDefender()
+	return true
+end
+
+function VigilantTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Vigilant.sensormap_id) == nil then
+		Vigilant.sensormap_id = cpu_manager.stats:GetAbilityID( "guard_sensormap" )
+	end
+	if (Vigilant.jammermap_id) == nil then
+		Vigilant.jammermap_id = cpu_manager.stats:GetAbilityID( "guard_jammermap" )
+	end
+end
+
+function VigilantTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	local abilitySelector = math.random(1, 100)
+	
+	if (abilitySelector <= 10 and iPower >= 500) then
+		if (self.squad_ai:CanDoAbility(Vigilant.sensormap_id)) then
+			self.squad_ai:DoSpecialAbility(Vigilant.sensormap_id) 
+		end
+	elseif (abilitySelector <= 50 and iPower >= 500) then
+		if (self.squad_ai:CanDoAbility(Vigilant.jammermap_id) and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility(Vigilant.jammermap_id) 
+		end
+	end
+
+	-- Call standard method
+	GuardVehicleTactic.DoAbilities(self)
+end

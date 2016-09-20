@@ -1,0 +1,30 @@
+----------------------------------------
+-- File: 'orkburnabommtactic.ai'
+-- Edited by Thudmeizer	@ 25.02.2016
+
+class 'OrkBurnaBommTactic' (BaseTactic)
+
+OrkBurnaBomm = {}
+
+function OrkBurnaBommTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Ork Burna Bomm Tactic")
+end
+
+function OrkBurnaBommTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (OrkBurnaBomm.detonate_id == nil) then
+		OrkBurnaBomm.detonate_id = cpu_manager.stats:GetAbilityID( "nuke_detonate" )
+	end
+end
+
+function OrkBurnaBommTactic:DoAbilities()
+	
+	-- Detonate Bomb with enemies in vicinity but only if few or no allies are near!
+	if (self.base_ai:CanDoAbility(OrkBurnaBomm.detonate_id)) then
+		if (Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), 15, 5) ~= nil and Ability.Filters.CloseHurt(self.base_ai:GetPosition(), 20, 4) == nil) then
+			self.base_ai:DoSpecialAbility(OrkBurnaBomm.detonate_id)
+		end
+	end
+end

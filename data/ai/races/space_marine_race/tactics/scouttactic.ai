@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'scouttactic.ai'
 -- Edited by Arkhan		@ 12.01.2006
--- Edited by Thudmeizer		@ 05.02.2016
+-- Edited by Thudmeizer		@ 20.02.2016
 
 class 'ScoutTactic' (SpaceMarineInfantryTactic)
 
@@ -85,15 +85,19 @@ function ScoutTactic:Reinforce()
 	if (not Tactic.Options.can_reinforce) then
 		return
 	end
+
+	-- Always try for the actual leader next
+	if not self.squad_ai:IsReinforcing() then
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		elseif (self.squad_ai:CanReinforce( true, 0 )) then
+			self.squad_ai:DoReinforce( true, 0 )
+		end
+	end
 	
 	-- Check if sniper was researched
 	if (not cpu_manager.cpu_player:IsResearchComplete("marine_sniper_rifle")) then
 		return
-	end
-	
-	-- Reinforce scout squad
-	if (not self.squad_ai:IsReinforcing() and cpu_manager:GetTierLevel() >= 2 and self.squad_ai:CanReinforce(false, 0)) then
-		self.squad_ai:DoReinforce(false, 0)
 	end
 end
 

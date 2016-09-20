@@ -1,0 +1,195 @@
+----------------------------------------
+-- File: 'daemonsheraldkhornetactic.ai'
+-- Edited by fuggles 27.05.2013
+-- Edited by Thudmeizer	08.05.2016
+
+class 'DaemonsHeraldKhorneTactic' (DaemonsInfantryTactic)
+
+DaemonsHeraldKhorne = {}
+
+function DaemonsHeraldKhorneTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Herald of Khorne Tactic")
+	
+	self.attachlist = {}
+	self:AddAttachList()
+end
+
+function DaemonsHeraldKhorneTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDaemonsHeraldKhorne = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDaemonsHeraldKhorne ~= nil) then
+			local addOnID = buildChannelDaemonsHeraldKhorne:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelDaemonsHeraldKhorne:IsBuilding() == 0 and buildChannelDaemonsHeraldKhorne:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelDaemonsHeraldKhorne:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function DaemonsHeraldKhorneTactic:IsAttacker()
+
+	-- Never attack if we have low health
+	if (self.squad_ai:GetHealthPercentage() <= 0.3 ) then
+		return false
+	end
+	return self:IsCommanderAttacker() 
+end
+
+function DaemonsHeraldKhorneTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function DaemonsHeraldKhorneTactic:AddAttachList()
+	table.insert( self.attachlist, "daemon_squad_bloodletter_elites")
+	table.insert( self.attachlist, "daemon_squad_bloodletters")
+	table.insert( self.attachlist, "daemon_squad_flesh_hound")
+end
+
+function DaemonsHeraldKhorneTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsHeraldKhorne.frenzy_id == nil) then
+		DaemonsHeraldKhorne.frenzy_id = cpu_manager.stats:GetAbilityID( "daemons_blood_frenzy" )	
+	end
+
+	if (DaemonsHeraldKhorne.run_id == nil) then
+		DaemonsHeraldKhorne.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function DaemonsHeraldKhorneTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	if ( self.squad_ai:IsInCombat() and not self.squad_ai:IsCapturing() and not self.squad_ai:IsBroken() and iPower >= 40 ) then
+	  
+		-- Check if I can go berserk while stationary
+		if (self.squad_ai:CanDoAbility( DaemonsHeraldKhorne.frenzy_id )) then
+			self.squad_ai:DoSpecialAbility( DaemonsHeraldKhorne.frenzy_id)
+		end		
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DaemonsHeraldKhorne.run_id )) then
+			self.squad_ai:DoSpecialAbility( DaemonsHeraldKhorne.run_id )
+		end
+	end
+	
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
+end
+
+function DaemonsHeraldKhorneTactic:AttachSquadMatch( squad_ai )
+	local squadName = squad_ai:GetSquadName()
+			
+	for i = 1, table.getn( self.attachlist ) do
+		if( self.attachlist[i] ~= nil and squadName == self.attachlist[i] and not squad_ai:IsAttached() ) then
+			return true	
+		end
+	end
+	return false
+end
+		
+function DaemonsHeraldKhorneTactic:TryAttachSquad( melee, match_stance, radius, min_strength, health )
+
+	local bInfiltrator = self.squad_ai:IsInfiltrating()
+	if not self.squad_ai:IsBroken() and 
+		(health == nil or self.squad_ai:GetHealthPercentage() < health) then
+		
+		-- minimum strength of squad we want to attach to
+		if min_strength == nil then
+			min_strength = 160 + (cpu_manager:GetTierLevel() - 1) * 40
+		end
+
+		local range_filter = function( squad_ai )
+			local oTactic = squad_ai:GetTactic()
+			return squad_ai:IsRanged() and not squad_ai:IsBroken() and not squad_ai:IsCapturing() and
+					oTactic:GetUnitStrength() >= min_strength and self.squad_ai:CanAttachTo( squad_ai ) and
+					not oTactic:IsInSubState() and (not squad_ai:IsInfiltrating() or bInfiltrator) and oTactic:IsAttacker() and self:AttachSquadMatch( squad_ai )
+		end
+		
+		local melee_filter = function( squad_ai )
+			local oTactic = squad_ai:GetTactic()
+			return not squad_ai:IsRanged() and not squad_ai:IsBroken() and not squad_ai:IsCapturing() and
+					oTactic:GetUnitStrength() >= min_strength and self.squad_ai:CanAttachTo( squad_ai ) and
+					not oTactic:IsInSubState() and (not squad_ai:IsInfiltrating() or bInfiltrator) and oTactic:IsAttacker() and self:AttachSquadMatch( squad_ai )
+		end
+
+		-- attach to ranged
+		if not melee then
+			
+			local attach_to = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), radius, range_filter )
+			
+			if attach_to == nil and not match_stance then
+				--try for melee unit if we don't care about the stance
+				local attach_to = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), radius, melee_filter )
+			end
+			
+			if attach_to ~= nil then			
+				self:DoMoveAttach( attach_to )		            		 
+				
+				if match_stance then
+				attach_to:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+				end			
+			end
+			
+		else -- attach to melee
+			
+			local attach_to = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), radius, melee_filter )
+			if attach_to == nil and not match_stance then
+				--try for ranged unit if we don't care about the stance
+				local attach_to = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), radius, range_filter )
+			end
+
+			if attach_to ~= nil then
+			
+				self:DoMoveAttach( attach_to )		            		 
+				
+				if match_stance then
+				attach_to:DoSetMeleeStance( SquadAI.MSTANCE_Assault )
+				end
+			end
+		end
+	end
+	return attach_to 
+end
+
+function DaemonsHeraldKhorneTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_increase_production_2	8
+
+	local addon_random_commander_upgrades = math.random( 0,7 )	-- Randomize these addons
+	self:AutoBuildAddOn(addon_random_commander_upgrades)
+end
+
+function DaemonsHeraldKhorneTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+	
+	-- Attach to squad
+	self:TryAttachSquad(true, false, 500, 150, nil)
+	
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+ 

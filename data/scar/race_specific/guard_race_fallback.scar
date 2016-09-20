@@ -1,0 +1,5 @@
+FallbackSettings.raceInfo["guard_race"] =
+{
+	"guard_priest_fanatical",
+	"guard_vox_rally",
+}

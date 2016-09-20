@@ -1,0 +1,30 @@
+----------------------------------------
+-- File: 'daemonsmaledictumtactic.ai'
+-- Created by Cylarne_04 2012
+-- Edited by Thudmeizer	09.05.2016
+
+class 'DaemonsMaledictumTactic' (BaseTactic)
+
+DaemonsMaledictum = {}
+
+function DaemonsMaledictumTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Daemons Maledictum Tactic")
+end
+
+function DaemonsMaledictumTactic:InitAbilities()
+	
+	-- Init abilities
+	if (DaemonsMaledictum.summon_id == nil) then
+		DaemonsMaledictum.summon_id = cpu_manager.stats:GetAbilityID( "daemons_maledictum_protection" )
+	end
+end
+
+function DaemonsMaledictumTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if (iPower >= 300) then
+		self.base_ai:DoSpecialAbility(DaemonsMaledictum.summon_id)
+	end
+end
+

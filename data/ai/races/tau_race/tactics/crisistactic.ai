@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'crisistactic.ai'
--- Edited by Thudmeizer @ 22.10.2006
+-- Edited by Thudmeizer @ 18.03.2016
 -- Edited by Cylarne_04 2011
 
 class 'CrisisTactic' (TauInfantryTactic)
@@ -12,25 +12,9 @@ function CrisisTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Crisis Tactic")
 end
 
-function CrisisTactic:InitAbilities()
-
-	-- Init ability ID's
-	if (Crisis.shield == nil) then
-		Crisis.shield = cpu_manager.stats:GetAbilityID( "tau_personal_shield" )
-	end
-end
-
-function CrisisTactic:DoAbilities()
-	
-	-- Activate the shields.
-	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.8) then
-		Ability.DoAbility( self.squad_ai, Crisis.shield, Ability.PredicateFilters.IsInCombat ) 
-	end
-end
-
 function CrisisTactic:Upgrade()
 
-	-- Check if we have free ressources
+	-- Check if we have free resources
 	if (not Tactic.Options.can_reinforce) then
 		return
 	end

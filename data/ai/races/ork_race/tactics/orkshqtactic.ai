@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'orkshqtactic.ai'
 -- Edited by Krronus @ 05.23.2010
+-- Edited by Thudmeizer	@ 25.02.2016
 
 class 'OrksHQTactic' (BaseTactic)
 
@@ -21,16 +22,15 @@ end
 
 function OrksHQTactic:DoAbilities()
 
-	--[[ Try to activate the Bombs superweapon -- Removed due to global range unlikeness.
+	-- Try to activate the Bombs superweapon
 	if (self.base_ai:CanDoAbility(OrksHQ.superweapon_id)) then
 	
 		local iRange = self.base_ai:GetAbilityRange(OrksHQ.superweapon_id)
-		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 6)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 25)
 		if (oSquad ~= nil) then		
-			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+			if (oSquad:IsAttacking()) then
 				self.base_ai:DoSpecialAbilitySquad(OrksHQ.superweapon_id, oSquad:GetSquad())
 			end
 		end
-	end]]
-	
+	end
 end

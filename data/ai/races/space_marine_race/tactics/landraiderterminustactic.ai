@@ -1,0 +1,86 @@
+----------------------------------------
+-- File: 'landraiderterminustactic.ai'
+-- Edited by Thudmeizer	@ 04.05.2016
+-- Edited by Cylarne_04 2011
+
+class 'LandRaiderTerminusTactic' (SpaceMarineVehicleTactic)
+
+LandRaiderTerminus = {}
+
+function LandRaiderTerminusTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Land Raider Terminus Tactic")
+	
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 2
+	self.m_iTransportSlots = 5
+end
+
+function LandRaiderTerminusTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (LandRaiderTerminus.spirit_id == nil) then
+		LandRaiderTerminus.spirit_id = cpu_manager.stats:GetAbilityID( "marines_machine_spirit" )
+	end
+
+	if (LandRaiderTerminus.smoke_id == nil) then
+		LandRaiderTerminus.smoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_launchers_land_raider" )	
+	end
+
+	if (LandRaiderTerminus.abilityrecharge_id == nil) then
+		LandRaiderTerminus.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (LandRaiderTerminus.heal_id == nil) then
+		LandRaiderTerminus.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (LandRaiderTerminus.reinforce_id == nil) then
+		LandRaiderTerminus.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+end
+
+function LandRaiderTerminusTactic:DoAbilities()
+
+	-- Check if I can use machine spirit while stationary
+	if (self.squad_ai:WasRecentlyHurt() and not self.squad_ai:IsInStateMove() and not self.squad_ai:IsInStateAttackMove()) then
+		
+		if (self.squad_ai:CanDoAbility(LandRaiderTerminus.spirit_id)) then
+			self.squad_ai:DoSpecialAbility(LandRaiderTerminus.spirit_id)
+		end	  
+	end
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(LandRaiderTerminus.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(LandRaiderTerminus.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(LandRaiderTerminus.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(LandRaiderTerminus.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(LandRaiderTerminus.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(LandRaiderTerminus.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(LandRaiderTerminus.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(LandRaiderTerminus.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(LandRaiderTerminus.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Do basic abilities
+	SpaceMarineVehicleTactic.DoAbilities(self)
+end

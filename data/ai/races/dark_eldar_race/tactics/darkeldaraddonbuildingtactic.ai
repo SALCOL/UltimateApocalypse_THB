@@ -1,0 +1,46 @@
+----------------------------------------
+-- File: 'darkeldaraddonbuildingtactic.ai'
+-- Edited by Thudmeizer	@ 01.04.2016
+
+class 'DarkEldarAddonBuildingTactic' (BaseTactic)
+
+DarkEldarAddonBuilding = {}
+
+function DarkEldarAddonBuildingTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Dark Eldar Addon Building Tactic")
+end
+
+function DarkEldarAddonBuildingTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function DarkEldarAddonBuildingTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarAddonBuilding.repair_id == nil) then
+		DarkEldarAddonBuilding.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function DarkEldarAddonBuildingTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Gruesome Display		-- addon_dark_eldar_gruesome_display_building
+
+	-- Always build the gruesome display
+	self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())	-- Gruesome Display
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DarkEldarAddonBuilding.repair_id )) then
+			self.base_ai:DoSpecialAbility( DarkEldarAddonBuilding.repair_id )
+		end
+	end
+end

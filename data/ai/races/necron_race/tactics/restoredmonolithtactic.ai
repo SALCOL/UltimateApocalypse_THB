@@ -2,6 +2,7 @@
 -- File: 'restoredmonolithtactic.ai'
 -- Created by Arkhan @ 31.10.2006
 -- Edited by Cylarne_04 2011
+-- Edited by Thudmeizer	@ 20.06.2016
 
 class 'RestoredMonolithTactic' (NecronVehicleTactic)
 
@@ -11,54 +12,33 @@ function RestoredMonolithTactic:__init( squad_ai ) super( squad_ai )
 	
 	self:SetName("Restored Monolith Tactic")
 	
-	self.underpossession = false
-	
+	-- Vehicle is an intermediate transport
+	self.m_iTransportVehicle = 2
+	self.m_iTransportSlots = 5
+end
+
+-- Restored Monolith is allowed to retreat even directly after a jump
+function RestoredMonolithTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
 end
 
 function RestoredMonolithTactic:InitAbilities()
 
 	-- Init ability ID's
-	-- Chronometron = no click
-	-- Phase Generator
-	-- Unnatural Solar Pulses
-	-- Greater Resurrection
-	-- Mass Production Grid
-	-- Ascend/descend/direct spawn.
-	
-	
-	--------------------------------Phalanx
-	if (RestoredMonolith.pulse_id == nil) then
-		RestoredMonolith.pulse_id = cpu_manager.stats:GetAbilityID( "necron_solar_pulse_monolith" )
-	end
-	if (RestoredMonolith.shifter_id == nil) then
-		RestoredMonolith.shifter_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter_monolith" )
-	end
-	if (RestoredMonolith.resurrection_id == nil) then
-		RestoredMonolith.resurrection_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_monolith" )
-	end
-	
-	--------------------------------Standard Monoliths
 	if (RestoredMonolith.production_id == nil) then
 		RestoredMonolith.production_id = cpu_manager.stats:GetAbilityID( "necron_mass_production" )
 	end
-	
+	if (RestoredMonolith.truegauss_id == nil) then
+		RestoredMonolith.truegauss_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )
+	end
 end
 
 function RestoredMonolithTactic:DoAbilities()
 
-	Ability.DoAbility( self.squad_ai, RestoredMonolith.shifter_id, Ability.Filters.IsInCombat )
-
-	-- Try to activate the Solar Pulse
-	if (self.squad_ai:CanDoAbility(RestoredMonolith.pulse_id)) then
-		Ability.DoAbilityPos(self.squad_ai, RestoredMonolith.pulse_id, Ability.Filters.CloseInfiltratedEnemy, 1)
-		Ability.DoAbilityPos(self.squad_ai, RestoredMonolith.pulse_id, Ability.Filters.CloseEnemy, 2)
-	end
-	-- Try to activate the Greater Resurrection ability
-	if (self.squad_ai:CanDoAbility(RestoredMonolith.resurrection_id)) then
-		Ability.DoAbility(self.squad_ai, RestoredMonolith.resurrection_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronCore.resurrection_id, min_bodies = 4 })
-	end
-	
-	------------------------------------ Production Grid
 	if (self.squad_ai:CanDoAbility(RestoredMonolith.production_id )) then
 		if (not self.squad_ai:IsUsingAbility(RestoredMonolith.production_id)) then
 			if ((self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.9) or (not self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() < 0.5)) then
@@ -71,38 +51,15 @@ function RestoredMonolithTactic:DoAbilities()
 			end
 		end
 	end
-	
-	------------------------------------- Spawn/Ascend/Descend
-	-- Try to spawn Necron Warriors if from Siege Monoliths.
-	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	
-	if (iPower >= 1000) then
-		if (self.timedDirectSpawnAbility ~= nil) then
-			self.timedDirectSpawnAbility:Call()
-		else
-			RestoredMonolithTactic.DoDirectSpawnAbility(self)
+
+	-- Gauss Weapon Overcharge: the squad will receive a boost in maximum damage, but a critical reduction in movement speed for a duration.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.5) then
+		if self.squad_ai:CanDoAbility( RestoredMonolith.truegauss_id ) then
+			Ability.DoAbilityArea( self.squad_ai, RestoredMonolith.truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
 		end
 	end
-	
-	-- The Ascend/Descend option
-	-- Try to possess
-	--[[if (not self.squad_ai:IsInCombat() and self.squad_ai:CanPossess()) then
-		if (self.underpossession and self.squad_ai:GetHealthPercentage() < 0.6) then
-			self.squad_ai:DoPossess()
-			self.underpossession = false
-		elseif (self.squad_ai:GetHealthPercentage() > 0.9) then
-			self.squad_ai:DoPossess()
-			self.underpossession = true
-		end
-	end]]
 end
 
-function RestoredMonolithTactic:DoDirectSpawnAbility()
-
-	if (self.squad_ai:CanDirectSpawn() and self.squad_ai:IsInCombat()) then 
-		self.squad_ai:DoDirectSpawn()
-	end
-end
 function RestoredMonolithTactic:JumpAttackRanged()
 
 	-- Call standard method
@@ -181,4 +138,29 @@ function RestoredMonolithTactic:JumpAttackRanged()
 		end
 	end
 	return false
+end
+
+function RestoredMonolithTactic:UnloadTroops()
+
+	local vSquadPos = self.squad_ai:GetPosition()
+	if (cpu_manager.terrain_analyzer:HasThreat(vSquadPos, 100) and self.squad_ai:CanUnload()) then
+
+		-- Unload all troops when enemy is in the distance
+		self.squad_ai:DoUnload()
+	end
+end
+
+function RestoredMonolithTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not VehicleTactic.Update(self)) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

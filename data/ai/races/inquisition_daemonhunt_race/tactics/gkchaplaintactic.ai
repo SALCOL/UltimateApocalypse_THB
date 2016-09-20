@@ -1,0 +1,99 @@
+----------------------------------------
+-- File: 'gkchaplaintactic.ai'
+-- Edited by Thudmeizer @ 15.04.2016
+-- Edited by Cylarne_04 2011
+
+class 'GKChaplainTactic' (DaemonhuntInfantryTactic)
+
+GKChaplain = {}
+
+function GKChaplainTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("GK Chaplain Tactic")
+end
+
+function GKChaplainTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelGKChaplain = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelGKChaplain ~= nil) then
+			local addOnID = buildChannelGKChaplain:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelGKChaplain:IsBuilding() == 0 and buildChannelGKChaplain:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelGKChaplain:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function GKChaplainTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function GKChaplainTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function GKChaplainTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (GKChaplain.demoralize == nil) then
+		GKChaplain.demoralize = cpu_manager.stats:GetAbilityID( "inquisition_demoralize" )
+	end
+end
+
+function GKChaplainTactic:DoAbilities()
+	
+	-- If we are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityTarget( self.squad_ai, GKChaplain.demoralize, Ability.Filters.CloseInfantryEnemy, 4 )
+	else
+		Ability.DoAbilityTarget( self.squad_ai, GKChaplain.demoralize, Ability.Filters.CloseInfantryEnemy, 8 )
+	end
+end
+
+function GKChaplainTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function GKChaplainTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+	
+	-- Attach to melee in tier2+
+	if (cpu_manager:GetTierLevel() > 1) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+end
+

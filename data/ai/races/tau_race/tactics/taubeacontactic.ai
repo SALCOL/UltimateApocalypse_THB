@@ -1,13 +1,96 @@
 ----------------------------------------
 -- File: 'taubeacontactic.ai'
--- Edited by Krronus	8.26.2010
+-- Edited by Krronus	8.26.2006
+-- Edited by Thudmeizer	@ 08.04.2016
 
 class 'TauBeaconTactic' (BaseTactic)
+
+TauBeacon = {}
 
 function TauBeaconTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Tau Beacon Tactic")
 
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
+	TauBeacon.detectDelay = -1
+end
+
+function TauBeaconTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TauBeacon.detection_id == nil) then
+		TauBeacon.detection_id = cpu_manager.stats:GetAbilityID( "guard_detection_field_sp" )
+	end
+
+	if (TauBeacon.repair_id == nil) then
+		TauBeacon.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function TauBeaconTactic:DoAbilities()
+
+	-- Try to activate detection field
+	if (self.base_ai:CanDoAbility(TauBeacon.detection_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(TauBeacon.detection_id)
+		local oSquad = Ability.Filters.CloseInfiltratedEnemy(self.base_ai:GetPosition(), iRange, 1)
+		
+		if (oSquad ~= nil) then
+			if(TauBeacon.detectDelay == -1) then
+				TauBeacon.detectDelay = math.max(0, 30)
+				TauBeacon.detectTime = g_iGMT + TauBeacon.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < TauBeacon.detectTime) then
+				return
+			end
+
+			-- Only try to detect if the infiltrated unit is attacking
+			if (oSquad:IsAttacking()) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.base_ai:DoSpecialAbilityPos( TauBeacon.detection_id, pos )
+
+				TauBeacon.detectDelay = -1
+			end
+		else 
+			--if no infiltrated units within range, scan other enemies
+			local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 1)
+			if(TauBeacon.detectDelay == -1) then
+				TauBeacon.detectDelay = math.max(0, 30)
+				TauBeacon.detectTime = g_iGMT + TauBeacon.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < TauBeacon.detectTime) then
+				return
+			end
+
+			if (oSquad ~= nil) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.base_ai:DoSpecialAbilityPos( TauBeacon.detection_id, pos )
+
+				TauBeacon.detectDelay = -1
+			end
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( TauBeacon.repair_id )) then
+			self.base_ai:DoSpecialAbility( TauBeacon.repair_id )
+		end
+	end
+end
+
+function TauBeaconTactic:CanDeepStrikeTroops()
+	return true
 end

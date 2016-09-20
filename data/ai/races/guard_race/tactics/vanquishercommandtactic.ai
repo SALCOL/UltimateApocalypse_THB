@@ -1,0 +1,34 @@
+----------------------------------------
+-- File: 'vanquishercommandtactic.ai'
+-- Edited by Thudmeizer	@ 29.02.2016
+
+class 'VanquisherCommandTactic' (GuardVehicleTactic)
+
+VanquisherCommand = {}
+
+function VanquisherCommandTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Vanquisher Command Tank Tactic")
+
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 2
+	self.m_iTransportSlots = 1
+end
+
+function VanquisherCommandTactic:InitAbilities()
+
+	if (VanquisherCommand.strafing_id == nil) then
+		VanquisherCommand.strafing_id = cpu_manager.stats:GetAbilityID( "guard_strafing_run_tank" )
+	end
+end
+
+function VanquisherCommandTactic:DoAbilities()
+
+	if (self.squad_ai:CanDoAbility(VanquisherCommand.strafing_id)) then
+		Ability.DoAbilityPos(self.squad_ai, VanquisherCommand.strafing_id, Ability.Filters.CloseEnemy, 6)
+		Ability.DoAbilityPos(self.squad_ai, VanquisherCommand.strafing_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Call standard method
+	GuardVehicleTactic.DoAbilities(self)
+end

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'tauinfantrytactic.ai'
--- Edited by Thudmeizer		@ 23.10.2006
+-- Edited by Thudmeizer		@ 21.06.2016
 
 class 'TauInfantryTactic' (InfantryTactic)
 
@@ -10,21 +10,36 @@ function TauInfantryTactic:__init( squad_ai ) super( squad_ai )
 	
 	-- Basic Tau infantry is able to enter transport vehicles
 	local sSquadName = squad_ai:GetSquadName()
-	if (sSquadName == "tau_stealth_team_squad" or
-		sSquadName == "tau_fire_warrior_squad" or
+	-- transport_infantry
+	if (sSquadName == "tau_fire_warrior_squad" or
+		sSquadName == "tau_shasui_fire_warrior_bodyguard_sp" or
 		sSquadName == "tau_pathfinder_squad" or
-		sSquadName == "tau_broadside_battlesuit_squad" or
-		sSquadName == "tau_ethereal_squad" or
-		sSquadName == "tau_commander_squad") then
-		self.m_iTransportable = 1
+	        sSquadName == "tau_vespid_auxiliary_squad" or
+		sSquadName == "tau_commander_squad" or
+		sSquadName == "tau_kroot_carnivore_squad" or
+		sSquadName == "tau_kroot_hound_squad" or
+		sSquadName == "tau_kroot_shaper_squad" or
+		sSquadName == "tau_stealth_team_squad" or
+		sSquadName == "tau_stealth_team_xv25_squad") then
+		self.m_iTransportable = 1 --or 2 -- Devilfish // Manta
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "tau_guidance_beacon" )
+
+	-- transport_terminator // transport_lieutenant // transport_tank
+	elseif (sSquadName == "tau_broadside_battlesuit_squad" or
+		sSquadName == "tau_broadside_battlesuit_xv8_squad" or
+		sSquadName == "tau_greater_knarloc_squad" or
+		sSquadName == "tau_crisis_suit_squad" or
+		sSquadName == "tau_xv81_crisis_suit_squad" or
+		sSquadName == "tau_xv89_bodyguard_squad" or
+		sSquadName == "tau_xv89_commander_squad" or
+		sSquadName == "tau_xv9_hazard_suit_squad" or
+		sSquadName == "tau_ethereal_squad") then
+		self.m_iTransportable = 2 -- Manta // Orca Dropship
 	end
 end
 
 function TauInfantryTactic:AddTargetAbilities()
-	table.insert(InfantryTactic.TargetAbilities, { nil, "tau_photon_grenade", Ability.Filters.CloseSquadEnemy, 1, 0 })
-	table.insert(InfantryTactic.TargetAbilities, { nil, "tau_photon_grenade_shasui", Ability.Filters.CloseSquadEnemy, 1, 0 })
-	table.insert(InfantryTactic.TargetAbilities, { nil, "tau_emp_grenade", Ability.Filters.CloseVehicleEnemy, 1, 0 })
-	table.insert(InfantryTactic.TargetAbilities, { nil, "tau_emp_grenade_shasui", Ability.Filters.CloseVehicleEnemy, 1, 0 })
+
 end
 
 function TauInfantryTactic:AddCommanders()
@@ -33,6 +48,40 @@ function TauInfantryTactic:AddCommanders()
 	table.insert(self.commander, { "tau_ethereal_squad", false })
 	table.insert(self.commander, { "tau_kroot_shaper_squad", false })
 	table.insert(self.commander, { "tau_kroot_knarloc_rider_squad", false })
+end
+
+function TauInfantryTactic:DoAbilities()
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		local run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+		if (self.squad_ai:CanDoAbility( run_id )) then
+			self.squad_ai:DoSpecialAbility( run_id )
+		end
+	end
+
+	-- I might have these attached
+	if (self.squad_ai:IsAttached()) then
+	
+		if (self.squad_ai:HasSquadAttached("tau_commander_squad")) then
+			TauCommanderTactic.InitAbilities( self )
+			TauCommanderTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("tau_xv89_commander_squad")) then
+			TauXVCommanderTactic.InitAbilities( self )
+			TauXVCommanderTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("tau_ethereal_squad")) then
+			EtherealTactic.InitAbilities( self )
+			EtherealTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("tau_kroot_knarloc_rider_squad")) then
+			KrootKnarlocRiderTactic.InitAbilities( self )
+			KrootKnarlocRiderTactic.DoAbilities( self )
+		end
+	end
+	
+	-- Call basic DoAbilities methods
+	InfantryTactic.DoAbilities(self)
 end
 
 function TauInfantryTactic:UpdateStance()

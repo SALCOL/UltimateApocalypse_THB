@@ -1,0 +1,57 @@
+REQUIREMENTS:
+______________________________________________________
+- At least 10 gigs of space on your computer. (Recommended) Minimal of 6.23 GB + Standalone faction mods.
+- Dawn of War - Soulstorm.
+- Objective Points UA (already included in mod).
+- Tyranids 1.5b
+- Chaos Daemons 2.0
+
+- Download Chaos Daemons 2.0 and Tyranids standalone mod if you do not have them: 
+http://forums.relicnews.com/showthread.php?277691-Hub-All-Standalone-factions
+
+- Inquisition Daemonhunters for Soulstorm is already integrrated in UA! Thanks to jONES1979 and IDH team.
+
+
+INSTALLATION:
+______________________________________________________
+- Place ALL files into your SS directory:
+	DISC - C:\Program Files (x86)\THQ\Dawn of War - Soulstorm
+	STEAM - C:\Program Files (x86)\Steam\SteamApps\common\Dawn of War - Soulstorm
+
+- Download Chaos Daemons 2.0 and Tyranids standalone mod if you do not have them: 
+http://forums.relicnews.com/showthread.php?277691-Hub-All-Standalone-factions
+
+- Inquisition Daemonhunters for Soulstorm is already integrrated in UA! Thanks to jONES1979 and IDH team.
+
+(Alternative Links)
+- Install Tyranids 1.5b here: http://www.moddb.com/mods/tyranid-mod/downloads/tyranid-mod-v05b2-for-soulstorm
+- Install Daemons 2.0 here: http://www.moddb.com/mods/daemons-mod/downloads/daemons-mod-complete-20
+
+- Install standalones accordingly.
+
+- Done go play.
+
+- Use DOW Mod Manager version 1.2 and greater: http://www.moddb.com/mods/ultimate-apocalypse-mod/downloads/dow-mod-manager-12
+
+- Download NTCore 2.0: http://www.moddb.com/mods/ultimate-apocalypse-mod/downloads/nt-core-20
+
+INSTALLATION FAILED (Via crash to desktop upon starting game):
+______________________________________________________
+
+- One possible solution (New Races) would be you did not download and install any standalone factions. Please
+visit this page for full guide: http://forums.relicnews.com/showthread.php?277691-Hub-All-Standalone-factions
+
+- Another possible solution would be you did not put ALL files into the SS directory.
+
+- Last and final solution would be you have a corrupted install. Try to download again from a different mirror.
+
+- If you tried all above, visit the technical issues thread: http://www.moddb.com/mods/ultimate-apocalypse-mod/forum/thread/technical-issues
+- FAQ found here: http://www.moddb.com/mods/ultimate-apocalypse-mod/tutorials/faq-frequently-asked-questions
+
+
+TRY TO INSTALL RECOMMENDED FILES: 
+______________________________________________________
+
+- Download DOW Mod Manager version 1.2 and greater: http://www.moddb.com/mods/ultimate-apocalypse-mod/downloads/dow-mod-manager-12
+
+- Download NTCore 2.0: http://www.moddb.com/mods/ultimate-apocalypse-mod/downloads/nt-core-20

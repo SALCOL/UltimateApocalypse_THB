@@ -1,6 +1,6 @@
 ----------------------------------------
--- File: 'HiveTyranttactic.ai'
--- Edited by Thudmeizer @ 18.06.2007
+-- File: 'hivetyranttactic.ai'
+-- Edited by Thudmeizer @ 20.06.2014
 
 class 'HiveTyrantTactic' (TyranidInfantryTactic)
 
@@ -9,6 +9,34 @@ HiveTyrant = {}
 function HiveTyrantTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Hive Tyrant Tactic")
+end
+
+function HiveTyrantTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelHiveTyrant = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelHiveTyrant ~= nil) then
+			local addOnID = buildChannelHiveTyrant:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelHiveTyrant:IsBuilding() == 0 and buildChannelHiveTyrant:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelHiveTyrant:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function HiveTyrantTactic:AutoBuildResearch( researchSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelHiveTyrant = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelHiveTyrant ~= nil) then
+			local ResearchID = buildChannelHiveTyrant:GetItemIDAt(BuildChannelAI.PQ_Research, researchSlot)
+			if (buildChannelHiveTyrant:IsBuilding() == 0 and buildChannelHiveTyrant:CanAddToQueue(BuildChannelAI.PQ_Research, ResearchID) == BuildChannelAI.CANBUILD_Ok) then			
+				buildChannelHiveTyrant:BuildResearch(ResearchID)
+				return
+			end
+		end
+	end
+	return
 end
 
 -- Assassinate win condition -- never attack
@@ -21,78 +49,169 @@ function HiveTyrantTactic:IsDefender()
 	return (not cpu_manager.assassinate and self:IsCommanderDefender())
 end
 
+-- Hive Tyrant is allowed to retreat even directly after a jump
+function HiveTyrantTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Assassinate win condition -- never jump into combat
+function HiveTyrantTactic:JumpAttack()
+	if (not cpu_manager.assassinate) then
+		Tactic.JumpAttack(self)
+	end
+end
+
+function HiveTyrantTactic:CanJumpAttached()
+	if (not cpu_manager.assassinate) then
+		return true
+	end
+end
 
 function HiveTyrantTactic:InitAbilities()
 
-	if HiveTyrant_catalyst == nil then
-		HiveTyrant_catalyst = cpu_manager.stats:GetAbilityID( "tyranids_hivetyrant_catalyst" )
+	if (HiveTyrant.catalyst_id == nil) then
+		HiveTyrant.catalyst_id = cpu_manager.stats:GetAbilityID( "tyranids_hivetyrant_catalyst" )
 	end
-	if HiveTyrant_field == nil then
-		HiveTyrant_field = cpu_manager.stats:GetAbilityID( "tyranids_hivetyrant_warp_field" )
+
+	if (HiveTyrant.storm_id == nil) then
+		HiveTyrant.storm_id = cpu_manager.stats:GetAbilityID( "tyranids_hive_tyrant_storm" )
 	end
-	if HiveTyrant_scream == nil then
-		HiveTyrant_scream = cpu_manager.stats:GetAbilityID( "tyranids_swarmlord_scream" )
-	end
-	
-	if HiveTyrant.biobomb_id == nil then
-		HiveTyrant.biobomb_id = cpu_manager.stats:GetAbilityID( "tyranids_bio_bomb" )
+
+	if (HiveTyrant.run_id == nil) then
+		HiveTyrant.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function HiveTyrantTactic:DoAbilities()
 	
-	if (self.squad_ai:CanDoAbility(HiveTyrant_catalyst)) then
-		Ability.DoAbility( self.squad_ai, HiveTyrant_catalyst, Ability.Filters.IsInCombat )
-	end
-	
-	if (self.squad_ai:CanDoAbility(HiveTyrant_scream)) then
-		Ability.DoAbility( self.squad_ai, HiveTyrant_scream, Ability.Filters.IsInCombat )
-	end
-	
-	if (self.squad_ai:GetHealthPercentage() < 0.8 and self.squad_ai:IsInCombat() and self.squad_ai:CanDoAbility(HiveTyrant_field) and not self.squad_ai:IsUsingAbility(HiveTyrant_field)) then
+	-- Catalyst: A psychic ability that forces Tyranids to fight on, even when they should fall.
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
 
-		-- Activate the Base Shields
-		self.squad_ai:DoSpecialAbility(HiveTyrant_field)
-	end	
-	if (self.squad_ai:CanDoAbility(HiveTyrant_field) and not self.squad_ai:IsInCombat() and self.squad_ai:IsUsingAbility(HiveTyrant_field)) then
-
-		-- Deactivate the Base Shields
-		self.squad_ai:DoSpecialAbility(HiveTyrant_field)
+		-- Activate Catalyst
+		if (self.squad_ai:CanDoAbility( HiveTyrant.catalyst_id )) then
+			self.squad_ai:DoSpecialAbility( HiveTyrant.catalyst_id )
+		end
 	end
-	
-	if (self.squad_ai:CanDoAbility(HiveTyrant.biobomb_id) and iRequisition >= 9000) then
-		Ability.DoAbilityPos( self.squad_ai, HiveTyrant.biobomb_id, Ability.Filters.CloseEnemy, 15 ) 
-		Ability.DoAbilityPos( self.squad_ai, HiveTyrant.biobomb_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
-	end
-	
-	
-end
 
-function HiveTyrantTactic:Upgrade()
+	-- Bio-Electric Field: An Electricial Field discharges and sends shock waves against friends and foe alike. It is created by constant micro vibrations across the unit's chitinous armour.
+	if (self.squad_ai:CanDoAbility(HiveTyrant.storm_id)) then
 
-	-- Check if we have free ressources
-	if (not Tactic.Options.can_reinforce) then
-		return
+		-- We are dying, lower requisites for attacks
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			Ability.DoAbilityArea( self.squad_ai, HiveTyrant.storm_id, Ability.Filters.CloseEnemy, 15, 4 )
+			Ability.DoAbilityArea( self.squad_ai, HiveTyrant.storm_id, Ability.Filters.CloseMonsterEnemy, 15, 4 )
+		else
+			Ability.DoAbilityArea( self.squad_ai, HiveTyrant.storm_id, Ability.Filters.CloseEnemy, 15, 8 )
+			Ability.DoAbilityArea( self.squad_ai, HiveTyrant.storm_id, Ability.Filters.CloseMonsterEnemy, 15, 8 )
+		end
+
+		-- Search a building
+		local iRange = self.squad_ai:GetAbilityRange(HiveTyrant.storm_id)
+		local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.squad_ai:GetPosition(), iRange, 5)
+		if (oBuilding ~= nil) then
+			-- Activate Bio-Electric Field against enemy buildings
+			self.squad_ai:DoSpecialAbilityEntity(HiveTyrant.storm_id, oBuilding) 
+		end
 	end
-	
-	if (not self.squad_ai:IsReinforcing()) then
-	
-		-- Upgrade if possible
-		if (self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetNumTroopers() > 0) then
-			local class_type = cpu_manager:GetFirstEnemyPlayer():GetMajorityClassType()
-			self.squad_ai:DoBestUpgrade( class_type )
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( HiveTyrant.run_id )) then
+			self.squad_ai:DoSpecialAbility( HiveTyrant.run_id )
 		end
 	end
 end
 
+function HiveTyrantTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] tyranids_ht_dvh_addon			1/2 Exclusive 	Devourer (Infantry)
+--	self:AutoBuildAddOn(1)	--	[addon_02] tyranids_ht_bw_addon				2/2 Exclusive	Lash Whips and Bonesword 
+--	self:AutoBuildAddOn(2)	--	[addon_03] tyranids_ht_stl_addon			1/4 Exclusive	Scything Talons
+--	self:AutoBuildAddOn(3)	--	[addon_04] tyranids_ht_bs_addon				2/4 Exclusive	Barbed Strangler (Heavy Infantry, Vehicles, and Buildings)
+--	self:AutoBuildAddOn(4)	--	[addon_05] tyranids_ht_vc_addon				3/4 Exclusive	Venom Cannon (Heavy Infantry and Vehicles)
+--	self:AutoBuildAddOn(5)	--	[addon_06] tyranids_ht_dvh2_addon			4/4 Exclusive	Devour (Infantry)
+--	self:AutoBuildAddOn(6)	--	[addon_07] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(9)	-- 	[addon_10] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(10)	-- 	[addon_11] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(11)	-- 	[addon_12] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(12)	-- 	[addon_13] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(13)	-- 	[addon_14] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(14)	-- 	[addon_15] addon_commanders_increase_production_2	8
+
+--	self:AutoBuildResearch(0)	-- [research_01] tyranids_hivetyrant_implant_research
+--	self:AutoBuildResearch(1)	-- [research_02] tyranids_hivetyrant_adrenal_researchh
+--	self:AutoBuildResearch(2)	-- [research_03] tyranids_hivetyrant_toxic_miasma_research
+--	self:AutoBuildResearch(3)	-- [research_04] tyranids_hivetyrant_carapace_research
+--	self:AutoBuildResearch(4)	-- [research_05] tyranids_hivetyrant_warp_field_research
+--	self:AutoBuildResearch(5)	-- [research_06] tyranids_hivetyrant_wings_research
+
+	local addon_random_top_upgrades = math.random( 0,1 )	-- Randomize between upper wargear
+	self:AutoBuildAddOn(addon_random_top_upgrades)
+
+	local addon_random_lower_upgrades = math.random( 2,5 )	-- Randomize between lower wargear
+	self:AutoBuildAddOn(addon_random_lower_upgrades)
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 6,14 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(8)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+
+	if not (cpu_manager.cpu_player:IsResearchComplete("tyranids_hivetyrant_implant_research")) then
+		self:AutoBuildResearch(0) -- Implant
+	elseif not (cpu_manager.cpu_player:IsResearchComplete("tyranids_hivetyrant_adrenal_research")) then
+		self:AutoBuildResearch(1) -- Adrenal
+	elseif not (cpu_manager.cpu_player:IsResearchComplete("tyranids_hivetyrant_toxic_miasma_research")) then
+		self:AutoBuildResearch(2) -- Toxic Miasma
+	elseif not (cpu_manager.cpu_player:IsResearchComplete("tyranids_hivetyrant_carapace_research")) then
+		self:AutoBuildResearch(3) -- Carapace
+	elseif not (cpu_manager.cpu_player:IsResearchComplete("tyranids_hivetyrant_warp_field_research")) then
+		self:AutoBuildResearch(4) -- Warp Field
+	elseif not (cpu_manager.cpu_player:IsResearchComplete("tyranids_hivetyrant_wings_research")) then
+		self:AutoBuildResearch(5) -- Wings
+	end
+
+	local class_type = cpu_manager:GetFirstEnemyPlayer():GetMajorityClassType()
+	self.squad_ai:DoBestUpgrade( class_type )
+end
+
 function HiveTyrantTactic:Update()
 
-	if self:IsComplete() then
-		return
+	if (self:IsComplete()) then
+        	return
+    	end
+
+    	-- State machine
+    	if (not InfantryTactic.Update(self)) then
+        	return
+    	end
+    
+	-- Assassinate win condition -- never attach to a squad
+	if (not cpu_manager.assassinate) then
+		
+		-- Attach to melee in tier3+
+		if (cpu_manager:GetTierLevel() > 2) then
+		
+			if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+				return
+			end
+		end
+		if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+			self:TryAttachSquadMelee()
+		end
 	end
-	
-	  --state machine
-	  if not InfantryTactic.Update( self ) then
-		 return
-	  end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

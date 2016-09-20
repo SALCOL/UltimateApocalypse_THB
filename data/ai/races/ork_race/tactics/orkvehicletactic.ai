@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'orkvehicletactic.ai'
--- Edited by Thudmeizer		@ 08.08.2006
+-- Edited by Thudmeizer		@ 20.06.2016
 
 class 'OrkVehicleTactic' (VehicleTactic)
 
@@ -14,7 +14,14 @@ function OrkVehicleTactic:CheckVehicleDance(sName)
 
 	if (sName == "ork_squad_trukk" or
 		sName == "ork_squad_wartrak" or
-		sName == "ork_squad_looted_tank") then
+		sName == "ork_squad_killa_kan" or
+		sName == "ork_squad_gun_wagon" or
+		sName == "ork_squad_battle_wagon" or
+		sName == "ork_squad_deff_dread" or
+		sName == "ork_squad_looted_tank" or
+		sName == "ork_squad_kill_bursta" or
+		sName == "ork_squad_kill_krusha" or
+		sName == "ork_squad_battlefortress") then
 		return true
 	end
 	return false
@@ -28,26 +35,16 @@ function OrkVehicleTactic:DoAbilities()
 		if (self.squad_ai:CanDoAbility(boost_id)) then
 			self.squad_ai:DoSpecialAbility(boost_id)
 		end
-	end	
-
-    -- SearchLight Scripts (Combat = On, No Combat = Off)
-    if (playing_night_map == 1) then
-    
-		local light1_id = cpu_manager.stats:GetAbilityID( "ork_searchlight_trukk" )
-		Ability.DoAbility( self.squad_ai, light1_id, Ability.Filters.IsInCombat ) 
-	
-		local light2_id = cpu_manager.stats:GetAbilityID( "ork_searchlight_wartrak" )
-		Ability.DoAbility( self.squad_ai, light2_id, Ability.Filters.IsInCombat ) 
-	
-		local light3_id = cpu_manager.stats:GetAbilityID( "ork_searchlight_killakan" )
-		Ability.DoAbility( self.squad_ai, light3_id, Ability.Filters.IsInCombat ) 
-	
-		local light4_id = cpu_manager.stats:GetAbilityID( "ork_searchlight_lemanruss" )
-		Ability.DoAbility( self.squad_ai, light4_id, Ability.Filters.IsInCombat ) 
-	
-		local light5_id = cpu_manager.stats:GetAbilityID( "ork_lighthalo_squiggoth" )
-		Ability.DoAbility( self.squad_ai, light5_id, Ability.Filters.IsInCombat ) 
 	end
+
+	-- RAM!!! - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	local rammingspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( rammingspeed_id )) then
+			self.squad_ai:DoSpecialAbility( rammingspeed_id )
+		end
+	end	
 
 	-- Call standard method
 	VehicleTactic.DoAbilities(self)

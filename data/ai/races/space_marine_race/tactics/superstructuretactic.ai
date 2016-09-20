@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'superstructuretactic.ai'
 -- Edited by Cylarne_04 @ 05.23.2010
--- Edited by Thudmeizer @ 02.02.2016
+-- Edited by Thudmeizer @ 24.05.2016
 
 class 'SuperStructureTactic' (BaseTactic)
 
@@ -14,14 +14,38 @@ end
 
 function SuperStructureTactic:InitAbilities()
 
-	if (SuperStructure.Nuke_id == nil) then
-		SuperStructure.Nuke_id = cpu_manager.stats:GetAbilityID( "marines_nuke" )
-		SuperStructure.Nuke2_id = cpu_manager.stats:GetAbilityID( "marines_nuke2" )
-		SuperStructure.Nuke3_id = cpu_manager.stats:GetAbilityID( "marines_nuke3" )
-		--SuperStructure.Nuke4_id = cpu_manager.stats:GetAbilityID( "marines_nuke4" )
-		--SuperStructure.Global = cpu_manager.stats:GetAbilityID( "sisters_exterminatus_global" )
+	if (SuperStructure.nuke_id == nil) then
+		SuperStructure.nuke_id = cpu_manager.stats:GetAbilityID( "marines_nuke" )					-- Nuke (All)
 	end
 
+	if (SuperStructure.emp_id == nil) then
+		SuperStructure.emp_id = cpu_manager.stats:GetAbilityID( "marines_nuke2" )					-- EMP (Vehicles/Buildings) 
+	end
+
+	if (SuperStructure.cannon_id == nil) then
+		SuperStructure.cannon_id = cpu_manager.stats:GetAbilityID( "marines_nuke3" )					-- Particle Cannon (All)
+	end
+
+	if (SuperStructure.curtain_id == nil) then
+		SuperStructure.curtain_id = cpu_manager.stats:GetAbilityID( "marines_nuke4" )					-- Iron Curtain (All)
+	end
+--[[
+	if (SuperStructure.gothic_id == nil) then
+		SuperStructure.gothic_id = cpu_manager.stats:GetAbilityID( "marines_orbital_strike_battlefleet_gothic" )	-- Orbital Lance (All)
+	end
+	
+	if (SuperStructure.gothic2_id == nil) then
+		SuperStructure.gothic2_id = cpu_manager.stats:GetAbilityID( "marines_orbital_strike_battlefleet_gothic_2" )	-- Orbital Lance (All)
+	end
+
+	if (SuperStructure.gothic3_id == nil) then
+		SuperStructure.gothic3_id = cpu_manager.stats:GetAbilityID( "marines_orbital_strike_battlefleet_gothic_3" )	-- Orbital Lance (All)
+	end
+
+	if (SuperStructure.gothic4_id == nil) then
+		SuperStructure.gothic4_id = cpu_manager.stats:GetAbilityID( "marines_orbital_strike_battlefleet_gothic_4" )	-- Orbital Lance (All)
+	end
+]]
 	if (SuperStructure.repair_id == nil) then
 		SuperStructure.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
@@ -29,19 +53,56 @@ end
 
 function SuperStructureTactic:DoAbilities()
 
-	-- Activate Apocalyptic Superweapon.
-	Ability.DoAbilityPos(self.base_ai, SuperStructure.Nuke3_id, Ability.Filters.CloseMonsterEnemy, 1)
-	Ability.DoAbilityPos(self.base_ai, SuperStructure.Nuke2_id, Ability.Filters.CloseVehicleEnemy, 10)
-	Ability.DoAbilityPos(self.base_ai, SuperStructure.Nuke_id, Ability.Filters.CloseEnemy, 35)
-	Ability.DoAbilityTargetEntity(self.base_ai, SuperStructure.Nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
-	
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Launch Nuclear Missile 
+	if (self.base_ai:CanDoAbility( SuperStructure.nuke_id ) and (iRequisition >= 4000 and iPower >= 4000)) then
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.nuke_id, Ability.Filters.CloseEnemy, 24 )
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6 )
+	end
 	
-	-- Activate the planet destroyer
-	--[[if (iRequisition >= 50000 and iPower >= 50000) then
-		Ability.DoAbilityTargetEntity(self.base_ai, SuperStructure.Global, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-	end]]
+	-- Activate EMP
+	if (self.base_ai:CanDoAbility( SuperStructure.emp_id ) and (iRequisition >= 4000 and iPower >= 2000)) then
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.emp_id, Ability.Filters.CloseVehicleEnemy, 8 )
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.emp_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10 )
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.emp_id, Ability.Filters.CloseSquadEnemy, 12 )
+	end
+
+	-- Check if we can use the Particle Cannon
+	if (self.base_ai:CanDoAbility(SuperStructure.cannon_id) and (iRequisition >= 3000 and iPower >= 3000)) then
+	
+		-- Get closest squad in range
+		local iRange = self.base_ai:GetAbilityRange(SuperStructure.cannon_id)
+		local oSquad = cpu_manager.cpu_player:FindFirstEnemy(self.base_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil) then
+		
+			-- Get stats
+			local oStats = oSquad:GetStats()
+			if (oStats ~= nil) then
+			
+				-- Check unit type
+				local eClass = oStats:GetClass()
+				if (eClass == UnitStatsAI.UC_VehicleHigh or eClass == UnitStatsAI.UC_Commander or
+					eClass == UnitStatsAI.UC_MonsterHigh or oSquad:GetNumTroopers() >= 10) then
+					
+					-- Use Particle Cannon ability on squad
+					self.base_ai:DoSpecialAbilitySquad(SuperStructure.cannon_id, oSquad:GetSquad())
+				end
+			end	
+		end
+	end
+
+	-- Check if we can use the Iron Curtain
+	if (self.base_ai:CanDoAbility(SuperStructure.curtain_id) and (iRequisition >= 8000 and iPower >= 8000)) then
+	
+		-- Search a squad
+		local iRange = self.base_ai:GetAbilityRange(SuperStructure.curtain_id)
+		local oUnit = Ability.Filters.CloseHurt(self.base_ai:GetPosition(), iRange, 10)
+		if (oUnit ~= nil and oUnit:IsInCombat() and oUnit:WasRecentlyHurt() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.base_ai:DoSpecialAbilitySquad(SuperStructure.curtain_id, oUnit:GetSquad())
+		end
+	end
 
 	-- Base Repair!
 	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then

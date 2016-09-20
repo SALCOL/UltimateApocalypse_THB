@@ -2,8 +2,8 @@
 
 version = 9
 
-priority = 35
-volume = 0.250000
+priority = 25
+volume = 0.500000
 volumeRand = 0.030000
 pitch = 1.000000
 pitchRand = 0.030000

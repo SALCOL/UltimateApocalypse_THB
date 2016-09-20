@@ -1,0 +1,176 @@
+----------------------------------------
+-- File: 'civilianbunkertactic.ai'
+-- Created by Gambit @ 11/06/2016
+-- Edited by Thudmeizer	@ 12.06.2016
+
+class 'CivilianBunkerTactic' (BaseTactic)
+
+CivilianBunker = {}
+
+function CivilianBunkerTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Civilian Bunker Tactic")
+
+    	CivBunkerAddonsTMR = g_iGMT
+end
+
+function CivilianBunkerTactic:AutoBuildAddOn( addonSlot )
+    	local buildChannel = build_manager:GetBuildChannelFromID(self.base_ai:GetEntity():GetID())
+    	if (buildChannel ~= nil) then
+        	local addOnID = buildChannel:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+        	if (buildChannel:IsBuilding() == 0 and buildChannel:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+            		buildChannel:BuildAddOn(addOnID)
+            		CivBunkerAddonsTMR = g_iGMT
+        	end
+    	end
+end
+
+function CivilianBunkerTactic:InitAbilities()
+
+	if (CivilianBunker.repair_id == nil) then
+        	CivilianBunker.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+    	end
+
+	-- Init Addons' ID
+	if CivilianBunker.addon_0 == nil then
+        	CivilianBunker.addon_0 = cpu_manager.stats:GetAddOnID( "inquisition_dedication_workers_addon" )
+        	CivilianBunker.addon_1 = cpu_manager.stats:GetAddOnID( "inquisition_dedication_trading_addon" )
+        	CivilianBunker.addon_2 = cpu_manager.stats:GetAddOnID( "inquisition_dedication_squad_addon" )
+        	CivilianBunker.addon_3 = cpu_manager.stats:GetAddOnID( "inquisition_dedication_support_addon" )
+        	CivilianBunker.addon_4 = cpu_manager.stats:GetAddOnID( "inquisition_dedication_requisition_addon" )
+        	CivilianBunker.addon_5 = cpu_manager.stats:GetAddOnID( "inquisition_dedication_power_addon" )
+	end
+end
+
+function CivilianBunkerTactic:DoAbilities()
+
+    	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( CivilianBunker.repair_id )) then
+           		self.base_ai:DoSpecialAbility( CivilianBunker.repair_id )
+       		end
+	end
+--[[
+	-- Bunkers' ADDONS management -------------------------------------------------------------------------------------
+	-- ADDONS BUILDING CODE
+
+	SLOT    ADDON NAME					ADDON EFFECT
+	0        inquisition_dedication_workers_addon		2% bonus req/pow, +2 squad/support cap.
+	1        inquisition_dedication_trading_addon		Trades resources.
+	2        inquisition_dedication_squad_addon		+9 squad cap, +1 max squad cap.
+	3        inquisition_dedication_support_addon		+9 support cap, +1 max support cap.
+	4        inquisition_dedication_requisition_addon	+15% req income increase.
+	5        inquisition_dedication_power_addon 		+15% pow income increase.
+]]
+	-- First, check if we have already upgraded, to avoid unnecessary calculations
+	-- Also, do NOT perform/process checks immediately (only every 3 secs), in case more than one bunkers is eligible.
+	local alreadyUpgraded = (self.base_ai:HasAddOn(CivilianBunker.addon_0) or self.base_ai:HasAddOn(CivilianBunker.addon_1) or
+	self.base_ai:HasAddOn(CivilianBunker.addon_2) or self.base_ai:HasAddOn(CivilianBunker.addon_3) or
+	self.base_ai:HasAddOn(CivilianBunker.addon_4) or self.base_ai:HasAddOn(CivilianBunker.addon_5))
+
+	if not alreadyUpgraded and g_iGMT > CivBunkerAddonsTMR + 3 then
+    		-- Calculate the current req/pow to see if we have the resources in order to upgrade
+   	 	local iReq = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+    		local iPow = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Power)
+    		if iReq > 300 and iPow > 300 then
+        		-- Calculate the current Race resources + caps + Trading Addons.
+        		local iSquadCapMax = build_manager:GetSquadCapCurrentMax()
+       			local iSquadCapLeft = build_manager:GetSquadCapLeft()
+        		local iSquadCapCurrent = iSquadCapMax - iSquadCapLeft
+        		local iSupportCapMax = build_manager:GetSupportCapCurrentMax()
+        		local iSupportCapLeft = build_manager:GetSupportCapLeft()
+        		local iSupportCapCurrent = iSupportCapMax - iSupportCapLeft
+        		local iReqRate = resource_manager:GetResourceRate(ResourceAmount.RT_Requisition)
+        		local iPowRate = resource_manager:GetResourceRate(ResourceAmount.RT_Power)
+        		local tradingAddons = 0
+        		for oBuilding in military_manager:GetBases() do
+            			if oBuilding:IsValid() then
+                			if oBuilding:GetBaseName() == "inquisition_civilian_bunker" then
+                    				if oBuilding:HasAddOn(CivilianBunker.addon_1) then
+                        				tradingAddons = tradingAddons + 1
+                    				else
+                        			local buildChannel = build_manager:GetBuildChannelFromID(oBuilding:GetEntity():GetID())
+                        			if buildChannel ~= nil then
+                            				if buildChannel:IsBuilding() == CivilianBunker.addon_1 then
+                               					tradingAddons = tradingAddons + 1
+                            				end
+                        			end
+                    			end
+                		end
+			end
+		end
+
+	-- Base probability for each Addon. (It is abstract - NOT percentile.)
+        local workers = 30
+        local trading = 40
+        local squadup = 10
+        local supptup = 10
+        local reqsnup = 10
+        local powerup = 10
+
+        -- NOW, modify the probability of each Addon, based on the calculated conditions, accordingly.
+        -- The 1st trading post has an unmodified probability of 40. To build a 2nd one, the probability drops to 5.
+        -- If 2 are already built, DO NOT build a 3rd - it's useless (the trading abilities are almost instantaneous).
+        if tradingAddons > 1 then
+		trading = 0
+        elseif tradingAddons == 1 then
+		trading = 5
+        end
+
+        if iSquadCapLeft < 6 then
+		squadup = squadup + 30
+        elseif iSquadCapLeft < 11 then
+		squadup = squadup + 5
+        else
+		squadup = squadup - 5
+        end
+
+        if iSupportCapLeft < 6 then
+		supptup = supptup + 15
+        elseif iSupportCapLeft < 11 then
+		supptup = supptup + 5
+        else
+		supptup = supptup - 5
+        end
+
+        if iReqRate < 30 or iReq < 1000 then
+		reqsnup = reqsnup + 30
+        elseif iReqRate < 60 or iReq < 2000 then
+		reqsnup = reqsnup + 15
+        end
+
+        if iPowRate < 30 or iPow < 1000 then
+            powerup = powerup + 30
+        elseif iPowRate < 60 or iPow < 2000 then
+            powerup = powerup + 15
+        end
+--[[      
+	-- Debug addon logic 
+        print("workers: "..workers)
+        print("trading: "..trading)
+        print("squadup: "..squadup)
+        print("supptup: "..supptup)
+        print("reqsnup: "..reqsnup)
+        print("powerup: "..powerup)
+]]
+        -- Based on the modified probabilities, "randomly" build one of the 6 Addons.
+        local maxProbability = workers + trading + squadup + supptup + reqsnup + powerup
+        local choice = math.random( 0 , maxProbability-1 )
+        --print(choice)
+        		if choice < workers then
+            			self:AutoBuildAddOn(0)
+        		elseif choice < workers+trading then
+            			self:AutoBuildAddOn(1)
+        		elseif choice < workers+trading+squadup then
+            			self:AutoBuildAddOn(2)
+        			elseif choice < workers+trading+squadup+supptup then
+            				self:AutoBuildAddOn(3)
+        			elseif choice < workers+trading+squadup+supptup+reqsnup then
+           				self:AutoBuildAddOn(4)
+        		else
+            			self:AutoBuildAddOn(5)
+        		end
+    		end
+	end ------------------------- Bunkers' ADDONS management Code end --------------------------------------
+end

@@ -1,0 +1,36 @@
+----------------------------------------
+-- File: 'watchtactic.ai'
+-- Edited by Cylarne
+-- Edited by Thudmeizer	@ 17.04.2016
+
+class 'WatchTactic' (BaseTactic)
+
+Watch = {}
+
+function WatchTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Watch Tactic")
+end
+
+function WatchTactic:InitAbilities()
+	
+	-- Init abilities
+	if (Watch.repair_id == nil) then
+		Watch.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function WatchTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( Watch.repair_id )) then
+			self.base_ai:DoSpecialAbility( Watch.repair_id )
+		end
+	end
+end
+
+function WatchTactic:CanDeepStrikeTroops()
+	return true
+end

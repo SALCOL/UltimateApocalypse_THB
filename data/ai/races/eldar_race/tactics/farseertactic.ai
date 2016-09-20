@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'farseertactic.ai'
--- Edited by Thudmeizer @ 09.03.2005
+-- Edited by Thudmeizer @ 07.06.2016
 -- Edited by LarkinVB   @ 15.08.2005
 
 class 'FarSeerTactic' (EldarInfantryTactic)
@@ -14,58 +14,76 @@ function FarSeerTactic:__init( squad_ai ) super( squad_ai )
 	self.dance_time = 0
 end
 
--- Assassinate win condition -- never attack
-function FarSeerTactic:IsAttacker()	
-	return (not cpu_manager.assassinate and self:IsCommanderAttacker())
+function FarSeerTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelFarSeer = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelFarSeer ~= nil) then
+			local addOnID = buildChannelFarSeer:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelFarSeer:IsBuilding() == 0 and buildChannelFarSeer:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelFarSeer:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
 end
 
--- Assassinate win condition -- never defend
+function FarSeerTactic:IsAttacker()	
+	return self:IsCommanderAttacker()
+end
+
 function FarSeerTactic:IsDefender()
-	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+	return self:IsCommanderDefender()
+end
+
+-- Farseer is allowed to retreat even directly after a jump
+function FarSeerTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function FarSeerTactic:CanJumpAttached()
+	return true
 end
 
 function FarSeerTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (FarSeer.storm_id == nil) then
-		FarSeer.storm_id = cpu_manager.stats:GetAbilityID( "eldar_psychic_storm" )
-	end
-	if (FarSeer.mind_war_id == nil) then
-		FarSeer.mind_war_id = cpu_manager.stats:GetAbilityID( "eldar_mind_war" )
-	end
-	if (FarSeer.entanglement_id == nil) then
-		FarSeer.entanglement_id = cpu_manager.stats:GetAbilityID( "eldar_entanglement_farseer" )
-	end
-	if (FarSeer.blind_id == nil) then
-		FarSeer.blind_id = cpu_manager.stats:GetAbilityID( "eldar_blind" )
-	end
 	if (FarSeer.eldritchstorm_id == nil) then
 		FarSeer.eldritchstorm_id = cpu_manager.stats:GetAbilityID( "eldar_eldritchstorm" )
-	end
-	if (FarSeer.guide_id == nil) then
-		FarSeer.guide_id = cpu_manager.stats:GetAbilityID( "eldar_guide" )
 	end
 	if (FarSeer.embolden_id == nil) then
 		FarSeer.embolden_id = cpu_manager.stats:GetAbilityID( "eldar_embolden_farseer" )
 	end
+	if (FarSeer.entanglement_id == nil) then
+		FarSeer.entanglement_id = cpu_manager.stats:GetAbilityID( "eldar_entanglement_farseer" )
+	end
 	if (FarSeer.sight_id == nil) then
 		FarSeer.sight_id = cpu_manager.stats:GetAbilityID( "eldar_far_sight" )
 	end
-	if (FarSeer.fleetoffoot_id == nil) then
-		FarSeer.fleetoffoot_id = cpu_manager.stats:GetAbilityID( "eldar_fleetoffoot2" )
+	if (FarSeer.guide_id == nil) then
+		FarSeer.guide_id = cpu_manager.stats:GetAbilityID( "eldar_guide" )
 	end
-	
-	-- Autarch stuff
-	if (FarSeer.blaster_id == nil) then
-		FarSeer.blaster_id = cpu_manager.stats:GetAbilityID( "eldar_mandiblaster_autarch" )
+	if (FarSeer.mind_war_id == nil) then
+		FarSeer.mind_war_id = cpu_manager.stats:GetAbilityID( "eldar_mind_war" )
 	end
-	if (FarSeer.invisibility_id == nil) then
-		FarSeer.invisibility_id = cpu_manager.stats:GetAbilityID( "eldar_invisibility_autarch" )
+	if (FarSeer.storm_id == nil) then
+		FarSeer.storm_id = cpu_manager.stats:GetAbilityID( "eldar_psychic_storm" )
+	end
+	if (FarSeer.run_id == nil) then
+		FarSeer.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+	if (FarSeer.foot_id == nil) then
+		FarSeer.foot_id = cpu_manager.stats:GetAbilityID( "eldar_fleetoffoot" )	
 	end
 end
 
 function FarSeerTactic:DoAbilities()
 	
+	-- Try to activate the Guide
 	if (self.squad_ai:CanDoAbility(FarSeer.guide_id)) then
 		local range = self.squad_ai:GetAbilityRange( FarSeer.guide_id )	
 		local squad_filter = function( squad_ai )		
@@ -78,6 +96,7 @@ function FarSeerTactic:DoAbilities()
 			self.squad_ai:DoSpecialAbilitySquad( FarSeer.guide_id, target_squad:GetSquad() )
  		end
 	end
+
 	-- Try to activate the Far Sight
 	if (self.squad_ai:CanDoAbility(FarSeer.sight_id)) then
 	
@@ -89,7 +108,8 @@ function FarSeerTactic:DoAbilities()
 			end
 		end
 	end
-	
+
+	-- Try to activate the Entanglement
 	if (self.squad_ai:CanDoAbility( FarSeer.entanglement_id )) then
 	
 		local range = self.squad_ai:GetAbilityRange( FarSeer.entanglement_id )
@@ -112,18 +132,19 @@ function FarSeerTactic:DoAbilities()
 		end
 	end
 	
+	-- Try to activate the Embolden
 	if (self.squad_ai:CanDoAbility( FarSeer.embolden_id ) and self.squad_ai:GetMoralePercentage() < 0.6) then
 		self.squad_ai:DoSpecialAbility( FarSeer.embolden_id )
 	end
+
 	-- If we are dying, lower requisites for attacks
 	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
 			
 	   Ability.DoAbilityPos( self.squad_ai, FarSeer.eldritchstorm_id, Ability.Filters.CloseEnemy, 6 )
-	   Ability.DoAbilityTarget( self.squad_ai, FarSeer.storm_id, Ability.Filters.CloseInfantryEnemy, 4 ) 
-	   Ability.DoAbilityTarget( self.squad_ai, FarSeer.blind_id, Ability.Filters.CloseInfantryEnemy, 3 ) 
+	   Ability.DoAbilityTarget( self.squad_ai, FarSeer.storm_id, Ability.Filters.CloseSquadEnemy, 4 ) 
 	   Ability.DoAbilityTarget( self.squad_ai, FarSeer.mind_war_id, Ability.Filters.CloseInfantryEnemy, 1 )
-	   Ability.DoAbilityTarget( self.squad_ai, FarSeer.blaster_id, Ability.Filters.CloseInfantryEnemy, 1 )
 
+	-- Try to activate the Guide
 	   if (self.squad_ai:CanDoAbility(FarSeer.guide_id)) then
 			local range = self.squad_ai:GetAbilityRange( FarSeer.guide_id )	
 			local squad_filter = function( squad_ai )		
@@ -138,83 +159,97 @@ function FarSeerTactic:DoAbilities()
  		end
  	else
 		Ability.DoAbilityPos( self.squad_ai, FarSeer.eldritchstorm_id, Ability.Filters.CloseEnemy, 8 )
-		Ability.DoAbilityTarget( self.squad_ai, FarSeer.storm_id, Ability.Filters.CloseInfantryEnemy, 8 ) 
-		Ability.DoAbilityTarget( self.squad_ai, FarSeer.blind_id, Ability.Filters.CloseInfantryEnemy, 6 ) 
-		Ability.DoAbilityTarget( self.squad_ai, FarSeer.mind_war_id, Ability.Filters.CloseCommanderEnemy )	
-		Ability.DoAbilityTarget( self.squad_ai, FarSeer.blaster_id, Ability.Filters.CloseCommanderEnemy )	
+		Ability.DoAbilityTarget( self.squad_ai, FarSeer.storm_id, Ability.Filters.CloseSquadEnemy, 8 ) 
+		Ability.DoAbilityTarget( self.squad_ai, FarSeer.mind_war_id, Ability.Filters.CloseCommanderEnemy, 1 )	
 	end
 
-	-- Check if I should enable/disable fleet of foot
-	if (not self.squad_ai:IsAttached()) then
-		self:DoAbilityFoF()
-	end
-	
-	if (self.squad_ai:CanDoAbility(FarSeer.invisibility_id)) then
-		if (not self.squad_ai:IsUsingAbility(FarSeer.invisibility_id) and not self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.7) then
-			self.squad_ai:DoSpecialAbility(FarSeer.invisibility_id)
-			
-		elseif (self.squad_ai:IsUsingAbility(FarSeer.invisibility_id) and self.squad_ai:IsInCombat()) then
-			self.squad_ai:DoSpecialAbility(FarSeer.invisibility_id)
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( FarSeer.run_id )) then
+			self.squad_ai:DoSpecialAbility( FarSeer.run_id )
+		elseif (self.squad_ai:CanDoAbility( FarSeer.foot_id )) then
+			self.squad_ai:DoSpecialAbility( FarSeer.foot_id )
 		end
+	end
+end
+
+function FarSeerTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
 	end
 end
 
 function FarSeerTactic:Update()
 
-    if (self:IsComplete()) then
-        return
-    end
+	if (self:IsComplete()) then
+		return
+	end
     
-    -- State machine
-    if (not InfantryTactic.Update( self )) then
-        return
-    end
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
     
  	-- Check for close commander
-    local bSetRanged = false
-    local bSetMelee = false
+    	local bSetRanged = false
+    	local bSetMelee = false
 	local vSquadPos = self.squad_ai:GetPosition()
 	local eStance = self.squad_ai:GetMeleeStance()
 	local oEnemyCommander = Ability.Filters.CloseCommanderEnemy(vSquadPos, 20, 1)
-    if (oEnemyCommander ~= nil) then
+   	if (oEnemyCommander ~= nil) then
        
-        -- Check health
-        if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
-            bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
-            self.dance_time = 0
+        	-- Check health
+        	if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
+            		bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+           		self.dance_time = 0
 		else
-            bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
-        end
+            		bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+        	end
 	else
+       		-- Check for close attached commander
+    		local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
+    		if (oSquad ~= nil and oSquad:IsAttached()) then
+    			bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+    		else
+    			bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+    		end
+	end
+
+	-- At leat 10 secs ranged stance/dancing
+    	if (bSetRanged) then
+        	self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+        	self.dance_time = g_iGMT
+	elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
+        	self.squad_ai:DoSetDefaultMeleeStance()
+        	self.dance_time = 0
+	end
     
-    	-- Check for close attached commander
-    	local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
-    	if (oSquad ~= nil and oSquad:IsAttached()) then
-    		bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
-    	else
-    		bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+	if (self.squad_ai:GetMeleeStance() == SquadAI.MSTANCE_Assault) then          
+		if (self.squad_ai:IsInCombat() or self.squad_ai:WasRecentlyHurt()) then
+            		if (self:TryAttachSquad(false, true, 50, 150, self.m_fCommanderAttachHealth) == nil) then
+                		self:TryAttachSquadMelee()
+           		end
+        	end
     	end
-    end
 
-    -- At leat 10 secs ranged stance/dancing
-    if (bSetRanged) then
-        self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
-        self.dance_time = g_iGMT
-    elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
-        self.squad_ai:DoSetDefaultMeleeStance()
-        self.dance_time = 0
-    end
-    
-	-- Assassinate win condition -- never attach to a squad / do not attach while dancing
-    if (not cpu_manager.assassinate and self.squad_ai:GetMeleeStance() == SquadAI.MSTANCE_Assault) then
-    
-		if (self:TryAttachSquad(true, true, 50, 100, nil) == nil) then
-		
-			if (self:TryAttachSquad(false, false, 50, 100, self.m_fCommanderAttachHealth) == nil) then
-				self:TryAttachSquadMelee()
-			end
-		end
-    end
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end
-
-

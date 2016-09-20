@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldararchontactic.ai'
--- Edited by Thudmeizer @ 26.10.2008
+-- Edited by Thudmeizer @ 22.04.2016
 
 class 'DarkEldarArchonTactic' (DarkEldarInfantryTactic)
 
@@ -9,30 +9,22 @@ DarkEldarArchon = {}
 function DarkEldarArchonTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Dark Eldar Archon Tactic")
+
+	self.dance_time = 0
 end
 
-function DarkEldarArchonTactic:InitAbilities()
-
-	-- Init ability ID's
-	if (DarkEldarArchon.vitae_id == nil) then
-		DarkEldarArchon.vitae_id = cpu_manager.stats:GetAbilityID( "dark_eldar_animus_vitae" )
+function DarkEldarArchonTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDarkEldarArchon = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDarkEldarArchon ~= nil) then
+			local addOnID = buildChannelDarkEldarArchon:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelDarkEldarArchon:IsBuilding() == 0 and buildChannelDarkEldarArchon:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelDarkEldarArchon:BuildAddOn(addOnID)
+				return
+			end
+		end
 	end
-
-	if (DarkEldarArchon.crucible_id == nil) then
-		DarkEldarArchon.crucible_id = cpu_manager.stats:GetAbilityID( "dark_eldar_crucible" )
-	end
-end
-
-function DarkEldarArchonTactic:DoAbilities()
-
-	-- We are dying, lower requisites for attacks and use life drain!
-	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.5) then
-		Ability.DoAbilityTarget(self.squad_ai, DarkEldarArchon.crucible_id, Ability.Filters.CloseSquadEnemy, 4)
-		Ability.DoAbilityTarget(self.squad_ai, DarkEldarArchon.vitae_id, Ability.Filters.CloseSquadEnemy, 4)
-	else
-		Ability.DoAbilityTarget(self.squad_ai, DarkEldarArchon.crucible_id, Ability.Filters.CloseSquadEnemy, 8)
-		Ability.DoAbilityTarget(self.squad_ai, DarkEldarArchon.vitae_id, Ability.Filters.CloseSquadEnemy, 8)
-	end
+	return
 end
 
 -- Assassinate win condition -- never attack
@@ -45,39 +37,104 @@ function DarkEldarArchonTactic:IsDefender()
 	return (not cpu_manager.assassinate and self:IsCommanderDefender())
 end
 
+function DarkEldarArchonTactic:InitAbilities()
 
-function DarkEldarArchonTactic:Reinforce()
+	-- Init ability ID's
+	if (DarkEldarArchon.vitae_id == nil) then
+		DarkEldarArchon.vitae_id = cpu_manager.stats:GetAbilityID( "dark_eldar_animus_vitae" )
+	end
 
-	-- Always try for the actual leader first
-	if not self.squad_ai:IsReinforcing() then
-		if self.squad_ai:CanReinforce( false, 0 ) then
-		   self.squad_ai:DoReinforce( false, 0 )
+	if (DarkEldarArchon.crucible_id == nil) then
+		DarkEldarArchon.crucible_id = cpu_manager.stats:GetAbilityID( "dark_eldar_crucible" )
+	end
+
+	if (DarkEldarArchon.haywire_id == nil) then
+		DarkEldarArchon.haywire_id = cpu_manager.stats:GetAbilityID( "dark_eldar_haywire_bombs_sp" )
+	end
+
+	if (DarkEldarArchon.leach_id == nil) then
+		DarkEldarArchon.leach_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_leach" )
+	end
+
+	if (DarkEldarArchon.portal_id == nil) then
+		DarkEldarArchon.portal_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_portal" )
+	end
+
+	if (DarkEldarArchon.bomb_id == nil) then
+		DarkEldarArchon.bomb_id = cpu_manager.stats:GetAbilityID( "dark_eldar_commander_bomb" )
+	end
+
+	if (DarkEldarArchon.run_id == nil) then
+		DarkEldarArchon.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+
+	if (DarkEldarArchon.foot_id == nil) then
+		DarkEldarArchon.foot_id = cpu_manager.stats:GetAbilityID( "dark_eldar_footonfire" )	
+	end
+end
+
+function DarkEldarArchonTactic:DoAbilities()
+
+	-- We are dying, lower requisites for attacks and use life drain!	
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.5) then
+		Ability.DoAbilityTarget(self.squad_ai, DarkEldarArchon.crucible_id, Ability.Filters.CloseSquadEnemy, 4)
+		Ability.DoAbilityTarget(self.squad_ai, DarkEldarArchon.vitae_id, Ability.Filters.CloseInfantryEnemy, 3)
+		Ability.DoAbilityPos(self.squad_ai, DarkEldarArchon.haywire_id, Ability.Filters.CloseVehicleEnemy, 1)
+	else
+		Ability.DoAbilityTarget(self.squad_ai, DarkEldarArchon.crucible_id, Ability.Filters.CloseSquadEnemy, 8)
+		Ability.DoAbilityTarget(self.squad_ai, DarkEldarArchon.vitae_id, Ability.Filters.CloseInfantryEnemy, 6)
+		Ability.DoAbilityPos(self.squad_ai, DarkEldarArchon.haywire_id, Ability.Filters.CloseVehicleEnemy, 2)
+	end
+
+	-- Luster of Souls: Restore the strength of your squad by concealing them and regaining their health. Exchange this great ritual in exchange for souls.
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarArchon.leach_id, Ability.Filters.CloseSquadEnemy, 15, 4)
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarArchon.leach_id, Ability.Filters.CloseCommanderEnemy, 15, 1)
+	end
+
+	-- Try to place portal (not supported by AI which cannot use these like Eldar Webways or IG Bunkers to send troops between them)
+	--Ability.DoAbilityPos(self.squad_ai, DarkEldarArchon.portal_id, Ability.Filters.CloseEnemy, 5)
+
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, DarkEldarArchon.bomb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, DarkEldarArchon.bomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DarkEldarArchon.run_id )) then
+			self.squad_ai:DoSpecialAbility( DarkEldarArchon.run_id )
+		elseif (self.squad_ai:CanDoAbility( DarkEldarArchon.foot_id )) then
+			self.squad_ai:DoSpecialAbility( DarkEldarArchon.foot_id )
 		end
 	end
 
-	if (not self.squad_ai:IsReinforcing()) then
+	-- Check if I should enable/disable foot on fire
+	--if (not self.squad_ai:IsAttached()) then
+		--self:DoAbilityFoF()
+	--end
+end
 
-		-- Try for different types of squad members
-		local incubiIndex = 0
-	
-		local numIncubis = self.squad_ai:GetLeaderCount( incubiIndex )
+function DarkEldarArchonTactic:Upgrade()
 
-		-- Desired number of each leader type
-		local desiredIncubis = 5 
-		
-		local squadMax = self.squad_ai:GetMaxLeaderCount()
-		if (squadMax > 4) then
-		
-			-- Research done - we want 7 Incubis
-			desiredIncubis = 7
-		end
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_souls			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
 
-		-- Desired order of reinforcing
-		if (numIncubis < desiredIncubis) then
-			if (self.squad_ai:CanReinforce( true, incubiIndex )) then
-				self.squad_ai:DoReinforce( true, incubiIndex )
-			end
-		end
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
 	end
 end
 
@@ -86,9 +143,59 @@ function DarkEldarArchonTactic:Update()
 	if (self:IsComplete()) then
 		return
 	end
-	
+    
 	-- State machine
 	if (not InfantryTactic.Update( self )) then
 		return
 	end
+   
+ 	-- Check for close commander
+	local bSetRanged = false
+	local bSetMelee = false
+	local vSquadPos = self.squad_ai:GetPosition()
+	local eStance = self.squad_ai:GetMeleeStance()
+	local oEnemyCommander = Ability.Filters.CloseCommanderEnemy(vSquadPos, 20, 1)
+   	if (oEnemyCommander ~= nil) then
+       
+        	-- Check health
+        	if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
+			bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+			self.dance_time = 0
+		else
+			bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+		end
+
+		else
+    
+    		-- Check for close attached commander
+    		local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
+    		if (oSquad ~= nil and oSquad:IsAttached()) then
+    			bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+    		else
+    			bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+		end
+	end
+
+	-- At leat 10 secs ranged stance/dancing
+	if (bSetRanged) then
+		self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+		self.dance_time = g_iGMT
+	elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
+		self.squad_ai:DoSetDefaultMeleeStance()
+		self.dance_time = 0
+	end
+ 
+	-- Assassinate win condition -- never attach to a squad / do not attach while dancing
+	if (not cpu_manager.assassinate and self.squad_ai:GetMeleeStance() == SquadAI.MSTANCE_Assault) then
+    
+		if (self:TryAttachSquad(true, true, 50, 100, nil) == nil) then
+		
+			if (self:TryAttachSquad(false, false, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+				self:TryAttachSquadMelee()
+			end
+		end
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

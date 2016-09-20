@@ -1,8 +1,66 @@
+----------------------------------------
+-- File: 'nobztactic.ai'
+-- Edited by Thudmeizer		@ 25.02.2016
+
 class 'NobzTactic' (OrkInfantryTactic)
+
+Nobz = {}
 
 function NobzTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Nobz Tactic")
+end
+
+function NobzTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Nobz.stikkbombs_id == nil) then
+		Nobz.stikkbombs_id = cpu_manager.stats:GetAbilityID( "ork_stikkbombs" )
+	end
+	if (Nobz.superstick_id == nil) then
+		Nobz.superstick_id = cpu_manager.stats:GetAbilityID( "ork_superstick_bomb" )
+	end
+	if (Nobz.tankbusta_id == nil) then
+		Nobz.tankbusta_id = cpu_manager.stats:GetAbilityID( "ork_tankbusta_bombs" )
+	end
+	if (Nobz.waagh_id == nil) then
+		Nobz.waagh_id = cpu_manager.stats:GetAbilityID( "ork_waagh!!!" )
+	end
+	if (Nobz.run_id == nil) then
+		Nobz.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+	end
+end
+
+function NobzTactic:DoAbilities()
+	
+	if (self.squad_ai:IsInCombat()) then
+
+		-- Try to use stikk bomb ability
+		Ability.DoAbilityTarget(self.squad_ai, Nobz.stikkbombs_id, Ability.Filters.CloseSquadEnemy, 4)
+
+		-- Try to use superstick bomb ability
+		Ability.DoAbilityTarget(self.squad_ai, Nobz.superstick_id, Ability.Filters.CloseInfantryEnemy, 6)
+
+		-- Try to use tankbusta bomb ability
+		Ability.DoAbilityTarget(self.squad_ai, Nobz.tankbusta_id, Ability.Filters.CloseVehicleEnemy, 1)
+	end
+
+	-- Waagh if in combat and enemy is not adjacent or while broken
+	-- Don't waagh if health is too low or we are not moving !
+	local squad_pos = self.squad_ai:GetPosition()
+	if (((self.squad_ai:IsInCombat() and Ability.Filters.CloseEnemy( squad_pos, 20, 1 ) == nil) or
+	   	self.squad_ai:IsBroken()) and self.squad_ai:GetHealthPercentage() > 0.8 and self:IsMoving()) then 
+		if (self.squad_ai:CanDoAbility(Nobz.waagh_id)) then
+			self.squad_ai:DoSpecialAbility(Nobz.waagh_id)
+		end
+	end
+
+	-- Check if we can safely run
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+		if (self.squad_ai:CanDoAbility( Nobz.run_id )) then
+			self.squad_ai:DoSpecialAbility( Nobz.run_id )
+		end
+	end
 end
 
 function NobzTactic:Reinforce()

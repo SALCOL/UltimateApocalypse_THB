@@ -1,0 +1,69 @@
+----------------------------------------
+-- File: 'taubodyguardtactic.ai'
+-- Edited by Thudmeizer @ 18.03.2016
+
+class 'TauBodyGuardTactic' (TauInfantryTactic)
+
+TauBodyGuard = {}
+
+function TauBodyGuardTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Tau Body Guard Tactic")
+end
+
+function TauBodyGuardTactic:AlwaysAttack()
+	return true
+end
+
+function TauBodyGuardTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TauBodyGuard.shield_id == nil) then
+		TauBodyGuard.shield_id = cpu_manager.stats:GetAbilityID( "tau_personal_shield_xv89_commander" )	
+	end
+end
+
+function TauBodyGuardTactic:DoAbilities()
+
+	-- Personal Shield: Personal/Halo Shields are protective shields that protect the user completely from harm. While active, the shields will transfer damage from health to shields (morale).
+	-- When the morale of the user drops to 0, the user will be incapable of shield damage and will start to lose health instead.
+	local conditionsMet = (self.squad_ai:IsInCombat() or self.squad_ai:WasRecentlyHurt()) and self.squad_ai:GetMoralePercentage() > 0.1
+    	if self.squad_ai:IsUsingAbility(TauBodyGuard.shield_id) then
+        	-- Turn shields OFF if not in the fray OR morale < 10%
+        	if not conditionsMet then
+            		self.squad_ai:DoSpecialAbility(TauBodyGuard.shield_id)
+        	end
+    		-- Turn shields ON only when in-combat or hurt, AND morale > 10%
+    		elseif conditionsMet then
+        		self.squad_ai:DoSpecialAbility(TauBodyGuard.shield_id)
+    	end
+--[[
+	-- Personal Shield: Personal/Halo Shields are protective shields that protect the user completely from harm. While active, the shields will transfer damage from health to shields (morale).
+	-- When the morale of the user drops to 0, the user will be incapable of shield damage and will start to lose health instead.
+	if (self.squad_ai:IsUsingAbility(TauBodyGuard.shield_id)) then
+
+		-- Turn shields OFF if stopped attacking OR morale < 20%
+		if ((not self.squad_ai:IsAttacking()) or self.squad_ai:GetMoralePercentage() < 0.2) then
+			self.squad_ai:DoSpecialAbility(TauBodyGuard.shield_id)
+		end
+		-- Turn shields ON only when attacking AND morale > 20%
+		elseif (self.squad_ai:IsAttacking() and self.squad_ai:GetMoralePercentage() > 0.2) then
+			self.squad_ai:DoSpecialAbility(TauBodyGuard.shield_id)
+	end
+
+	-- Personal Shield: Personal/Halo Shields are protective shields that protect the user completely from harm. While active, the shields will transfer damage from health to shields (morale).
+	-- When the morale of the user drops to 0, the user will be incapable of shield damage and will start to lose health instead.
+	if (self.squad_ai:IsUsingAbility(TauBodyGuard.shield_id)) then
+
+		-- Turn shields OFF if stopped attacking, OR if health < 50% OR morale > 70%
+		if ((not self.squad_ai:IsAttacking()) or self.squad_ai:GetHealthPercentage() < 0.5 or self.squad_ai:GetMoralePercentage() > 0.7) then
+			self.squad_ai:DoSpecialAbility(TauBodyGuard.shield_id)
+		end
+		-- Turn shields ON only when attacking, AND when health > 50% AND morale < 30%
+		elseif (self.squad_ai:IsAttacking() and self.squad_ai:GetHealthPercentage() > 0.5 and self.squad_ai:GetMoralePercentage() < 0.3) then
+			self.squad_ai:DoSpecialAbility(TauBodyGuard.shield_id)
+	end
+]]
+	-- Call basic DoAbilities methods
+	TauInfantryTactic.DoAbilities(self)
+end

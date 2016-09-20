@@ -1,0 +1,17 @@
+----------------------------------------
+-- File: 'daemonssoulgrindertactic.ai'
+-- Edited by gambit 12.06.2014
+-- Edited by Thudmeizer	08.05.2016
+
+class 'DaemonsSoulGrinderTactic' (DaemonsVehicleTactic)
+
+DaemonsSoulGrinder = {}
+
+function DaemonsSoulGrinderTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Soul Grinder Tactic")
+end
+
+function DaemonsSoulGrinderTactic:AlwaysAttack()
+	return true
+end

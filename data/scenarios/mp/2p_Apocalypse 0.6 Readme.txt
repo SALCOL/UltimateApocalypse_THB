@@ -1,0 +1,95 @@
+-----------------------------------------------------------------|
+--------------------
+APOCALYPSE MAP (2P)|
+--------------------
+Title: 2p_Apocalypse
+Version: 0.6
+Map Creator: Cylarne_04
+E-Mail: PM Cylarne_04 @ Home Page
+Home Page: http://forums.relicnews.com/showthread.php?254354-Apocalypse-Mods-Created-by-Cylarne_04
+Created: 4/14/2010 @ 20:18
+Compatbility: All
+Type: Map
+--------------------
+Credits:           |
+--------------------
+- Dark Crusade Mod Tools version 1.2.
+- Apocalypse Mod Team.
+--------------------
+Requirements:      |
+--------------------
+- >= 5 MB hard disk space.
+- Apocalypse Mods. (Optional)
+--------------------
+Installation:      |
+--------------------
+- Right Click downloaded compressed directory (folder).
+- Extract all files into...
+	Destination = Dawn of War game main directory\WXP\data\scenarios\mp.
+- Start Dawn of War game.
+- Go into skirmish and select Apocalypse (2)
+- Wala, you're done.
+
+-----------------------------------------------------------------|
+--------------------
+MAP DESCRIPTION:   |
+--------------------
+ This map is a large map, 512x512. It is a two player map and can be run in any Dawn of War game. It is mostly played by the Apocalypse modifications but it is 
+a free for all do whatever you want map in any modification you choose. This does not require a fast computer and it is fun like heck.
+--------------------
+MAP STATISTICS:    |
+--------------------
+# of players: 2
+Dimensions: 512x512
+Lighting: Dark blue
+Relic Count: 2
+Slag Deposits Count: 2
+Critical Location Count: 3
+Strategic Points: 16
+Cover: 2 (Heavy Cover)
+Structure Build Complications: Very little
+--------------------
+0.5 - 0.6 Updates: |
+--------------------
+- Added day maps.
+--------------------
+0.4 - 0.5 Updates: |
+--------------------
+- Added impassable terrain to the two gates and Necron environment structures.
+- Fixed some small needed corrections.
+--------------------
+0.35 - 0.4 Updates: |
+--------------------
+- Added small details and creativity.
+- Balanced both sides of the map.
+- Rearranged points.
+- Adjusted build complication level to low.
+- Made the entire map lighter and easy to see.
+- Scattered strategic points.
+--------------------
+0.2 - 0.35 Updates: |
+--------------------
+- Added lots of details and creativity.
+- Removed corpse.
+- Added cover to the terrain.
+--------------------
+0.1 - 0.2 Updates: |
+--------------------
+- Added corpse to the rock dim planet.
+- Added few details and texture.
+- Made skirmish map description.
+- Adjusted Strategic Points locations.
+- Removed one slag deposit in center.
+- Removed relic in center.
+- Placed two Strategic Points in the center.
+- Each side of the map now has eight strategic points.
+--------------------
+DOWNSIDES:         |
+--------------------
+- Skirmish map preview is lacking starting positions.
+-----------------------------------------------------------------|
+Thank you for downloading this map.
+Also check out the Apocalypse mods.
+Any problems you encounter, contact the Apocalypse Mod team immediately.
+Krronus, Cylarne_04, Tyrantarmy6.
+-----------------------------------------------------------------|

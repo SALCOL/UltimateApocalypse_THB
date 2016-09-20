@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'TauCommandertactic.ai'
--- Edited by Thudmeizer @ 23.10.2006
+-- Edited by Thudmeizer @ 17.03.2016
 -- Edited by Cylarne_04 2011
 
 class 'TauCommanderTactic' (TauInfantryTactic)
@@ -16,7 +16,21 @@ function TauCommanderTactic:__init( squad_ai ) super( squad_ai )
 	self.lastused_ability_snaretrap_position = squad_ai:GetPosition()
 	self.min_snaretrap_requisition = 400 -- amount of requisition to have before typical use
 	self.min_snaretrap_time = 240 -- 30 seconds to wait between use, in possibly same location
-	self.min_snaretrap_distance = squad_ai:GetAbilityRange(TauCommander.ability_snaretrap_id) * 2 -- min distance between consecutive throws
+	self.min_snaretrap_distance = squad_ai:GetAbilityRange(TauCommander.snaretrap_id) * 2 -- min distance between consecutive throws
+end
+
+function TauCommanderTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelTauCommander = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelTauCommander ~= nil) then
+			local addOnID = buildChannelTauCommander:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelTauCommander:IsBuilding() == 0 and buildChannelTauCommander:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelTauCommander:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
 end
 
 -- Tau Commander is allowed to retreat even directly after a jump
@@ -45,43 +59,53 @@ function TauCommanderTactic:JumpAttack()
 	end
 end
 
+function TauCommanderTactic:CanJumpAttached()
+	if (not cpu_manager.assassinate) then
+		return true
+	end
+end
+
 function TauCommanderTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (TauCommander.acquired == nil) then
-		TauCommander.acquired = cpu_manager.stats:GetAbilityID( "tau_target_acquired" )	
+	if (TauCommander.barrage_id == nil) then
+		TauCommander.barrage_id = cpu_manager.stats:GetAbilityID( "tau_commander_missile_barrage" )	
 	end
-	if (TauCommander.photon == nil) then
-		TauCommander.photon = cpu_manager.stats:GetAbilityID( "tau_photon_grenade_commander" )	
+	if (TauCommander.emp_id == nil) then
+		TauCommander.emp_id = cpu_manager.stats:GetAbilityID( "tau_emp_grenade_commander" )	
 	end
-	if (TauCommander.emp == nil) then
-		TauCommander.emp = cpu_manager.stats:GetAbilityID( "tau_emp_grenade_commander" )	
+	if (TauCommander.photon_id == nil) then
+		TauCommander.photon_id = cpu_manager.stats:GetAbilityID( "tau_photon_grenade_commander" )	
 	end
-	if (TauCommander.ability_snaretrap_id == nil) then
-		TauCommander.ability_snaretrap_id = cpu_manager.stats:GetAbilityID( "tau_snare_trap" )	
+	if (TauCommander.snaretrap_id == nil) then
+		TauCommander.snaretrap_id = cpu_manager.stats:GetAbilityID( "tau_snare_trap_commander" )	
 	end
-	
-	if (TauCommander.barrage == nil) then
-		TauCommander.barrage = cpu_manager.stats:GetAbilityID( "tau_commander_missile_barrage" )	
+	if (TauCommander.acquired_id == nil) then
+		TauCommander.acquired_id = cpu_manager.stats:GetAbilityID( "tau_target_acquired" )	
+	end
+	if (TauCommander.bomb_id == nil) then
+		TauCommander.bomb_id = cpu_manager.stats:GetAbilityID( "tau_commander_bomb" )
+	end
+	if (TauCommander.run_id == nil) then
+		TauCommander.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function TauCommanderTactic:DoAbilities()
 
-	-- Target generic enemy 
-	Ability.DoAbilityTarget( self.squad_ai, TauCommander.acquired, Ability.Filters.CloseEnemy, 1 )
+	if (self.squad_ai:IsInCombat()) then
 
-	Ability.DoAbilityTarget( self.squad_ai, TauCommander.photon, Ability.Filters.CloseSquadEnemy, 1 )
-	
-	Ability.DoAbilityTarget( self.squad_ai, TauCommander.barrage, Ability.Filters.CloseEnemy, 8 )
-	
-	Ability.DoAbilityTarget( self.squad_ai, TauCommander.emp, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, TauCommander.acquired_id, Ability.Filters.CloseEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, TauCommander.photon_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, TauCommander.barrage_id, Ability.Filters.CloseEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, TauCommander.emp_id, Ability.Filters.CloseVehicleEnemy, 1 )
+	end
 
 	-- Check if we can use snare trap ability
-	if (self.squad_ai:CanDoAbility(TauCommander.ability_snaretrap_id)) then
+	if (self.squad_ai:CanDoAbility(TauCommander.snaretrap_id)) then
 	
 		-- Get ability range
-		local iRange = self.squad_ai:GetAbilityRange(TauCommander.ability_snaretrap_id)
+		local iRange = self.squad_ai:GetAbilityRange(TauCommander.snaretrap_id)
 	
 		-- If surrounded, try to use the snare trap
 		if (self.squad_ai:IsInCombat()) then
@@ -95,10 +119,11 @@ function TauCommanderTactic:DoAbilities()
 				local vTargetPos = Vector3f(vSquadPos)
 				vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
 				vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
-				self:DoSpecialAbilitySnareTrap(vTargetPos, true)
+				if not (self.squad_ai:IsAttached()) then
+					self:DoSpecialAbilitySnareTrap(vTargetPos, true)
+				end
 			end
 		else
-
 			-- Check for close strategic point
 			local oTarget = Ability.Filters.CloseStrategicPoint(self.squad_ai:GetPosition(), iRange)
 			if (oTarget ~= nil) then
@@ -111,23 +136,25 @@ function TauCommanderTactic:DoAbilities()
 				vTargetPos.z = vTargetPos.z + vDir.z * iOffset
 				local iDistanceSqr = distance_sqr(vTargetPos, self.squad_ai:GetPosition())
 				if (iDistanceSqr < sqr(iRange) and iDistanceSqr > 1) then
-					self:DoSpecialAbilitySnareTrap(vTargetPos, false)
+					if not (self.squad_ai:IsAttached()) then
+						self:DoSpecialAbilitySnareTrap(vTargetPos, false)
+					end
 				end
 			end
 		end
 	end
-end
 
-function TauCommanderTactic:Upgrade()
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, TauCommander.bomb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, TauCommander.bomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
 
-	-- If I am broken, don't upgrade!
-	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
-		return
-	end
-	
-	-- Force upgrade
-	if (not self.squad_ai:IsReinforcing() and self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetHealthPercentage() > 0.5) then
-		self.squad_ai:DoBestUpgrade(UnitStatsAI.UC_VehicleMed)
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( TauCommander.run_id )) then
+			self.squad_ai:DoSpecialAbility( TauCommander.run_id )
+		end
 	end
 end
 
@@ -146,23 +173,66 @@ function TauCommanderTactic:DoSpecialAbilitySnareTrap(position,skip_prereqs)
 		(current_requisition > min_requisition and distance(position,last_pos) > min_distance)) then
 
 		-- Use snare trap ability
-		self.squad_ai:DoSpecialAbilityPos(TauCommander.ability_snaretrap_id, position)
+		self.squad_ai:DoSpecialAbilityPos(TauCommander.snaretrap_id, position)
 		self.lastused_ability_snaretrap_time = current_time
 		self.lastused_ability_snaretrap_position = position
 	end
 end
 
+function TauCommanderTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+
+	-- Force upgrade
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetHealthPercentage() > 0.5) then
+		local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+	end
+end
+
 function TauCommanderTactic:Update()
 
-    if (self:IsComplete()) then
-        return
-    end
+	if (self:IsComplete()) then
+        	return
+    	end
 
-    -- State machine
-    if (not InfantryTactic.Update(self)) then
-        return
-    end
+    	-- State machine
+    	if (not InfantryTactic.Update(self)) then
+        	return
+    	end
     
+	-- Assassinate win condition -- never attach to a squad
+	if (not cpu_manager.assassinate) then
+		
+		-- Attach to melee in tier3+
+		if (cpu_manager:GetTierLevel() > 2) then
+		
+			if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+				return
+			end
+		end
+		if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+			self:TryAttachSquadMelee()
+		end
+	end
+
 	-- Check if we are in serious trouble
 	self:EmergencyRetreat()
 end

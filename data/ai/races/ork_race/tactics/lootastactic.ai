@@ -1,0 +1,110 @@
+----------------------------------------
+-- File: 'lootastactic.ai'
+-- Edited by Thudmeizer		@ 25.02.2016
+
+class 'LootasTactic' (OrkInfantryTactic)
+
+Lootas = {}
+
+function LootasTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Lootas Tactic")
+end
+
+function LootasTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Lootas.stikkbombs_id == nil) then
+		Lootas.stikkbombs_id = cpu_manager.stats:GetAbilityID( "ork_stikkbombs" )
+	end
+	if (Lootas.superstick_id == nil) then
+		Lootas.superstick_id = cpu_manager.stats:GetAbilityID( "ork_superstick_bomb" )
+	end
+	if (Lootas.tankbusta_id == nil) then
+		Lootas.tankbusta_id = cpu_manager.stats:GetAbilityID( "ork_tankbusta_bombs" )
+	end
+	if (Lootas.waagh_id == nil) then
+		Lootas.waagh_id = cpu_manager.stats:GetAbilityID( "ork_waagh!!!" )
+	end
+	if (Lootas.run_id == nil) then
+		Lootas.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+	end
+end
+
+function LootasTactic:DoAbilities()
+	
+	if (self.squad_ai:IsInCombat()) then
+
+		-- Try to use stikk bomb ability
+		Ability.DoAbilityTarget(self.squad_ai, Lootas.stikkbombs_id, Ability.Filters.CloseSquadEnemy, 4)
+
+		-- Try to use superstick bomb ability
+		Ability.DoAbilityTarget(self.squad_ai, Lootas.superstick_id, Ability.Filters.CloseInfantryEnemy, 6)
+
+		-- Try to use tankbusta bomb ability
+		Ability.DoAbilityTarget(self.squad_ai, Lootas.tankbusta_id, Ability.Filters.CloseVehicleEnemy, 1)
+	end
+
+	-- Waagh if in combat and enemy is not adjacent or while broken
+	-- Don't waagh if health is too low or we are not moving !
+	local squad_pos = self.squad_ai:GetPosition()
+	if (((self.squad_ai:IsInCombat() and Ability.Filters.CloseEnemy( squad_pos, 20, 1 ) == nil) or
+	   	self.squad_ai:IsBroken()) and self.squad_ai:GetHealthPercentage() > 0.8 and self:IsMoving()) then 
+		if (self.squad_ai:CanDoAbility(Lootas.waagh_id)) then
+			self.squad_ai:DoSpecialAbility(Lootas.waagh_id)
+		end
+	end
+
+	-- Check if we can safely run
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+		if (self.squad_ai:CanDoAbility( Lootas.run_id )) then
+			self.squad_ai:DoSpecialAbility( Lootas.run_id )
+		end
+	end
+end
+
+function LootasTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+   
+	-- If there are no ressources available, don't upgrade!
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (iRequisition < 500 and not Tactic.Options.can_reinforce) then
+		return
+	end
+
+	if (not self.squad_ai:IsReinforcing()) then
+	  
+		-- Try for upgrade if we've a leader and more than 4 troopers
+		if (self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetNumTroopers() > 4) then
+			local class_type = cpu_manager:GetFirstEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function LootasTactic:Reinforce()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+   
+	-- If there are no ressources available, don't upgrade!
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (iRequisition < 600 and not Tactic.Options.can_reinforce) then
+		return
+	end
+	
+	-- Reinforce squad
+	if (not self.squad_ai:IsReinforcing()) then
+        	if (self.squad_ai:CanReinforce(true, 0)) then            
+            		self.squad_ai:DoReinforce(true, 0)
+       		elseif (self.squad_ai:CanReinforce(false, 0)) then
+            		self.squad_ai:DoReinforce(false, 0)
+        	end
+    	end
+end

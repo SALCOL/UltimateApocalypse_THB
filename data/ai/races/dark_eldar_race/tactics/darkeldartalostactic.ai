@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldartalostactic.ai'
--- Edited by Thudmeizer @ 26.10.2008
+-- Edited by Thudmeizer @ 06.04.2016
 
 class 'DarkEldarTalosTactic' (DarkEldarVehicleTactic)
 
@@ -21,7 +21,7 @@ end
 function DarkEldarTalosTactic:DoAbilities()
 
 	-- Target area to activate wildfire  
-	Ability.DoAbilityArea( self.squad_ai, DarkEldarTalos.wildfire_id, Ability.Filters.CloseEnemy, 15, 6 ) 
+	Ability.DoAbilityArea( self.squad_ai, DarkEldarTalos.wildfire_id, Ability.Filters.CloseEnemy, 15, 5 ) 
 
 	-- We are dying, lower requisites for attacks
 	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then

@@ -1,0 +1,99 @@
+----------------------------------------
+-- File: 'daemonshqtactic.ai'
+-- Edited by Thudmeizer	@ 09.05.2016
+
+class 'DaemonsHQTactic' (BaseTactic)
+
+DaemonsHQ = {}
+
+function DaemonsHQTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Daemons HQ Tactic")
+end
+
+function DaemonsHQTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsHQ.daemons_id == nil) then
+		DaemonsHQ.daemons_id = cpu_manager.stats:GetAbilityID( "daemons_sacrifice_daemons" )
+	end
+
+	if (DaemonsHQ.minions_id == nil) then
+		DaemonsHQ.minions_id = cpu_manager.stats:GetAbilityID( "daemons_sacrifice_minions" )
+	end
+
+	if (DaemonsHQ.warpportal_id == nil) then
+		DaemonsHQ.warpportal_id = cpu_manager.stats:GetAbilityID( "daemons_warp_portal" )
+	end
+
+	if (DaemonsHQ.repair_id == nil) then
+		DaemonsHQ.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function DaemonsHQTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Vile Sacrifice: Increases the relic resource at an extreme rate (Daemons army choice) and decreases the required time to build Primarch Angron.
+	-- The duration ends with the eventual inevitable death of the squad. The stronger the targeted daemon, the more resource is gathered from them.
+	if (iPower >= 4000) and (cpu_manager:GetTierLevel() > 5) then
+		if (self.base_ai:CanDoAbility(DaemonsHQ.daemons_id)) then
+			local range = self.base_ai:GetAbilityRange( DaemonsHQ.daemons_id )	
+			local squad_filter = function( squad_ai )		
+				return squad_ai:GetNumTroopers() >= 1 and squad_ai:GetHealthPercentage() > 0.5 and not squad_ai:IsInCombat()
+			end	
+   			local oSquad = cpu_manager:GetClosestSquad( self.base_ai:GetPosition(), range, squad_filter )
+			if (oSquad ~= nil) then
+				local oStats = oSquad:GetStats()
+				if (oStats ~= nil) then
+					if oStats:GetClass() == UnitStatsAI.UC_VehicleHigh then
+						self.base_ai:DoSpecialAbilitySquad(DaemonsHQ.daemons_id, oSquad:GetSquad())
+					end
+				end
+ 			end
+		end
+
+	end
+	-- Vile Sacrifice: Increases the relic resource at a moderate rate (Minions army choice) and decreases the required time to build Primarch Angron.
+	-- The duration ends with the eventual inevitable death of the squad. The stronger the targeted minion, the more resource is gathered from them.
+	if (iPower >= 3000) and (cpu_manager:GetTierLevel() > 4) then
+		if (self.base_ai:CanDoAbility(DaemonsHQ.minions_id)) then
+			local range = self.base_ai:GetAbilityRange( DaemonsHQ.minions_id )	
+			local squad_filter = function( squad_ai )		
+				return squad_ai:GetNumTroopers() >= 1 and squad_ai:GetHealthPercentage() > 0.5 and not squad_ai:IsInCombat() or squad_ai:IsBroken()
+			end	
+   			local oSquad = cpu_manager:GetClosestSquad( self.base_ai:GetPosition(), range, squad_filter )
+			if (oSquad ~= nil) then
+				local oStats = oSquad:GetStats()
+				if (oStats ~= nil) then
+					if oStats:GetClass() == UnitStatsAI.UC_VehicleMed or oStats:GetClass() == UnitStatsAI.UC_MonsterMed then
+						self.base_ai:DoSpecialAbilitySquad(DaemonsHQ.minions_id, oSquad:GetSquad())
+					end
+				end
+ 			end
+		end
+	end
+
+	-- Try to summon a Warp Portal near enemy infantry -- only use if we have excess power.
+	if (iPower >= 5000) and (self.base_ai:CanDoAbility(DaemonsHQ.warpportal_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(DaemonsHQ.warpportal_id)
+		local oSquad = Ability.Filters.CloseInfantryEnemy(self.base_ai:GetPosition(), iRange, 7)
+		if (oSquad ~= nil) then
+			
+			-- Only try to detect if the enemy unit is attacking
+			if (oSquad:IsAttacking()) then
+				self.base_ai:DoSpecialAbilitySquad(DaemonsHQ.warpportal_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DaemonsHQ.repair_id )) then
+			self.base_ai:DoSpecialAbility( DaemonsHQ.repair_id )
+		end
+	end
+end

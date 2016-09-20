@@ -1,0 +1,122 @@
+----------------------------------------
+-- File: 'coloneltactic.ai'
+-- Edited by Thudmeizer @ 29.02.2016
+
+class 'ColonelTactic' (GuardInfantryTactic)
+
+Colonel = {}
+
+function ColonelTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Colonel Command Squad Tactic")
+
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+end
+
+function ColonelTactic:IsAttacker()	
+	return self:IsCommanderAttacker()
+end
+
+function ColonelTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function ColonelTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Colonel.nervegas_id == nil) then
+		Colonel.nervegas_id = cpu_manager.stats:GetAbilityID( "guard_nervegas_grenades_lieutenant" )	
+	end
+	if (Colonel.rally_id == nil) then
+		Colonel.rally_id = cpu_manager.stats:GetAbilityID( "guard_vox_rally" )	
+	end
+	if (Colonel.run_id == nil) then
+		Colonel.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function ColonelTactic:DoAbilities()
+
+	-- Throw nerve gas grenades!
+	Ability.DoAbilityTarget(self.squad_ai, Colonel.nervegas_id, Ability.Filters.CloseSquadEnemy, 9)
+
+	-- Rally!
+	if (self.squad_ai:IsBroken()) or (self.squad_ai:GetMoralePercentage() < 0.6) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( Colonel.rally_id )) then
+			self.squad_ai:DoSpecialAbility( Colonel.rally_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Colonel.run_id )) then
+			self.squad_ai:DoSpecialAbility( Colonel.run_id )
+		end
+	end
+end
+
+function ColonelTactic:Reinforce()
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- Always try for the actual leader first
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+			return
+		end
+
+		-- Try for different types of squad members
+		local medicIndex = 0
+		local guardsmanIndex = 1
+		local bannerIndex = 2
+		local ogrynIndex = 3
+	
+		-- Get current leader count
+		local numMedics = self.squad_ai:GetLeaderCount( medicIndex )
+		local numGuardsmen = self.squad_ai:GetLeaderCount( guardsmanIndex)
+		local numBanners = self.squad_ai:GetLeaderCount( bannerIndex )
+		local numOgryns = self.squad_ai:GetLeaderCount( ogrynIndex )
+
+		-- Desired number of each leader type
+		local desiredMedics = math.random(0,1)
+		local desiredGuardsmen = math.random(0,1)
+		local desiredBanners = math.random(0,1)
+		local desiredOgryns = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if (numMedics < desiredMedics) then
+			if self.squad_ai:CanReinforce( true, medicIndex ) then
+				self.squad_ai:DoReinforce( true, medicIndex )
+			end
+		elseif (numGuardsmen < desiredGuardsmen) then
+			if self.squad_ai:CanReinforce( true, guardsmanIndex ) then
+				self.squad_ai:DoReinforce( true, guardsmanIndex )
+			end
+		elseif (numBanners < desiredBanners) then
+			if self.squad_ai:CanReinforce( true, bannerIndex ) then
+				self.squad_ai:DoReinforce( true, bannerIndex )
+			end
+		elseif (numOgryns < desiredOgryns) then
+			if self.squad_ai:CanReinforce( true, ogrynIndex ) then
+				self.squad_ai:DoReinforce( true, ogrynIndex )
+			end
+		end
+	end
+end
+
+function ColonelTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+   
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+end

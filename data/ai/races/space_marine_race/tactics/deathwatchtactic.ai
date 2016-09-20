@@ -1,0 +1,143 @@
+----------------------------------------
+-- File: 'deathwatchtactic.ai'
+-- Edited by Thudmeizer @ 21.06.2016
+
+class 'DeathwatchTactic' (SpaceMarineInfantryTactic)
+
+Deathwatch = {}
+
+function DeathwatchTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Deathwatch Tactic")
+end
+
+function DeathwatchTactic:InitAbilities()
+
+	if (Deathwatch.inferno_id == nil) then
+		Deathwatch.inferno_id = cpu_manager.stats:GetAbilityID( "marines_inferno_grenades_deathwatch" )	
+	end
+
+	if (Deathwatch.rally_id == nil) then
+		Deathwatch.rally_id = cpu_manager.stats:GetAbilityID( "marines_rally" )	
+	end
+
+	if (Deathwatch.sabotage_id == nil) then
+		Deathwatch.sabotage_id = cpu_manager.stats:GetAbilityID( "marines_sabotage" )	
+	end
+
+	if (Deathwatch.run_id == nil) then
+		Deathwatch.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function DeathwatchTactic:DoAbilities()
+
+        Ability.DoAbilityTarget( self.squad_ai, Deathwatch.inferno_id, Ability.Filters.CloseMonsterEnemy, 3)
+        Ability.DoAbilityTarget( self.squad_ai, Deathwatch.inferno_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTarget( self.squad_ai, Deathwatch.inferno_id, Ability.Filters.CloseCommanderEnemy, 1)
+        Ability.DoAbilityTargetEntity( self.squad_ai, Deathwatch.inferno_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+
+	-- Use Sabotage on enemy vehicles or buildings
+        Ability.DoAbilityTarget( self.squad_ai, Deathwatch.sabotage_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTargetEntity( self.squad_ai, Deathwatch.sabotage_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+
+	if (self.squad_ai:IsBroken()) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( Deathwatch.rally_id )) then
+			self.squad_ai:DoSpecialAbility( Deathwatch.rally_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Deathwatch.run_id )) then
+			self.squad_ai:DoSpecialAbility( Deathwatch.run_id )
+		end
+	end
+
+	-- Call standard method
+	SpaceMarineInfantryTactic.DoAbilities(self)
+end
+
+function DeathwatchTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	-- Only upgrade if not reinforcing
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		if (self.squad_ai:HasUpgradableTrooper()) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function DeathwatchTactic:Reinforce()
+
+  --always try for the actual leader first
+	if not self.squad_ai:IsReinforcing() then
+		if self.squad_ai:CanReinforce( false, 0 ) then
+		   self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- try for different types of squad members
+		local SergeantIndex = 0
+		local ApothecaryIndex = 1
+		local BannerIndex = 2
+		local SkullIndex = 3
+	
+		local numSergeants = self.squad_ai:GetLeaderCount( SergeantIndex )
+		local numApothecaries = self.squad_ai:GetLeaderCount( ApothecaryIndex )
+		local numBanners = self.squad_ai:GetLeaderCount( BannerIndex )
+		local numSkulls = self.squad_ai:GetLeaderCount( SkullIndex )
+
+		-- Desired number of each leader type
+		local desiredSergeants = math.random(0,1)
+		local desiredApothecaries = math.random(0,1)
+		local desiredBanners = math.random(0,1)
+		local desiredSkulls = math.random(0,1)
+		
+		-- Desired order of reinforcing
+		if numApothecaries < desiredApothecaries then
+			if self.squad_ai:CanReinforce( true, ApothecaryIndex ) then
+				self.squad_ai:DoReinforce( true, ApothecaryIndex )
+			end
+		elseif numBanners < desiredBanners then
+			if self.squad_ai:CanReinforce( true, BannerIndex ) then
+				self.squad_ai:DoReinforce( true, BannerIndex )
+			end
+		elseif numSkulls < desiredSkulls then
+			if self.squad_ai:CanReinforce( true, SkullIndex ) then
+				self.squad_ai:DoReinforce( true, SkullIndex )
+			end
+		elseif numSergeants < desiredSergeants then
+			if self.squad_ai:CanReinforce( true, SergeantIndex ) then
+				self.squad_ai:DoReinforce( true, SergeantIndex )
+			end
+		end
+	end
+
+	-- Don't reinforce more than 12 squad members -- they both get stuck or don't capture points properly
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 12) then
+        	if (self.squad_ai:CanReinforce(true, 0)) then            
+            		self.squad_ai:DoReinforce(true, 0)
+       		elseif (self.squad_ai:CanReinforce(false, 0)) then
+            		self.squad_ai:DoReinforce(false, 0)
+		end
+	end
+end

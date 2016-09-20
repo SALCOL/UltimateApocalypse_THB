@@ -1,0 +1,86 @@
+----------------------------------------
+-- File: 'dhlandraidertactic.ai'
+-- Edited by Thudmeizer	@ 24.05.2016
+
+class 'DHLandRaiderTactic' (DaemonhuntVehicleTactic)
+
+DHLandRaider = {}
+
+function DHLandRaiderTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DH Land Raider Tactic")
+	
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 2
+	self.m_iTransportSlots = 3
+end
+
+function DHLandRaiderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DHLandRaider.abilityrecharge_id == nil) then
+		DHLandRaider.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (DHLandRaider.heal_id == nil) then
+		DHLandRaider.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (DHLandRaider.reinforce_id == nil) then
+		DHLandRaider.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+
+	if (DHLandRaider.spirit_id == nil) then
+		DHLandRaider.spirit_id = cpu_manager.stats:GetAbilityID( "inquisition_machine_spirit" )
+	end
+
+	if (DHLandRaider.smoke_id == nil) then
+		DHLandRaider.smoke_id = cpu_manager.stats:GetAbilityID( "inquisition_smoke_launchers" )	
+	end
+end
+
+function DHLandRaiderTactic:DoAbilities()
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(DHLandRaider.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(DHLandRaider.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(DHLandRaider.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(DHLandRaider.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(DHLandRaider.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(DHLandRaider.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Check if I can use machine spirit while stationary
+	if (self.squad_ai:WasRecentlyHurt() and not self.squad_ai:IsInStateMove() and not self.squad_ai:IsInStateAttackMove()) then
+		
+		if (self.squad_ai:CanDoAbility(DHLandRaider.spirit_id)) then
+			self.squad_ai:DoSpecialAbility(DHLandRaider.spirit_id)
+		end	  
+	end
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(DHLandRaider.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(DHLandRaider.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(DHLandRaider.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Do basic abilities
+	DaemonhuntVehicleTactic.DoAbilities(self)
+end

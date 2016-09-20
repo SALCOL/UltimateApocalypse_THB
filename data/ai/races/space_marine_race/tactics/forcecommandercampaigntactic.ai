@@ -1,0 +1,88 @@
+----------------------------------------
+-- File: 'forcecommandercampaigntactic.ai'
+-- Edited by Thudmeizer @ 17.02.2016
+
+class 'ForceCommanderCampaignTactic' (SpaceMarineInfantryTactic)
+
+ForceCommanderCampaign = {}
+
+function ForceCommanderCampaignTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Force Commander Campaign Tactic")
+end
+
+function ForceCommanderCampaignTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function ForceCommanderCampaignTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Force Commander is allowed to retreat even directly after a jump
+function ForceCommanderCampaignTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Assassinate win condition -- never jump into combat
+function ForceCommanderCampaignTactic:JumpAttack()
+
+	if (not cpu_manager.assassinate) then
+		Tactic.JumpAttack(self)
+	end
+end
+
+function ForceCommanderCampaignTactic:CanJumpAttached()
+	return true
+end
+
+function ForceCommanderCampaignTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ForceCommanderCampaign.orbital_b == nil) then
+		ForceCommanderCampaign.orbital_b = cpu_manager.stats:GetAbilityID( "marines_orbital_bombardment" )
+	end
+	if (ForceCommanderCampaign.battlecry == nil) then
+		ForceCommanderCampaign.battlecry = cpu_manager.stats:GetAbilityID( "marines_battlecry" )
+	end
+end
+
+function ForceCommanderCampaignTactic:DoAbilities()
+
+	-- Try to use battlecry
+	Ability.DoAbilityArea( self.squad_ai, ForceCommanderCampaign.battlecry, Ability.Filters.CloseInCombat, 10 )
+	
+	-- Try to use orbital bombardement
+	Ability.DoAbilityPos(self.squad_ai, ForceCommanderCampaign.orbital_b, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, ForceCommanderCampaign.orbital_b, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+end
+
+function ForceCommanderCampaignTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+		
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

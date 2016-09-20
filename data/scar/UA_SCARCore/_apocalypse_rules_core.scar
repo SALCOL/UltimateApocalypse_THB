@@ -101,16 +101,21 @@ function ApocalypseRules_SS_Check()
 			ApocalypseRules_AddBuildings = function( ar_entity_pos, itemindex, ar_entityID )
 				-- Every single super structure blueprint or Add-on goes here...
 				if (Entity_GetBlueprintName(ar_entityID) == "chaos_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "dark_eldar_hq_sp_dxp3" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "dark_eldar_hq_sp_dxp3" and Entity_GetBuildingProgress(ar_entityID) >= 0.5 or
 					Entity_GetBlueprintName(ar_entityID) == "eldar_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "eldar_vaul_portal" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "guard_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "guard_basilisk_magnus" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "monolith_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "sisters_shrine_to_the_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "sisters_missile_silo" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "sisters_krak" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "space_marine_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "space_marine_armoury_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "tau_arka_ion_cannon" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "daemon_doom_pit" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "inquisition_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "inquisition_shrine_to_the_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "tyranids_capillary_tower" and Entity_GetBuildingProgress(ar_entityID) == 1.0) then
 					
 					-- Give the warning.
@@ -124,6 +129,32 @@ function ApocalypseRules_SS_Check()
 					Ping_Position(EGroup_GetPosition("ar_eg_superstructure_"..j), false, "attack")
 					ApocalypseRules_RevealSS("ar_eg_superstructure_"..j)
 					--Sound_PlayStinger("warning_ua")
+					
+				-- Capitol Imperialis
+				-- From Adeptus Mechanicus mod. This will spawn a Capitol Imperialis in place of a CI structure.
+				elseif (Entity_GetBlueprintName(ar_entityID) == "sisters_capitol_building" and Entity_GetBuildingProgress(ar_entityID) == 1.0) then
+					
+					-- Local variables.
+					local healthPercent = Entity_GetHealth(ar_entityID)/Entity_GetHealthMax(ar_entityID)
+					if healthPercent > 1 or healthPercent < 0 then healthPercent = 1 end
+					local Owner = Entity_GetPlayerOwner(ar_entityID)
+					local Spawnpos = Entity_GetPosition(ar_entityID)
+					
+					-- Despawn Capitol, then spawn mobile version.
+					Entity_DeSpawn(ar_entityID)
+					Entity_Destroy(ar_entityID)
+					
+					-- Attempt to modify position, so that the squad to appear at the precise point the entity was.
+					--AMspawnpos.x = AMspawnpos.x - 0.0001
+					Spawnpos.z = Spawnpos.z - 0.0001
+					eID = Entity_Create("sisters_capitol_dummy", Owner, Spawnpos)
+					spawnSquad = Squad_Create("sisters_squad_capitol_imperialis", Owner, Spawnpos, 1)
+					nID = Entity_FromWorldID(eID.id+1)
+					Squad_Spawn(spawnSquad, Spawnpos)
+					Squad_SetHealth(spawnSquad, healthPercent)
+					Entity_Destroy(eID)
+					
+					
 				end
 			end
 			
@@ -314,6 +345,16 @@ function ApocalypseRules_Wargear_GrantToAI(ar_f_player, ar_f_wargearoption)
 					Player_GrantResearch(ar_f_player, "eldar_spell_mind_war")
 					Player_GrantResearch(ar_f_player, "eldar_spell_shroud")
 					Player_GrantResearch(ar_f_player, "eldar_spell_storm")
+					Player_GrantResearch(ar_f_player, "eldar_spell_gracious_alacrity")
+					Player_GrantResearch(ar_f_player, "eldar_spell_gracious_mercy")
+					Player_GrantResearch(ar_f_player, "eldar_spell_holosuit")
+					Player_GrantResearch(ar_f_player, "eldar_spell_holosuit_improved")
+					Player_GrantResearch(ar_f_player, "eldar_spell_misdirection")
+					Player_GrantResearch(ar_f_player, "eldar_spell_shards_ice")
+					Player_GrantResearch(ar_f_player, "eldar_spell_shards_fire")
+					Player_GrantResearch(ar_f_player, "eldar_spell_teleportation")
+					Player_GrantResearch(ar_f_player, "eldar_spell_veil_of_tears")
+					Player_GrantResearch(ar_f_player, "eldar_spell_empathy")
 					if (Mod_Includes_Tyranids == true) then
 						Player_GrantResearch(ar_f_player, "tyranids_lictor_adrenal_research")
 						Player_GrantResearch(ar_f_player, "tyranids_lictor_implant_research")
@@ -337,6 +378,9 @@ function ApocalypseRules_Wargear_GrantToAI(ar_f_player, ar_f_wargearoption)
 					Player_GrantResearch(ar_f_player, "necron_lightning_storm_research")
 					Player_GrantResearch(ar_f_player, "necron_wargear21")
 					Player_GrantResearch(ar_f_player, "necron_shroud_antigravity_research")
+					Player_GrantResearch(ar_f_player, "eldar_spell_shards_ice_improved")
+					Player_GrantResearch(ar_f_player, "eldar_spell_shards_fire_improved")
+					Player_GrantResearch(ar_f_player, "eldar_spell_eldritch_tempest")
 				end
 			end
 			

@@ -1,0 +1,62 @@
+----------------------------------------
+-- File: 'darkreapertactic.ai'
+-- Edited by Thudmeizer @ 22.02.2016
+
+class 'EldarSquadTactic' (EldarInfantryTactic)
+
+EldarSquad = {}
+
+function EldarSquadTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Eldar Squad Tactic")
+end
+
+function EldarSquadTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (EldarSquad.blind_id == nil) then
+		EldarSquad.blind_id = cpu_manager.stats:GetAbilityID( "eldar_blind_grenades" )
+	end
+	if (EldarSquad.gravitic_id == nil) then
+		EldarSquad.gravitic_id = cpu_manager.stats:GetAbilityID( "eldar_gravitic_grenades" )
+	end
+	if (EldarSquad.haywires_id == nil) then
+		EldarSquad.haywires_id = cpu_manager.stats:GetAbilityID( "eldar_haywire_bombs" )
+	end
+	if (EldarSquad.haywire_id == nil) then
+		EldarSquad.haywire_id = cpu_manager.stats:GetAbilityID( "eldar_haywire_bombs_2" )
+	end
+	if (EldarSquad.plasma_id == nil) then
+		EldarSquad.plasma_id = cpu_manager.stats:GetAbilityID( "eldar_plasma_grenades" )
+	end
+	if (EldarSquad.plasmas_id == nil) then
+		EldarSquad.plasmas_id = cpu_manager.stats:GetAbilityID( "eldar_plasma_grenades_2" )
+	end
+end
+
+function EldarSquadTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat()) then
+		Ability.DoAbilityTarget( self.squad_ai, EldarSquad.blind_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, EldarSquad.gravitic_id, Ability.Filters.CloseInfantryEnemy, 6 )
+		Ability.DoAbilityTarget( self.squad_ai, EldarSquad.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, EldarSquad.haywires_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, EldarSquad.plasma_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, EldarSquad.plasmas_id, Ability.Filters.CloseSquadEnemy, 4 )
+	end
+
+	-- Call standard method
+	EldarInfantryTactic.DoAbilities(self)
+end
+
+function EldarSquadTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+end

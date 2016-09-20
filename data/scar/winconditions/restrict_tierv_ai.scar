@@ -29,7 +29,9 @@ function Rule_RestrictSupers_Ai()
 				local restrict = _Actual.superstructure_list[i];
 			
 				local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Actual.superstructure_list[i])
+				local modifier2 = Modifier_Create(MAT_EntityType, "enable_general_combat", MUT_Enable, false, -1, _Actual.superstructure_list[i])
 				Modifier_ApplyToPlayer( modifier, player)
+				Modifier_ApplyToPlayer( modifier2, player)
 			end 
 			if (Mod_Includes_Tyranids == true) then
 				-- Restrict the structure.
@@ -37,7 +39,9 @@ function Rule_RestrictSupers_Ai()
 					local structure = _Tyranids.superstructure_list[i];
 					
 					local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Tyranids.superstructure_list[i])
+					local modifier2 = Modifier_Create(MAT_EntityType, "enable_general_combat", MUT_Enable, false, -1, _Tyranids.superstructure_list[i])
 					Modifier_ApplyToPlayer( modifier, player)
+					Modifier_ApplyToPlayer( modifier2, player)
 				end 
 			end
 			if (Mod_Includes_Inquisition == true) then
@@ -46,7 +50,9 @@ function Rule_RestrictSupers_Ai()
 					local structure = _Inquisition.superstructure_list[i];
 					
 					local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Inquisition.superstructure_list[i])
+					local modifier2 = Modifier_Create(MAT_EntityType, "enable_general_combat", MUT_Enable, false, -1, _Inquisition.superstructure_list[i])
 					Modifier_ApplyToPlayer( modifier, player)
+					Modifier_ApplyToPlayer( modifier2, player)
 				end 
 			end
 			if (Mod_Includes_Daemons == true) then
@@ -55,7 +61,9 @@ function Rule_RestrictSupers_Ai()
 					local structure = _Daemons.superstructure_list[i];
 					
 					local modifier = Modifier_Create(MAT_EntityType, "production_speed_modifier", MUT_Multiplication, false, 0, _Daemons.superstructure_list[i])
+					local modifier2 = Modifier_Create(MAT_EntityType, "enable_general_combat", MUT_Enable, false, -1, _Daemons.superstructure_list[i])
 					Modifier_ApplyToPlayer( modifier, player)
+					Modifier_ApplyToPlayer( modifier2, player)
 				end 
 			end
 		end

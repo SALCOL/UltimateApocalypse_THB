@@ -1,0 +1,57 @@
+File name Billstexture3
+
+Author BIll Brooks email bbrooks@brainerd.net
+
+This is a set or 23 textures made for WARHAMMER 40,000: DAWN OF WAR maps
+
+They are decals to be used on terrain this set was based off some pics of rock formations.
+Thanks Zman.
+
+The decals will be found under the bills_2 sub dir in the decal window
+
+They are 
+
+bill_pinkrock1
+bill_pinkrock2
+bill_pinkrock3
+bill_pinkrock4
+bill_pinkrock5
+bill_pinkrock6
+bill_pinkrock7
+bill_pinkrock8
+bill_pinkrock9
+bill_pinkrock10
+bill_pinkrock11
+bill_pinkrock13
+bill_pinkrock14
+bill_pinkrock15
+bill_pinkrock16
+bill_pinkr_ground1
+bill_pinkr_ground2
+
+bill_redgranite1
+bill_redgranite2
+bill_redgranite3
+bill_redgranite4
+bill_redg_ground1
+
+
+
+Install instructions
+Point the unzip to your base dir example on my system it is C:\Program Files\THQ\Dawn of War
+I have included all the sub folders so click yes to overwrite it only copies the folder names all exsiting files will stay.
+
+Enjoy.
+
+--------------------------------------------------------------------------------
+* COPYRIGHT / PERMISSIONS *
+--------------------------------------------------------------------------------
+
+
+You MUST NOT distribute thes textures UNLESS you INCLUDE THIS FILE WITH
+NO MODIFICATIONS. If you don't co-operate, then DON'T DISTRIBUTE IT
+IN ANY FORM.
+
+Thes textures may be distributed ONLY over the Internet and/or BBS systems.
+You are NOT authorized to put this textures on any CD or distribute it in
+any way without my written permission

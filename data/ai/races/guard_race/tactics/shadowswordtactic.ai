@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'shadowswordtactic.ai'
 -- Edited by Cylarne_04 2011
+-- Edited by Thudmeizer		@ 28.02.2016
 
 class 'ShadowswordTactic' (GuardVehicleTactic)
 
@@ -14,16 +15,16 @@ end
 function ShadowswordTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Shadowsword.volcano_cannon_overdrive_id == nil) then
-		Shadowsword.volcano_cannon_overdrive_id = cpu_manager.stats:GetAbilityID( "guard_volcano_cannon_overdrive" )
+	if (Shadowsword.overdrive_id == nil) then
+		Shadowsword.overdrive_id = cpu_manager.stats:GetAbilityID( "guard_volcano_cannon_overdrive" )
 	end
 end
 
 function ShadowswordTactic:DoAbilities()
 
 	-- Try to use volcano cannon overdrive
-	Ability.DoAbilityPos(self.squad_ai, Shadowsword.volcano_cannon_overdrive_id, Ability.Filters.CloseEnemy, 6)
-	Ability.DoAbilityPos(self.squad_ai, Shadowsword.volcano_cannon_overdrive_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	Ability.DoAbilityPos(self.squad_ai, Shadowsword.overdrive_id, Ability.Filters.CloseEnemy, 6)
+	Ability.DoAbilityPos(self.squad_ai, Shadowsword.overdrive_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
 
 	-- Call standard method
 	GuardVehicleTactic.DoAbilities(self)

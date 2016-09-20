@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'chaplaintactic.ai'
--- Edited by Thudmeizer @ 10.06.2011
+-- Edited by Thudmeizer @ 04.03.2016
 -- Edited by Cylarne_04 2011
 
 class 'ChaplainTactic' (SpaceMarineInfantryTactic)
@@ -12,6 +12,20 @@ function ChaplainTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Chaplain Tactic")
 end
 
+function ChaplainTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelChaplain = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelChaplain ~= nil) then
+			local addOnID = buildChannelChaplain:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelChaplain:IsBuilding() == 0 and buildChannelChaplain:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelChaplain:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
 function ChaplainTactic:IsAttacker()
 	return self:IsCommanderAttacker()
 end
@@ -20,11 +34,53 @@ function ChaplainTactic:IsDefender()
 	return self:IsCommanderDefender()
 end
 
+-- Chaplain is allowed to retreat even directly after a jump
+function ChaplainTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Arkhan 03.2006: Inherited method used by commanders which are able to jump with an attached squad
+function ChaplainTactic:CanJumpAttached()
+	return true
+end
+
 function ChaplainTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Chaplain.demoralize == nil) then
-		Chaplain.demoralize = cpu_manager.stats:GetAbilityID( "marines_demoralize" )
+	if (Chaplain.demoralize_id == nil) then
+		Chaplain.demoralize_id = cpu_manager.stats:GetAbilityID( "marines_demoralize" )
+	end
+
+	if (Chaplain.flashbang_id == nil) then
+		Chaplain.flashbang_id = cpu_manager.stats:GetAbilityID( "marines_flashbang_grenades" )	
+	end
+
+	if (Chaplain.frag_id == nil) then
+		Chaplain.frag_id = cpu_manager.stats:GetAbilityID( "marines_frag_grenades" )	
+	end
+
+	if (Chaplain.inferno_id == nil) then
+		Chaplain.inferno_id = cpu_manager.stats:GetAbilityID( "marines_inferno_grenades" )	
+	end
+
+	if (Chaplain.krak_id == nil) then
+		Chaplain.krak_id = cpu_manager.stats:GetAbilityID( "marines_krak_grenades" )	
+	end
+
+	if (Chaplain.melta_id == nil) then
+		Chaplain.melta_id = cpu_manager.stats:GetAbilityID( "marines_melta_bombs" )	
+	end
+
+	if (Chaplain.smoke_id == nil) then
+		Chaplain.smoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_grenades" )	
+	end
+
+	if (Chaplain.run_id == nil) then
+		Chaplain.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
@@ -32,9 +88,88 @@ function ChaplainTactic:DoAbilities()
 	
 	-- If we are dying, lower requisites for attacks
 	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
-		Ability.DoAbilityTarget( self.squad_ai, Chaplain.demoralize, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Chaplain.demoralize_id, Ability.Filters.CloseInfantryEnemy, 4 )
 	else
-		Ability.DoAbilityTarget( self.squad_ai, Chaplain.demoralize, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, Chaplain.demoralize_id, Ability.Filters.CloseInfantryEnemy, 8 )
+	end
+
+        Ability.DoAbilityTarget( self.squad_ai, Chaplain.flashbang_id, Ability.Filters.CloseSquadEnemy, 4)
+        Ability.DoAbilityTarget( self.squad_ai, Chaplain.frag_id, Ability.Filters.CloseSquadEnemy, 2)
+        Ability.DoAbilityTarget( self.squad_ai, Chaplain.inferno_id, Ability.Filters.CloseSquadEnemy, 3)
+        Ability.DoAbilityTarget( self.squad_ai, Chaplain.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTarget( self.squad_ai, Chaplain.melta_id, Ability.Filters.CloseVehicleEnemy, 1)
+
+	-- Search a squad to launch smoke grenades
+	local iRange = self.squad_ai:GetAbilityRange(Chaplain.smoke_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbilitySquad(Chaplain.smoke_id, oUnit:GetSquad())
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Chaplain.run_id )) then
+			self.squad_ai:DoSpecialAbility( Chaplain.run_id )
+		end
+	end
+end
+
+function ChaplainTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] space_marine_commander_plasma_pistol_addon
+--	self:AutoBuildAddOn(1)	--	[addon_02] space_marine_commander_bolter_addon
+--	self:AutoBuildAddOn(2)	--	[addon_03] space_marine_commander_storm_bolter_addon
+--	self:AutoBuildAddOn(3)	--	[addon_04] space_marine_commander_powerfist_addon
+
+--	self:AutoBuildAddOn(4)	--	[addon_08] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_09] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_10] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(7)	-- 	[addon_11] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(8)	-- 	[addon_12] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(9)	-- 	[addon_13] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(10)	-- 	[addon_14] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(11)	-- 	[addon_15] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(12)	-- 	[addon_16] addon_commanders_increase_production_2	8
+
+	-- Figure out my enemy's favourite class
+	local enemy = cpu_manager:FindClosestEnemyPlayer()
+	if (enemy == nil) then
+		return
+	end
+	
+	local class_type = enemy:GetMajorityClassType()
+	
+	-- Hard counter upgrade for infantry
+	if (class_type == UnitStatsAI.UC_LightInfantryLow) or 
+		(class_type == UnitStatsAI.UC_LightInfantryMed) or 
+		(class_type == UnitStatsAI.UC_LightInfantryHigh) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryMed) or
+		(class_type == UnitStatsAI.UC_MonsterMed) then 
+   		if (cpu_manager:GetTierLevel() >= 2) then 
+			local addon_random_infantry_wargear = math.random( 0,1 )
+			self:AutoBuildAddOn(addon_random_infantry_wargear )	-- Randomize between Plasm Pistol and Bolter weapons
+		end
+	-- Hard counter upgrade for Vehicles
+	elseif (class_type == UnitStatsAI.UC_HeavyInfantryHigh) or
+		(class_type == UnitStatsAI.UC_VehicleLow) or 
+		(class_type == UnitStatsAI.UC_VehicleMed) or
+		(class_type == UnitStatsAI.UC_VehicleHigh) or
+		(class_type == UnitStatsAI.UC_MonsterHigh) then
+   		if (cpu_manager:GetTierLevel() >= 2) then 
+			local addon_random_vehicle_wargear = math.random( 2,3 )
+			self:AutoBuildAddOn(addon_random_vehicle_wargear )	-- Randomize between Storbolter and PowerFist weapons
+		end
+	end
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 4,12 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(6)	-- Always build in late tiers to support the construction of Titans and late game ubers.
 	end
 end
 
@@ -59,5 +194,8 @@ function ChaplainTactic:Update()
 	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
 		self:TryAttachSquadMelee()
 	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end
 

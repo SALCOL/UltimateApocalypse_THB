@@ -627,9 +627,9 @@ function VehicleTactic:Update()
 	
 		-- Set repair states
 		if (self.squad_ai:IsRanged() and self.squad_ai:GetHealthPercentage() < 0.2) then
-			self.m_bNeedRepair = false
+			self.m_bNeedRepair = true
 		elseif (not self.squad_ai:IsRanged() and not self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
-			self.m_bNeedRepair = false
+			self.m_bNeedRepair = true
 		end
 	end
 	

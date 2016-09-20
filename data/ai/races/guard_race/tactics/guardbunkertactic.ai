@@ -1,8 +1,11 @@
 ----------------------------------------
 -- File: 'guardbunkertactic.ai'
 -- Edited by Arkhan		@ 07.01.2007
+-- Edited by Thudmeizer		@ 28.02.2016
 
 class 'GuardBunkerTactic' (BaseTactic)
+
+GuardBunker = {}
 
 function GuardBunkerTactic:__init( base_ai ) super( base_ai )
 
@@ -10,4 +13,23 @@ function GuardBunkerTactic:__init( base_ai ) super( base_ai )
 	
 	-- Building is a bunker
 	self:AddToBunkerList()
+end
+
+function GuardBunkerTactic:InitAbilities()
+
+	--Init ability ID's
+	if (GuardBunker.repair_id == nil) then
+		GuardBunker.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function GuardBunkerTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( GuardBunker.repair_id )) then
+			self.base_ai:DoSpecialAbility( GuardBunker.repair_id )
+		end
+	end
 end

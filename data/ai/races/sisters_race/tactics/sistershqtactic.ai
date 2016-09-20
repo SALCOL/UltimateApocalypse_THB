@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistershqtactic.ai'
--- Edited by Krronus @ 05.23.2010
+-- Edited by Krronus @ 10.04.2016
 
 class 'SistersHQTactic' (BaseTactic)
 
@@ -9,16 +9,30 @@ SistersHQ = {}
 function SistersHQTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Sisters HQ Tactic")
-	
 end
 
 function SistersHQTactic:InitAbilities()
 
+	if (SistersHQ.hailers_id == nil) then
+		SistersHQ.hailers_id = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_ecclesiarchal_chapel" )
+	end
 	
-	
+	if (SistersHQ.repair_id == nil) then
+		SistersHQ.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
 end
 
 function SistersHQTactic:DoAbilities()
 
-	
+	if (self.base_ai:CanDoAbility( SistersHQ.hailers_id )) then
+      		 Ability.DoAbilityArea( self.base_ai, SistersHQ.hailers_id, Ability.Filters.CloseInfantryEnemy, 20, 2)
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SistersHQ.repair_id )) then
+			self.base_ai:DoSpecialAbility( SistersHQ.repair_id )
+		end
+	end
 end

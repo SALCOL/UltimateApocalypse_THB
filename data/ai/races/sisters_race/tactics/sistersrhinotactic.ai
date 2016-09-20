@@ -1,6 +1,6 @@
 ----------------------------------------
--- File: 'SistersRhinotactic.ai'
--- Edited by Thudmeizer @ 23.03.2008
+-- File: 'sistersrhinotactic.ai'
+-- Edited by Thudmeizer @ 12.04.2016
 
 class 'SistersRhinoTactic' (SistersVehicleTactic)
 
@@ -18,17 +18,62 @@ end
 function SistersRhinoTactic:InitAbilities()
 
 	-- Init ability ID's
+	if (SistersRhino.laymines_id == nil) then
+		SistersRhino.laymines_id = cpu_manager.stats:GetAbilityID( "sisters_laymines" )
+	end
 	if (SistersRhino.hailers_id == nil) then
 		SistersRhino.hailers_id = cpu_manager.stats:GetAbilityID( "sisters_laud_hailers_fx_rhino" )	
+	end
+	if (SistersRhino.abilityrecharge_id == nil) then
+		SistersRhino.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+	if (SistersRhino.heal_id == nil) then
+		SistersRhino.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+	if (SistersRhino.reinforce_id == nil) then
+		SistersRhino.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
 	end
 end
 
 function SistersRhinoTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( SistersRhino.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 3000 and iPower >= 3000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( SistersRhino.laymines_id )
+		end
+	end
 
 	-- Adversely affects enemy morale but boosts allies
 	if (self.squad_ai:IsInCombat()) then
 		Ability.DoAbilityArea(self.squad_ai, SistersRhino.hailers_id, Ability.Filters.CloseInfantryEnemy, 10, 3)
 	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(SistersRhino.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(SistersRhino.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(SistersRhino.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(SistersRhino.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(SistersRhino.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(SistersRhino.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Call standard method
+	SistersVehicleTactic.DoAbilities(self)
 end
-
-

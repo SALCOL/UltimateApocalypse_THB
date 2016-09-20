@@ -1,0 +1,67 @@
+----------------------------------------
+-- File: 'assaultpodtactic.ai'
+-- Edited by Thudmeizer	@ 23.04.2016
+
+class 'AssaultPodTactic' (ChaosMarineVehicleTactic)
+
+AssaultPod = {}
+
+function AssaultPodTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Assault Pod Tactic")
+
+	-- Vehicle is a light transport
+	self.m_iTransportVehicle = 3
+	self.m_iTransportSlots = 2
+end
+
+-- Assault Pod is allowed to retreat even directly after a jump
+function AssaultPodTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function AssaultPodTactic:AlwaysAttack()
+	return true
+end
+
+function AssaultPodTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (AssaultPod.laymines_id == nil) then
+		AssaultPod.laymines_id = cpu_manager.stats:GetAbilityID( "chaos_laymines" )
+	end
+end
+
+function AssaultPodTactic:DoAbilities()
+
+	Ability.DoAbilityArea( self.squad_ai, AssaultPod.laymines_id, Ability.Filters.CloseEnemy, 30, 1 ) 
+end
+
+function AssaultPodTactic:UnloadTroops()
+
+	local vSquadPos = self.squad_ai:GetPosition()
+	if (cpu_manager.terrain_analyzer:HasThreat(vSquadPos, 100) and self.squad_ai:CanUnload()) then
+
+		-- Unload all troops when enemy is in the distance
+		self.squad_ai:DoUnload()
+	end
+end
+
+function AssaultPodTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+    	-- State machine
+    	if (not VehicleTactic.Update(self)) then
+        	return
+    	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

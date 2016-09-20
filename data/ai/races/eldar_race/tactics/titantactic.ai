@@ -1,0 +1,47 @@
+----------------------------------------
+-- File: 'titantactic.ai'
+-- Edited by Thudmeizer	@ 23.04.2016
+
+class 'TitanTactic' (EldarVehicleTactic)
+
+Titan = {}
+
+function TitanTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Titan Tactic")
+end
+
+function TitanTactic:InitAbilities()
+
+	if (Titan.wraithtomb_id == nil) then
+		Titan.wraithtomb_id = cpu_manager.stats:GetAbilityID( "eldar_wraithtomb_of_khaine" )	
+	end
+
+	if (Titan.velocious_id == nil) then
+		Titan.velocious_id = cpu_manager.stats:GetAbilityID( "eldar_velocious_weapons" )	
+	end
+end
+
+function TitanTactic:DoAbilities()
+
+	-- Enhanced Wraithbone Regeneration only when not attacking and with low health
+	-- If turned on, the user will regenerate 300 health per second in exchange for weapon capabilities. 
+	if (self.squad_ai:IsUsingAbility(Titan.wraithtomb_id)) then
+
+		-- Turn regeneration OFF if health > 60%
+		if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.6) then
+			self.squad_ai:DoSpecialAbility(Titan.wraithtomb_id)
+		end
+		-- Turn regeneration ON when health < 30%
+		elseif (not self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() < 0.3) then
+			self.squad_ai:DoSpecialAbility(Titan.wraithtomb_id)
+	end
+
+	-- Enable Wrath of Vaul - Decreases the reload times of all weaponry on the Phantom Titan.
+	if (self.squad_ai:CanDoAbility(Titan.velocious_id)) then
+
+		if (self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility(Titan.velocious_id)
+		end
+	end
+end

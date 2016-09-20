@@ -1,0 +1,171 @@
+----------------------------------------
+-- File: 'darkeldarcitadeltactic.ai'
+-- Edited by Krronus @ 9/24/10
+-- Edited by Cylarne_04 2012
+-- Edited by Thudmeizer	@ 08.04.2016
+
+class 'DarkEldarCitadelTactic' (BaseTactic)
+
+DarkEldarCitadel = {}
+
+function DarkEldarCitadelTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Dark Eldar Citadel Tactic")
+end
+
+function DarkEldarCitadelTactic:InitAbilities()
+
+	if (DarkEldarCitadel.eye_id == nil) then
+		DarkEldarCitadel.eye_id = cpu_manager.stats:GetAbilityID( "dark_eldar_citadel_all_seeing_eye" )
+	end
+	if (DarkEldarCitadel.bombard_id == nil) then
+		DarkEldarCitadel.bombard_id = cpu_manager.stats:GetAbilityID( "dark_eldar_citadel_bombard" )
+	end
+	if (DarkEldarCitadel.storm_id == nil) then
+		DarkEldarCitadel.storm_id = cpu_manager.stats:GetAbilityID( "dark_eldar_citadel_corrosive_storm" )
+	end
+	if (DarkEldarCitadel.agony_id == nil) then
+		DarkEldarCitadel.agony_id = cpu_manager.stats:GetAbilityID( "dark_eldar_citadel_eternal_damnation" )
+	end
+	if (DarkEldarCitadel.invulnerability_id == nil) then
+		DarkEldarCitadel.invulnerability_id = cpu_manager.stats:GetAbilityID( "dark_eldar_citadel_invulnerability_field" )
+	end
+	if (DarkEldarCitadel.soulportal_id == nil) then
+		DarkEldarCitadel.soulportal_id = cpu_manager.stats:GetAbilityID( "dark_eldar_citadel_summon_soulportal" )	-- not AI-useable as, like Eldar Webways, AI cannot use portals to transfer in-between them.
+	end
+	if (DarkEldarCitadel.repair_id == nil) then
+		DarkEldarCitadel.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+--[[
+	if (DarkEldarCitadel.superweapon_id == nil) then
+		DarkEldarCitadel.superweapon_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_destructor" )
+	end
+
+	if (DarkEldarCitadel.shield_id == nil) then
+		DarkEldarCitadel.shield_id = cpu_manager.stats:GetAbilityID( "dark_eldar_base_shield" )
+	end
+]]
+end
+
+function DarkEldarCitadelTactic:DoAbilities()
+
+	-- Don't use major soul-expensive Citadel abilities as we need souls to get to Tier6!
+   	if (cpu_manager:GetTierLevel() < 6) then
+		return
+	end
+
+	-- The All Seeing Eye: A global ranged and power ability used by the Kabal Citadel (Requires Soul Cage). Reveals everything on the map for a duration. (Soul Cost: 400)
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	local eyeChance = math.random (1,100)
+	if (eyeChance < 10) and (iRequisition > 10000 and iPower > 10000) then
+		Ability.DoAbilityArea(self.base_ai, DarkEldarCitadel.eye_id, Ability.Filters.CloseInfiltratedEnemy, 80, 2)
+		Ability.DoAbilityArea(self.base_ai, DarkEldarCitadel.eye_id, Ability.Filters.CloseEnemy, 80, 15)
+	end
+
+	-- Try to activate the "Eternal Agony" ability 
+	-- Eternal Agony: Targeted enemy unit suffers drastic health, morale, movement, combat, and overall regeneration penalties. Target will be killed almost instantly if the target is low on health. (Soul Cost: 400)
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	local agonyChance = math.random (1,100)
+	if (agonyChance < 15) and (iRequisition > 10000 and iPower > 10000) then
+		if (self.base_ai:CanDoAbility(DarkEldarCitadel.agony_id)) then
+	
+			-- Only activate if enemy unit is attacking
+			local iRange = self.base_ai:GetAbilityRange(DarkEldarCitadel.agony_id)
+			local oSquad = Ability.Filters.CloseInfantryEnemy(self.base_ai:GetPosition(), iRange, 4)
+			if (oSquad ~= nil and oSquad:IsAttacking()) then
+				self.base_ai:DoSpecialAbilitySquad(DarkEldarCitadel.agony_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	-- Try to activate the "Corrosive Storm" ability 
+	-- Corrosive Storm: Summons a vast tempest of poisonous and blinding winds. All targets within a 50m radius are blind, unable to shoot, and unable of production. (Soul Cost: 400)
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	local stormChance = math.random (1,100)
+	if (stormChance < 20) and (iRequisition > 15000 and iPower > 15000) then
+
+		if (self.base_ai:CanDoAbility(DarkEldarCitadel.storm_id)) then
+	
+			-- Only activate if enemy unit is attacking
+			local iRange = self.base_ai:GetAbilityRange(DarkEldarCitadel.storm_id)
+			local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 25)
+			if (oSquad ~= nil and oSquad:IsAttacking()) then
+				self.base_ai:DoSpecialAbilitySquad(DarkEldarCitadel.storm_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	-- Try to activate the "Invulnerability Field" ability
+	-- Invulnerability Field: Grants all ally units and structures within a 50m radius invulnerability and massive health regeneration for a very short duration; especially useful against nukes. (Soul Cost: 500)
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	local invulnerabilityChance = math.random (1,100)
+	if (invulnerabilityChance < 10) and (iRequisition > 25000 and iPower > 25000) then
+
+		if (self.base_ai:CanDoAbility(DarkEldarCitadel.invulnerability_id) and self.base_ai:IsInCombat() and self.base_ai:GetHealthPercentage() < 0.8) then
+			self.base_ai:DoSpecialAbility(DarkEldarCitadel.invulnerability_id)
+		end
+	end
+
+	-- Bombard: The Kabal Citadel unleashes a very large volley of bombardment projectiles scattered across at the designated target. (Soul Cost: 850)
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	local bombardChance = math.random (1,100)
+	if (bombardChance < 10) and (iRequisition > 30000 and iPower > 30000) then
+
+		if (self.base_ai:CanDoAbility(DarkEldarCitadel.bombard_id)) then
+			Ability.DoAbilityPos(self.base_ai, DarkEldarCitadel.bombard_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+			Ability.DoAbilityPos(self.base_ai, DarkEldarCitadel.bombard_id, Ability.Filters.CloseVehicleEnemy, 5)
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DarkEldarCitadel.repair_id )) then
+			self.base_ai:DoSpecialAbility( DarkEldarCitadel.repair_id )
+		end
+	end
+--[[
+	-- Drop Massive Soul Portal ontop of the enemy destroying all under it. (Soul Cost: 500)
+	if (self.base_ai:CanDoAbility(DarkEldarCitadel.soulportal_id)) then
+		
+		Ability.DoAbilityPos(self.base_ai, DarkEldarCitadel.soulportal_id, Ability.Filters.CloseEnemy, 35)
+		Ability.DoAbilityPos(self.base_ai, DarkEldarCitadel.soulportal_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+	end
+	
+	-- Superweapon
+	if (self.base_ai:CanDoAbility(DarkEldarCitadel.superweapon_id)) then
+	
+		-- Only activate if enemy unit is attacking
+		local iRange = self.base_ai:GetAbilityRange(DarkEldarCitadel.superweapon_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 40)
+		if (oSquad ~= nil) then
+			self.base_ai:DoSpecialAbilitySquad(DarkEldarCitadel.superweapon_id, oSquad:GetSquad())
+		end
+		
+		Ability.DoAbilityTargetEntity(self.base_ai, DarkEldarCitadel.superweapon_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+	end
+
+	if (self.base_ai:CanDoAbility(DarkEldarCitadel.shield_id)) then
+	
+		if (self.base_ai:IsInCombat() and self.base_ai:GetHealthPercentage() > 0.3 and not self.base_ai:IsUsingAbility(DarkEldarCitadel.shield_id)) then
+
+			-- Activate the Base Shields
+			self.base_ai:DoSpecialAbility(DarkEldarCitadel.shield_id)
+		end	
+		if (not self.base_ai:IsInCombat() and self.base_ai:IsUsingAbility(DarkEldarCitadel.shield_id)) then
+
+			-- Deactivate the Base Shields
+			self.base_ai:DoSpecialAbility(DarkEldarCitadel.shield_id)
+		end
+	end
+]]
+end
+
+function DarkEldarCitadelTactic:CanDeepStrikeTroops()
+	return true
+end

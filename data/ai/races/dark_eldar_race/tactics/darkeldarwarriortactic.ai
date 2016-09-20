@@ -1,0 +1,107 @@
+----------------------------------------
+-- File: 'darkeldarwarriortactic.ai'
+-- Edited by Thudmeizer		@ 05.04.2016
+
+class 'DarkEldarWarriorTactic' (DarkEldarInfantryTactic)
+
+DarkEldarWarrior = {}
+
+function DarkEldarWarriorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Warrior Tactic")
+end
+
+function DarkEldarWarriorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarWarrior.gravitic_id == nil) then
+		DarkEldarWarrior.gravitic_id = cpu_manager.stats:GetAbilityID( "dark_eldar_gravitic_grenade" )	
+	end
+	if (DarkEldarWarrior.haywire_id == nil) then
+		DarkEldarWarrior.haywire_id = cpu_manager.stats:GetAbilityID( "dark_eldar_haywire_bombs" )	
+	end
+	if (DarkEldarWarrior.horrorfex_id == nil) then
+		DarkEldarWarrior.horrorfex_id = cpu_manager.stats:GetAbilityID( "dark_eldar_horrorfex_grenade" )	
+	end
+	if (DarkEldarWarrior.leach_id == nil) then
+		DarkEldarWarrior.leach_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_leach" )
+	end
+	if (DarkEldarWarrior.terrorfex_id == nil) then
+		DarkEldarWarrior.terrorfex_id = cpu_manager.stats:GetAbilityID( "dark_eldar_terrorfex_grenade" )	
+	end
+	if (DarkEldarWarrior.tracking_id == nil) then
+		DarkEldarWarrior.tracking_id = cpu_manager.stats:GetAbilityID( "dark_eldar_tracking_device" )	
+	end
+	if (DarkEldarWarrior.run_id == nil) then
+		DarkEldarWarrior.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function DarkEldarWarriorTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat()) then
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWarrior.gravitic_id)) then
+
+			-- Send grenade against enemy infantry
+			Ability.DoAbilityPos( self.squad_ai, DarkEldarWarrior.gravitic_id, Ability.Filters.CloseSquadEnemy, 3 ) 
+		end
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWarrior.haywire_id)) then
+
+			-- Send grenade against enemy infantry
+			Ability.DoAbilityPos( self.squad_ai, DarkEldarWarrior.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
+		end
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWarrior.horrorfex_id)) then
+
+			-- Send grenade against enemy infantry
+			Ability.DoAbilityPos( self.squad_ai, DarkEldarWarrior.horrorfex_id, Ability.Filters.CloseSquadEnemy, 2 ) 
+		end
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWarrior.terrorfex_id)) then
+
+			-- Send bomb against enemy infantry
+			Ability.DoAbilityPos( self.squad_ai, DarkEldarWarrior.terrorfex_id, Ability.Filters.CloseInfantryEnemy, 4 ) 
+		end
+	end
+
+	-- Luster of Souls: Restore the strength of your squad by concealing them and regaining their health. Exchange this great ritual in exchange for souls.
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWarrior.leach_id)) then
+			Ability.DoAbilityArea(self.squad_ai, DarkEldarWarrior.leach_id, Ability.Filters.CloseSquadEnemy, 15, 4)
+			Ability.DoAbilityArea(self.squad_ai, DarkEldarWarrior.leach_id, Ability.Filters.CloseCommanderEnemy, 15, 1)
+		end
+	end
+--[[
+	if (self.squad_ai:CanDoAbility(DarkEldarWarrior.tracking_id)) then
+		Ability.DoAbilityTarget(self.squad_ai, DarkEldarWarrior.tracking_id, Ability.Filters.CloseSquadEnemy, 4)
+		Ability.DoAbilityTarget(self.squad_ai, DarkEldarWarrior.tracking_id, Ability.Filters.CloseVehicleEnemy, 1)
+		Ability.DoAbilityTarget(self.squad_ai, DarkEldarWarrior.tracking_id, Ability.Filters.CloseCommanderEnemy, 1)
+	end
+]]
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DarkEldarWarrior.run_id )) then
+			self.squad_ai:DoSpecialAbility( DarkEldarWarrior.run_id )
+		end
+	end
+
+	-- Call basic DoAbilities methods
+	DarkEldarInfantryTactic.DoAbilities(self)
+end
+
+function DarkEldarWarriorTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+end

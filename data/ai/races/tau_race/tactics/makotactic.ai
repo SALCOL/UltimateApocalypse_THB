@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'makotactic.ai'
 -- Created by Cylarne @ 2011
+-- Edited by Thudmeizer	@ 18.03.2016
 
 class 'MakoTactic' (TauVehicleTactic)
 
@@ -14,20 +15,14 @@ end
 function MakoTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Mako.barrage == nil) then
-		Mako.barrage = cpu_manager.stats:GetAbilityID( "tau_titan_missile_barrage" )
-	end
-	
-	if (Mako.overshield == nil) then
-		Mako.overshield = cpu_manager.stats:GetAbilityID( "tau_overshield_riptide" )
+	if (Mako.barrage_id == nil) then
+		Mako.barrage_id = cpu_manager.stats:GetAbilityID( "tau_titan_missile_barrage" )
 	end
 end
 
 function MakoTactic:DoAbilities()
 
-	Ability.DoAbilityTarget(self.squad_ai, Mako.barrage, Ability.Filters.CloseSquadEnemy, 6)
-	
-	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.8) then
-		Ability.DoAbility( self.squad_ai, Mako.overshield, Ability.PredicateFilters.IsInCombat ) 
-	end
+	Ability.DoAbilityPos(self.squad_ai, Mako.barrage_id, Ability.Filters.CloseSquadEnemy, 6)
+	Ability.DoAbilityPos(self.squad_ai, Mako.barrage_id, Ability.Filters.CloseVehicleEnemy, 3)
+	Ability.DoAbilityPos(self.squad_ai, Mako.barrage_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
 end

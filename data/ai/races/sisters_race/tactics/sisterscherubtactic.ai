@@ -1,0 +1,37 @@
+----------------------------------------
+-- File: 'sisterscherubtactic.ai'
+-- Edited by Thudmeizer   @ 11.04.2016
+
+class 'SistersCherubTactic' (SistersInfantryTactic)
+
+SistersCherub = {}
+
+function SistersCherubTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Cherub Tactic")
+end
+
+function SistersCherubTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function SistersCherubTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function SistersCherubTactic:Update()
+
+	if self:IsComplete() then
+      		return
+	end
+   
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	--attach to squad
+	self:TryAttachSquad( false, false, 1000, 200, nil )
+end
+
+

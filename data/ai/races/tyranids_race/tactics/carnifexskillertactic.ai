@@ -1,0 +1,28 @@
+----------------------------------------
+-- File: 'carnifexskillertactic.ai'
+-- Edited by Thudmeizer	@ 25.04.2016
+
+class 'CarnifexSkillerTactic' (TyranidVehicleTactic)
+
+CarnifexSkiller = {}
+
+function CarnifexSkillerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Carnifex Skiller Tactic")
+end
+
+function CarnifexSkillerTactic:InitAbilities()
+
+	if (CarnifexSkiller.scream_id == nil) then
+		CarnifexSkiller.scream_id = cpu_manager.stats:GetAbilityID( "tyranids_carnifex_scream" )
+	end
+end
+
+function CarnifexSkillerTactic:DoAbilities()
+	
+	-- Horror Scream: Offensive timed ability. User unleashes a horrifying Scream, ruining the morale of nearby enemy units within a 25m radius.
+	if (self.squad_ai:CanDoAbility(CarnifexSkiller.scream_id)) then
+		Ability.DoAbilityArea( self.squad_ai, CarnifexSkiller.scream_id, Ability.Filters.CloseSquadEnemy, 20, 4 )
+		Ability.DoAbilityArea( self.squad_ai, CarnifexSkiller.scream_id, Ability.Filters.CloseMonsterEnemy, 20, 4 )
+	end
+end

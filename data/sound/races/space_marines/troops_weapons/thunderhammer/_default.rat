@@ -2,13 +2,15 @@
 
 version = 9
 
-priority = 65
-volume = 0.350000
+priority = 36
+maxPolyphony = 10
 type3D = 1
 cardiodScale = 0.000000
 cardiodLowFreq = 0
 cardiodHighFreq = 0
 containerType = 3
 loopingContainer = 0
+loadAllContainer = 0
 silenceBreak = 0.000000
 silenceRandom = 0.000000
+volume = 0.820000

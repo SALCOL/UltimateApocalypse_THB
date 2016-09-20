@@ -35,23 +35,23 @@ function ApocalypseRules() -- Main Ultimate Apocalypse Rule.
 	
 	FOW_Reset()
 	
-	-- Restrict Honor Guards
-	--ApocalypseRules_RestrictHonorGuards()
+	-- Restrict Honor Guards and Legio Titans
+	ApocalypseRules_Restrict()
 	
 	-- Set starting resources for Easy and Standard resources if on Quickstart.
 	ApocalypseRules_ReadjustQuickstart()
 
 end
 
-function ApocalypseRules_RestrictHonorGuards()
+function ApocalypseRules_Restrict()
 
-	-- Restrict Honor Guards from player as well, to allow the "Allow Honor Guards" wincondition.
+	-- Restrict things from player as well.
 	local count = World_GetPlayerCount();
 	for i = 0, count-1
 	do
 		local player = World_GetPlayerAt(i);
 		
-		import("UA_SCARCore/K_04/HonorGuardList.scar");
+		import("UA_SCARCore/K_04/RestrictList.scar");
 		
 		for i=1,table.getn( hg_squad_list ) do
 			local squad = hg_squad_list[i];

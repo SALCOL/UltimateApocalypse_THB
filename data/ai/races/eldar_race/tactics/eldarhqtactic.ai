@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'eldarhqtactic.ai'
 -- Edited by Cylarne		@ 3/21/2011
+-- Edited by Thudmeizer		@ 04.20.2016
 
 class 'EldarHQTactic' (BaseTactic)
 
@@ -9,10 +10,6 @@ EldarHQ = {}
 function EldarHQTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Eldar HQ Tactic")
-	
-	-- Init abilities
-	self.m_bCanDeepStrikeTroops = true
-	self.m_iTransportSlots = 2
 end
 
 function EldarHQTactic:InitAbilities()
@@ -21,11 +18,46 @@ function EldarHQTactic:InitAbilities()
 	if (EldarHQ.soulstone_id == nil) then
 		EldarHQ.soulstone_id = cpu_manager.stats:GetAbilityID( "eldar_soulstone_superweapon" )
 	end
+
+	if (EldarHQ.repair_id == nil) then
+		EldarHQ.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
 end
 
 function EldarHQTactic:DoAbilities()
 
-	-- Activate the anti-titan weapon.
-	--Ability.DoAbilityTarget( self.base_ai, EldarHQ.soulstone_id, Ability.Filters.CloseVehicleEnemy, 1 )
+	-- Check if we can use the anti-titan weapon
+	if (self.base_ai:CanDoAbility(EldarHQ.soulstone_id)) then
 	
+		-- Get closest squad in range
+		local iRange = self.base_ai:GetAbilityRange(EldarHQ.soulstone_id)
+		local oSquad = cpu_manager.cpu_player:FindFirstEnemy(self.base_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil) then
+		
+			-- Get stats
+			local oStats = oSquad:GetStats()
+			if (oStats ~= nil) then
+			
+				-- Check unit type
+				local eClass = oStats:GetClass()
+				if (eClass == UnitStatsAI.UC_VehicleHigh or eClass == UnitStatsAI.UC_MonsterHigh) then
+					
+					-- Only try to use soulstorm superweapon when enemy vehicle or monster is attacking
+					if (oSquad:IsAttacking()) then
+
+						-- Use the soulstorm superweapon on heavy targets
+						self.base_ai:DoSpecialAbilitySquad(EldarHQ.soulstone_id, oSquad:GetSquad())
+					end
+				end
+			end	
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( EldarHQ.repair_id )) then
+			self.base_ai:DoSpecialAbility( EldarHQ.repair_id )
+		end
+	end	
 end

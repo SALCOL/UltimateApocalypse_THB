@@ -1,16 +1,26 @@
+----------------------------------------
+-- File: 'commandsquadtactic.ai'
+-- Edited by Arkhan		@ 23.11.2007
+-- Edited by Thudmeizer		@ 27.02.2016
+
 class 'CommandSquadTactic' (GuardInfantryTactic)
 
+CommandSquad = {}
 
 CommandSquadTactic.SpecialAbilities = 
 {
-	{ nil, "guard_priest_fanatical",                Ability.Filters.IsInCombat },
-	{ nil, "guard_speech_captain",                Ability.Filters.IsInCombat },
+	{ nil, "guard_priest_fanatical",		Ability.Filters.IsInCombat },
+	{ nil, "guard_speech_captain",			Ability.Filters.IsInCombat },
 }
 
 CommandSquadTactic.PosAbilities = 
 {
 	{ nil, "guard_strafing_run",			Ability.Filters.CloseEnemy, 6 },
+	{ nil, "guard_strafing_run_vox",		Ability.Filters.CloseEnemy, 8 },
 	{ nil, "guard_valkyrie_strike",			Ability.Filters.CloseEnemy, 8 },
+	{ nil, "guard_valkyrie_strike_vox",		Ability.Filters.CloseEnemy, 10 },
+	{ nil, "guard_commander_bomb",			Ability.Filters.CloseEnemy, 24 },
+	{ nil, "guard_commander_bomb",			Ability.EntityFilters.CloseBaseEntityEnemy, 2 },
 }
 
 CommandSquadTactic.TargetAbilities = 
@@ -20,13 +30,56 @@ CommandSquadTactic.TargetAbilities =
 	{ nil, "guard_curse_machine_spirits", 		Ability.Filters.CloseVehicleEnemy, 1 },
 }
 
-
 function CommandSquadTactic:__init( squad_ai ) super( squad_ai )
 
-	self:SetName("Leader Tactic")
+	self:SetName("Command Squad Tactic")
 	
 	-- Command squad is able to enter a bunker
 	self.m_bBunkerSquad = true
+end
+
+function CommandSquadTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelCommandSquad = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelCommandSquad ~= nil) then
+			local addOnID = buildChannelCommandSquad:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelCommandSquad:IsBuilding() == 0 and buildChannelCommandSquad:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelCommandSquad:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+-- Assassinate win condition -- never attack
+function CommandSquadTactic:IsAttacker()
+
+	-- Never attack in assassinate game mode
+	if (cpu_manager.assassinate) then
+		return false
+	end
+	
+	-- Attack if we have more than one squad member
+	if (self.squad_ai:GetNumTroopers() > 1) then
+		return true
+	end
+	return self:IsCommanderAttacker()
+end
+
+-- Assassinate win condition -- never defend
+function CommandSquadTactic:IsDefender()
+
+	-- Never defend in assassinate game mode
+	if (cpu_manager.assassinate) then
+		return false
+	end
+	
+	-- Defend if we have more than one squad member
+	if (self.squad_ai:GetNumTroopers() > 1) then
+		return true
+	end
+	return self:IsCommanderDefender()
 end
 
 function CommandSquadTactic:InitAbilities()
@@ -51,6 +104,19 @@ function CommandSquadTactic:InitAbilities()
 			local ability_id = cpu_manager.stats:GetAbilityID( CommandSquadTactic.TargetAbilities[i][2] )
 			CommandSquadTactic.TargetAbilities[i][1] = ability_id
 		end
+	end
+
+	if (CommandSquad.demo_id == nil) then
+		CommandSquad.demo_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge" )	
+	end
+	if (CommandSquad.detonate_id == nil) then
+		CommandSquad.detonate_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge_detonate" )	
+	end
+	if (CommandSquad.rally_id == nil) then
+		CommandSquad.rally_id = cpu_manager.stats:GetAbilityID( "guard_vox_rally" )	
+	end
+	if (CommandSquad.run_id == nil) then
+		CommandSquad.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
@@ -84,36 +150,59 @@ function CommandSquadTactic:DoAbilities()
 			Ability.DoAbilityTarget( self.squad_ai, ability_id, filter, squad_count ) 
 		end
 	end
+
+	-- Place Demo Charge
+	if (self.squad_ai:CanDoAbility(CommandSquad.demo_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, CommandSquad.demo_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, CommandSquad.demo_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, CommandSquad.demo_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Detonate Charge!
+	if (self.squad_ai:CanDoAbility(CommandSquad.detonate_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, CommandSquad.detonate_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, CommandSquad.detonate_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, CommandSquad.detonate_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	if (self.squad_ai:IsBroken()) or (self.squad_ai:GetMoralePercentage() < 0.6) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( CommandSquad.rally_id )) then
+			self.squad_ai:DoSpecialAbility( CommandSquad.rally_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( CommandSquad.run_id )) then
+			self.squad_ai:DoSpecialAbility( CommandSquad.run_id )
+		end
+	end
 end
 
--- Assassinate win condition -- never attack
-function CommandSquadTactic:IsAttacker()
+function CommandSquadTactic:Upgrade()
 
-	-- Never attack in assassinate game mode
-	if (cpu_manager.assassinate) then
-		return false
-	end
-	
-	-- Attack if we have more than one squad member
-	if (self.squad_ai:GetNumTroopers() > 1) then
-		return true
-	end
-	return self:IsCommanderAttacker()
-end
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
 
--- Assassinate win condition -- never defend
-function CommandSquadTactic:IsDefender()
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
 
-	-- Never defend in assassinate game mode
-	if (cpu_manager.assassinate) then
-		return false
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
 	end
-	
-	-- Defend if we have more than one squad member
-	if (self.squad_ai:GetNumTroopers() > 1) then
-		return true
-	end
-	return self:IsCommanderDefender()
 end
 
 function CommandSquadTactic:Reinforce()
@@ -139,16 +228,25 @@ function CommandSquadTactic:Reinforce()
 		local commissarIndex = 0
 		local psykerIndex = 1
 		local priestIndex = 2
+		local voxIndex = 3
 	
 		-- Get current leader count
 		local numCommissars = self.squad_ai:GetLeaderCount( commissarIndex )
 		local numPsykers = self.squad_ai:GetLeaderCount( psykerIndex)
 		local numPriests = self.squad_ai:GetLeaderCount( priestIndex )
+		local numVox = self.squad_ai:GetLeaderCount( voxIndex )
 
+		-- Desired number of each leader type
+		local desiredCommissars = math.random(0,1)
+		local desiredPsykers = math.random(0,1)
+		local desiredPriests = math.random(0,1)
+		local desiredVox = math.random(0,1)
+--[[
 		-- Desired number of each leader type
 		local desiredCommissars = 0
 		local desiredPsykers = 0
 		local desiredPriests = 2
+		local desiredVox = 2
 		
 		-- If squad size research is done want a psyker
 		local squadMax = self.squad_ai:GetMaxLeaderCount()
@@ -156,6 +254,7 @@ function CommandSquadTactic:Reinforce()
 			desiredCommissars = 0
 			desiredPsykers = 1
 			desiredPriests = 3
+			desiredVox = 3
 		end
 		
 		-- Check if the enemy has infiltrators
@@ -166,11 +265,16 @@ function CommandSquadTactic:Reinforce()
 				desiredPsykers = 1
 				desiredPriests = 1
 				desiredCommissars = 0
+				desiredVox = 0
 			end
 		end
-
+]]
 		-- Desired order of reinforcing
-		if (numPsykers < desiredPsykers) then
+		if (numCommissars < desiredCommissars) then
+			if self.squad_ai:CanReinforce( true, commissarIndex ) then
+				self.squad_ai:DoReinforce( true, commissarIndex )
+			end
+		elseif (numPsykers < desiredPsykers) then
 			if self.squad_ai:CanReinforce( true, psykerIndex ) then
 				self.squad_ai:DoReinforce( true, psykerIndex )
 			end
@@ -178,10 +282,9 @@ function CommandSquadTactic:Reinforce()
 			if self.squad_ai:CanReinforce( true, priestIndex ) then
 				self.squad_ai:DoReinforce( true, priestIndex )
 			end
-
-		elseif (numCommissars < desiredCommissars) then
-			if self.squad_ai:CanReinforce( true, commissarIndex ) then
-				self.squad_ai:DoReinforce( true, commissarIndex )
+		elseif (numVox < desiredVox) then
+			if self.squad_ai:CanReinforce( true, voxIndex ) then
+				self.squad_ai:DoReinforce( true, voxIndex )
 			end
 		end
 	end

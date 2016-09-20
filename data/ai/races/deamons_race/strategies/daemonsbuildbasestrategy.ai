@@ -1,11 +1,11 @@
 ----------------------------------------
--- File: 'daemonsBuildBaseStrategy.ai'
+-- File: 'daemonsbuildbasestrategy.ai'
 -- Created by Krronus @ 5/1/11
-
 -- Edited by CornCobMan 03/06/2013
 -- Edited by fuggles 10/06/2013
 -- Edited by Gambit 26/07/2013
 -- Edited by Cylarne 6/16/2014
+-- Edited by Thudmeizer	@ 20.06.2016
 
 class 'DaemonsBuildBaseStrategy' (BuildBaseStrategy)
 
@@ -18,7 +18,10 @@ function DaemonsBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	self:AddDetectorUnit("daemon_squad_lord_stature")
 	self:AddDetectorUnit("daemon_squad_daemon_prince")
 	self:AddDetectorUnit("daemon_squad_hell_spawn")
-	
+
+	-- dark40k - set items that need bypass for CpuPrerequisites
+	CpuPrerequisites2.AddSpecialItem("daemon_squad_primarch_angron", CpuPrerequisites.BT_Squad)
+
 	-- Choose one of two favored army research patterns for the Daemons race.
 	self.m_iFavoredResearch = math.random(1, 2)
 	
@@ -36,7 +39,6 @@ function DaemonsBuildBaseStrategy:ChooseBuildProgram()
 	if (table.getn(self.info.BuildPrograms) ~= 5) then
 		return BuildBaseStrategy.ChooseBuildProgram(self)
 	end
-	
 	return 1
 end
 
@@ -121,29 +123,31 @@ function DaemonsBuildBaseStrategy:GetBuildingName( sType )
 	elseif (sType == "Mine") then
 		return "daemon_eye_of_terror"
 	end
-	
 	return nil
 end
 
 function DaemonsBuildBaseStrategy:GetAddonBuilding( sType )
 	
 	if (sType == "addon_daemons_hell_fire") then
-	return "daemon_hq"
+		return "daemon_hq"
+
+	elseif (sType == "addon_superweapon") then
+		return "daemon_doom_pit"
 
 	elseif (sType == "addon_daemons_hq_1") then
-	return "daemon_hq"
+		return "daemon_hq"
 
 	elseif (sType == "addon_daemons_hq_2") then
-	return "daemon_hq"
+		return "daemon_hq"
 
 	elseif (sType == "addon_daemons_hq_3") then
-	return "daemon_hq"
+		return "daemon_hq"
 	
 	elseif (sType == "addon_daemons_hq_4") then
-	return "daemon_hq"
+		return "daemon_hq"
 
 	elseif (sType == "addon_daemons_hq_5") then
-	return "daemon_hq"
+		return "daemon_hq"
 
 	elseif (sType == "addon_daemons_list_post_1") then
 		return "daemon_listening_post"
@@ -169,6 +173,12 @@ function DaemonsBuildBaseStrategy:GetAddonBuilding( sType )
 	elseif (sType == "addon_daemons_turret") then
 		return "daemon_turret"
 		
+	elseif (sType == "addon_daemons_turret_nurgle") then
+		return "daemon_turret"
+
+	elseif (sType == "addon_daemons_turret_tzeentch") then
+		return "daemon_turret"
+
 	elseif (sType == "addon_daemons_turret_warpstorm") then
 		return "daemon_turret"
 	end
@@ -196,68 +206,44 @@ end
 -- Arkhan 11.2005: Returns the squad cap and support cap of the given squad
 function DaemonsBuildBaseStrategy:GetUnitStats(sSquadName)
 
-	if (sSquadName == "daemon_squad_bloodletters") then
-		return 6, 0
-	elseif (sSquadName == "daemon_squad_daemonettes") then
-		return 5, 0
-	elseif (sSquadName == "daemon_squad_daemonettes_greater") then
-		return 6, 0
-	elseif (sSquadName == "daemon_squad_flesh_hounds") then
-		return 3, 0
+	if (sSquadName == "daemon_squad_fury") then
+		return 2, 0
+	elseif (sSquadName == "daemon_squad_flesh_hound") then
+		return 2, 0
 	elseif (sSquadName == "daemon_squad_nurgling") then
-		return 3, 0
-	elseif (sSquadName == "daemon_squad_fury") then
-		return 4, 0
-	elseif (sSquadName == "daemon_squad_fiends") then
-		return 7, 0
-	elseif (sSquadName == "daemon_squad_flamers") then
-		return 6, 0
-	elseif (sSquadName == "daemon_squad_horror") then
-		return 6, 0
-	elseif (sSquadName == "daemon_squad_pink_horror") then
-		return 6, 0
+		return 2, 0
+	elseif (sSquadName == "daemon_squad_daemonettes") then
+		return 2, 0
 	elseif (sSquadName == "daemon_squad_pink_horror_minions") then
-		return 5, 0
-	elseif (sSquadName == "daemon_squad_plague_bearers") then
-		return 6, 0
+		return 2, 0
 	elseif (sSquadName == "daemon_squad_screamers") then
+		return 2, 0
+	elseif (sSquadName == "daemon_squad_flamers") then
+		return 3, 0
+	elseif (sSquadName == "daemon_squad_plague_bearers") then
+		return 3, 0
+	elseif (sSquadName == "daemon_squad_daemonettes_greater") then
+		return 4, 0
+	elseif (sSquadName == "daemon_squad_pink_horror") then
+		return 4, 0
+	elseif (sSquadName == "daemon_squad_bloodletters") then
 		return 5, 0
+	elseif (sSquadName == "daemon_squad_fiends") then
+		return 5, 0
+	elseif (sSquadName == "daemon_squad_blight_drones") then
+		return 0, 1
+	elseif (sSquadName == "daemon_squad_jugg") then
+		return 0, 2
 	elseif (sSquadName == "daemon_squad_defiler_khorne") then
-		return 0, 2
-	elseif (sSquadName == "daemon_squad_defiler_nurgle") then
-		return 0, 2	
-	elseif (sSquadName == "daemon_squad_defiler_slaanesh") then
-		return 0, 2	
-	elseif (sSquadName == "daemon_squad_defiler_tzeentch") then
-		return 0, 2
-	elseif (sSquadName == "daemon_squad_warp_spawn") then
 		return 0, 3
-	elseif (sSquadName == "daemon_squad_daemon_prince") then
-		return 0, 0
-	elseif (sSquadName == "daemon_squad_daemon_prince_khorne") then
-		return 0, 0
-	elseif (sSquadName == "daemon_squad_daemon_prince_nurgle") then
-		return 0, 0
-	elseif (sSquadName == "daemon_squad_daemon_prince_slaanesh") then
-		return 0, 0
-	elseif (sSquadName == "daemon_squad_daemon_prince_tzeentch") then
-		return 0, 0
-	elseif (sSquadName == "daemon_squad_bloodthirster") then
-		return 0, 5
-	elseif (sSquadName == "daemon_squad_guo") then
-		return 0, 5
-	elseif (sSquadName == "daemon_squad_keeper_of_secrets") then
-		return 0, 5
-	elseif (sSquadName == "daemon_squad_lord_of_change") then
-		return 0, 5
-	elseif (sSquadName == "daemon_squad_soul_grinder") then
-		return 0, 5
-	elseif (sSquadName == "daemon_squad_hell_spawn") then
-		return 0, 0
+	elseif (sSquadName == "daemon_squad_defiler_nurgle") then
+		return 0, 3
+	elseif (sSquadName == "daemon_squad_defiler_slaanesh") then
+		return 0, 3
+	elseif (sSquadName == "daemon_squad_defiler_tzeentch") then
+		return 0, 3
 	end
-	
 	return 0, 0
-	
 end
 
 function DaemonsBuildBaseStrategy:UpdateTierLevel()
@@ -294,10 +280,11 @@ function DaemonsBuildBaseStrategy:UpdateTierLevel()
 			-- Check for HQ addon 2
 			elseif (oBase:HasAddOn(iHQAddon2ID)) then
 				self.tierLevel = 3
-			
+				return
 			-- Check for HQ addon 1
 			elseif (oBase:HasAddOn(iHQAddon1ID)) then
 				self.tierLevel = 2
+				return
 			end
 		end
 	end
@@ -306,6 +293,7 @@ end
 function DaemonsBuildBaseStrategy:BuildFlexible()
 
 	-- Locales
+	-- Dynamic research item syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
 	local iArmyStrength = cpu_manager:GetArmyStrength()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
@@ -331,8 +319,7 @@ function DaemonsBuildBaseStrategy:BuildFlexible()
 		-- Favored Army: Minions
 		self:DynamicResearch("daemons_research_favored1", 1, 0, 0, 0, 0, nil, 0)
 		self.m_iGiftsResearch = 1
-	else
-		
+	else	
 		-- Favored Army: Greater Daemons
 		self:DynamicResearch("daemons_research_favored2", 1, 0, 0, 0, 0, nil, 0)
 		self.m_iGiftsResearch = 2
@@ -348,9 +335,8 @@ function DaemonsBuildBaseStrategy:BuildFlexible()
 	elseif (self.m_iMarkResearch == 4) then
 		self:DynamicResearch("daemons_mark_nurgle", 1, 0, 200, 0, 0, nil, 0)
 	end
-	
-
---[[      ****************   ALL DAEMONIC GIFTS --- DAEMONS MOD   ****************
+--[[      
+	****************   ALL DAEMONIC GIFTS --- DAEMONS MOD   ****************
 	> Normal Researches in daemon_gift_circle. Limit 10 (plus the Army selection) <
 	
 	Research------------------Notes-----------------Description--------------------------
@@ -438,115 +424,238 @@ T4	daemons_research_gift19	 (Greater Daemons Only)	Steel-Hearted
 T4	daemons_research_gift20	 (Greater Daemons Only)	Protective Runes - Shadow Fiends
 T5---	daemons_research_gift23	 (Minions Only)		Infernal Shroud ability - Shadow Fiends
 T5	daemons_research_gift24	 (Greater Daemons Only)	Strange Voice ability - Shadow Fiends	Gift 16
-T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability - Shadow Fiends]]
+T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability - Shadow Fiends
+]]
 
 	if (iArmyStrength >= 1000 or (iPower >= 800 and iRequisition >= 900)) then
-		
 
-		-- Favored Minions army.
-		if( cpu_manager.cpu_player:IsResearchComplete( "daemons_research_favored1" ) ) then
-			self:DynamicResearch("daemons_research_gift13", 2, 0, 620, 0, 0, nil, 0) -- Inf Will - LS
-			self:DynamicResearch("daemons_research_gift4", 2, 0, 600, 0, 0, nil, 0)  -- Furies I
-			self:DynamicResearch("daemons_research_gift18", 2, 0, 600, 0, 0, nil, 0)  -- Furies II
-			self:DynamicResearch("daemons_research_gift3", 2, 0, 600, 0, 0, nil, 0)  -- Daemonic Soul
-			self:DynamicResearch("daemons_research_gift6", 2, 0, 550, 0, 0, nil, 0)  -- Daem Fort
-			self:DynamicResearch("daemons_research_gift12", 2, 0, 640, 0, 0, nil, 0) -- Daem Hull
-			self:DynamicResearch("daemons_research_gift1", 3, 0, 800, 0, 0, nil, 0)  -- Flame
-			self:DynamicResearch("daemons_research_gift5", 3, 0, 600, 0, 0, nil, 0)  -- Spam Fest
-			self:DynamicResearch("daemons_research_gift14", 3, 0, 525, 0, 0, nil, 0) -- Hatred - LS
-			self:DynamicResearch("daemons_research_gift7", 4, 0, 600, 0, 0, nil, 0)  -- Greater Fortitude
-			self:DynamicResearch("daemons_research_gift17", 4, 0, 525, 0, 0, nil, 0) -- Daem Inf - SF
-			self:DynamicResearch("daemons_research_gift25", 4, 0, 535, 0, 0, nil, 0) -- SF Precision
-			self:DynamicResearch("daemons_research_gift23", 4, 0, 580, 0, 0, nil, 0) -- SF Shroud
-			
-		-- Favored Daemons army.
-		elseif( cpu_manager.cpu_player:IsResearchComplete( "daemons_research_favored2" ) ) then
-			self:DynamicResearch("daemons_research_gift11", 1, 0, 500, 0, 0, nil, 0) -- Will
-			self:DynamicResearch("daemons_research_gift6", 2, 0, 550, 0, 0, nil, 0)  -- Daem Fort
-			self:DynamicResearch("daemons_research_gift12", 2, 0, 640, 0, 0, nil, 0) -- Daem Hull
-			self:DynamicResearch("daemons_research_gift4", 2, 0, 600, 0, 0, nil, 0)  -- Furies I
-			self:DynamicResearch("daemons_research_gift13", 2, 0, 620, 0, 0, nil, 0) -- Inf Will - LS
-			self:DynamicResearch("daemons_research_gift15", 3, 0, 650, 0, 0, nil, 0) ---- DL Stature
-			self:DynamicResearch("daemons_research_gift16", 3, 0, 650, 0, 0, nil, 0) -- SF Stature
-			self:DynamicResearch("daemons_research_gift1", 3, 0, 620, 0, 0, nil, 0) -- Flames
-			self:DynamicResearch("daemons_research_gift10", 3, 0, 575, 0, 0, nil, 0) -- Daem Resil
-			self:DynamicResearch("daemons_research_gift8", 3, 0, 670, 0, 0, nil, 0) -- Fear
-			self:DynamicResearch("daemons_research_gift14", 3, 0, 525, 0, 0, nil, 0) -- Hatred - LS
-			self:DynamicResearch("daemons_research_gift19", 4, 0, 550, 0, 0, nil, 0) -- Horblu
-			self:DynamicResearch("daemons_research_gift18", 4, 0, 625, 0, 0, nil, 0) -- Furies II
-			self:DynamicResearch("daemons_research_gift20", 4, 0, 460, 0, 0, nil, 0) -- Prot Runes - SF
-			self:DynamicResearch("daemons_research_gift24", 4, 0, 580, 0, 0, nil, 0) -- SF Voice
-			
+		-- Favored Minions Army
+		if ( cpu_manager.cpu_player:IsResearchComplete( "daemons_research_favored1" ) ) then
+
+			-- Compute tier 2 researches
+			if (self.tierLevel >= 2) then
+
+				-- Compute gifts
+				self:DynamicResearch("daemons_research_gift13", 2, 0, 180, 0, 0, nil, 0) -- Inf Will - LS
+				self:DynamicResearch("daemons_research_gift4", 2, 0, 75, 0, 0, nil, 0)  -- Furies I
+				self:DynamicResearch("daemons_research_gift18", 2, 0, 225, 0, 0, nil, 0)  -- Furies II
+				self:DynamicResearch("daemons_research_gift3", 2, 0, 75, 0, 0, nil, 0)  -- Daemonic Soul
+				self:DynamicResearch("daemons_research_gift6", 2, 0, 120, 0, 0, nil, 0)  -- Daem Fort
+				self:DynamicResearch("daemons_research_gift9", 2, 0, 140, 0, 0, nil, 0)
+				self:DynamicResearch("daemons_research_gift12", 2, 0, 220, 0, 0, nil, 0) -- Daem Hull
+				self:DynamicResearch("daemons_research_gift2", 2, 0, 250, 0, 0, nil, 0)
+			end
+
+			-- Compute tier 3 researches
+			if (self.tierLevel >= 3) then
+
+				-- Compute gifts
+				self:DynamicResearch("daemons_research_gift1", 3, 0, 320, 0, 0, nil, 0)  -- Flame
+				self:DynamicResearch("daemons_research_gift5", 3, 0, 220, 0, 0, nil, 0)  -- Spam Fest
+				self:DynamicResearch("daemons_research_gift14", 3, 0, 225, 0, 0, nil, 0) -- Hatred - LS
+			end
+
+			-- Compute tier 4 researches
+			if (self.tierLevel >= 4) then
+
+				-- Compute gifts
+				self:DynamicResearch("daemons_research_gift7", 4, 0, 230, 0, 0, nil, 0)  -- Greater Fortitude
+				self:DynamicResearch("daemons_research_gift17", 4, 0, 225, 0, 0, nil, 0) -- Daem Inf - SF
+				self:DynamicResearch("daemons_research_gift25", 4, 0, 235, 0, 0, nil, 0) -- SF Precision
+				self:DynamicResearch("daemons_research_gift23", 4, 0, 200, 0, 0, nil, 0) -- SF Shroud
+			end
+
+		-- Favored Daemons Army
+		elseif ( cpu_manager.cpu_player:IsResearchComplete( "daemons_research_favored2" ) ) then
+
+			-- Compute tier 1 researches
+			if (self.tierLevel >= 1) then
+
+				-- Compute gift
+				self:DynamicResearch("daemons_research_gift11", 1, 0, 85, 0, 0, nil, 0) -- Will
+			end
+
+			-- Compute tier 2 researches
+			if (self.tierLevel >= 2) then
+
+				-- Compute gifts
+				self:DynamicResearch("daemons_research_gift6", 2, 0, 120, 0, 0, nil, 0)  -- Daem Fort
+				self:DynamicResearch("daemons_research_gift12", 2, 0, 220, 0, 0, nil, 0) -- Daem Hull
+				self:DynamicResearch("daemons_research_gift4", 2, 0, 75, 0, 0, nil, 0)  -- Furies I
+				self:DynamicResearch("daemons_research_gift13", 2, 0, 180, 0, 0, nil, 0) -- Inf Will - LS
+				self:DynamicResearch("daemons_research_gift9", 2, 0, 140, 0, 0, nil, 0)
+				self:DynamicResearch("daemons_research_gift2", 2, 0, 250, 0, 0, nil, 0)
+			end
+
+			-- Compute tier 3 researches
+			if (self.tierLevel >= 3) then
+
+				-- Compute gifts
+				self:DynamicResearch("daemons_research_gift15", 3, 0, 1000, 0, 0, nil, 0) ---- DL Stature
+				self:DynamicResearch("daemons_research_gift16", 3, 0, 1000, 0, 0, nil, 0) -- SF Stature
+				self:DynamicResearch("daemons_research_gift1", 3, 0, 320, 0, 0, nil, 0) -- Flames
+				self:DynamicResearch("daemons_research_gift10", 3, 0, 125, 0, 0, nil, 0) -- Daem Resil
+				self:DynamicResearch("daemons_research_gift8", 3, 0, 200, 0, 0, nil, 0) -- Fear
+		     	      --self:DynamicResearch("daemons_research_gift14", 3, 0, 225, 0, 0, nil, 0) -- Hatred - LS
+			end
+
+			-- Compute tier 4 researches
+			if (self.tierLevel >= 4) then
+
+				-- Compute gifts
+				self:DynamicResearch("daemons_research_gift19", 4, 0, 375, 0, 0, nil, 0) -- Horblu
+				self:DynamicResearch("daemons_research_gift18", 4, 0, 225, 0, 0, nil, 0) -- Furies II
+				self:DynamicResearch("daemons_research_gift20", 4, 0, 160, 0, 0, nil, 0) -- Prot Runes - SF
+				self:DynamicResearch("daemons_research_gift24", 4, 0, 200, 0, 0, nil, 0) -- SF Voice	
+			end
 		end
 
+		-- Other researches		
+	
+		-- Compute tier 1 researches
+		if (self.tierLevel >= 1) then
 
+			-- Compute HQ Tier2 Addons for future HQs
+			if (self:GetBuildingCountByName("daemon_hq") > 1) and (iRequisition >= 3000 and iPower >= 3000) then
+				self:DynamicAddon("addon_daemons_hq_1", 100, 1, 400, 130, 0, 0, nil, nil, false)
+			end
+		end
 
-		-- Dynamic research item syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
-		local iArmyStrength = cpu_manager:GetArmyStrength()
-		local iCommanderSquads	= self:CountSquads("daemon_squad_lord")
+		-- Compute tier 2 researches
+		if (self.tierLevel >= 2) then
+
+			-- Compute resource researches
+			self:DynamicResearch("daemons_power_research_1", 2, 200, 20, 0, 0, nil, 0)
+			self:DynamicResearch("daemons_requisition_research_1", 2, 75, 250, 0, 0, nil, 0)
+
+			-- Compute Turret research
+			self:DynamicResearch("daemons_turret_upgrade", 2, 0, 360, 0, 0, nil, 0)
+
+			-- Compute either Nurgle or Tzeentch turret addons
+			if (cpu_manager.cpu_player:IsResearchComplete( "daemons_mark_nurgle" )) then
+				self:DynamicAddon("addon_daemons_turret_nurgle", 100, 2, 0, 100, 0, 0, nil, nil, false)
+			else
+				self:DynamicAddon("addon_daemons_turret_tzeentch", 100, 2, 0, 100, 0, 0, nil, nil, false)
+			end
+
+			-- Compute HQ Tier2 Addons for future HQs
+			if (self:GetBuildingCountByName("daemon_hq") > 1) and (iRequisition >= 4000 and iPower >= 4000) then
+				self:DynamicAddon("addon_daemons_hq_2", 100, 2, 500, 500, 0, 0, nil, nil, false)
+			end
+		end
+
+		-- Compute tier 3 researches
+		if (self.tierLevel >= 3) then
+
+			-- Compute resource researches
+			self:DynamicResearch("daemons_power_research_2", 3, 350, 0, 0, 0, nil, 0)
+			self:DynamicResearch("daemons_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
+
+			-- Compute HQ Tier3 Addons for future HQs
+			if (self:GetBuildingCountByName("daemon_hq") > 1) and (iPower >= 5000 and iRequisition >= 5000) then
+				self:DynamicAddon("addon_daemons_hq_3", 100, 3, 1000, 1000, 0, 0, nil, nil, false)
+			end
+		end
+
+		-- Compute tier 4 researches
+		if (self.tierLevel >= 4) then
+
+			-- Compute resource researches
+			self:DynamicResearch("daemons_power_research_3", 4, 600, 60, 0, 0, nil, 0)
+			self:DynamicResearch("daemons_requisition_research_3", 4, 125, 450, 0, 0, nil, 0)
+
+			-- Compute Turret research
+			self:DynamicResearch("daemons_turret_upgrade_2", 4, 0, 780, 0, 0, nil, 0)
+
+			-- Compute TierIV Addon
+			--self:DynamicAddon("addon_daemons_hq_4", 25, 4, 1500, 1500, 0, 0, nil, nil, false)
+
+			-- Compute HQ Tier4 Addons for future HQs
+			if (self:GetBuildingCountByName("daemon_hq") > 2) and (iRequisition >= 7000 and iPower >= 7000) then
+				self:DynamicAddon("addon_daemons_hq_4", 100, 4, 1500, 1500, 0, 0, nil, nil, false)
+			end
+		end
+
+		-- Compute tier 5 researches
+		if (self.tierLevel >= 5) then
+
+			-- Compute resource researches
+			self:DynamicResearch("daemons_power_research_4", 5, 800, 80, 0, 0, nil, 0)
+			self:DynamicResearch("daemons_requisition_research_4", 5, 150, 550, 0, 0, nil, 0)
 		
-		-- Compute resource researches
-		self:DynamicResearch("daemons_requisition_research_1", 2, 75, 250, 0, 0, nil, 0)
-		self:DynamicResearch("daemons_power_research_1", 2, 200, 0, 0, 0, nil, 0)
-		self:DynamicResearch("daemons_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
-		self:DynamicResearch("daemons_power_research_2", 3, 350, 0, 0, 0, nil, 0)
-		self:DynamicResearch("daemons_requisition_research_3", 4, 125, 450, 0, 0, nil, 0)
-		self:DynamicResearch("daemons_power_research_3", 4, 600, 0, 0, 0, nil, 0)
-		self:DynamicResearch("daemons_requisition_research_4", 5, 150, 550, 0, 0, nil, 0)
-		self:DynamicResearch("daemons_power_research_4", 5, 800, 0, 0, 0, nil, 0)
-		
-		-- Compute Turret researches.
-		self:DynamicResearch("daemons_turret_upgrade", 2, 275, 50, 0, 0, nil, 0)
-		self:DynamicResearch("daemons_turret_upgrade_2", 4, 420, 170, 0, 0, nil, 0)
-		
-		-- Compute Daemon Prince research.
-		self:DynamicResearch("daemons_transform_research", 5, 0, 3000, 0, 0, nil, 0) -- Prince
-		
-		-- Compute Endgame research.
-		self:DynamicResearch("daemons_research_planetary_exterminator", 5, 0, 10000, 0, 0, nil, 0)
-		
-		
-		--[[ Angron Wargear
+			-- Compute TierV Addon
+			--self:DynamicAddon("addon_daemons_hq_5", 25, 5, 6000, 6000, 0, 0, nil, nil, false)
+
+			-- Compute Daemon Prince research
+			if (self:CountSquads("daemon_squad_daemon_prince") >= 1) then
+				self:DynamicResearch("daemons_transform_research", 5, 0, 1000, 0, 0, nil, 0) -- Prince
+			end
+
+			-- Compute HQ Tier5 Addons for future HQs
+			if (self:GetBuildingCountByName("daemon_hq") > 2) and (iRequisition >= 6500 and iPower >= 6500) then
+				self:DynamicAddon("addon_daemons_hq_5", 100, 5, 6000, 6000, 0, 0, nil, nil, false)
+			end
+		end
+
+		-- Compute tier 6 researches
+		if (self.tierLevel >= 6) then
+
+			-- Compute Endgame research
+			self:DynamicResearch("daemons_research_planetary_exterminator", 6, 0, 20000, 0, 0, nil, 0)
+		end		
+--[[
+		-- Angron Wargear
 		self:DynamicResearch("daemons_wargear_angron1", 5, 0, 10000, 0, 0, nil, 0) -- Fear
 		self:DynamicResearch("daemons_wargear_angron2", 5, 0, 15000, 0, 0, nil, 0) -- Invulnerability Hide
 		self:DynamicResearch("daemons_wargear_angron3", 5, 0, 15000, 0, 0, nil, 0) -- Leeching
-		self:DynamicResearch("daemons_wargear_angron4", 5, 0, 15000, 0, 0, nil, 0) ]]-- Catastrophic Powers
+		self:DynamicResearch("daemons_wargear_angron4", 5, 0, 15000, 0, 0, nil, 0) -- Catastrophic Powers
+]]
 	end
+
 	-- Restrict dynamic builds to hard difficulty or higher
 	if (CpuManager.AISettings.bMultiBuildings) then
 	
 		-- Dynamic buildings
 		-- Item-Syntax: BuildingName, BuildingCount, MinTier, MinRequisition, MinPower, MinSquadCap, MinSupportCap
 		
-		self:DynamicBuild("daemon_icon", 6 * self:GetBuildingCountByName("daemon_hq"), 3, 500, 0, 0, 0)
-		
-		if ((iPower >= 250 and iRequisition >= 2000) or self.m_iArmyBuild >= 3) then
-			--[[ tier 0
-			self:DynamicBuild("daemon_sacrificial_circle", 2, 1, 1000, 0, 0, 0)
+		self:DynamicBuild("daemon_icon", 6 * self:GetBuildingCountByName("daemon_hq"), 2, 200, 0, 0, 0)
+
+		if ((iRequisition > 1500 and iPower > 700) or self.m_iArmyBuild >= 3) then
+
+			-- tier 0
 			self:DynamicBuild("daemon_turret", 4, 1, 300, 0, 0, 0)
 			self:DynamicBuild("daemon_eye_of_terror", 2, 1, 200, 0, 0, 0)
 			
 			-- tier1
-			self:DynamicBuild("daemon_hq", 2, 2, 800, 200, 0, 0)
-			self:DynamicBuild("daemon_maledictum", 1, 2, 0, 300, 0, 0)
-			self:DynamicBuild("daemon_turret", 15, 2, 1000, 0, 0, 0)
-			self:DynamicBuild("daemon_daemon_pit", 2, 2, 1000, 0, 0, 0)
+			self:DynamicBuild("daemon_hq", 2, 2, 800, 250, 0, 0)
+			self:DynamicBuild("daemon_eye_of_terror", 3, 2, 400, 0, 0, 0)
+			self:DynamicBuild("daemon_turret", 6, 2, 1000, 0, 0, 0)
 			
 			-- tier 2
+			self:DynamicBuild("daemon_eye_of_terror", 4, 3, 500, 0, 0, 0)
+			self:DynamicBuild("daemon_icon", 15, 3, 600, 0, 0, 0)
+			self:DynamicBuild("daemon_gift_circle", 2, 3, 800, 0, 0, 0)
+			self:DynamicBuild("daemon_hq", 3, 3, 1250, 450, 0, 0)
+			self:DynamicBuild("daemon_turret", 8, 3, 1250, 0, 0, 0)
 			
 			-- tier 3
-			self:DynamicBuild("daemon_hq", 3, 4, 1500, 1000, 0, 0)
-			self:DynamicBuild("daemon_daemon_pit", 4, 4, 3000, 0, 0, 0)
-			
+			self:DynamicBuild("daemon_icon", 18, 3, 700, 0, 0, 0)
+			self:DynamicBuild("daemon_eye_of_terror", 5, 4, 800, 0, 0, 0)
+			self:DynamicBuild("daemon_turret", 10, 4, 1750, 0, 0, 0)
+
 			-- tier 4
-			self:DynamicBuild("daemon_turret", 20, 5, 2000, 0, 0, 0)
-			self:DynamicBuild("daemon_doom_gateway", 2, 5, 1500, 0, 0, 0)
-			self:DynamicBuild("daemon_doom_pit", 5, 5, 10000, 10000, 0, 0)]]
+			self:DynamicBuild("daemon_eye_of_terror", 6, 5, 1000, 0, 0, 0)
+			self:DynamicBuild("daemon_turret", 12, 5, 2000, 0, 0, 0)
+			self:DynamicBuild("daemon_doom_gateway", 2, 5, 3500, 0, 0, 0)
+			self:DynamicBuild("daemon_hq", 4, 6, 1700, 650, 0, 0)
+			self:DynamicBuild("daemon_icon", 24, 6, 2000, 0, 0, 0)
+			self:DynamicBuild("daemon_doom_pit", 2, 6, 4000, 4000, 0, 0)
+			self:DynamicBuild("daemon_turret", 15, 6, 5000, 0, 0, 0)
+			self:DynamicBuild("daemon_doom_pit", 3, 6, 6000, 6000, 0, 0)
 		end
-		
-		-- Build nukes
-		
-		--[[local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+--[[		
+		-- Build nukes	
+		local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 			
 		-- Build nuke
@@ -556,9 +665,13 @@ T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability 
 		tBuildType.name = "npc_squad_superweapon1"
 		if (self:TryBuild( tBuildType )) then
 			aitrace("BuildController: Dynamic build of "..tBuildType.name)
-		end]]
-		
-		
+		end
+]]		
+	end
+
+	-- Check if we can build a Maledictum
+	if (self:CountSquads("daemon_squad_hell_spawn") == 0) then
+		self:DynamicBuild("daemon_maledictum", 1, 3, 300, 0, 0, 0)
 	end
 
 	-- Try to get extra Power
@@ -588,8 +701,9 @@ T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability 
 			if (self:TryBuild( tBuildType )) then
 				aitrace("BuildController: Dynamic build of "..tBuildType.name)
 			end
-	    end
+		end
 	end
+
 	if (self.tierLevel >= 3) then
 
 		-- Check resources and research
@@ -613,8 +727,9 @@ T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability 
 			if (self:TryBuild( tBuildType )) then
 				aitrace("BuildController: Dynamic build of "..tBuildType.name)
 			end
-	    end
+		end
 	end
+
 	if (self.tierLevel >= 1) then
 
 		-- Check resources and research
@@ -638,8 +753,7 @@ T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability 
 			if (self:TryBuild( tBuildType )) then
 				aitrace("BuildController: Dynamic build of "..tBuildType.name)
 			end
-	    end
-
+		end
 	end 
 
 	if (self.tierLevel < 4) then
@@ -658,10 +772,9 @@ T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability 
  				pos.x = pos.x + math.random(-20, 20)
 				pos.z = pos.z + math.random(-10, 4)
 				build_channel:DoDeepStrikeToPos(pos)
-	       end 
-  	    end
+			end 
+		end
 	end
-	
 	
 	-- Resource trading for high resources
 	self:BuildResourceTrades()
@@ -671,6 +784,7 @@ T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability 
 end
 
 function DaemonsBuildBaseStrategy:BuildResourceTrades()
+
 	local squadID
 
 	-- Check resources
@@ -699,34 +813,34 @@ function DaemonsBuildBaseStrategy:BuildResourceTrades()
 	tBuildType.btype = CpuPrerequisites.BT_Squad
 	tBuildType.name = squadID
 	if (self:TryBuild( tBuildType )) then
-		aitrace("BuildController: Dynamic build of "..tBuildType.name)
-			
+		aitrace("BuildController: Dynamic build of "..tBuildType.name)	
 	end
 end
 
 function DaemonsBuildBaseStrategy:BuildRandomMarkAddons()
+
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local tierLevel = self:GetTierLevel()
 	
-	if iPower < 350 then 
+	if (iPower < 350) then 
 		return
 	end
 	
 	if ( tierLevel >= 4 ) then
-		self:DynamicAddon( "addon_daemons_mark_khorne", math.random( 5, 8 ), 2, 0, 150, 0, 0, nil, nil, false)
-		self:DynamicAddon( "addon_daemons_mark_nurgle", math.random( 5, 8 ), 2, 0, 150, 0, 0, nil, nil, false)
-		self:DynamicAddon( "addon_daemons_mark_slaanesh", math.random( 5, 8 ), 2, 0, 150, 0, 0, nil, nil, false)
-		self:DynamicAddon( "addon_daemons_mark_tzeentch", math.random( 5, 8 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_khorne", math.random( 5, 8 ), 2, 0, 75, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_nurgle", math.random( 5, 8 ), 2, 0, 80, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_slaanesh", math.random( 5, 8 ), 2, 0, 75, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_tzeentch", math.random( 5, 8 ), 2, 0, 80, 0, 0, nil, nil, false)
 	elseif ( tierLevel >= 3 ) then
-		self:DynamicAddon( "addon_daemons_mark_khorne", math.random( 3, 5 ), 2, 0, 150, 0, 0, nil, nil, false)
-		self:DynamicAddon( "addon_daemons_mark_nurgle", math.random( 3, 5 ), 2, 0, 150, 0, 0, nil, nil, false)
-		self:DynamicAddon( "addon_daemons_mark_slaanesh", math.random( 3, 5 ), 2, 0, 150, 0, 0, nil, nil, false)
-		self:DynamicAddon( "addon_daemons_mark_tzeentch", math.random( 3, 5 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_khorne", math.random( 3, 5 ), 2, 0, 75, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_nurgle", math.random( 3, 5 ), 2, 0, 80, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_slaanesh", math.random( 3, 5 ), 2, 0, 75, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_tzeentch", math.random( 3, 5 ), 2, 0, 80, 0, 0, nil, nil, false)
 	elseif ( tierLevel >= 2 ) then
-		self:DynamicAddon( "addon_daemons_mark_khorne", math.random( 1, 3 ), 2, 0, 150, 0, 0, nil, nil, false)
-		self:DynamicAddon( "addon_daemons_mark_nurgle", math.random( 1, 3 ), 2, 0, 150, 0, 0, nil, nil, false)
-		self:DynamicAddon( "addon_daemons_mark_slaanesh", math.random( 1, 3 ), 2, 0, 150, 0, 0, nil, nil, false)
-		self:DynamicAddon( "addon_daemons_mark_tzeentch", math.random( 1, 3 ), 2, 0, 150, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_khorne", math.random( 1, 3 ), 2, 0, 75, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_nurgle", math.random( 1, 3 ), 2, 0, 80, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_slaanesh", math.random( 1, 3 ), 2, 0, 75, 0, 0, nil, nil, false)
+		self:DynamicAddon( "addon_daemons_mark_tzeentch", math.random( 1, 3 ), 2, 0, 80, 0, 0, nil, nil, false)
 	end
 end
 
@@ -764,24 +878,23 @@ function DaemonsBuildBaseStrategy:ForceTech()
 		end
 		
 		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier2 and (iPower < 800)) then
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier2 and (iRequisition < 600 and iPower < 600)) then
 			return true
 		end
 		
 	elseif (iTierLevel == 3) then	
 
 		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iPower < 800)) then
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iRequisition < 1100 and iPower < 1100)) then
 			return true
 		end
 		
 	elseif (iTierLevel == 4) then	
 
 		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier4 and (iPower < 1000)) then
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier4 and (iRequisition < 1600 and iPower < 1600)) then
 			return true
 		end
-		
 	end
 	return false
 end
@@ -790,22 +903,21 @@ end
 function DaemonsBuildBaseStrategy:GetPlacementType(iBuildingID)
 	
 	-- Check building
-	if (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_doom_pit")) then
-		return "HQ"
-	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_sacrificial_circle") or 
+	if (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_hq")) then
+		return "Safeplace"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_icon") or 
+		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_sacrificial_circle") or 
 		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_daemon_pit") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_doom_gateway")) then
 		return "Military"
-	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_icon") or 
-		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_maledictum") or 
-		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_gift_circle")or
-		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_hq")) then	
-		return "Safeplace"
-	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_turret") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_turret_ai") ) then
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_maledictum") or 
+		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_gift_circle") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("daemon_doom_pit")) then	
+		return "Baseback"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_turret")) then
 		return "Front1"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("daemon_eye_of_terror")) then
-		return "Mine"
+		return "Front2"
 	end
 	return "Basic"
 end
@@ -814,7 +926,8 @@ end
 function DaemonsBuildBaseStrategy:RelicRequired(sName)
 
 	-- Check name
-	if  (sName == "daemon_squad_hell_spawn") or (sName == "daemon_squad_primarch_angron") then
+	if  (sName == "daemon_squad_hell_spawn") or 
+		(sName == "daemon_squad_primarch_angron") then
 		return true
 	end
 	return false

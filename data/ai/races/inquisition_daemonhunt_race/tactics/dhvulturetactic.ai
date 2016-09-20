@@ -1,0 +1,145 @@
+----------------------------------------
+-- File: 'dhvulturetactic.ai'
+-- Edited by Thudmeizer     @ 18.04.2016
+
+class 'DHVultureTactic' (DaemonhuntVehicleTactic)
+
+DHVulture = {}
+
+function DHVultureTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DHVulture Tactic")
+	
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 4
+end
+
+-- DH Vulture is allowed to retreat even directly after a jump
+function DHVultureTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function DHVultureTactic:InitAbilities()
+
+	if (DHVulture.smoke_id == nil) then
+		DHVulture.smoke_id = cpu_manager.stats:GetAbilityID( "inquisition_smoke_launchers" )	
+	end
+end
+
+function DHVultureTactic:DoAbilities()
+	
+	-- Check if we can throw smoke
+	if (self.squad_ai:CanDoAbility(DHVulture.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(DHVulture.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(DHVulture.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Call standard method
+	DaemonhuntVehicleTactic.DoAbilities(self)
+end
+
+function DHVultureTactic:JumpAttackRanged()
+
+	-- Call standard method
+	if (Tactic.JumpAttackRanged(self)) then
+		return true
+	end
+	
+	-- Get position and jump range
+	local vDHVulturePosition = self.squad_ai:GetPosition()
+	local iJumpRange = sqr(self.squad_ai:GetJumpDistance())
+	
+	-- Check if we can jump directly to the target
+	local iClosestDistance = distance_sqr(vDHVulturePosition, self.target)
+	local vTargetPos = nil
+	if (iClosestDistance < iJumpRange) then
+		vTargetPos = self.target
+	else
+	
+		-- Get closest squad to target position
+		for oSquad in military_manager:GetSquads() do
+	
+			-- Check if squad is valid
+			if (oSquad:IsValid()) then
+			
+				-- Check distance
+				local vPosition = oSquad:GetPosition()
+				local iDistanceToDHVulture = distance_sqr(vPosition, vDHVulturePosition)
+				local iDistanceToTarget = distance_sqr(vPosition, self.target)
+				if (iDistanceToDHVulture < iJumpRange and iDistanceToTarget < iClosestDistance) then
+					iClosestDistance = iDistanceToTarget
+					vTargetPos = vPosition
+				end
+			end
+		end
+		
+		-- Get closest building to target position
+		for oBuilding in military_manager:GetBases() do
+		
+			-- Check if building is valid
+			if (oBuilding:IsValid()) then
+			
+				-- Check distance
+				local vPosition = oBuilding:GetPosition()
+				local iDistanceToDHVulture = distance_sqr(vPosition, vDHVulturePosition)
+				local iDistanceToTarget = distance_sqr(vPosition, self.target)
+				if (iDistanceToDHVulture < iJumpRange and iDistanceToTarget < iClosestDistance) then
+					iClosestDistance = iDistanceToTarget
+					vTargetPos = vPosition
+				end
+			end
+		end
+	end
+	
+	-- Don't jump if we didn't find a target
+	if (vTargetPos == nil or distance_sqr(vDHVulturePosition, vTargetPos) < sqr(50)) then
+		return false
+	end
+	
+	-- Try to jump to target
+	for iLoop1 = 1, 5 do
+	
+		-- Create a jump position
+		local vJumpPosition = vTargetPos
+		vJumpPosition.x = vJumpPosition.x + math.random(-15, 15)
+		vJumpPosition.z = vJumpPosition.z + math.random(-15, 15)
+			
+		-- Check if target position is in range and if unit is able to jump to target position
+		local iDistance = distance_sqr(vJumpPosition, vDHVulturePosition)
+		if (iDistance <= iJumpRange and self.squad_ai:CanJumpToPosition(vJumpPosition)) then
+							
+			-- Jump to position
+			self.squad_ai:DoJump(vJumpPosition)
+			self.last_jump = g_iGMT
+			self.m_iLastGatherMove = self.last_jump - 10
+			return true
+		end
+	end
+	return false
+end
+
+function DHVultureTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not VehicleTactic.Update(self)) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

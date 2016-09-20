@@ -3,19 +3,21 @@
 -- AbilsThem are abilities used against enemy targets
 AutoAbilsSettings.AbilsThem["ork_race"] =
 {
-	{ "ork_stikkbombs", 20 },
-	{ "ork_tank_zappa", 20 },
-	{ "ork_superstick_bomb", 18 },
-	{ "ork_tankbusta_bombs", 18 }
+	{ "ork_wierdboy_zzzap_blast", 45 },
+	{ "ork_wierdboy_zzzap", 45 },
+	{ "ork_stikkbombs", 30 },
+	{ "ork_tankbusta_bomb", 30 },
+	{ "ork_wierdboy_frazzle", 25 },
+	{ "ork_stikkbombs_krak", 20 },
+	{ "ork_stikkbombs_kommandoz", 20 },
+	{ "ork_superstick_bomb", 15 },
+	{ "ork_superstick_bomb_mekboy", 15 }
 }
 
--- AbilsUs are abilities used on self
 AutoAbilsSettings.AbilsUs["ork_race"] =
 {
-	{ "ork_turbo_boost", 45 },
-	{ "ork_turbo_boost_stormboyz", 35 },
+	{ "ork_power_surge", 15 },
 	{ "ork_power_of_waagh", 15 },
-	{ "ork_fightin_juice", 14 },
-	{ "ork_power_surge", 0 },
-	{ "ork_da_big_waagh", 0 },
+	{ "ork_waagh_charge", 15 },
+	{ "ork_fightin_juice", 14 }
 }

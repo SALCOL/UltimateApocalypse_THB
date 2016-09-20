@@ -1,0 +1,123 @@
+----------------------------------------
+-- File: 'sistersassassintactic.ai'
+-- Edited by Thudmeizer @ 12.04.2016
+
+class 'SistersAssassinTactic' (SistersInfantryTactic)
+
+SistersAssassin = {}
+
+function SistersAssassinTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Assassin Tactic")
+end
+
+function SistersAssassinTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function SistersAssassinTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Assassin is allowed to retreat even directly after a jump
+function SistersAssassinTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersAssassinTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function SistersAssassinTactic:CanJumpAttached()
+	return true
+end
+
+function SistersAssassinTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersAssassin.dolanphail_id == nil) then
+		SistersAssassin.dolanphail_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_dolan_phail" )
+	end
+
+	if (SistersAssassin.tears_id == nil) then
+		SistersAssassin.tears_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_emperors_tears" )
+	end
+
+	if (SistersAssassin.fervor_id == nil) then
+		SistersAssassin.fervor_id = cpu_manager.stats:GetAbilityID( "sisters_righteous_fervor" )
+	end
+
+	if (SistersAssassin.run_id == nil) then
+		SistersAssassin.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function SistersAssassinTactic:DoAbilities()
+
+	-- Phial of Dolain: Timed support ability, grants a boost of movement speed to the entire squad when used. (Faith cost: 125)
+	if (self.squad_ai:IsAttached() and self.squad_ai:CanDoAbility(SistersAssassin.dolanphail_id)) then
+
+		if (self:IsMoving() or self:IsInSubState()) then
+			self.squad_ai:DoSpecialAbility(SistersAssassin.dolanphail_id) 
+		end
+	end
+	
+	-- Emperor's Tears: Timed aggressive ability, grants invulnerability and an extra boost of damage to the squad when used. (Faith cost: 200)
+	if (self.squad_ai:IsAttached()) then 
+
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.6) then
+	
+			if (self.squad_ai:CanDoAbility(SistersAssassin.tears_id)) then
+				self.squad_ai:DoSpecialAbility(SistersAssassin.tears_id) 
+			end
+		end
+	end
+
+	-- Increases Speed and Damage but kills squad overtime
+	if (self.squad_ai:IsAttacking() and self.squad_ai:WasRecentlyHurt() and	self.squad_ai:GetHealthPercentage() > 0.4 and not self.squad_ai:IsCapturing() and not self.squad_ai:IsBroken()) then
+
+		if (self.squad_ai:CanDoAbility(SistersAssassin.fervor_id)) then 
+			self.squad_ai:DoSpecialAbility(SistersAssassin.fervor_id)
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersAssassin.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersAssassin.run_id )
+		end
+	end
+end
+
+function SistersAssassinTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+		
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

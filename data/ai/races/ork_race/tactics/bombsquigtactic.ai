@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'bombsquig.ai'
 -- Created by Cylarne @ 2014
+-- Edited by Thudmeizer	@ 30.04.2016
 
 class 'BombsquigTactic' (OrkInfantryTactic)
 
@@ -27,13 +28,28 @@ function BombsquigTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	
-	if (iPower >= 1000) then
-		Ability.DoAbilityArea(self.squad_ai, Bombsquig.kaboom_id, Ability.Filters.CloseEnemy, 20, 17)
+	if (iPower >= 150) then
+		Ability.DoAbilityArea(self.squad_ai, Bombsquig.blowup_id, Ability.Filters.CloseEnemy, 10, 5)
+
+		-- Search a building
+		local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.squad_ai:GetPosition(), 10, 3)
+		if (oBuilding ~= nil) then
+			-- Detonate the Bomb!
+			self.squad_ai:DoSpecialAbilityEntity(Bombsquig.blowup_id, oBuilding) 
+		end
 	end
-		
-	if (iPower >= 200) then
-		Ability.DoAbilityArea(self.squad_ai, Bombsquig.blowup_id, Ability.Filters.CloseEnemy, 6, 10)
+
+	if (iPower >= 900) then
+		Ability.DoAbilityArea(self.squad_ai, Bombsquig.kaboom_id, Ability.Filters.CloseEnemy, 10, 15)
+
+		-- Search a building
+		local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.squad_ai:GetPosition(), 10, 5)
+		if (oBuilding ~= nil) then
+			-- Detonate the Bomb!
+			self.squad_ai:DoSpecialAbilityEntity(Bombsquig.kaboom_id, oBuilding) 
+		end
 	end
+
 end
 
 function BombsquigTactic:Reinforce()
@@ -43,16 +59,16 @@ function BombsquigTactic:Reinforce()
 		return
 	end
    
-	-- If there are no ressources available, don't upgrade!
+	-- If there are no resources available, don't upgrade!
 	if (not Tactic.Options.can_reinforce) then
 		return
 	end
 	
-	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	-- Only reinforce if we have the required resource.
-	if (iRequisition < 1000) then
-		return
+	-- Don't reinforce more than 8 squad members -- they get stuck
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 8) then
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end
 	end
 end
 

@@ -1,0 +1,76 @@
+--Your squads will fall back as they break their morale
+--
+-- original functions by Relic Entertainment Inc.
+-- (c) 2003 Relic Entertainment Inc.
+-- 
+--Created by ScarCow
+--Heavily edited by CutterShane
+--version 1.1
+
+import("Player.scar");
+import("GroupCallers.scar");
+import("Command.scar");
+import("Groups.scar");
+import("ScarUtil.scar");
+
+FallbackSettings = {}
+FallbackSettings.raceInfo = {}
+
+myPoints = nil
+chickenID = nil
+
+function MoraleMainRule()
+	local j = World_GetPlayerCount()
+	for i = 1, j do
+		local player = World_GetPlayerAt (i-1)
+		local playerRace = Player_GetRaceName (player)
+		local Fallback = function (sgroupid, itemindex, squadID)
+			if Squad_IsMoraleBroken (squadID) then
+				local squadpos = Squad_GetPosition (squadID)
+				local myPlayerID = Squad_GetPlayerOwner (squadID)
+				local close_position = Player_GetStartPosition (myPlayerID)
+				local distance = World_DistancePointToPoint (squadpos, close_position)
+				local DistSgroupToEntity = function (egroupid, itemindex, entityID)
+					local pos = Entity_GetPosition (entityID)
+					local checkdist = World_DistancePointToPoint (squadpos, pos)
+					if (checkdist < distance) then
+						distance = checkdist
+						close_position = pos
+					end
+				end
+				EGroup_Clear (myPoints)
+				Player_GetStrategicPoints (myPlayerID, myPoints)
+				EGroup_ForEach (myPoints, DistSgroupToEntity)
+				SGroup_Clear (chickenID)
+				SGroup_Add (chickenID, squadID)
+				Command_SquadPos (myPlayerID, chickenID, SCMD_Move, close_position)
+				if (FallbackSettings.raceInfo[playerRace] ~= nil) then
+					for m in FallbackSettings.raceInfo[playerRace] do
+						Cmd_CastAbilitySelf ("sg_chickens", FallbackSettings.raceInfo[playerRace][m])
+					end
+				end
+			end
+		end
+		SGroup_ForEach (Player_GetSquads (player), Fallback)
+	end
+end
+
+function Morale_InitRule()
+	local j = World_GetPlayerCount()
+	for i = 1, j do
+		local player = World_GetPlayerAt(i-1)
+		local playerRace = Player_GetRaceName (player)
+		if (FallbackSettings.raceInfo[playerRace] == nil) then
+			pcall (import, 'race_specific/'..playerRace..'_fallback.scar')
+		end
+	end
+	myPoints = EGroup_CreateIfNotFound ("eg_MyStrategicPoints")
+	chickenID = SGroup_CreateIfNotFound ("sg_chickens")
+	Rule_AddInterval (MoraleMainRule, 1.01) 
+end
+
+function Setupfallback()
+	Rule_AddOneShot( Morale_InitRule, 1.30 ) 
+end
+
+Scar_AddInit(Setupfallback)

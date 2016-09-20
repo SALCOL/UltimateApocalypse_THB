@@ -1,0 +1,72 @@
+----------------------------------------
+-- File: 'guardturrettactic.ai'
+-- Edited by Thudmeizer         @ 28.02.2016
+
+class 'GuardTurretTactic' (BaseTactic)
+
+GuardTurret = {}
+
+function GuardTurretTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Guard Turret Tactic")
+end
+
+function GuardTurretTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function GuardTurretTactic:InitAbilities()
+
+	-- Init standard ability ID's
+	if (GuardTurret.repair_id == nil) then
+		GuardTurret.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function GuardTurretTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Volcano Cannon	-- addon_guard_platform_volcano
+--	self:AutoBuildAddOn(1) -- EMP			-- addon_guard_platform_emp
+
+	-- Figure out my enemy's favourite class
+	local enemy = cpu_manager:FindClosestEnemyPlayer()
+	if (enemy == nil) then
+		return
+	end
+	
+	local class_type = enemy:GetMajorityClassType()
+	
+	-- Larkins hard counter upgrade for infantry
+	if (class_type == UnitStatsAI.UC_LightInfantryLow) or 
+		(class_type == UnitStatsAI.UC_LightInfantryMed) or 
+		(class_type == UnitStatsAI.UC_LightInfantryHigh) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryMed) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryHigh) or
+		(class_type == UnitStatsAI.UC_MonsterMed) or
+		(class_type == UnitStatsAI.UC_MonsterHigh) then
+   		if (cpu_manager:GetTierLevel() >= 1) then 
+			self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())	-- Volcano
+		end
+	-- Larkins hard counter upgrade for Vehicles
+	elseif (class_type == UnitStatsAI.UC_VehicleLow) or 
+		(class_type == UnitStatsAI.UC_VehicleMed) or
+		(class_type == UnitStatsAI.UC_VehicleHigh) then
+   		if (cpu_manager:GetTierLevel() >= 1) then 
+			self:AutoBuildTurretAddOn(1, self.base_ai:GetEntity():GetID())	 -- EMP
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( GuardTurret.repair_id )) then
+			self.base_ai:DoSpecialAbility( GuardTurret.repair_id )
+		end
+	end
+end

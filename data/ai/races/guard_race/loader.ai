@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'guardloader.ai'
 -- Edited by Arkhan	@ 23.10.2006
--- Edited by Thudmeizer @ 01.11.2007
+-- Edited by Thudmeizer @ 20.06.2016
 -- Renamed by Corsix    @ 13.02.2006
 -- Edited by Cylarne_04 2011
 
@@ -32,25 +32,52 @@ function guard_race:LoadRace( eDifficulty )
 	import( 'Races/guard_race/Tactics/EnginseerTactic.ai' )
 	import( 'Races/guard_race/Tactics/ConscriptTactic.ai' )
 	import( 'Races/guard_race/Tactics/GuardSquadTactic.ai' )
-	import( 'Races/guard_race/Tactics/KasrkinTactic.ai' )
-	import( 'Races/guard_race/Tactics/CommandSquadTactic.ai' )
-	import( 'Races/guard_race/Tactics/PsykerTactic.ai' )
-	import( 'Races/guard_race/Tactics/PriestTactic.ai' )
-	import( 'Races/guard_race/Tactics/CommissarTactic.ai' )
+	import( 'Races/guard_race/Tactics/RoughRiderTactic.ai' )
+	import( 'Races/guard_race/Tactics/SpecialWeaponsTactic.ai' )
+	import( 'Races/guard_race/Tactics/HeavyWeaponsTactic.ai' )
 	import( 'Races/guard_race/Tactics/HeavyWeaponsTeamTactic.ai' )
+	import( 'Races/guard_race/Tactics/CommissarCadetTactic.ai' )
+	import( 'Races/guard_race/Tactics/OgrynTactic.ai' )
+	import( 'Races/guard_race/Tactics/KasrkinTactic.ai' )
+	import( 'Races/guard_race/Tactics/StormtrooperTactic.ai' )
+	import( 'Races/guard_race/Tactics/MasterVoxTactic.ai' )
+	import( 'Races/guard_race/Tactics/BannerBearerTactic.ai' )
+	import( 'Races/guard_race/Tactics/MedicTactic.ai' )
+	import( 'Races/guard_race/Tactics/AssassinTactic.ai' )
+	import( 'Races/guard_race/Tactics/CommissarTactic.ai' )
+	import( 'Races/guard_race/Tactics/PsykerTactic.ai' )
+	import( 'Races/guard_race/Tactics/PsykerCommandSquadTactic.ai' )
+	import( 'Races/guard_race/Tactics/PriestTactic.ai' )
+	import( 'Races/guard_race/Tactics/ColonelTactic.ai' )
+	import( 'Races/guard_race/Tactics/OfficerMaleTactic.ai' )
+	import( 'Races/guard_race/Tactics/OfficerFemaleTactic.ai' )
+	import( 'Races/guard_race/Tactics/CommandSquadTactic.ai' )
+	import( 'Races/guard_race/Tactics/ConvoyTactic.ai' )
+	import( 'Races/guard_race/Tactics/SentinelTactic.ai' )
 	import( 'Races/guard_race/Tactics/ChimeraTactic.ai' )
-	import( 'Races/guard_race/Tactics/TitanTactic.ai' )
+	import( 'Races/guard_race/Tactics/ChimeraKronusTactic.ai' )
 	import( 'Races/guard_race/Tactics/HellhoundTactic.ai' )
 	import( 'Races/guard_race/Tactics/MarauderTactic.ai' )
+	import( 'Races/guard_race/Tactics/VigilantTactic.ai' )
+	import( 'Races/guard_race/Tactics/ValkyrieTactic.ai' )
 	import( 'Races/guard_race/Tactics/VultureTactic.ai' )
 	import( 'Races/guard_race/Tactics/BasiliskTactic.ai' )
-	import( 'Races/guard_race/Tactics/SentinelTactic.ai' )
+	import( 'Races/guard_race/Tactics/DeathstrikeTactic.ai' )
+	import( 'Races/guard_race/Tactics/VanquisherCommandTactic.ai' )
 	import( 'Races/guard_race/Tactics/ShadowswordTactic.ai' )
+	import( 'Races/guard_race/Tactics/StormlordTactic.ai' )
+	import( 'Races/guard_race/Tactics/TitanTactic.ai' )
+	import( 'Races/guard_race/Tactics/ReaverCaptainTactic.ai' )
 	import( 'Races/guard_race/Tactics/GuardHQTactic.ai' )
+	import( 'Races/guard_race/Tactics/GuardArrayTactic.ai' )
 	import( 'Races/guard_race/Tactics/GuardMarsPatternTactic.ai' )
 	import( 'Races/guard_race/Tactics/GuardNuclearFacilityTactic.ai' )
+	import( 'Races/guard_race/Tactics/GuardBasiliskMagnusTactic.ai' )
 	import( 'Races/guard_race/Tactics/GuardBunkerTactic.ai' )
-	import( 'Races/guard_race/Tactics/DeathstrikeTactic.ai' )
+	import( 'Races/guard_race/Tactics/GuardBuildingTactic.ai' )
+	import( 'Races/guard_race/Tactics/GuardTurretTactic.ai' )
+	import( 'Races/guard_race/Tactics/GuardBolterTurretTactic.ai' )
+	import( 'Races/guard_race/Tactics/GuardBigGeneratorTactic.ai' )
 	return true
 end
 
@@ -78,58 +105,86 @@ function guard_race:CreateTactic(oSquadAI)
 	local eClass = oSquadAI:GetStats():GetClass()
 	
 	-- Check if there is a special tactic for the unit available
-	if (sUnitName == "guard_squad_guardsmen") then
-		return GuardSquadTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_guardsmen_specialweapons") then
-		return GuardSquadTactic(oSquadAI)
+	if (sUnitName == "guard_squad_enginseer") then
+		return EnginseerTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_guardsmen_conscript") then
 		return ConscriptTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_guardsmen") then
+		return GuardSquadTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_guardsmen_rider") then
+		return RoughRiderTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_guardsmen_specialweapons") then
+		return SpecialWeaponsTactic(oSquadAI)
+	elseif (sUnitName == "guard_heavy_weapons_team_support_squad") then
+		return HeavyWeaponsTactic(oSquadAI)
+	elseif (sUnitName == "guard_heavy_weapons_team_squad") or (sUnitName == "guard_heavy_weapon_team_entrenched_squad_sp") then
+		return HeavyWeaponsTeamTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_commissar_cadet") then
+		return CommissarCadetTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_ogryns") then
+		return OgrynTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_kasrkin") then
 		return KasrkinTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_stormtrooper") then
-		return KasrkinTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_command_squad") then
-		return CommandSquadTactic(oSquadAI)
-	elseif (sUnitName == "npc_squad_civilian_group") then
-		return CommandSquadTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_priest") then
-		return PriestTactic(oSquadAI)
+		return StormtrooperTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_master_vox") then
+		return MasterVoxTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_banner_bearer") then
+		return BannerBearerTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_field_medic") then
+		return MedicTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_assassin") then
+		return AssassinTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_commissar") then
+		return CommissarTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_psyker") then
 		return PsykerTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_command_squad_psykers") then
-		return PsykerTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_commissar") then
-		return CommissarTactic(oSquadAI)
-	elseif (sUnitName == "guard_heavy_weapons_team_squad") then
-		return HeavyWeaponsTeamTactic(oSquadAI)
-	elseif (sUnitName == "guard_heavy_weapon_team_entrenched_squad_sp") then
-		return HeavyWeaponsTeamTactic(oSquadAI)
+		return PsykerCommandSquadTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_priest") then
+		return PriestTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_command_squad_colonel") then
+		return ColonelTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_officer_squad") then
+		return OfficerMaleTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_officer_support_squad") then
+		return OfficerFemaleTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_command_squad") or (sUnitName == "npc_squad_civilian_group") then
+		return CommandSquadTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_convoy_sp_dxp3") then
+		return ConvoyTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_sentinel") then
 		return SentinelTactic(oSquadAI)
-	elseif (sUnitName == "guard_vehicles_shadowsword") then
-		return ShadowswordTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_chimera") then
 		return ChimeraTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_chimera_kronus") then
-		return ChimeraTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_valkyrie_transport") then
-		return ChimeraTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_marauder") then
-		return MarauderTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_vulture") then
-		return VultureTactic(oSquadAI)
+		return ChimeraKronusTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_hellhound") then
 		return HellhoundTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_marauder") then
+		return MarauderTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_marauder_vigilant") then
+		return VigilantTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_valkyrie_transport") then
+		return ValkyrieTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_vulture") then
+		return VultureTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_basilisk") then
 		return BasiliskTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_enginseer") then
-		return EnginseerTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_deathstrike_missile_launcher") then
 		return DeathstrikeTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_warhound_titan") or
-		(sUnitName == "guard_squad_reaver_titan") then
+	elseif (sUnitName == "guard_squad_lemanruss_vanquisher_command") then
+		return VanquisherCommandTactic(oSquadAI)
+	elseif (sUnitName == "guard_vehicles_shadowsword") then
+		return ShadowswordTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_stormlord") then
+		return StormlordTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_warhound_titan") or (sUnitName == "guard_squad_reaver_titan") then
 		return TitanTactic(oSquadAI)
-	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) then
+	elseif (sUnitName == "guard_squad_reaver_titan_captain") then
+		return ReaverCaptainTactic(oSquadAI)
+	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
+	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return GuardVehicleTactic(oSquadAI)
 	end	
 	return GuardInfantryTactic(oSquadAI)
@@ -145,17 +200,32 @@ function guard_race:CreateBaseTactic(oBuilding)
 	if (sBuildingName == "guard_hq") then
 		return GuardHQTactic(oBuilding)
 	elseif (sBuildingName == "guard_comms_array") then
-		return GuardHQTactic(oBuilding)
+		return GuardArrayTactic(oBuilding)
 	elseif (sBuildingName == "guard_mars_pattern") then
 		return GuardMarsPatternTactic(oBuilding)
 	elseif (sBuildingName == "guard_nuclear_facility") then
 		return GuardNuclearFacilityTactic(oBuilding)
-	elseif (sBuildingName == "guard_listening_post") then
+	elseif (sBuildingName == "guard_listening_post") or 
+		(sBuildingName == "guard_infantry") or 
+		(sBuildingName == "guard_mechanized") or 
+		(sBuildingName == "guard_industry") or 
+		(sBuildingName == "guard_tanks") then
 		return GuardBunkerTactic(oBuilding)
-	elseif (sBuildingName == "guard_infantry") then
-		return GuardBunkerTactic(oBuilding)
-	elseif (sBuildingName == "guard_mechanized") then
-		return GuardBunkerTactic(oBuilding)
+	elseif (sBuildingName == "guard_basilisk_magnus") then
+		return GuardBasiliskMagnusTactic(oBuilding)
+	elseif (sBuildingName == "guard_plasma_generator") or 
+		(sBuildingName == "guard_tactica") or 
+		(sBuildingName == "guard_titan_facility") or 
+	        (sBuildingName == "guard_turret_heavy_bolter") or 
+		(sBuildingName == "guard_wall") or 
+		(sBuildingName == "guard_wall_fortified") then
+		return GuardBuildingTactic(oBuilding)
+	--elseif (sBuildingName == "guard_turret_heavy_bolter") then 
+		--return GuardBolterTurretTactic(oBuilding)
+	elseif (sBuildingName == "guard_turret_missile_launcher_sp") then 
+		return GuardTurretTactic(oBuilding)
+	elseif (sBuildingName == "guard_thermo_plasma") or (sBuildingName == "guard_thermonuclear_generator") then
+		return GuardBigGeneratorTactic(oBuilding)
 	end
 	return nil
 end

@@ -1,0 +1,71 @@
+----------------------------------------
+-- File: 'zoanthropetactic.ai'
+-- Created by Cylarne @ 2015
+-- Edited by Thudmeizer	@ 25.04.2016
+
+class 'ZoanthropeTactic' (TyranidInfantryTactic)
+
+Zoanthrope = {}
+
+function ZoanthropeTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Zoanthrope Tactic")
+end
+
+function ZoanthropeTactic:InitAbilities()
+
+	if (Zoanthrope.catalyst_id == nil) then
+		Zoanthrope.catalyst_id = cpu_manager.stats:GetAbilityID( "tyranids_zohan_catalyst" )
+	end
+
+	if (Zoanthrope.run_id == nil) then
+		Zoanthrope.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function ZoanthropeTactic:DoAbilities()
+	
+	-- Catalyst: Activate a wide aura catalyst affect that will allow your army nearby to fight on even when they should fall.
+	-- While active, all nearby ally units within the area of affect cannot die, will heal faster than normal, and receive bioshield morale immunity for a duration.
+	if (self.squad_ai:CanDoAbility(Zoanthrope.catalyst_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Zoanthrope.catalyst_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and oUnit:GetHealthPercentage() < 0.5 and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbility(Zoanthrope.catalyst_id)
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Zoanthrope.run_id )) then
+			self.squad_ai:DoSpecialAbility( Zoanthrope.run_id )
+		end
+	end
+end
+
+function ZoanthropeTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+	
+	-- Attach to melee in tier2+
+	if (cpu_manager:GetTierLevel() > 1) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+end

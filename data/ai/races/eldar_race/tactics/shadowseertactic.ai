@@ -1,0 +1,334 @@
+----------------------------------------
+-- File: 'shadowseertactic.ai'
+-- Edited by Thudmeizer @ 13.06.2016
+
+class 'ShadowseerTactic' (EldarInfantryTactic)
+
+Shadowseer = {}
+
+function ShadowseerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Shadowseer Tactic")
+
+	self.dance_time = 0
+end
+
+function ShadowseerTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelShadowseer = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelShadowseer ~= nil) then
+			local addOnID = buildChannelShadowseer:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelShadowseer:IsBuilding() == 0 and buildChannelShadowseer:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelShadowseer:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function ShadowseerTactic:IsAttacker()	
+	return self:IsCommanderAttacker()
+end
+
+function ShadowseerTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Shadowseer is allowed to retreat even directly after a jump
+function ShadowseerTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function ShadowseerTactic:CanJumpAttached()
+	return true
+end
+
+function ShadowseerTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Shadowseer.blind_id == nil) then
+		Shadowseer.blind_id = cpu_manager.stats:GetAbilityID( "eldar_blind" )
+	end
+	if (Shadowseer.eldritchtempest_id == nil) then
+		Shadowseer.eldritchtempest_id = cpu_manager.stats:GetAbilityID( "eldar_eldritch_tempest" )
+	end
+	if (Shadowseer.empathy_id == nil) then
+		Shadowseer.empathy_id = cpu_manager.stats:GetAbilityID( "eldar_empathy" )			-- health regen for allied squads
+	end
+	if (Shadowseer.alacrity_id == nil) then
+		Shadowseer.alacrity_id = cpu_manager.stats:GetAbilityID( "eldar_gracious_alacrity" )		-- increase health, production, repair rate of units (builders) or structures (unit building ones)
+	end
+	if (Shadowseer.mercy_id == nil) then
+		Shadowseer.mercy_id = cpu_manager.stats:GetAbilityID( "eldar_gracious_mercy" )			-- increase health and morale maximums for allied squads
+	end
+	if (Shadowseer.misdirection_id == nil) then
+		Shadowseer.misdirection_id = cpu_manager.stats:GetAbilityID( "eldar_misdirection" )		-- target enemy or ground.. causes throw back and large morale loss
+	end
+	if (Shadowseer.fire_id == nil) then
+		Shadowseer.fire_id = cpu_manager.stats:GetAbilityID( "eldar_shards_fire" )			-- target enemy or ground.. fire damage to enemies
+	end
+	if (Shadowseer.fireimproved_id == nil) then
+		Shadowseer.fireimproved_id = cpu_manager.stats:GetAbilityID( "eldar_shards_fire_improved" )	-- target enemy or ground.. fire damage to enemies
+	end
+	if (Shadowseer.ice_id == nil) then
+		Shadowseer.ice_id = cpu_manager.stats:GetAbilityID( "eldar_shards_ice" )			-- target enemy or ground.. ice and movement damage to enemies
+	end
+	if (Shadowseer.iceimproved_id == nil) then
+		Shadowseer.iceimproved_id = cpu_manager.stats:GetAbilityID( "eldar_shards_ice_improved" )	-- target enemy or ground.. ice and movement damage to enemies
+	end
+	if (Shadowseer.tears_id == nil) then
+		Shadowseer.tears_id = cpu_manager.stats:GetAbilityID( "eldar_veil_of_tears" )			-- target enemy or structure.. affected unit has massive debuffs applied
+	end
+	if (Shadowseer.foot_id == nil) then
+		Shadowseer.foot_id = cpu_manager.stats:GetAbilityID( "eldar_fleetoffoot" )	
+	end
+	if (Shadowseer.run_id == nil) then
+		Shadowseer.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function ShadowseerTactic:DoAbilities()
+	
+	-- Try to activate Empathy
+	if (self.squad_ai:CanDoAbility(Shadowseer.empathy_id)) then
+		local range = self.squad_ai:GetAbilityRange( Shadowseer.empathy_id )	
+		local squad_filter = function( squad_ai )		
+			return squad_ai:IsInCombat() and squad_ai:IsInStateAttackMove() and squad_ai:GetHealthPercentage() < 0.4 and 
+					squad_ai:GetNumTroopers() >= 4 and not squad_ai:IsBroken() and
+					not squad_ai:IsCapturing()
+		end	
+   		local target_squad = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), range, squad_filter )
+		if (target_squad ~= nil) then
+			self.squad_ai:DoSpecialAbilitySquad( Shadowseer.empathy_id, target_squad:GetSquad() )
+ 		end
+	end
+
+	-- Try to activate Alacrity
+	if self.squad_ai:CanDoAbility(Shadowseer.alacrity_id) and not self.squad_ai:IsAttached() then
+        	local range = self.squad_ai:GetAbilityRange( Shadowseer.alacrity_id )
+        	local rand = math.random(1, 2)
+        	if rand == 1 then
+            		local oSquad = self:GetAlliedBuildingBuilderWithin(range)
+            		if oSquad ~= nil then
+                		--print(oSquad:GetSquadName())
+                		self.squad_ai:DoSpecialAbilitySquad( Shadowseer.alacrity_id, oSquad:GetSquad() )
+            		else
+                		local oBuilding = self:GetAlliedProducingStructureWithin(range)
+               			if oBuilding ~= nil then
+                    			--print(oBuilding:GetEntity():GetBlueprintName())
+                    			self.squad_ai:DoSpecialAbilityEntity(Shadowseer.alacrity_id, oBuilding:GetEntity())
+               			end
+            		end
+        		else
+            			local oBuilding = self:GetAlliedProducingStructureWithin(range)
+            			if oBuilding ~= nil then
+                			--print(oBuilding:GetEntity():GetBlueprintName())
+                			self.squad_ai:DoSpecialAbilityEntity(Shadowseer.alacrity_id, oBuilding:GetEntity())
+            		else
+                		local oSquad = self:GetAlliedBuildingBuilderWithin(range)
+               			if oSquad ~= nil then
+                    			--print(oSquad:GetSquadName())
+                    			self.squad_ai:DoSpecialAbilitySquad( Shadowseer.alacrity_id, oSquad:GetSquad() )
+                		end
+            		end
+        	end
+	end
+
+	-- Try to activate Mercy
+	if (self.squad_ai:CanDoAbility(Shadowseer.mercy_id)) then
+		local range = self.squad_ai:GetAbilityRange( Shadowseer.mercy_id )	
+		local squad_filter = function( squad_ai )		
+			return squad_ai:IsInCombat() and squad_ai:IsInStateAttackMove() and squad_ai:GetHealthPercentage() < 0.4 and squad_ai:GetMoralePercentage() < 0.4 and 
+					squad_ai:GetNumTroopers() >= 4 and not squad_ai:IsCapturing()
+		end	
+   		local target_squad = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), range, squad_filter )
+		if (target_squad ~= nil) then
+			self.squad_ai:DoSpecialAbilitySquad( Shadowseer.mercy_id, target_squad:GetSquad() )
+ 		end
+	end
+
+	-- If we are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			
+		Ability.DoAbilityTarget( self.squad_ai, Shadowseer.blind_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Shadowseer.blind_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.misdirection_id, Ability.Filters.CloseSquadEnemy, 2 ) 
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.fire_id, Ability.Filters.CloseEnemy, 6 )
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.fireimproved_id, Ability.Filters.CloseEnemy, 6 )
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.ice_id, Ability.Filters.CloseEnemy, 6 )
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.iceimproved_id, Ability.Filters.CloseEnemy, 6 )
+		Ability.DoAbilityTarget( self.squad_ai, Shadowseer.tears_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, Shadowseer.tears_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, Shadowseer.tears_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+ 	else
+		Ability.DoAbilityTarget( self.squad_ai, Shadowseer.blind_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, Shadowseer.blind_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.misdirection_id, Ability.Filters.CloseSquadEnemy, 4 ) 
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.fire_id, Ability.Filters.CloseEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.fireimproved_id, Ability.Filters.CloseEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.ice_id, Ability.Filters.CloseEnemy, 10 )
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.iceimproved_id, Ability.Filters.CloseEnemy, 10 )
+		Ability.DoAbilityTarget( self.squad_ai, Shadowseer.tears_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, Shadowseer.tears_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, Shadowseer.tears_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	end
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Superweapon - Eldritch Tempest: Unleash a deadly Eldritch Storm at the designated target. 
+	-- The Eldritch tempest will continue to execute lightning strikes at all targets 90m away from the designated target for 180 seconds. 
+	-- The lightning strikes are deadly, and everything that was struck by the lightning will be rendered idle and lose health over time.
+	if (self.squad_ai:CanDoAbility(Shadowseer.eldritchtempest_id) and (iRequisition >= 4500 and iPower >= 4500)) then
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.eldritchtempest_id, Ability.Filters.CloseEnemy, 20 )
+		Ability.DoAbilityPos( self.squad_ai, Shadowseer.eldritchtempest_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10 )
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Shadowseer.run_id )) then
+			self.squad_ai:DoSpecialAbility( Shadowseer.run_id )
+		elseif (self.squad_ai:CanDoAbility( Shadowseer.foot_id )) then
+			self.squad_ai:DoSpecialAbility( Shadowseer.foot_id )
+		end
+	end
+end
+
+function ShadowseerTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function ShadowseerTactic:IsProducing( eID )
+	local buildChannel = build_manager:GetBuildChannelFromID(eID)
+    	if buildChannel ~= nil then
+        	if buildChannel:IsBuilding() ~= 0 then
+            		return true
+        	end
+    	end
+    	return false
+end
+
+-- Called directly to find a nearby builder that is building a structure
+function ShadowseerTactic:GetAlliedBuildingBuilderWithin( iRange )
+	local iSelfPosition = self.squad_ai:GetPosition()
+	for oPlayer in cpu_manager.stats:GetPlayerStats() do
+    		if not oPlayer:IsPlayerDead() then
+        		if not cpu_manager.player_stats:IsEnemy(oPlayer) then
+            			for oSquad in oPlayer:GetSquads() do
+                			if oSquad:IsValid() then
+                    				if oSquad:IsEngineer() and oSquad:IsBuilding() ~= 0 then
+                        				if distance_sqr(oSquad:GetPosition(),iSelfPosition) < iRange*iRange then
+                            					return oSquad
+                        				end
+                    				end
+                			end
+           			end
+        		end
+    		end
+	end
+	return nil
+end
+
+-- Called directly to find an ally building that is producing (anything)
+function ShadowseerTactic:GetAlliedProducingStructureWithin( iRange )
+	local iSelfPosition = self.squad_ai:GetPosition()
+	for oPlayer in cpu_manager.stats:GetPlayerStats() do
+    		if not oPlayer:IsPlayerDead() then
+        		if not cpu_manager.player_stats:IsEnemy(oPlayer) then
+            			for oBuilding in oPlayer:GetBases() do
+                			if oBuilding:IsValid() then
+                    				if distance_sqr(oBuilding:GetPosition(),iSelfPosition) < iRange*iRange then
+                        				if self:IsProducing(oBuilding:GetEntity():GetID()) then
+                            					return oBuilding
+                       					end
+                   				end
+               				end
+            			end
+        		end
+    		end
+	end
+	return nil
+end
+
+function ShadowseerTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+    
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+    
+ 	-- Check for close commander
+    	local bSetRanged = false
+    	local bSetMelee = false
+	local vSquadPos = self.squad_ai:GetPosition()
+	local eStance = self.squad_ai:GetMeleeStance()
+	local oEnemyCommander = Ability.Filters.CloseCommanderEnemy(vSquadPos, 20, 1)
+   	if (oEnemyCommander ~= nil) then
+       
+        	-- Check health
+        	if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
+            		bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+           		self.dance_time = 0
+		else
+            		bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+        	end
+	else
+       		-- Check for close attached commander
+    		local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
+    		if (oSquad ~= nil and oSquad:IsAttached()) then
+    			bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+    		else
+    			bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+    		end
+	end
+
+	-- At leat 10 secs ranged stance/dancing
+    	if (bSetRanged) then
+        	self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+        	self.dance_time = g_iGMT
+	elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
+        	self.squad_ai:DoSetDefaultMeleeStance()
+        	self.dance_time = 0
+	end
+    
+	if (self.squad_ai:GetMeleeStance() == SquadAI.MSTANCE_Assault) then          
+		if (self.squad_ai:IsInCombat() or self.squad_ai:WasRecentlyHurt()) then
+            		if (self:TryAttachSquad(false, true, 50, 150, self.m_fCommanderAttachHealth) == nil) then
+                		self:TryAttachSquadMelee()
+           		end
+        	end
+    	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

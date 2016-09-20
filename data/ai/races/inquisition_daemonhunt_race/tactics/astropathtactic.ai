@@ -1,0 +1,57 @@
+----------------------------------------
+-- File: 'astropathtactic.ai'
+-- Edited by Thudmeizer @ 18.04.2016
+
+class 'AstropathTactic' (DaemonhuntInfantryTactic)
+
+Astropath = {}
+
+function AstropathTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Astropath Tactic")
+end
+
+function AstropathTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function AstropathTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function AstropathTactic:InitAbilities()
+
+	if (Astropath.run_id == nil) then
+		Astropath.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function AstropathTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Astropath.run_id )) then
+			self.squad_ai:DoSpecialAbility( Astropath.run_id )
+		end
+	end
+
+	-- Do basic abilities
+	DaemonhuntInfantryTactic.DoAbilities(self)
+end
+
+function AstropathTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+   
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	--attach to squad
+	self:TryAttachSquad( false, false, 1000, 200, nil )
+end

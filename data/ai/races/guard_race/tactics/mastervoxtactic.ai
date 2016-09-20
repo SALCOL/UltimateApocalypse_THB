@@ -1,0 +1,110 @@
+----------------------------------------
+-- File: 'mastervoxtactic.ai'
+-- Edited by Thudmeizer @ 29.02.2016
+
+class 'MasterVoxTactic' (GuardInfantryTactic)
+
+MasterVox = {}
+
+function MasterVoxTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Master Vox Tactic")
+
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+end
+
+function MasterVoxTactic:IsAttacker()	
+	return self:IsCommanderAttacker()
+end
+
+function MasterVoxTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function MasterVoxTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (MasterVox.demo_id == nil) then
+		MasterVox.demo_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge" )	
+	end
+	if (MasterVox.detonate_id == nil) then
+		MasterVox.detonate_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge_detonate" )	
+	end
+	if (MasterVox.strafing_id == nil) then
+		MasterVox.strafing_id = cpu_manager.stats:GetAbilityID( "guard_strafing_run_vox" )	
+	end
+	if (MasterVox.strike_id == nil) then
+		MasterVox.strike_id = cpu_manager.stats:GetAbilityID( "guard_valkyrie_strike_vox" )	
+	end
+	if (MasterVox.rally_id == nil) then
+		MasterVox.rally_id = cpu_manager.stats:GetAbilityID( "guard_vox_rally" )	
+	end
+	if (MasterVox.run_id == nil) then
+		MasterVox.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function MasterVoxTactic:DoAbilities()
+
+	-- Place Demo Charge
+	if (self.squad_ai:CanDoAbility(MasterVox.demo_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.demo_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.demo_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.demo_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Detonate Charge!
+	if (self.squad_ai:CanDoAbility(MasterVox.detonate_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.detonate_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.detonate_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.detonate_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+	
+	-- Commence Strafing Run!
+	if (self.squad_ai:CanDoAbility(MasterVox.strafing_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.strafing_id, Ability.Filters.CloseEnemy, 6 )
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.strafing_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+	end
+
+	-- Commence Valkyrie Strike!
+	if (self.squad_ai:CanDoAbility(MasterVox.strike_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.strike_id, Ability.Filters.CloseEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, MasterVox.strike_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Rally!
+	if (self.squad_ai:IsAttached()) then
+		if (self.squad_ai:IsBroken()) or (self.squad_ai:GetMoralePercentage() < 0.6) then
+	
+			-- Check if I can repair my morale
+			if (self.squad_ai:CanDoAbility( MasterVox.rally_id )) then
+				self.squad_ai:DoSpecialAbility( MasterVox.rally_id )
+			end
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( MasterVox.run_id )) then
+			self.squad_ai:DoSpecialAbility( MasterVox.run_id )
+		end
+	end
+end
+
+function MasterVoxTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+   
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	--attach to squad
+	self:TryAttachSquad( false, false, 1000, 200, nil )
+end

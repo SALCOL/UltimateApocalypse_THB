@@ -173,6 +173,13 @@ UnitTypes.eldar_race =
 		UpgradeFunction = UpgradeRangedSquad,
 		FXType = "Squad",
 	},
+	eldar_squad_shining_spears = 
+	{
+		Title = "Shining Spears",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
 	eldar_squad_wraithguard =
 	{
 		Title = "Wraithguard",
@@ -200,6 +207,7 @@ UnitTypes.eldar_race =
 		Type = "RegularForces",
 		UpgradeFunction = UpgradeRangedSquad,
 		FXType = "Squad",
+		CanAttach = true,
 	},
 	eldar_squad_grav_platform_brightlance =
 	{
@@ -207,6 +215,7 @@ UnitTypes.eldar_race =
 		Type = "SpecialForces",
 		UpgradeFunction = UpgradeRangedSquad,
 		FXType = "Squad",
+		CanAttach = true,
 	},
 	eldar_squad_grav_platform_dcannon =
 	{
@@ -237,6 +246,14 @@ UnitTypes.eldar_race =
 		UpgradeFunction = UpgradeCommander,
 		FXType = "Squad",
 	},
+	eldar_warlock_attachable_squad =
+	{
+		Title = "Warlock",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+		CanAttach = true,
+	},
 	eldar_squad_seer_council =
 	{
 		Title = "Seer Council",
@@ -250,6 +267,21 @@ UnitTypes.eldar_race =
 			"eldar_shuriken_pistol_seer_council",
 			"eldar_power_sword_seer_council",
 			"eldar_witchblade_seer_council",
+		},
+	},
+	eldar_squad_shadowseer =
+	{
+		Title = "Shadowseer",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"eldar_witchblade_farseer",
 		},
 	},
 	eldar_squad_farseer =
@@ -310,6 +342,13 @@ UnitTypes.eldar_race =
 	eldar_squad_falcon_grav_tank =
 	{
 		Title = "Falcon Grav Tank",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+	},
+	eldar_squad_hornet =
+	{
+		Title = "Hornet Grav Tank",
 		Type = "RegularForces",
 		UpgradeFunction = UpgradeTank,
 		FXType = "Vehicle",

@@ -1,0 +1,43 @@
+----------------------------------------
+-- File: 'necronobelisktactic.ai'
+-- Edited by Thudmeizer	@ 04.05.2016
+
+class 'NecronObeliskTactic' (BaseTactic)
+
+NecronObelisk = {}
+
+function NecronObeliskTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Obelisk Tactic")
+end
+
+function NecronObeliskTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (NecronObelisk.repair_id == nil) then
+		NecronObelisk.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+
+	if (NecronObelisk.vortex_id == nil) then
+		NecronObelisk.vortex_id = cpu_manager.stats:GetAbilityID( "necron_necronium_vortex" )
+	end
+end
+
+function NecronObeliskTactic:DoAbilities()
+
+	-- Apocalypse Superweapon: Necronium Vortex - Upon activation, you win!
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if (iPower >= 30000) then
+		if (self.base_ai:CanDoAbility( NecronObelisk.vortex_id )) then
+			self.base_ai:DoSpecialAbility( NecronObelisk.vortex_id )
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( NecronObelisk.repair_id )) then
+			self.base_ai:DoSpecialAbility( NecronObelisk.repair_id )
+		end
+	end
+end

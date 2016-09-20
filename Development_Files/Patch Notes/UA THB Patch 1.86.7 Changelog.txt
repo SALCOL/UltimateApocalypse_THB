@@ -1,0 +1,586 @@
+Hint: 
+* = Fixes.
+- = Ideas not taken to effect yet.
+!* = Applied ingame, but as rough drafts (non final product)
+> = Noted for next version.
+>> = Noted, but not for another two versions or more.
+
+------------------------
+
+PLANS FOR FUTURE VERSIONS:
+
+- Do up more balance changes in a phase of regular patching for version 1.86.
+- Finish AI for all factions, complete revamp by Thudmeizer.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+NEW CREDITS:
+- Thudmeizer - For Eldar, Chaos Space Marines, and Ork new AI. + Greater improved Space Marine AI. And even more work.
+- Eranthis Aconite for more structure sounds.
+- Zany Reaper - TTRU mod for Shining Spears and more unit sounds.
+- Q-ZERO.
+
+
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+------------------------
+Global: 
+------------------------
+* All AI are revamped, thanks to Thudmeizer.
+* All commander inspiring choices: Production rates now actually increase the production rates of everything. Description updated.
+* All commander inspiring choices: Morale Bonus increases morale bonuses of all units by 40% from 50%. Description updated.
+* All turret limits were rollbacked. Unlimited turrets.
+* All walls now require a control radius, but gives off a control radius at the same time.
+* All tank traps now function differently. All allied and enemy units or structures within a 5m radius (very short area) of a Tank Trap will receive range defensive bonuses, like cover. Tank Traps will also disallow keen sight detection of nearby units, allowing only dedicated detectors to detect the tank traps.
+* All Tank Trap health increased from 75 hp to 200 hp. Armor increased by 20.
+* All Overshield recharge abilities now affects all vehicles.
+- All ucs containing "Abilities: " were reworked, displaying "Ability Use" instead with no numbers.
+* All super structures no longer produce a unit over and over. So because of this, addons were given, and players must purchase the addon instead of wait for the unit to be complete.
+- New 1.86 rule: All transports are equipped with abilities that can distribute bonuses to your squads dependant on the faction. Transport abilities are listed in each faction.
+- New 1.86 rule: All relic units (daemons especially) damage versus commanders is now normal damage instead of almost null. 
+	Reason being: Commanders in vanilla was designed to take down relic units as it was the only counter and commanders were very support. Now, commanders are heroic and can now be dealt damage to by relic units and titans of any type.
+* All nukes now deals 50% damage (from 30%) to low armored structures, like generators, Listening Posts, or turrets. 
+* All nukes deal 100% more damage to everything but armored, heavily armored, living metal, and super structures.
+* Titanic shield charge (from the thermo generators) cost 3000 power from 7000.
+* All Electro Supermassive Pulse W.O.M.D. now lasts for 2 minutes from 75 seconds.
+- All Titanic aircraft relic resource cost increased by 150 and costs 50% more to produce. 
+
+AI Changes ------------------------
+
+------------------------
+Chaos Marines: 
+------------------------
+
+* Desecrated Castles no longer casts the summon gate ability.
+* Chaos sorcerer abilities: Storm of Change, Meteor Swarm and Greater Bolt of Change damage reduced significantly
+* Chaos sorcerer ritual abilities now require Tier 5
+* Chaos Sorceror teleportation no longer makes a boom.
+* Rubric Marine health decreased by 15%.
+- Rubric Marine squad loadout (max) decreased by 5.
+* Warp Storm of World End cost decreased from 50000/50000 to 40000/40000 each.
+* Global invulnerability for the lord of change is now targetable again as it is so OP.
+* Chaos Sorceror corruption aura damage decreased by 30%. 
+* Forced Labor now deals damage to the Hellsmith.
+* Spawned Turret limit was reduced to 10.
+* Fixed spell icons so they all have the same border.
+* Fixed the Daemon Princes ritual tooltips referencing the Sorcerer instead of him.
+* Vindicator Gun reload time increased from 2 seconds recharge to 3.5 seconds recharge.
+* Noise Marine default weapons damage against structures decreased by 75%.
+* Since they are available early, Chaos Vindicators health decreased by 500hp.
+* Hell Talons cost increased by 30 power.
+* Eye of the Warp global ability cost increased from 100/100 to 160/160 requisition/power.
+- Hell Drake costs 20% more to produce.
+* Lord of Change Mini Warp Storm now requires tier 4.
+* Lord of Change's Invulnerability is no longer globally affected, but can now target allies.
+
+CSM
+Bolt of Change, Greater Bolt of Change, Invulnerability, and Warp Time icons - missing pink border to align/look similiar to other spells. Currently, it looks too out of place.
+Chaos Lord - When the Terminator Armour is built wargear options are still present even though Terminator Armour does not support it. There is also no way to go back to a normal Chaos Lord to take advantage of those so it seems redundant to have them present once Terminator Armour is built.
+Daemon Prince - some of its spells like All Seeing Eye or Sacrifice reference the Sorcerer NOT the Daemon Prince.
+
+
+AI Changes-------------
+
+------------------------
+Chaos Daemons:
+------------------------
+
+* Angron will no longer receive invulnerability penalties when morale is lost.
+* Turrets cost decreased from 220 requisition to 190 requisition.
+* Daemon Signatures cost decreased from 160 to 150 requisition.
+* Eye of Madness requisition cost decreased from 200 to 180 requisition.
+* Increased Angrons armour by 5, minimum armour by 15 and health by 20,000
+* Increased Lesser Daemon Portal size by (x) 2.
+* Greater Daemon Prince starting health increased by 4,000hp. Damage increased by 80%. Health regeneration increased by 50.
+* Greater Daemon Prince research cost increased to 4,000 relic resource.
+* Planetary Exterminator cost increased from 22500/22500 to 26000/26000 each resource.
+- Spotting enemy announcements now works for daemons!
+- Daemon Lord no longer loses shield aesthetics when morale is lost.
+- Gift of Chaos: Armor research now works correctly.
+- Gift of Chaos: Life Leeching was changed up, renamed to "Daemonic Constitution", and increases health of all minions and Greater Daemons.
+- Greater Daemon Prince health and damage increased by 10%.
+- Blight Drones health increased. Morale damage increased and now spreads poison by a chance.
+- Juggernaut health increased.
+- Chaos Daemons health (Bloodthirsters, GUO, Keeper of Secrets, etc) is reduced by half until tier IV is reached.
+- Angron's morale increased to 19000 max. Regeneration in combat increased to -300 health per second.
+- Once Angron upgrades with the Invulnerable Hide wargear, his invulnerability will not go away upon morale drop.
+- Furies melee damage decreased.
+- Maledictum sight radius decreased. 
+- Hellspawn sight radius is now the same as the Maledictum's sight.
+- Level 8 hero researches now give heroes the ability to cast warp storms (global recharge and used once every 10 minutes with a higher cost. Relic and super structure required.)
+- Daemonettes and Fiends of Slaanesh melee damage decreased.
+- Soul Grinder damage versus structures decreased by 60%.
+
+AI Changes-------------
+
+------------------------
+Dark Eldar: 
+------------------------ 
+* 1.86 Transport Rule: Raider and Rampage (Ability quick recharge, Health recovery, Extra Reinforcements (Tier 2), Deploy Minefield (Tier 2)) 
+!* New Unit: Instigator Titan
+!* New Unit: Araspida
+!* New Research: Dark Abyss.
+- New addon: Torment Turret
+- New addon: Citadel Weapons (Add-On)
+* Model update: Voidraven Fighter. Voidraven Fighter name changed to Razorwing.
+* Razorwing can no longer use Implosion Missiles. This weapon is only for the Voidraven only. Cheaper and quicker to produce.
+* Razorwings and Voidravens no longer requires the donation of 4000 souls.
+* Dark Eldar race now uses relic resource instead of squad/support caps to allow more titans.
+* To increase relic resource, donate souls to the soul cage.
+* Donation of souls researches now requires a relic.
+* Kabal Fortresses now contains Shroud and Waystation abilities, similar to Portals.
+* Kabal Fortress can now deepstrike up to 2 squads within its hold.
+* Structures can relocate to Kabal Fortresses.
+* Portal research icons were changed up and improved.
+* Shadow Super-Heavy health increased by 2,000hp. 
+* Shadow Super-Heavy pink icon was fixed.
+* Rampage cost increased by 100 more power.
+* Haemonculus no longer loses shield aesthetics when morale is lost.
+* Trueborn Warrior Greater Dark Lance limit decreased to one.
+* Scourges Dark Lance damage decreased by 15%.
+* Reapers are now effective against commanders by default.
+* Kabal Citadel health regenerative ability cost increased by 100% and is available after the donation of souls IV research.
+* Kabal Citadel projectiles no longer knocks back units on weapon impact.
+* Clawed Fiends can now be reinforced into a squad of 3. 
+* Dais of Destruction Dark Lance Swipe damage decreased by 30%.
+* Rekindle Rage ability soul cost doubled.
+* Corrupted Gates cost decreased from 630/280 to 550/260. Can be placed anywhere.
+* Corrupted Gate name changed to Ancient Websail.
+* Structures can now relocate to Ancient Websail.
+* Reapers can now be upgraded with Reaper Shards (similar to the Eldar kin).
+* Feet On Fire was reworked. Feet On Fire is now a dashing ability, instead of a toggleable ability that doesn't even reduce accuracy of Dark Eldar units.
+
+
+
+AI Changes-------------
+
+------------------------
+Eldar: 
+------------------------
+* 1.86 Transport Rule: Wave Serpent, Falcon, and Storm Serpent (Ability quick recharge, Health recovery, Extra Reinforcements (Tier 2), Deploy Minefield (Tier 2)) 
+* "New" unit: Attachable Warlock.
+!* New Research: Exarch Biting Blades
+!* New Research: Exarch Executioner Blade
+* Shining Spears now counts as a commander unit, limit 1, requires no cap. Shining Spears can now be upgraded by hero wargear.
+* Shining Spears can now call in Nightwing Airstrikes, much similar to the Phoenix's ability.
+* Shining Spear squad loadout increases the more you upgrade with hero wargear.
+* Laughing God now has a new ability: Dance of Blazing Applause
+* The Laughing God icon was changed up. Cost increased for both research and unit.
+* Avatar of Khaine icon was changed up. Tooltips improved.
+* Avatar of Khaine overall statistics were improved. Armor increased, regenerates much quicker than usual, special attacks were greatly improved, Avatar of Khaine is now effective against virtually everything, and melee damage + research modifiers were changed.
+* Avatar of Khaine however costs a lot more than the Laughing God, plus more time consumption is used.
+* Avatar now spawns from the Shrine of Khaine much like a Restored Monolith. Gets spawned back to the shrine after death. (Thanks to QERO MOD)
+* Avatar of Khaine was added into army painter.
+* Khaine's Wrath ability icon is no longer pink.
+* Wailing Doom ability can be used every 20 seconds from 90 seconds.
+* Khaine's Wrath ability slot changed and can be used every 50 seconds from 180 seconds.
+* New additions in the 1.86.3 update including the items marked in "!*" were officially added to game!
+* Holo Fields research no longer makes Shining Spears invulnerable.
+* Shining Spears range increased to 40m, almost same range as a Starlance (slightly shorter).
+* Webway Assemblies now contains Shroud and Waystation abilities, similar to Webway Gates.
+* Webway Assemblies can no longer deepstrike (Dark Eldar feature only), but can hold up to 5 squads, able to spawn units from Webway Assembly to Webway Assembly.
+* Structures can relocate to Webway Assemblies. 
+* Webway Assembly control radius and sight decreased from 50m to only 30m.
+* Advanced Support Platform turret can no longer be buildable as it is under used and half of its functions get bugged out or don't work.
+* Wraithtomb ability now disables abilities of enemy structures.
+* Fire Prism Scatter Beam toggle now actually works!
+* All Vibrocannons now actually work.
+* Vampire Raider health decreased by 20%. Shields decreased by 20%. Making it hit hard, but need to micro versus Phantom Titan microing.
+* Vampire Raider is almost ineffective versus super structures.
+* Infinity Stone (Resource) price decreased from 20000 req to 10000 req. Requires now tier 4.
+* Infinity Stone (Shroud) price decreased from 40,000 to 30,000 power. Requires tier 4.
+* Apocalypse research cost decreased from 6000/6000 to 4000/4000.
+* Rangers research moved to the Soul Shrine.
+* Rangers cost increased (not to reinforce) to 200 req to produce. Time to produce increased.
+* Rangers Sniper Rifle movement speed decrease modifiers lasts a lot less in lower tier sniper rifles.
+* Dark Reaper damage versus infantry decreased by 20%. Damage versus heavy infantry decreased by 5%.
+* Dark Reaper overall damage decreased by 10%.
+* Attack Bikes and Support Platforms can now garrisson in Webway Gates.
+* Soul Walker Brightlance weapon power cost increased to 200 power.
+* Soul Walker armor decreased by 2, health decreased by 1,000 hp. Cost decreased.
+* Soul Walker basic melee damage decreased by 17%. Other weapons were untouched.
+* Vampire Raider now requires the Shrine to the Laughing God.
+* Ancient Wraithguard. Squad cap is now 10, costs no relic points. Time to produce greatly increased. Cost greatly increased.
+* Ancient Wraithguard requires the Heavy Support Portal and the Shrine of Khaine to be created.
+* Ancient Wraithguard Wraithcannons no longer fire a bolt at the enemy, plus, its area effect was changed with an increased impact radius of 4m.
+* Ancient Wraithlord is now available from the Heavy Support Portal at tier III. Requires the Shrine of Khaine to be created.
+* Ancient Wraithlord cost, health, and damage decreased. Requires 330 relic instead of 400.
+* Relic Research II Upgrade gives off 250 relic instead of 350.
+* Warlock Witchblade research was moved to the Shrine of Khaine.
+* Song of Peace now definitely disables all weaponry globally.
+* Webway Healing Station research II can now repair structures over time like description depicts.
+* Voidspinner and Nightspinners are now infiltrated visually when near webway gates or a cloaked Farseer.
+* New 'Unit': Warlock - Can be attached to squads as an attachable leader!
+* Starlance damage increased
+* Ancient Wraithguard damage decreased versus titans and heavily armoured vehicles
+* Anicent Wraithguard damage decreased by 10%
+* Ancient Wraithguard power cost increased by 200
+* Wraithguard wraithcannon power cost decreased
+* Fire dragon damage increased by 10%
+* Swooping Hawk damage increased by 10% and damage against buildings increased by 25%.
+* Phantom Titan damage (maximum) increased by 25% and is 40% more effective against infantry. Is 3% more effective against titans.
+* Revenant Titan weapon upgrade damage increased by 15%.
+* Revenant Titan default weapon reload time decreased by 1.5 seconds. 
+* Scorpion Super-Heavy Tank main Pulsar damage decreased by 5%.
+* Laughing God melee damage decreased by 10%.
+* Fleet of Foot was reworked. Fleet of Foot is now a dashing ability, instead of a toggleable ability that doesn't even reduce accuracy of Eldar units.
+* Dire Avengers and Exarch receive new weaponry upon the Vengeful Persistance research, effective against vehicles, and the weapon is almost double the damage compared to original, with an increased 5m range.
+* Dire Avengers and Exarch health increases upon the Vengeful Persistance research. 
+* All tooltips updated for the Vengeful Persistance research.
+
+Eldar
+Falcon Grav Tank - icon for Shurikens has an odd greyed out colour that does not match other weapons. It should look consistent.
+
+AI Changes-------------
+
+------------------------
+Imperial Guard: 
+------------------------
+
+- New Unit: Thundersword (Non cannon)
+- New Research: Defensive Walls Upgrade II 
+- New Research: Tank Armor II
+- Tank Armor research will now increase the damage of all Leman Russ main battlecannon weapon damages by 25%, also increasing range.
+* Leman Russ sponson heavy bolter damage increased for all weapons by 50%.
+* General's Personal Reaver titan now requires the General to be fielded
+* General can garrison in his Personal Reaver titan, increasing it's health and enabling hero researches on the titan
+* Sentinel armour research now increases the price of sentinels
+* Stun grenade launchers now do increased morale damage
+* BM Locators now cost 5000/5000 from 2000/2000 req/power each.
+* Apocalypse Rounds now cost 35000/35000 each resource from 20000/20000.
+* Basilisk Magnus health doubled
+* Titan Doctrine provides +750 relic from 500.
+* Mars Pattern Command can now establish a rally point.
+* Marauder Bomber bomb damage increased by 100%.
+* Stormsword flamers versus super structures decreased by 50%.
+* Lieutenant's Command Tank now costs 350/800 req/power and requires hero: Level 7.
+- Lieutenant's Command Tank upgrades now require tier III or higher.
+* Super Heavies now take two minutes to garrisson in a structure instead of one.
+* Shadowsword damage decreased by 15%.
+* Plasma Cannon turret addon costs now 100/200 req/power and cost time increased.
+* Valkyries and Vulture Gunship strikes now cost resources to fire.
+- Valkyries and Vulture strikes no longer give off a sight radius.
+* Convoys now affects all structures with its aura. Description was fixed.
+* Demolition Charges effectiveness versus heavily armored and super structures decreased.
+- Conscript damage decreased by 5%.
+- Sentinel Plasma Cannons are available at tier III?
+- Kasrkin and Heavy Weapons team weapon loadout - swap.
+- Aircraft doctrine cheese.
+- Vindicator Assassin limit reduced to only 3.
+- Firesword flamer damage increased versus daemons and monsters by 100%. Overall damage increased by 10%.
+- Mars Pattern Convoys can now affect titan bunkers.
+- Vindicator Assassin limit 1, with wargear.
+- Imperial Guard Hydra VO!!!!
+
+AI Changes-------------
+
+------------------------
+Inquisition:
+------------------------
+- 1.86 Transport Rule: Chimera, Rhino Transport, and Land Raider (Ability quick recharge, Health recovery, Vehicle Repair (after research), Extra Reinforcements (Tier 2)) 
+> New Unit: Librarian (In Terminator Armor).
+* Inquisitor Lord can now garrison in Valkyries without needing to be attached to a squad
+* All vehicles aside from Land Raiders and other transport vehicles can now load into a valkyrie
+* Deepstrike turrets limited to 10.
+- Thunderfire Cannons can no longer fire on the move.
+- Requisition and Power income researches were removed from the game, as they give too much resource to the IDH.
+- Grey Knight Paladins and Grand Master no longer lose shield aesthetics when morale is lost.
+- Both Warhounds now contain an aura of Daemonic Purge. Both Warhounds are now affected by the Canticle of Absolution research.
+- Canticle of Absolution description updated and cost increased from 400/210 requisition/power to 900/600 requisition/power.
+- Warhound Purifier Titan damage increased by 40%.
+- Predator Tank Side Heavy Bolters damage increased by 100%.
+- Grand Master armor decreased.
+- Chaplain In Terminator Armor was removed from army painter.
+- Bodyguard melta guns damage decreased by 25%.
+- Psycannon weapon damages increased by 20%.
+- Grey Knights no longer take so long to teleport.
+- scholars + bodyguards OP
+- All IDH Vehicles can now be loaded into Valkyrie transports.
+* Deepstrike Turret limit was reduced to 10.
+- Warp Reactors can now make resource trades.
+- Logistic Psykers now contains a global recharge for all abilities acquired.
+
+
+AI Changes-------------
+
+
+------------------------
+Necrons: 
+------------------------
+
+* Energy Beacon is now limited to 2 per Monolith.
+* Amplification Generator health incrementation now increases the health of all structures around it (30 meters) by 10% each generator instead of 100 hp each. Living Metal armor is untouched and affected globally.
+* Overseer's voiceover was fixed.
+* Wraith get back up chance decreased by 15%.
+* Turret researches increase the health of turrets a little bit more.
+* Standard turret health increased from 600 hp to 800 hp.
+* Advanced turret health increased from 1000 hp to 1400 hp.
+* Pyramid Collossus addon weapons fire a doomsday blast instead, dealing twice the amount of damage, like a doomsday monolith blast.
+* Most researches of the Necrons are tons cheaper to produce.
+* All Disruption Field III researches grants a little bit more health and ranged damage protection.
+* Necron power income increment rollbacked to 200/400/600/800/1000.
+* AEonic Orb ability costs decreased. Non expanded impact ability impact radius doubled as it seems to miss its target half the time.
+* All Necron squads are produced 25% faster.
+* Necron Warrior and Flayed Ones final shield upgrade now requires tier 3 instead of tier 2
+* Deathmarks armour changed to heavy infantry from elite heavy infantry
+* Fixed Unlife, Deathmark and Lychguard shield research icons so they have the same border as the other researches
+* Deathmark health decreased, only start with 2 units in a squad and require their Disruption field research to reinforce with up to 4 units in a squad
+- Ghost Arks now aim up.
+- Global range Pylon Accelerator research now costs 50,000 power.
+- Doomsday Monolith cost more relic.
+- Tier V is now displayed even if it is not ready to be researched.
+
+AI Changes-------------
+
+------------------------
+Orks: 
+------------------------
+- 1.86 Transport Rule: Wartrukk and Battlefortress (Ability quick recharge, Health recovery, Extra Reinforcements (Tier 2), Deploy Minefield (Tier 2)) 
+!* New addon: Supa Dupa Turret.
+* Ork population tech tree was slightly redone. Max population limit is now 400 (In standard games (with final great waagh research)).
+* Waagh Banners now have a limit, limit of 10, so players don't feel forced to build Waagh Banners all the time.
+* Waagh Banner health increases as you go up in population. Description added.
+* More Orky pop! addons increases the Ork population by 20 each. Requisition cost increased, time to produce increased. Description updated.
+* Waagh Banners no longer increase in construction wait time the more you build.
+* Great Waaagh! research increases max population limit by only 100 from 500. Description updated.
+* Population rate increases beyond 90 population now. HQs no longer affect it.
+* Ouchy Turrets can now upgrade into Supa Dupa Turrets. Supa Dupa Turret was removed from build queue.
+* Big Mek and Weirdboy no longer lose shield aesthetics when morale is lost.
+* Model update: Great Gargant, new model no longer crashes the game and has fixed OE code.
+* Grot gang shotguns damage reduced by 60%.
+* Looted Russ sponson weapons damage increased by 50% like the Imperial Guard Leman Russ and Predators.
+* Battle Wagon cost decreased.
+* Wierdboy spell costs decreased by 50%.
+- Fixed the Wierdboy'z entrench issue.
+* Supa Dupa turret damage against all armor types increased. Range increased by 10m.
+* 'Ard Boyz Powah Claw now requires 90 pop instead of the Ork Hut upgrade.
+* Nukklear Bomma strike cost decreased from 4500 each resource to 3500 each resource.
+* Bombsquigs best ability (super duper explosion) damage increased by 25% and costs now only 400 power from 850.
+* Lootas damage increased by 10%.
+* Bigga Generator can no longer auto repair.
+* Grot infiltration research is only applied to Gretchin builder units now.
+* Tankbustaz infiltration research was removed from game.
+* Ouchy Turret and Supa Dupa Zappy turrets are now affected by research.
+* Power Claws research cost increased from 200/100 to 250/125 req/power. Requires 130 population.
+* Great Gargant Teknolojee now requires the Gargant Teknolojee from the Builda Pit.
+
+AI Changes-------------
+
+------------------------
+Sisters of Battle:
+------------------------
+* New Unit: Capitol Imperialis
+* New Structure: Adepta Sororitas Bunker
+* 1.86 Transport Rule: Rhino Transport (Morale Recovery that also hurts enemies, Ability quick recharge that disables enemies, Health recovery that also hurts enemies, Extra Reinforcements (Tier 2) that stops reinforcements of enemies) 
+* New Battle Sisters textures from Eranthis added!
+* New Structure: Ecclesiarchal Citadel
+* New Structure: Missile Silo
+* New Unit: Ordo Hereticus Inquisitor
+* New unit: Legatine Superiors
+* New Unit: Redemptionists (Still need to fix damage, cost, time cost)
+* New Research: Sentinel scanners research. Much like the IG Sentinel scanners research, making Sentinels for sisters act like a detector unit.
+* Bunkers bolter and flamer fx fixed
+* New Capitol Imperialis Building model
+* Celestians can now recruit the Celestian Veteran Superior instead of the normal Veteran Superior
+* Sister Repentia squads can now recruit Mistresses as leaders instead of a Veteran Superior
+* Fixed UI positions and hotkeys of new buildings
+* Missile Silo is no longer affected by plasma or thermo generators
+* Death Cult Assassin can now charge into combat much like a Space Marine.
+* Death Cult Assassin new ablity: Righteous Fervor
+* Retributors now start with heavy flamers by default, although they are now just as effective as heavy bolters
+* New research: Psyocculum II, buffs sisters weapons even more. (Still need to sort out descriptions, icons and name)
+* Miraculous Intervention is now activated from the Shrine of the Living Saint and effects all Saints at once
+* Tier 5 cost increased to 3000/3000/3000
+* Apocalypse tier requires shrine to the Emperor OR nuclear missile silo.
+* Arch Angel can now use the Invincibilty aura
+* Rein of Fire research costs 10000 faith to research instead of 12500.
+* Nunciate Superior no longer can recruit leaders to make a squad, instead she can spawn a squad of Legatine Superiors and attach to other squads
+* Phial Of Dolain now has an fx when used
+* Rhino's can now lay mines
+* Arch Angel relic resource cost dropped from 1000 to 850.
+* Living Saint variant relic resource cost increased from 200 to 330 each.
+* Arch Angel starting health increased from 14,000 hp to 18,000 hp.
+* All Angels don't resurrect on their own.
+* Miraculous intervention faith cost decreased by 200. Lasts for 60 seconds, then recharge time doubled.
+* Death Cult Assassin special attack strength greatly increased to fit her base damage.
+* Repentia Squads now only take up one squad hold slot.
+* Seraphims are now transportable.
+* Health percentage when miraculous intervention is used is actually valid.
+
+Also.. need to fix these in next patch please:
+Modifier modifiers\ability_laud_hailers_friendaura_event.lua is invalid, data:attrib\abilities\all_transport_reinforce.rgd
+Loading error in event_manager_ext.  Unknown modifier type(ability_laud_hailers_foeaura_event)., data:attrib\ebps\races\sisters\troops\sisters_inquisitor.rgd
+
+
+AI Changes-------------
+
+
+------------------------
+Space Marines: 
+------------------------
+- 1.86 Transport Rule: Rhino Transport, Land Raider, and Stormraven (Ability quick recharge, Health recovery, Extra Reinforcements (Tier 2), Deploy Minefields (Tier 2)) 
+- New Research: Speeder Probe Scanners.
+- New Ability for the Chaplain - HELLSTORM!
+- Devastator squad VO was restored to normal (rollback).
+- Vindicator VO was restored to noraml (rollback).
+- Assault Terminators now spawn with power claws, but can be upgraded to wield Thunder Hammers.
+- Terminators now spawn with storm bolters, but can be upgraded to wirld Heavy Flamers or Assault Cannons.
+- Chaplain can now use Demolition Charges when at hero: level 5.
+* Demolition charge damage reduced versus infantry.
+* Deepstrike turrets limited to 10.
+- Whirlwind MKII Inferno shots damage versus structures increased by 20%.
+- Vindicator damage versus heavy infantry decreased. Damage versus vehicles decreased.
+
+AI Changes-------------
+
+* REVAMPED AI #2! Thanks to Thudmeizer.
+
+------------------------
+Tau: 
+------------------------
+
+- New Structure: Drone Sentry turret (from TTRU mod).
+- New addon: Barracks support addon (from DOW Pro?).
+* 1.86 Transport Rule: Devilfish (Snare Trap Volley, Health aura support, Ability aura support, Extra Reinforcements) 
+* New Unit: Eel Battletank (Thanks to Hard Mod)
+* New Structure: Ark Blaster Turret (Thanks to Hard Mod)
+- New Research: Bubble Shield Grenade
+- New Research: Titan Shields
+!* New Research: Ion Battery Overcharge Research
+!* New Research: Vehicle Shields Research
+!* New Research: Vehicle Health Research
+!* New Addon: Shield Improvement Add-On
+* The Tau Headquarters health increases by 500hp after either tier 3 researches, Path To Destruction, and then Tier 5.
+* Greater Knarloc CHARGE!!!! ability now works.
+* Greater Knarlocs and Krootox can now receive attachments from singular attachable units.
+* Greater Knarlocs are now cheaper to recruit.
+* Greater Knarlocs's bite now chews through the armor of titans (if they get there). Tooltip updated.
+* Greater Knarloc bite damage increased by 25%. The bite now ruins armor and for a limited time hurts the target by lowering movement speed and cause bleeding damage. Morale damage increased as well.
+* Devilfish Transport can now fire its weapons when infiltrated.
+* Tau Commander, XV89 Commander, and XV9 Hazard Suits no longer lose shield aesthetics when morale is lost.
+* XV89 Commander now contains inspiring hero choices.
+* XV89 Commander can now spawn XV89 Bodyguards.
+* Coalition Center is now the structure that constructs Satellite Probe Drones.
+* Coalition Center requires tier IV, is a required structure to field (along with guidance beacons) to keep Satellite Drones alive.
+* Coalition Centers are much more expensive now and require a longer time to construct.
+* The Ethereal is now produced at the Cadre Headquarters. Is produced at tier 1.
+* The Ethereal tooltip was fixed, stating he can no longer grant buffs to the Ion Cannon.
+* The Ethereal deals 100% more morale damage to all of your units if he dies.
+* Satellite Drones no longer require any sort of caps and are limited to the number of Coalition Centers you have constructed.
+* Satellite Drone costs decreased. Damage decreased by 20%. Weapon Range decreased from 5 meters to 1 meter.
+* Pathfinder and Sniper Drone damage versus vehicles and structures decreased by 91%. Knockback added upon hit. Morale damage increased.
+* Pathfinder weapons are now modified with the Pulse Ammunition researches.
+* Pathfinder and Sniper Drone help texts were updated.
+* Pathfinder combat stance range increased from 35m to 60m.
+* Listening Post Gun addon II weapon damage increased by 20%.
+* Fire Warrior Rail Rifle upgrade cost increased to 30/15 from 25/10. Damage decreased by 15%.
+* Rail Rifles for Fire Warriors are now slightly effective against vehicles, and a smidgit effective against armored structures.
+* XV89 Commander and Bodyguards now requires the Montka and Kauyon Command Posts. Costs to produce both units increased.
+* Ion Cannon superweapon cost decreased from 5000/5000 to 3000/3000 requisition/power.
+* Ion Cannon Overcharge winbutton now requires a research, contained within itself. No longer costs resources to use, but will instead reap health from the Ion Cannon. Requires 50% health to operate.
+* Ion Cannon weapon turns much faster now.
+* Tigershark cost decreased, even for relic requirement.
+* Tetra Scout Speeder cost to produce decreased to only 25/25 requisition/power.
+* Swordfish Gunship, Greater Knarlocs, Krootox, and Stingray Gunships are now transportable inside Orca Transports and Mantas.
+* Kroot Carnivore cost to reinforce increased from 30 to 35 requisition.
+* Kroot Carnivore health decreased by 20 hp. Damage decreased by 12%.
+* Vespids now require tier 2, changed from tier 1.
+* Vespids armor type changed from elite infantry to elite heavy infantry. Vespids melee damage increased by 20%.
+* Vespids movement speed, squad size, and morale also increased, along with their cost and required cap.
+* Kroot Hounds are available at tier 1. Armor type changed from elite heavy infantry to elite infantry.
+* Kroot Hounds damage decreased by 10%. Keen sight increased by 5 meters.
+* Kroot Hounds damage against vehicles and structures decreased by 25%.
+* Kroot Shapers can now melee leap, tons stronger than Carnivores and Hounds, too.
+* All Kroot effectiveness against monstrous creatures and daemons increased by 12%.
+* Kroot Shapers melee damage against commanders decreased by 17% as the damage against commanders was too high.
+* Krootox damage against commanders, daemons, and heavily armored vehicles increased.
+* Krootox movement speed increased by 50%.
+* Kroot Shapers (squad) can now detect infiltrators when close to them.
+* Vespids can now be transported.
+* Kroot Hounds can now cannibalize.
+* Alpha Knarloc Rider can now ride in transports.
+* Alpha Knarloc Rider is now affected by Kroot research.
+* Vicous Strength research no longer affects stealth suits and affects the vision and damage of Kroot Carnivores, Kroot Hounds, Vespids, Kroot Shapers, Krootox, and Greater Knarlocs.
+* Both Riptides now require 600 relic resources from 500.
+* XV101 Riptide health increased from 8500hp to 10500hp.
+* XV104 Riptide health decreased from 13500hp to 12500hp.
+* XV202 Mako Titan health increased from 9500hp to 11500hp. Armor increased by 1.
+* XV202 Mako Titan main weapon damage increased by 20%.
+* Manta rail gun damage increased by 60% as it was underwhelming as a tier 5 titan weapon.
+* Tigershark rail gun damage was reworked.
+* Tigershark can now fire smart missiles from its hull.
+* Tigershark cost increased by 30%.
+* XV88 Broadside Shas'vre damage increased by 40%. Range increased by 10m. Squad combat range increased.
+* XV81 Broadside movement speed increased from 12m to 16m (normal infantry speed). Cost decreased from 40/150 to 40/120.
+* Mont'Ka Metallurgy research now affects Shas'ui Fire Warriors, XV25 Stealth Suits, and Commanders + Bodyguards.
+* Target Lock research now affects the burst cannon of the XV25 Stealth Suit.
+* Turret missile weapons damage increased by 15%.
+* Sniper Drone squad loadout decreased from 6 total members to 4.
+* Sniper Drones no longer regenerate health.
+* Attack Drone squad loadout doubled and requires less time to reinforce.
+* Tau Commander health increased by 100hp. Making him a tad more stronger in the end in durability.
+* XV89 Commander requisition cost increased from 140 to 220 requisition.
+* XV30 Heavy Builder limit extended to 2.
+* Commanders give morale bonus when attached.
+* Vehicle Beacon cost changed from 300/100 to 200/125 requisition/power.
+* Guidance Beacon cost changed from 200/100 to 170/170.
+* Marker Drone modifiers actually work now and do not force affect the Tau Commander's weapons.
+* Marker Drones now increases the sight radius of the attached squad by 5m.
+* Alpha Knarloc Rider health regeneration was fixed. It now regenerates the same amount of health as commanders.
+* XV9 Hazard Suit cost increased from 125/400 to 150/450 requisition/power.
+* Overall accuracy of Commander Missile Pods and Missile Launchers increased, especially on the move.
+* Commander Cyclic Ion Blaster damage increased by 20%.
+* Commander Plasma Rifle damage increased by 15%. Plasma Rifles for XV89 Commander now requires Hero: Level 6.
+* All XV89 Commander upgrade tooltips were corrected.
+* XV15 and XV25 Stealth Suit research now doubles the damage of Burst Cannons instead of increase them by 1.5x.
+* XV25 Stealth Suit Burst Cannon damage increase by 65%.
+* XV25 Fusion Blaster damage increased by 20%.
+* Harbinger Drones are no longer free.
+* XV8 Crisis Suits and XV8 Sunfire Battlesuits weapon damages increased by 20%.
+* XV8 Sunfire Plasma Rifle damage increased by 30%.
+* Hammerhead Gunship Twin-Linked Plasma Cannons damage increased by 30%.
+* XV8 and XV89 Missile Pods accuracy increased as they miss a lot.
+* Pirahna Fusion Blaster cost increased from 50/50 to 50/75 req/power.
+
+AI Changes-------------
+
+------------------------
+Tyranids: 
+------------------------
+* Toxic Miasma no longer drains the morale of enemy squads.
+* Tyranids Capillary Tower is now 100% super duper fixed. Even though it was before, my changes were backported, and we apologize for the inconvenience.
+- Gargoyles reinforce 1 second slower. Gargoyles cost 5 requisition more to produce. Health decreased by 20hp.
+- Lictor Alpha can now use a new ability called "Grappling Hook", which will fling single targeted units his way.
+- The Hive Tyrant upon Hero Research: Level 8 will be able to use the bioshock field ability, disabling all production structures nearby.
+- Trygon's Bioshock ability will do the same thing as the Hive Tyrant's Bioshock ability, but will cost lots of power and be less spammable.
+- Hive Tyrant weaponry and wargear costs increased.
+AI Changes-------------
+
+--------------------------------------------------------|
+Tech Trees (Visual Images Separate from mod): | 
+--------------------------------------------------------|
+
+* Sisters of Battle redone.
+* Tau redone.
+* Space Marines redone.
+* Necrons redone.
+* Dark Eldar redone.
+* Eldar redone.
+* Imperial Guard redone.
+* Tech Tree completely updated: Eldar.
+- Whirlwind MKI was moved to tier II.
+* Hero levels were added to Dark Eldar, Space Marines, and Imperial Guard.
+
+
+--------------------------------------------------------|
+SCAR (Winconditions): | 
+--------------------------------------------------------|
+
+- Riptides are now considered as titans in the restriction of titans wincondition.
+
+--------------------------------------------------------|
+SCENARIOS: | 
+--------------------------------------------------------|

@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'Titantactic.ai'
+-- File: 'titantactic.ai'
 -- Edited by Cylarne @ 2012
+-- Edited by Thudmeizer	@ 29.02.2016
 
 class 'TitanTactic' (GuardVehicleTactic)
 
@@ -13,23 +14,24 @@ end
 
 function TitanTactic:InitAbilities()
 
-	--[[if Titan.shields == nil then
-	   Titan.shields = cpu_manager.stats:GetAbilityID("titan_shield")	
-	end]]
-
-	if Titan.stomp == nil then
-	   Titan.stomp = cpu_manager.stats:GetAbilityID("titan_stomp")	
+	if (Titan.stomp_id == nil) then
+		Titan.stomp_id = cpu_manager.stats:GetAbilityID( "titan_stomp" )	
 	end
 	
-	if Titan.missiles == nil then
-	   Titan.missiles = cpu_manager.stats:GetAbilityID("marines_apocalypse_missiles")	
+	if (Titan.missiles_id == nil) then
+		Titan.missiles_id = cpu_manager.stats:GetAbilityID( "marines_apocalypse_missiles" )	
 	end
 end
 
 function TitanTactic:DoAbilities()
 
-	Ability.DoAbilityTarget(self.squad_ai, Titan.stomp, Ability.Filters.CloseSquadEnemy, 3)
-	Ability.DoAbilityTarget(self.squad_ai, Titan.missiles, Ability.Filters.CloseSquadEnemy, 6)
-	Ability.DoAbilityTarget(self.squad_ai, Titan.missiles, Ability.Filters.CloseVehicleEnemy, 1)
-	
+	if (self.squad_ai:CanDoAbility(Titan.stomp_id)) then
+		Ability.DoAbilityTarget(self.squad_ai, Titan.stomp_id, Ability.Filters.CloseSquadEnemy, 4)
+	end
+
+	if (self.squad_ai:CanDoAbility(Titan.missiles_id)) then	
+		Ability.DoAbilityPos(self.squad_ai, Titan.missiles_id, Ability.Filters.CloseEnemy, 24)
+		Ability.DoAbilityPos(self.squad_ai, Titan.missiles_id, Ability.Filters.CloseVehicleEnemy, 3)
+		Ability.DoAbilityPos(self.squad_ai, Titan.missiles_id, Ability.EntityFilters.CloseBaseEntityEnemy, 4)
+	end
 end

@@ -1,0 +1,74 @@
+----------------------------------------
+-- File: 'trukktactic.ai'
+-- Edited by Thudmeizer		@ 20.06.2016
+
+class 'TrukkTactic' (OrkVehicleTactic)
+
+Trukk = {}
+
+function TrukkTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Trukk Tactic")
+	
+	-- Vehicle is a light transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 2
+end
+
+function TrukkTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Trukk.laymines_id == nil) then
+		Trukk.laymines_id = cpu_manager.stats:GetAbilityID( "ork_laymines" )
+	end
+
+	if (Trukk.abilityrecharge_id == nil) then
+		Trukk.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (Trukk.heal_id == nil) then
+		Trukk.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (Trukk.reinforce_id == nil) then
+		Trukk.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+end
+
+function TrukkTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( Trukk.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 1000 and iPower >= 1000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( Trukk.laymines_id )
+		end
+	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(Trukk.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(Trukk.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(Trukk.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(Trukk.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(Trukk.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(Trukk.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Call standard method
+	OrkVehicleTactic.DoAbilities(self)
+end

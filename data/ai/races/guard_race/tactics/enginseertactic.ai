@@ -1,8 +1,11 @@
 ----------------------------------------
--- File: 'Enginseertactic.ai'
+-- File: 'enginseertactic.ai'
 -- Edited by Arkhan 	@ 10.01.2007
+-- Edited by Thudmeizer	@ 29.02.2016
 
 class 'EnginseerTactic' (EngineerTactic)
+
+Enginseer = {}
 
 function EnginseerTactic:__init( squad_ai ) super( squad_ai )
 
@@ -12,10 +15,75 @@ function EnginseerTactic:__init( squad_ai ) super( squad_ai )
 	self.m_bBunkerSquad = false
 end
 
+function EnginseerTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Enginseer.bolster_id == nil) then
+		Enginseer.bolster_id = cpu_manager.stats:GetAbilityID( "guard_bolster_defenses" )	
+	end
+	if (Enginseer.flashbang_id == nil) then
+		Enginseer.flashbang_id = cpu_manager.stats:GetAbilityID( "guard_flashbang_grenades" )	
+	end
+	if (Enginseer.frag_id == nil) then
+		Enginseer.frag_id = cpu_manager.stats:GetAbilityID( "guard_frag_grenades" )	
+	end
+	if (Enginseer.krak_id == nil) then
+		Enginseer.krak_id = cpu_manager.stats:GetAbilityID( "guard_krak_grenades" )	
+	end
+	if (Enginseer.smoke_id == nil) then
+		Enginseer.smoke_id = cpu_manager.stats:GetAbilityID( "guard_smoke_grenades" )	
+	end
+	if (Enginseer.run_id == nil) then
+		Enginseer.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function EnginseerTactic:DoAbilities()
+
+	-- Check if we can Bolster Defenses
+	if (self.squad_ai:CanDoAbility(Enginseer.bolster_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Enginseer.bolster_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(Enginseer.bolster_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Throw flashbang grenades!
+	Ability.DoAbilityTarget(self.squad_ai, Enginseer.flashbang_id, Ability.Filters.CloseSquadEnemy, 6)
+
+	-- Throw frag grenades!
+	Ability.DoAbilityTarget(self.squad_ai, Enginseer.frag_id, Ability.Filters.CloseInfantryEnemy, 4)
+
+	-- Throw melta grenades!
+	Ability.DoAbilityTarget(self.squad_ai, Enginseer.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(Enginseer.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Enginseer.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(Enginseer.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Enginseer.run_id )) then
+			self.squad_ai:DoSpecialAbility( Enginseer.run_id )
+		end
+	end
+end
+--[[
 function EnginseerTactic:Update()
 
 	-- Update engineer tactic
 	EngineerTactic.Update(self)
-	
 end
- 
+]]

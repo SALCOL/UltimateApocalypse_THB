@@ -1,0 +1,71 @@
+----------------------------------------
+-- File: 'hierophanttactic.ai'
+-- Created by Thudmeizer @ 25.04.2016
+
+class 'HierophantTactic' (TyranidInfantryTactic)
+
+Hierophant = {}
+
+function HierophantTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Hierophant Tactic")
+
+	-- Add a choice to stay in ranged or melee combat
+	self.choice_ranged_melee = math.random(1, 100)
+end
+
+function HierophantTactic:AlwaysAttack()
+	return true
+end
+
+function HierophantTactic:InitAbilities()
+
+	if (Hierophant.infest_id == nil) then
+		Hierophant.infest_id = cpu_manager.stats:GetAbilityID( "tyranids_hierophant_infest" )
+	end
+end
+
+function HierophantTactic:DoAbilities()
+
+	-- Miasmic Infestation: Create a cloud of infestation above the Hierophant. All structures will have reduced production speeds for a duration.
+	-- All enemy units and structures will suffer decreased vision, possible causes of instant death, health degeneration, movement speed losses, and morale rate reductions for a duration.
+	if (self.squad_ai:CanDoAbility(Hierophant.infest_id)) then
+
+		-- We are dying, lower requisites for attacks
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			Ability.DoAbilityArea( self.squad_ai, Hierophant.infest_id, Ability.Filters.CloseEnemy, 45, 4 )
+			Ability.DoAbilityArea( self.squad_ai, Hierophant.infest_id, Ability.Filters.CloseMonsterEnemy, 45, 4 )
+		else
+			Ability.DoAbilityArea( self.squad_ai, Hierophant.infest_id, Ability.Filters.CloseEnemy, 45, 8 )
+			Ability.DoAbilityArea( self.squad_ai, Hierophant.infest_id, Ability.Filters.CloseMonsterEnemy, 45, 8 )
+		end
+
+		-- Search a building
+		local iRange = self.squad_ai:GetAbilityRange(Hierophant.infest_id)
+		local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.squad_ai:GetPosition(), iRange, 8)
+		if (oBuilding ~= nil) then
+			-- Activate infestation against enemy buildings
+			self.squad_ai:DoSpecialAbilityEntity(Hierophant.infest_id, oBuilding) 
+		end
+	end
+end
+
+function HierophantTactic:Update()
+	
+	local sSquadName = self.squad_ai:GetSquadName()
+	if not (sSquadName == "tyranids_squad_hierophant_max") then
+		
+		-- Set unit on ranged stance by a 50/50 chance.
+		if (self.squad_ai:GetMeleeStance() ~= SquadAI.MSTANCE_Ranged and self.choice_ranged_melee >= 50) then
+			self.squad_ai:DoSetMeleeStance(SquadAI.MSTANCE_Ranged)
+		end
+	end
+	
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

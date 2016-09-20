@@ -1,0 +1,53 @@
+----------------------------------------
+-- File: 'etherealtactic.ai'
+-- Edited by Thudmeizer @ 12.02.2016
+
+class 'HeldrakeTactic' (ChaosMarineInfantryTactic)
+
+Heldrake = {}
+
+function HeldrakeTactic:__init( squad_ai ) super( squad_ai )
+	
+	self.timedDirectSpawnAbility = Timer( HeldrakeTactic.DoDirectSpawnAbility, self, 5 )
+
+	self:SetName("Heldrake Tactic")
+end
+
+function HeldrakeTactic:AlwaysAttack()
+	return true
+end
+
+function HeldrakeTactic:InitAbilities()
+
+end
+
+function HeldrakeTactic:DoAbilities()
+
+	-- Try to spawn hell talons
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		HeldrakeTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function HeldrakeTactic:DoDirectSpawnAbility()
+
+	-- Spawn hell talons in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+
+function HeldrakeTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+end
+

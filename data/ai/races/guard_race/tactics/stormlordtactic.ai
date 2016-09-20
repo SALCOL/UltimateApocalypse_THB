@@ -1,0 +1,16 @@
+----------------------------------------
+-- File: 'stormbladetactic.ai'
+-- Edited by Cylarne_04 2011
+
+class 'StormlordTactic' (GuardVehicleTactic)
+
+Stormlord = {}
+
+function StormlordTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Stormlord Tactic")
+
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 3
+end

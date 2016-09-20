@@ -1,0 +1,72 @@
+----------------------------------------
+-- File: 'deceivertactic.ai'
+-- Edited by Thudmeizer @ 09.03.2016
+
+class 'DeceiverTactic' (NecronInfantryTactic)
+
+Deceiver = {}
+
+function DeceiverTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Deceiver Tactic")
+
+	self.timedDirectSpawnAbility = Timer( DeceiverTactic.DoDirectSpawnAbility, self, 5 )
+end
+
+function DeceiverTactic:AlwaysAttack()
+	return true
+end
+
+-- Deceiver is allowed to retreat even directly after a jump
+function DeceiverTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Don't return to Necron Lord
+function DeceiverTactic:InitAbilities()
+
+	if (Deceiver.deceive_id == nil) then
+		Deceiver.deceive_id = cpu_manager.stats:GetAbilityID( "necron_deceiver_deceive" )
+	end
+end
+
+function DeceiverTactic:DoAbilities()
+	
+	-- Try abilities
+	Ability.DoAbilityTarget(self.squad_ai, Deceiver.deceive_id, Ability.Filters.CloseEnemy, 6)
+	
+	-- Try to create the Deceiver Illusions
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		DeceiverTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function DeceiverTactic:DoDirectSpawnAbility()
+
+	-- Spawn Illusions in combat
+	if (self.squad_ai:CanDirectSpawn() and self.squad_ai:IsInCombat()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+
+function DeceiverTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

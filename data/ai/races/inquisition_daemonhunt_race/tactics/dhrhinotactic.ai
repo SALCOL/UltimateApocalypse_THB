@@ -1,0 +1,87 @@
+----------------------------------------
+-- File: 'dhrhinotactic.ai'
+-- Edited by Thudmeizer @ 24.05.2016
+
+class 'DHRhinoTactic' (DaemonhuntVehicleTactic)
+
+DHRhino = {}
+
+function DHRhinoTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DH Rhino Tactic")
+
+	-- Vehicle is a light transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 2
+end
+
+function DHRhinoTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DHRhino.abilityrecharge_id == nil) then
+		DHRhino.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (DHRhino.heal_id == nil) then
+		DHRhino.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (DHRhino.reinforce_id == nil) then
+		DHRhino.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+
+	if (DHRhino.repair_id == nil) then
+		DHRhino.repair_id = cpu_manager.stats:GetAbilityID( "inquisition_rhino_self_repair" )	
+	end
+
+	if (DHRhino.smoke_id == nil) then
+		DHRhino.smoke_id = cpu_manager.stats:GetAbilityID( "inquisition_smoke_launchers" )	
+	end
+end
+
+function DHRhinoTactic:DoAbilities()
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(DHRhino.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(DHRhino.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(DHRhino.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(DHRhino.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(DHRhino.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(DHRhino.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Rhino Repair!
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		if (self.squad_ai:CanDoAbility( DHRhino.repair_id )) then
+			self.squad_ai:DoSpecialAbility( DHRhino.repair_id )
+		end
+	end
+
+	-- Check if we can throw smoke
+	if (self.squad_ai:CanDoAbility(DHRhino.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(DHRhino.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(DHRhino.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Do basic abilities
+	DaemonhuntVehicleTactic.DoAbilities(self)
+end
+

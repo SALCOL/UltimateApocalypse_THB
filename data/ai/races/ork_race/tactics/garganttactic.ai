@@ -1,0 +1,66 @@
+----------------------------------------
+-- File: 'garganttactic.ai'
+-- Created by Cylarne_04 @ 2014
+-- Edited by Thudmeizer		@ 23.02.2016
+
+class 'GargantTactic' (OrkVehicleTactic)
+
+Gargant = {}
+
+function GargantTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Gargant Tactic")
+	
+	-- Vehicle is a heavy transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 3
+end
+
+function GargantTactic:AlwaysAttack()
+	return true
+end
+
+function GargantTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Gargant.laymines_id == nil) then
+		Gargant.laymines_id = cpu_manager.stats:GetAbilityID( "ork_laymines" )
+	end
+	
+	if (Gargant.shield_id == nil) then
+		Gargant.shield_id = cpu_manager.stats:GetAbilityID( "ork_super_chargy" )
+	end
+
+	if (Gargant.run_id == nil) then
+		Gargant.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+	end
+end
+
+function GargantTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( Gargant.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 1000 and iPower >= 1000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( Gargant.laymines_id )
+		end
+	end
+	
+	if (self.squad_ai:IsInCombat() and self.squad_ai:WasRecentlyHurt()) then
+		if (self.squad_ai:CanDoAbility( Gargant.shield_id )) then
+			self.squad_ai:DoSpecialAbility( Gargant.shield_id )
+		end
+	end
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Gargant.run_id )) then
+			self.squad_ai:DoSpecialAbility( Gargant.run_id )
+		end
+	end
+end

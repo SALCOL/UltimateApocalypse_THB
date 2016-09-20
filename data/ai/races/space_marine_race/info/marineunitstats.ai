@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marineunitstats.ai'
--- Edited by Thudmeizer @ 01.02.2016
+-- Edited by Thudmeizer @ 20.06.2016
 -- Edited by Cylarne_04 2011
 
 --XP3
@@ -48,6 +48,7 @@ UnitStrengths.space_marine_squad_tactical_bike = 160
 UnitStrengths.space_marine_squad_assault = 175
 UnitStrengths.space_marine_squad_devastator = 190
 UnitStrengths.space_marine_squad_servitor_weapons = 100
+UnitStrengths.space_marine_squad_lotd_tactical = 200
 UnitStrengths.space_marine_squad_vanguard_veteran = 200
 UnitStrengths.space_marine_squad_sternguard_veteran = 210
 UnitStrengths.space_marine_squad_terminator = 250
@@ -67,6 +68,7 @@ UnitStrengths.space_marine_squad_ds_turret = 100
 UnitStrengths.space_marine_squad_thunderfire_cannon = 110
 UnitStrengths.space_marine_squad_rhino = 145
 UnitStrengths.space_marine_squad_razorback = 185
+UnitStrengths.space_marine_squad_rhino_stalker = 195
 UnitStrengths.space_marine_squad_land_speeder = 200
 UnitStrengths.space_marine_squad_tempest = 220
 UnitStrengths.space_marine_squad_dreadnought = 300
@@ -79,23 +81,23 @@ UnitStrengths.space_marine_squad_whirlwind = 490
 UnitStrengths.space_marine_squad_predator = 490
 UnitStrengths.space_marine_squad_predator_advance_sp = 490
 UnitStrengths.space_marine_squad_predator_murderer = 550
---UnitStrengths.space_marine_squad_thunderhawk_uamod = 500
+UnitStrengths.space_marine_squad_thunderhawk_uamod = 500
+UnitStrengths.space_marine_squad_land_raider_terminus = 700
 UnitStrengths.space_marine_squad_land_raider = 600
 UnitStrengths.space_marine_squad_land_raider_redeemer = 600
 UnitStrengths.space_marine_squad_land_raider_crusader = 600
 UnitStrengths.space_marine_squad_land_raider_helios = 600
 UnitStrengths.space_marine_squad_land_raider_prometheus = 600
 UnitStrengths.space_marine_squad_land_raider_ares = 600
-UnitStrengths.space_marine_squad_land_raider_terminus = 700
 UnitStrengths.space_marine_squad_stormraven = 700
 UnitStrengths.space_marine_squad_warhound_titan = 1000
 UnitStrengths.space_marine_squad_reaver_titan = 1200
---UnitStrengths.npc_squad_warlord_titan = 1800
 
 LeaderStrengths.space_marine_squad_servitor_weapons = 75
 LeaderStrengths.space_marine_squad_tactical = 75
 LeaderStrengths.space_marine_squad_assault = 75
 LeaderStrengths.space_marine_squad_devastator = 0
+LeaderStrengths.space_marine_squad_lotd_tactical = 0
 LeaderStrengths.space_marine_squad_vanguard_veteran = 0
 LeaderStrengths.space_marine_squad_sternguard_veteran = 0
 LeaderStrengths.space_marine_squad_terminator = 0
@@ -181,7 +183,7 @@ SpaceMarineUnitStats =
 			},
 			{
 				name = "space_marine_missile_turret",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.1,5.1,3.3,2.1,9.0,9.0,9.0,3.3,3.3,2.1,5.0,9.0,9.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(3.1,3.1,3.1,3.3,2.1,9.0,9.0,9.0,3.3,3.3,2.1,5.0,9.0,9.4,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
@@ -382,6 +384,46 @@ SpaceMarineUnitStats =
 		}
 	},
 	{
+		name = "Deathwatch Marines",
+		sbp_name = "space_marine_squad_lotd_tactical",
+		ebp_name = "space_marine_deathwatch",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "space_marine_bolter_tactical",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_flamer_tactical",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,0.3,0.0,0.0,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,2.5,2.0,1.2,0.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "space_marine_heavy_bolter_tactical",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,0.3,0.0,0.0,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,2.5,2.0,1.2,0.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_plasma_gun",
+				effectiveness = GenerateUnitEffectiveness(1.1,1.3,0.4,1.1,1.1,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,1.3,1.0,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,0.3,0.0,2.8,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_missile_launcher_tactical",
+				effectiveness = GenerateUnitEffectiveness(1.1,1.3,0.4,1.1,1.1,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,1.3,1.0,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,0.3,0.0,2.8,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_knife_tactical",
+				effectiveness = GenerateUnitEffectiveness(4.1,4.6,4.0,4.1,4.0,0.0,0.0,0.0,4.0,0.0,3.6,4.1,2.2,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
 		name = "Vanguard Veteran Marine Squad",
 		sbp_name = "space_marine_squad_vanguard_veteran",
 		ebp_name = "vanguard_veteran",
@@ -425,7 +467,7 @@ SpaceMarineUnitStats =
 		potential =
 		{
 			{
-				name = "space_marine_bolter_veteran",
+				name = "space_marine_bolter_variants",
 				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -525,12 +567,12 @@ SpaceMarineUnitStats =
 		potential =
 		{
 			{
-				name = "space_marine_thunder_hammer",
+				name = "space_marine_lightning_claw_terminator",
 				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
-				name = "space_marine_lightning_claw_terminator",
+				name = "space_marine_thunder_hammer",
 				effectiveness = GenerateUnitEffectiveness(9.2,9.9,9.7,9.0,9.7,9.6,9.2,9.3,9.0,9.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
@@ -617,16 +659,61 @@ SpaceMarineUnitStats =
 		}
 	},
 	{
-		name = "Chaplain",
-		sbp_name = "space_marine_squad_chaplain",
-		ebp_name = "chaplain",
+		name = "Gladiator Command Squad",
+		sbp_name = "space_marine_squad_honor_guard_gladiator",
+		ebp_name = "honor_guard_gladiator",
 		class = UnitStatsAI.UC_Commander,
 		rating = 7,
 		potential =
 		{
 			{
-				name = "space_marine_bolt_pistol_librarian",
+				name = "space_marine_bolter_veteran",
 				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_bolter_kraken_veteran",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_bolter_dragonfire_veteran",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_bolter_hellfire_veteran",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_bolter_vengeance_veteran",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_power_sword_veteran_improved",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "space_marine_power_sword_veteran",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Chaplain",
+		sbp_name = "space_marine_squad_chaplain",
+		ebp_name = "chaplain",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(8*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "space_marine_bolt_pistol_librarian",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -651,13 +738,18 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_chaplain_advance_sp",
 		ebp_name = "chaplain_advance_sp",
 		class = UnitStatsAI.UC_Commander,
-		rating = 7,
+		rating = math.random(8*10,9.5*10)/10,
 		potential =
 		{
 			{
-				name = "inquisition_storm_bolter_gk_terminator",
-				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				name = "space_marine_storm_bolter_commander",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_crozius_arcanum_improved",
+				effectiveness = GenerateUnitEffectiveness(3.4,3.7,3.5,3.8,3.5,3.1,3.8,3.0,3.0,3.0,3.9,3.1,3.6,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 			{
 				name = "space_marine_crozius_arcanum",
@@ -671,12 +763,12 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_librarian",
 		ebp_name = "librarian",
 		class = UnitStatsAI.UC_Commander,
-		rating = 8,
+		rating = math.random(8*10,9.5*10)/10,
 		potential =
 		{
 			{
 				name = "space_marine_storm_bolter_grey_knight",
-				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -706,12 +798,12 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_force_commander",
 		ebp_name = "force_commander",
 		class = UnitStatsAI.UC_Commander,
-		rating = 8,
+		rating = math.random(8*10,9.5*10)/10,
 		potential =
 		{
 			{
 				name = "space_marine_bolt_pistol_forcecommander",
-				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -751,12 +843,12 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_force_commander_killeus",
 		ebp_name = "force_commander_killeus",
 		class = UnitStatsAI.UC_Commander,
-		rating = 8,
+		rating = math.random(8*10,9.5*10)/10,
 		potential =
 		{
 			{
 				name = "space_marine_bolt_pistol_forcecommander",
-				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -787,16 +879,56 @@ SpaceMarineUnitStats =
 		}
 	},
 	{
+		name = "Force Commander Advance Sp",
+		sbp_name = "space_marine_squad_force_commander_advance_sp",
+		ebp_name = "force_commander_advance_sp",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(8*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "space_marine_bolt_pistol_forcecommander",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_plasma_pistol_commander",
+				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,8.3,4.4,0.0,10.0,5.9,8.9,8.5,3.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_bolt_pistol_combi_chaingun_forcecommander",
+				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,7.6,0.0,10.0,9.1,10.0,10.0,5.6,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_chainsword_force_commander",
+				effectiveness = GenerateUnitEffectiveness(4.8,10.0,8.5,7.8,6.3,4.1,1.7,0.0,6.3,3.3,7.0,4.1,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "space_marine_power_sword_force_commander",
+				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,7.5,4.5,3.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "space_marine_daemon_hammer_advance_sp",
+				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,6.2,6.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
 		name = "Force Commander Terminator",
 		sbp_name = "space_marine_squad_force_commander_terminator",
 		ebp_name = "force_commander_terminator",
 		class = UnitStatsAI.UC_Commander,
-		rating = 9,
+		rating = math.random(9*10,9.5*10)/10,
 		potential =
 		{
 			{
 				name = "space_marine_storm_bolter_commander",
-				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -833,77 +965,6 @@ SpaceMarineUnitStats =
 				name = "space_marine_missile_launcher_cyclone_commander",
 				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
-
-			},
-		}
-	},
-	{
-		name = "Force Commander Advance Sp",
-		sbp_name = "space_marine_squad_force_commander_advance_sp",
-		ebp_name = "force_commander_advance_sp",
-		class = UnitStatsAI.UC_Commander,
-		rating = 7,
-		potential =
-		{
-			{
-				name = "space_marine_bolt_pistol_forcecommander",
-				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "space_marine_plasma_pistol_commander",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,8.3,4.4,0.0,10.0,5.9,8.9,8.5,3.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "space_marine_bolt_pistol_combi_chaingun_forcecommander",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,7.6,0.0,10.0,9.1,10.0,10.0,5.6,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "space_marine_chainsword_force_commander",
-				effectiveness = GenerateUnitEffectiveness(4.8,10.0,8.5,7.8,6.3,4.1,1.7,0.0,6.3,3.3,7.0,4.1,1.7,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "space_marine_power_sword_force_commander",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,7.5,4.5,3.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "space_marine_daemon_hammer_advance_sp",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,6.2,6.9,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	{
-		name = "Gladiator Command Squad",
-		sbp_name = "space_marine_squad_honor_guard_gladiator",
-		ebp_name = "honor_guard_gladiator",
-		class = UnitStatsAI.UC_Commander,
-		rating = 7,
-		potential =
-		{
-			{
-				name = "space_marine_bolter_veteran",
-				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "space_marine_bolter_kraken_veteran",
-				effectiveness = GenerateUnitEffectiveness(math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "space_marine_power_sword_veteran_improved",
-				effectiveness = GenerateUnitEffectiveness(math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,math.random(7*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "space_marine_power_sword_veteran",
-				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
@@ -912,12 +973,12 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_chapter_master",
 		ebp_name = "honour_guard_chapter_master",
 		class = UnitStatsAI.UC_Commander,
-		rating = 9,
+		rating = math.random(9.0*10,9.5*10)/10,
 		potential =
 		{
 			{
 				name = "space_marine_melta_combo",
-				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
@@ -987,6 +1048,31 @@ SpaceMarineUnitStats =
 			},
 			{
 				name = "space_marine_lascannon_twin_razorback",
+				effectiveness = GenerateUnitEffectiveness(3.7,4.0,3.7,3.7,8.7,8.6,8.6,8.0,3.7,0.0,8.3,8.7,8.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Rhino Stalker",
+		sbp_name = "space_marine_squad_rhino_stalker",
+		ebp_name = "rhino_stalker",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "chaos_heavy_bolter_predator",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_heavy_bolter_stalker_left",
+				effectiveness = GenerateUnitEffectiveness(3.7,4.0,3.7,3.7,8.7,8.6,8.6,8.0,3.7,0.0,8.3,8.7,8.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_heavy_bolter_stalker_right",
 				effectiveness = GenerateUnitEffectiveness(3.7,4.0,3.7,3.7,8.7,8.6,8.6,8.0,3.7,0.0,8.3,8.7,8.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -1117,14 +1203,14 @@ SpaceMarineUnitStats =
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "space_marine_flamer_dreadnought",
-				effectiveness = GenerateUnitEffectiveness(3.7,4.0,3.7,3.7,3.7,3.6,3.6,3.0,3.7,0.0,3.3,3.7,3.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_ShortRanged,
-			},
-			{
 				name = "space_marine_dreadnought_fist_twin",
 				effectiveness = GenerateUnitEffectiveness(3.7,4.0,3.7,3.7,3.7,1.6,0.6,0.0,3.7,0.0,3.3,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "space_marine_flamer_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(3.7,4.0,3.7,3.7,3.7,3.6,3.6,3.0,3.7,0.0,3.3,3.7,3.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 		}
 	},
@@ -1292,7 +1378,7 @@ SpaceMarineUnitStats =
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "guard_plasma_cannon_executioner",
+				name = "space_marine_plasma_cannon_executioner",
 				effectiveness = GenerateUnitEffectiveness(4.0,4.0,5.0,9.0,9.0,8.9,8.0,9.0,6.0,5.8,1.6,8.9,8.3,8.7,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -1329,7 +1415,6 @@ SpaceMarineUnitStats =
 		}
 	},
 	{
---[[
 		name = "Thunderhawk Transport",
 		sbp_name = "space_marine_squad_thunderhawk_uamod",
 		ebp_name = "thunderhawk_uamod",
@@ -1345,12 +1430,11 @@ SpaceMarineUnitStats =
 		}
 	},
 	{
-]]
 		name = "Land Raider",
 		sbp_name = "space_marine_squad_land_raider",
 		ebp_name = "land_raider",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = math.random(8.0,9.5),
+		rating = math.random(7*10,9*10)/10,
 		potential =
 		{
 			{
@@ -1380,7 +1464,7 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_land_raider_redeemer",
 		ebp_name = "land_raider_redeemer",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = math.random(8.0,9.5),
+		rating = math.random(7*10,9*10)/10,
 		potential =
 		{
 			{
@@ -1415,7 +1499,7 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_land_raider_ares",
 		ebp_name = "land_raider_ares",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = math.random(8.5,9.5),
+		rating = math.random(7*10,9.5*10)/10,
 		potential =
 		{
 			{
@@ -1426,12 +1510,12 @@ SpaceMarineUnitStats =
 			{
 				name = "space_marine_flamestorm_cannon_right",
 				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,1.7,0.7,0.0,5.6,2.9,3.7,10.0,6.6,6.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
 				name = "space_marine_flamestorm_cannon_left",
 				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,1.7,0.7,0.0,5.6,2.9,3.7,10.0,6.6,6.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
 				name = "space_marine_demolisher_cannon_ares",
@@ -1445,7 +1529,7 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_land_raider_crusader",
 		ebp_name = "land_raider_crusader",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = math.random(9.0,9.5),
+		rating = math.random(7*10,9*10)/10,
 		potential =
 		{
 			{
@@ -1480,7 +1564,7 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_land_raider_helios",
 		ebp_name = "land_raider_helios",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = math.random(8.0,9.5),
+		rating = math.random(7*10,9*10)/10,
 		potential =
 		{
 			{
@@ -1505,7 +1589,7 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_land_raider_prometheus",
 		ebp_name = "land_raider_prometheus",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = math.random(9.0,9.5),
+		rating = math.random(7*10,9*10)/10,
 		potential =
 		{
 			{
@@ -1521,7 +1605,7 @@ SpaceMarineUnitStats =
 			{
 				name = "space_marine_multi_melta_crusader",
 				effectiveness = GenerateUnitEffectiveness(4.0,4.0,5.0,9.0,9.0,8.9,9.0,9.0,6.0,5.8,1.6,8.9,8.3,8.7,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
 				name = "space_marine_heavy_bolter_land_raider",
@@ -1535,7 +1619,7 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_land_raider_terminus",
 		ebp_name = "land_raider_terminus",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = math.random(9.0,9.5),
+		rating = math.random(7.5*10,9.5*10)/10,
 		potential =
 		{
 			{
@@ -1586,7 +1670,7 @@ SpaceMarineUnitStats =
 			{
 				name = "space_marine_multi_melta_stormraven",
 				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
 				name = "space_marine_hurricane_bolter_stormraven_right",
@@ -1625,6 +1709,11 @@ SpaceMarineUnitStats =
 			},
 			{
 				name = "npc_titan_plasma_blastgun_left",
+				effectiveness = GenerateUnitEffectiveness(5.5,5.5,5.5,5.5,5.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "npc_titan_plasma_blastgun_left_godly",
 				effectiveness = GenerateUnitEffectiveness(5.5,5.5,5.5,5.5,5.5,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -1640,6 +1729,11 @@ SpaceMarineUnitStats =
 			},
 			{
 				name = "npc_titan_plasma_blastgun",
+				effectiveness = GenerateUnitEffectiveness(5.5,5.5,5.5,5.5,5.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "npc_titan_plasma_blastgun_godly",
 				effectiveness = GenerateUnitEffectiveness(5.5,5.5,5.5,5.5,5.5,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},

@@ -1,0 +1,17 @@
+----------------------------------------
+-- File: 'daemonswarpspawntactic.ai'
+-- Edited by fuggles 27.05.2013
+-- Edited by Thudmeizer	08.05.2016
+
+class 'DaemonsWarpSpawnTactic' (DaemonsInfantryTactic)
+
+DaemonsWarpSpawn = {}
+
+function DaemonsWarpSpawnTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Warp Spawn Tactic")
+end
+
+function DaemonsWarpSpawnTactic:AlwaysAttack()
+	return true
+end

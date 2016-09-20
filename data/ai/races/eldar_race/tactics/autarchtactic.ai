@@ -1,0 +1,220 @@
+----------------------------------------
+-- File: 'autarchtactic.ai'
+-- Edited by Thudmeizer @ 23.04.2016
+
+class 'AutarchTactic' (EldarInfantryTactic)
+
+Autarch = {}
+
+function AutarchTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Autarch Tactic")
+
+	self.dance_time = 0
+end
+
+function AutarchTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelAutarch = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelAutarch ~= nil) then
+			local addOnID = buildChannelAutarch:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelAutarch:IsBuilding() == 0 and buildChannelAutarch:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelAutarch:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+-- Assassinate win condition -- never attack
+function AutarchTactic:IsAttacker()	
+	return (not cpu_manager.assassinate and self:IsCommanderAttacker())
+end
+
+-- Assassinate win condition -- never defend
+function AutarchTactic:IsDefender()
+	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+end
+
+-- Autarch is allowed to retreat even directly after a jump
+function AutarchTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Assassinate win condition -- never jump into combat
+function AutarchTactic:JumpAttack()
+
+	if (not cpu_manager.assassinate) then
+		Tactic.JumpAttack(self)
+	end
+end
+
+function AutarchTactic:CanJumpAttached()
+	return true
+end
+
+function AutarchTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Autarch.blind_id == nil) then
+		Autarch.blind_id = cpu_manager.stats:GetAbilityID( "eldar_blind_grenades" )
+	end
+
+	if (Autarch.bomb_id == nil) then
+		Autarch.bomb_id = cpu_manager.stats:GetAbilityID( "eldar_commander_bomb" )
+	end
+
+	if (Autarch.gravitic_id == nil) then
+		Autarch.gravitic_id = cpu_manager.stats:GetAbilityID( "eldar_gravitic_grenades" )
+	end
+
+	if (Autarch.haywire_id == nil) then
+		Autarch.haywire_id = cpu_manager.stats:GetAbilityID( "eldar_haywire_bombs_2" )
+	end
+
+	if (Autarch.blaster_id == nil) then
+		Autarch.blaster_id = cpu_manager.stats:GetAbilityID( "eldar_mandiblaster_autarch" )
+	end
+
+	if (Autarch.plasma_id == nil) then
+		Autarch.plasma_id = cpu_manager.stats:GetAbilityID( "eldar_plasma_grenades" )
+	end
+
+	if (Autarch.run_id == nil) then
+		Autarch.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+
+	if (Autarch.foot_id == nil) then
+		Autarch.foot_id = cpu_manager.stats:GetAbilityID( "eldar_fleetoffoot" )	
+	end
+end
+
+function AutarchTactic:DoAbilities()
+
+	-- If we are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.blind_id, Ability.Filters.CloseInfantryEnemy, 3 )
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.gravitic_id, Ability.Filters.CloseInfantryEnemy, 3 )
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.blaster_id, Ability.Filters.CloseSquadEnemy, 2 )
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.plasma_id, Ability.Filters.CloseSquadEnemy, 2 ) 
+ 	else
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.blind_id, Ability.Filters.CloseInfantryEnemy, 4 ) 
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.gravitic_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.blaster_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.blaster_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, Autarch.plasma_id, Ability.Filters.CloseSquadEnemy, 4 ) 	
+	end
+
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, Autarch.bomb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, Autarch.bomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Autarch.run_id )) then
+			self.squad_ai:DoSpecialAbility( Autarch.run_id )
+		elseif (self.squad_ai:CanDoAbility( Autarch.foot_id )) then
+			self.squad_ai:DoSpecialAbility( Autarch.foot_id )
+		end
+	end
+
+	-- Check if I should enable/disable fleet of foot
+	--if (not self.squad_ai:IsAttached()) then
+		--self:DoAbilityFoF()
+	--end
+end
+
+function AutarchTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function AutarchTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+    
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+    
+ 	-- Check for close commander
+	local bSetRanged = false
+	local bSetMelee = false
+	local vSquadPos = self.squad_ai:GetPosition()
+	local eStance = self.squad_ai:GetMeleeStance()
+	local oEnemyCommander = Ability.Filters.CloseCommanderEnemy(vSquadPos, 20, 1)
+   	if (oEnemyCommander ~= nil) then
+       
+        	-- Check health
+        	if (self.squad_ai:GetHealthPercentage() > 0.8 and oEnemyCommander:GetHealthPercentage() < 0.3) then
+			bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+			self.dance_time = 0
+		else
+			bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+		end
+
+		else
+    
+    		-- Check for close attached commander
+    		local oSquad = Ability.Filters.CloseInfantryEnemy(vSquadPos, 20, 4)
+    		if (oSquad ~= nil and oSquad:IsAttached()) then
+    			bSetRanged = (eStance == SquadAI.MSTANCE_Assault)
+    		else
+    			bSetMelee = (eStance == SquadAI.MSTANCE_Ranged)
+		end
+	end
+
+	-- At leat 10 secs ranged stance/dancing
+	if (bSetRanged) then
+		self.squad_ai:DoSetMeleeStance( SquadAI.MSTANCE_Ranged )
+		self.dance_time = g_iGMT
+	elseif (bSetMelee and self.stateID ~= Tactic.StateID.DoDance and g_iGMT > self.dance_time + 10) then
+		self.squad_ai:DoSetDefaultMeleeStance()
+		self.dance_time = 0
+	end
+    
+	-- Assassinate win condition -- never attach to a squad / do not attach while dancing
+	if (not cpu_manager.assassinate and self.squad_ai:GetMeleeStance() == SquadAI.MSTANCE_Assault) then
+    
+		if (self:TryAttachSquad(true, true, 50, 100, nil) == nil) then
+		
+			if (self:TryAttachSquad(false, false, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+				self:TryAttachSquadMelee()
+			end
+		end
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

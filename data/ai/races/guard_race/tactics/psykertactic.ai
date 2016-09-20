@@ -1,6 +1,6 @@
 ----------------------------------------
--- File: 'Psykertactic.ai'
--- Edited by Thudmeizer @ 22.09.2005
+-- File: 'psykertactic.ai'
+-- Edited by Thudmeizer @ 29.02.2016
 
 class 'PsykerTactic' (GuardInfantryTactic)
 
@@ -9,6 +9,9 @@ Psyker = {}
 function PsykerTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Psyker Tactic")
+
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
 end
 
 function PsykerTactic:IsAttacker()
@@ -31,10 +34,8 @@ function PsykerTactic:InitAbilities()
 	if (Psyker.curse_id == nil) then
 		Psyker.curse_id = cpu_manager.stats:GetAbilityID( "guard_curse_machine_spirits" )	
 	end
-	
-	-------------Primaris
-	if (Psyker.haste_id == nil) then
-		Psyker.haste_id = cpu_manager.stats:GetAbilityID( "guard_haste" )	
+	if (Psyker.run_id == nil) then
+		Psyker.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
@@ -48,41 +49,29 @@ function PsykerTactic:DoAbilities()
 	
 	-- Target vehicles
 	Ability.DoAbilityTarget( self.squad_ai, Psyker.curse_id, Ability.Filters.CloseVehicleEnemy, 1 )
-	
-	-- Haste
-	Ability.DoAbility( self.squad_ai, Psyker.haste_id, Ability.Filters.IsInCombat )
-	
-	-- Personal Shields
-	local id_Shields = cpu_manager.stats:GetAbilityID("guard_personal_shield_psyker")
-	
-	if (((self.squad_ai:IsUsingAbility(id_Shields) and self.squad_ai:GetMoralePercentage() < 0.1) or
-		(self.squad_ai:IsUsingAbility(id_Shields) == false and self.squad_ai:GetMoralePercentage() == 1)) and
-		self.squad_ai:CanDoAbility(id_Shields)) then
-		self.squad_ai:DoSpecialAbility(id_Shields)
-	end
-	
-	-- Soulripper
-	local id_Ripper = cpu_manager.stats:GetAbilityID("guard_soulripper")
-	
-	if (((self.squad_ai:IsUsingAbility(id_Ripper) and self.squad_ai:GetHealthPercentage() > 0.7) or
-		(self.squad_ai:IsUsingAbility(id_Ripper) == false and self.squad_ai:GetHealthPercentage() <= 0.7 and self.squad_ai:IsInCombat())) and
-		self.squad_ai:CanDoAbility(id_Ripper)) then
-		self.squad_ai:DoSpecialAbility(id_Ripper)
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Psyker.run_id )) then
+			self.squad_ai:DoSpecialAbility( Psyker.run_id )
+		end
 	end
 end
 
 function PsykerTactic:Update()
 
-   if self:IsComplete() then
-      return
-   end
+	if self:IsComplete() then
+		return
+	end
 
-   --state machine
-   if not InfantryTactic.Update( self ) then
-      return
-   end
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
 
-   --attach to squad
-   self:TryAttachSquad( false, false, 1000, 100, nil )
+	--attach to squad
+	self:TryAttachSquad( false, false, 1000, 100, nil )
 end
 

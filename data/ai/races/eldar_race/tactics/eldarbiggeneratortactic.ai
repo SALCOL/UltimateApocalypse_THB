@@ -1,0 +1,116 @@
+----------------------------------------
+-- File: 'eldarbiggeneratortactic.ai'
+-- Edited by Thudmeizer @ 12.06.2016
+
+class 'EldarBigGeneratorTactic' (BaseTactic)
+
+EldarBigGenerator = {}
+
+function EldarBigGeneratorTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Eldar Big Generator Tactic")
+
+	self.m_iNukeID = cpu_manager.stats:GetBuildingID( "eldar_hq_super" )
+
+	ResourcesGenTMR = g_iGMT
+end
+
+function EldarBigGeneratorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (EldarBigGenerator.repair_id == nil) then
+		EldarBigGenerator.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+	if (EldarBigGenerator.inhibitor_id == nil) then
+		EldarBigGenerator.inhibitor_id = cpu_manager.stats:GetAbilityID( "all_apocalypse_inhibitor" )
+	end
+	if (EldarBigGenerator.powerdump_id == nil) then
+		EldarBigGenerator.powerdump_id = cpu_manager.stats:GetAbilityID( "all_thermo_dump_power" )
+	end
+	if (EldarBigGenerator.reqdump_id == nil) then
+		EldarBigGenerator.reqdump_id = cpu_manager.stats:GetAbilityID( "all_thermo_dump_requisition" )
+	end
+	if (EldarBigGenerator.recharge_id == nil) then
+		EldarBigGenerator.recharge_id = cpu_manager.stats:GetAbilityID( "all_thermo_shieldrecharge" )
+	end
+end
+
+function EldarBigGeneratorTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iNukeID, true) > 0) and (iPower >= 30000) then
+
+		-- Increase charge rate of super weapons
+		if (self.base_ai:CanDoAbility( EldarBigGenerator.inhibitor_id )) then
+			self.base_ai:DoSpecialAbility( EldarBigGenerator.inhibitor_id )
+		end
+	end
+
+	-- Check resources needs every (at least) 6 secs, to avoid issues with multiple ability castings
+	if  g_iGMT > ResourcesGenTMR + 6 then
+    		local iReq = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+    		local iPow = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+    		-- Check if we have enough Power to dump, but keep 3500 Power as reserve (ability costs 6000 Pow)
+    		if iPow > 9500 then
+       			-- Check if we actually need Requisition
+        		if iReq < 1000 then
+            			-- Dump Power for Requisition
+            			if self.base_ai:CanDoAbility(EldarBigGenerator.powerdump_id) then
+                			self.base_ai:DoSpecialAbility(EldarBigGenerator.powerdump_id)
+                			ResourcesGenTMR = g_iGMT
+            			end
+        		end
+    		end
+    
+    		-- Check if we have enough Requisition to dump, but keep 4000 Requisition as reserve (ability costs 5000 Req)
+    		if iReq > 9000 then
+        		-- Check if we actually need Power
+        		if iPow < 1000 then
+            			-- Dump Requisition for Power
+            			if self.base_ai:CanDoAbility(EldarBigGenerator.reqdump_id) then
+                			self.base_ai:DoSpecialAbility(EldarBigGenerator.reqdump_id)
+                			ResourcesGenTMR = g_iGMT
+           			end
+        		end
+    		end
+	end
+
+	-- Search for a specific uber units which are low on morale
+	if (self.base_ai:CanDoAbility( EldarBigGenerator.recharge_id ) and (iPower >= 10000)) then
+		if self:PlayerHasLowMoraleSquad(0.3) then
+			-- Enable the Shield Recharge on currently impacted units with low morale (low shield level)
+            		self.base_ai:DoSpecialAbility( EldarBigGenerator.recharge_id )
+        	end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( EldarBigGenerator.repair_id )) then
+			self.base_ai:DoSpecialAbility( EldarBigGenerator.repair_id )
+		end
+	end
+end
+
+-- Called to find if the player has a squad (from a specific list) that meets the low morale condition.
+function EldarBigGeneratorTactic:PlayerHasLowMoraleSquad(iMoraleRatio)
+	for oSquad in cpu_manager.stats:GetPlayerStatsFromID(cpu_manager.player_id):GetSquads() do
+    		if oSquad:IsValid() then
+        	local oName = oSquad:GetSquadName()
+       			if (oName == "eldar_squad_titan_revenant" or
+				oName == "eldar_squad_titan_phantom" or 
+				oName == "eldar_squad_vampire_raider" or 
+				oName == "eldar_squad_phoenix" or 
+				oName == "eldar_squad_scorpion" or 
+				oName == "eldar_squad_storm_serpent" or 
+				oName == "eldar_squad_cobra" or 
+				oName == "eldar_squad_voidspinner") then
+            			if oSquad:GetMoralePercentage() <= iMoraleRatio then
+                		return true
+            			end
+        		end
+    		end
+	end
+	return false
+end

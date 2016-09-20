@@ -1,0 +1,59 @@
+----------------------------------------
+-- File: 'chaoshqsupertactic.ai'
+-- Edited by Krronus @ 04.06.2010
+-- Edited by Thudmeizer @ 24.04.2016
+-- Edited by Cylarne_04 2011
+
+class 'ChaosHQSuperTactic' (BaseTactic)
+
+ChaosHQSuper = {}
+
+function ChaosHQSuperTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Chaos HQ Tactic")
+end
+
+function ChaosHQSuperTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChaosHQSuper.warpstorm_id == nil) then
+		ChaosHQSuper.warpstorm_id = cpu_manager.stats:GetAbilityID( "chaos_nuke" )
+	end
+
+	if (ChaosHQSuper.warpstorm2_id == nil) then
+		ChaosHQSuper.warpstorm2_id = cpu_manager.stats:GetAbilityID( "chaos_warp_storm_super_world_end" )
+	end
+
+	if (ChaosHQSuper.repair_id == nil) then
+		ChaosHQSuper.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function ChaosHQSuperTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Superweapon: Warp Storm of World End - Chaos Apocalypse superweapon, capable of spawning a massive warp storm covering almost the whole world, unable to harm daemons.
+	-- Dozens of warp storms are spawned by a pillar of taint errupted from the grounds of the planet, able to spawn dozens of monsters at your command by clicking on any pillar spawned. 
+	-- For enemies that get too close to the pillars, they will attack each other by a small chance, also whip lashed by lightning strikes surrounding them.
+	if (self.base_ai:CanDoAbility(ChaosHQSuper.warpstorm2_id) and (iRequisition >= 45000 and iPower >= 45000)) then
+		Ability.DoAbilityPos( self.base_ai, ChaosHQSuper.warpstorm2_id, Ability.Filters.CloseEnemy, 35 )
+		Ability.DoAbilityPos( self.base_ai, ChaosHQSuper.warpstorm2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 8 )
+	end
+
+	-- Superweapon: Warp Storm - Unleash the darkest powers of the warp at the designated target. At first, all enemies within a 25m radius will attack each other for multiple seconds, driven by madness.
+	-- A Warp Storm is then summoned, destroying most objects within a 60m radius, and then, it will continue to execute lightning strikes at all targets 90m away from the designated target for 180 seconds.
+	if (self.base_ai:CanDoAbility(ChaosHQSuper.warpstorm_id) and (iRequisition >= 3000 and iPower >= 3000)) then
+		Ability.DoAbilityPos( self.base_ai, ChaosHQSuper.warpstorm_id, Ability.Filters.CloseEnemy, 25 )
+		Ability.DoAbilityPos( self.base_ai, ChaosHQSuper.warpstorm_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6 )
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( ChaosHQSuper.repair_id )) then
+			self.base_ai:DoSpecialAbility( ChaosHQSuper.repair_id )
+		end
+	end
+end

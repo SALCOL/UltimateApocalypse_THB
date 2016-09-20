@@ -1,0 +1,58 @@
+----------------------------------------
+-- File: 'bannerbearertactic.ai'
+-- Edited by Thudmeizer	@ 29.02.2016
+
+class 'BannerBearerTactic' (GuardInfantryTactic)
+
+BannerBearer = {}
+
+function BannerBearerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("BannerBearer Tactic")
+
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+end
+
+function BannerBearerTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function BannerBearerTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function BannerBearerTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (BannerBearer.run_id == nil) then
+		BannerBearer.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function BannerBearerTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( BannerBearer.run_id )) then
+			self.squad_ai:DoSpecialAbility( BannerBearer.run_id )
+		end
+	end
+end
+
+function BannerBearerTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+   
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	--attach to squad
+	self:TryAttachSquad( false, false, 1000, 200, nil )
+end

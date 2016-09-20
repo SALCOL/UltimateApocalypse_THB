@@ -1,0 +1,90 @@
+----------------------------------------
+-- File: 'grotgangtactic.ai'
+-- Edited by Thudmeizer		@ 24.02.2016
+
+class 'GrotGangTactic' (OrkInfantryTactic)
+
+GrotGang = {}
+
+function GrotGangTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Grot Gang Tactic")
+end
+
+function GrotGangTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (GrotGang.run_id == nil) then
+		GrotGang.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function GrotGangTactic:DoAbilities()
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( GrotGang.run_id )) then
+			self.squad_ai:DoSpecialAbility( GrotGang.run_id )
+		end
+	end
+end
+
+function GrotGangTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+   
+	-- If there are no ressources available, don't upgrade!
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (iRequisition < 400 and not Tactic.Options.can_reinforce) then
+		return
+	end
+
+	if (not self.squad_ai:IsReinforcing()) then
+	  
+		-- Try for upgrade if we've a leader and more than 4 troopers
+		if (self.squad_ai:HasUpgradableTrooper() and self.squad_ai:GetNumTroopers() > 4) then
+			local class_type = cpu_manager:GetFirstEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function GrotGangTactic:Reinforce()
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- try for different types of squad members
+		local iKannonIndex = 0
+        	local iZzzapIndex = 1
+		
+		local iNumKannon = self.squad_ai:GetLeaderCount( iKannonIndex )
+		local iNumZzzap = self.squad_ai:GetLeaderCount( iZzzapIndex )
+
+		-- Desired number of each leader type
+		local iDesiredKannon = 1
+		local iDesiredZzzap = 1
+		
+		-- Desired order of reinforcing
+		if iNumKannon < iDesiredKannon then
+			if self.squad_ai:CanReinforce( true, iKannonIndex ) then
+				self.squad_ai:DoReinforce( true, iKannonIndex )
+			end
+		elseif iNumZzzap < iDesiredZzzap then
+			if self.squad_ai:CanReinforce( true, iZzzapIndex ) then
+				self.squad_ai:DoReinforce( true, iZzzapIndex )
+			end
+		end
+	end
+
+	-- Don't reinforce more than 8 grots -- they get stuck
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 8) then
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+end

@@ -1,0 +1,104 @@
+----------------------------------------
+-- File: 'psykercommandsquadtactic.ai'
+-- Edited by Thudmeizer @ 29.02.2016
+
+class 'PsykerCommandSquadTactic' (GuardInfantryTactic)
+
+PsykerCommandSquad = {}
+
+function PsykerCommandSquadTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Psyker Command Squad Tactic")
+
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+end
+
+function PsykerCommandSquadTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function PsykerCommandSquadTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function PsykerCommandSquadTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (PsykerCommandSquad.lightning_id == nil) then
+		PsykerCommandSquad.lightning_id = cpu_manager.stats:GetAbilityID( "guard_psyker_lightning_arc" )	
+	end
+	if (PsykerCommandSquad.strip_id == nil) then
+		PsykerCommandSquad.strip_id = cpu_manager.stats:GetAbilityID( "guard_psyker_strip_soul" )	
+	end
+	if (PsykerCommandSquad.curse_id == nil) then
+		PsykerCommandSquad.curse_id = cpu_manager.stats:GetAbilityID( "guard_curse_machine_spirits" )	
+	end
+	if (PsykerCommandSquad.run_id == nil) then
+		PsykerCommandSquad.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+
+	-------------Primaris
+	if (PsykerCommandSquad.haste_id == nil) then
+		PsykerCommandSquad.haste_id = cpu_manager.stats:GetAbilityID( "guard_haste" )	
+	end
+	if (PsykerCommandSquad.ripper_id == nil) then
+		PsykerCommandSquad.ripper_id = cpu_manager.stats:GetAbilityID( "guard_soulripper" )	
+	end
+end
+
+function PsykerCommandSquadTactic:DoAbilities()
+
+	-- Target infantry
+	Ability.DoAbilityTarget( self.squad_ai, PsykerCommandSquad.lightning_id, Ability.Filters.CloseSquadEnemy, 4 ) 
+	
+	-- Target commanders
+	Ability.DoAbilityTarget( self.squad_ai, PsykerCommandSquad.strip_id, Ability.Filters.CloseCommanderEnemy, 1 )
+	
+	-- Target vehicles
+	Ability.DoAbilityTarget( self.squad_ai, PsykerCommandSquad.curse_id, Ability.Filters.CloseVehicleEnemy, 1 )
+
+	-- Haste
+	Ability.DoAbility( self.squad_ai, PsykerCommandSquad.haste_id, Ability.Filters.IsInCombat )
+--[[	
+	-- Soulripper
+	if (((self.squad_ai:IsUsingAbility(PsykerCommandSquad.ripper_id) and self.squad_ai:GetHealthPercentage() > 0.7) or
+		(self.squad_ai:IsUsingAbility(PsykerCommandSquad.ripper_id) == false and self.squad_ai:GetHealthPercentage() <= 0.7 and self.squad_ai:IsInCombat())) and
+		self.squad_ai:CanDoAbility(PsykerCommandSquad.ripper_id)) then
+			self.squad_ai:DoSpecialAbility(PsykerCommandSquad.ripper_id)
+	end
+]]
+	-- Enable Soulripper only when attacking and with enough health
+	if (self.squad_ai:IsUsingAbility(PsykerCommandSquad.ripper_id)) then
+
+		-- Turn soulripper OFF if stopped attacking, OR if health < 50%
+		if ((not self.squad_ai:IsAttacking()) or self.squad_ai:GetHealthPercentage() < 0.5) then
+			self.squad_ai:DoSpecialAbility(PsykerCommandSquad.ripper_id)
+		end
+		-- Turn soulripper ON only when attacking, AND when health > 50%
+		elseif (self.squad_ai:IsAttacking() and self.squad_ai:GetHealthPercentage() > 0.5) then
+			self.squad_ai:DoSpecialAbility(PsykerCommandSquad.ripper_id)
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( PsykerCommandSquad.run_id )) then
+			self.squad_ai:DoSpecialAbility( PsykerCommandSquad.run_id )
+		end
+	end
+end
+
+function PsykerCommandSquadTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+end
+

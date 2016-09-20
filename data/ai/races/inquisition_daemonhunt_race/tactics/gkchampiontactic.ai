@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'GKChampiontactic.ai'
 -- Created by Cylarne
+-- Edited by Thudmeizer	@ 07.06.2016
 
 class 'GKChampionTactic' (DaemonhuntInfantryTactic)
 
@@ -8,7 +9,21 @@ GKChampion = {}
 
 function GKChampionTactic:__init( squad_ai ) super( squad_ai )
 
-	self:SetName("GKChampion Tactic")
+	self:SetName("Grey Knight Champion Tactic")
+end
+
+function GKChampionTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelGKChampion = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelGKChampion ~= nil) then
+			local addOnID = buildChannelGKChampion:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelGKChampion:IsBuilding() == 0 and buildChannelGKChampion:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelGKChampion:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
 end
 
 function GKChampionTactic:IsAttacker()
@@ -19,35 +34,123 @@ function GKChampionTactic:IsDefender()
 	return self:IsCommanderDefender()
 end
 
+-- GK Champion is allowed to retreat even directly after a jump
+function GKChampionTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function GKChampionTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function GKChampionTactic:CanJumpAttached()
+	return true
+end
+
 function GKChampionTactic:InitAbilities()
 
-	if GKChampion.rally == nil then
-	   GKChampion.rally = cpu_manager.stats:GetAbilityID( "inquisition_rally_gk" )	
+	if (GKChampion.rally_id == nil) then
+		GKChampion.rally_id = cpu_manager.stats:GetAbilityID( "inquisition_rally_gk" )	
 	end
 
-	if GKChampion.light == nil then
-	   GKChampion.light = cpu_manager.stats:GetAbilityID( "inquisition_strike_of_justice_champion" )	
+	if (GKChampion.justice_id == nil) then
+		GKChampion.justice_id = cpu_manager.stats:GetAbilityID( "inquisition_strike_of_justice_champion" )	
+	end
+
+	if (GKChampion.medikits_id == nil) then
+	    	GKChampion.medikits_id = cpu_manager.stats:GetAbilityID( "inquisition_medikits" )	
+	end
+
+	if (GKChampion.run_id == nil) then
+		GKChampion.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function GKChampionTactic:DoAbilities()
 	
-	if (self.squad_ai:IsBroken()) then
+	-- If we are dying, lower requisites for attacks
+	if self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 then
+	       	Ability.DoAbilityPos( self.squad_ai, GKChampion.justice_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, GKChampion.justice_id, Ability.Filters.CloseMonsterEnemy, 4 ) 
+	else
+		Ability.DoAbilityPos( self.squad_ai, GKChampion.justice_id, Ability.Filters.CloseInfantryEnemy, 8 ) 
+		Ability.DoAbilityPos( self.squad_ai, GKChampion.justice_id, Ability.Filters.CloseMonsterEnemy, 8 ) 
+	end
+
+	if (self.squad_ai:IsBroken() and self.squad_ai:IsAttached()) then
 		
 		-- Check if I can repair my morale
-		if (self.squad_ai:CanDoAbility( GKChampion.rally )) then
-			self.squad_ai:DoSpecialAbility( GKChampion.rally )
+		if (self.squad_ai:CanDoAbility( GKChampion.rally_id )) then
+			self.squad_ai:DoSpecialAbility( GKChampion.rally_id )
 		end
 	end
 
-	Ability.DoAbilityPos( self.squad_ai, GKChampion.light, Ability.Filters.CloseInfantryEnemy, 8 ) 
-	Ability.DoAbilityPos( self.squad_ai, GKChampion.light, Ability.Filters.CloseMonsterEnemy, 1 ) 
-
-	--we are dying, lower requisites for attacks
-	if self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 then
-	
-        Ability.DoAbilityPos( self.squad_ai, GKChampion.light, Ability.Filters.CloseInfantryEnemy, 4 )
-		Ability.DoAbilityPos( self.squad_ai, GKChampion.light, Ability.Filters.CloseInfantryEnemy, 4 ) 
-
+	-- Use Medkits if low on health
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		
+		if (self.squad_ai:CanDoAbility( GKChampion.medikits_id )) then
+			self.squad_ai:DoSpecialAbility( GKChampion.medikits_id )
+		end
 	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( GKChampion.run_id )) then
+			self.squad_ai:DoSpecialAbility( GKChampion.run_id )
+		end
+	end
+end
+
+function GKChampionTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function GKChampionTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+	
+	-- Attach to melee in tier2+
+	if (cpu_manager:GetTierLevel() > 1) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

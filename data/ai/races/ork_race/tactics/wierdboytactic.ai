@@ -1,0 +1,227 @@
+----------------------------------------
+-- File: 'wierdboytactic.ai'
+-- Edited by LarkinVB   @ 31.07.2005
+-- Edited by Thudmeizer   @ 23.02.2016
+
+class 'WierdBoyTactic' (OrkInfantryTactic)
+
+WierdBoy = {}
+
+function WierdBoyTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Wierd Boy Tactic")
+
+	-- Assume squad just entrenched/retrenched
+	self.m_iLastEntrenchTime = g_iGMT
+end
+
+function WierdBoyTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelWierdBoy = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelWierdBoy ~= nil) then
+			local addOnID = buildChannelWierdBoy:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelWierdBoy:IsBuilding() == 0 and buildChannelWierdBoy:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelWierdBoy:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function WierdBoyTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function WierdBoyTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Wierdboy is allowed to retreat even directly after a jump
+function WierdBoyTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Arkhan 03.2006: Inherited method used by commanders which are able to jump with an attached squad
+function WierdBoyTactic:CanJumpAttached()
+	return true
+end
+
+function WierdBoyTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (WierdBoy.frazzle == nil) then
+		WierdBoy.frazzle = cpu_manager.stats:GetAbilityID( "ork_wierdboy_frazzle" )
+	end
+	if (WierdBoy.zzzap == nil) then
+		WierdBoy.zzzap = cpu_manager.stats:GetAbilityID( "ork_wierdboy_zzzap" )
+	end
+	if (WierdBoy.blast == nil) then
+		WierdBoy.blast = cpu_manager.stats:GetAbilityID( "ork_wierdboy_zzzap_blast" )
+	end
+	if (WierdBoy.waagh == nil) then
+		WierdBoy.waagh = cpu_manager.stats:GetAbilityID( "ork_waagh!!!" )
+	end
+	if (WierdBoy.run == nil) then
+		WierdBoy.run = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function WierdBoyTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityPos(self.squad_ai, WierdBoy.frazzle, Ability.Filters.CloseSquadEnemy, 4)
+
+		if (iPower >= 300) then
+			Ability.DoAbilityPos(self.squad_ai, WierdBoy.zzzap, Ability.Filters.CloseVehicleEnemy, 1)
+			Ability.DoAbilityPos(self.squad_ai, WierdBoy.zzzap, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+		end
+		if (iPower >= 500) then
+			Ability.DoAbilityPos(self.squad_ai, WierdBoy.blast, Ability.Filters.CloseEnemy, 8)
+			Ability.DoAbilityPos(self.squad_ai, WierdBoy.blast, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+		end
+	else
+		Ability.DoAbilityPos(self.squad_ai, WierdBoy.frazzle, Ability.Filters.CloseSquadEnemy, 6)
+
+		if (iPower >= 600) then
+			Ability.DoAbilityPos(self.squad_ai, WierdBoy.zzzap, Ability.Filters.CloseVehicleEnemy, 2)
+			Ability.DoAbilityPos(self.squad_ai, WierdBoy.zzzap, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+		end
+		if (iPower >= 1000) then
+			Ability.DoAbilityPos(self.squad_ai, WierdBoy.blast, Ability.Filters.CloseEnemy, 12)
+			Ability.DoAbilityPos(self.squad_ai, WierdBoy.blast, Ability.EntityFilters.CloseBaseEntityEnemy, 4)
+		end
+	end
+
+	-- Charge if in combat and enemy is not adjacent or while broken
+	-- Don't waagh if health is too low or we are not moving !
+	local squad_pos = self.squad_ai:GetPosition()
+	if (((self.squad_ai:IsInCombat() and Ability.Filters.CloseEnemy( squad_pos, 20, 1 ) == nil) or
+	   	self.squad_ai:IsBroken()) and self.squad_ai:GetHealthPercentage() > 0.8 and self:IsMoving()) then 
+		if (self.squad_ai:CanDoAbility(WierdBoy.waagh)) then
+			self.squad_ai:DoSpecialAbility(WierdBoy.waagh)
+		end
+	end
+
+	-- Can elevate himself which will provide protection to all nearby units within a 35m radius and granting an effective ranged weapon
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), 20, 4)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 450 and self.squad_ai:GetHealthPercentage() > 0.6 and not self.squad_ai:IsAttached()) then
+
+		-- Try to entrench
+		self:DoEntrenchAbility()
+	end
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( WierdBoy.run )) then
+			self.squad_ai:DoSpecialAbility( WierdBoy.run )
+		end
+	end
+end
+
+function WierdBoyTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_population.lua			5/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support.lua			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_04] addon_commanders_increase_production.lua		5/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_05] addon_commanders_increase_health.lua			6/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_06] addon_commanders_increase_morale.lua			6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_07] addon_commanders_cap_population_2.lua		8
+--	self:AutoBuildAddOn(6)	-- 	[addon_08] addon_commanders_cap_support_2.lua			8
+--	self:AutoBuildAddOn(7)	-- 	[addon_09] addon_commanders_increase_production_2.lua		8
+
+	local addon_random_commander_upgrades = math.random( 0,7 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+end
+
+function WierdBoyTactic:DoEntrenchAbility()
+
+	-- Don't entrench/retrench too fast after a retrench/entrench
+	if (g_iGMT < self.m_iLastEntrenchTime + 5) then
+		return
+	end
+
+	-- Calculate distance to target position
+	local iDistance = distance_sqr(self.target, self.squad_ai:GetPosition())
+	
+	-- Check unit state
+	local bAttackState = (self:GetState() == Tactic.States.Attack)
+	
+	-- Check if we can entrench
+	if (self.squad_ai:CanEntrench(true)) then
+	
+		-- Check situation
+		local bDoEntrench = false
+		if (self.squad_ai:IsInCombat()) then
+		
+			-- Check state
+			if (bAttackState or iDistance < sqr(25)) then
+				bDoEntrench = true
+			end
+		 
+		elseif (not bAttackState and iDistance < sqr(20) and not cpu_manager.terrain_analyzer:HasThreat(self.target, 25)) then
+			bDoEntrench = true
+		end
+		
+		-- Try to entrench
+		if (bDoEntrench) then
+			self.squad_ai:DoEntrench(true)
+			self.m_iLastEntrenchTime = g_iGMT
+		end
+	end
+	
+	-- Check if we can retrench
+	if (self.squad_ai:CanEntrench(false)) then
+	
+		-- Check situation
+		local bDoRetrench = false
+		if (self.squad_ai:IsAttacking()) then
+		
+			-- Check state
+			if (not bAttackState and iDistance > sqr(25)) then
+				bDoRetrench = true
+			end
+			self.m_iLastEntrenchTime = g_iGMT
+	
+		elseif (bAttackState or iDistance > sqr(20) or cpu_manager.terrain_analyzer:HasThreat(self.target, 25)) then
+			bDoRetrench = true
+		end
+	
+		-- Try to retrench
+		if (bDoRetrench) then
+			self.squad_ai:DoEntrench(false)
+			self.m_iLastEntrenchTime = g_iGMT
+		end
+	end
+end
+
+function WierdBoyTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+	
+	-- Attach to melee
+	if (self:TryAttachSquad(true, true, 50, 100, nil) == nil) then
+	
+		if (self:TryAttachSquad(false, false, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+			self:TryAttachSquadMelee()
+		end
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

@@ -1,6 +1,6 @@
 ----------------------------------------
--- File: 'WillHivetactic.ai'
--- Edited by Thudmeizer @ 12.12.2006
+-- File: 'willhivetactic.ai'
+-- Edited by Thudmeizer @ 25.04.2016
 
 class 'WillHiveTactic' (EngineerTactic)
 
@@ -9,9 +9,8 @@ WillHive = {}
 function WillHiveTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Will Hive Tactic")
-	
-	-- Init abilities
-	self.m_bCanDeepStrikeTroops = true
+
+	WillHive.detectDelay = -1
 end
 
 function WillHiveTactic:CanRepair()
@@ -23,109 +22,129 @@ function WillHiveTactic:IsAffectedByMorale()
 end
 
 function WillHiveTactic:InitAbilities()
-	
-	------------------------- LINKS
-	if (WillHive.link_tyranoform_id == nil) then
-		WillHive.link_tyranoform_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_tyranoform")
-	end
-	if (WillHive.link_infest_id == nil) then
-		WillHive.link_infest_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_infest")
-	end
-	if (WillHive.link_reveal_id == nil) then
-		WillHive.link_reveal_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_reveal")
-	end
-	if (WillHive.link_sporestrike_id == nil) then
-		WillHive.link_sporestrike_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_hivestrike")
-	end
-	if (WillHive.link_hivestrike_id == nil) then
-		WillHive.link_hivestrike_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_hivestrike_greater")
+
+	if (WillHive.sporestrike_id == nil) then
+		WillHive.sporestrike_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_hivestrike")
 	end
 	
-	------------------------- SUPERWEAPONS
-	
-	--[[if (WillHive.superweapon2_id == nil) then
-		WillHive.superweapon2_id = cpu_manager.stats:GetAbilityID("tyranids_summon_hive_fleet")
+	if (WillHive.hivestrike_id == nil) then
+		WillHive.hivestrike_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_hivestrike_greater")
 	end
-	if (WillHive.superweapon1_id == nil) then
-		WillHive.superweapon1_id = cpu_manager.stats:GetAbilityID("tyranids_planetary_bombardment")
+
+	if (WillHive.infest_id == nil) then
+		WillHive.infest_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_infest")
 	end
-	
-	if (WillHive.biobomb_id == nil) then
-		WillHive.biobomb_id = cpu_manager.stats:GetAbilityID("tyranids_bio_bomb")
-	end]]
+
+	if (WillHive.reveal_id == nil) then
+		WillHive.reveal_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_reveal")
+	end
+
+	if (WillHive.tyranoform_id == nil) then
+		WillHive.tyranoform_id = cpu_manager.stats:GetAbilityID("tyranids_hivemind_tyranoform")
+	end
 end
 
 function WillHiveTactic:DoAbilities()
 
-	------------------------------ HIVE MIND LINKS
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	
-	local iRange = 2000
+	-- Meteor Strike: Spawn several large meteors at a targeted location. Meteors do good damage to all enemy units and structures randomly throughout the targeted area.
+	if (self.squad_ai:CanDoAbility(WillHive.hivestrike_id) and iPower >= 2000) then
+		Ability.DoAbilityPos(self.squad_ai, WillHive.hivestrike_id, Ability.Filters.CloseEnemy, 35)
+		Ability.DoAbilityPos(self.squad_ai, WillHive.hivestrike_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10)
+	end
+	
+	-- Reveal: Reveals an area of interest
+	if (self.squad_ai:CanDoAbility(WillHive.reveal_id) and iPower >= 1000) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(WillHive.reveal_id)
+		local oSquad = Ability.Filters.CloseInfiltratedEnemy(self.squad_ai:GetPosition(), iRange, 1)
+		
+		if (oSquad ~= nil) then
+			if(WillHive.detectDelay == -1) then
+				WillHive.detectDelay = math.max(0, 30)
+				WillHive.detectTime = g_iGMT + WillHive.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < WillHive.detectTime) then
+				return
+			end
+
+			-- Only try to detect if the infiltrated unit is attacking
+			if (oSquad:IsAttacking()) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.squad_ai:DoSpecialAbilityPos( WillHive.reveal_id, pos )
+
+				WillHive.detectDelay = -1
+			end
+		else 
+			--if no infiltrated units within range, scan other enemies
+			local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 1)
+			if(WillHive.detectDelay == -1) then
+				WillHive.detectDelay = math.max(0, 30)
+				WillHive.detectTime = g_iGMT + WillHive.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < WillHive.detectTime) then
+				return
+			end
+
+			if (oSquad ~= nil) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.squad_ai:DoSpecialAbilityPos( WillHive.reveal_id, pos )
+
+				WillHive.detectDelay = -1
+			end
+		end
+	end
+	
+	-- Infest Environment: Create an infestation cloud above a targeted location. Infestation cloud has a chance to cripple enemy production speeds at regular intervals, for a prolonged duration.
+	-- Infestation cloud speeds up production speeds around your own structures if casted upon your territory.
+	local iRange = self.squad_ai:GetAbilityRange(WillHive.infest_id)
+	local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 12)
+	if (self.squad_ai:CanDoAbility(WillHive.infest_id) and iPower >= 1500) then
+		if (math.random(1, 10) >= 5) then
+			Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.infest_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10)
+		elseif (math.random(1, 10) <= 4) then
+			if (oSquad ~= nil and oSquad:IsInCombat()) then
+				self.squad_ai:DoSpecialAbilitySquad(WillHive.infest_id, oSquad:GetSquad())
+			end
+		end
+	end
+	
+	-- Fog of Disaster: Summon a large cloud of spore-saturated miasma at a targeted location. The enlarged fog blinds and decreases accuracy of all enemy units and structures within a large radius at the targeted location.
+	local iRange = self.squad_ai:GetAbilityRange(WillHive.tyranoform_id)
+	local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 14)
+	if (self.squad_ai:CanDoAbility(WillHive.tyranoform_id) and iPower >= 1250) then
+		if (oSquad ~= nil) then
+			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
+				self.squad_ai:DoSpecialAbilitySquad(WillHive.tyranoform_id, oSquad:GetSquad())
+			end
+		end
+	end
+	
+	-- Sporestrike: Spawn several spore meteors at a targeted location. Spore meteors damage and poison enemy targets at random locations.
+	local iRange = self.squad_ai:GetAbilityRange(WillHive.sporestrike_id)
 	local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 6)
-	local squad_filter = function( squad_ai )		
-		return not squad_ai:IsInCombat() and not squad_ai:IsBroken()
-	end	
-	
-	-- Hivestrike
-	if (self.squad_ai:CanDoAbility(WillHive.link_hivestrike_id) and iPower >= 1000) then
-		Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.link_hivestrike_id, Ability.EntityFilters.CloseBaseEntityEnemy, 12)
-	end
-	
-	-- Reveal
-	if (self.squad_ai:CanDoAbility(WillHive.link_reveal_id) and iPower >= 400) then
-		Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.link_reveal_id, Ability.EntityFilters.CloseBaseEntityEnemy, 14)
-	end	
-	
-	-- Infestation
-	if (self.squad_ai:CanDoAbility(WillHive.link_infest_id) and iPower >= 500) then
-		if (math.random(1, 10) >= 8) then
-			Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.link_infest_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10)
-		elseif (math.random(1, 10) >= 5) then
-			--local target_squad = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), range, squad_filter )
-			--self.squad_ai:DoSpecialAbilitySquad(WillHive.link_infest_id, target_squad)
-		elseif (oSquad ~= nil) then
-			self.squad_ai:DoSpecialAbilitySquad(WillHive.link_infest_id, oSquad:GetSquad())
-		end
-	end
-	
-	-- Tyranoformation
-	if (self.squad_ai:CanDoAbility(WillHive.link_tyranoform_id) and iPower >= 600) then
+	if (self.squad_ai:CanDoAbility(WillHive.sporestrike_id) and iPower >= 200) then
 		if (oSquad ~= nil) then
 			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
-				self.squad_ai:DoSpecialAbilitySquad(WillHive.link_tyranoform_id, oSquad:GetSquad())
+				self.squad_ai:DoSpecialAbilitySquad(WillHive.sporestrike_id, oSquad:GetSquad())
 			end
 		end
 	end
-	
-	-- Spore Strike
-	if (self.squad_ai:CanDoAbility(WillHive.link_sporestrike_id) and iPower >= 200) then
-		if (oSquad ~= nil) then
-			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
-				self.squad_ai:DoSpecialAbilitySquad(WillHive.link_sporestrike_id, oSquad:GetSquad())
-			end
-		end
-	end
+end
 
-	------------------------------ DO SUPERWEAPONS
-	
-	--[[if (self.squad_ai:CanDoAbility(WillHive.superweapon2_id) and iPower >= 15000) then
-		-- Activate the Meteor Strike.
-		Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.superweapon2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-		
-	elseif (self.squad_ai:CanDoAbility(WillHive.biobomb_id) and iPower < 7000) then
-		local iRange = self.squad_ai:GetAbilityRange(WillHive.biobomb_id)
-		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 30)
-		if (oSquad ~= nil) then	
-			if (oSquad:IsInCombat() or oSquad:IsCapturing()) then
-				self.squad_ai:DoSpecialAbilitySquad(WillHive.biobomb_id, oSquad:GetSquad())
-			end
-		end
-		
-	elseif (self.squad_ai:CanDoAbility(WillHive.superweapon1_id) and iPower >= 7000) then
-		-- Activate the Meteor Strike.
-		Ability.DoAbilityTargetEntity(self.squad_ai, WillHive.superweapon1_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-		
-	end]]
-	
-
+function WillHiveTactic:CanDeepStrikeTroops()
+	return true
 end

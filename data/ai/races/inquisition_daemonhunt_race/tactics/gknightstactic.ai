@@ -1,0 +1,121 @@
+----------------------------------------
+-- File: 'gknightstactic.ai'
+-- Edited by Thudmeizer @ 07.06.2016
+
+class 'GKnightsTactic' (DaemonhuntInfantryTactic)
+
+GKnights = {}
+
+function GKnightsTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("GKnights Tactic")
+end
+
+-- Grey Knights are allowed to retreat even directly after a jump
+function GKnightsTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function GKnightsTactic:InitAbilities()
+
+	if (GKnights.crack_id == nil) then
+		GKnights.crack_id = cpu_manager.stats:GetAbilityID( "inquisition_crack_grenades_stormtroopers" )	
+	end
+
+	if (GKnights.disruption_id == nil) then
+	    	GKnights.disruption_id = cpu_manager.stats:GetAbilityID( "inquisition_disruption_grenades" )	
+	end
+
+	if (GKnights.frag_id == nil) then
+	    	GKnights.frag_id = cpu_manager.stats:GetAbilityID( "inquisition_frag_grenades_stormtroopers" )	
+	end
+
+	if (GKnights.inferno_id == nil) then
+	    	GKnights.inferno_id = cpu_manager.stats:GetAbilityID( "inquisition_inferno_grenades" )	
+	end
+
+	if (GKnights.medikits_id == nil) then
+	    	GKnights.medikits_id = cpu_manager.stats:GetAbilityID( "inquisition_medikits" )	
+	end
+
+	if (GKnights.rally_id == nil) then
+	    	GKnights.rally_id = cpu_manager.stats:GetAbilityID( "inquisition_rally_gk" )	
+	end
+
+	if (GKnights.run_id == nil) then
+		GKnights.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function GKnightsTactic:DoAbilities()
+
+	if (self.squad_ai:CanDoAbility( GKnights.crack_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, GKnights.crack_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, GKnights.crack_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	end
+
+	if (self.squad_ai:CanDoAbility( GKnights.disruption_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, GKnights.disruption_id, Ability.Filters.CloseInfantryEnemy, 4 )
+	end
+
+	if (self.squad_ai:CanDoAbility( GKnights.frag_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, GKnights.frag_id, Ability.Filters.CloseSquadEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, GKnights.frag_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, GKnights.frag_id, Ability.Filters.CloseMonsterEnemy, 1 )
+	end
+
+	if (self.squad_ai:CanDoAbility( GKnights.inferno_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, GKnights.inferno_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, GKnights.inferno_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+		Ability.DoAbilityTarget( self.squad_ai, GKnights.inferno_id, Ability.Filters.CloseMonsterEnemy, 1 )
+	end
+
+	-- Use Medkits if low on health
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		
+		if (self.squad_ai:CanDoAbility( GKnights.medikits_id )) then
+			self.squad_ai:DoSpecialAbility( GKnights.medikits_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( GKnights.run_id )) then
+			self.squad_ai:DoSpecialAbility( GKnights.run_id )
+		end
+	end
+
+	-- Do basic abilities
+	DaemonhuntInfantryTactic.DoAbilities(self)
+end
+
+function GKnightsTactic:CheckForBroken()
+
+	if (self.squad_ai:IsBroken()) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( GKnights.rally_id )) then
+			self.squad_ai:DoSpecialAbility( GKnights.rally_id )
+		end
+	end
+   
+	-- Call basic broken check method
+	InfantryTactic.CheckForBroken(self)
+end
+
+function GKnightsTactic:Update()
+
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+	
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

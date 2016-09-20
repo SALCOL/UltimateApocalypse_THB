@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'necronbuildingtactic.ai'
+-- Edited by Thudmeizer	@ 08.03.2016
+
+class 'NecronBuildingTactic' (BaseTactic)
+
+NecronBuilding = {}
+
+function NecronBuildingTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Necron Building Tactic")
+end
+
+function NecronBuildingTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (NecronBuilding.repair_id == nil) then
+		NecronBuilding.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function NecronBuildingTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( NecronBuilding.repair_id )) then
+			self.base_ai:DoSpecialAbility( NecronBuilding.repair_id )
+		end
+	end
+end

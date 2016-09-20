@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'necronpyramidtactic.ai'
--- Edited by Cylarne @ 08.05.2012
+-- Edited by Cylarne @	2012
+-- Edited by Thudmeizer @ 04.05.2016
 
 class 'NecronPyramidTactic' (BaseTactic)
 
@@ -9,35 +10,85 @@ NecronPyramid = {}
 function NecronPyramidTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Necron Pyramid Tactic")
-	self.m_bCanDeepStrikeTroops = true
+end
+
+function NecronPyramidTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
 end
 
 function NecronPyramidTactic:InitAbilities()
 
-	if (NecronPyramid.Annihilator_id == nil) then
-		NecronPyramid.Annihilator_id = cpu_manager.stats:GetAbilityID( "necron_annihilator" )
+	if (NecronPyramid.annihilator_id == nil) then
+		NecronPyramid.annihilator_id = cpu_manager.stats:GetAbilityID( "necron_annihilator" )
 	end
-	if (NecronPyramid.CO_id == nil) then
-		NecronPyramid.CO_id = cpu_manager.stats:GetAbilityID( "necron_cataclysmic_obliterator" )
+
+	if (NecronPyramid.annihilator2_id == nil) then
+		NecronPyramid.annihilator2_id = cpu_manager.stats:GetAbilityID( "necron_annihilator2" )
 	end
-	
+
+	if (NecronPyramid.cataclysmic_id == nil) then
+		NecronPyramid.cataclysmic_id = cpu_manager.stats:GetAbilityID( "necron_cataclysmic_obliterator" )
+	end
+
+	if (NecronPyramid.repair_id == nil) then
+		NecronPyramid.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
 end
 
 function NecronPyramidTactic:DoAbilities()
 	
+--	self:AutoBuildAddOn(0) -- Stage 1	-- addon_necron_pyramid
+--	self:AutoBuildAddOn(1) -- Stage 2	-- addon_necron_pyramid_engaged
+--	self:AutoBuildAddOn(2) -- Stage 3 	-- addon_necron_pyramid_collossus
+
+	-- Build all three possible addons
+	local random_pyramid_addons = math.random( 0,2 )
+	self:AutoBuildTurretAddOn(random_pyramid_addons, self.base_ai:GetEntity():GetID())
+
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	
-	if (self.base_ai:CanDoAbility(NecronPyramid.Annihilator_id)) then
-		if (iPower >= 30000 and self.base_ai:CanDoAbility(NecronPyramid.CO_id)) then
-			Ability.DoAbilityPos(self.base_ai, NecronPyramid.CO_id, Ability.Filters.CloseEnemy, 60)
-			Ability.DoAbilityTargetEntity(self.base_ai, NecronPyramid.CO_id , Ability.EntityFilters.CloseBaseEntityEnemy, 25)
-			Ability.DoAbilityTargetEntity(self.base_ai, NecronPyramid.CO_id , Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	-- Activate the Cataclysmic Obliterator
+	if (self.base_ai:CanDoAbility(NecronPyramid.cataclysmic_id)) then
+		if (iPower >= 35000) then
+			-- Activate Apocalyptic Superweapon
+			Ability.DoAbilityPos( self.base_ai, NecronPyramid.cataclysmic_id, Ability.Filters.CloseEnemy, 40 )
+			Ability.DoAbilityPos( self.base_ai, NecronPyramid.cataclysmic_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10 )
 		end
-		-- Activate Apocalyptic Superweapon.
-		Ability.DoAbilityPos(self.base_ai, NecronPyramid.Annihilator_id, Ability.Filters.CloseEnemy, 35)
-		Ability.DoAbilityTargetEntity(self.base_ai, NecronPyramid.Annihilator_id , Ability.EntityFilters.CloseBaseEntityEnemy, 6)
 	end
-	
-	
-	
+
+	-- Activate the Annihilator
+	if (self.base_ai:CanDoAbility(NecronPyramid.annihilator_id)) then
+		if (iPower >= 1000) then
+			-- Activate the Annihilator
+			Ability.DoAbilityPos( self.base_ai, NecronPyramid.annihilator_id, Ability.Filters.CloseEnemy, 25 )
+			Ability.DoAbilityPos( self.base_ai, NecronPyramid.annihilator_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6 )
+		end
+	end
+
+	-- Activate the other Annihilator
+	if (self.base_ai:CanDoAbility(NecronPyramid.annihilator2_id)) then
+		if (iPower >= 5000) then
+			-- Activate the other Annihilator
+			Ability.DoAbilityPos( self.base_ai, NecronPyramid.annihilator2_id, Ability.Filters.CloseEnemy, 25 )
+			Ability.DoAbilityPos( self.base_ai, NecronPyramid.annihilator2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6 )
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( NecronPyramid.repair_id )) then
+			self.base_ai:DoSpecialAbility( NecronPyramid.repair_id )
+		end
+	end
+end
+
+function NecronPyramidTactic:CanDeepStrikeTroops()
+	return true
 end

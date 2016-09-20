@@ -1,0 +1,34 @@
+----------------------------------------
+-- File: 'darkeldarbombtactic.ai'
+-- Edited by Thudmeizer	@ 31.03.2016
+
+class 'DarkEldarBombTactic' (BaseTactic)
+
+DarkEldarBomb = {}
+
+function DarkEldarBombTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Dark Eldar Bomb Tactic")
+end
+
+function DarkEldarBombTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarBomb.detonate_id == nil) then
+		DarkEldarBomb.detonate_id = cpu_manager.stats:GetAbilityID( "nuke_detonate" )
+	end
+end
+
+function DarkEldarBombTactic:DoAbilities()
+	
+	-- Detonate Bomb with enemies in vicinity!
+	Ability.DoAbilityArea(self.base_ai, DarkEldarBomb.detonate_id, Ability.Filters.CloseEnemy, 10, 5)
+
+	-- Search a building
+	local iRange = self.base_ai:GetAbilityRange(DarkEldarBomb.detonate_id)
+	local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.base_ai:GetPosition(), iRange, 1)
+	if (oBuilding ~= nil) then
+		-- Detonate the Bomb!
+		self.base_ai:DoSpecialAbilityEntity(DarkEldarBomb.detonate_id, oBuilding) 
+	end
+end

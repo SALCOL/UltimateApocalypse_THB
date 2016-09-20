@@ -1,0 +1,63 @@
+----------------------------------------
+-- File: 'stalkertactic.ai'
+-- Edited by Thudmeizer 	@ 04.05.2016
+
+class 'StalkerTactic' (SpaceMarineVehicleTactic)
+
+Stalker = {}
+
+function StalkerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Stalker Tactic")
+end
+
+function StalkerTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Stalker.smoke_id == nil) then
+		Stalker.smoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_launchers" )	
+	end
+
+	if (Stalker.laymines_id == nil) then
+		Stalker.laymines_id = cpu_manager.stats:GetAbilityID( "marines_laymines_stalker" )
+	end
+end
+
+function StalkerTactic:DoAbilities()
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(Stalker.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Stalker.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(Stalker.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( Stalker.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 1000 and iPower >= 1000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( Stalker.laymines_id )
+		end
+	end
+
+	-- Call standard method
+	SpaceMarineVehicleTactic.DoAbilities(self)
+end
+
+function StalkerTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end

@@ -1,0 +1,28 @@
+----------------------------------------
+-- File: 'falcontactic.ai'
+-- Edited by Thudmeizer		@ 22.03.2016
+
+class 'FirePrismTactic' (EldarVehicleTactic)
+
+FirePrism = {}
+
+function FirePrismTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Fire Prism Grav Tank Tactic")
+end
+
+function FirePrismTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (FirePrism.scatterbeam_id == nil) then
+		FirePrism.scatterbeam_id = cpu_manager.stats:GetAbilityID( "eldar_scatter_beam" )
+	end
+end
+
+function FirePrismTactic:DoAbilities()
+	
+	Ability.DoAbilityArea( self.squad_ai, FirePrism.scatterbeam_id, Ability.Filters.CloseVehicleEnemy, 30, 1 )
+
+	-- Call standard method
+	EldarVehicleTactic.DoAbilities(self)
+end

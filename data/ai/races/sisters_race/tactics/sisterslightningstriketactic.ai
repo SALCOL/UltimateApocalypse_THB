@@ -1,9 +1,7 @@
 ----------------------------------------
 -- File: 'lightningstriketactic.ai'
 -- Created by Cylarne_04 2012
-
--- Note: For some odd reason, this tactic even though examined multiple times is bugging the ai.
--- Tactic switched over to the Exorcist Tactic.
+-- Edited by Thudmeizer	@ 11.04.2016
 
 class 'SistersLightningStrikeTactic' (SistersVehicleTactic)
 
@@ -14,22 +12,40 @@ function SistersLightningStrikeTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Sisters Lightning Strike Tactic")
 end
 
---[[function SistersLightningStrikeTactic:InitAbilities()
+function SistersLightningStrikeTactic:AlwaysAttack()
+	return true
+end
+
+-- Lightning is allowed to retreat even directly after a jump
+function SistersLightningStrikeTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersLightningStrikeTactic:InitAbilities()
 
 	if (SistersLightningStrike.bombard_id == nil) then
 		SistersLightningStrike.bombard_id = cpu_manager.stats:GetAbilityID( "guard_missilestrike" )
 	end
-	
 end
 
 function SistersLightningStrikeTactic:DoAbilities()
 
 	if (self.squad_ai:CanDoAbility(SistersLightningStrike.bombard_id)) then
-		Ability.DoAbilityPos(self.squad_ai, SistersLightningStrike.bombard_id, Ability.Filters.CloseInfiltratedEnemy, 2)
-		Ability.DoAbilityPos(self.squad_ai, SistersLightningStrike.bombard_id, Ability.Filters.CloseEnemy, 4)
+
+		-- We are dying, lower requisites for attacks
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			Ability.DoAbilityPos(self.squad_ai, SistersLightningStrike.bombard_id, Ability.Filters.CloseEnemy, 8)
+		else
+			Ability.DoAbilityPos(self.squad_ai, SistersLightningStrike.bombard_id, Ability.Filters.CloseEnemy, 12)
+		end
 	end
-end]]
---[[function SistersLightningStrikeTactic:JumpAttackRanged()
+end
+
+function SistersLightningStrikeTactic:JumpAttackRanged()
 
 	-- Call standard method
 	if (Tactic.JumpAttackRanged(self)) then
@@ -107,4 +123,20 @@ end]]
 		end
 	end
 	return false
-end]]
+end
+
+function SistersLightningStrikeTactic:Update()
+
+	if (self:IsComplete()) then
+        	return
+    	end
+
+    	-- State machine
+    	if (not VehicleTactic.Update(self)) then
+        	return
+   	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

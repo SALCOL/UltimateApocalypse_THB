@@ -1,0 +1,44 @@
+----------------------------------------
+-- File: 'lychguardtactic.ai'
+-- Edited by Thudmeizer	@ 10.03.2016
+
+class 'LychGuardTactic' (NecronInfantryTactic)
+
+LychGuard = {}
+
+function LychGuardTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Lych Guard Tactic")
+end
+
+function LychGuardTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (LychGuard.storm_id == nil) then
+		LychGuard.storm_id = cpu_manager.stats:GetAbilityID( "necron_lightning_storm_lychguard" )
+	end
+	if (LychGuard.resurrection_id == nil) then
+		LychGuard.resurrections_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_lychguard" )
+	end
+end
+
+function LychGuardTactic:DoAbilities()
+	
+	-- Lightning Storm: Centered on the caster, a giant blast of electrical energy strikes down enemy targets within a 25m radius.
+	-- Devastating blast of electrical energy pulses that deal good damage to all affected targets.
+	if (self.squad_ai:CanDoAbility( LychGuard.storm_id )) then
+	
+		local oUnit = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), 20, 6)
+		if (oUnit ~= nil) then
+			self.squad_ai:DoSpecialAbility( LychGuard.storm_id )
+		end
+	end
+
+	-- Try to activate the Greater Resurrection ability
+	if (self.squad_ai:CanDoAbility( LychGuard.resurrection_id )) then
+		Ability.DoAbility(self.squad_ai, LychGuard.resurrections_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = LychGuard.resurrections_id, min_bodies = 4 })
+	end
+
+	-- Call standard method
+	NecronInfantryTactic.DoAbilities(self)
+end

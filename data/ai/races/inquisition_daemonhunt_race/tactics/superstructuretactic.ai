@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'superstructuretactic.ai'
 -- Edited by Cylarne_04 @ 05.23.2010
+-- Edited by Thudmeizer	@ 24.05.2016
 
 class 'SuperStructureTactic' (BaseTactic)
 
@@ -13,12 +14,24 @@ end
 
 function SuperStructureTactic:InitAbilities()
 
-	if (SuperStructure.Nuke_id == nil) then
-		SuperStructure.Nuke_id = cpu_manager.stats:GetAbilityID( "marines_nuke" )
-		SuperStructure.Nuke2_id = cpu_manager.stats:GetAbilityID( "marines_nuke2" )
-		--SuperStructure.Nuke3_id = cpu_manager.stats:GetAbilityID( "marines_nuke3" )
-		--SuperStructure.Nuke4_id = cpu_manager.stats:GetAbilityID( "marines_nuke4" )
-		SuperStructure.Global = cpu_manager.stats:GetAbilityID( "inquisition_exterminatus" )
+	if (SuperStructure.nuke_id == nil) then
+		SuperStructure.nuke_id = cpu_manager.stats:GetAbilityID( "marines_nuke" )
+	end
+
+	if (SuperStructure.nuke2_id == nil) then
+		SuperStructure.nuke2_id = cpu_manager.stats:GetAbilityID( "marines_nuke2" )
+	end
+
+	if (SuperStructure.exterminatus_id == nil) then
+		SuperStructure.exterminatus_id = cpu_manager.stats:GetAbilityID( "inquisition_exterminatus" )
+	end
+
+	if (SuperStructure.curtain_id == nil) then
+		SuperStructure.curtain_id = cpu_manager.stats:GetAbilityID( "inquisition_nuke2" )	-- Iron Curtain (All)
+	end
+
+	if (SuperStructure.repair_id == nil) then
+		SuperStructure.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
 end
 
@@ -27,14 +40,40 @@ function SuperStructureTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	
-	-- Activate the planet destroyer
-	if (self.base_ai:CanDoAbility(SuperStructure.Global)) then
-		Ability.DoAbilityTargetEntity(self.base_ai, SuperStructure.Global, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	-- Activate EMP
+	if (self.base_ai:CanDoAbility(SuperStructure.nuke2_id) and (iRequisition >= 4000 and iPower >= 4000)) then
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.nuke2_id, Ability.Filters.CloseVehicleEnemy, 5 )
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.nuke2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 4 )
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.nuke2_id, Ability.Filters.CloseSquadEnemy, 12 )
 	end
 
-	-- Activate Apocalyptic Superweapon.
-	Ability.DoAbilityPos(self.base_ai, SuperStructure.Nuke_id, Ability.Filters.CloseVehicleEnemy, 16)
-	Ability.DoAbilityPos(self.base_ai, SuperStructure.Nuke_id, Ability.Filters.CloseEnemy, 32)
-	Ability.DoAbilityTargetEntity(self.base_ai, SuperStructure.Nuke2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	-- Launch the Nuclear Missile
+	if (self.base_ai:CanDoAbility(SuperStructure.nuke_id) and (iRequisition >= 3000 and iPower >= 3000)) then
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.nuke_id, Ability.Filters.CloseEnemy, 24 )
+		Ability.DoAbilityPos( self.base_ai, SuperStructure.nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 8 )
+	end
+
+	-- Activate the Apocalyptic Planet Destroyer
+	if (self.base_ai:CanDoAbility(SuperStructure.exterminatus_id)) then
+		Ability.DoAbilityTargetEntity( self.base_ai, SuperStructure.exterminatus_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1 )
+	end
+
+	-- Check if we can use the Iron Curtain
+	if (self.base_ai:CanDoAbility(SuperStructure.curtain_id) and (iRequisition >= 7000 and iPower >= 7000)) then
 	
+		-- Search a squad
+		local iRange = self.base_ai:GetAbilityRange(SuperStructure.curtain_id)
+		local oUnit = Ability.Filters.CloseHurt(self.base_ai:GetPosition(), iRange, 10)
+		if (oUnit ~= nil and oUnit:IsInCombat() and oUnit:WasRecentlyHurt() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.base_ai:DoSpecialAbilitySquad(SuperStructure.curtain_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SuperStructure.repair_id )) then
+			self.base_ai:DoSpecialAbility( SuperStructure.repair_id )
+		end
+	end
 end

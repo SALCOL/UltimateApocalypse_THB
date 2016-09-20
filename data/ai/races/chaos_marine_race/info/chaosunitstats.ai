@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'chaosunitstats.ai'
--- Edited by Thudmeizer @ 05.01.2016
+-- Edited by Thudmeizer @ 23.04.2016
 -- Edited by Arkhan     @ 31.10.2006
 -- Edited by Cylarne_04 2011
 
@@ -45,10 +45,9 @@ UnitStrengths.chaos_squad_cultist = 20
 UnitStrengths.chaos_squad_renegades = 55
 UnitStrengths.chaos_marine_squad = 170
 UnitStrengths.chaos_squad_raptor = 175
---UnitStrengths.chaos_squad_ds_turret = 100
+UnitStrengths.chaos_squad_ds_turret = 100
 UnitStrengths.chaos_squad_khorne_berserker = 190
 UnitStrengths.chaos_squad_possessed_marine = 220
-UnitStrengths.chaos_squad_horror = 60
 UnitStrengths.chaos_havoc_marine_squad = 190
 UnitStrengths.chaos_marine_bike_squad = 160
 UnitStrengths.chaos_marine_icon_bearer_squad = 110
@@ -57,11 +56,13 @@ UnitStrengths.chaos_rubric_marine_squad = 80
 UnitStrengths.chaos_noise_marine_squad = 190
 UnitStrengths.chaos_squad_bloodletters = 50
 UnitStrengths.chaos_squad_plague_bearers = 50
-UnitStrengths.chaos_squad_screamers = 60
 UnitStrengths.chaos_squad_daemonettes = 60
+UnitStrengths.chaos_squad_horror = 60
+UnitStrengths.chaos_squad_screamers = 60
 UnitStrengths.chaos_squad_psyker = 90
 UnitStrengths.chaos_squad_sorcerer = 225
 UnitStrengths.chaos_squad_lord = 270
+UnitStrengths.chaos_squad_lord_terminator = 370
 UnitStrengths.chaos_squad_lord_undivided = 270
 UnitStrengths.chaos_squad_lord_slaanesh = 270
 UnitStrengths.chaos_squad_lord_khorne = 270
@@ -71,7 +72,6 @@ UnitStrengths.chaos_terminator_khorne_squad = 250
 UnitStrengths.chaos_squad_obliterator = 300
 UnitStrengths.chaos_squad_mutilator = 300
 UnitStrengths.chaos_squad_assaultpod = 120
-UnitStrengths.chaos_squad_ds_turret = 100
 UnitStrengths.chaos_squad_rhino = 160
 UnitStrengths.chaos_squad_hell_talon = 260
 UnitStrengths.chaos_squad_dreadnought = 300
@@ -92,17 +92,33 @@ UnitStrengths.chaos_squad_heldrake = 900
 UnitStrengths.chaos_squad_warhound_titan = 1000
 UnitStrengths.chaos_squad_reaver_titan = 1200
 
-LeaderStrengths.chaos_squad_cultist = 75
-LeaderStrengths.chaos_marine_squad = 75
-LeaderStrengths.chaos_squad_raptor = 75
+LeaderStrengths.chaos_squad_cultist = 0
 LeaderStrengths.chaos_squad_renegades = 75
+LeaderStrengths.chaos_marine_squad = 0
+LeaderStrengths.chaos_squad_raptor = 75
+LeaderStrengths.chaos_havoc_marine_squad = 0
+LeaderStrengths.chaos_squad_khorne_berserker = 75
+LeaderStrengths.chaos_plague_marine_squad = 0
+LeaderStrengths.chaos_noise_marine_squad = 0
+LeaderStrengths.chaos_terminator_squad = 75
 
-Attachments.chaos_squad_cultist = { "chaos_squad_lord", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp", "chaos_squad_psyker" }
-Attachments.chaos_squad_renegades = { "chaos_squad_lord", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp", "chaos_squad_psyker" }
-Attachments.chaos_marine_squad = { "chaos_squad_lord", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp", "chaos_squad_psyker" }
-Attachments.chaos_squad_khorne_berserker = { "chaos_squad_lord", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp", "chaos_squad_psyker" }
-Attachments.chaos_squad_possessed_marine = { "chaos_squad_lord", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp", "chaos_squad_psyker" }
-
+Attachments.chaos_squad_cultist = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_squad_renegades = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_marine_squad = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_squad_raptor = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_havoc_marine_squad = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_squad_khorne_berserker = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_noise_marine_squad = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_plague_marine_squad = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_rubric_marine_squad = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_squad_daemonettes = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_squad_plague_bearers = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_squad_screamers = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_squad_possessed_marine = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_squad_mutilator = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_squad_obliterator = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_terminator_khorne_squad = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
+Attachments.chaos_terminator_squad = { "chaos_marine_icon_bearer_squad", "chaos_squad_lord", "chaos_squad_lord_khorne", "chaos_squad_lord_nurgle", "chaos_squad_lord_slaanesh", "chaos_squad_lord_terminator", "chaos_squad_psyker", "chaos_squad_sorcerer", "chaos_squad_sorcerer_advance_sp" }
 
 ChaosMarineUnitStats =
 {
@@ -131,24 +147,24 @@ ChaosMarineUnitStats =
 		potential =
 		{
 			{
-				name = "chaos_knife_cultist",
-				effectiveness = GenerateUnitEffectiveness(3.1,4.2,3.2,2.9,0.0,0.0,0.0,0.0,0.9,0.0,0.9,2.0,0.8,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_plasma_gun_cultist",
-				effectiveness = GenerateUnitEffectiveness(3.4,3.2,3.2,3.2,4.5,3.7,3.9,3.0,4.5,0.0,4.1,3.2,2.0,1.4,0.0,0.0,0.0),
+				name = "chaos_laspistol",
+				effectiveness = GenerateUnitEffectiveness(math.random(3*10,4*10)/10,math.random(3*10,4*10)/10,math.random(3*10,4*10)/10,math.random(3*10,4*10)/10,math.random(3*10,4*10)/10,math.random(3*10,4*10)/10,math.random(3*10,4*10)/10,math.random(3*10,4*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_grenade_launcher",
-				effectiveness = GenerateUnitEffectiveness(4.0,4.0,4.0,4.0,2.6,0.9,0.7,0.0,2.8,0.0,0.6,2.1,0.8,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(6.0,4.0,6.0,4.0,6.6,0.9,6.7,0.0,6.8,0.0,6.6,2.1,6.8,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "chaos_laspistol",
-				effectiveness = GenerateUnitEffectiveness(2.3,2.7,2.3,2.2,0.0,0.0,0.0,0.0,1.0,0.0,0.6,1.5,0.5,0.8,0.0,0.0,0.0),
+				name = "chaos_plasma_gun_cultist",
+				effectiveness = GenerateUnitEffectiveness(3.4,6.2,3.2,6.2,4.5,6.7,3.9,6.0,4.5,6.0,4.1,6.2,2.0,6.4,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_knife_cultist",
+				effectiveness = GenerateUnitEffectiveness(2.3,2.7,2.3,2.2,0.0,0.0,0.0,0.0,1.0,0.0,0.6,1.5,0.5,0.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
@@ -157,38 +173,78 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_renegades",
 		ebp_name = "chaos_renegade",
 		class = UnitStatsAI.UC_LightInfantryMed,
-		rating = 3.0,
+		rating = 5,
 		potential =
 		{
 			{
+				name = "guard_lasgun_guardsmen",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
 				name = "chaos_grenade_launcher_renegade",
-				effectiveness = GenerateUnitEffectiveness(4.6,5.1,5.0,4.8,3.7,3.0,3.0,1.6,3.6,0.0,1.0,3.4,2.4,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_plasma_gun_renegade",
-				effectiveness = GenerateUnitEffectiveness(3.0,3.9,3.7,5.5,5.3,3.9,3.4,0.0,2.3,3.3,3.0,4.7,3.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_melta_renegade",
-				effectiveness = GenerateUnitEffectiveness(6.8,7.2,8.2,9.2,8.8,10.0,10.0,10.0,4.9,6.6,1.8,5.7,7.0,6.5,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_flamer_renegade",
-				effectiveness = GenerateUnitEffectiveness(5.9,5.3,2.8,2.7,2.0,0.8,0.8,0.0,1.4,0.0,0.8,0.0,0.0,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "chaos_plasma_gun_renegade",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
+				name = "chaos_melta_renegade",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
 				name = "chaos_missile_launcher_renegade",
-				effectiveness = GenerateUnitEffectiveness(2.5,2.5,2.5,2.5,2.5,7.0,7.0,7.0,7.5,5.4,2.1,7.0,7.0,7.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_mortar_renegade",
-				effectiveness = GenerateUnitEffectiveness(5.6,6.1,6.0,5.8,4.7,4.0,4.0,2.6,4.6,2.0,2.0,3.4,2.4,2.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_knife_guardsmen",
+				effectiveness = GenerateUnitEffectiveness(3.0,3.3,3.1,3.4,3.1,4.5,3.0,0.0,4.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Chaos Attack Bike",
+		sbp_name = "chaos_marine_bike_squad",
+		ebp_name = "chaos_marine_bike",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "chaos_bolter_bike",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_flamer_bike",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.5,8.0,5.3,4.8,2.3,2.2,0.0,8.1,8.0,8.1,7.4,5.6,4.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "chaos_plasma_gun_bike",
+				effectiveness = GenerateUnitEffectiveness(5.4,5.7,5.7,8.1,8.5,8.6,8.7,8.3,6.1,1.3,5.1,8.1,8.8,2.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_chainsword_raptor",
+				effectiveness = GenerateUnitEffectiveness(3.0,3.3,3.1,3.4,3.1,4.5,3.0,0.0,4.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
@@ -202,17 +258,17 @@ ChaosMarineUnitStats =
 		{
 			{
 				name = "chaos_bolter_tactical",
-				effectiveness = GenerateUnitEffectiveness(6.0,6.3,6.1,6.4,6.1,4.5,3.0,0.0,4.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_heavy_bolter_tactical",
-				effectiveness = GenerateUnitEffectiveness(7.5,7.5,7.4,7.5,6.1,5.0,4.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_flamer_tactical",
-				effectiveness = GenerateUnitEffectiveness(6.1,6.5,6.0,5.3,4.8,2.3,2.2,0.0,4.1,0.0,4.1,7.4,5.6,4.7,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(8.1,8.5,6.0,5.3,4.8,2.3,2.2,0.0,4.1,0.0,4.1,7.4,5.6,4.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "chaos_heavy_bolter_tactical",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,7.4,7.5,6.1,5.0,4.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -222,8 +278,8 @@ ChaosMarineUnitStats =
 			},
 			{
 				name = "chaos_meltagun_tactical",
-				effectiveness = GenerateUnitEffectiveness(4.1,4.5,4.0,4.3,3.8,2.3,2.2,2.0,7.1,7.0,3.1,7.4,5.6,1.7,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				effectiveness = GenerateUnitEffectiveness(4.1,4.5,4.0,4.3,3.8,8.3,2.2,2.0,7.1,7.0,3.1,7.4,5.6,1.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
 				name = "chaos_missile_launcher_tactical",
@@ -246,42 +302,17 @@ ChaosMarineUnitStats =
 		potential =
 		{
 			{
-				name = "chaos_flamer_raptor",
-				effectiveness = GenerateUnitEffectiveness(6.1,6.5,6.0,5.3,4.8,2.3,2.2,0.0,4.1,0.0,4.1,7.4,5.6,4.7,0.0,0.0,0.0),
+				name = "chaos_bolt_pistol_raptor",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "chaos_bolt_pistol_raptor",
-				effectiveness = GenerateUnitEffectiveness(1.6,3.1,3.2,3.1,3.1,0.0,0.0,0.0,3.3,0.0,2.0,2.4,1.6,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				name = "chaos_flamer_raptor",
+				effectiveness = GenerateUnitEffectiveness(8.1,8.5,8.0,8.3,4.8,2.3,2.2,0.0,8.1,8.0,8.1,7.4,5.6,4.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
 				name = "chaos_chainsword_raptor",
-				effectiveness = GenerateUnitEffectiveness(6.0,6.3,6.1,6.4,6.1,4.5,3.0,0.0,4.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	{
-		name = "Rubric Marine",
-		sbp_name = "chaos_rubric_marine_squad",
-		ebp_name = "chaos_marine_rubric",
-		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 6,
-		potential =
-		{
-			{
-				name = "chaos_bolter_rubric",
-				effectiveness = GenerateUnitEffectiveness(5.9,5.4,5.1,5.2,5.1,3.5,0.0,0.0,5.1,0.0,4.0,4.7,3.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_bolter_rubric_inferno",
-				effectiveness = GenerateUnitEffectiveness(5.9,5.4,5.1,5.2,5.1,3.5,0.0,0.0,5.1,0.0,4.0,4.7,3.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_knife_tactical",
 				effectiveness = GenerateUnitEffectiveness(4.1,4.4,4.0,4.1,4.1,0.0,0.0,0.0,4.0,0.0,3.6,4.1,2.2,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
@@ -297,22 +328,22 @@ ChaosMarineUnitStats =
 		{
 			{
 				name = "chaos_heavy_bolter_havoc",
-				effectiveness = GenerateUnitEffectiveness(7.5,7.5,7.4,7.5,6.1,5.0,4.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_missile_launcher_havoc",
-				effectiveness = GenerateUnitEffectiveness(4.1,4.5,4.0,4.3,3.8,2.3,2.2,2.0,7.1,7.0,3.1,7.4,5.6,1.7,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_autocannon_havoc",
-				effectiveness = GenerateUnitEffectiveness(6.1,6.1,6.1,4.3,3.1,7.6,8.0,8.9,4.3,4.3,3.1,6.0,6.0,5.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_lascannon_havoc",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.1,5.1,4.3,3.1,7.6,8.0,8.9,6.3,6.3,5.1,6.0,6.0,5.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -323,46 +354,21 @@ ChaosMarineUnitStats =
 		}
 	},
 	{
-		name = "Chaos Attack Bike",
-		sbp_name = "chaos_marine_bike_squad",
-		ebp_name = "chaos_marine_bike",
-		class = UnitStatsAI.UC_VehicleLow,
-		rating = 4,
-		potential =
-		{
-			{
-				name = "chaos_bolter_bike",
-				effectiveness = GenerateUnitEffectiveness(3.9,4.4,4.1,4.2,4.1,1.5,0.0,0.0,4.1,0.0,3.0,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_flamer_bike",
-				effectiveness = GenerateUnitEffectiveness(6.1,6.5,6.0,5.3,4.8,2.3,2.2,0.0,4.1,0.0,4.1,7.4,5.6,4.7,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_plasma_gun_bike",
-				effectiveness = GenerateUnitEffectiveness(5.4,5.7,5.7,8.1,8.5,5.6,2.7,1.3,6.1,1.3,5.1,4.1,2.8,2.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-		}
-	},
-	{
-		name = "Chaos Icon Bearer",
-		sbp_name = "chaos_marine_icon_bearer_squad",
-		ebp_name = "chaos_marine_icon_bearer",
+		name = "Khorne Berzerkers",
+		sbp_name = "chaos_squad_khorne_berserker",
+		ebp_name = "chaos_khorne_berserker",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 4,
+		rating = math.random(7*10,8*10)/10,
 		potential =
 		{
 			{
-				name = "chaos_bolt_pistol_raptor",
-				effectiveness = GenerateUnitEffectiveness(1.6,3.1,3.2,3.1,3.1,0.0,0.0,0.0,3.3,0.0,2.0,2.4,1.6,0.0,0.0,0.0,0.0),
+				name = "chaos_bolt_pistol_khorne_berserker",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "chaos_chainsword_raptor",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.6,5.3,5.3,4.6,2.4,0.7,0.0,5.3,0.0,4.2,4.0,2.8,0.0,0.0,0.0,0.0),
+				name = "chaos_khornate_chainaxe",
+				effectiveness = GenerateUnitEffectiveness(8.0,8.3,8.3,8.3,8.3,4.6,4.2,3.5,5.4,3.5,5.3,3.1,2.5,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -372,27 +378,27 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_plague_marine_squad",
 		ebp_name = "chaos_marine_plague",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 7,
+		rating = math.random(7*10,8*10)/10,
 		potential =
 		{
 			{
 				name = "chaos_bolter_plague",
-				effectiveness = GenerateUnitEffectiveness(6.0,6.3,6.1,6.4,6.1,4.5,3.0,0.0,4.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_flamer_plague",
-				effectiveness = GenerateUnitEffectiveness(6.1,6.5,6.0,5.3,4.8,2.3,2.2,0.0,4.1,0.0,4.1,7.4,5.6,4.7,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				effectiveness = GenerateUnitEffectiveness(8.1,8.5,8.0,5.3,4.8,2.3,2.2,0.0,8.1,8.0,4.1,7.4,5.6,4.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
 				name = "chaos_plasma_gun_plague",
-				effectiveness = GenerateUnitEffectiveness(5.4,5.7,5.7,8.1,8.5,5.6,2.7,1.3,6.1,1.3,5.1,4.1,2.8,2.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(5.4,5.7,5.7,8.1,8.5,8.6,2.7,1.3,6.1,1.3,8.1,4.1,8.8,2.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_meltagun_plague",
-				effectiveness = GenerateUnitEffectiveness(4.1,4.5,4.0,4.3,3.8,2.3,2.2,2.0,7.1,7.0,3.1,7.4,5.6,1.7,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(4.1,4.5,4.0,4.3,3.8,2.3,8.2,8.0,5.1,5.0,3.1,8.4,5.6,1.7,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -407,140 +413,68 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_noise_marine_squad",
 		ebp_name = "chaos_marine_noise",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 7,
+		rating = math.random(7*10,8*10)/10,
 		potential =
 		{
 			{
 				name = "chaos_sonic_blaster",
-				effectiveness = GenerateUnitEffectiveness(6.1,6.5,6.0,5.3,4.8,2.3,2.2,0.0,4.1,0.0,4.1,7.4,5.6,4.7,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_blast_master_heavy",
-				effectiveness = GenerateUnitEffectiveness(7.1,8.5,8.0,6.3,4.8,2.3,2.2,0.0,4.1,0.0,4.1,8.4,7.6,6.7,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(4.9,4.4,4.1,4.2,9.1,9.5,9.0,9.0,4.1,0.0,4.0,4.7,9.9,9.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
-
 			{
 				name = "chaos_knife_noise",
 				effectiveness = GenerateUnitEffectiveness(5.1,5.6,5.3,5.3,4.6,2.4,0.7,0.0,5.3,0.0,4.2,4.0,2.8,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
-
 		}
 	},
 	{
-		name = "Khorne Berzerkers",
-		sbp_name = "chaos_squad_khorne_berserker",
-		ebp_name = "chaos_khorne_berserker",
+		name = "Rubric Marine",
+		sbp_name = "chaos_rubric_marine_squad",
+		ebp_name = "chaos_marine_rubric",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 7,
+		rating = math.random(7*10,8*10)/10,
 		potential =
 		{
 			{
-				name = "chaos_bolt_pistol_khorne_berserker",
-				effectiveness = GenerateUnitEffectiveness(3.8,3.7,3.8,3.8,3.9,3.8,0.0,0.0,2.9,1.8,2.5,3.1,1.5,0.0,0.0,0.0,0.0),
+				name = "chaos_bolter_rubric",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "chaos_khornate_chainaxe",
-				effectiveness = GenerateUnitEffectiveness(8.0,8.3,8.3,8.3,8.3,4.6,4.2,3.5,5.4,3.5,5.3,3.1,2.5,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	--[[{
-		name = "Horror Squad",
-		sbp_name = "chaos_squad_horror",
-		ebp_name = "chaos_horror",
-		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 7,
-		potential =
-		{
-			{
-				name = "chaos_horror_melee",
-				effectiveness = GenerateUnitEffectiveness(4.1,4.3,4.8,4.9,4.2,0.0,0.0,0.0,3.0,0.0,0.7,2.0,0.8,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_daemon_fire",
-				effectiveness = GenerateUnitEffectiveness(2.8,2.9,2.8,2.8,2.9,6.0,5.7,4.2,2.8,0.1,2.9,4.7,3.9,3.1,0.0,0.0,0.0),
+				name = "chaos_bolter_rubric_inferno",
+				effectiveness = GenerateUnitEffectiveness(4.9,4.4,4.1,4.2,9.1,9.5,9.0,9.0,4.1,0.0,4.0,4.7,9.9,9.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
-		}
-	},
-	{
-		name = "Bloodletters of Khorne",
-		sbp_name = "chaos_squad_bloodletters",
-		ebp_name = "chaos_bloodletter",
-		class = UnitStatsAI.UC_MonsterMed,
-		rating = 6,
-		potential =
-		{
 			{
-				name = "chaos_bloodletter_hellblade",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.3,5.8,5.9,5.2,1.0,0.0,0.0,4.0,0.0,3.7,4.0,2.8,0.0,0.0,0.0,0.0),
+				name = "chaos_knife_tactical",
+				effectiveness = GenerateUnitEffectiveness(4.1,4.4,4.0,4.1,4.1,0.0,0.0,0.0,4.0,0.0,3.6,4.1,2.2,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
-	{
-		name = "Plaguebearers of Nurgle",
-		sbp_name = "chaos_squad_plague_bearers",
-		ebp_name = "chaos_plague_bearer",
-		class = UnitStatsAI.UC_MonsterMed,
-		rating = 6,
-		potential =
-		{
-			{
-				name = "chaos_plaguebearer_plaguesword",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.3,5.8,5.9,5.2,1.0,0.0,0.0,4.0,0.0,3.7,4.0,2.8,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	{
-		name = "Screamers of Tzeentch",
-		sbp_name = "chaos_squad_screamers",
-		ebp_name = "chaos_screamer",
-		class = UnitStatsAI.UC_MonsterMed,
-		rating = 6,
-		potential =
-		{
-			{
-				name = "chaos_screamer_melee",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.3,5.8,5.9,5.2,1.0,0.0,0.0,4.0,0.0,3.7,4.0,2.8,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	{
-		name = "Daemonettes of Slaanesh",
-		sbp_name = "chaos_squad_daemonettes",
-		ebp_name = "chaos_daemonettes",
-		class = UnitStatsAI.UC_MonsterMed,
-		rating = 6,
-		potential =
-		{
-			{
-				name = "chaos_daemonettes_melee",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.3,5.8,5.9,5.2,1.0,0.0,0.0,4.0,0.0,3.7,4.0,2.8,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},]]
 	{
 		name = "Possessed Chaos Marine",
 		sbp_name = "chaos_squad_possessed_marine",
 		ebp_name = "chaos_possessed_marine",
-		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		class = UnitStatsAI.UC_HeavyInfantryMed,
 		rating = 8,
 		potential =
 		{
 			{
 				name = "chaos_possessed_melee",
-				effectiveness = GenerateUnitEffectiveness(8.1,8.4,8.4,8.4,8.4,7.6,7.4,5.6,4.5,3.6,5.4,5.6,5.0,4.7,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_flamer_possessed",
+				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.3,8.9,8.5,4.3,3.9,2.6,9.3,6.6,6.0,8.3,8.9,3.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 		}
 	},
@@ -554,22 +488,27 @@ ChaosMarineUnitStats =
 		{
 			{
 				name = "chaos_storm_bolter_terminator",
-				effectiveness = GenerateUnitEffectiveness(5.3,6.0,5.8,6.2,5.7,4.6,4.1,2.8,6.1,2.8,4.3,5.0,2.7,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_heavy_flamer_terminator",
-				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.3,5.9,5.5,4.3,3.9,2.6,6.3,6.6,6.0,8.3,8.9,8.2,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				effectiveness = GenerateUnitEffectiveness(9.0,3.0,9.3,5.9,5.5,4.3,3.9,2.6,9.3,6.6,6.0,8.3,8.9,3.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
 				name = "chaos_reaper_terminator",
-				effectiveness = GenerateUnitEffectiveness(9.3,9.1,9.6,9.6,9.3,8.0,5.6,4.1,7.6,4.1,5.7,7.0,5.6,5.9,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.3,9.9,5.5,9.3,9.9,2.6,6.3,9.6,6.0,8.3,4.9,8.2,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "chaos_chain_fist",
+				name = "chaos_power_fist_terminator",
 				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_chain_fist",
+				effectiveness = GenerateUnitEffectiveness(7.0,9.0,7.3,5.9,9.5,4.3,3.9,9.6,6.3,6.6,9.0,9.3,6.9,3.2,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -579,16 +518,16 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_terminator_khorne_squad",
 		ebp_name = "chaos_terminator_khorne",
 		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 8,
+		rating = 8.5,
 		potential =
 		{
 			{
-				name = "chaos_heavy_flamer_terminator",
-				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.3,5.9,5.5,4.3,3.9,2.6,6.3,6.6,6.0,8.3,8.9,8.2,0.0,0.0,0.0),
+				name = "chaos_heavy_flamer_terminator_chosen",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "chaos_chain_fist",
+				name = "chaos_khornate_chainaxe_terminator",
 				effectiveness = GenerateUnitEffectiveness(8.7,8.8,9.0,8.8,8.7,8.1,8.7,7.2,7.3,8.2,7.8,7.9,7.3,7.5,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
@@ -599,23 +538,23 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_obliterator",
 		ebp_name = "chaos_obliterator",
 		class = UnitStatsAI.UC_MonsterMed,
-		rating = 9,
+		rating = 8,
 		potential =
 		{
 			{
+				name = "chaos_obliterator_ranged_group",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
 				name = "chaos_power_fist_obliterator",
-				effectiveness = GenerateUnitEffectiveness(5.9,5.7,5.5,5.7,5.6,5.3,2.9,1.8,4.8,1.8,3.1,4.1,2.7,2.9,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(9.3,9.9,8.5,8.2,8.0,8.7,8.2,7.8,8.3,7.9,7.4,8.5,7.9,4.2,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
 				name = "chaos_heavy_flamer_obliterator",
 				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.3,5.9,5.5,4.3,3.9,2.6,6.3,6.6,6.0,8.3,8.9,8.2,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_obliterator_ranged_group",
-				effectiveness = GenerateUnitEffectiveness(9.3,9.9,8.5,8.2,8.0,8.7,8.2,7.8,8.3,7.9,7.4,8.5,7.9,4.2,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_ShortRanged,
 			},
 		}
 	},
@@ -624,63 +563,33 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_mutilator",
 		ebp_name = "chaos_mutilator",
 		class = UnitStatsAI.UC_MonsterMed,
-		rating = 9,
-		potential =
-		{
-			{
-				name = "chaos_power_fist_mutilator",
-				effectiveness = GenerateUnitEffectiveness(8.3,9.9,9.3,9.5,8.0,8.7,8.2,7.8,7.3,7.9,7.4,6.5,8.9,4.2,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	{
-		name = "Chaos Sorcerer",
-		sbp_name = "chaos_squad_sorcerer",
-		ebp_name = "chaos_sorcerer",
-		class = UnitStatsAI.UC_Commander,
-		rating = 7,
-		potential =
-		{
-			{
-				name = "chaos_bedlam_staff",
-				effectiveness = GenerateUnitEffectiveness(6.6,7.9,7.7,8.0,7.7,6.3,5.9,8.3,6.3,8.3,5.0,7.8,6.0,6.5,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_plasma_pistol_sorceror",
-				effectiveness = GenerateUnitEffectiveness(6.9,7.0,7.0,7.0,7.0,3.3,0.0,0.0,7.0,4.2,6.1,5.9,4.9,5.7,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_bolt_pistol_sorceror",
-				effectiveness = GenerateUnitEffectiveness(3.6,4.3,3.9,3.7,3.7,1.0,0.0,0.0,3.7,1.5,2.9,3.7,2.0,2.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-		}
-	},
-	{
-		name = "Chaos Sorcerer Lord",
-		sbp_name = "chaos_squad_sorcerer_advance_sp",
-		ebp_name = "chaos_sorcerer_advance_sp",
-		class = UnitStatsAI.UC_Commander,
 		rating = 8,
 		potential =
 		{
 			{
-				name = "chaos_bedlam_staff_stronghold_sp",
-				effectiveness = GenerateUnitEffectiveness(6.6,7.9,7.7,8.0,7.7,6.3,5.9,8.3,6.3,8.3,5.0,7.8,6.0,6.5,0.0,0.0,0.0),
+				name = "chaos_power_fist_mutilator",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
+		}
+	},
+	{
+		name = "Chaos Icon Bearer",
+		sbp_name = "chaos_marine_icon_bearer_squad",
+		ebp_name = "chaos_marine_icon_bearer",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 7,
+		potential =
+		{
 			{
-				name = "chaos_plasma_pistol_sorceror",
-				effectiveness = GenerateUnitEffectiveness(6.9,7.0,7.0,7.0,7.0,3.3,0.0,0.0,7.0,4.2,6.1,5.9,4.9,5.7,0.0,0.0,0.0),
+				name = "chaos_bolt_pistol_raptor",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "chaos_bolt_pistol_sorceror",
-				effectiveness = GenerateUnitEffectiveness(3.6,4.3,3.9,3.7,3.7,1.0,0.0,0.0,3.7,1.5,2.9,3.7,2.0,2.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				name = "chaos_chainsword_raptor",
+				effectiveness = GenerateUnitEffectiveness(5.1,5.6,5.3,5.3,4.6,2.4,0.7,0.0,5.3,0.0,4.2,4.0,2.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
@@ -689,12 +598,12 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_psyker",
 		ebp_name = "chaos_psyker",
 		class = UnitStatsAI.UC_Commander,
-		rating = 5,
+		rating = 8,
 		potential =
 		{
 			{
 				name = "guard_laspistol_psyker",
-				effectiveness = GenerateUnitEffectiveness(4.0,3.9,3.8,3.6,3.4,3.2,2.1,0.0,3.6,2.6,3.2,3.4,2.4,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -705,32 +614,7 @@ ChaosMarineUnitStats =
 		}
 	},
 	{
-		name = "Chaos Lord",
-		sbp_name = "chaos_squad_lord",
-		ebp_name = "chaos_lord",
-		class = UnitStatsAI.UC_Commander,
-		rating = 8,
-		potential =
-		{
-			{
-				name = "chaos_manreaper",
-				effectiveness = GenerateUnitEffectiveness(7.4,8.6,8.5,8.8,8.5,7.0,6.6,8.9,8.9,8.9,7.3,7.1,5.5,5.7,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_plasma_pistol_lord",
-				effectiveness = GenerateUnitEffectiveness(7.3,7.2,7.2,7.2,7.2,5.7,5.2,0.0,6.6,5.5,6.7,6.3,4.6,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_bolt_pistol_lord",
-				effectiveness = GenerateUnitEffectiveness(6.0,6.6,6.0,6.7,6.0,5.1,4.0,0.0,6.7,4.3,5.5,6.2,3.4,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-		}
-	},
-	--[[{
-		name = "Lord of Chaos Undivided",
+		name = "Hell Smith",
 		sbp_name = "chaos_squad_lord_undivided",
 		ebp_name = "chaos_lord_undivided",
 		class = UnitStatsAI.UC_Commander,
@@ -738,34 +622,200 @@ ChaosMarineUnitStats =
 		potential =
 		{
 			{
-				name = "chaos_power_sword_lord",
-				effectiveness = GenerateUnitEffectiveness(7.4,8.6,8.5,8.8,8.5,7.0,6.6,8.9,8.9,8.9,7.3,7.1,5.5,5.7,0.0,0.0,0.0),
+				name = "chaos_bolter_combo",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
-				name = "chaos_flamer_combo",
-				effectiveness = GenerateUnitEffectiveness(7.3,7.2,7.2,7.2,7.2,5.7,5.2,0.0,6.6,5.5,6.7,6.3,4.6,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				name = "chaos_melta_combo",
+				effectiveness = GenerateUnitEffectiveness(5.3,5.2,5.2,4.2,9.2,9.7,9.2,8.0,5.6,4.5,9.7,9.3,9.6,7.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "chaos_chainaxe_hellsmith",
+				effectiveness = GenerateUnitEffectiveness(2.4,2.6,2.5,3.8,3.5,3.0,3.6,4.9,4.9,3.9,3.3,3.1,3.5,3.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
-	},]]
+	},
 	{
-		name = "Champion of Nurgle",
-		sbp_name = "chaos_squad_lord_nurgle",
-		ebp_name = "chaos_lord_nurgle",
+		name = "Chaos Sorcerer",
+		sbp_name = "chaos_squad_sorcerer",
+		ebp_name = "chaos_sorcerer",
 		class = UnitStatsAI.UC_Commander,
-		rating = 8,
+		rating = 9,
 		potential =
 		{
 			{
-				name = "chaos_manreaper",
-				effectiveness = GenerateUnitEffectiveness(7.4,8.6,8.5,8.8,8.5,7.0,6.6,8.9,8.9,8.9,7.3,7.1,5.5,5.7,0.0,0.0,0.0),
+				name = "chaos_bolt_pistol_sorceror",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_plasma_pistol_sorceror",
+				effectiveness = GenerateUnitEffectiveness(6.9,7.0,7.0,7.0,7.0,3.3,0.0,0.0,7.0,4.2,6.1,5.9,4.9,5.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_bedlam_staff",
+				effectiveness = GenerateUnitEffectiveness(3.6,4.3,3.9,3.7,3.7,1.0,0.0,0.0,3.7,1.5,2.9,3.7,2.0,2.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Chaos Sorcerer Lord",
+		sbp_name = "chaos_squad_sorcerer_advance_sp",
+		ebp_name = "chaos_sorcerer_advance_sp",
+		class = UnitStatsAI.UC_Commander,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "chaos_bolt_pistol_sorceror",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_plasma_pistol_sorceror",
+				effectiveness = GenerateUnitEffectiveness(6.9,7.0,7.0,7.0,7.0,3.3,0.0,0.0,7.0,4.2,6.1,5.9,4.9,5.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_bedlam_staff_stronghold_sp",
+				effectiveness = GenerateUnitEffectiveness(3.6,4.3,3.9,3.7,3.7,1.0,0.0,0.0,3.7,1.5,2.9,3.7,2.0,2.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Chaos Lord",
+		sbp_name = "chaos_squad_lord",
+		ebp_name = "chaos_lord",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(8*10,9*10)/10,
+		potential =
+		{
+			{
+				name = "chaos_bolt_pistol_lord",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_plasma_pistol_lord",
+				effectiveness = GenerateUnitEffectiveness(8.8,3.0,3.5,3.8,3.3,4.1,1.7,0.0,8.3,3.3,3.0,3.1,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_melta_gun_lord",
+				effectiveness = GenerateUnitEffectiveness(3.8,8.0,3.5,3.8,3.3,4.1,1.7,8.0,3.3,8.3,3.0,3.1,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_power_sword_lord",
+				effectiveness = GenerateUnitEffectiveness(3.8,3.0,8.5,3.8,3.3,4.1,8.7,0.0,3.3,3.3,8.0,3.1,1.7,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
-				name = "chaos_bolt_pistol_lord",
-				effectiveness = GenerateUnitEffectiveness(7.3,7.2,7.2,7.2,7.2,5.7,5.2,0.0,6.6,5.5,6.7,6.3,4.6,0.0,0.0,0.0,0.0),
+				name = "chaos_manreaper",
+				effectiveness = GenerateUnitEffectiveness(3.8,3.0,3.5,8.8,3.3,8.1,1.7,0.0,3.3,3.3,3.0,8.1,1.7,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_khornate_chainaxe_lord",
+				effectiveness = GenerateUnitEffectiveness(3.8,3.0,3.5,3.8,8.3,4.1,1.7,0.0,3.3,3.3,3.0,3.1,8.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Chaos Lord Terminator",
+		sbp_name = "chaos_squad_lord_terminator",
+		ebp_name = "chaos_lord_terminator",
+		class = UnitStatsAI.UC_Commander,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "chaos_storm_bolter_lord",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_flamer_combo_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "chaos_plasma_combo_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_melta_combo_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "chaos_reaper_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_power_fist_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_chain_fist_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_power_claw_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.9,3.7,4.0,3.7,2.6,2.2,1.3,4.0,1.3,3.0,3.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Lord Advance Sp",
+		sbp_name = "chaos_squad_lord_advance_sp",
+		ebp_name = "chaos_lord_advance_sp",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(7*10,8.5*10)/10,
+		potential =
+		{
+			{
+				name = "chaos_bolt_pistol_lord",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_plasma_pistol_lord",
+				effectiveness = GenerateUnitEffectiveness(8.8,3.0,3.5,3.8,3.3,4.1,1.7,0.0,8.3,3.3,3.0,3.1,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_melta_gun_lord",
+				effectiveness = GenerateUnitEffectiveness(3.8,8.0,3.5,3.8,3.3,4.1,1.7,8.0,3.3,8.3,3.0,3.1,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_power_sword_lord",
+				effectiveness = GenerateUnitEffectiveness(3.8,3.0,8.5,3.8,3.3,4.1,8.7,0.0,3.3,3.3,8.0,3.1,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_manreaper",
+				effectiveness = GenerateUnitEffectiveness(3.8,3.0,3.5,8.8,3.3,8.1,1.7,0.0,3.3,3.3,3.0,8.1,1.7,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_khornate_chainaxe_lord",
+				effectiveness = GenerateUnitEffectiveness(3.8,3.0,3.5,3.8,8.3,4.1,1.7,0.0,3.3,3.3,3.0,3.1,8.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+
 			},
 		}
 	},
@@ -774,18 +824,58 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_lord_khorne",
 		ebp_name = "chaos_lord_khorne",
 		class = UnitStatsAI.UC_Commander,
-		rating = 8,
+		rating = 9,
 		potential =
 		{
 			{
-				name = "chaos_manreaper",
-				effectiveness = GenerateUnitEffectiveness(7.4,8.6,8.5,8.8,8.5,7.0,6.6,8.9,8.9,8.9,7.3,7.1,5.5,5.7,0.0,0.0,0.0),
+				name = "chaos_bolt_pistol_lord",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_plasma_pistol_lord",
+				effectiveness = GenerateUnitEffectiveness(8.2,3.9,7.7,4.0,8.7,2.6,7.2,1.3,8.0,1.3,8.0,3.6,7.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_lightning_claw_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,8.9,3.7,8.0,3.7,8.6,2.2,7.3,4.0,8.3,3.0,8.6,2.1,2.4,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
+				name = "chaos_manreaper",
+				effectiveness = GenerateUnitEffectiveness(4.8,10.0,8.5,7.8,6.3,4.1,1.7,0.0,6.3,3.3,7.0,4.1,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Champion of Nurgle",
+		sbp_name = "chaos_squad_lord_nurgle",
+		ebp_name = "chaos_lord_nurgle",
+		class = UnitStatsAI.UC_Commander,
+		rating = 9,
+		potential =
+		{
+			{
 				name = "chaos_bolt_pistol_lord",
-				effectiveness = GenerateUnitEffectiveness(7.3,7.2,7.2,7.2,7.2,5.7,5.2,0.0,6.6,5.5,6.7,6.3,4.6,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_plasma_pistol_lord",
+				effectiveness = GenerateUnitEffectiveness(8.2,3.9,7.7,4.0,8.7,2.6,7.2,1.3,8.0,1.3,8.0,3.6,7.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_lightning_claw_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,8.9,3.7,8.0,3.7,8.6,2.2,7.3,4.0,8.3,3.0,8.6,2.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_manreaper",
+				effectiveness = GenerateUnitEffectiveness(4.8,10.0,8.5,7.8,6.3,4.1,1.7,0.0,6.3,3.3,7.0,4.1,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
@@ -794,17 +884,77 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_lord_slaanesh",
 		ebp_name = "chaos_lord_slaanesh",
 		class = UnitStatsAI.UC_Commander,
-		rating = 8,
+		rating = 9,
 		potential =
 		{
 			{
-				name = "chaos_manreaper",
-				effectiveness = GenerateUnitEffectiveness(7.4,8.6,8.5,8.8,8.5,7.0,6.6,8.9,8.9,8.9,7.3,7.1,5.5,5.7,0.0,0.0,0.0),
+				name = "chaos_bolt_pistol_lord",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_plasma_pistol_lord",
+				effectiveness = GenerateUnitEffectiveness(8.2,3.9,7.7,4.0,8.7,2.6,7.2,1.3,8.0,1.3,8.0,3.6,7.1,2.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_lightning_claw_lord",
+				effectiveness = GenerateUnitEffectiveness(3.2,8.9,3.7,8.0,3.7,8.6,2.2,7.3,4.0,8.3,3.0,8.6,2.1,2.4,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
-				name = "chaos_bolt_pistol_lord",
-				effectiveness = GenerateUnitEffectiveness(7.3,7.2,7.2,7.2,7.2,5.7,5.2,0.0,6.6,5.5,6.7,6.3,4.6,0.0,0.0,0.0,0.0),
+				name = "chaos_manreaper",
+				effectiveness = GenerateUnitEffectiveness(4.8,10.0,8.5,7.8,6.3,4.1,1.7,0.0,6.3,3.3,7.0,4.1,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Chaos Thunderhawk Transport",
+		sbp_name = "chaos_squad_thunderhawk",
+		ebp_name = "chaos_thunderhawk",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 3,
+		potential =
+		{
+			{
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+	{
+		name = "Chaos Assaultpod",
+		sbp_name = "chaos_squad_assaultpod",
+		ebp_name = "chaos_assaultpod",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 4,
+		potential =
+		{
+			{
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+	{
+		name = "Chaos Deepstrike Turret",
+		sbp_name = "chaos_squad_ds_turret",
+		ebp_name = "chaos_ds_turret",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 5,
+		potential =
+		{
+			{
+				name = "chaos_heavy_bolter_turret",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_missile_turret",
+				effectiveness = GenerateUnitEffectiveness(2.7,3.0,0.7,2.5,2.5,9.0,9.0,9.3,3.0,2.4,2.2,4.3,9.4,9.8,0.0,7.3,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
@@ -819,7 +969,7 @@ ChaosMarineUnitStats =
 		{
 			{
 				name = "chaos_heavy_bolter_predator",
-				effectiveness = GenerateUnitEffectiveness(4.9,5.3,4.9,5.2,4.9,4.6,3.0,1.4,5.1,1.8,5.1,6.1,1.4,1.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
@@ -834,8 +984,23 @@ ChaosMarineUnitStats =
 		{
 			{
 				name = "chaos_autocannon_hell_talon",
-				effectiveness = GenerateUnitEffectiveness(6.3,6.7,6.3,5.6,4.5,7.6,7.3,5.8,5.6,4.4,4.4,5.9,4.4,4.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_lascannon_hell_talon",
+				effectiveness = GenerateUnitEffectiveness(3.1,3.9,3.7,3.5,3.2,2.8,0.0,0.0,3.5,0.0,2.8,3.2,3.8,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_lascannon_hell_talon_2",
+				effectiveness = GenerateUnitEffectiveness(3.1,3.9,3.7,3.5,3.2,2.8,0.0,0.0,3.5,0.0,2.8,3.2,3.8,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_incendiary_bomb",
+				effectiveness = GenerateUnitEffectiveness(3.1,3.9,3.7,3.5,3.2,2.8,0.0,0.0,3.5,0.0,2.8,3.2,3.8,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
@@ -849,17 +1014,57 @@ ChaosMarineUnitStats =
 		{
 			{
 				name = "chaos_dreadnought_fist",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.8,5.7,5.0,5.7,5.4,5.2,5.4,5.0,5.4,5.9,5.5,5.9,5.9,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
+				name = "chaos_heavy_bolter_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(8.0,5.0,8.0,5.0,5.0,5.0,5.0,5.0,8.0,5.0,5.0,5.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_multi_melta_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(5.0,5.0,5.0,5.0,5.0,8.0,5.0,5.0,5.0,5.0,5.0,8.0,0.0,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
 				name = "chaos_autocannon_twin_dreadnought",
-				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(5.0,8.0,5.0,8.0,8.0,5.0,5.0,5.0,5.0,8.0,8.0,5.0,5.0,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_lascannon_twin_dreadnought",
-				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(5.0,5.0,5.0,5.0,5.0,5.0,8.0,8.0,5.0,5.0,5.0,5.0,8.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_dreadnought_fist_twin",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.5,4.5,4.5,5.7,4.3,2.4,4.5,2.4,3.9,5.1,4.6,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "space_marine_flamer_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(3.1,3.9,3.7,3.5,3.2,2.8,0.0,0.0,3.5,0.0,2.8,3.2,3.8,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+		}
+	},
+	{
+		name = "Vindicator",
+		sbp_name = "chaos_squad_vindicator",
+		ebp_name = "chaos_vindicator",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "space_marine_vindicator_gun",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_heavy_bolter_predator",
+				effectiveness = GenerateUnitEffectiveness(5.1,4.9,4.7,4.5,4.2,2.8,0.0,0.0,4.5,0.0,2.8,4.2,3.8,3.8,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
@@ -869,13 +1074,19 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_defiler",
 		ebp_name = "chaos_defiler",
 		class = UnitStatsAI.UC_VehicleMed,
-		rating = 9,
+		rating = 7,
 		potential =
 		{
 			{
-				name = "chaos_defiler_melee",
-				effectiveness = GenerateUnitEffectiveness(6.3,6.7,6.3,5.6,4.5,7.6,7.3,5.8,5.6,4.4,4.4,5.9,4.4,4.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
+
+				name = "chaos_heavy_flamer_defiler",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "chaos_missile_launcher_defiler",
+				effectiveness = GenerateUnitEffectiveness(4.7,4.7,4.3,3.6,2.5,8.9,8.7,8.0,2.6,2.0,4.4,9.1,9.1,9.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_autocannon_twin_defiler",
@@ -884,18 +1095,13 @@ ChaosMarineUnitStats =
 			},
 			{
 				name = "chaos_lascannon_twin_defiler",
-				effectiveness = GenerateUnitEffectiveness(4.7,4.7,4.3,3.6,2.5,8.9,8.7,8.0,2.6,2.0,4.4,6.1,6.1,6.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(4.7,4.7,4.3,3.6,2.5,8.9,8.7,8.0,2.6,2.0,4.4,9.1,9.1,9.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "chaos_heavy_flamer_defiler",
+				name = "chaos_defiler_melee",
 				effectiveness = GenerateUnitEffectiveness(5.1,4.9,4.7,4.5,4.2,2.8,0.0,0.0,4.5,0.0,2.8,4.2,3.8,3.8,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_ShortRanged,
-			},
-			{
-				name = "chaos_missile_launcher_defiler",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.1,5.1,3.3,2.1,6.6,7.0,7.9,3.3,3.3,2.1,5.0,5.0,4.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				range = UnitStatsAI.RT_Melee,
 			},
 			{
 				name = "chaos_battlecannon",
@@ -904,137 +1110,62 @@ ChaosMarineUnitStats =
 			},
 			{
 				name = "chaos_battlecannon_desecration",
-				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.5,4.5,4.5,5.7,7.3,7.3,7.3,7.3,5.9,5.9,6.6,6.8,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.5,4.5,4.5,5.7,5.3,5.3,5.3,5.3,5.9,5.9,6.6,6.8,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
 	},
-	--[[{
-		name = "Vindicator",
-		sbp_name = "chaos_squad_vindicator",
-		ebp_name = "chaos_vindicator",
+	{
+		name = "Chaos Deathwheel",
+		sbp_name = "chaos_squad_deathwheel",
+		ebp_name = "chaos_deathwheel",
 		class = UnitStatsAI.UC_VehicleMed,
-		rating = 8,
+		rating = 7,
 		potential =
 		{
 			{
-				name = "space_marine_vindicator_gun",
-				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.5,4.5,4.5,5.7,4.3,2.4,4.5,2.4,3.9,5.1,4.6,3.8,0.0,0.0,0.0),
+				name = "chaos_autocannon_twin_defiler",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
-	},]]
+	},
 	{
 		name = "Chaos Predator",
 		sbp_name = "chaos_squad_predator",
 		ebp_name = "chaos_predator",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 9,
-		potential =
-		{
-			{
-				name = "chaos_autocannon_predator",
-				effectiveness = GenerateUnitEffectiveness(6.3,6.7,6.3,5.6,4.5,7.6,7.3,5.8,5.6,4.4,4.4,5.9,4.4,4.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_heavy_bolter_predator_r",
-				effectiveness = GenerateUnitEffectiveness(6.3,6.7,6.3,5.6,4.5,5.9,4.7,0.0,5.6,0.0,4.4,5.1,2.1,3.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_heavy_bolter_predator_l",
-				effectiveness = GenerateUnitEffectiveness(6.3,6.7,6.3,5.6,4.5,7.6,7.3,5.8,5.6,4.4,4.4,5.9,4.4,4.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_lascannon_twin_predator",
-				effectiveness = GenerateUnitEffectiveness(4.7,4.7,4.3,3.6,2.5,8.9,8.7,8.0,2.6,2.0,4.4,6.1,6.1,6.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_lascannon_predator_r",
-				effectiveness = GenerateUnitEffectiveness(4.7,4.7,4.3,3.6,2.5,8.9,8.7,8.0,2.6,2.0,4.4,6.1,6.1,6.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_lascannon_predator_l",
-				effectiveness = GenerateUnitEffectiveness(4.7,4.7,4.3,3.6,2.5,8.9,8.7,8.0,2.6,2.0,4.4,6.1,6.1,6.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			--[[},
-			{
-				name = "chaos_missile_launcher_predator",
-				effectiveness = GenerateUnitEffectiveness(5.1,5.1,5.1,3.3,2.1,6.6,7.0,7.9,3.3,3.3,2.1,5.0,5.0,4.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,]]
-			},
-		}
-	},
-	--[[{
-		name = "Chaos Thunderhawk Transport",
-		sbp_name = "chaos_squad_thunderhawk",
-		ebp_name = "chaos_thunderhawk",
-		class = UnitStatsAI.UC_VehicleMed,
-		rating = 5,
-		potential =
-		{
-			{
-				name = "none",
-				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_None,
-			},
-		}
-	},]]
-	{
-		name = "Chaos Land Raider",
-		sbp_name = "chaos_squad_landraider",
-		ebp_name = "chaos_landraider",
-		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 7.0,
-		potential = 
-		{
-			{
-				name = "space_marine_heavy_bolter_twin",
-				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_landraider_twin_heavybolters_improved",
-				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_landraider_twin_lascannon_left",
-				effectiveness = GenerateUnitEffectiveness(8.6,8.4,8.4,8.5,8.5,8.9,8.2,7.6,6.9,7.6,5.2,8.2,7.6,6.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_landraider_twin_lascannon_right",
-				effectiveness = GenerateUnitEffectiveness(8.6,8.4,8.4,8.5,8.5,8.9,8.2,7.6,6.9,7.6,5.2,8.2,7.6,6.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-		}
-	},
-	{
-		name = "Plague Reaper",
-		sbp_name = "chaos_squad_baneblade",
-		ebp_name = "chaos_baneblade",
-		class = UnitStatsAI.UC_VehicleHigh,
 		rating = 7,
 		potential =
 		{
 			{
-				name = "chaos_plague_cannon",
-				effectiveness = GenerateUnitEffectiveness(7.1,7.0,6.8,6.7,6.3,5.7,4.3,5.4,6.5,6.9,4.9,5.7,4.2,0.1,0.0,0.0,0.0),
+				name = "chaos_autocannon_predator",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "guard_heavy_bolter_baneblade_1",
-				effectiveness = GenerateUnitEffectiveness(6.0,5.8,5.7,5.5,5.3,3.1,0.0,0.0,5.5,3.7,3.1,4.4,2.9,0.0,0.0,0.0,0.0),
+				name = "chaos_lascannon_twin_predator",
+				effectiveness = GenerateUnitEffectiveness(4.7,4.7,4.3,3.6,2.5,8.9,8.7,8.0,2.6,2.0,4.4,9.1,9.1,9.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "guard_heavy_bolter_baneblade_2",
-				effectiveness = GenerateUnitEffectiveness(6.0,5.8,5.7,5.5,5.3,3.1,0.0,0.0,5.5,3.7,3.1,4.4,2.9,0.0,0.0,0.0,0.0),
+				name = "chaos_heavy_bolter_predator_r",
+				effectiveness = GenerateUnitEffectiveness(4.8,4.8,4.4,3.7,3.5,4.9,4.7,0.0,4.6,3.0,4.5,5.1,2.1,3.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_heavy_bolter_predator_l",
+				effectiveness = GenerateUnitEffectiveness(4.8,4.8,4.4,3.7,3.5,4.9,4.7,0.0,4.6,3.0,4.5,5.1,2.1,3.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_lascannon_predator_r",
+				effectiveness = GenerateUnitEffectiveness(4.7,4.7,4.3,3.6,2.5,8.9,8.7,8.0,2.6,2.0,4.4,9.1,9.1,9.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_lascannon_predator_l",
+				effectiveness = GenerateUnitEffectiveness(4.7,4.7,4.3,3.6,2.5,8.9,8.7,8.0,2.6,2.0,4.4,9.1,9.1,9.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
@@ -1048,13 +1179,13 @@ ChaosMarineUnitStats =
 		potential =
 		{
 			{
-				name = "chaos_brass_scorpion_melee",
-				effectiveness = GenerateUnitEffectiveness(9,9,9,9,9,9,10,6.8,5.6,4.4,4.4,5.9,4.4,4.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
+				name = "chaos_battlecannon_brass_scorpion",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_autocannon_twin_defiler",
-				effectiveness = GenerateUnitEffectiveness(5.9,7.8,7.7,7.5,7.0,5.1,4.7,0.0,7.0,1.4,5.9,7.7,5.8,1.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -1063,7 +1194,97 @@ ChaosMarineUnitStats =
 				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
-				name = "chaos_battlecannon_brass_scorpion",
+				name = "chaos_brass_scorpion_melee",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.5,4.5,4.5,5.7,4.3,2.4,4.5,2.4,3.9,5.1,4.6,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Chaos Land Raider",
+		sbp_name = "chaos_squad_landraider",
+		ebp_name = "chaos_landraider",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 8,
+		potential = 
+		{
+			{
+				name = "space_marine_heavy_bolter_twin",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_landraider_twin_heavybolters_improved",
+				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_landraider_twin_lascannon_right",
+				effectiveness = GenerateUnitEffectiveness(8.6,8.4,8.4,8.5,8.5,8.9,8.2,7.6,6.9,7.6,5.2,8.2,7.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_landraider_twin_lascannon_left",
+				effectiveness = GenerateUnitEffectiveness(8.6,8.4,8.4,8.5,8.5,8.9,8.2,7.6,6.9,7.6,5.2,8.2,7.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_heavy_bolter_predator",
+				effectiveness = GenerateUnitEffectiveness(6.0,5.8,5.7,5.5,5.3,3.1,0.0,0.0,5.5,3.7,3.1,4.4,2.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_missile_launcher_predator",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.5,4.5,4.5,5.7,4.3,2.4,4.5,2.4,3.9,5.1,4.6,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Plague Reaper",
+		sbp_name = "chaos_squad_baneblade",
+		ebp_name = "chaos_baneblade",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "chaos_plague_cannon",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_demolisher_cannon_baneblade",
+				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_heavy_bolter_baneblade_1",
+				effectiveness = GenerateUnitEffectiveness(5.1,4.9,4.7,4.5,4.2,2.8,0.0,0.0,4.5,0.0,2.8,4.2,3.8,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_heavy_bolter_baneblade_2",
+				effectiveness = GenerateUnitEffectiveness(5.1,4.9,4.7,4.5,4.2,2.8,0.0,0.0,4.5,0.0,2.8,4.2,3.8,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_heavy_bolter_baneblade_3",
+				effectiveness = GenerateUnitEffectiveness(5.1,4.9,4.7,4.5,4.2,2.8,0.0,0.0,4.5,0.0,2.8,4.2,3.8,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_lascannon_baneblade_1",
+				effectiveness = GenerateUnitEffectiveness(6.0,5.8,5.7,5.5,5.3,3.1,0.0,0.0,5.5,3.7,3.1,4.4,2.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_lascannon_baneblade_2",
+				effectiveness = GenerateUnitEffectiveness(6.0,5.8,5.7,5.5,5.3,3.1,0.0,0.0,5.5,3.7,3.1,4.4,2.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_missile_launcher_predator",
 				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.5,4.5,4.5,5.7,4.3,2.4,4.5,2.4,3.9,5.1,4.6,3.8,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -1074,12 +1295,27 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_daemon_prince",
 		ebp_name = "chaos_daemon_prince",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = 10.0,
+		rating = 9,
 		potential =
 		{
 			{
 				name = "chaos_daemon_prince_sword",
-				effectiveness = GenerateUnitEffectiveness(8.3,9.4,9.5,9.5,9.5,8.6,8.6,8.2,9.5,8.2,8.3,8.3,7.9,7.5,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Daemon Prince Advance Sp",
+		sbp_name = "chaos_squad_daemon_prince_advance_sp",
+		ebp_name = "chaos_daemon_prince_advance_sp",
+		class = UnitStatsAI.UC_MonsterHigh,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "chaos_daemon_prince_sword",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -1089,12 +1325,12 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_bloodthirster",
 		ebp_name = "chaos_bloodthirster",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = 10.0,
+		rating = 9,
 		potential =
 		{
 			{
 				name = "chaos_bloodthirster_melee",
-				effectiveness = GenerateUnitEffectiveness(8.6,9.7,9.8,9.8,9.8,9.4,9.5,9.0,9.8,9.0,6.7,9.3,8.3,9.1,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -1104,12 +1340,17 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_guo",
 		ebp_name = "chaos_guo",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = 10.0,
+		rating = 9,
 		potential =
 		{
 			{
 				name = "chaos_bloodthirster_melee",
-				effectiveness = GenerateUnitEffectiveness(8.6,9.7,9.8,9.8,9.8,9.4,9.5,9.0,9.8,9.0,6.7,9.3,8.3,9.1,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "chaos_guosword",
+				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -1119,12 +1360,12 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_keeper_of_secrets",
 		ebp_name = "chaos_keeper_of_secrets",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = 10.0,
+		rating = 9,
 		potential =
 		{
 			{
 				name = "chaos_bloodthirster_melee",
-				effectiveness = GenerateUnitEffectiveness(8.6,9.7,9.8,9.8,9.8,9.4,9.5,9.0,9.8,9.0,6.7,9.3,8.3,9.1,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -1134,12 +1375,12 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_lord_of_change",
 		ebp_name = "chaos_lord_of_change",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = 10.0,
+		rating = 9,
 		potential =
 		{
 			{
 				name = "chaos_loc_melee",
-				effectiveness = GenerateUnitEffectiveness(8.6,9.7,9.8,9.8,9.8,9.4,9.5,9.0,9.8,9.0,6.7,9.3,8.3,9.1,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -1149,16 +1390,26 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_heldrake",
 		ebp_name = "chaos_heldrake",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 9,
+		rating = 9.5,
 		potential =
 		{
 			{
 				name = "chaos_flamer_heldrake",
-				effectiveness = GenerateUnitEffectiveness(9.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "chaos_daemon_fire_heldrake",
+				effectiveness = GenerateUnitEffectiveness(9.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_doombolt_heldrake",
+				effectiveness = GenerateUnitEffectiveness(9.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "chaos_firebolt_heldrake",
 				effectiveness = GenerateUnitEffectiveness(9.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -1169,12 +1420,12 @@ ChaosMarineUnitStats =
 		sbp_name = "chaos_squad_warhound_titan",
 		ebp_name = "chaos_warhound_titan",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 9.9,
+		rating = 10,
 		potential =
 		{
 			{
-				name = "npc_titan_plasma_blastgun_chaos",
-				effectiveness = GenerateUnitEffectiveness(5.5,5.5,5.5,5.5,5.5,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0),
+				name = "npc_titan_double_turbo_laser_chaos",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -1183,12 +1434,12 @@ ChaosMarineUnitStats =
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "npc_titan_double_turbo_laser_chaos",
+				name = "npc_titan_double_turbo_laser_right_chaos",
 				effectiveness = GenerateUnitEffectiveness(9.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "npc_titan_double_turbo_laser_right_chaos",
+				name = "npc_titan_plasma_blastgun_chaos",
 				effectiveness = GenerateUnitEffectiveness(9.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -1203,139 +1454,24 @@ ChaosMarineUnitStats =
 		potential =
 		{
 			{
-				name = "npc_titan_megalaser_reaver_chaos",
-				effectiveness = GenerateUnitEffectiveness(5.5,5.5,5.5,5.5,5.5,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0),
+				name = "npc_titan_autocannon_reaver_chaos",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "npc_titan_autocannon_reaver_chaos",
+				name = "npc_titan_megalaser_reaver_chaos",
 				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
-		}
-	},
-	--[[{
-		name = "Daemon Prince Advance Sp",
-		sbp_name = "chaos_squad_daemon_prince_advance_sp",
-		ebp_name = "chaos_daemon_prince_advance_sp",
-		class = UnitStatsAI.UC_MonsterHigh,
-		rating = 10.0,
-		potential =
-		{
 			{
-				name = "chaos_daemon_prince_sword",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},]]
-	{
-		name = "Lord Advance Sp",
-		sbp_name = "chaos_squad_lord_advance_sp",
-		ebp_name = "chaos_lord_advance_sp",
-		class = UnitStatsAI.UC_Commander,
-		rating = 3.7,
-		potential =
-		{
-			{
-				name = "chaos_bolt_pistol_lord",
-				effectiveness = GenerateUnitEffectiveness(6.3,8.5,6.1,9.1,6.1,3.5,1.8,0.0,8.9,2.6,4.7,7.1,1.3,0.0,0.0,0.0,0.0),
+				name = "npc_missile_launcher_reaver",
+				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "chaos_plasma_pistol_lord",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,5.1,3.8,0.0,9.1,5.2,9.5,7.6,2.7,0.0,0.0,0.0,0.0),
+				name = "npc_missile_launcher_reaver_left",
+				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_melta_gun_lord",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,7.0,5.2,0.0,10.0,6.7,10.0,10.0,3.6,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_power_sword_lord",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,7.6,5.1,1.3,10.0,7.8,10.0,7.6,3.8,2.5,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_manreaper",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,9.1,10.0,10.0,10.0,10.0,10.0,4.8,5.3,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_khornate_chainaxe_lord",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.5,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_dummy_weapon",
-				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_dummy_weapon",
-				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_dummy_weapon",
-				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			--[[},
-			{
-				name = "chaos_wargear_05",
-				effectiveness = GenerateUnitEffectiveness(0.8,0.8,0.8,0.8,0.8,0.0,0.0,0.0,0.8,0.8,0.8,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_dummy_weapon",
-				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_wargear_06",
-				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_dummy_weapon",
-				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_wargear_07",
-				effectiveness = GenerateUnitEffectiveness(6.7,8.2,8.0,7.5,7.0,0.0,0.0,0.0,7.0,5.2,6.5,1.4,0.8,0.3,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_dummy_weapon",
-				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_wargear_08",
-				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_dummy_weapon",
-				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_lord_banner",
-				effectiveness = GenerateUnitEffectiveness(4.2,4.2,4.2,4.2,4.2,0.0,0.0,0.0,4.2,4.2,4.2,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "chaos_dummy_weapon",
-				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "chaos_dummy_weapon",
-				effectiveness = GenerateUnitEffectiveness(1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,]]
 			},
 		}
 	},

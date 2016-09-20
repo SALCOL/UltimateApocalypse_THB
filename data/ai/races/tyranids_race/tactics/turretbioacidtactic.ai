@@ -1,0 +1,52 @@
+----------------------------------------
+-- File: 'turretbioacidtactic.ai'
+-- Edited by Cylarne @ 2015
+-- Edited by Thudmeizer	@ 25.04.2016
+
+class 'TurretBioAcidTactic' (BaseTactic)
+
+TurretBioAcid = {}
+
+function TurretBioAcidTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Turret BioAcid Tactic")
+end
+
+function TurretBioAcidTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function TurretBioAcidTactic:InitAbilities()
+	
+	if (TurretBioAcid.minelaunch_id == nil) then
+		TurretBioAcid.minelaunch_id = cpu_manager.stats:GetAbilityID( "tyranids_minelaunch_greater" )
+	end
+end
+
+function TurretBioAcidTactic:DoAbilities()
+
+	-- Activate turret greater minelaunch
+	if (self.base_ai:CanDoAbility(TurretBioAcid.minelaunch_id)) then
+		if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.3) then
+			Ability.DoAbilityPos( self.base_ai, TurretBioAcid.minelaunch_id, Ability.Filters.CloseEnemy, 2 )
+		else
+			Ability.DoAbilityPos( self.base_ai, TurretBioAcid.minelaunch_id, Ability.Filters.CloseEnemy, 5 )
+		end
+	end
+
+--	self:AutoBuildAddOn(0) -- Launcher Addon	-- tyranids_turret_launcher_addon
+--	self:AutoBuildAddOn(1) -- Production Addon	-- tyranids_turret_production_addon
+
+	-- Always build these addons
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+   	if (cpu_manager:GetTierLevel() >= 5) and (iPower >= 5000) then	
+		local random_turretbioacid_addon = math.random( 0,1 )
+		self:AutoBuildTurretAddOn(random_turretbioacid_addon, self.base_ai:GetEntity():GetID())	-- Build all these addons
+	end		
+end

@@ -1,0 +1,50 @@
+-- scarcerates.scar
+-- Created by Cylarne_04 2011
+-- This win condition basically transforms the mod to the old XP1 styled expansion, featuring greater scale battles and greater starting resources.
+-----------------------------------------------------------------------------------------
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+
+-- Init ExtremeBattles rule system
+function Scarce_Rates_Setup()
+
+	-- Delay by 1.9 seconds just because.
+	Mod_TotalDestruction = 1;
+	Rule_AddOneShot(Scarce_Rates, 1.9)
+	print("Total Destruction (rates) mod activated!")
+	
+end
+
+function Scarce_Rates()
+
+	-- Create army cap modifiers
+	local oModPower	= Modifier_Create(MAT_Player, "income_power_player_modifier", MUT_Multiplication, false, 0.5, "")
+	local oModRequisition	= Modifier_Create(MAT_Player, "income_requisition_player_modifier", MUT_Multiplication, false, 0.5, "")
+	--local oModSouls	= Modifier_Create(MAT_Player, "resource_per_tick_souls_modifier", MUT_Multiplication, false, 3, "")
+	local oModFaith	= Modifier_Create(MAT_Player, "income_faith_player_modifier", MUT_Multiplication, false, 0.5, "")
+	
+	-- Compute all players
+	g_iPlayerCount = World_GetPlayerCount()
+	for iLoop1 = 0, g_iPlayerCount - 1 do
+	
+		-- Get player ID
+		local ePlayerID = World_GetPlayerAt(iLoop1)
+		
+		-- Apply army cap modifiers
+		pcall(Modifier_ApplyToPlayer, oModPower, ePlayerID)
+		pcall(Modifier_ApplyToPlayer, oModRequisition, ePlayerID)
+		--pcall(Modifier_ApplyToPlayer, oModSouls, ePlayerID)
+		pcall(Modifier_ApplyToPlayer, oModFaith, ePlayerID)
+	end
+	
+	-- Destroy army cap modifiers
+	Modifier_Destroy(oModPower)
+	Modifier_Destroy(oModRequisition)
+	--Modifier_Destroy(oModSouls)
+	Modifier_Destroy(oModFaith)
+end
+
+-- Init SCAR
+Scar_AddInit(Scarce_Rates_Setup)

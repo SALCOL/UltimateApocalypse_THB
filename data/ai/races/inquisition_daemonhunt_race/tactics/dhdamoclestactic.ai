@@ -1,0 +1,51 @@
+----------------------------------------
+-- File: 'dhdamoclestactic.ai'
+-- Edited by Thudmeizer @ 05.05.2016
+
+class 'DHDamoclesTactic' (DaemonhuntVehicleTactic)
+
+DHDamocles = {}
+
+function DHDamoclesTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DHDamocles Tactic")
+end
+
+function DHDamoclesTactic:IsAttacker()
+	return false
+end
+
+function DHDamoclesTactic:IsDefender()
+	return true
+end
+
+function DHDamoclesTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DHDamocles.sensormap_id) == nil then
+		DHDamocles.sensormap_id = cpu_manager.stats:GetAbilityID( "inquisition_sensormap" )
+	end
+	if (DHDamocles.jammermap_id) == nil then
+		DHDamocles.jammermap_id = cpu_manager.stats:GetAbilityID( "inquisition_jammermap" )
+	end
+end
+
+function DHDamoclesTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	local abilitySelector = math.random(1, 100)
+	
+	if (abilitySelector <= 10 and iPower >= 500) then
+		if (self.squad_ai:CanDoAbility(DHDamocles.sensormap_id)) then
+			self.squad_ai:DoSpecialAbility(DHDamocles.sensormap_id) 
+		end
+	elseif (abilitySelector <= 50 and iPower >= 500) then
+		if (self.squad_ai:CanDoAbility(DHDamocles.jammermap_id) and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility(DHDamocles.jammermap_id) 
+		end
+	end
+
+	-- Call standard method
+	DaemonhuntVehicleTactic.DoAbilities(self)
+end

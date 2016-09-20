@@ -1,0 +1,112 @@
+----------------------------------------
+-- File: 'sisterbunkertactic.ai'
+-- Edited by Thudmeizer	@ 10.04.2016
+
+class 'SistersBunkerTactic' (BaseTactic)
+
+SistersBunker = {}
+
+function SistersBunkerTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Sisters Bunker Tactic")
+
+	-- Building is a bunker
+	self:AddToBunkerList()
+
+	SistersBunker.detectDelay = -1
+end
+
+function SistersBunkerTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function SistersBunkerTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersBunker.detection_id == nil) then
+		SistersBunker.detection_id = cpu_manager.stats:GetAbilityID( "sisters_detection_field" )
+	end
+
+	if (SistersBunker.repair_id == nil) then
+		SistersBunker.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function SistersBunkerTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Bolters		-- addon_sisters_wall_bolters
+--	self:AutoBuildAddOn(1) -- Flamers		-- addon_sisters_wall_flamers
+--	self:AutoBuildAddOn(2) -- Probe			-- addon_sisters_wall_probe
+
+	-- Randomly choose between all three bunker addons
+	local addon_bunker_ports = math.random( 0,2 )
+	self:AutoBuildTurretAddOn(addon_bunker_ports, self.base_ai:GetEntity():GetID())	-- Randomly choose between all three building addons
+
+	-- Try to activate detection field
+	if (self.base_ai:CanDoAbility(SistersBunker.detection_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(SistersBunker.detection_id)
+		local oSquad = Ability.Filters.CloseInfiltratedEnemy(self.base_ai:GetPosition(), iRange, 1)
+		
+		if (oSquad ~= nil) then
+			if(SistersBunker.detectDelay == -1) then
+				SistersBunker.detectDelay = math.max(0, 30)
+				SistersBunker.detectTime = g_iGMT + SistersBunker.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < SistersBunker.detectTime) then
+				return
+			end
+
+			-- Only try to detect if the infiltrated unit is attacking
+			if (oSquad:IsAttacking()) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.base_ai:DoSpecialAbilityPos( SistersBunker.detection_id, pos )
+
+				SistersBunker.detectDelay = -1
+			end
+		else 
+			--if no infiltrated units within range, scan other enemies
+			local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 1)
+			if(SistersBunker.detectDelay == -1) then
+				SistersBunker.detectDelay = math.max(0, 30)
+				SistersBunker.detectTime = g_iGMT + SistersBunker.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < SistersBunker.detectTime) then
+				return
+			end
+
+			if (oSquad ~= nil) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.base_ai:DoSpecialAbilityPos( SistersBunker.detection_id, pos )
+
+				SistersBunker.detectDelay = -1
+			end
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( SistersBunker.repair_id )) then
+			self.base_ai:DoSpecialAbility( SistersBunker.repair_id )
+		end
+	end
+end

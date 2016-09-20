@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'nidloader.ai'
--- Edited by Thudmeizer   @ 28.11.2007
+-- Edited by Thudmeizer   @ 25.04.2016
 
 class 'tyranids_race'
 
@@ -24,19 +24,30 @@ function tyranids_race:LoadRace( eDifficulty )
 	import( "Races/tyranids_race/Strategies/NidStrategyInfo.ai" )
 		
 	-- Import tactics
-	--import( 'Races/tyranids_race/Tactics/CarnifexTactic.ai' )
 	import( 'Races/tyranids_race/Tactics/TyranidInfantryTactic.ai' )
 	import( 'Races/tyranids_race/Tactics/TyranidVehicleTactic.ai' )
-	import( 'Races/tyranids_race/Tactics/HiveFleetTactic.ai' )
 	import( 'Races/tyranids_race/Tactics/WillHiveTactic.ai' )
-	import( 'Races/tyranids_race/Tactics/SpinegauntTactic.ai' )
-	import( 'Races/tyranids_race/Tactics/BroodLordTactic.ai' )
-	import( 'Races/tyranids_race/Tactics/HiveTyrantTactic.ai' )
-	import( 'Races/tyranids_race/Tactics/TrygonTactic.ai' )
-	import( 'Races/tyranids_race/Tactics/CapillaryTowerTactic.ai' )
-	import( 'Races/tyranids_race/Tactics/TurretTactic.ai' )
 	import( 'Races/tyranids_race/Tactics/RipperSwarmTactic.ai' )
-	--import( 'Races/tyranids_race/Tactics/ZoanthropesTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/GauntTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/GargoyleTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/RavenerTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/WarriorTactic.ai' )
+        import( 'Races/tyranids_race/Tactics/ZoanthropeTactic.ai' )
+        import( 'Races/tyranids_race/Tactics/LictorTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/LictorAlphaTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/HiveTyrantTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/SwarmLordTactic.ai' )
+        import( 'Races/tyranids_race/Tactics/CarnifexTactic.ai' )
+        import( 'Races/tyranids_race/Tactics/CarnifexSkillerTactic.ai' )
+        import( 'Races/tyranids_race/Tactics/CarnifexUberTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/TrygonTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/HierophantTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/CapillaryTowerTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/CapillaryVeinTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/TurretTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/TurretBioAcidTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/TyranidBigGeneratorTactic.ai' )
+	import( 'Races/tyranids_race/Tactics/TyranidBuildingTactic.ai' )
 	return true
 end
 
@@ -66,41 +77,46 @@ function tyranids_race:CreateTactic(oSquadAI)
 	-- Check if there is a special tactic for the unit available
 	if (sUnitName == "tyranids_squad_woth") then
 		return WillHiveTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_spinegaunt") then
-		return SpinegauntTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_spinegaunt_max") then
-		return SpinegauntTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_gaunt_won") then
-		return SpinegauntTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_ripperswarm") then
-		return WillHiveTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_ripperswarm_global") then
-		return WillHiveTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_broodlord") then
-		return BroodLordTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_hive_tyrant") then
-		return HiveTyrantTactic(oSquadAI)
-	elseif (sUnitName == "npc_squad_civilian_group") then
+	elseif (sUnitName == "tyranids_squad_ripperswarm") or (sUnitName == "tyranids_squad_ripperswarm_global") then
+		return RipperSwarmTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_spinegaunt") or
+		(sUnitName == "tyranids_squad_spinegaunt_max") or 
+		(sUnitName == "tyranids_squad_gaunt_won") or
+		(sUnitName == "tyranids_squad_hormagaunt") or
+		(sUnitName == "tyranids_squad_hormagaunt_max") or
+		(sUnitName == "tyranids_squad_termagant") or
+		(sUnitName == "tyranids_squad_termagant_max") or
+		(sUnitName == "tyranids_squad_genestealer") or
+		(sUnitName == "tyranids_squad_genestealer_max") then
+		return GauntTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_gargoyle") then
+		return GargoyleTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_ravener") then
+		return RavenerTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_warrior") then
+		return WarriorTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_zoanthropes") then
+		return ZoanthropeTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_lictor") then
+		return LictorTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_lictor_alpha") then
+		return LictorAlphaTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_hive_tyrant") or (sUnitName == "npc_squad_civilian_group") then
 		return HiveTyrantTactic(oSquadAI)
 	elseif (sUnitName == "tyranids_squad_swarmlord") then
-		return HiveTyrantTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_trygon") then
-		return TrygonTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_hierophant") then
-		return TrygonTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_hierophant_max") then
-		return TrygonTactic(oSquadAI)
-	elseif (sUnitName == "tyranids_squad_spore_cluster_spam") then
-		return BroodLordTactic(oSquadAI)
-	--[[elseif (sUnitName == "tyranids_squad_carnifex") then
+		return SwarmLordTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_carnifex") then
 		return CarnifexTactic(oSquadAI)
 	elseif (sUnitName == "tyranids_squad_carnifex_skiller") then
-		return CarnifexTactic(oSquadAI)
+		return CarnifexSkillerTactic(oSquadAI)
 	elseif (sUnitName == "tyranids_squad_carnifex_uber") then
-		return CarnifexTactic(oSquadAI)]]
-	--[[elseif (sUnitName == "tyranids_squad_zoanthropes") then
-		return ZoanthropesTactic(oSquadAI)]]
-	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh or eClass == UnitStatsAI.UC_MonsterMed) then
+		return CarnifexUberTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_trygon") then
+		return TrygonTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_hierophant") or (sUnitName == "tyranids_squad_hierophant_max") then
+		return HierophantTactic(oSquadAI)
+	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
+	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return TyranidVehicleTactic(oSquadAI)
 	end
 	return TyranidInfantryTactic(oSquadAI)
@@ -115,10 +131,16 @@ function tyranids_race:CreateBaseTactic(oBuilding)
 	-- Check if their is a special tactic for the building available
 	if (sBuildingName == "tyranids_capillary_tower") then
 		return CapillaryTowerTactic(oBuilding)
+	elseif (sBuildingName == "tyranids_capillary_vein") then
+		return CapillaryVeinTactic(oBuilding)
 	elseif (sBuildingName == "tyranids_turret") then
 		return TurretTactic(oBuilding)
 	elseif (sBuildingName == "tyranids_turret_bioacid") then
-		return TurretTactic(oBuilding)
+		return TurretBioAcidTactic(oBuilding)
+	elseif (sBuildingName == "tyranids_adv_magma_vent") then
+		return TyranidBigGeneratorTactic(oBuilding)
+	elseif (sBuildingName == "tyranids_digest_pool") or (sBuildingName == "tyranids_spore_chimney") then
+		return TyranidBuildingTactic(oBuilding)
 	end
 	return nil
 end

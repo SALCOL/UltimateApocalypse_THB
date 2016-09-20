@@ -1,8 +1,9 @@
 ----------------------------------------
 -- File: 'daemonsloader.ai'
 -- Created by Krronus	@ 5/1/2008
---edited by fuggles 27/05/2013
+-- Edited by fuggles 27/05/2013
 -- Edited by Cylarne 6/16/2014
+-- Edited by Thudmeizer	09.05.2016
 
 class 'deamons_race'
 
@@ -28,33 +29,42 @@ function deamons_race:LoadRace( eDifficulty )
 	-- Import tactics
 	import( 'Races/deamons_race/Tactics/DaemonsInfantryTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsVehicleTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsDeepStrikeTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsLostSoulTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsLordTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsLordStatureTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsAngronTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsPrinceTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsHellSpawnTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsLocTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsKosTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsGuoTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsBloodThirsterTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsMaledictumTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsDoomPitTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsSuperHQTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsFleshHoundsTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsHorrorSquadTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsNurglingTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsPinkHorrorTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsDaemonettesTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsBloodlettersTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsHorrorSquadTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsLordTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsLordStatureTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsHeraldKhorneTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsHeraldNurgleTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsHeraldSlaaneshTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsHeraldTzeentchTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsWarpSpawnTactic.ai' )
-	import( 'Races/deamons_race/Tactics/DaemonsDefilerTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsPrinceTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsPrinceKhorneTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsPrinceNurgleTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsPrinceSlaaneshTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsPrinceTzeentchTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsBloodThirsterTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsGuoTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsKosTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsLocTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsJuggTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsDefilerTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsWarpSpawnTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsHellSpawnTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsSoulGrinderTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsBloodThirsterBodyGuardTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsAngronTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsDeepstrikeTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsBuildingTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsBigGeneratorTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsDoomPitTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsMaledictumTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsSuperHQTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsHQTactic.ai' )
 	return true
 end
 
@@ -84,60 +94,66 @@ function deamons_race:CreateTactic(oSquadAI)
 	-- Check if there is a special tactic for the unit available	
 	if (sUnitName == "daemon_squad_lost_soul") then
 		return DaemonsLostSoulTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_lord") then
-		return DaemonsLordTactic(oSquadAI)	
-	elseif (sUnitName == "daemon_squad_lord_stature") then
-		return DaemonsLordStatureTactic(oSquadAI)
-	elseif (sUnitName == "npc_squad_civilian_group") then
-		return DaemonsLordTactic(oSquadAI)	
-	elseif (sUnitName == "daemon_squad_daemon_prince") or 
-		(sUnitName == "daemon_squad_daemon_prince_nurgle") or 
-		(sUnitName == "daemon_squad_daemon_prince_khorne") or 
-		(sUnitName == "daemon_squad_daemon_prince_slaanesh") or 
-		(sUnitName == "daemon_squad_daemon_prince_tzeentch") then
-		return DaemonsPrinceTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_nurgle_herald") then
-		return DaemonsHeraldNurgleTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_khorne_herald") then
-		return DaemonsHeraldKhorneTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_slaanesh_herald") then
-		return DaemonsHeraldSlaaneshTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_tzeentch_herald") then
-		return DaemonsHeraldTzeentchTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_hell_spawn") then
-		return DaemonsHellSpawnTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_horblu") or  
-		(sUnitName == "daemon_squad_horblu_stature") then
-		return DaemonsHorrorSquadTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_bloodletters") then
+		return DaemonsBloodlettersTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_flesh_hound") then
+		return DaemonsFleshHoundsTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_nurgling") then
+		return DaemonsNurglingTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_daemonettes") or (sUnitName == "daemon_squad_daemonettes_greater") then
+		return DaemonsDaemonettesTactic(oSquadAI)
 	elseif (sUnitName == "daemon_squad_pink_horror") or 
 		(sUnitName == "daemon_squad_horror") or 
 		(sUnitName == "daemon_squad_pink_horror_minion")  then
 		return DaemonsPinkHorrorTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_flesh_hound") then
-		return DaemonsFleshHoundsTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_daemonettes") then
-		return DaemonsDaemonettesTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_bloodletters") then
-		return DaemonsBloodlettersTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_primarch_angron") then
-		return DaemonsAngronTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_horblu") or (sUnitName == "daemon_squad_horblu_stature") then
+		return DaemonsHorrorSquadTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_lord") or (sUnitName == "npc_squad_civilian_group") then
+		return DaemonsLordTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_lord_stature") then
+		return DaemonsLordStatureTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_daemon_prince") then
+		return DaemonsPrinceTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_daemon_prince_khorne") then
+		return DaemonsPrinceKhorneTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_daemon_prince_nurgle") then
+		return DaemonsPrinceNurgleTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_daemon_prince_slaanesh") then
+		return DaemonsPrinceSlaaneshTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_daemon_prince_tzeentch") then
+		return DaemonsPrinceTzeentchTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_khorne_herald") then
+		return DaemonsHeraldKhorneTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_nurgle_herald") then
+		return DaemonsHeraldNurgleTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_slaanesh_herald") then
+		return DaemonsHeraldSlaaneshTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_tzeentch_herald") then
+		return DaemonsHeraldTzeentchTactic(oSquadAI)
 	elseif (sUnitName == "daemon_squad_jugg") then
 		return DaemonsJuggTactic(oSquadAI)
-	--[[elseif (sUnitName == "daemon_squad_lord_of_change") then
-		return DaemonsLocTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_keeper_of_secrets") then
-		return DaemonsKosTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_guo") then
-		return DaemonsGuoTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_bloodthirster") then
-		return DaemonsBloodThirsterTactic(oSquadAI)]]
-	elseif (sUnitName == "daemon_squad_warp_spawn") then
-		return DaemonsWarpSpawnTactic(oSquadAI)
-	elseif (sUnitName == "daemon_squad_soul_grinder") then
-		return DaemonsSoulGrinderTactic(oSquadAI)
 	elseif (sUnitName == "daemon_squad_defiler_nurgle") then
 		return DaemonsDefilerTactic(oSquadAI)
-	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) then
+	elseif (sUnitName == "daemon_squad_bloodthirster") then
+		return DaemonsBloodThirsterTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_guo") then
+		return DaemonsGuoTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_keeper_of_secrets") then
+		return DaemonsKosTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_lord_of_change") then
+		return DaemonsLocTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_warp_spawn") then
+		return DaemonsWarpSpawnTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_hell_spawn") then
+		return DaemonsHellSpawnTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_soul_grinder") then
+		return DaemonsSoulGrinderTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_bloodthirster_angron") then
+		return DaemonsBloodThirsterBodyguardTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_primarch_angron") then
+		return DaemonsAngronTactic(oSquadAI)
+	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
+	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return DaemonsVehicleTactic(oSquadAI)
 	end
 	return DaemonsInfantryTactic(oSquadAI)
@@ -150,16 +166,20 @@ function deamons_race:CreateBaseTactic(oBuilding)
 	local sBuildingName = oBuilding:GetBaseName()
 	
 	-- Check if their is a special tactic for the building available
-	if (sBuildingName == "daemon_sacrificial_circle") then
-		return DaemonsDeepStrikeTactic(oBuilding)
-	elseif (sBuildingName == "daemon_daemon_pit") then
-		return DaemonsDeepStrikeTactic(oBuilding)
+	if (sBuildingName == "daemon_sacrificial_circle") or (sBuildingName == "daemon_daemon_pit") or (sBuildingName == "daemon_doom_gateway") then
+		return DaemonsDeepstrikeTactic(oBuilding)
+	elseif (sBuildingName == "daemon_gift_circle") or (sBuildingName == "daemon_icon") or (sBuildingName == "daemon_turret") or (sBuildingName == "daemon_turret_ai") or (sBuildingName == "daemon_turret_maledictum") then
+		return DaemonsBuildingTactic(oBuilding)
+	elseif (sBuildingName == "daemon_lab") then
+		return DaemonsBigGeneratorTactic(oBuilding)
+	elseif (sBuildingName == "daemon_listening_post") then
+		return DaemonsDoomPitTactic(oBuilding)
 	elseif (sBuildingName == "daemon_maledictum") then
 		return DaemonsMaledictumTactic(oBuilding)
-	--[[elseif (sBuildingName == "daemon_listening_post") then
-		return DaemonsDoomPitTactic(oBuilding)]]
 	elseif (sBuildingName == "daemon_doom_pit") then
 		return DaemonsSuperHQTactic(oBuilding)
+	elseif (sBuildingName == "daemon_hq") then
+		return DaemonsHQTactic(oBuilding)
 	end
 	return nil
 end
@@ -185,7 +205,7 @@ function deamons_race:GetInfo(sType)
 	elseif (sType == "InvisibleBuildings") then
 		return false
 	elseif (sType == "HarassingLeader") then
-			return "daemon_squad_lord"
+		return "daemon_squad_lord"
 	elseif (sType == "AutoConstructBuildings") then
 		return true
 	end

@@ -1,0 +1,414 @@
+----------------------------------------
+-- File: 'taubuildertactic.ai'
+-- Edited by Cylarne_04 2011
+-- Edited by Thudmeizer/Gambit @ 17.03.2016
+
+class 'TauBuilderTactic' (TauInfantryTactic)
+
+TauBuilder = {}
+
+function TauBuilderTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Tau Builder Tactic")
+
+	-- Engineer Tactic Settings, modify as required
+	self.iBusy = g_iGMT
+	self.iSquadName = self.squad_ai:GetSquadName()   --> The name of the SQUAD with the dual role, so that not to repair itself!
+	self.iRepairVehicleRange = 40   --> The range within which the squad will perform the vehicle repairs
+	self.iRepairSuperVehiclesWhenInCombat = true  --> Will repair super vehicles, even if in combat
+	self.iRepairStrongVehiclesWhenInCombat = true  --> Will also repair super vehicles if true
+	self.isBuildingsRepairer  = true  --> Will also repair nearby structures if true
+	self.isBuildingsAssistant  = true  --> Will also help build nearby unfinished structures if true
+	self.iFixBuildingsRange = 30  --> The range within which the squad will perform building duties
+
+	self:InitAbilities()
+	self.lastused_ability_snaretrap_position = squad_ai:GetPosition()
+	self.min_snaretrap_requisition = 400 -- amount of requisition to have before typical use
+	self.min_snaretrap_time = 240 -- 30 seconds to wait between use, in possibly same location
+	self.min_snaretrap_distance = squad_ai:GetAbilityRange(TauBuilder.snaretrap_id) * 2 -- min distance between consecutive throws
+end
+
+function TauBuilderTactic:IsAttacker()
+	return false
+end
+
+function TauBuilderTactic:IsDefender()
+	return false
+end
+
+function TauBuilderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TauBuilder.emp_id == nil) then
+		TauBuilder.emp_id = cpu_manager.stats:GetAbilityID( "tau_emp_grenade" )	
+	end
+	if (TauBuilder.photon_id == nil) then
+		TauBuilder.photon_id = cpu_manager.stats:GetAbilityID( "tau_photon_grenade" )	
+	end
+	if (TauBuilder.snaretrap_id == nil) then
+		TauBuilder.snaretrap_id = cpu_manager.stats:GetAbilityID( "tau_snare_trap" )	
+	end
+	if (TauBuilder.run_id == nil) then
+		TauBuilder.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function TauBuilderTactic:DoAbilities()
+
+	if (self.squad_ai:IsInCombat()) then
+
+		Ability.DoAbilityTarget( self.squad_ai, TauBuilder.photon_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, TauBuilder.emp_id, Ability.Filters.CloseVehicleEnemy, 1 )
+	end
+
+	-- Check if we can use snare trap ability
+	if (self.squad_ai:CanDoAbility(TauBuilder.snaretrap_id)) then
+	
+		-- Get ability range
+		local iRange = self.squad_ai:GetAbilityRange(TauBuilder.snaretrap_id)
+	
+		-- If surrounded, try to use the snare trap
+		if (self.squad_ai:IsInCombat()) then
+	
+			local vSquadPos = self.squad_ai:GetPosition()
+			local fThrowFactor = 1 / 3
+			local oEnemy = Ability.Filters.CloseEnemy(vSquadPos, iRange, 4)
+			if (oEnemy ~= nil) then
+			
+				local vEnemyPos = oEnemy:GetPosition()
+				local vTargetPos = Vector3f(vSquadPos)
+				vTargetPos.x = vTargetPos.x + (vEnemyPos.x - vSquadPos.x) * fThrowFactor
+				vTargetPos.z = vTargetPos.z + (vEnemyPos.z - vSquadPos.z) * fThrowFactor
+				self:DoSpecialAbilitySnareTrap(vTargetPos, true)
+			end
+		else
+			-- Check for close strategic point
+			local oTarget = Ability.Filters.CloseStrategicPoint(self.squad_ai:GetPosition(), iRange)
+			if (oTarget ~= nil) then
+			
+				-- Modify position
+				local vTargetPos = oTarget:GetPosition()
+				local vDir = cpu_manager:GetDirectionToEnemy(vTargetPos)
+				local iOffset = math.random(1, 5)		
+				vTargetPos.x = vTargetPos.x + vDir.x * iOffset
+				vTargetPos.z = vTargetPos.z + vDir.z * iOffset
+				local iDistanceSqr = distance_sqr(vTargetPos, self.squad_ai:GetPosition())
+				if (iDistanceSqr < sqr(iRange) and iDistanceSqr > 1) then
+					self:DoSpecialAbilitySnareTrap(vTargetPos, false)
+				end
+			end
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( TauBuilder.run_id )) then
+			self.squad_ai:DoSpecialAbility( TauBuilder.run_id )
+		end
+	end
+end
+
+function TauBuilderTactic:DoSpecialAbilitySnareTrap(position,skip_prereqs)
+
+	local current_time = g_iGMT
+	local current_requisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	local last_time = self.iBusy
+	local last_pos = self.lastused_ability_snaretrap_position
+	local min_requisition = self.min_snaretrap_requisition
+	local min_time = self.min_snaretrap_time 
+	local min_distance = self.min_snaretrap_distance
+	
+	-- Check situation
+	if (skip_prereqs or (current_requisition > min_requisition and current_time - last_time > min_time) or 
+		(current_requisition > min_requisition and distance(position,last_pos) > min_distance)) then
+
+		-- Use snare trap ability
+		self.squad_ai:DoSpecialAbilityPos(TauBuilder.snaretrap_id, position)
+		self.iBusy = current_time
+		self.lastused_ability_snaretrap_position = position
+	end
+end
+
+function TauBuilderTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end
+
+-----------------------------------------
+-- Update tactic for dual-duty squads  --
+-----------------------------------------
+
+function TauBuilderTactic:Update()
+
+	-- State machine
+	if not Tactic.Update( self ) then
+		return false
+	end
+
+	-- Reinforce squads
+	self:Reinforce()
+
+	-- Upgrade weapons
+	self:Upgrade()
+
+	-- Do abilities even if this means interrupting engineer duties.
+	-- Place the following two lines AFTER the locked check below,
+	--  if you do not want abilities to interrupt them.
+	-- Alternative, make specific IF checks, in case you want each
+	--  ability to have different behaviour.
+	self:InitAbilities()
+	self:DoAbilities()
+
+	-- Check if locked, and not attacked while being so, so that to fulfil his tasks
+	if (self.squad_ai:IsLocked() and not self.squad_ai:WasRecentlyHurt()) then
+		return true
+   	end
+
+	if self.squad_ai:CanJump() then
+		self.tolerance_default = self.squad_ai:GetJumpDistance()
+	else
+		self.tolerance_default = 100
+	end
+
+	-- Update commander attach/detach health
+	local iSupportCap = build_manager:GetSupportCapCurrentMax() - build_manager:GetSupportCapLeft()
+	if (iSupportCap >= 4) then
+		self.m_fCommanderAttachHealth = 0.3
+	else
+		self.m_fCommanderAttachHealth = 0.1
+	end
+
+	self:SyncSubState()
+
+	self:CheckForBroken()
+
+	-- If not already in substate
+	if (self.stateID == Tactic.StateID.NoState) then
+	   
+		-- Check dance mode
+		if (CpuManager.AISettings.iDancing == 2) then
+		 	self:CheckForDeath()
+			if (self.stateID == Tactic.StateID.NoState) then
+				self:CheckForDance()
+				if (self.stateID == Tactic.StateID.NoState) then
+					self:CheckForStealthTroops()
+				end
+			end
+		elseif (CpuManager.AISettings.iDancing == 1 and g_iGMT > self.m_iDancing + 10) then
+			self:CheckForDeath()
+			if (self.stateID == Tactic.StateID.NoState) then
+				self:CheckForDance()
+				if (self.stateID == Tactic.StateID.NoState) then
+					self:CheckForStealthTroops()
+				end
+			end
+		end
+	end
+
+	if (self.stateID == Tactic.StateID.NoState) then
+	
+		for i in self.commander do
+		
+			if self.squad_ai:HasSquadAttached( self.commander[i][1] ) and self.commander[i][2] then
+				
+				--if I'm nearly dead, run away
+				if self.squad_ai:GetAttachedHealthPercentage() < 0.7 then
+				   self.squad_ai:DoMoveToClosestSafePoint( self.safe_point, self.tolerance )
+				end
+				return
+			end
+		end
+	end
+
+	if (self.squad_ai:IsAttached()) then
+		self:CheckForDetach()
+	end
+
+	-- Special moves after a while
+	if g_iGMT > self.iBusy + 6 then
+		self:CloseOnEnemy()
+	end
+
+	-- Check stance
+	self:UpdateStance()
+
+	-- Perform engineer duties
+	self:DoEngineerDuties()
+
+	-- If no tasks after a while, or attacked while building a structure, engage closest enemy.
+	if ((not (self:IsMoving() or self.squad_ai:IsInCombat()) and g_iGMT > self.iBusy + 6) or
+	(self.squad_ai:IsBuilding() ~= 0 and self.squad_ai:WasRecentlyHurt())) then
+		self:EngageClosestEnemyIfNeeded()
+	end
+
+	-- Return success
+	return true
+end
+
+------------------------------------------------
+-- Code for dual-duty squads (also engineers) --
+------------------------------------------------
+
+-- Moves the squad to engage the enemy. Usually called if idle, or attacked during building a structure
+function TauBuilderTactic:EngageClosestEnemyIfNeeded()
+	-- Define squad filter functor
+	local oSquadFilter = function( oSquadAI )
+		return not oSquadAI:IsBroken()
+	end
+	-- Get closest enemy squad to engage
+    local oEnemySquad = cpu_manager:FindClosestEnemy(self.squad_ai:GetPosition(), 1512, oSquadFilter)
+    if (oEnemySquad ~= nil) then
+		local targetPosition = oEnemySquad:GetPosition()
+		if Ability.Filters.CloseHurt(targetPosition, 40, 1) ~= nil then
+			self.squad_ai:DoMove(targetPosition)
+		end
+	end
+end
+
+
+-- Performs the repair and building tasks
+function TauBuilderTactic:DoEngineerDuties()
+	-- Assisting boolean, so that not to call GetDmgdOrUnfnsdBuildingWithin twice
+	local iCheck = true
+
+	-- Try to repair a nearby damaged vehicle. If no vehicle, find a damaged building
+	if self.squad_ai:CanRepair() then
+		-- First, find the closest vehicle that can be repaired
+		local oVehicleToRepair = self:GetDamagedVehicleWithin(self.iRepairVehicleRange)
+		if (oVehicleToRepair ~= nil) then
+			-- Prefer to repair a powerful vehicle, even in battle
+			local superVehicle = false
+			local strongVehicle = false
+			if self.iRepairSuperVehiclesWhenInCombat then
+				local vStats = oVehicleToRepair:GetStats()
+				if  vStats ~= nil then
+					local vClass = vStats:GetClass()
+					if vClass ~= nil then
+						if vClass == UnitStatsAI.UC_VehicleHigh then
+							superVehicle = true
+						end
+					end
+				end
+
+			elseif self.iRepairStrongVehiclesWhenInCombat then
+				local vStats = oVehicleToRepair:GetStats()
+				if  vStats ~= nil then
+					local vClass = vStats:GetClass()
+					if vClass ~= nil then
+						if vClass == UnitStatsAI.UC_VehicleMed then
+
+							strongVehicle = true
+						end
+					end
+				end
+			end
+
+			if not self.squad_ai:IsInCombat() or superVehicle or strongVehicle then
+				aitrace("EngineerTactic: Repairing vehicle...")
+				self.squad_ai:DoRepairSquad(oVehicleToRepair)
+				self.iBusy = g_iGMT
+				return true
+			end
+		end
+		-- Then, find the closest building that can be repaired
+		if self.isBuildingsRepairer then
+			self:GetDmgdOrUnfnsdBuildingWithin(self.iFixBuildingsRange)
+			iCheck = false
+			if not self.squad_ai:IsInCombat() then
+				local oBuildingToRepair = self:GetDamagedBuilding()
+
+				if (oBuildingToRepair ~= nil) then
+					aitrace("EngineerTactic: Repairing building...")
+					self.squad_ai:DoRepairBase(oBuildingToRepair)
+					self.iBusy = g_iGMT
+					return true
+				end
+			end
+		end
+	end
+	-- Then, try to help finish a building
+	if self.isBuildingsAssistant then
+		if self.squad_ai:IsEngineer() and not self.squad_ai:IsInCombat() then
+			if iCheck then
+				self:GetDmgdOrUnfnsdBuildingWithin(self.iFixBuildingsRange)
+			end
+
+			local oBuildingToFinish = self:GetUnfinishedBuilding()
+			if (oBuildingToFinish ~= nil) then
+				aitrace("EngineerTactic: Help finishing a building...")
+				self.squad_ai:DoFinishBuilding(oBuildingToFinish)
+				self.iBusy = g_iGMT
+				return true
+			end
+		end
+	end
+end
+
+
+-- Called directly to find an ally repairable and damaged squad within range.
+function TauBuilderTactic:GetDamagedVehicleWithin(iRange)
+local iEngineerSquadPosition = self.squad_ai:GetPosition()
+for oPlayer in cpu_manager.stats:GetPlayerStats() do
+	if not oPlayer:IsPlayerDead() then
+		if not cpu_manager.player_stats:IsEnemy(oPlayer) then
+			for oSquad in oPlayer:GetSquads() do
+				if oSquad:IsValid() then
+					if oSquad:CanBeRepaired() and oSquad:GetHealthPercentage() < 1.0
+					and oSquad:GetSquadName() ~= self.iSquadName then
+						if distance(oSquad:GetPosition(),iEngineerSquadPosition) < iRange then 
+							return oSquad
+						end
+					end
+				end
+			end
+		end
+	end
+end
+return nil
+end
+
+
+-- Called indirectly, to find an ally repairable and damaged building, or an unfinished within range.
+function TauBuilderTactic:GetDmgdOrUnfnsdBuildingWithin(iRange)
+self.damagedBuilding = nil
+self.unfinishedBuilding = nil
+local iEngineerSquadPosition = self.squad_ai:GetPosition()
+for oPlayer in cpu_manager.stats:GetPlayerStats() do
+	if (not oPlayer:IsPlayerDead()) then
+		if (not cpu_manager.player_stats:IsEnemy(oPlayer)) then
+			for oBuilding in oPlayer:GetBases() do
+				if oBuilding:IsValid() then
+					if distance(oBuilding:GetPosition(),iEngineerSquadPosition) < iRange then
+						if (self.isBuildingsRepairer and oBuilding:CanBeRepaired() and oBuilding:GetHealthPercentage() < 1.0) then
+							self.damagedBuilding = oBuilding
+							return
+						elseif (self.isBuildingsAssistant and not oBuilding:IsConstructionDone()) then
+							self.unfinishedBuilding = oBuilding:GetEntity()
+							return
+						end
+					end
+				end
+			end
+		end
+	end
+end
+end
+
+
+function TauBuilderTactic:GetDamagedBuilding()
+	return self.damagedBuilding
+end
+
+
+function TauBuilderTactic:GetUnfinishedBuilding()
+	return self.unfinishedBuilding
+end
+

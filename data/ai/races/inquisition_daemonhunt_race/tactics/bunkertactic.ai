@@ -1,13 +1,121 @@
 ----------------------------------------
 -- File: 'bunkertactic.ai'
 -- Edited by Cylarne
+-- Edited by Thudmeizer	@ 24.05.2016
 
 class 'BunkerTactic' (BaseTactic)
+
+Bunker = {}
 
 function BunkerTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Bunker Tactic")
-	
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
+
+	-- Building is a bunker
+	self:AddToBunkerList()
+
+	Bunker.detectDelay = -1
 end
+
+function BunkerTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function BunkerTactic:InitAbilities()
+	
+	-- Init abilities
+	if (Bunker.detection_id == nil) then
+		Bunker.detection_id = cpu_manager.stats:GetAbilityID( "sisters_detection_field" )
+	end
+
+	if (Bunker.repair_id == nil) then
+		Bunker.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function BunkerTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Bolters		-- addon_sisters_wall_bolters
+--	self:AutoBuildAddOn(1) -- Flamers		-- addon_sisters_wall_flamers
+--	self:AutoBuildAddOn(2) -- Probe			-- addon_sisters_wall_probe
+
+	-- Randomly choose between all three bunker addons
+	local addon_bunker_ports = math.random( 0,2 )
+	self:AutoBuildTurretAddOn(addon_bunker_ports, self.base_ai:GetEntity():GetID())	-- Randomly choose between all three building addons
+
+	-- Try to activate detection field
+	if (self.base_ai:CanDoAbility(Bunker.detection_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(Bunker.detection_id)
+		local oSquad = Ability.Filters.CloseInfiltratedEnemy(self.base_ai:GetPosition(), iRange, 1)
+		
+		if (oSquad ~= nil) then
+			if(Bunker.detectDelay == -1) then
+				Bunker.detectDelay = math.max(0, 30)
+				Bunker.detectTime = g_iGMT + Bunker.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < Bunker.detectTime) then
+				return
+			end
+
+			-- Only try to detect if the infiltrated unit is attacking
+			if (oSquad:IsAttacking()) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.base_ai:DoSpecialAbilityPos( Bunker.detection_id, pos )
+
+				Bunker.detectDelay = -1
+			end
+		else 
+			--if no infiltrated units within range, scan other enemies
+			local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 1)
+			if(Bunker.detectDelay == -1) then
+				Bunker.detectDelay = math.max(0, 30)
+				Bunker.detectTime = g_iGMT + Bunker.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < Bunker.detectTime) then
+				return
+			end
+
+			if (oSquad ~= nil) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.base_ai:DoSpecialAbilityPos( Bunker.detection_id, pos )
+
+				Bunker.detectDelay = -1
+			end
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( Bunker.repair_id )) then
+			self.base_ai:DoSpecialAbility( Bunker.repair_id )
+		end
+	end
+end
+--[[
+function BunkerTactic:CanDeepStrikeTroops()
+
+	if (cpu_manager:GetTierLevel() > 2) then
+		return true
+	end
+end
+]]

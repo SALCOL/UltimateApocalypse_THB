@@ -29,7 +29,7 @@ t_fortress_list =
 		"necron_turret_battery",
 		"necron_turret_missile_sp",
 		"necron_resurrection_beacon",
-		"necron_shield_spike",
+		
 		"ork_boomy_platform",
 		--"ork_gork_totem",
 		"ork_waagh_banner_turret_sp",
@@ -37,10 +37,12 @@ t_fortress_list =
 		"ork_burna_bomm",
 		"ork_mine_field",
 		"ork_tanktrap",
+		
 		--"sisters_listening_post",
 		"sisters_turret_flamer",
 		"sisters_mines",
 		"sisters_tanktrap",
+		
 		--"space_marine_listening_post",
 		"space_marine_turret_bolter",
 		"space_marine_turret_missile_sp",
@@ -48,6 +50,7 @@ t_fortress_list =
 		"space_marine_tanktrap",
 		--"tau_listening_post",
 		"tau_turret",
+		"tau_turret_sp",
 		"tau_mines",
 		"tau_shield_generator",
 		
@@ -75,6 +78,7 @@ t_fortress_list =
 		"inquisition_tanktrap",
 		"inquisition_turret_heavy_bolter",
 		"inquisition_wall",
+		"inquisition_infantry_bunker",
 	},
 	Daemons = 
 	{

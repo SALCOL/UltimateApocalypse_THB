@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'Daemonhuntunitstats.ai'
--- Edited by Thudmeizer @ 25.03.2007
+-- Edited by Thudmeizer @ 24.04.2016
 -- Edited by Lord_Cylarne @ 9/30/14
 
 --XP3
@@ -18,30 +18,32 @@ UnitStrengths.npc_squad_civilian_group = 0
 UnitStrengths.inquisition_squad_archivist = 0
 UnitStrengths.inquisition_squad_civilian = 0
 UnitStrengths.inquisition_squad_civilian_ai = 0
+UnitStrengths.inquisition_squad_trade_power = 0
+UnitStrengths.inquisition_squad_trade_requisition = 0
 UnitStrengths.inquisition_squad_servo_skull = 10
-UnitStrengths.inquisition_squad_bodyguard = 45
-UnitStrengths.inquisition_squad_shock_troops = 50
-UnitStrengths.inquisition_squad_scholars = 55
-UnitStrengths.inquisition_squad_scholar_astropath = 30
-UnitStrengths.inquisition_squad_scholar_exorcist = 30
-UnitStrengths.inquisition_squad_scholar_calculus_logi = 30
-UnitStrengths.inquisition_squad_grenaider_troops = 65
-UnitStrengths.inquisition_squad_death_cultist = 65
 UnitStrengths.inquisition_squad_servitor_maintenance = 25
-UnitStrengths.inquisition_squad_servitor_melee = 65
-UnitStrengths.inquisition_squad_servitor_weapon = 65
-UnitStrengths.inquisition_squad_ds_turret = 300
-UnitStrengths.inquisition_squad_grey_knights = 70
-UnitStrengths.inquisition_squad_grey_knights_purgator = 75
-UnitStrengths.inquisition_squad_grey_knights_purifier = 70
-UnitStrengths.inquisition_squad_grey_knights_interceptor = 70
-UnitStrengths.inquisition_squad_grey_knights_terminator = 90
+UnitStrengths.inquisition_squad_servitor_melee = 35
+UnitStrengths.inquisition_squad_servitor_weapon = 40
+UnitStrengths.inquisition_squad_bodyguard = 70
+UnitStrengths.inquisition_squad_shock_troops = 75
+UnitStrengths.inquisition_squad_scholars = 65
+UnitStrengths.inquisition_squad_grenaider_troops = 75
+UnitStrengths.inquisition_squad_death_cultist = 85
+UnitStrengths.inquisition_squad_grey_knights = 90
+UnitStrengths.inquisition_squad_grey_knights_purgator = 90
+UnitStrengths.inquisition_squad_grey_knights_purifier = 90
+UnitStrengths.inquisition_squad_grey_knights_interceptor = 90
+UnitStrengths.inquisition_squad_grey_knights_terminator = 95
 UnitStrengths.inquisition_squad_grey_knights_terminator_paladin = 100
+UnitStrengths.inquisition_squad_scholar_astropath = 60
+UnitStrengths.inquisition_squad_scholar_exorcist = 60
+UnitStrengths.inquisition_squad_scholar_calculus_logi = 60
+UnitStrengths.inquisition_squad_chaplain = 400
 UnitStrengths.inquisition_squad_grey_knight_champion = 320
 UnitStrengths.inquisition_squad_grey_knight_hero = 1800
 UnitStrengths.inquisition_squad_inquisitor_lord = 310
 UnitStrengths.inquisition_squad_inquisitor_ordo_malleus = 310
-UnitStrengths.inquisition_squad_chaplain = 400
+UnitStrengths.inquisition_squad_ds_turret = 200
 UnitStrengths.inquisition_squad_rhino = 145
 UnitStrengths.inquisition_squad_damocles = 160
 UnitStrengths.inquisition_squad_razorback = 185
@@ -65,8 +67,10 @@ UnitStrengths.inquisition_squad_dreadknight_titan = 900
 UnitStrengths.inquisition_squad_warhound_titan = 1000
 UnitStrengths.inquisition_squad_warhound_vengence_titan = 1000
 
+LeaderStrengths.inquisition_squad_servitor_weapon = 75
 LeaderStrengths.inquisition_squad_bodyguard = 75
 LeaderStrengths.inquisition_squad_scholars = 75
+LeaderStrengths.inquisition_squad_grenaider_troops = 75
 LeaderStrengths.inquisition_squad_shock_troops = 75
 LeaderStrengths.inquisition_squad_grey_knights = 75
 LeaderStrengths.inquisition_squad_grey_knights_purgator = 75
@@ -74,1015 +78,1363 @@ LeaderStrengths.inquisition_squad_grey_knights_purifier = 75
 LeaderStrengths.inquisition_squad_grey_knights_interceptor = 75
 LeaderStrengths.inquisition_squad_grey_knights_terminator = 75
 
-Attachments.inquisition_squad_bodyguard = { "inquisition_squad_inquisitor_lord", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_shock_troops = { "inquisition_squad_inquisitor_lord", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_scholars = { "inquisition_squad_inquisitor_lord", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_death_cultist = { "inquisition_squad_inquisitor_lord", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_servitor_maintenance = { "inquisition_squad_inquisitor_lord", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_grey_knights = { "inquisition_squad_grey_knight_hero", "inquisition_squad_grey_knight_champion", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_grey_knights_purifier = { "inquisition_squad_grey_knight_hero", "inquisition_squad_grey_knight_champion", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_grey_knights_interceptor = { "inquisition_squad_grey_knight_hero", "inquisition_squad_grey_knight_champion", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_grey_knights_purgator = { "inquisition_squad_grey_knight_hero", "inquisition_squad_grey_knight_champion", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_grey_knights_terminator = { "inquisition_squad_grey_knight_hero", "inquisition_squad_grey_knight_champion", "inquisition_squad_servo_skull", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_exorcist" }
-Attachments.inquisition_squad_grey_knights_terminator_paladin = { "inquisition_squad_grey_knight_hero", "inquisition_squad_grey_knight_champion" }
+Attachments.inquisition_squad_servitor_maintenance = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_servitor_melee = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_servitor_weapon = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_bodyguard = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_scholars = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_shock_troops = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_grenaider_troops = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_grey_knights = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_grey_knights_interceptor = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_grey_knights_purgator = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_grey_knights_purifier = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_grey_knights_terminator = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
+Attachments.inquisition_squad_grey_knights_terminator_paladin = { "inquisition_squad_servo_skull", "inquisition_squad_thunderfire_cannon", "inquisition_squad_scholar_astropath", "inquisition_squad_scholar_calculus_logi", "inquisition_squad_scholar_exorcist", "inquisition_squad_chaplain", "inquisition_squad_grey_knight_champion", "inquisition_squad_grey_knight_hero", "inquisition_squad_inquisitor_lord", "inquisition_squad_inquisitor_ordo_malleus" }
 
 DaemonhuntUnitStats =
 {
 	race = "inquisition_daemonhunt_race",
+	{
+		name = "Inquisition Archivist",
+		sbp_name = "inquisition_squad_archivist",
+		ebp_name = "inquisition_archivist",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 0,
+		potential =
 		{
-			name = "Inquisition Archivist",
-			sbp_name = "inquisition_squad_archivist",
-			ebp_name = "inquisition_archivist",
-			class = UnitStatsAI.UC_VehicleLow,
-			rating = 0,
-			potential =
 			{
-				{
-					name = "none",
-					effectiveness = GenerateUnitEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_None,
-				},
-			}
-		},
-		{
-			name = "Inquisition Civilian",
-			sbp_name = "inquisition_squad_civilian",
-			ebp_name = "inquisition_civilian",
-			class = UnitStatsAI.UC_LightInfantryLow,
-			rating = 0,
-			potential =
-			{
-				{
-					name = "none",
-					effectiveness = GenerateUnitEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_None,
-				},
-			}
-		},
-		{
-			name = "Inquisition Civilian (AI)",
-			sbp_name = "inquisition_squad_civilian_ai",
-			ebp_name = "inquisition_civilian_ai",
-			class = UnitStatsAI.UC_LightInfantryLow,
-			rating = 0,
-			potential =
-			{
-				{
-					name = "none",
-					effectiveness = GenerateUnitEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_None,
-				},
-			}
-		},
-		{
-			name = "Servo Skull",
-			sbp_name = "inquisition_squad_servo_skull",
-			ebp_name = "inquisition_servo_skull",
-			class = UnitStatsAI.UC_LightInfantryLow,
-			rating = 1.0,
-			potential =
-			{
-				{
-					name = "inquisition_servo_skull_defense",
-					effectiveness = GenerateUnitEffectiveness(2.9,3.2,2.3,2.3,0.0,0.0,0.0,0.0,2.3,0.0,0.0,2.9,0.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Inquisition Bodyguard",
-			sbp_name = "inquisition_squad_bodyguard",
-			ebp_name = "inquisition_bodyguard",
-			class = UnitStatsAI.UC_LightInfantryMed,
-			rating = 3,
-			potential =
-			{
-				{
-					name = "inquisition_hellgun_bodyguard",
-					effectiveness = GenerateUnitEffectiveness(2,3,2,2,1,1,0,0,1,0,1,2,2,1,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_flamer_bodyguard",
-					effectiveness = GenerateUnitEffectiveness(3,4,3,4,3,2,2,2,4,2,2,1,1,1,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_melta_gun_bodyguard",
-					effectiveness = GenerateUnitEffectiveness(3,3,3,3,3,3,5,5,3,2,2,4,4,3,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Shock Troops",
-			sbp_name = "inquisition_squad_shock_troops",
-			ebp_name = "inquisition_shock_troops",
-			class = UnitStatsAI.UC_LightInfantryMed,
-			rating = 5,
-			potential =
-			{
-				{
-					name = "inquisition_hellgun_shock_troops",
-					effectiveness = GenerateUnitEffectiveness(3.3,3.3,3.3,3.3,2.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_grenade_launcher_shock_troops",
-					effectiveness = GenerateUnitEffectiveness(4.6,5.1,5.0,4.8,3.7,3.0,3.0,1.6,3.6,0.0,1.0,3.4,2.4,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_plasma_gun_shock_troops",
-					effectiveness = GenerateUnitEffectiveness(3.0,3.9,3.7,5.5,5.3,3.9,3.4,0.0,2.3,3.3,3.0,4.7,3.9,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_flamer_shock_troops",
-					effectiveness = GenerateUnitEffectiveness(5.9,5.3,2.8,2.7,2.0,0.8,0.8,0.0,1.4,0.0,0.8,0.0,0.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_melta_gun_shock_troops",
-					effectiveness = GenerateUnitEffectiveness(4.8,6.2,6.2,6.2,6.8,8.0,7.0,6.0,4.9,6.6,1.8,5.7,7.0,6.5,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Scholars",
-			sbp_name = "inquisition_squad_scholars",
-			ebp_name = "inquisition_scholars",
-			class = UnitStatsAI.UC_LightInfantryMed,
-			rating = 5,
-			potential =
-			{
-				{
-					name = "inquisition_staff_scholar",
-					effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-				{
-					name = "inquisition_laspistol_scholars",
-					effectiveness = GenerateUnitEffectiveness(3.3,3.3,3.3,3.3,2.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Grenaider Troops",
-			sbp_name = "inquisition_squad_grenaider_troops",
-			ebp_name = "inquisition_grenaider_troops",
-			class = UnitStatsAI.UC_LightInfantryHigh,
-			rating = 6,
-			potential =
-			{
-				{
-					name = "inquisition_grenade_launcher_shock_troops",
-					effectiveness = GenerateUnitEffectiveness(4.6,5.1,5.0,4.8,3.7,3.0,3.0,1.6,3.6,0.0,1.0,3.4,2.4,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_grenade_launcher_stun",
-					effectiveness = GenerateUnitEffectiveness(7.0,7.0,6.8,8.2,7.0,8.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_grenade_launcher_incendiary",
-					effectiveness = GenerateUnitEffectiveness(5.9,5.3,2.8,2.7,2.0,0.8,0.8,0.0,1.4,6.0,6.8,8.0,7.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Death Cultist",
-			sbp_name = "inquisition_squad_death_cultist",
-			ebp_name = "inquisition_death_cultist",
-			class = UnitStatsAI.UC_HeavyInfantryMed,
-			rating = 6,
-			potential =
-			{
-				{
-					name = "inquisition_power_sword_cultist",
-					effectiveness = GenerateUnitEffectiveness(7,7,6,5,4.5,2,1,0,3,2,1,2,0,0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Inquisition Servitor Maintenance",
-			sbp_name = "inquisition_squad_servitor_maintenance",
-			ebp_name = "inquisition_servitor_maintenance",
-			class = UnitStatsAI.UC_HeavyInfantryMed,
-			rating = 2,
-			potential =
-			{
-				{
-					name = "inquisition_power_wrench",
-					effectiveness = GenerateUnitEffectiveness(5.4,5.7,5.7,6.1,6.5,5.6,2.7,1.3,6.1,1.3,5.1,4.1,2.8,2.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Inquisition Servitor Weapons",
-			sbp_name = "inquisition_squad_servitor_weapon",
-			ebp_name = "inquisition_servitor_weapon",
-			class = UnitStatsAI.UC_HeavyInfantryMed,
-			rating = 6,
-			potential =
-			{
-				{
-					name = "inquisition_power_pincers_servitor",
-					effectiveness = GenerateUnitEffectiveness(5.4,5.7,5.7,6.1,6.5,5.6,2.7,1.3,6.1,1.3,5.1,4.1,2.8,2.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-				{
-					name = "inquisition_heavy_bolter_servitor",
-					effectiveness = GenerateUnitEffectiveness(7.5,7.5,7.4,6.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_multi_melta_servitor",
-					effectiveness = GenerateUnitEffectiveness(4.8,6.2,6.2,6.2,6.8,8.0,8.0,7.0,6.9,6.6,1.8,5.7,7.0,6.5,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Servitor Assault",
-			sbp_name = "inquisition_squad_servitor_melee",
-			ebp_name = "inquisition_servitor_melee",
-			class = UnitStatsAI.UC_HeavyInfantryMed,
-			rating = 6,
-			potential =
-			{
-				{
-					name = "inquisition_power_pincers_servitor",
-					effectiveness = GenerateUnitEffectiveness(6.9,6.9,6.9,6.9,6.9,6.6,4.7,1.3,6.1,1.3,5.1,4.1,2.8,2.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Exorcist",
-			sbp_name = "inquisition_squad_scholar_exorcist",
-			ebp_name = "inquisition_scholars_exorcist",
-			class = UnitStatsAI.UC_LightInfantryHigh,
-			rating = 6.0,
-			potential =
-			{
-				{
-					name = "inquisition_eviscerator",
-					effectiveness = GenerateUnitEffectiveness(7,7,6,5,4.5,2,1,0,3,2,1,2,0,0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Astropath",
-			sbp_name = "inquisition_squad_scholar_astropath",
-			ebp_name = "inquisition_scholars_astropath",
-			class = UnitStatsAI.UC_LightInfantryHigh,
-			rating = 6.0,
-			potential =
-			{
-				{
-					name = "inquisition_laspistol_scholars",
-					effectiveness = GenerateUnitEffectiveness(3.3,3.3,3.3,3.3,2.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_staff_scholar",
-					effectiveness = GenerateUnitEffectiveness(4.5,3.5,3.2,1,1,0,2,2,2,2,2,2,2,2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Calculus Logistic",
-			sbp_name = "inquisition_squad_scholar_calculus_logi",
-			ebp_name = "inquisition_scholars_calculus_logi",
-			class = UnitStatsAI.UC_LightInfantryHigh,
-			rating = 7.5,
-			potential =
-			{
-				{
-					name = "none",
-					effectiveness = GenerateUnitEffectiveness(8,8,8,8,8,8,8,8,8,8,8,8,8,0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_None,
-				},
-			}
-		},
-		{
-			name = "Inquisition Grey Knights",
-			sbp_name = "inquisition_squad_grey_knights",
-			ebp_name = "inquisition_grey_knights",
-			class = UnitStatsAI.UC_HeavyInfantryMed,
-			rating = 7.5,
-			potential =
-			{
-				{
-					name = "inquisition_storm_bolter_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(5.3,6.0,5.8,6.2,5.7,4.6,4.1,2.8,6.1,2.8,4.3,5.0,2.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "space_marine_halberd_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(6.7,6.8,6.7,6.7,6.5,4.2,4.2,4.2,8.0,8.0,6.7,4.2,4.2,4.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-				{
-					name = "inquisition_incinerator_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(7.1,7.5,7.0,6.3,5.8,2.3,2.2,0.0,5.1,0.0,5.1,5.4,5.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_psycannon_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(6.1,8.5,7.9,7,6.8,3.3,3.2,1.0,6.1,0.0,2.1,1.4,1.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Grey Knights Interceptors",
-			sbp_name = "inquisition_squad_grey_knights_interceptor",
-			ebp_name = "inquisition_grey_knights_interceptor",
-			class = UnitStatsAI.UC_HeavyInfantryMed,
-			rating = 7.5,
-			potential =
-			{
-				{
-					name = "inquisition_storm_bolter_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(5.3,6.0,5.8,6.2,5.7,4.6,4.1,2.8,6.1,2.8,4.3,5.0,2.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "space_marine_halberd_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(6.7,6.8,6.7,6.7,6.5,4.2,4.2,4.2,8.0,8.0,6.7,4.2,4.2,4.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-				{
-					name = "inquisition_nemesis_weapon_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(7.7,7.8,7.7,8.7,7.5,4.2,4.2,4.2,8.0,8.0,6.7,4.2,4.2,4.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-				{
-					name = "inquisition_nemesis_weapon_falchions",
-					effectiveness = GenerateUnitEffectiveness(8.7,9.8,8.2,8.3,7.1,2.2,1.2,0.2,5.0,5.0,3.7,2.2,2.2,2.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-				{
-					name = "inquisition_daemon_hammer_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(5.7,6.8,6.7,8.7,6.5,6.2,6.2,6.2,10.0,9.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Inquisition Grey Knights Purifiers",
-			sbp_name = "inquisition_squad_grey_knights_purifier",
-			ebp_name = "inquisition_grey_knights_purifier",
-			class = UnitStatsAI.UC_HeavyInfantryMed,
-			rating = 7.5,
-			potential =
-			{
-				{
-					name = "inquisition_storm_bolter_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(5.3,6.0,5.8,6.2,5.7,4.6,4.1,2.8,6.1,2.8,4.3,5.0,2.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_staff_psyker",
-					effectiveness = GenerateUnitEffectiveness(6.7,6.8,6.7,6.7,6.5,4.2,4.2,4.2,8.0,8.0,6.7,4.2,4.2,4.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Inquisition Grey Knights Purgators",
-			sbp_name = "inquisition_squad_grey_knights_purgator",
-			ebp_name = "inquisition_grey_knights_purgator",
-			class = UnitStatsAI.UC_HeavyInfantryMed,
-			rating = 7.5,
-			potential =
-			{
-				{
-					name = "inquisition_psycannon_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(6.1,8.5,7.9,7,6.8,3.3,3.2,1.0,6.1,0.0,2.1,1.4,1.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_incinerator_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(7.1,7.5,7.0,6.3,5.8,2.3,2.2,0.0,5.1,0.0,5.1,5.4,5.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_knife_grey_knight",
-					effectiveness = GenerateUnitEffectiveness(4.1,4.6,4.0,4.1,4.0,0.0,0.0,0.0,4.0,0.0,3.6,4.1,2.2,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Inquisition Grey Knights Terminator",
-			sbp_name = "inquisition_squad_grey_knights_terminator",
-			ebp_name = "inquisition_grey_knights_terminator",
-			class = UnitStatsAI.UC_HeavyInfantryHigh,
-			rating = 8.5,
-			potential =
-			{
-				{
-					name = "inquisition_storm_bolter_gk_terminator",
-					effectiveness = GenerateUnitEffectiveness(5.3,6.0,5.8,6.2,5.7,4.6,4.1,2.8,6.1,2.8,4.3,5.0,2.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_nemesis_weapon_gk_terminator",
-					effectiveness = GenerateUnitEffectiveness(7.7,9.8,9.7,8.7,7.5,4.2,4.2,4.2,8.0,8.0,6.7,4.2,4.2,4.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-				{
-					name = "inquisition_incinerator_gk_terminator",
-					effectiveness = GenerateUnitEffectiveness(7.1,7.5,7.0,6.3,5.8,2.3,2.2,0.0,5.1,0.0,5.1,5.4,5.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_psycannon_gk_terminator",
-					effectiveness = GenerateUnitEffectiveness(6.1,8.5,7.9,7,6.8,3.3,3.2,1.0,6.1,0.0,2.1,1.4,1.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Grey Knights Terminator Paladin",
-			sbp_name = "inquisition_squad_grey_knights_terminator_paladin",
-			ebp_name = "inquisition_grey_knights_terminator_paladin",
-			class = UnitStatsAI.UC_HeavyInfantryHigh,
-			rating = 9,
-			potential =
-			{
-				{
-					name = "inquisition_storm_bolter_gk_terminator",
-					effectiveness = GenerateUnitEffectiveness(5.3,6.0,5.8,6.2,5.7,4.6,4.1,2.8,6.1,2.8,4.3,5.0,2.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_nemesis_weapon_gk_terminator",
-					effectiveness = GenerateUnitEffectiveness(7.7,9.8,9.7,8.7,7.5,4.2,4.2,4.2,8.0,8.0,6.7,4.2,4.2,4.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-				{
-					name = "inquisition_daemon_hammer_grey_knight_terminator",
-					effectiveness = GenerateUnitEffectiveness(8.7,9.8,9.7,9.7,6.5,6.2,6.2,6.2,10.0,9.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-				{
-					name = "inquisition_incinerator_gk_terminator",
-					effectiveness = GenerateUnitEffectiveness(7.1,7.5,7.0,6.3,5.8,2.3,2.2,0.0,5.1,0.0,5.1,5.4,5.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_psycannon_gk_terminator",
-					effectiveness = GenerateUnitEffectiveness(6.1,8.5,7.9,7,6.8,3.3,3.2,1.0,6.1,0.0,2.1,1.4,1.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Inquisitor Lord",
-			sbp_name = "inquisition_squad_inquisitor_lord",
-			ebp_name = "inquisition_inquisitor_lord",
-			class = UnitStatsAI.UC_Commander,
-			rating = 7,
-			potential =
-			{
-				{
-					name = "inquisition_bolt_pistol_inquisitor_lord",
-					effectiveness = GenerateUnitEffectiveness(6,7,7,5,6,5,5,5,7,6,5,5,5,5,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Ordo Malleus Supreme Lord",
-			sbp_name = "inquisition_squad_inquisitor_ordo_malleus",
-			ebp_name = "inquisition_inquisitor_ordo_malleus",
-			class = UnitStatsAI.UC_Commander,
-			rating = 9,
-			potential =
-			{
-				{
-					name = "inquisition_plasma_pistol_inquisitor_lord",
-					effectiveness = GenerateUnitEffectiveness(6,7,7,5,6,5,5,5,7,6,5,5,5,5,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Grey Knight Hero",
-			sbp_name = "inquisition_squad_grey_knight_hero",
-			ebp_name = "inquisition_grey_knight_hero",
-			class = UnitStatsAI.UC_Commander,
-			rating = 10,
-			potential =
-			{
-				{
-					name = "inquisition_nemesis_weapon_gk_hero",
-					effectiveness = GenerateUnitEffectiveness(10,10,10,10,10,10,10,10,10,10,10,10,10,10,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Inquisition Grey Knight Champion",
-			sbp_name = "inquisition_squad_grey_knight_champion",
-			ebp_name = "inquisition_grey_knight_champion",
-			class = UnitStatsAI.UC_Commander,
-			rating = 8,
-			potential =
-			{
-				{
-					name = "inquisition_bolt_pistol_inquisitor_lord",
-					effectiveness = GenerateUnitEffectiveness(6,7,7,5,6,5,5,5,7,6,5,5,5,5,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_daemon_hammer_champion",
-					effectiveness = GenerateUnitEffectiveness(8.7,9.8,9.7,9.7,6.5,6.2,6.2,6.2,10.0,9.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Inquisition Chaplain",
-			sbp_name = "inquisition_squad_chaplain",
-			ebp_name = "inquisition_chaplain",
-			class = UnitStatsAI.UC_Commander,
-			rating = 9,
-			potential =
-			{
-				{
-					name = "inquisition_storm_bolter_gk_terminator",
-					effectiveness = GenerateUnitEffectiveness(5.3,6.0,5.8,6.2,5.7,4.6,4.1,2.8,6.1,2.8,4.3,5.0,2.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_daemon_hammer_champion",
-					effectiveness = GenerateUnitEffectiveness(8.7,9.8,9.7,9.7,6.5,6.2,6.2,6.2,10.0,9.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Melee,
-				},
-			}
-		},
-		{
-			name = "Inquisition Deepstrike Turret",
-			sbp_name = "inquisition_squad_ds_turret",
-			ebp_name = "inquisition_ds_turret",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 8,
-			potential =
-			{
-				{
-					name = "guard_heavy_bolter_turret",
-					effectiveness = GenerateUnitEffectiveness(8.5,8.5,8.4,8.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "guard_missile_turret",
-					effectiveness = GenerateUnitEffectiveness(5.1,5.1,5.1,3.3,2.1,9.6,9.0,9.9,7.3,7.3,7.1,5.0,5.0,4.4,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Chimera Transport",
-			sbp_name = "inquisition_squad_chimera_transport",
-			ebp_name = "inquisition_chimera_transport",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 5,
-			potential =
-			{
-				{
-					name = "inquisition_multilaser_chimera",
-					effectiveness = GenerateUnitEffectiveness(5.2,5.4,5.0,4.0,4.0,1.0,1.0,0.4,5.2,2.6,3.6,4.4,4.1,3.6,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_heavy_flamer_chimera_turret",
-					effectiveness = GenerateUnitEffectiveness(6.1,6.5,6.0,5.3,4.8,2.3,2.2,0.0,4.1,0.0,4.1,4.4,3.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_heavy_bolter_chimera_turret",
-					effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Rhino",
-			sbp_name = "inquisition_squad_rhino",
-			ebp_name = "inquisition_rhino",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 5,
-			potential =
-			{
-				{
-					name = "inquisition_storm_bolter_rhino",
-					effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_missile_launcher_rhino",
-					effectiveness = GenerateUnitEffectiveness(5.1,5.1,5.1,3.3,2.1,6.6,7.0,7.9,3.3,3.3,2.1,5.0,5.0,4.4,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Razorback",
-			sbp_name = "inquisition_squad_razorback",
-			ebp_name = "inquisition_razorback",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 6,
-			potential =
-			{
-				{
-					name = "inquisition_incinerator_razorback",
-					effectiveness = GenerateUnitEffectiveness(5.1,7.5,6.9,6,5.8,3.3,3.2,1.0,6.1,0.0,2.1,1.4,1.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-
-			}
-		},
-		{
-			name = "Inquisition Thunderfire Cannon",
-			sbp_name = "inquisition_squad_thunderfire_cannon",
-			ebp_name = "inquisition_thunderfire_cannon",
-			class = UnitStatsAI.UC_VehicleLow,
-			rating = 6,
-			potential =
-			{
-				{
-					name = "inquisition_autocannon_thunderfire_cannon",
-					effectiveness = GenerateUnitEffectiveness(3.6,3.7,4.5,5.3,7.0,8.7,8.5,6.0,6.8,5.0,5.1,4.7,4.0,2.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		--[[{
-			name = "IDH Damocles",
-			sbp_name = "inquisition_squad_damocles",
-			ebp_name = "inquisition_damocles",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 4,
-			potential =
-			{
-				{
-					name = "space_marine_storm_bolter",
-					effectiveness = GenerateUnitEffectiveness(5.3,6.0,5.8,6.2,5.7,4.6,4.1,2.8,6.1,2.8,4.3,5.0,2.7,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},]]
-		{
-			name = "IDH Tempest",
-			sbp_name = "inquisition_squad_tempest",
-			ebp_name = "inquisition_tempest",
-			class = UnitStatsAI.UC_AirMed,
-			rating = 5,
-			potential =
-			{
-				{
-					name = "space_marine_assault_cannon_tempest",
-					effectiveness = GenerateUnitEffectiveness(4.6,6.3,6.0,6.3,6.3,5.6,5.1,3.8,6.6,4.0,5.5,5.2,3.7,3.9,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_incendiary_missile",
-					effectiveness = GenerateUnitEffectiveness(6.4,7.6,8.4,6.5,6.4,4.0,5.0,5.0,6.7,5.0,5.7,2.0,0.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Dreadnought",
-			sbp_name = "inquisition_squad_dreadnought",
-			ebp_name = "inquisition_dreadnought",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 7,
-			potential =
-			{
-				{
-					name = "inquisition_assault_cannon_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(5.6,5.7,5.5,5.3,5.0,4.7,2.5,0.0,5.8,2.0,2.1,2.7,2.0,1.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_autocannon_twin_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(6.6,6.7,6.5,5.9,5.7,6.7,5.5,0.0,6.8,4.0,3.1,3.7,3.0,2.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_lascannon_twin_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(6.1,6.2,6.1,5.5,4.3,8.5,8.3,8.2,5.9,4.2,3.1,6.5,5.7,6.5,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Dreadnought Assault",
-			sbp_name = "inquisition_squad_dreadnought_assault",
-			ebp_name = "inquisition_dreadnought_assault",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 7,
-			potential =
-			{
-				{
-					name = "inquisition_heavy_bolter_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_psycannon_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(6.1,8.5,7.9,7,6.8,3.3,3.2,1.0,6.1,0.0,2.1,1.4,1.6,1.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_assault_cannon_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(5.6,5.7,5.5,5.3,5.0,4.7,2.5,0.0,5.8,2.0,2.1,2.7,2.0,1.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_multi_melta_gun_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(5.8,6.1,5.7,4.3,2.8,8.8,8.7,8.5,4.2,1.3,7.3,8.5,8.0,7.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Dreadnought Support",
-			sbp_name = "inquisition_squad_dreadnought_support",
-			ebp_name = "inquisition_dreadnought_support",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 7,
-			potential =
-			{
-				{
-					name = "inquisition_assault_cannon_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(5.6,5.7,5.5,5.3,5.0,4.7,2.5,0.0,5.8,2.0,2.1,2.7,2.0,1.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_autocannon_twin_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(6.6,6.7,6.5,5.9,5.7,6.7,5.5,0.0,6.8,4.0,3.1,3.7,3.0,2.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_lascannon_twin_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(6.1,6.2,6.1,5.5,4.3,8.5,8.3,8.2,5.9,4.2,3.1,6.5,5.7,6.5,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_heavy_plasma_gun_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(9.8,9.1,9.7,9.3,9.8,7.8,7.7,7.0,9.2,9.3,9.3,6.0,5.0,4.2,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Dreadnought Venerable",
-			sbp_name = "inquisition_squad_dreadnought_venerable",
-			ebp_name = "inquisition_dreadnought_venerable",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 8.5,
-			potential =
-			{
-				{
-					name = "inquisition_autocannon_twin_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(6.6,6.7,6.5,5.9,5.7,6.7,5.5,0.0,6.8,4.0,3.1,3.7,3.0,2.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_lascannon_twin_dreadnought",
-					effectiveness = GenerateUnitEffectiveness(6.1,6.2,6.1,5.5,4.3,8.5,8.3,8.2,5.9,4.2,3.1,6.5,5.7,6.5,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Predator Annihilator",
-			sbp_name = "inquisition_squad_predator",
-			ebp_name = "inquisition_predator",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 8.5,
-			potential =
-			{
-				{
-					name = "inquisition_lascannon_twin_predator",
-					effectiveness = GenerateUnitEffectiveness(4.0,4.0,5.0,5.0,5.0,8.9,8.0,7.0,6.0,5.8,1.6,8.9,8.3,8.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "space_marine_heavy_bolter_tank_right",
-					effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,6.0,7.0,7.9,7.0,4.0,7.0,7.8,2.6,7.9,7.3,7.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "space_marine_heavy_bolter_tank_left",
-					effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,6.0,7.0,7.9,7.0,4.0,7.0,7.8,2.6,7.9,7.3,7.7,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Whirlwind",
-			sbp_name = "inquisition_squad_whirlwind",
-			ebp_name = "inquisition_whirlwind",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 8.5,
-			potential =
-			{
-				{
-					name = "inquisition_missile_battery_inferno",
-					effectiveness = GenerateUnitEffectiveness(7.4,6.4,6.4,6.4,6.4,6.8,6.9,5.9,6.4,6.4,6.4,6.2,6.9,6.4,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_missile_battery",
-					effectiveness = GenerateUnitEffectiveness(5.4,5.4,5.4,5.4,5.4,5.8,4.9,3.9,5.4,5.4,5.4,5.2,4.9,4.4,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Vulture",
-			sbp_name = "inquisition_squad_vulture",
-			ebp_name = "inquisition_vulture",
-			class = UnitStatsAI.UC_VehicleMed,
-			rating = 8.5,
-			potential =
-			{
-				{
-					name = "guard_missile_launcher_vulture",
-					effectiveness = GenerateUnitEffectiveness(2.5,2.5,2.5,2.5,2.5,7.0,7.0,7.0,7.5,5.4,2.1,7.0,7.0,7.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Land Raider",
-			sbp_name = "inquisition_squad_land_raider",
-			ebp_name = "inquisition_land_raider",
-			class = UnitStatsAI.UC_VehicleHigh,
-			rating = 8,
-			potential =
-			{
-				{
-					name = "inquisition_heavy_bolter_twin_landraider",
-					effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Land Raider Redeemer",
-			sbp_name = "inquisition_squad_land_raider_redeemer",
-			ebp_name = "inquisition_land_raider_redeemer",
-			class = UnitStatsAI.UC_VehicleHigh,
-			rating = 8,
-			potential =
-			{
-				{
-					name = "inquisition_flamestorm_cannon_right",
-					effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,9.7,9.7,8.0,5.6,2.9,3.7,10.0,6.6,6.6,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_flamestorm_cannon_left",
-					effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,9.7,9.7,8.0,5.6,2.9,3.7,10.0,6.6,6.6,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "space_marine_assault_cannon_redeemer",
-					effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
-		{
-			name = "Inquisition Land Raider Crusader",
-			sbp_name = "inquisition_squad_land_raider_crusader",
-			ebp_name = "inquisition_land_raider_crusader",
-			class = UnitStatsAI.UC_VehicleHigh,
-			rating = 8,
-			potential =
-			{
-				{
-					name = "inquisition_assault_cannon_twin_crusader",
-					effectiveness = GenerateUnitEffectiveness(9,9,9,9,8,6,6,6,4,6,4,3,2,1,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
 			},
-		},
+		}
+	},
+	{
+		name = "Inquisition Civilian",
+		sbp_name = "inquisition_squad_civilian",
+		ebp_name = "inquisition_civilian",
+		class = UnitStatsAI.UC_LightInfantryLow,
+		rating = 0,
+		potential =
 		{
-			name = "Inquisition Stormraven Fury",
-			sbp_name = "inquisition_squad_stormraven_fury",
-			ebp_name = "inquisition_stormraven_fury",
-			class = UnitStatsAI.UC_VehicleHigh,
-			rating = 8.5,
-			potential =
 			{
-				{
-					name = "space_marine_assault_cannon_stormraven",
-					effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "space_marine_hurricane_bolter_stormraven_right",
-					effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "space_marine_hurricane_bolter_stormraven_left",
-					effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "space_marine_heavy_bolter_twin_stormraven",
-					effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "space_marine_multi_melta_stormraven",
-					effectiveness = GenerateUnitEffectiveness(9,9,9,9,8,6,6,6,4,6,4,3,2,1,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+	{
+		name = "Inquisition Civilian (AI)",
+		sbp_name = "inquisition_squad_civilian_ai",
+		ebp_name = "inquisition_civilian_ai",
+		class = UnitStatsAI.UC_LightInfantryLow,
+		rating = 0,
+		potential =
 		{
-			name = "Inquisition Nemesis Dreadknight",
-			sbp_name = "inquisition_squad_dreadknight_titan",
-			ebp_name = "inquisition_dreadknight_titan",
-			class = UnitStatsAI.UC_VehicleHigh,
-			rating = 10.0,
-			potential =
 			{
-				{
-					name = "inquisition_autocannon_twin_dreadknight",
-					effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,8.0,8.0,9.0,10.0,10.0,10.0,9.0,9.0,9.0,7.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_incinerator_dreadknight",
-					effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,9.0,9.0,9.0,10.0,9.0,10.0,7.0,7.0,7.0,7.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "inquisition_psycannon_dreadknight",
-					effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+	{
+		name = "Inquisition Trade Power",
+		sbp_name = "inquisition_squad_trade_power",
+		ebp_name = "inquisition_trade_power",
+		class = UnitStatsAI.UC_LightInfantryLow,
+		rating = 0,
+		potential =
 		{
-			name = "Inquisition Warhound Purifier Titan",
-			sbp_name = "inquisition_squad_warhound_titan",
-			ebp_name = "inquisition_warhound_titan",
-			class = UnitStatsAI.UC_VehicleHigh,
-			rating = 10,
-			potential =
 			{
-				{
-					name = "npc_titan_inferno_cannon_improved_left",
-					effectiveness = GenerateUnitEffectiveness(8.0,7.0,6.0,7.0,7.0,10.0,10.0,10.0,10.0,8.5,8.5,7.0,7.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "npc_titan_inferno_cannon_improved",
-					effectiveness = GenerateUnitEffectiveness(8.0,7.0,6.0,7.0,7.0,10.0,10.0,10.0,10.0,8.5,8.5,7.0,7.0,0.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+	{
+		name = "Inquisition Trade Requisition",
+		sbp_name = "inquisition_squad_trade_requisition",
+		ebp_name = "inquisition_trade_requisition",
+		class = UnitStatsAI.UC_LightInfantryLow,
+		rating = 0,
+		potential =
 		{
-			name = "Inquisition Warhound Vengence Titan",
-			sbp_name = "inquisition_squad_warhound_vengence_titan",
-			ebp_name = "inquisition_warhound_vengence_titan",
-			class = UnitStatsAI.UC_VehicleHigh,
-			rating = 10,
-			potential =
 			{
-				{
-					name = "npc_titan_plasma_blastgun",
-					effectiveness = GenerateUnitEffectiveness(5.5,5.5,5.5,5.5,5.5,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,10.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-				{
-					name = "npc_titan_vulcan_mega_bolter_left",
-					effectiveness = GenerateUnitEffectiveness(9.5,9.5,9.5,9.5,9.5,8.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,0.0,0.0,0.0),
-					range = UnitStatsAI.RT_Ranged,
-				},
-			}
-		},
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+	{
+		name = "Servo Skull",
+		sbp_name = "inquisition_squad_servo_skull",
+		ebp_name = "inquisition_servo_skull",
+		class = UnitStatsAI.UC_LightInfantryLow,
+		rating = 2,
+		potential =
+		{
+			{
+				name = "inquisition_servo_skull_defense",
+				effectiveness = GenerateUnitEffectiveness(2.9,3.2,2.3,2.3,0.0,0.0,0.0,0.0,2.3,0.0,0.0,2.9,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Servitor Maintenance",
+		sbp_name = "inquisition_squad_servitor_maintenance",
+		ebp_name = "inquisition_servitor_maintenance",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "inquisition_power_wrench",
+				effectiveness = GenerateUnitEffectiveness(9.4,9.7,9.7,9.1,9.5,9.6,9.7,9.3,9.1,9.3,9.1,9.1,9.8,9.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Servitor Weapons",
+		sbp_name = "inquisition_squad_servitor_weapon",
+		ebp_name = "inquisition_servitor_weapon",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_heavy_bolter_servitor",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_multi_melta_servitor",
+				effectiveness = GenerateUnitEffectiveness(4.8,6.2,6.2,6.2,6.8,8.0,8.0,8.0,5.9,4.6,1.8,5.7,8.0,6.5,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "inquisition_power_wrench",
+				effectiveness = GenerateUnitEffectiveness(5.4,5.7,5.7,6.1,6.5,5.6,2.7,1.3,6.1,1.3,5.1,4.1,2.8,2.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_power_pincers_servitor",
+				effectiveness = GenerateUnitEffectiveness(7.7,7.8,7.3,7.6,6.7,5.7,4.6,1.5,7.2,7.4,7.4,4.6,1.6,0.5,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Servitor Assault",
+		sbp_name = "inquisition_squad_servitor_melee",
+		ebp_name = "inquisition_servitor_melee",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "inquisition_power_wrench_double",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_power_wrench",
+				effectiveness = GenerateUnitEffectiveness(0.9,1.1,0.2,0.9,0.7,0.6,0.4,0.2,0.7,0.4,0.4,0.5,0.2,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_power_pincers_servitor",
+				effectiveness = GenerateUnitEffectiveness(6.7,6.8,6.3,7.6,6.1,7.7,4.6,1.5,6.2,3.4,3.4,4.6,1.6,0.5,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Bodyguard",
+		sbp_name = "inquisition_squad_bodyguard",
+		ebp_name = "inquisition_bodyguard",
+		class = UnitStatsAI.UC_LightInfantryMed,
+		rating = 4,
+		potential =
+		{
+			{
+				name = "inquisition_hellgun_bodyguard",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_flamer_bodyguard",
+				effectiveness = GenerateUnitEffectiveness(7.3,7.3,7.3,7.3,7.7,1.7,1.1,0.0,7.9,7.0,7.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "inquisition_melta_gun_bodyguard",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,7.7,7.1,7.0,1.9,0.0,2.5,7.0,7.7,7.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "inquisition_knife_bodyguard",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Shock Troops",
+		sbp_name = "inquisition_squad_shock_troops",
+		ebp_name = "inquisition_shock_troops",
+		class = UnitStatsAI.UC_LightInfantryMed,
+		rating = 5,
+		potential =
+		{
+			{
+				name = "inquisition_hellgun_shock_troops",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_flamer_shock_troops",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "inquisition_grenade_launcher_shock_troops",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_plasma_gun_shock_troops",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_melta_gun_shock_troops",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "inquisition_knife_shock_troops",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Scholars",
+		sbp_name = "inquisition_squad_scholars",
+		ebp_name = "inquisition_scholars",
+		class = UnitStatsAI.UC_LightInfantryMed,
+		rating = 5,
+		potential =
+		{
+			{
+				name = "inquisition_laspistol_scholars",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_staff_scholar",
+				effectiveness = GenerateUnitEffectiveness(3.3,3.3,3.3,3.3,2.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Grenaider Troops",
+		sbp_name = "inquisition_squad_grenaider_troops",
+		ebp_name = "inquisition_grenaider_troops",
+		class = UnitStatsAI.UC_LightInfantryHigh,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "inquisition_grenade_launcher_shock_troops",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_grenade_launcher_stun",
+				effectiveness = GenerateUnitEffectiveness(6.9,6.3,6.9,6.6,6.1,6.8,6.9,6.0,6.5,6.0,6.9,6.0,6.1,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_grenade_launcher_incendiary",
+				effectiveness = GenerateUnitEffectiveness(6.8,6.4,6.8,6.7,6.0,6.9,6.8,6.1,6.4,6.1,6.8,6.1,6.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_knife_shock_troops",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Thunderfire Cannon",
+		sbp_name = "inquisition_squad_thunderfire_cannon",
+		ebp_name = "inquisition_thunderfire_cannon",
+		class = UnitStatsAI.UC_LightInfantryHigh,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "inquisition_autocannon_thunderfire_cannon",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Death Cultist",
+		sbp_name = "inquisition_squad_death_cultist",
+		ebp_name = "inquisition_death_cultist",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "inquisition_power_sword_cultist",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Grey Knights",
+		sbp_name = "inquisition_squad_grey_knights",
+		ebp_name = "inquisition_grey_knights",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 7.5,
+		potential =
+		{
+			{
+				name = "inquisition_storm_bolter_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_incinerator_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_psycannon_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_halberd_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(4.7,4.8,4.7,4.7,4.5,4.2,4.2,4.2,5.0,5.0,4.7,4.2,4.2,4.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Grey Knights Interceptors",
+		sbp_name = "inquisition_squad_grey_knights_interceptor",
+		ebp_name = "inquisition_grey_knights_interceptor",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 7.5,
+		potential =
+		{
+			{
+				name = "inquisition_storm_bolter_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_halberd_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(4.7,4.8,4.7,4.7,4.5,4.2,4.2,4.2,5.0,5.0,4.7,4.2,4.2,4.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_nemesis_weapon_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_nemesis_weapon_falchions",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_daemon_hammer_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Grey Knights Purifiers",
+		sbp_name = "inquisition_squad_grey_knights_purifier",
+		ebp_name = "inquisition_grey_knights_purifier",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 7.5,
+		potential =
+		{
+			{
+				name = "inquisition_storm_bolter_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_staff_psyker",
+				effectiveness = GenerateUnitEffectiveness(6.7,6.8,6.7,6.7,6.5,4.2,4.2,4.2,8.0,8.0,6.7,4.2,4.2,4.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Grey Knights Purgators",
+		sbp_name = "inquisition_squad_grey_knights_purgator",
+		ebp_name = "inquisition_grey_knights_purgator",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 7.5,
+		potential =
+		{
+			{
+				name = "inquisition_psycannon_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_incinerator_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(7.1,7.5,7.0,7.3,5.8,2.3,2.2,7.0,5.1,0.0,6.1,6.4,5.6,1.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_knife_grey_knight",
+				effectiveness = GenerateUnitEffectiveness(4.1,4.6,4.0,4.1,4.0,0.0,0.0,0.0,4.0,0.0,3.6,4.1,2.2,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Grey Knights Terminator",
+		sbp_name = "inquisition_squad_grey_knights_terminator",
+		ebp_name = "inquisition_grey_knights_terminator",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "inquisition_storm_bolter_gk_terminator",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_incinerator_gk_terminator",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_psycannon_gk_terminator",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_nemesis_weapon_gk_terminator",
+				effectiveness = GenerateUnitEffectiveness(7.7,9.8,9.7,8.7,7.5,4.2,4.2,4.2,8.0,8.0,6.7,4.2,4.2,4.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Grey Knights Terminator Paladin",
+		sbp_name = "inquisition_squad_grey_knights_terminator_paladin",
+		ebp_name = "inquisition_grey_knights_terminator_paladin",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "inquisition_storm_bolter_gk_terminator",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_incinerator_gk_terminator",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_psycannon_gk_terminator",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_nemesis_weapon_gk_terminator",
+				effectiveness = GenerateUnitEffectiveness(7.7,6.8,6.7,6.7,7.5,7.2,5.2,5.2,7.0,6.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_daemon_hammer_grey_knight_terminator",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(3.3,4.3,4.3,4.3,3.7,1.7,1.1,0.0,1.9,0.0,2.5,2.0,1.7,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Exorcist",
+		sbp_name = "inquisition_squad_scholar_exorcist",
+		ebp_name = "inquisition_scholars_exorcist",
+		class = UnitStatsAI.UC_LightInfantryHigh,
+		rating = math.random(6*10,7*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_eviscerator",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Astropath",
+		sbp_name = "inquisition_squad_scholar_astropath",
+		ebp_name = "inquisition_scholars_astropath",
+		class = UnitStatsAI.UC_LightInfantryHigh,
+		rating = math.random(6*10,7*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_laspistol_scholars",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_staff_scholar",
+				effectiveness = GenerateUnitEffectiveness(4.5,3.5,3.2,1,1,0,2,2,2,2,2,2,2,2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Calculus Logistic",
+		sbp_name = "inquisition_squad_scholar_calculus_logi",
+		ebp_name = "inquisition_scholars_calculus_logi",
+		class = UnitStatsAI.UC_LightInfantryHigh,
+		rating = math.random(6*10,7*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_melee_dummy",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+	{
+		name = "Inquisition Inquisitor Lord",
+		sbp_name = "inquisition_squad_inquisitor_lord",
+		ebp_name = "inquisition_inquisitor_lord",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(9*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_bolt_pistol_inquisitor_lord",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_plasma_pistol_inquisitor_lord",
+				effectiveness = GenerateUnitEffectiveness(8.7,9.8,9.7,9.7,6.5,6.2,6.2,6.2,10.0,9.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_power_sword_inquisitor",
+				effectiveness = GenerateUnitEffectiveness(7.7,6.8,6.7,6.7,7.5,7.2,5.2,5.2,7.0,6.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_thunder_hammer_daemonkiller",
+				effectiveness = GenerateUnitEffectiveness(7.5,9.2,7.4,9.4,7.4,9.5,5.4,9.0,7.4,9.7,6.6,6.5,4.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand_complex",
+				effectiveness = GenerateUnitEffectiveness(0.1,0.1,0.1,0.1,0.1,0.0,0.0,0.0,2.6,1.7,0.3,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+--[[
+			},
+		}
+	},
+	{
+		name = "Inquisition Chaplain",
+		sbp_name = "inquisition_squad_chaplain",
+		ebp_name = "inquisition_chaplain",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(9*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_storm_bolter_gk_terminator",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_daemon_hammer_champion",
+				effectiveness = GenerateUnitEffectiveness(8.7,9.8,9.7,9.7,6.5,6.2,6.2,6.2,10.0,9.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+]]
+			},
+		}
+	},
+	{
+		name = "Inquisition Ordo Malleus Supreme Lord",
+		sbp_name = "inquisition_squad_inquisitor_ordo_malleus",
+		ebp_name = "inquisition_inquisitor_ordo_malleus",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(9*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_plasma_pistol_inquisitor_lord",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_power_sword_inquisitor",
+				effectiveness = GenerateUnitEffectiveness(8.7,9.8,9.7,9.7,6.5,6.2,6.2,6.2,10.0,9.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_thunder_hammer_daemonkiller",
+				effectiveness = GenerateUnitEffectiveness(7.7,6.8,6.7,6.7,7.5,7.2,5.2,5.2,7.0,6.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Grey Knight Hero",
+		sbp_name = "inquisition_squad_grey_knight_hero",
+		ebp_name = "inquisition_grey_knight_hero",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(9*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_storm_bolter_gk_hero",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_nemesis_weapon_gk_hero",
+				effectiveness = GenerateUnitEffectiveness(8.7,9.8,9.7,9.7,6.5,6.2,6.2,6.2,10.0,9.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand_complex",
+				effectiveness = GenerateUnitEffectiveness(7.7,6.8,6.7,6.7,7.5,7.2,5.2,5.2,7.0,6.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand_complex",
+				effectiveness = GenerateUnitEffectiveness(7.5,9.2,7.4,9.4,7.4,9.5,5.4,9.0,7.4,9.7,6.6,6.5,4.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Grey Knight Champion",
+		sbp_name = "inquisition_squad_grey_knight_champion",
+		ebp_name = "inquisition_grey_knight_champion",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(9*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_bolt_pistol_inquisitor_lord",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_daemon_hammer_champion",
+				effectiveness = GenerateUnitEffectiveness(8.7,9.8,9.7,9.7,6.5,6.2,6.2,6.2,10.0,9.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand_complex",
+				effectiveness = GenerateUnitEffectiveness(7.7,6.8,6.7,6.7,7.5,7.2,5.2,5.2,7.0,6.0,7.7,5.2,5.2,5.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(7.5,9.2,7.4,9.4,7.4,9.5,5.4,9.0,7.4,9.7,6.6,6.5,4.8,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Rhino",
+		sbp_name = "inquisition_squad_rhino",
+		ebp_name = "inquisition_rhino",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_storm_bolter_rhino",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_missile_launcher_rhino",
+				effectiveness = GenerateUnitEffectiveness(4.0,4.1,0.3,3.0,5.7,8.7,8.0,8.0,2.6,2.0,6.1,8.7,8.0,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Damocles",
+		sbp_name = "inquisition_squad_damocles",
+		ebp_name = "inquisition_damocles",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "space_marine_storm_bolter",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Razorback",
+		sbp_name = "inquisition_squad_razorback",
+		ebp_name = "inquisition_razorback",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_incinerator_razorback",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Chimera Transport",
+		sbp_name = "inquisition_squad_chimera_transport",
+		ebp_name = "inquisition_chimera_transport",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_multilaser_chimera",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_heavy_flamer_chimera_turret",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "inquisition_heavy_bolter_chimera_turret",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hellgun_chimera_l1",
+				effectiveness = GenerateUnitEffectiveness(4.0,4.6,0.3,3.0,1.7,0.7,0.0,0.0,2.6,2.0,1.1,0.7,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hellgun_chimera_l2",
+				effectiveness = GenerateUnitEffectiveness(4.0,4.6,0.3,3.0,1.7,0.7,0.0,0.0,2.6,2.0,1.1,0.7,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hellgun_chimera_l3",
+				effectiveness = GenerateUnitEffectiveness(4.0,4.6,0.3,3.0,1.7,0.7,0.0,0.0,2.6,2.0,1.1,0.7,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hellgun_chimera_r1",
+				effectiveness = GenerateUnitEffectiveness(4.0,4.6,0.3,3.0,1.7,0.7,0.0,0.0,2.6,2.0,1.1,0.7,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hellgun_chimera_r2",
+				effectiveness = GenerateUnitEffectiveness(4.0,4.6,0.3,3.0,1.7,0.7,0.0,0.0,2.6,2.0,1.1,0.7,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hellgun_chimera_r3",
+				effectiveness = GenerateUnitEffectiveness(4.0,4.6,0.3,3.0,1.7,0.7,0.0,0.0,2.6,2.0,1.1,0.7,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_heavy_bolter_chimera_hull",
+				effectiveness = GenerateUnitEffectiveness(4.9,5.0,0.9,3.7,3.3,0.9,0.0,0.0,3.9,1.3,1.8,0.9,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Tempest",
+		sbp_name = "inquisition_squad_tempest",
+		ebp_name = "inquisition_tempest",
+		class = UnitStatsAI.UC_AirMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "space_marine_assault_cannon_tempest",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_incendiary_missile",
+				effectiveness = GenerateUnitEffectiveness(6.4,7.6,8.4,6.5,6.4,4.0,5.0,5.0,6.7,5.0,5.7,2.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Vulture",
+		sbp_name = "inquisition_squad_vulture",
+		ebp_name = "inquisition_vulture",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "guard_autocannon_vulture",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_lascannon_sentinel",
+				effectiveness = GenerateUnitEffectiveness(3.7,3.7,0.9,3.7,7.8,9.1,9.4,9.6,2.8,2.8,6.3,9.8,9.9,9.8,0.0,9.1,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_heavy_bolter_leman_russ_hull",
+				effectiveness = GenerateUnitEffectiveness(5.7,5.8,0.3,4.1,3.6,1.2,0.0,0.0,4.3,0.9,1.4,2.2,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_missile_launcher_vulture",
+				effectiveness = GenerateUnitEffectiveness(1.3,1.4,0.7,1.3,1.3,3.0,2.5,1.0,1.4,1.2,1.2,1.3,0.7,0.2,0.0,2.2,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Deepstrike Turret",
+		sbp_name = "inquisition_squad_ds_turret",
+		ebp_name = "inquisition_ds_turret",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "guard_heavy_bolter_turret",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "guard_missile_turret",
+				effectiveness = GenerateUnitEffectiveness(4.1,4.1,4.1,3.3,2.1,9.6,9.0,9.9,4.3,4.3,4.1,9.0,9.0,9.4,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Dreadnought",
+		sbp_name = "inquisition_squad_dreadnought",
+		ebp_name = "inquisition_dreadnought",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_assault_cannon_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_autocannon_twin_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(8.6,8.7,8.5,8.9,8.7,6.7,5.5,0.0,8.8,8.0,8.1,3.7,3.0,2.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_lascannon_twin_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(6.1,6.2,6.1,5.5,4.3,8.5,8.3,8.2,5.9,4.2,3.1,8.5,8.7,8.5,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_dreadnought_fist",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_incinerator_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Dreadnought Assault",
+		sbp_name = "inquisition_squad_dreadnought_assault",
+		ebp_name = "inquisition_dreadnought_assault",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_heavy_bolter_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_psycannon_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_assault_cannon_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_multi_melta_gun_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_power_sword_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_incinerator_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Dreadnought Support",
+		sbp_name = "inquisition_squad_dreadnought_support",
+		ebp_name = "inquisition_dreadnought_support",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_assault_cannon_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_autocannon_twin_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_lascannon_twin_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_heavy_plasma_gun_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_missile_launcher_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_incinerator_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_incinerator_melee",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Dreadnought Venerable",
+		sbp_name = "inquisition_squad_dreadnought_venerable",
+		ebp_name = "inquisition_dreadnought_venerable",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_autocannon_twin_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_lascannon_twin_dreadnought",
+				effectiveness = GenerateUnitEffectiveness(4.1,4.2,4.1,4.3,6.0,9.5,9.3,9.2,4.9,4.2,3.1,9.5,9.7,9.5,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_dreadnought_fist_improved",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "space_marine_assault_cannon_hellfire",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hammerhand",
+				effectiveness = GenerateUnitEffectiveness(4.5,4.5,4.4,5.5,5.1,3.0,2.0,0.0,5.0,0.0,3.8,3.9,2.1,1.3,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Predator Annihilator",
+		sbp_name = "inquisition_squad_predator",
+		ebp_name = "inquisition_predator",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_lascannon_twin_predator",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_heavy_bolter_tank_right",
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,6.0,7.0,7.9,7.0,4.0,7.0,7.8,2.6,7.9,7.3,7.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_heavy_bolter_tank_left",
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,6.0,7.0,7.9,7.0,4.0,7.0,7.8,2.6,7.9,7.3,7.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_storm_bolter_rhino",
+				effectiveness = GenerateUnitEffectiveness(5.7,5.8,0.3,4.1,3.6,1.2,0.0,0.0,4.3,0.9,1.4,2.2,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Whirlwind",
+		sbp_name = "inquisition_squad_whirlwind",
+		ebp_name = "inquisition_whirlwind",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 7,
+		potential =
+		{
+			{
+				name = "inquisition_missile_battery_inferno",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_missile_battery",
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,6.0,7.0,7.9,7.0,4.0,7.0,7.8,2.6,7.9,7.3,7.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{	
+				name = "space_marine_missile_launcher_hyperios", 
+				effectiveness = GenerateUnitEffectiveness(7.0,7.0,7.0,6.0,7.0,7.9,7.0,4.0,7.0,7.8,2.6,7.9,7.3,7.7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Land Raider",
+		sbp_name = "inquisition_squad_land_raider",
+		ebp_name = "inquisition_land_raider",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(7.5*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_heavy_bolter_twin_landraider",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_lascannon_twin_landraider_left",
+				effectiveness = GenerateUnitEffectiveness(7.5,7.2,7.9,7.6,7.3,7.7,7.7,7.0,5.6,2.9,3.7,7.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_lascannon_twin_landraider_right",
+				effectiveness = GenerateUnitEffectiveness(7.5,7.2,7.9,7.6,7.3,7.7,7.7,7.0,5.6,2.9,3.7,7.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Land Raider Redeemer",
+		sbp_name = "inquisition_squad_land_raider_redeemer",
+		ebp_name = "inquisition_land_raider_redeemer",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(7.5*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "space_marine_assault_cannon_redeemer",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_flamestorm_cannon_left",
+				effectiveness = GenerateUnitEffectiveness(7.5,7.2,7.9,7.6,7.3,7.7,7.7,7.0,5.6,2.9,3.7,7.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "inquisition_flamestorm_cannon_right",
+				effectiveness = GenerateUnitEffectiveness(7.5,7.2,7.9,7.6,7.3,7.7,7.7,7.0,5.6,2.9,3.7,7.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+			{
+				name = "space_marine_heavy_bolter_land_raider",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,5.7,5.7,5.0,5.6,2.9,3.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Land Raider Crusader",
+		sbp_name = "inquisition_squad_land_raider_crusader",
+		ebp_name = "inquisition_land_raider_crusader",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(7.5*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_assault_cannon_twin_crusader",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hurricane_bolter_crusader_right",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,5.7,5.7,5.0,5.6,2.9,3.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hurricane_bolter_crusader_left",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,5.7,5.7,5.0,5.6,2.9,3.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_multi_melta_crusader",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,5.7,5.7,5.0,5.6,2.9,3.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_multi_melta_crusader",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,7.5,9.7,9.7,9.0,5.6,2.9,3.7,9.0,9.6,9.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Stormraven Fury",
+		sbp_name = "inquisition_squad_stormraven_fury",
+		ebp_name = "inquisition_stormraven_fury",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(7.5*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "space_marine_multi_melta_stormraven",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_hurricane_bolter_stormraven_left",
+				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_hurricane_bolter_stormraven_right",
+				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Nemesis Dreadknight",
+		sbp_name = "inquisition_squad_dreadknight_titan",
+		ebp_name = "inquisition_dreadknight_titan",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(8*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_nemesis_weapon_dreadknight",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_autocannon_twin_dreadknight",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,5.7,5.7,5.0,5.6,2.9,3.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_incinerator_dreadknight",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,5.7,5.7,5.0,5.6,2.9,3.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_psycannon_dreadknight",
+				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,8.7,8.7,8.1,8.2,8.3,8.7,7.9,6.8,5.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_daemon_hammer_dreadknight",
+				effectiveness = GenerateUnitEffectiveness(4.5,5.2,4.9,4.6,4.3,4.7,4.7,4.0,4.6,5.9,5.7,5.0,5.6,5.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Inquisition Land Raider Daemonhunter",
+		sbp_name = "inquisition_squad_land_raider_daemonhunter",
+		ebp_name = "inquisition_land_raider_daemonhunter",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(8*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "inquisition_assault_cannon_twin_crusader",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_heavy_bolter_twin_landraider",
+				effectiveness = GenerateUnitEffectiveness(9.5,9.2,9.9,9.6,9.3,5.7,5.7,5.0,9.6,9.9,9.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hurricane_bolter_crusader_right",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,5.7,5.7,5.0,5.6,2.9,3.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_lascannon_twin_landraider_right",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,9.7,9.7,9.0,5.6,2.9,3.7,9.0,9.6,9.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_hurricane_bolter_crusader_left",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,5.7,5.7,5.0,5.6,2.9,3.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_lascannon_twin_landraider_left",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,9.7,9.7,9.0,5.6,2.9,3.7,9.0,9.6,9.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_multi_melta_crusader",
+				effectiveness = GenerateUnitEffectiveness(6.5,6.2,5.9,5.6,5.3,5.7,5.7,5.0,5.6,2.9,3.7,5.0,6.6,6.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Warhound Purifier Titan",
+		sbp_name = "inquisition_squad_warhound_titan",
+		ebp_name = "inquisition_warhound_titan",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(8*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "npc_titan_inferno_cannon_improved_left",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "npc_titan_inferno_cannon_improved",
+				effectiveness = GenerateUnitEffectiveness(8.0,7.0,6.0,7.0,7.0,10.0,10.0,10.0,10.0,8.5,8.5,7.0,7.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Warhound Vengence Titan",
+		sbp_name = "inquisition_squad_warhound_vengence_titan",
+		ebp_name = "inquisition_warhound_vengence_titan",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(8*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "npc_titan_vulcan_mega_bolter_left",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "npc_titan_plasma_blastgun",
+				effectiveness = GenerateUnitEffectiveness(9.5,9.5,9.5,9.5,9.5,8.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
 	},
 }

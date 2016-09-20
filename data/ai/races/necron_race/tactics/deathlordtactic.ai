@@ -1,0 +1,124 @@
+----------------------------------------
+-- File: 'deathlordtactic.ai'
+-- Edited by Thudmeizer @ 10.03.2016
+
+class 'DeathLordTactic' (NecronInfantryTactic)
+
+DeathLord = {}
+
+function DeathLordTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Death Lord Tactic")
+end
+
+-- Death Lord is allowed to retreat even directly after a jump
+function DeathLordTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function DeathLordTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function DeathLordTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function DeathLordTactic:MoveToDisengage()
+	Tactic.MoveToDisengage(self)
+end
+
+function DeathLordTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function DeathLordTactic:CheckForDance()
+	InfantryTactic.CheckForDance(self)
+end
+
+function DeathLordTactic:CheckForDeath()
+	InfantryTactic.CheckForDeath(self)
+end
+
+function DeathLordTactic:InitAbilities()
+	
+	if (DeathLord.chronometron_id == nil) then
+		DeathLord.chronometron_id = cpu_manager.stats:GetAbilityID( "necron_chronometron_deathlord" )
+	end
+	
+	if (DeathLord.veil_id == nil) then
+		DeathLord.veil_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter_veil" )
+	end
+
+	if (DeathLord.spike_id == nil) then
+		DeathLord.spike_id = cpu_manager.stats:GetAbilityID( "necron_veiling_spike" )
+	end
+
+	if (DeathLord.truegauss_id == nil) then
+		DeathLord.truegauss_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )
+	end
+end
+
+function DeathLordTactic:DoAbilities()
+
+	-- Try to activate the Chronometron ability
+	if (self.squad_ai:CanDoAbility( DeathLord.chronometron_id )) then
+		Ability.DoAbilityArea(self.squad_ai, DeathLord.chronometron_id, Ability.Filters.CloseEnemy, 20, 5)
+	end
+
+	-- Shadow Shifter: Cloaks and disables the squad for several seconds, enabling quick regeneration and recovery from battle.
+	-- Infiltrated squad will also receive no damage from incoming attacks (if at all revealed), but cannot attack either.
+	if (self.squad_ai:IsInCombat()) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			if (self.squad_ai:CanDoAbility( DeathLord.veil_id )) then
+				self.squad_ai:DoSpecialAbility( DeathLord.veil_id )
+			end
+		end
+	end
+
+	-- Summon Blinding Spike of Deception: a veiled spike emerges from the ground, reactivated, forming a cloud of deception within the eyes of the victim within a moderate radius.
+	if (self.squad_ai:IsInCombat()) then
+		Ability.DoAbilityPos(self.squad_ai, DeathLord.spike_id, Ability.Filters.CloseEnemy, 10)
+	end
+
+	-- Gauss Weapon Overcharge: the squad will receive a boost in maximum damage, but a critical reduction in movement speed for a duration.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.5) then
+		Ability.DoAbilityArea( self.squad_ai, DeathLord.truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
+	end
+end
+
+function DeathLordTactic:Reinforce()
+
+	-- If I am broken, don't reinforce!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- Reinforce squad
+	if (not self.squad_ai:IsReinforcing()) then
+        	if (self.squad_ai:CanReinforce(true, 0)) then            
+            		self.squad_ai:DoReinforce(true, 0)
+       		elseif (self.squad_ai:CanReinforce(false, 0)) then
+            		self.squad_ai:DoReinforce(false, 0)
+        	end
+    	end
+end
+
+function DeathLordTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+    	-- State machine
+    	if (not InfantryTactic.Update(self)) then
+		return
+    	end
+    
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

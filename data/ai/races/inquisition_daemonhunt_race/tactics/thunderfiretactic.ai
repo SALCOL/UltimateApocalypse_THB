@@ -1,0 +1,55 @@
+----------------------------------------
+-- File: 'thunderfiretactic.ai'
+-- Edited by Thudmeizer   @ 20.06.2016
+
+class 'ThunderfireTactic' (DaemonhuntInfantryTactic)
+
+Thunderfire = {}
+
+function ThunderfireTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Thunderfire Tactic")
+end
+
+function ThunderfireTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function ThunderfireTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function ThunderfireTactic:InitAbilities()
+
+	if (Thunderfire.rammingspeed_id == nil) then
+		Thunderfire.rammingspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )	
+	end
+end
+
+function ThunderfireTactic:DoAbilities()
+
+	-- RAM!!! - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( Thunderfire.rammingspeed_id )) then
+			self.squad_ai:DoSpecialAbility( Thunderfire.rammingspeed_id )
+		end
+	end
+end
+
+function ThunderfireTactic:Update()
+
+	if self:IsComplete() then
+      		return
+	end
+   
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	--attach to squad
+	self:TryAttachSquad( false, false, 1000, 200, nil )
+end
+
+

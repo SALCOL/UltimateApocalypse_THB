@@ -146,6 +146,13 @@ UnitTypes.dark_eldar_race =
 		},
 	},
 	-- Vehicles
+	dark_eldar_squad_araspida =
+	{
+		Title = "Mobile Shield Generator",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+	},
 	dark_eldar_squad_reaver =
 	{
 		Title = "Reaver Jetbike",
@@ -327,6 +334,22 @@ UnitTypes.dark_eldar_race =
 		{
 			"dark_eldar_dark_lance_titan",
 			"dark_eldar_agonizer_titan_assault",
+		},
+	},
+	dark_eldar_squad_instigator = 
+	{
+		Title = "Instigator Titan",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"dark_eldar_dark_lance_titan_instigator_right",
+			"dark_eldar_dark_lance_titan_instigator_left",
+			"dark_eldar_dark_lance_titan_greater",
+			"dark_eldar_reaper_cannon_instigator",
 		},
 	},	
 }

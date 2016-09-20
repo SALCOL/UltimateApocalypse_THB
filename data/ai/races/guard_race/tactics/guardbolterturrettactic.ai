@@ -1,0 +1,73 @@
+----------------------------------------
+-- File: 'guardbolterturrettactic.ai'
+-- Edited by Thudmeizer         @ 29.03.2016
+
+class 'GuardBolterTurretTactic' (BaseTactic)
+
+GuardBolterTurret = {}
+
+function GuardBolterTurretTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Guard Bolter Turret Tactic")
+end
+
+function GuardBolterTurretTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function GuardBolterTurretTactic:InitAbilities()
+
+	-- Init standard ability ID's
+	if (GuardBolterTurret.repair_id == nil) then
+		GuardBolterTurret.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function GuardBolterTurretTactic:DoAbilities()
+
+--	self:AutoBuildAddOn(0) -- Battle Cannon		-- addon_guard_turret
+--	self:AutoBuildAddOn(1) -- Plasma Cannon		-- addon_guard_turret_heavy
+--	self:AutoBuildAddOn(2) -- Probe			-- addon_guard_turret_probe
+
+	-- Figure out my enemy's favourite class
+	local enemy = cpu_manager:FindClosestEnemyPlayer()
+	if (enemy == nil) then
+		return
+	end
+	
+	local class_type = enemy:GetMajorityClassType()
+	
+	-- Larkins hard counter upgrade for infantry
+	if (class_type == UnitStatsAI.UC_LightInfantryLow) or 
+		(class_type == UnitStatsAI.UC_LightInfantryMed) or 
+		(class_type == UnitStatsAI.UC_LightInfantryHigh) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryMed) or
+		(class_type == UnitStatsAI.UC_HeavyInfantryHigh) or
+		(class_type == UnitStatsAI.UC_MonsterMed) or
+		(class_type == UnitStatsAI.UC_MonsterHigh) then
+   		if (cpu_manager:GetTierLevel() >= 1) then 
+			self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())	-- Battle Cannon
+		end
+	-- Larkins hard counter upgrade for Vehicles
+	elseif (class_type == UnitStatsAI.UC_VehicleLow) or 
+		(class_type == UnitStatsAI.UC_VehicleMed) or
+		(class_type == UnitStatsAI.UC_VehicleHigh) then
+   		if (cpu_manager:GetTierLevel() >= 1) then 
+			self:AutoBuildTurretAddOn(1, self.base_ai:GetEntity():GetID())	 -- Plasma Cannon
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( GuardBolterTurret.repair_id )) then
+			self.base_ai:DoSpecialAbility( GuardBolterTurret.repair_id )
+		end
+	end
+end

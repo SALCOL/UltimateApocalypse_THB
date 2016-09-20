@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonssuperhqtactic.ai'
--- Edited by Thudmeizer		@ 13.06.2011
+-- Edited by Thudmeizer		@ 09.05.2016
 -- Edited by Cylarne_04 2011
 -- Edited by Cylarne 6/16/2014
 
@@ -11,21 +11,26 @@ DaemonsSuperHQ = {}
 function DaemonsSuperHQTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Daemons Super HQ Tactic")
-
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
 end
 
 function DaemonsSuperHQTactic:InitAbilities()
 	
 	-- Init abilities
-	if (DaemonsSuperHQ.warp_storm == nil) then
-		DaemonsSuperHQ.warp_storm = cpu_manager.stats:GetAbilityID( "daemons_warp_storm" )
+	if (DaemonsSuperHQ.warpstorm_id == nil) then
+		DaemonsSuperHQ.warpstorm_id = cpu_manager.stats:GetAbilityID( "daemons_warp_storm" )
 	end
-	if (DaemonsSuperHQ.planetary_exterminator == nil) then
-		DaemonsSuperHQ.planetary_exterminator = cpu_manager.stats:GetAbilityID( "daemons_planetary_exterminator" )
+
+	if (DaemonsSuperHQ.superstorm_id == nil) then
+		DaemonsSuperHQ.superstorm_id = cpu_manager.stats:GetAbilityID( "daemons_warp_storm_super_world_end" )
 	end
-	
+
+	if (DaemonsSuperHQ.exterminator_id == nil) then
+		DaemonsSuperHQ.exterminator_id = cpu_manager.stats:GetAbilityID( "daemons_planetary_exterminator" )
+	end
+
+	if (DaemonsSuperHQ.repair_id == nil) then
+		DaemonsSuperHQ.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end	
 end
 
 function DaemonsSuperHQTactic:DoAbilities()
@@ -33,15 +38,28 @@ function DaemonsSuperHQTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	
-	-- Activate the planet destroyer, the Planetary Exterminator! (Once activated, bye bye! 8000/80)
-	if (iRequisition >= 22000 and iPower >= 22000) then
-		self.base_ai:DoSpecialAbility(DaemonsSuperHQ.planetary_exterminator)
+	-- Try to activate the "Super Storm" ability against the enemy (global annihiliation on a biblical scale!)
+	if (self.base_ai:CanDoAbility(DaemonsSuperHQ.superstorm_id) and (iRequisition >= 51000 and iPower >= 51000)) then
+		Ability.DoAbilityPos(self.base_ai, DaemonsSuperHQ.superstorm_id, Ability.Filters.CloseEnemy, 40)
+		Ability.DoAbilityTargetEntity(self.base_ai, DaemonsSuperHQ.superstorm_id, Ability.EntityFilters.CloseBaseEntityEnemy, 8)
 	end
-	
-	-- Try to activate the "Warp Storm" ability against the enemy (utterly massive destruction @ ground zero - Cost: 1500/15)
-	if (self.base_ai:CanDoAbility(DaemonsSuperHQ.warp_storm)) then
-		Ability.DoAbilityPos(self.base_ai, DaemonsSuperHQ.warp_storm, Ability.Filters.CloseEnemy, 35)
-		Ability.DoAbilityTargetEntity(self.base_ai, DaemonsSuperHQ.warp_storm, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+
+	-- Activate the planet destroyer, the Planetary Exterminator! (Once activated, bye bye!)
+	if (self.base_ai:CanDoAbility(DaemonsSuperHQ.exterminator_id) and (iRequisition >= 27000 and iPower >= 27000)) then
+		self.base_ai:DoSpecialAbility(DaemonsSuperHQ.exterminator_id)
+	end
+
+	-- Try to activate the "Warp Storm" ability against the enemy (utterly massive destruction @ ground zero)
+	if (self.base_ai:CanDoAbility(DaemonsSuperHQ.warpstorm_id) and (iRequisition >= 4000 and iPower >= 4000)) then
+		Ability.DoAbilityPos(self.base_ai, DaemonsSuperHQ.warpstorm_id, Ability.Filters.CloseEnemy, 35)
+		Ability.DoAbilityTargetEntity(self.base_ai, DaemonsSuperHQ.warpstorm_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DaemonsSuperHQ.repair_id )) then
+			self.base_ai:DoSpecialAbility( DaemonsSuperHQ.repair_id )
+		end
 	end
 end
-

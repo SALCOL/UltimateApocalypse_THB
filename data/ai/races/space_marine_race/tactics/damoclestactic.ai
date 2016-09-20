@@ -1,7 +1,7 @@
 ----------------------------------------
--- File: 'Damoclestactic.ai'
+-- File: 'damoclestactic.ai'
 -- Created by Cylarne_04
--- Edited by Thudmeizer @ 02.02.2016
+-- Edited by Thudmeizer @ 05.05.2016
 
 class 'DamoclesTactic' (SpaceMarineVehicleTactic)
 
@@ -23,10 +23,10 @@ end
 function DamoclesTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Damocles.sensormap_id) == nil then
+	if (Damocles.sensormap_id == nil) then
 		Damocles.sensormap_id = cpu_manager.stats:GetAbilityID( "marines_sensormap" )
 	end
-	if (Damocles.jammermap_id) == nil then
+	if (Damocles.jammermap_id == nil) then
 		Damocles.jammermap_id = cpu_manager.stats:GetAbilityID( "marines_jammermap" )
 	end
 end
@@ -38,9 +38,13 @@ function DamoclesTactic:DoAbilities()
 	local abilitySelector = math.random(1, 100)
 	
 	if (abilitySelector <= 10 and iPower >= 500) then
-		self.squad_ai:DoSpecialAbility(Damocles.sensormap_id) 
+		if (self.squad_ai:CanDoAbility(Damocles.sensormap_id)) then
+			self.squad_ai:DoSpecialAbility(Damocles.sensormap_id) 
+		end
 	elseif (abilitySelector <= 50 and iPower >= 500) then
-		Ability.DoAbility( self.squad_ai, Damocles.jammermap_id, Ability.Filters.IsInCombat )
+		if (self.squad_ai:CanDoAbility(Damocles.jammermap_id) and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility(Damocles.jammermap_id) 
+		end
 	end
 
 	-- Call standard method

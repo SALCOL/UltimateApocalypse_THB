@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarraventactic.ai'
--- Edited by Thudmeizer @ 23.10.2008
+-- Edited by Thudmeizer @ 05.04.2016
 
 class 'DarkEldarRavenTactic' (DarkEldarVehicleTactic)
 
@@ -25,6 +25,5 @@ function DarkEldarRavenTactic:DoAbilities()
 		-- Send pulse which stuns enemy vehicle/building
 		Ability.DoAbilityTarget( self.squad_ai, DarkEldarRaven.shortcircuit_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
 		Ability.DoAbilityTargetEntity( self.squad_ai, DarkEldarRaven.shortcircuit_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-
 	end
 end

@@ -1,0 +1,148 @@
+----------------------------------------
+-- File: 'bodyguardtactic.ai'
+-- Edited by Thudmeizer @ 18.04.2016
+
+class 'BodyGuardTactic' (DaemonhuntInfantryTactic)
+
+BodyGuard = {}
+
+function BodyGuardTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("BodyGuard Tactic")
+end
+
+function BodyGuardTactic:InitAbilities()
+
+	if (BodyGuard.crack_id == nil) then
+		BodyGuard.crack_id = cpu_manager.stats:GetAbilityID( "inquisition_crack_grenades_bodyguards" )	
+	end
+
+	if (BodyGuard.disruption_id == nil) then
+	    	BodyGuard.disruption_id = cpu_manager.stats:GetAbilityID( "inquisition_disruption_grenades" )	
+	end
+
+	if (BodyGuard.frag_id == nil) then
+	    	BodyGuard.frag_id = cpu_manager.stats:GetAbilityID( "inquisition_frag_grenades_bodyguards" )	
+	end
+
+	if (BodyGuard.frag2_id == nil) then
+	    	BodyGuard.frag2_id = cpu_manager.stats:GetAbilityID( "inquisition_frag_grenades_stormtroopers" )	
+	end
+
+	if (BodyGuard.inferno_id == nil) then
+	    	BodyGuard.inferno_id = cpu_manager.stats:GetAbilityID( "inquisition_inferno_grenades" )	
+	end
+
+	if (BodyGuard.medikits_id == nil) then
+	    	BodyGuard.medikits_id = cpu_manager.stats:GetAbilityID( "inquisition_medikits" )	
+	end
+
+	if (BodyGuard.rally_id == nil) then
+	    	BodyGuard.rally_id = cpu_manager.stats:GetAbilityID( "inquisition_rally" )	
+	end
+
+	if (BodyGuard.bolster_id == nil) then
+	    	BodyGuard.bolster_id = cpu_manager.stats:GetAbilityID( "inquisition_bolster_defenses" )	
+	end
+
+	if (BodyGuard.run_id == nil) then
+		BodyGuard.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+
+end
+
+function BodyGuardTactic:DoAbilities()
+
+	if (self.squad_ai:CanDoAbility( BodyGuard.crack_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, BodyGuard.crack_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, BodyGuard.crack_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	end
+
+	if (self.squad_ai:CanDoAbility( BodyGuard.disruption_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, BodyGuard.disruption_id, Ability.Filters.CloseInfantryEnemy, 4 )
+	end
+
+	if (self.squad_ai:CanDoAbility( BodyGuard.frag_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, BodyGuard.frag_id, Ability.Filters.CloseSquadEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, BodyGuard.frag_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, BodyGuard.frag_id, Ability.Filters.CloseMonsterEnemy, 1 )
+	end
+
+	if (self.squad_ai:CanDoAbility( BodyGuard.frag2_id )) then
+		Ability.DoAbilityPos( self.squad_ai, BodyGuard.frag2_id, Ability.Filters.CloseEnemy, 2 )
+	end
+
+	if (self.squad_ai:CanDoAbility( BodyGuard.inferno_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, BodyGuard.inferno_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, BodyGuard.inferno_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+		Ability.DoAbilityTarget( self.squad_ai, BodyGuard.inferno_id, Ability.Filters.CloseMonsterEnemy, 1 )
+	end
+
+	-- Use Medkits if low on health
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		
+		if (self.squad_ai:CanDoAbility( BodyGuard.medikits_id )) then
+			self.squad_ai:DoSpecialAbility( BodyGuard.medikits_id )
+		end
+	end
+
+	-- Check if we can Bolster Defenses
+	if (self.squad_ai:CanDoAbility(BodyGuard.bolster_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(BodyGuard.bolster_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(BodyGuard.bolster_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( BodyGuard.run_id )) then
+			self.squad_ai:DoSpecialAbility( BodyGuard.run_id )
+		end
+	end
+
+	-- Do basic abilities
+	DaemonhuntInfantryTactic.DoAbilities(self)
+end
+
+function BodyGuardTactic:CheckForBroken()
+
+	if (self.squad_ai:IsBroken()) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( BodyGuard.rally_id )) then
+			self.squad_ai:DoSpecialAbility( BodyGuard.rally_id )
+		end
+	end
+   
+	-- Call basic broken check method
+	InfantryTactic.CheckForBroken(self)
+end
+
+function BodyGuardTactic:Reinforce()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+   
+	-- If there are no resources available, don't upgrade!
+	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
+	if (iRequisition < 600 and not Tactic.Options.can_reinforce) then
+		return
+	end
+			
+	-- Don't reinforce more than 12 squad members -- they both get stuck or don't capture points properly
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 12) then
+        	if (self.squad_ai:CanReinforce(true, 0)) then            
+            		self.squad_ai:DoReinforce(true, 0)
+       		elseif (self.squad_ai:CanReinforce(false, 0)) then
+            		self.squad_ai:DoReinforce(false, 0)
+		end
+	end
+end

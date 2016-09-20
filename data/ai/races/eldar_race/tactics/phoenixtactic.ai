@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'phoenixtactic.ai'
 -- Created by Cylarne_04 2011
+-- Edited by Thudmeizer		@ 22.02.2016
 
 class 'PhoenixTactic' (EldarVehicleTactic)
 
@@ -9,6 +10,8 @@ Phoenix = {}
 function PhoenixTactic:__init( squad_ai ) super( squad_ai )
 	
 	self:SetName("Phoenix Tactic")
+
+	self.timedDirectSpawnAbility = Timer( PhoenixTactic.DoDirectSpawnAbility, self, 5 )
 end
 
 function PhoenixTactic:InitAbilities()
@@ -16,7 +19,6 @@ function PhoenixTactic:InitAbilities()
 	if (Phoenix.bombard_id == nil) then
 		Phoenix.bombard_id = cpu_manager.stats:GetAbilityID( "eldar_nightwing_strike" )
 	end
-	
 end
 
 function PhoenixTactic:DoAbilities()
@@ -25,21 +27,23 @@ function PhoenixTactic:DoAbilities()
 		Ability.DoAbilityPos(self.squad_ai, Phoenix.bombard_id, Ability.Filters.CloseInfiltratedEnemy, 2)
 		Ability.DoAbilityPos(self.squad_ai, Phoenix.bombard_id, Ability.Filters.CloseEnemy, 4)
 	end
-	-- Try to spawn Fighters
+
+	-- Try to spawn Nightwing Fighters
 	if (self.timedDirectSpawnAbility ~= nil) then
 		self.timedDirectSpawnAbility:Call()
 	else
 		PhoenixTactic.DoDirectSpawnAbility(self)
 	end
-
 end
 
 function PhoenixTactic:DoDirectSpawnAbility()
 
-	if (self.squad_ai:CanDirectSpawn() and self.squad_ai:IsInCombat()) then 
-		--self.squad_ai:DoDirectSpawn()
+	-- Spawn Nightwing Fighters in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
 	end
 end
+
 function PhoenixTactic:JumpAttackRanged()
 
 	-- Call standard method

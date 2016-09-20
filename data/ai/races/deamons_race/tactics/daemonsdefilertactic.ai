@@ -1,0 +1,30 @@
+----------------------------------------
+-- File: 'daemonsdefilertactic.ai'
+-- Edited by CornCobMan 11/06/2013
+-- Edited by Thudmeizer	08.05.2016
+
+class 'DaemonsDefilerTactic' (DaemonsVehicleTactic)
+
+DaemonsDefiler = {}
+
+function DaemonsDefilerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Defiler Tactic")
+end
+
+function DaemonsDefilerTactic:InitAbilities()
+
+	if (DaemonsDefiler.rot_id == nil) then
+		DaemonsDefiler.rot_id = cpu_manager.stats:GetAbilityID( "daemons_nurgles_rot" )	
+	end
+end
+
+function DaemonsDefilerTactic:DoAbilities()
+
+	Ability.DoAbilityArea( self.squad_ai, DaemonsDefiler.rot_id, Ability.Filters.CloseSquadEnemy, 10, 4 )
+	Ability.DoAbilityArea( self.squad_ai, DaemonsDefiler.rot_id, Ability.Filters.CloseMonsterEnemy, 10, 3 )
+	Ability.DoAbilityArea( self.squad_ai, DaemonsDefiler.rot_id, Ability.Filters.CloseCommanderEnemy, 10, 1 )
+
+	-- Call basic DoAbilities methods
+	DaemonsVehicleTactic.DoAbilities(self)
+end

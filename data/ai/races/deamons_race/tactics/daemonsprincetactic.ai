@@ -1,0 +1,133 @@
+----------------------------------------
+-- File: 'daemonsprincetactic.ai'
+-- Edited by CornCobMan @ 29.05.2013
+-- Edited by Thudmeizer @ 08.05.2016
+
+class 'DaemonsPrinceTactic' (DaemonsInfantryTactic)
+
+DaemonsPrince = {}
+
+function DaemonsPrinceTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Prince Tactic")
+end
+
+function DaemonsPrinceTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDaemonsPrince = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDaemonsPrince ~= nil) then
+			local addOnID = buildChannelDaemonsPrince:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelDaemonsPrince:IsBuilding() == 0 and buildChannelDaemonsPrince:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelDaemonsPrince:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+-- Assassinate win condition -- never attack
+function DaemonsPrinceTactic:IsAttacker()
+	return (not cpu_manager.assassinate and self:IsCommanderAttacker())
+end
+
+-- Assassinate win condition -- never defend
+function DaemonsPrinceTactic:IsDefender()
+	return (not cpu_manager.assassinate and self:IsCommanderDefender())
+end
+
+-- Daemon Prince is allowed to retreat even directly after a jump
+function DaemonsPrinceTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+-- Assassinate win condition -- never jump into combat
+function DaemonsPrinceTactic:JumpAttack()
+
+	if (not cpu_manager.assassinate) then
+		Tactic.JumpAttack(self)
+	end
+end
+
+function DaemonsPrinceTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsPrince.obliteration_id == nil) then
+		DaemonsPrince.obliteration_id = cpu_manager.stats:GetAbilityID( "daemons_divine_obliteration" )	
+	end
+
+	if (DaemonsPrince.murder_id == nil) then
+		DaemonsPrince.murder_id = cpu_manager.stats:GetAbilityID( "daemons_wargear_murder" )	
+	end
+
+	if (DaemonsPrince.warpportal_id == nil) then
+		DaemonsPrince.warpportal_id = cpu_manager.stats:GetAbilityID( "daemons_warp_portal_lord" )	
+	end
+
+	if (DaemonsPrince.warpfire_id == nil) then
+		DaemonsPrince.warpfire_id = cpu_manager.stats:GetAbilityID( "daemons_warpfire_prince" )	
+	end
+		
+	if (DaemonsPrince.hellmouth_id == nil) then
+		DaemonsPrince.hellmouth_id = cpu_manager.stats:GetAbilityID( "daemons_warpfire_roar" )	
+	end
+end
+
+function DaemonsPrinceTactic:DoAbilities()
+
+	-- If we are dying, lower requisites for attacks
+	if ( self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 ) then
+		Ability.DoAbilityArea( self.squad_ai, DaemonsPrince.obliteration_id, Ability.Filters.CloseEnemy, 10, 2 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrince.murder_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrince.murder_id, Ability.Filters.CloseSquadEnemy, 2 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrince.murder_id, Ability.Filters.CloseMonsterEnemy, 2 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpportal_id, Ability.Filters.CloseSquadEnemy, 3 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpportal_id, Ability.Filters.CloseMonsterEnemy, 3 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpfire_id, Ability.Filters.CloseEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.hellmouth_id, Ability.Filters.CloseEnemy, 5 )
+	else
+		Ability.DoAbilityArea( self.squad_ai, DaemonsPrince.obliteration_id, Ability.Filters.CloseEnemy, 10, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrince.murder_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrince.murder_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrince.murder_id, Ability.Filters.CloseMonsterEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpportal_id, Ability.Filters.CloseSquadEnemy, 6 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpportal_id, Ability.Filters.CloseMonsterEnemy, 6 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpfire_id, Ability.Filters.CloseEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.hellmouth_id, Ability.Filters.CloseEnemy, 10 )
+	end
+end
+
+function DaemonsPrinceTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_increase_production_2	8
+
+	local addon_random_commander_upgrades = math.random( 0,7 )	-- Randomize these addons
+	self:AutoBuildAddOn(addon_random_commander_upgrades)
+end
+
+function DaemonsPrinceTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+	
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

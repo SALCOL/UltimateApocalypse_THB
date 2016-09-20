@@ -1,13 +1,49 @@
 ----------------------------------------
 -- File: 'flayedonestactic.ai'
 -- Created by Arkhan  @ 15.03.2008
+-- Edited by Thudmeizer	@ 09.03.2016
 
 class 'FlayedOnesTactic' (NecronInfantryTactic)
+
+FlayedOnes = {}
 
 function FlayedOnesTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Flayed Ones Tactic")
 
 	-- Flayed one can deepstrike
-	self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID("monolith")
+	self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "monolith" )
+end
+
+function FlayedOnesTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (FlayedOnes.veil_id == nil) then
+		FlayedOnes.veil_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter_veil" )
+	end
+	if (FlayedOnes.reassemble_id == nil) then
+		FlayedOnes.reassemble_id = cpu_manager.stats:GetAbilityID( "necron_reassemble" )
+	end
+end
+
+function FlayedOnesTactic:DoAbilities()
+	
+	--Shadow Shifter: Cloaks and disables the squad for several seconds, enabling quick regeneration and recovery from battle.
+	-- Infiltrated squad will also receive no damage from incoming attacks (if at all revealed), but cannot attack either.
+	if (self.squad_ai:IsInCombat()) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			self.squad_ai:DoSpecialAbility(FlayedOnes.veil_id)
+		end
+	end
+
+	-- Reassemble: - Reassembles any fallen Necron unit 7m away from the squad at a moderate cost of power.
+	if (self.squad_ai:IsInCombat()) then
+		-- Reassemble if squad strength is low.
+		if (self.squad_ai:CanDoAbility( FlayedOnes.reassemble_id ) and self.squad_ai:GetNumTroopers() < 3) then
+			Ability.DoAbility(self.squad_ai, FlayedOnes.reassemble_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = FlayedOnes.reassemble_id, min_bodies = 1 })
+		end
+	end
+
+	-- Call standard method
+	NecronInfantryTactic.DoAbilities(self)
 end

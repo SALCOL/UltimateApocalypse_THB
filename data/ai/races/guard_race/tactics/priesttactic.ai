@@ -1,6 +1,6 @@
 ----------------------------------------
--- File: 'Priesttactic.ai'
--- Edited by Thudmeizer @ 22.09.2005
+-- File: 'priesttactic.ai'
+-- Edited by Thudmeizer @ 29.02.2016
 
 class 'PriestTactic' (GuardInfantryTactic)
 
@@ -25,6 +25,9 @@ function PriestTactic:InitAbilities()
 	if (Priest.fanatical_id == nil) then
 		Priest.fanatical_id = cpu_manager.stats:GetAbilityID( "guard_priest_fanatical" )	
 	end
+	if (Priest.run_id == nil) then
+		Priest.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function PriestTactic:DoAbilities()
@@ -32,6 +35,15 @@ function PriestTactic:DoAbilities()
 	-- No fanatism while retreating
 	if (not self:IsMoving() and self.squad_ai:IsInCombat()) then
 		Ability.DoAbility( self.squad_ai, Priest.fanatical_id, Ability.Filters.IsInCombat ) 
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Priest.run_id )) then
+			self.squad_ai:DoSpecialAbility( Priest.run_id )
+		end
 	end
 end
 

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'spacemarinevehicletactic.ai'
--- Edited by Thudmeizer		@ 03.02.2016
+-- Edited by Thudmeizer		@ 20.06.2016
 
 class 'SpaceMarineVehicleTactic' (VehicleTactic)
 
@@ -66,17 +66,13 @@ function SpaceMarineVehicleTactic:DoAbilities()
 		self.squad_ai:DoSpecialAbilitySquad(vehiclesmoke_id, oUnit:GetSquad())
 	end
 
-	-- Enable ramming speed only when not attacking and with enough health
-	local combatspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )
-	if (self.squad_ai:IsUsingAbility(combatspeed_id)) then
-
-		-- Turn ramming speed ON if stopped attacking, OR if health < 50%
-		if ((not self.squad_ai:IsAttacking()) or self.squad_ai:GetHealthPercentage() < 0.5) then
-			self.squad_ai:DoSpecialAbility(combatspeed_id)
+	-- RAM!!! - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	local rammingspeed_id = cpu_manager.stats:GetAbilityID( "all_bumpertank" )
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( rammingspeed_id )) then
+			self.squad_ai:DoSpecialAbility( rammingspeed_id )
 		end
-		-- Turn ramming speed OFF only when attacking, AND when health > 50%
-		elseif (self.squad_ai:IsAttacking() and self.squad_ai:GetHealthPercentage() > 0.5) then
-			self.squad_ai:DoSpecialAbility(combatspeed_id)
 	end
 
 	-- Call standard method

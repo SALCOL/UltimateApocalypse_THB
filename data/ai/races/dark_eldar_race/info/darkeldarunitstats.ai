@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarunitstats.ai'
--- Edited by Thudmeizer @ 08.02.2016
+-- Edited by Thudmeizer @ 21.06.2016
 -- Edited by Cylarne_04 2011
 
 --XP3
@@ -27,6 +27,7 @@ UnitStrengths.dark_eldar_squad_warrior_leader_hg_dxp3 = 75
 -- Skirmish
 UnitStrengths.dark_eldar_squad_slave = 0
 UnitStrengths.dark_eldar_squad_slave_murdered = 10
+UnitStrengths.dark_eldar_squad_slave_murdered_ai = 10
 UnitStrengths.dark_eldar_squad_mandrake = 40
 UnitStrengths.dark_eldar_squad_warrior = 50
 UnitStrengths.dark_eldar_squad_hellion = 65
@@ -35,9 +36,11 @@ UnitStrengths.dark_eldar_squad_wych = 110
 UnitStrengths.dark_eldar_squad_warp_beast = 190
 UnitStrengths.dark_eldar_squad_wrack = 220
 UnitStrengths.dark_eldar_squad_warrior_trueborn = 220
-UnitStrengths.dark_eldar_squad_archon = 220
-UnitStrengths.dark_eldar_squad_haemonculus = 310
+UnitStrengths.dark_eldar_squad_clawed_warp_beast = 250
 UnitStrengths.dark_eldar_squad_incubus = 280
+UnitStrengths.dark_eldar_squad_haemonculus = 310
+UnitStrengths.dark_eldar_squad_archon = 320
+UnitStrengths.dark_eldar_squad_araspida = 130
 UnitStrengths.dark_eldar_squad_reaver = 145
 UnitStrengths.dark_eldar_squad_raider = 200
 UnitStrengths.dark_eldar_squad_talos = 260
@@ -47,30 +50,31 @@ UnitStrengths.dark_eldar_squad_ravager = 465
 UnitStrengths.dark_eldar_squad_rampage = 465
 UnitStrengths.dark_eldar_squad_shadow = 550
 UnitStrengths.dark_eldar_squad_dais_of_destruction = 550
-UnitStrengths.dark_eldar_squad_clawed_beast = 550
-UnitStrengths.dark_eldar_squad_clawed_warp_beast = 550
-UnitStrengths.dark_eldar_squad_soulstorm = 700
 UnitStrengths.dark_eldar_squad_tormentor = 900
 UnitStrengths.dark_eldar_squad_tormentor_assault = 900
+UnitStrengths.dark_eldar_squad_instigator = 900
 UnitStrengths.dark_eldar_squad_phoenix = 1000
 UnitStrengths.dark_eldar_squad_voidraven = 2000
 UnitStrengths.dark_eldar_squad_voidraven_variant = 2000
+UnitStrengths.dark_eldar_squad_soulstorm = 2500
 UnitStrengths.dark_eldar_squad_soulstorm_cataclysm = 0
 
 LeaderStrengths.dark_eldar_squad_warrior = 75
+LeaderStrengths.dark_eldar_squad_warrior_trueborn = 75
 LeaderStrengths.dark_eldar_squad_scourge = 75
+LeaderStrengths.dark_eldar_squad_wrack = 75
 LeaderStrengths.dark_eldar_squad_wych = 75
 LeaderStrengths.dark_eldar_squad_warp_beast = 75
 LeaderStrengths.dark_eldar_squad_hellion = 75
 LeaderStrengths.dark_eldar_squad_archon = 70
 
-Attachments.dark_eldar_squad_mandrake = { "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
-Attachments.dark_eldar_squad_warrior = { "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
-Attachments.dark_eldar_squad_wych = { "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
-Attachments.dark_eldar_squad_warp_beast = { "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
-Attachments.dark_eldar_squad_warrior_trueborn = { "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
-Attachments.dark_eldar_squad_wrack = { "dark_eldar_squad_haemonculus" }
-Attachments.dark_eldar_squad_incubus = { "dark_eldar_squad_archon" }
+Attachments.dark_eldar_squad_mandrake = { "dark_eldar_squad_araspida", "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
+Attachments.dark_eldar_squad_warrior = { "dark_eldar_squad_araspida", "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
+Attachments.dark_eldar_squad_wych = { "dark_eldar_squad_araspida", "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
+Attachments.dark_eldar_squad_warp_beast = { "dark_eldar_squad_araspida", "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
+Attachments.dark_eldar_squad_warrior_trueborn = { "dark_eldar_squad_araspida", "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
+Attachments.dark_eldar_squad_wrack = { "dark_eldar_squad_araspida", "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
+Attachments.dark_eldar_squad_incubus = { "dark_eldar_squad_araspida", "dark_eldar_squad_haemonculus", "dark_eldar_squad_archon" }
 
 DarkEldarUnitStats =
 {
@@ -101,71 +105,116 @@ DarkEldarUnitStats =
 			{
 				name = "none",
 				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				range = UnitStatsAI.RT_None,
 			},
 		}
 	},
 	{
-		name = "Infantry Mandrake",
-		sbp_name = "dark_eldar_squad_mandrake",
-		ebp_name = "dark_eldar_infantry_mandrake",
+		name = "Support Slave Murdered",
+		sbp_name = "dark_eldar_squad_slave_murdered_ai",
+		ebp_name = "dark_eldar_support_slave_murdered",
 		class = UnitStatsAI.UC_LightInfantryLow,
-		rating = 3.0,
+		rating = 0.0,
 		potential =
 		{
 			{
+				name = "none",
+				effectiveness = GenerateUnitEffectiveness(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_None,
+			},
+		}
+	},
+	{
+		name = "Mandrake",
+		sbp_name = "dark_eldar_squad_mandrake",
+		ebp_name = "dark_eldar_infantry_mandrake",
+		class = UnitStatsAI.UC_LightInfantryLow,
+		rating = 4,
+		potential =
+		{
+			{
+				name = "dark_eldar_knife_mandrake",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,math.random(4*10,5*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
 				name = "dark_eldar_knife_mandrake_daemonic_touch",
-				effectiveness = GenerateUnitEffectiveness(2.7,2.7,2.7,1.7,1.7,0.5,0.2,0.1,1.2,0.8,1.7,1.2,0.5,0.2,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_knife_mandrake_daemonic_touch_2",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_knife",
+				effectiveness = GenerateUnitEffectiveness(0.7,0.7,0.0,0.4,0.4,0.1,0.0,0.0,0.2,0.1,0.4,0.2,0.0,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
 				name = "dark_eldar_poisoned_blade_mandrake",
-				effectiveness = GenerateUnitEffectiveness(2.7,2.7,2.7,1.7,1.7,0.5,0.2,0.1,1.2,0.8,1.7,1.2,0.5,0.2,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_mandrake_improved",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	{
-		name = "Infantry Warrior",
+		name = "Warrior",
 		sbp_name = "dark_eldar_squad_warrior",
 		ebp_name = "dark_eldar_infantry_warrior",
 		class = UnitStatsAI.UC_LightInfantryMed,
-		rating = 5.0,
+		rating = 5,
 		potential =
 		{
 			{
 				name = "dark_eldar_splinter_rifle_warrior",
-				effectiveness = GenerateUnitEffectiveness(3.4,3.4,3.4,2.8,2.0,0.7,0.3,0.2,1.4,0.8,2.0,1.6,0.7,0.3,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "dark_eldar_poisoned_blade_warrior",
-				effectiveness = GenerateUnitEffectiveness(3.4,3.4,3.4,2.8,2.0,0.7,0.3,0.2,1.4,0.8,2.0,1.6,0.7,0.3,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
 				name = "dark_eldar_splinter_cannon_scourge",
-				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,5.1,3.9,0.9,0.4,0.3,2.0,1.2,2.7,2.2,0.9,0.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(7.3,4.3,7.3,5.1,7.9,0.9,7.4,0.3,7.0,1.2,7.7,2.2,7.9,0.4,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "dark_eldar_dark_lance_scourge",
-				effectiveness = GenerateUnitEffectiveness(3.8,3.8,3.8,5.8,4.8,4.8,4.8,4.8,3.6,3.8,3.8,3.1,4.1,3.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(3.8,7.8,3.8,7.8,4.8,7.8,4.8,7.8,3.6,7.8,3.8,7.1,4.1,7.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_knife_warrior",
+				effectiveness = GenerateUnitEffectiveness(0.5,0.9,0.2,0.9,1.7,0.0,0.0,0.0,1.2,0.2,0.4,0.1,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_warrior",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_warrior_improved",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	{
-		name = "Infantry Hellion",
+		name = "Hellion",
 		sbp_name = "dark_eldar_squad_hellion",
 		ebp_name = "dark_eldar_infantry_hellion",
 		class = UnitStatsAI.UC_LightInfantryHigh,
-		rating = 5.0,
+		rating = 5,
 		potential =
 		{
 			{
 				name = "dark_eldar_hellglaive_shooter_hellion",
-				effectiveness = GenerateUnitEffectiveness(4.8,4.8,4.8,4.9,3.6,1.0,0.4,0.3,2.8,1.9,3.6,1.7,0.8,0.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -175,42 +224,62 @@ DarkEldarUnitStats =
 			},
 			{
 				name = "dark_eldar_poisoned_blade_hellion",
-				effectiveness = GenerateUnitEffectiveness(3.8,3.8,3.8,4.9,3.6,1.0,0.3,0.3,2.8,1.9,3.6,1.7,0.8,0.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_hellion_improved",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	{
-		name = "Infantry Scourge",
+		name = "Scourge",
 		sbp_name = "dark_eldar_squad_scourge",
 		ebp_name = "dark_eldar_infantry_scourge",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 6.0,
+		rating = 7,
 		potential =
 		{
 			{
 				name = "dark_eldar_splinter_cannon_scourge",
-				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,5.1,3.9,0.9,0.4,0.3,2.0,1.2,2.7,2.2,0.9,0.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "dark_eldar_dark_lance_scourge",
-				effectiveness = GenerateUnitEffectiveness(3.8,3.8,3.8,5.8,4.8,4.8,4.8,4.8,3.6,3.8,3.8,3.1,4.1,3.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_knife_scourge",
+				effectiveness = GenerateUnitEffectiveness(0.6,1.0,0.2,1.0,1.8,0.0,0.0,0.0,1.3,0.3,0.5,0.1,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_scourge",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_scourge_improved",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	{
-		name = "Infantry Wych",
+		name = "Wych",
 		sbp_name = "dark_eldar_squad_wych",
 		ebp_name = "dark_eldar_infantry_wych",
 		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 6.0,
+		rating = 7,
 		potential =
 		{
 			{
 				name = "dark_eldar_splinter_pistol_wych",
-				effectiveness = GenerateUnitEffectiveness(5.9,5.9,5.9,5.9,5.4,0.4,0.2,0.5,0.9,0.5,5.2,5.0,0.4,0.2,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -220,68 +289,98 @@ DarkEldarUnitStats =
 			},
 			{
 				name = "dark_eldar_poisoned_blade_wych",
-				effectiveness = GenerateUnitEffectiveness(3.3,3.3,3.3,3.3,3.3,3.3,3.3,3.3,3.3,3.3,3.3,3.3,0.0,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_wych_improved",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	{
-		name = "Infantry Wrack",
+		name = "Wracks",
 		sbp_name = "dark_eldar_squad_wrack",
 		ebp_name = "dark_eldar_infantry_wrack",
 		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 7.0,
+		rating = 7,
 		potential =
 		{
 			{
+				name = "dark_eldar_destructor_haemonculus",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
 				name = "dark_eldar_scissorhand_wrack",
-				effectiveness = GenerateUnitEffectiveness(9.0,9.0,9.0,8.5,8.0,2.4,2.4,1.1,7.0,7.0,7.0,2.6,2.9,1.6,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(6.3,6.3,6.3,6.3,6.3,6.6,6.6,6.6,6.3,6.3,6.3,0.0,0.0,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
-				name = "dark_eldar_destructor_haemonculus",
-				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,9.8,3.3,2.6,1.5,8.0,9.6,8.0,3.5,2.9,1.9,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
+				name = "dark_eldar_poisoned_blade_haemonculus",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_haemonculus_improved",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	
 	{
-		name = "Infantry Trueborn",
+		name = "Warrior Trueborn",
 		sbp_name = "dark_eldar_squad_warrior_trueborn",
 		ebp_name = "dark_eldar_infantry_warrior_trueborn",
 		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 8.0,
+		rating = 7.5,
 		potential =
 		{
 			{
 				name = "dark_eldar_splinter_cannon_trueborn",
-				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,7.5,7.0,4.4,3.4,2.1,5.0,5.0,7.0,2.6,2.9,1.6,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "dark_eldar_dark_lance_trueborn",
-				effectiveness = GenerateUnitEffectiveness(3.8,3.8,3.8,5.8,7.8,7.8,7.8,7.8,4.6,4.8,4.8,4.1,5.1,3.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "dark_eldar_dark_lance_trueborn_greater",
-				effectiveness = GenerateUnitEffectiveness(5.8,5.8,5.8,7.8,9.8,9.8,9.8,8.8,6.6,6.8,6.8,6.1,7.1,5.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_knife_trueborn",
+				effectiveness = GenerateUnitEffectiveness(1.7,2.7,0.6,2.7,4.9,0.0,0.0,0.0,3.6,0.8,1.4,0.4,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_scourge",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_scourge_improved",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	{
-		name = "Infantry Warp Beast",
+		name = "Warp Beast",
 		sbp_name = "dark_eldar_squad_warp_beast",
 		ebp_name = "dark_eldar_infantry_warp_beast",
 		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 8.0,
+		rating = math.random(7.5*10,8.5*10)/10,
 		potential =
 		{
 			{
 				name = "dark_eldar_unarmed_warp_beast",
-				effectiveness = GenerateUnitEffectiveness(6.0,6.0,6.0,6.0,6.0,7.0,7.0,8.4,8.0,8.0,9.0,8.0,7.2,5.1,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -291,31 +390,96 @@ DarkEldarUnitStats =
 		sbp_name = "dark_eldar_squad_clawed_warp_beast",
 		ebp_name = "dark_eldar_clawed_beast",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = 8.5,
+		rating = math.random(7.5*10,8.5*10)/10,
 		potential =
 		{
 			{
 				name = "dark_eldar_unarmed_warp_beast",
-				effectiveness = GenerateUnitEffectiveness(8.2,8.9,9.0,9.0,9.3,9.4,9.2,9.9,9.1,9.0,9.0,9.0,9.0,9.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	{
-		name = "Leader Archon",
+		name = "Incubus",
+		sbp_name = "dark_eldar_squad_incubus",
+		ebp_name = "dark_eldar_leader_incubus",
+		class = UnitStatsAI.UC_Commander,
+		rating = 8.5,
+		potential =
+		{
+			{
+				name = "dark_eldar_tormentor_helm_incubus",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_punisher_incubus",
+				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.4,3.4,2.1,8.0,8.0,8.0,4.6,3.9,2.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_incubus",
+				effectiveness = GenerateUnitEffectiveness(6.3,6.3,6.3,6.3,6.3,6.6,6.6,6.6,6.3,6.3,6.3,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_incubus_improved",
+				effectiveness = GenerateUnitEffectiveness(6.3,6.3,6.3,6.3,6.3,6.6,6.6,6.6,6.3,6.3,6.3,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Haemonculus",
+		sbp_name = "dark_eldar_squad_haemonculus",
+		ebp_name = "dark_eldar_leader_haemonculus",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(8*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "dark_eldar_destructor_haemonculus",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_scissorhand_haemonculus",
+				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.4,3.4,2.1,8.0,8.0,8.0,4.6,3.9,2.6,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_haemonculus",
+				effectiveness = GenerateUnitEffectiveness(6.3,6.3,6.3,6.3,6.3,6.6,6.6,6.6,6.3,6.3,6.3,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_haemonculus_improved",
+				effectiveness = GenerateUnitEffectiveness(6.3,6.3,6.3,6.3,6.3,6.6,6.6,6.6,6.3,6.3,6.3,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Archon",
 		sbp_name = "dark_eldar_squad_archon",
 		ebp_name = "dark_eldar_leader_archon",
 		class = UnitStatsAI.UC_Commander,
-		rating = 7.0,
+		rating = math.random(8*10,9.5*10)/10,
 		potential =
 		{
 			{
 				name = "dark_eldar_splinter_rifle_archon_sp",
-				effectiveness = GenerateUnitEffectiveness(7.8,7.8,7.8,7.8,6.8,6.5,5.0,3.0,7.8,6.4,7.1,6.8,5.7,3.8,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "dark_eldar_destructor_archon_sp",
+				effectiveness = GenerateUnitEffectiveness(7.8,7.8,7.8,7.8,6.8,6.5,5.0,3.0,7.8,6.4,7.1,6.8,5.7,3.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_disintegrator_archon_sp",
 				effectiveness = GenerateUnitEffectiveness(7.8,7.8,7.8,7.8,6.8,6.5,5.0,3.0,7.8,6.4,7.1,6.8,5.7,3.8,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -334,64 +498,44 @@ DarkEldarUnitStats =
 				effectiveness = GenerateUnitEffectiveness(6.1,6.3,6.0,6.0,6.2,6.0,6.0,8.4,6.0,6.0,4.0,6.6,4.2,2.1,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
+			{
+				name = "dark_eldar_poisoned_blade_archon",
+				effectiveness = GenerateUnitEffectiveness(0.2,0.2,0.2,0.2,0.2,0.0,0.0,0.0,0.2,0.2,0.2,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "dark_eldar_poisoned_blade_archon_improved",
+				effectiveness = GenerateUnitEffectiveness(0.3,0.3,0.3,0.3,0.3,0.0,0.0,0.0,0.3,0.3,0.3,0.0,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
 		}
 	},
 	{
-		name = "Leader Haemonculus",
-		sbp_name = "dark_eldar_squad_haemonculus",
-		ebp_name = "dark_eldar_leader_haemonculus",
-		class = UnitStatsAI.UC_Commander,
-		rating = 7.0,
+		name = "Araspida Mobile Shield Generator",
+		sbp_name = "dark_eldar_squad_araspida",
+		ebp_name = "dark_eldar_vehicle_araspida",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 5,
 		potential =
 		{
 			{
-				name = "dark_eldar_destructor_haemonculus",
-				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,9.8,3.3,2.6,1.5,8.0,9.6,8.0,3.5,2.9,1.9,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_scissorhand_haemonculus",
-				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.4,3.4,2.1,8.0,8.0,8.0,4.6,3.9,2.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "dark_eldar_poisoned_blade_haemonculus",
-				effectiveness = GenerateUnitEffectiveness(6.3,6.3,6.3,6.3,6.3,6.6,6.6,6.6,6.3,6.3,6.3,0.0,0.0,0.0,0.0,0.0,0.0),
+				name = "dark_eldar_dummy_araspida",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	{
-		name = "Leader Incubus",
-		sbp_name = "dark_eldar_squad_incubus",
-		ebp_name = "dark_eldar_leader_incubus",
-		class = UnitStatsAI.UC_Commander,
-		rating = 8.5,
-		potential =
-		{
-			{
-				name = "dark_eldar_punisher_incubus",
-				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.4,3.4,2.1,8.0,8.0,8.0,4.6,3.9,2.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "dark_eldar_poisoned_blade_incubus",
-				effectiveness = GenerateUnitEffectiveness(6.3,6.3,6.3,6.3,6.3,6.6,6.6,6.6,6.3,6.3,6.3,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	{
-		name = "Vehicle Reaver",
+		name = "Reaver",
 		sbp_name = "dark_eldar_squad_reaver",
 		ebp_name = "dark_eldar_vehicle_reaver",
 		class = UnitStatsAI.UC_VehicleLow,
-		rating = 5.0,
+		rating = 5,
 		potential =
 		{
 			{
 				name = "dark_eldar_splinter_pistol_reaver",
-				effectiveness = GenerateUnitEffectiveness(4.8,4.8,4.8,4.9,3.6,1.0,0.4,0.3,2.8,1.9,3.6,1.7,0.8,0.4,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -402,16 +546,16 @@ DarkEldarUnitStats =
 		}
 	},
 	{
-		name = "Vehicle Raider",
+		name = "Raider",
 		sbp_name = "dark_eldar_squad_raider",
 		ebp_name = "dark_eldar_vehicle_raider",
 		class = UnitStatsAI.UC_VehicleMed,
-		rating = 6.0,
+		rating = 6,
 		potential =
 		{
 			{
 				name = "dark_eldar_dark_lance_raider",
-				effectiveness = GenerateUnitEffectiveness(5.9,5.8,5.9,5.9,3.8,1.2,0.5,0.3,2.8,1.9,3.6,1.7,0.8,0.5,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -627,16 +771,41 @@ DarkEldarUnitStats =
 		}
 	},
 	{
-		name = "Vehicle Talos",
+		name = "Raven",
+		sbp_name = "dark_eldar_squad_raven",
+		ebp_name = "dark_eldar_vehicle_raven",
+		class = UnitStatsAI.UC_AirMed,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "dark_eldar_splinter_cannon_raven",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_dark_lance_raven",
+				effectiveness = GenerateUnitEffectiveness(6.0,6.0,6.0,6.0,6.0,6.0,6.0,8.1,6.0,8.9,6.0,6.0,6.0,8.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_dark_lance_raven_2",
+				effectiveness = GenerateUnitEffectiveness(6.0,6.0,6.0,6.0,6.0,6.0,6.0,8.1,6.0,8.9,6.0,6.0,6.0,8.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Talos",
 		sbp_name = "dark_eldar_squad_talos",
 		ebp_name = "dark_eldar_vehicle_talos",
 		class = UnitStatsAI.UC_VehicleMed,
-		rating = 7.0,
+		rating = 6,
 		potential =
 		{
 			{
 				name = "dark_eldar_talos_sting",
-				effectiveness = GenerateUnitEffectiveness(5.9,5.8,5.7,5.9,3.7,1.0,0.6,0.3,2.9,1.9,3.7,1.7,0.8,0.5,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -647,51 +816,41 @@ DarkEldarUnitStats =
 		}
 	},
 	{
-		name = "Vehicle Reaper",
+		name = "Reaper",
 		sbp_name = "dark_eldar_squad_reaper",
 		ebp_name = "dark_eldar_vehicle_reaper",
 		class = UnitStatsAI.UC_VehicleMed,
-		rating = 7.0,
+		rating = 7,
 		potential =
 		{
 			{
 				name = "dark_eldar_reaper_cannon",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_reaper_shard",
+				effectiveness = GenerateUnitEffectiveness(6.0,6.0,6.0,6.0,6.0,6.0,6.0,8.1,6.0,8.9,6.0,6.0,6.0,8.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_reaper_cannon_antiair",
 				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.2,2.1,1.7,8.0,8.9,7.0,5.2,2.1,1.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
 	},
 	{
-		name = "Vehicle Raven",
-		sbp_name = "dark_eldar_squad_raven",
-		ebp_name = "dark_eldar_vehicle_raven",
-		class = UnitStatsAI.UC_AirMed,
-		rating = 7.0,
-		potential =
-		{
-			{
-				name = "dark_eldar_splinter_cannon_raven",
-				effectiveness = GenerateUnitEffectiveness(5.8,5.7,5.8,6.1,3.6,1.1,0.5,0.4,2.8,2.0,3.6,1.7,0.8,0.5,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_dark_lance_raven",
-				effectiveness = GenerateUnitEffectiveness(6.0,6.0,6.0,6.0,6.0,6.0,6.0,8.1,6.0,8.9,6.0,6.0,6.0,8.1,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-		}
-	},
-	{
-		name = "Vehicle Ravager",
+		name = "Ravager",
 		sbp_name = "dark_eldar_squad_ravager",
 		ebp_name = "dark_eldar_vehicle_ravager",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 8.0,
+		rating = 7,
 		potential =
 		{
 			{
 				name = "dark_eldar_dark_lance_ravager",
-				effectiveness = GenerateUnitEffectiveness(6.1,6.1,6.1,6.2,5.2,8.0,8.0,8.4,7.4,5.2,4.1,7.2,4.8,3.6,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -707,46 +866,41 @@ DarkEldarUnitStats =
 		}
 	},
 	{
-		name = "Vehicle Rampage",
+		name = "Rampage Super-Heavy Skimmer",
 		sbp_name = "dark_eldar_squad_rampage",
 		ebp_name = "dark_eldar_vehicle_rampage",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 7.1,
+		rating = 7,
 		potential =
 		{
 			{
 				name = "dark_eldar_dark_lance_rampage",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_reaper_cannon_rampage",
 				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.2,2.1,1.7,8.0,8.9,7.0,5.2,2.1,1.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
-			--[[{
-				name = "dark_eldar_reaper_cannon3",
-				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.2,2.1,1.7,8.0,8.9,7.0,5.2,2.1,1.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},]]
 		}
 	},
 	{
-		name = "Shadow Super-Heavy",
+		name = "Shadow Super-Heavy Skimmer",
 		sbp_name = "dark_eldar_squad_shadow",
 		ebp_name = "dark_eldar_vehicle_shadow",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 7.1,
+		rating = 7,
 		potential =
 		{
 			{
-				name = "dark_eldar_shadow_weapon",
-				effectiveness = GenerateUnitEffectiveness(9.0,9.0,9.0,9.0,9.0,7.2,3.6,2.9,9.0,9.0,9.0,9.0,3.6,1.8,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_shadow_weapon",
-				effectiveness = GenerateUnitEffectiveness(9.0,9.0,9.0,9.0,9.0,7.2,3.6,2.9,9.0,9.0,9.0,9.0,3.6,1.8,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
 				name = "dark_eldar_dark_lance_shadow",
-				effectiveness = GenerateUnitEffectiveness(5.7,5.7,5.7,7.3,7.3,9.0,9.0,9.0,9.0,7.3,5.7,9.0,6.9,5.1,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_shadow_weapon",
+				effectiveness = GenerateUnitEffectiveness(9.0,9.0,9.0,9.0,9.0,7.2,3.6,2.9,9.0,9.0,9.0,9.0,3.6,1.8,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			}
 		}
@@ -756,68 +910,18 @@ DarkEldarUnitStats =
 		sbp_name = "dark_eldar_squad_dais_of_destruction",
 		ebp_name = "dark_eldar_dais_of_destruction",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 9.3,
+		rating = 7,
 		potential =
 		{
 			{
 				name = "dark_eldar_disintegrator_dais",
-				effectiveness = GenerateUnitEffectiveness(9.0,9.0,9.0,9.0,9.0,7.2,3.6,2.9,9.0,9.0,9.0,9.0,3.6,1.8,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_disintegrator_dais",
-				effectiveness = GenerateUnitEffectiveness(9.0,9.0,9.0,9.0,9.0,7.2,3.6,2.9,9.0,9.0,9.0,9.0,3.6,1.8,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "dark_eldar_dark_lance_dais",
 				effectiveness = GenerateUnitEffectiveness(5.7,5.7,5.7,7.3,7.3,9.0,9.0,9.0,9.0,7.3,5.7,9.0,6.9,5.1,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
-			}
-		}
-	},
-	{
-		name = "Tormentor Titan",
-		sbp_name = "dark_eldar_squad_tormentor",
-		ebp_name = "dark_eldar_titan_tormentor",
-		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 9.0,
-		potential =
-		{
-			{
-				name = "dark_eldar_dark_lance_titan",
-				effectiveness = GenerateUnitEffectiveness(9.7,9.7,9.7,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.7,9.0,9.9,8.1,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_dark_lance_titan_greater",
-				effectiveness = GenerateUnitEffectiveness(9.7,9.7,9.7,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.7,9.0,9.9,8.1,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_agonizer_titan",
-				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.2,2.1,1.7,8.0,8.9,7.0,5.2,2.1,1.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	{
-		name = "Tormentor Assault Titan",
-		sbp_name = "dark_eldar_squad_tormentor_assault",
-		ebp_name = "dark_eldar_titan_tormentor_assault",
-		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 9.0,
-		potential =
-		{
-			{
-				name = "dark_eldar_dark_lance_titan",
-				effectiveness = GenerateUnitEffectiveness(9.7,9.7,9.7,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.7,9.0,9.9,8.1,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_agonizer_titan_assault",
-				effectiveness = GenerateUnitEffectiveness(8.1,9.3,9.0,9.0,9.2,9.0,9.0,6.4,5.0,4.0,3.0,9.6,7.2,5.1,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
@@ -826,12 +930,12 @@ DarkEldarUnitStats =
 		sbp_name = "dark_eldar_squad_phoenix",
 		ebp_name = "dark_eldar_vehicle_phoenix",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 10,
+		rating = math.random(8.5*10,9.5*10)/10,
 		potential =
 		{
 			{
 				name = "dark_eldar_dark_lance_titan_phoenix",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,9.0,9.0,9.0,10.0,6.9,5.6,5.6,2.8,10.0,7.7,10.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -851,22 +955,32 @@ DarkEldarUnitStats =
 		sbp_name = "dark_eldar_squad_voidraven",
 		ebp_name = "dark_eldar_vehicle_voidraven",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 10,
+		rating = math.random(8.5*10,9.5*10)/10,
 		potential =
 		{
 			{
 				name = "dark_eldar_dark_lance_voidraven",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,9.0,9.0,9.0,10.0,6.9,5.6,5.6,2.8,10.0,7.7,10.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_missile_necrotoxin_voidraven",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_missile_shatterfield_voidraven",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_missile_implosion_voidraven",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
 				name = "dark_eldar_missile_pod_voidraven",
 				effectiveness = GenerateUnitEffectiveness(9.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_missile_implosion_voidraven",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,9.0,9.0,9.0,10.0,6.9,5.6,5.6,2.8,10.0,7.7,10.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
@@ -876,12 +990,22 @@ DarkEldarUnitStats =
 		sbp_name = "dark_eldar_squad_voidraven_variant",
 		ebp_name = "dark_eldar_vehicle_voidraven_variant",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 10,
+		rating = math.random(8.5*10,9.5*10)/10,
 		potential =
 		{
 			{
 				name = "dark_eldar_dark_lance_voidraven",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,9.0,9.0,9.0,10.0,6.9,5.6,5.6,2.8,10.0,7.7,10.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_missile_necrotoxin_voidraven",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_missile_shatterfield_voidraven",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
@@ -893,194 +1017,84 @@ DarkEldarUnitStats =
 				name = "dark_eldar_splinter_cannon_voidraven",
 				effectiveness = GenerateUnitEffectiveness(9.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_missile_necrotoxin_voidraven",
-				effectiveness = GenerateUnitEffectiveness(9.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_missile_shatterfield_voidraven",
-				effectiveness = GenerateUnitEffectiveness(8.0,7.0,7.0,7.0,8.0,8.0,9.0,9.0,9.0,9.0,9.0,8.0,8.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_missile_implosion_voidraven",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,9.0,9.0,9.0,10.0,6.9,5.6,5.6,2.8,10.0,7.7,10.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-		}
-	},
-	--[[{
-		name = "SoulStorm Entity",
-		sbp_name = "dark_eldar_squad_soulstorm",
-		ebp_name = "dark_eldar_soulstorm_citadel",
-		class = UnitStatsAI.UC_MonsterHigh,
-		rating = 7.0,
-		potential =
-		{
-			{
-				name = "chaos_dummy_weapon_2",
-				effectiveness = GenerateUnitEffectiveness(10.0,10.0,10.0,6.0,6.0,6.0,6.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},]]
-	--[[{
-		name = "The Cataclysm",
-		sbp_name = "dark_eldar_squad_soulstorm_cataclysm",
-		ebp_name = "dark_eldar_soulstorm_cataclysm",
-		class = UnitStatsAI.UC_MonsterHigh,
-		rating = 10.0,
-		potential =
-		{
-			{
-				name = "ork_choppa_boyz",
-				effectiveness = GenerateUnitEffectiveness(9.0,2.0,2.0,6.0,6.0,6.0,6.0,5.0,5.0,5.0,5.0,5.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},]]
-	--[[{
-		name = "Mandrake Elite",
-		sbp_name = "dark_eldar_squad_mandrake_hg_dxp3",
-		ebp_name = "dark_eldar_infantry_mandrake_hg_dxp3",
-		class = UnitStatsAI.UC_LightInfantryLow,
-		rating = 3.0,
-		potential =
-		{
-			{
-				name = "dark_eldar_knife_mandrake_daemonic_touch",
-				effectiveness = GenerateUnitEffectiveness(2.7,2.7,2.7,1.7,1.7,0.5,0.2,0.1,1.2,0.8,1.7,1.2,0.5,0.2,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-			{
-				name = "dark_eldar_poisoned_blade_mandrake",
-				effectiveness = GenerateUnitEffectiveness(2.7,2.7,2.7,1.7,1.7,0.5,0.2,0.1,1.2,0.8,1.7,1.2,0.5,0.2,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
+			}
 		}
 	},
 	{
-		name = "Warrior Sybarites",
-		sbp_name = "dark_eldar_squad_warrior_leader_hg_dxp3",
-		ebp_name = "dark_eldar_infantry_warrior_leader_hg_dxp3",
-		class = UnitStatsAI.UC_LightInfantryMed,
-		rating = 4.0,
+		name = "Tormentor Titan",
+		sbp_name = "dark_eldar_squad_tormentor",
+		ebp_name = "dark_eldar_titan_tormentor",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(8.5*10,9.5*10)/10,
 		potential =
 		{
 			{
-				name = "dark_eldar_splinter_pistol_sybarite",
-				effectiveness = GenerateUnitEffectiveness(3.4,3.4,3.4,2.8,2.0,0.7,0.3,0.2,1.4,0.8,2.0,1.6,0.7,0.3,0.0,0.0,0.0),
+				name = "dark_eldar_dark_lance_titan",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "dark_eldar_shredder_sybarite",
-				effectiveness = GenerateUnitEffectiveness(3.4,3.4,3.4,2.8,2.0,0.7,0.3,0.2,1.4,0.8,2.0,1.6,0.7,0.3,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	{
-		name = "Hellion Coven",
-		sbp_name = "dark_eldar_squad_hellion_leader_hg_dxp3",
-		ebp_name = "dark_eldar_infantry_hellion_leader_hg_dxp3",
-		class = UnitStatsAI.UC_LightInfantryHigh,
-		rating = 5.0,
-		potential =
-		{
-			{
-				name = "dark_eldar_destructor_hellion_leader",
-				effectiveness = GenerateUnitEffectiveness(4.8,4.8,4.8,4.9,3.6,1.0,0.4,0.3,2.8,1.9,3.6,1.7,0.8,0.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_punisher_hellion_succubus",
-				effectiveness = GenerateUnitEffectiveness(3.8,3.8,3.8,4.9,3.6,1.0,0.3,0.3,2.8,1.9,3.6,1.7,0.8,0.4,0.0,0.0,0.0),
+				name = "dark_eldar_agonizer_titan",
+				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.2,2.1,1.7,8.0,8.9,7.0,5.2,2.1,1.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 			{
-				name = "dark_eldar_power_scythe_hellion_leader",
-				effectiveness = GenerateUnitEffectiveness(3.8,3.8,3.8,4.9,3.6,1.0,0.3,0.3,2.8,1.9,3.6,1.7,0.8,0.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},
-	{
-		name = "Scourgers",
-		sbp_name = "dark_eldar_squad_scourge_hg_dxp3",
-		ebp_name = "dark_eldar_infantry_scourge_hg_dxp3",
-		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 5.0,
-		potential =
-		{
-			{
-				name = "dark_eldar_splinter_cannon_scourge",
-				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,5.1,3.9,0.9,0.4,0.3,2.0,1.2,2.7,2.2,0.9,0.4,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "dark_eldar_dark_lance_scourge",
-				effectiveness = GenerateUnitEffectiveness(3.8,3.8,3.8,5.8,4.8,4.8,4.8,4.8,3.6,3.8,3.8,3.1,4.1,3.0,0.0,0.0,0.0),
+				name = "dark_eldar_dark_lance_titan_greater",
+				effectiveness = GenerateUnitEffectiveness(9.7,9.7,9.7,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.7,9.0,9.9,8.1,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
 	},
 	{
-		name = "Wych Coven",
-		sbp_name = "dark_eldar_squad_wych_leader_hg_dxp3",
-		ebp_name = "dark_eldar_infantry_wych_leader_hg_dxp3",
-		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 6.0,
+		name = "Tormentor Assault Titan",
+		sbp_name = "dark_eldar_squad_tormentor_assault",
+		ebp_name = "dark_eldar_titan_tormentor_assault",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(8.5*10,9.5*10)/10,
 		potential =
 		{
 			{
-				name = "dark_eldar_splinter_pistol_wych_succubus",
-				effectiveness = GenerateUnitEffectiveness(5.9,5.9,5.9,5.9,5.4,0.4,0.2,0.5,0.9,0.5,5.2,5.0,0.4,0.2,0.0,0.0,0.0),
+				name = "dark_eldar_dark_lance_titan",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "dark_eldar_hydraknife_wych_succubus",
-				effectiveness = GenerateUnitEffectiveness(4.3,4.3,4.3,4.3,4.3,0.6,0.3,0.2,5.4,5.1,9.5,1.5,0.6,0.3,0.0,0.0,0.0),
+				name = "dark_eldar_agonizer_titan_assault",
+				effectiveness = GenerateUnitEffectiveness(8.1,9.3,9.0,9.0,9.2,9.0,9.0,6.4,5.0,4.0,3.0,9.6,7.2,5.1,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},
 	{
-		name = "Warp Beasts",
-		sbp_name = "dark_eldar_squad_warp_beast_hg_dxp3",
-		ebp_name = "dark_eldar_infantry_warp_beast_hg_dxp3",
-		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 7.0,
+		name = "Instigator Titan",
+		sbp_name = "dark_eldar_squad_instigator",
+		ebp_name = "dark_eldar_titan_instigator",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(8.5*10,9.5*10)/10,
 		potential =
 		{
 			{
-				name = "dark_eldar_unarmed_warp_beast",
-				effectiveness = GenerateUnitEffectiveness(6.0,6.0,6.0,6.0,6.0,6.0,6.0,8.4,6.0,6.0,6.0,6.0,4.2,2.1,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
-			},
-		}
-	},]]
-	--[[{
-		name = "Incubus Coven",
-		sbp_name = "dark_eldar_squad_incubus_hg_dxp3",
-		ebp_name = "dark_eldar_leader_incubus_hg_dxp3",
-		class = UnitStatsAI.UC_Commander,
-		rating = 8.5,
-		potential =
-		{
-			{
-				name = "dark_eldar_punisher_incubus",
-				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.4,3.4,2.1,8.0,8.0,8.0,4.6,3.9,2.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
+				name = "dark_eldar_dark_lance_titan_instigator_right",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "dark_eldar_poisoned_blade_incubus",
-				effectiveness = GenerateUnitEffectiveness(6.3,6.3,6.3,6.3,6.3,6.6,6.6,6.6,6.3,6.3,6.3,0.0,0.0,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Melee,
+				name = "dark_eldar_dark_lance_titan_instigator_left",
+				effectiveness = GenerateUnitEffectiveness(8.1,9.3,9.0,9.0,9.2,9.0,9.0,6.4,5.0,4.0,3.0,9.6,7.2,5.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_dark_lance_titan_greater",
+				effectiveness = GenerateUnitEffectiveness(9.7,9.7,9.7,10.0,10.0,10.0,10.0,10.0,10.0,10.0,9.7,9.0,9.9,8.1,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "dark_eldar_reaper_cannon_instigator",
+				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,4.2,2.1,1.7,8.0,8.9,7.0,5.2,2.1,1.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
 			},
 		}
-	},]]
+	},
 	{
 		name = "Nuke",
 		sbp_name = "npc_squad_superweapon1",

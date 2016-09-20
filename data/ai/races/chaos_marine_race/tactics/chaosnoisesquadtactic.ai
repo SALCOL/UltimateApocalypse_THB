@@ -1,0 +1,120 @@
+----------------------------------------
+-- File: 'chaosnoisesquadtactic.ai'
+-- Edited by Thudmeizer	@ 28.02.2016
+
+class 'ChaosNoiseSquadTactic' (ChaosMarineInfantryTactic)
+
+ChaosNoiseSquad = {}
+
+function ChaosNoiseSquadTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chaos Noise Squad Tactic")
+end
+
+function ChaosNoiseSquadTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChaosNoiseSquad.noise_id == nil) then
+		ChaosNoiseSquad.noise_id = cpu_manager.stats:GetAbilityID( "chaos_noise_grenades" )	
+	end
+
+	if (ChaosNoiseSquad.siren_id == nil) then
+		ChaosNoiseSquad.siren_id = cpu_manager.stats:GetAbilityID( "chaos_doom_siren" )	
+	end
+
+	if (ChaosNoiseSquad.run_id == nil) then
+		ChaosNoiseSquad.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+
+	if (ChaosNoiseSquad.rage_id == nil) then
+		ChaosNoiseSquad.rage_id = cpu_manager.stats:GetAbilityID( "chaos_furious_rage" )	
+	end
+end
+
+function ChaosNoiseSquadTactic:DoAbilities()
+
+	-- Activate various targetted abilities
+        Ability.DoAbilityPos( self.squad_ai, ChaosNoiseSquad.noise_id, Ability.Filters.CloseEnemy, 4)
+	Ability.DoAbilityArea( self.squad_ai, ChaosNoiseSquad.siren_id, Ability.Filters.CloseEnemy, 15, 4)
+	
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( ChaosNoiseSquad.run_id )) then
+			self.squad_ai:DoSpecialAbility( ChaosNoiseSquad.run_id )
+		end
+	end
+
+	if (self.squad_ai:IsInCombat() and not self.squad_ai:IsCapturing() and not self.squad_ai:IsBroken()) then
+	  
+		-- Check if I can go berserk while stationary
+		if (not self:IsMoving()) then
+
+			if (self.squad_ai:CanDoAbility( ChaosNoiseSquad.rage_id )) then
+				self.squad_ai:DoSpecialAbility( ChaosNoiseSquad.rage_id )
+			end
+		end		
+	end
+	
+	-- Call basic DoAbilities methods
+	ChaosMarineInfantryTactic.DoAbilities(self)
+end
+
+function ChaosNoiseSquadTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	-- Only upgrade if not reinforcing
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		if (self.squad_ai:HasUpgradableTrooper()) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function ChaosNoiseSquadTactic:Reinforce()
+
+  --always try for the actual leader first
+	if not self.squad_ai:IsReinforcing() then
+		if self.squad_ai:CanReinforce( false, 0 ) then
+		   self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- try for different types of squad members
+		local iChampionIndex = 0
+        	local iIconBearerIndex = 1
+		
+		local iNumChampion = self.squad_ai:GetLeaderCount( iChampionIndex )
+		local iNumIconBearer = self.squad_ai:GetLeaderCount( iIconBearerIndex )
+
+		-- Desired number of each leader type
+		local iDesiredChampion = 1
+		local iDesiredIconBearer = 1
+		
+		-- Desired order of reinforcing
+		if iNumChampion < iDesiredChampion then
+			if self.squad_ai:CanReinforce( true, iChampionIndex ) then
+				self.squad_ai:DoReinforce( true, iChampionIndex )
+			end
+		elseif iNumIconBearer < iDesiredIconBearer then
+			if self.squad_ai:CanReinforce( true, iIconBearerIndex ) then
+				self.squad_ai:DoReinforce( true, iIconBearerIndex )
+			end
+		end
+	end
+end
+

@@ -1,0 +1,5 @@
+FallbackSettings.raceInfo["dark_eldar_race"] =
+{
+	"dark_eldar_tame_warp_beast",
+	"dark_eldar_combat_drugs",
+}

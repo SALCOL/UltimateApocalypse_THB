@@ -1,7 +1,8 @@
 ----------------------------------------
--- File: 'GuardNuclearFacilitytactic.ai'
+-- File: 'guardnuclearfacilitytactic.ai'
 -- Edited by Krronus		@ 24.10.2006
 -- Edited by Cylarne_04 2011
+-- Edited by Thudmeizer		@ 24.04.2016
 
 class 'GuardNuclearFacilityTactic' (BaseTactic)
 
@@ -14,43 +15,70 @@ end
 
 function GuardNuclearFacilityTactic:InitAbilities()
 
-	if (GuardNuclearFacility.Nuke_id == nil) then
-		GuardNuclearFacility.Nuke_id = cpu_manager.stats:GetAbilityID( "marines_nuke" )
-		GuardNuclearFacility.Nuke2_id = cpu_manager.stats:GetAbilityID( "marines_nuke2" )
-		GuardNuclearFacility.Nuke3_id = cpu_manager.stats:GetAbilityID( "marines_nuke3" )
-		--GuardNuclearFacility.Nuke4_id = cpu_manager.stats:GetAbilityID( "guard_nuke4" )
-		--GuardNuclearFacility.Global = cpu_manager.stats:GetAbilityID( "guard_nuke_global" )
+	if (GuardNuclearFacility.nuke_id == nil) then
+		GuardNuclearFacility.nuke_id = cpu_manager.stats:GetAbilityID( "marines_nuke" )		-- Nuclear Missile
+	end
+
+	if (GuardNuclearFacility.emp_id == nil) then
+		GuardNuclearFacility.emp_id = cpu_manager.stats:GetAbilityID( "marines_nuke2" )		-- Electro Magnetic Supermassive Pulse
+	end
+
+	if (GuardNuclearFacility.cannon_id == nil) then
+		GuardNuclearFacility.cannon_id = cpu_manager.stats:GetAbilityID( "marines_nuke3" )	-- Satellite Particle Cannon
+	end
+
+	if (GuardNuclearFacility.repair_id == nil) then
+		GuardNuclearFacility.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
 end
 
 function GuardNuclearFacilityTactic:DoAbilities()
 
-	if (self.base_ai:CanDoAbility(GuardNuclearFacility.Nuke_id)) then
-		-- Activate Apocalyptic Superweapon.
-		Ability.DoAbilityPos(self.base_ai, GuardNuclearFacility.Nuke2_id, Ability.Filters.CloseVehicleEnemy, 10)
-		Ability.DoAbilityPos(self.base_ai, GuardNuclearFacility.Nuke_id, Ability.Filters.CloseSquadEnemy, 35)
-		Ability.DoAbilityTargetEntity(self.base_ai, GuardNuclearFacility.Nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
-		
-		--[[if (self.base_ai:CanDoAbility(GuardNuclearFacility.Nuke3_id)) then
-	
-			-- Only activate if enemy unit is attacking
-			local iRange = self.base_ai:GetAbilityRange(GuardNuclearFacility.Nuke3_id)
-			local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 24)
-			if (oSquad ~= nil and oSquad:IsAttacking()) then
-				self.base_ai:DoSpecialAbilitySquad(GuardNuclearFacility.Nuke3_id, oSquad:GetSquad())
-			end
-		end]]
-		--Ability.DoAbilityPos(self.base_ai, GuardNuclearFacility.Nuke4_id, Ability.Filters.CloseVehicleEnemy, 2)
-		--Ability.DoAbilityPos(self.base_ai, GuardNuclearFacility.Nuke4_id, Ability.Filters.CloseEnemy, 8)
-		--Ability.DoAbilityTargetEntity(self.base_ai, GuardNuclearFacility.Nuke4_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-		
-		local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-		
-		-- Activate the planet destroyer
-		--[[if (iRequisition >= 50000 and iPower >= 50000) then
-			Ability.DoAbilityTargetEntity(self.base_ai, GuardNuclearFacility.Global, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
-		end]]
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Launch Nuclear Missile 
+	if (self.base_ai:CanDoAbility( GuardNuclearFacility.nuke_id ) and (iRequisition >= 4000 and iPower >= 4000)) then
+		Ability.DoAbilityPos( self.base_ai, GuardNuclearFacility.nuke_id, Ability.Filters.CloseEnemy, 24 )
+		Ability.DoAbilityPos( self.base_ai, GuardNuclearFacility.nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6 )
 	end
 	
+	-- Activate EMP
+	if (self.base_ai:CanDoAbility( GuardNuclearFacility.emp_id ) and (iRequisition >= 4000 and iPower >= 2000)) then
+		Ability.DoAbilityPos( self.base_ai, GuardNuclearFacility.emp_id, Ability.Filters.CloseVehicleEnemy, 8 )
+		Ability.DoAbilityPos( self.base_ai, GuardNuclearFacility.emp_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10 )
+		Ability.DoAbilityPos( self.base_ai, GuardNuclearFacility.emp_id, Ability.Filters.CloseSquadEnemy, 12 )
+	end
+
+	-- Check if we can use the Particle Cannon
+	if (self.base_ai:CanDoAbility(GuardNuclearFacility.cannon_id) and (iRequisition >= 3000 and iPower >= 3000)) then
+	
+		-- Get closest squad in range
+		local iRange = self.base_ai:GetAbilityRange(GuardNuclearFacility.cannon_id)
+		local oSquad = cpu_manager.cpu_player:FindFirstEnemy(self.base_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil) then
+		
+			-- Get stats
+			local oStats = oSquad:GetStats()
+			if (oStats ~= nil) then
+			
+				-- Check unit type
+				local eClass = oStats:GetClass()
+				if (eClass == UnitStatsAI.UC_VehicleHigh or eClass == UnitStatsAI.UC_Commander or
+					eClass == UnitStatsAI.UC_MonsterHigh or oSquad:GetNumTroopers() >= 10) then
+					
+					-- Use Particle Cannon ability on squad
+					self.base_ai:DoSpecialAbilitySquad(GuardNuclearFacility.cannon_id, oSquad:GetSquad())
+				end
+			end	
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( GuardNuclearFacility.repair_id )) then
+			self.base_ai:DoSpecialAbility( GuardNuclearFacility.repair_id )
+		end
+	end
 end

@@ -1,0 +1,135 @@
+----------------------------------------
+-- File: 'chaosplaguesquadtactic.ai'
+-- Edited by Thudmeizer	@ 28.02.2016
+
+class 'ChaosPlagueSquadTactic' (ChaosMarineInfantryTactic)
+
+ChaosPlagueSquad = {}
+
+function ChaosPlagueSquadTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Chaos Plague Squad Tactic")
+end
+
+function ChaosPlagueSquadTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (ChaosPlagueSquad.blight_id == nil) then
+		ChaosPlagueSquad.blight_id = cpu_manager.stats:GetAbilityID( "chaos_blight_grenades" )	
+	end
+
+	if (ChaosPlagueSquad.frag_id == nil) then
+		ChaosPlagueSquad.frag_id = cpu_manager.stats:GetAbilityID( "chaos_frag_grenades" )	
+	end
+
+	if (ChaosPlagueSquad.smoke_id == nil) then
+		ChaosPlagueSquad.smoke_id = cpu_manager.stats:GetAbilityID( "chaos_fumigating_smoke" )	
+	end
+
+	if (ChaosPlagueSquad.krak_id == nil) then
+		ChaosPlagueSquad.krak_id = cpu_manager.stats:GetAbilityID( "chaos_krak_grenades" )	
+	end
+
+	if (ChaosPlagueSquad.melta_id == nil) then
+		ChaosPlagueSquad.melta_id = cpu_manager.stats:GetAbilityID( "chaos_melta_bombs_havoc" )	
+	end
+
+	if (ChaosPlagueSquad.run_id == nil) then
+		ChaosPlagueSquad.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+
+	if (ChaosPlagueSquad.rage_id == nil) then
+		ChaosPlagueSquad.rage_id = cpu_manager.stats:GetAbilityID( "chaos_furious_rage" )	
+	end
+end
+
+function ChaosPlagueSquadTactic:DoAbilities()
+
+	-- Activate various targetted abilities
+        Ability.DoAbilityPos( self.squad_ai, ChaosPlagueSquad.blight_id, Ability.Filters.CloseEnemy, 3)
+	Ability.DoAbilityTarget( self.squad_ai, ChaosPlagueSquad.frag_id, Ability.Filters.CloseEnemy, 4)
+        Ability.DoAbilityArea( self.squad_ai, ChaosPlagueSquad.smoke_id, Ability.Filters.CloseInfantryEnemy, 10, 4)
+        Ability.DoAbilityTarget( self.squad_ai, ChaosPlagueSquad.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
+        Ability.DoAbilityTarget( self.squad_ai, ChaosPlagueSquad.melta_id, Ability.Filters.CloseVehicleEnemy, 1)
+	
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( ChaosPlagueSquad.run_id )) then
+			self.squad_ai:DoSpecialAbility( ChaosPlagueSquad.run_id )
+		end
+	end
+
+	if (self.squad_ai:IsInCombat() and not self.squad_ai:IsCapturing() and not self.squad_ai:IsBroken()) then
+	  
+		-- Check if I can go berserk while stationary
+		if (not self:IsMoving()) then
+
+			if (self.squad_ai:CanDoAbility( ChaosPlagueSquad.rage_id )) then
+				self.squad_ai:DoSpecialAbility( ChaosPlagueSquad.rage_id )
+			end
+		end		
+	end
+	
+	-- Call basic DoAbilities methods
+	ChaosMarineInfantryTactic.DoAbilities(self)
+end
+
+function ChaosPlagueSquadTactic:Upgrade()
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	-- Only upgrade if not reinforcing
+	if (not self.squad_ai:IsReinforcing()) then
+	
+		if (self.squad_ai:HasUpgradableTrooper()) then
+			local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+			self.squad_ai:DoBestUpgrade( class_type )
+		end
+	end
+end
+
+function ChaosPlagueSquadTactic:Reinforce()
+
+  --always try for the actual leader first
+	if not self.squad_ai:IsReinforcing() then
+		if self.squad_ai:CanReinforce( false, 0 ) then
+		   self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- try for different types of squad members
+		local iChampionIndex = 0
+        	local iIconBearerIndex = 1
+		
+		local iNumChampion = self.squad_ai:GetLeaderCount( iChampionIndex )
+		local iNumIconBearer = self.squad_ai:GetLeaderCount( iIconBearerIndex )
+
+		-- Desired number of each leader type
+		local iDesiredChampion = 1
+		local iDesiredIconBearer = 1
+		
+		-- Desired order of reinforcing
+		if iNumChampion < iDesiredChampion then
+			if self.squad_ai:CanReinforce( true, iChampionIndex ) then
+				self.squad_ai:DoReinforce( true, iChampionIndex )
+			end
+		elseif iNumIconBearer < iDesiredIconBearer then
+			if self.squad_ai:CanReinforce( true, iIconBearerIndex ) then
+				self.squad_ai:DoReinforce( true, iIconBearerIndex )
+			end
+		end
+	end
+end
+

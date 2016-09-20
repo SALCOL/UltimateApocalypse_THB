@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marinesbombtactic.ai'
--- Edited by Arkhan		@ 02.02.2016
+-- Edited by Thudmeizer	@ 12.02.2016
 
 class 'MarinesBombTactic' (BaseTactic)
 
@@ -21,6 +21,14 @@ end
 
 function MarinesBombTactic:DoAbilities()
 	
-	--Detonate Bomb!
+	-- Detonate Bomb with enemies in vicinity!
 	Ability.DoAbilityArea(self.base_ai, MarinesBomb.detonate_id, Ability.Filters.CloseEnemy, 10, 5)
+
+	-- Search a building
+	local iRange = self.base_ai:GetAbilityRange(MarinesBomb.detonate_id)
+	local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.base_ai:GetPosition(), iRange, 1)
+	if (oBuilding ~= nil) then
+		-- Detonate the Bomb!
+		self.base_ai:DoSpecialAbilityEntity(MarinesBomb.detonate_id, oBuilding) 
+	end
 end

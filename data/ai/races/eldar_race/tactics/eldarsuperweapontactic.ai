@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'EldarSuperweapontactic.ai'
--- Edited by Jared @ 09.03.2005
+-- File: 'eldarsuperweapontactic.ai'
+-- Edited by Jared	@ 09.03.2005
+-- Edited by Thudmeizer	@ 14.05.2016
 
 class 'EldarSuperweaponTactic' (BaseTactic)
 
@@ -9,35 +10,84 @@ EldarSuperweapon = {}
 function EldarSuperweaponTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Eldar Superweapon Tactic")
-	
-	-- Init abilities
-	self.m_bCanDeepStrikeTroops = true
-	
+end
+
+function EldarSuperweaponTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
 end
 
 function EldarSuperweaponTactic:InitAbilities()
 
-	if (EldarSuperweapon.superweapon_id == nil) then
-		EldarSuperweapon.superweapon_id = cpu_manager.stats:GetAbilityID( "eldar_nuke" )
+	if (EldarSuperweapon.cannon_id == nil) then
+		EldarSuperweapon.cannon_id = cpu_manager.stats:GetAbilityID( "eldar_nuke" )
 	end
-	if (EldarSuperweapon.superweapon2_id == nil) then
-		EldarSuperweapon.superweapon2_id = cpu_manager.stats:GetAbilityID( "eldar_nuke2" )
+	if (EldarSuperweapon.tempest_id == nil) then
+		EldarSuperweapon.tempest_id = cpu_manager.stats:GetAbilityID( "eldar_nuke2" )
 	end
-	--[[if (EldarSuperweapon.superweapon3_id == nil) then
-		EldarSuperweapon.superweapon3_id = cpu_manager.stats:GetAbilityID( "eldar_nuke3" )
-	end]]
-	--[[if (EldarSuperweapon.superweapon4_id == nil) then
-		EldarSuperweapon.superweapon4_id = cpu_manager.stats:GetAbilityID( "eldar_nuke4" )
-	end]]
+	if (EldarSuperweapon.repair_id == nil) then
+		EldarSuperweapon.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
 end
 
 function EldarSuperweaponTactic:DoAbilities()
 	
-	-- Activate Apocalyptic Superweapon.
-	if (self.base_ai:CanDoAbility(EldarSuperweapon.superweapon_id)) then
-		Ability.DoAbilityPos(self.base_ai, EldarSuperweapon.superweapon_id, Ability.Filters.CloseEnemy, 30)
-		Ability.DoAbilityTargetEntity(self.base_ai, EldarSuperweapon.superweapon2_id, Ability.EntityFilters.CloseBaseEntityEnemy, 16)
-		Ability.DoAbilityPos(self.base_ai, EldarSuperweapon.superweapon_id, Ability.Filters.CloseVehicleEnemy, 3)
-		Ability.DoAbilityPos(self.base_ai, EldarSuperweapon.superweapon2_id, Ability.Filters.CloseEnemy, 1)
+	-- If possible, immediately deepstrike the spawnable Cataclyism at the next available enemy's base
+    	local buildChannelHQ = build_manager:GetBuildChannelFromID(self.base_ai:GetEntity():GetID())
+    	local id = buildChannelHQ:GetBlueprintID()
+    	if buildChannelHQ ~= nil then
+        	if (buildChannelHQ:CanDeepStrike() and cpu_manager:MilitaryDeepStrike(id)) then
+            		local closestEnemy = cpu_manager:GetFirstEnemyPlayer()
+            		-- First, try to deepstrike against the closest enemy, if he is still alive
+           	 	if not closestEnemy:IsPlayerDead() then
+                		buildChannelHQ:DoDeepStrikeToPos(closestEnemy:GetStartingPosition())
+           		else
+           	 	-- If closest player is dead, try to deepstrike against a random alive enemy
+                	for oPlayer in cpu_manager.stats:GetPlayerStats() do
+                    		if (cpu_manager.player_stats:IsEnemy(oPlayer) and not oPlayer:IsPlayerDead()) then
+                       			local closestEnemyPos = oPlayer:GetStartingPosition()
+                        			buildChannelHQ:DoDeepStrikeToPos(closestEnemyPos)
+                        			break
+                    			end
+                		end
+            		end
+		end
+	end
+
+--	self:AutoBuildAddOn(0) -- eldar_spire_stone_destruction		-- 1/3 Mutually Exclusive
+--	self:AutoBuildAddOn(1) -- eldar_spire_stone_infinity_resource	-- 2/3 Mutually Exclusive
+--	self:AutoBuildAddOn(2) -- eldar_spire_stone_infinity_shroud	-- 3/3 Mutually Exclusive
+
+	local addon_spire_stone = math.random( 0,2 )
+	self:AutoBuildTurretAddOn(addon_spire_stone, self.base_ai:GetEntity():GetID())	-- Randomly choose one of the three addons
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Superweapon - Eldritch Cannon: Fire a deadly blast of eldritch energy at the designated target. A massive blast of energy kills most most targets outright within a 50m radius.
+	if (self.base_ai:CanDoAbility( EldarSuperweapon.cannon_id ) and (iRequisition >= 4000 and iPower >= 4000)) then
+		Ability.DoAbilityPos( self.base_ai, EldarSuperweapon.cannon_id, Ability.Filters.CloseEnemy, 20 )
+		Ability.DoAbilityPos( self.base_ai, EldarSuperweapon.cannon_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6 )
+	end
+	
+	-- Superweapon - Eldritch Tempest: Unleash a deadly Eldritch Storm at the designated target. 
+	-- The Eldritch tempest will continue to execute lightning strikes at all targets 90m away from the designated target for 180 seconds. 
+	-- The lightning strikes are deadly, and everything that was struck by the lightning will be rendered idle and lose health over time.
+	if (self.base_ai:CanDoAbility(EldarSuperweapon.tempest_id) and (iRequisition >= 4500 and iPower >= 4500)) then
+		Ability.DoAbilityPos( self.base_ai, EldarSuperweapon.tempest_id, Ability.Filters.CloseEnemy, 30 )
+		Ability.DoAbilityPos( self.base_ai, EldarSuperweapon.tempest_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10 )
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( EldarSuperweapon.repair_id )) then
+			self.base_ai:DoSpecialAbility( EldarSuperweapon.repair_id )
+		end
 	end
 end

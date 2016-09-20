@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersseraphimtactic.ai'
--- Edited by Thudmeizer @ 15.11.2007
+-- Edited by Thudmeizer @ 11.04.2016
 
 class 'SistersSeraphimTactic' (SistersInfantryTactic)
 
@@ -11,6 +11,19 @@ function SistersSeraphimTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Sisters Seraphim Tactic")
 end
 
+-- Seraphims are allowed to retreat even directly after a jump
+function SistersSeraphimTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersSeraphimTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
 function SistersSeraphimTactic:InitAbilities()
 
 	-- Init ability ID's
@@ -18,21 +31,83 @@ function SistersSeraphimTactic:InitAbilities()
 		SistersSeraphim.visage_id = cpu_manager.stats:GetAbilityID( "sisters_angelic_visage" )
 	end
 
+	if (SistersSeraphim.flashbang_id == nil) then
+		SistersSeraphim.flashbang_id = cpu_manager.stats:GetAbilityID( "sisters_flashbang_grenades" )
+	end
+
 	if (SistersSeraphim.krak_id == nil) then
 		SistersSeraphim.krak_id = cpu_manager.stats:GetAbilityID( "sisters_krak_grenades" )
+	end
+
+	if (SistersSeraphim.phosphor_id == nil) then
+		SistersSeraphim.phosphor_id = cpu_manager.stats:GetAbilityID( "sisters_phosphor_grenades" )
+	end
+
+	if (SistersSeraphim.smoke_id == nil) then
+		SistersSeraphim.smoke_id = cpu_manager.stats:GetAbilityID( "sisters_smoke_grenades" )
+	end
+
+	if (SistersSeraphim.run_id == nil) then
+		SistersSeraphim.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function SistersSeraphimTactic:DoAbilities()
 	
-	-- Check if we are in combat
-	if (self.squad_ai:IsInCombat()) then
-
-		-- Reduces morale damage and boosts combat performance
-		--Ability.DoAbility(self.squad_ai, SistersSeraphim.visage_id)
+	Ability.DoAbilityArea(self.squad_ai, SistersSeraphim.visage_id, Ability.Filters.CloseEnemy, 20, 2)
 		
-		-- Krak grenades
-		Ability.DoAbilityTarget( self.squad_ai, SistersSeraphim.krak_id, Ability.Filters.CloseVehicleEnemy, 1 )
-		Ability.DoAbilityTargetEntity( self.squad_ai, SistersSeraphim.krak_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
+	-- Throw flashbang grenades!
+	if (self.squad_ai:CanDoAbility( SistersSeraphim.flashbang_id )) then
+		Ability.DoAbilityPos( self.squad_ai, SistersSeraphim.flashbang_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, SistersSeraphim.flashbang_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, SistersSeraphim.flashbang_id, Ability.Filters.CloseMonsterEnemy, 2 )
 	end
+
+	-- Throw krak grenades!
+	if (self.squad_ai:CanDoAbility( SistersSeraphim.krak_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, SistersSeraphim.krak_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, SistersSeraphim.krak_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1 )
+	end
+
+	-- Throw phosphor grenades!
+	if (self.squad_ai:CanDoAbility( SistersSeraphim.phosphor_id )) then
+		Ability.DoAbilityPos( self.squad_ai, SistersSeraphim.phosphor_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, SistersSeraphim.phosphor_id, Ability.Filters.CloseMonsterEnemy, 2 )
+		Ability.DoAbilityPos( self.squad_ai, SistersSeraphim.phosphor_id, Ability.Filters.CloseInfantryEnemy, 4 )
+	end
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility( SistersSeraphim.smoke_id )) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange( SistersSeraphim.smoke_id )
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad( SistersSeraphim.smoke_id, oUnit:GetSquad() )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersSeraphim.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersSeraphim.run_id )
+		end
+	end
+end
+
+function SistersSeraphimTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

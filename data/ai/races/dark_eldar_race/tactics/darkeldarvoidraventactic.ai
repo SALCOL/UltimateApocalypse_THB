@@ -1,0 +1,126 @@
+----------------------------------------
+-- File: 'darkeldarvoidraventactic.ai'
+-- Created by Cylarne_04 2011
+-- Edited by Thudmeizer	@ 05.04.2016
+
+class 'DarkEldarVoidRavenTactic' (DarkEldarVehicleTactic)
+
+DarkEldarVoidRaven = {}
+
+function DarkEldarVoidRavenTactic:__init( squad_ai ) super( squad_ai )
+	
+	self:SetName("Dark Eldar VoidRaven Tactic")
+
+	self.timedDirectSpawnAbility = Timer( DarkEldarVoidRavenTactic.DoDirectSpawnAbility, self, 5 )
+end
+
+function DarkEldarVoidRavenTactic:InitAbilities()
+
+	if (DarkEldarVoidRaven.bombard_id == nil) then
+		DarkEldarVoidRaven.bombard_id = cpu_manager.stats:GetAbilityID( "dark_eldar_bombard_voidraven" )	
+	end
+end
+
+function DarkEldarVoidRavenTactic:DoAbilities()
+
+	if (self.squad_ai:CanDoAbility(DarkEldarVoidRaven.bombard_id)) then
+	
+		Ability.DoAbilityPos(self.squad_ai, DarkEldarVoidRaven.bombard_id, Ability.Filters.CloseEnemy, 24)
+		Ability.DoAbilityPos(self.squad_ai, DarkEldarVoidRaven.bombard_id, Ability.EntityFilters.CloseBaseEntityEnemy, 5)
+	end
+	
+	-- Try to spawn Ravens
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		DarkEldarVoidRavenTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function DarkEldarVoidRavenTactic:DoDirectSpawnAbility()
+
+	-- Spawn Ravens in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+
+function DarkEldarVoidRavenTactic:JumpAttackRanged()
+
+	-- Call standard method
+	if (Tactic.JumpAttackRanged(self)) then
+		return true
+	end
+	
+	-- Get position and jump range
+	local vDarkEldarVoidRavenPosition = self.squad_ai:GetPosition()
+	local iJumpRange = sqr(self.squad_ai:GetJumpDistance())
+	
+	-- Check if we can jump directly to the target
+	local iClosestDistance = distance_sqr(vDarkEldarVoidRavenPosition, self.target)
+	local vTargetPos = nil
+	if (iClosestDistance < iJumpRange) then
+		vTargetPos = self.target
+	else
+	
+		-- Get closest squad to target position
+		for oSquad in military_manager:GetSquads() do
+	
+			-- Check if squad is valid
+			if (oSquad:IsValid()) then
+			
+				-- Check distance
+				local vPosition = oSquad:GetPosition()
+				local iDistanceToDarkEldarVoidRaven = distance_sqr(vPosition, vDarkEldarVoidRavenPosition)
+				local iDistanceToTarget = distance_sqr(vPosition, self.target)
+				if (iDistanceToDarkEldarVoidRaven < iJumpRange and iDistanceToTarget < iClosestDistance) then
+					iClosestDistance = iDistanceToTarget
+					vTargetPos = vPosition
+				end
+			end
+		end
+		
+		-- Get closest building to target position
+		for oBuilding in military_manager:GetBases() do
+		
+			-- Check if building is valid
+			if (oBuilding:IsValid()) then
+			
+				-- Check distance
+				local vPosition = oBuilding:GetPosition()
+				local iDistanceToDarkEldarVoidRaven = distance_sqr(vPosition, vDarkEldarVoidRavenPosition)
+				local iDistanceToTarget = distance_sqr(vPosition, self.target)
+				if (iDistanceToDarkEldarVoidRaven < iJumpRange and iDistanceToTarget < iClosestDistance) then
+					iClosestDistance = iDistanceToTarget
+					vTargetPos = vPosition
+				end
+			end
+		end
+	end
+	
+	-- Don't jump if we didn't find a target
+	if (vTargetPos == nil or distance_sqr(vDarkEldarVoidRavenPosition, vTargetPos) < sqr(50)) then
+		return false
+	end
+	
+	-- Try to jump to target
+	for iLoop1 = 1, 5 do
+	
+		-- Create a jump position
+		local vJumpPosition = vTargetPos
+		vJumpPosition.x = vJumpPosition.x + math.random(-15, 15)
+		vJumpPosition.z = vJumpPosition.z + math.random(-15, 15)
+			
+		-- Check if target position is in range and if unit is able to jump to target position
+		local iDistance = distance_sqr(vJumpPosition, vDarkEldarVoidRavenPosition)
+		if (iDistance <= iJumpRange and self.squad_ai:CanJumpToPosition(vJumpPosition)) then
+							
+			-- Jump to position
+			self.squad_ai:DoJump(vJumpPosition)
+			self.last_jump = g_iGMT
+			self.m_iLastGatherMove = self.last_jump - 10
+			return true
+		end
+	end
+	return false
+end

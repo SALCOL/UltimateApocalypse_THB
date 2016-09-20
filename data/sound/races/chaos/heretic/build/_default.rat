@@ -3,7 +3,7 @@
 version = 9
 
 priority = 20
-volume = 0.200000
+volume = 0.500000
 maxPolyphony = 3
 type3D = 1
 cardiodScale = 0.000000
@@ -13,3 +13,4 @@ containerType = 3
 loopingContainer = 0
 silenceBreak = 0.000000
 silenceRandom = 0.000000
+pitchRand = 0.050000

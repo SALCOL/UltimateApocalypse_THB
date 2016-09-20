@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'orkloader.ai'
--- Edited by Arkhan		@ 23.10.2006
--- Edited by Thudmeizer @ 08.02.2006
+-- Edited by Arkhan	@ 23.10.2006
+-- Edited by Thudmeizer @ 20.06.2016
 -- Renamed by Corsix    @ 13.02.2006
 -- Edited by Cylarne_04 2011
 
@@ -28,22 +28,41 @@ function ork_race:LoadRace( eDifficulty )
 	
 	-- Import tactics
 	import( 'Races/ork_race/Tactics/OrkInfantryTactic.ai' )
-	import( 'Races/ork_race/Tactics/OrksHQTactic.ai' )
-	import( 'Races/ork_race/Tactics/BombsquigTactic.ai' )
 	import( 'Races/ork_race/Tactics/OrkVehicleTactic.ai' )
-	import( 'Races/ork_race/Tactics/WartrukkTactic.ai' )
-	import( 'Races/ork_race/Tactics/BadDokTactic.ai' )
-	import( 'Races/ork_race/Tactics/WarBossTactic.ai' )
-	import( 'Races/ork_race/Tactics/MekBoyTactic.ai' )
-	import( 'Races/ork_race/Tactics/StormBoyzTactic.ai' )
-	import( 'Races/ork_race/Tactics/NukklearBommaTactic.ai' )
+	import( 'Races/ork_race/Tactics/GrotTactic.ai' )
+	import( 'Races/ork_race/Tactics/GrotGangTactic.ai' )
+	import( 'Races/ork_race/Tactics/BombsquigTactic.ai' )
 	import( 'Races/ork_race/Tactics/SluggaBoyzTactic.ai' )
+	import( 'Races/ork_race/Tactics/ShootaTactic.ai' )
+	import( 'Races/ork_race/Tactics/BurnaTactic.ai' )
+	import( 'Races/ork_race/Tactics/KommandozTactic.ai' )
+	import( 'Races/ork_race/Tactics/StormBoyzTactic.ai' )
 	import( 'Races/ork_race/Tactics/TankbustaTactic.ai' )
+	import( 'Races/ork_race/Tactics/ArdBoyzTactic.ai' )
+	import( 'Races/ork_race/Tactics/LootasTactic.ai' )
+	import( 'Races/ork_race/Tactics/FlashGitzTactic.ai' )
 	import( 'Races/ork_race/Tactics/NobzTactic.ai' )
 	import( 'Races/ork_race/Tactics/MegaNobzTactic.ai' )
-	import( 'Races/ork_race/Tactics/ShootaTactic.ai' )
-	import( 'Races/ork_race/Tactics/GrotTactic.ai' )
-	import( 'Races/ork_race/Tactics/OrkTitanTactic.ai' )
+	import( 'Races/ork_race/Tactics/BadDokTactic.ai' )
+	import( 'Races/ork_race/Tactics/WierdBoyTactic.ai' )
+	import( 'Races/ork_race/Tactics/WierdBoyEntrenchedTactic.ai' )
+	import( 'Races/ork_race/Tactics/MekBoyTactic.ai' )
+	import( 'Races/ork_race/Tactics/WarBossTactic.ai' )
+	import( 'Races/ork_race/Tactics/TrukkTactic.ai' )
+	import( 'Races/ork_race/Tactics/WartrukkTactic.ai' )
+	import( 'Races/ork_race/Tactics/WagonTactic.ai' )
+	import( 'Races/ork_race/Tactics/FightaBommaTactic.ai' )
+	import( 'Races/ork_race/Tactics/NukklearBommaTactic.ai' )
+	import( 'Races/ork_race/Tactics/BattlefortressTactic.ai' )
+	import( 'Races/ork_race/Tactics/GargantTactic.ai' )
+	import( 'Races/ork_race/Tactics/GargantuanTactic.ai' )
+	import( 'Races/ork_race/Tactics/KustimStompaTactic.ai' )
+	import( 'Races/ork_race/Tactics/OrksHQTactic.ai' )
+	import( 'Races/ork_race/Tactics/OrkBombTactic.ai' )
+	import( 'Races/ork_race/Tactics/OrkBurnaBommTactic.ai' )
+	import( 'Races/ork_race/Tactics/BannerTurretTactic.ai' )
+	import( 'Races/ork_race/Tactics/WallTactic.ai' )
+	import( 'Races/ork_race/Tactics/OrkBigGeneratorTactic.ai' )
 	return true
 end
 
@@ -71,47 +90,64 @@ function ork_race:CreateTactic(oSquadAI)
 	local eClass = oSquadAI:GetStats():GetClass()
 	
 	-- Check if there is a special tactic for the unit available
-	if (sUnitName == "ork_squad_grot") then
+	if (sUnitName == "ork_squad_grot")  then
 		return GrotTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_grot_gang") then
-		return GrotTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_kommandoz") then
-		return BadDokTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_stormboy") then
-		return StormBoyzTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_slugga") then
+		return GrotGangTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_bombsquigs") then
+		return BombsquigTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_slugga") or (sUnitName == "ork_squad_honor_guard_slugga") then
 		return SluggaBoyzTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_tankbusta") then
-		return TankbustaTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_shoota_boy") then
 		return ShootaTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_bad_dok") then
-		return BadDokTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_burna") then
+		return BurnaTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_kommandoz") then
+		return KommandozTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_stormboy") then
+		return StormBoyzTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_tankbusta") then
+		return TankbustaTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_ard_boyz") then
+		return ArdBoyzTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_lootas") then
+		return LootasTactic(oSquadAI)
+	elseif (sUnitName == "ork_flash_gitz_squad") then
+		return FlashGitzTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_nob") then
 		return NobzTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_armored_nob") then
 		return MegaNobzTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_nukklear_bomba") then
-		return NukklearBommaTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_mek_boy") then
+	elseif (sUnitName == "ork_squad_bad_dok") then
+		return BadDokTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_mek_boy") or (sUnitName == "npc_squad_civilian_group") then
 		return MekBoyTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_wierdboy") then
-		return MekBoyTactic(oSquadAI)
-	elseif (sUnitName == "npc_squad_civilian_group") then
-		return MekBoyTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_squiggoth_gargantaun") then
-		return OrkTitanTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_ork_gargant") then
-		return OrkTitanTactic(oSquadAI)
+		return WierdBoyTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_wierdboy_entrenched") then
+		return WierdBoyEntrenchedTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_warboss") then
 		return WarBossTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_bombsquigs") then
-		return BombsquigTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_trukk") or 
-		(sUnitName == "ork_squad_gunwagon") or 
-		(sUnitName == "ork_squad_battlewagon") then
+	elseif (sUnitName == "ork_squad_trukk") then
+		return TrukkTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_kill_krusha") or (sUnitName == "ork_squad_kill_bursta") or (sUnitName == "ork_squad_squiggoth") then
 		return WartrukkTactic(oSquadAI)
-	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) then
+	elseif (sUnitName == "ork_squad_gunwagon") or (sUnitName == "ork_squad_battlewagon") then
+		return WagonTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_fighta_bomba") then
+		return FightaBommaTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_nukklear_bomba") then
+		return NukklearBommaTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_battlefortress") then
+		return BattlefortressTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_kustim_stompa") then
+		return KustimStompaTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_ork_gargant") then
+		return GargantTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_squiggoth_gargantaun") then
+		return GargantuanTactic(oSquadAI)
+	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
+	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return OrkVehicleTactic(oSquadAI)
 	end
 	return OrkInfantryTactic(oSquadAI)
@@ -125,6 +161,16 @@ function ork_race:CreateBaseTactic(oBuilding)
 	-- Check if their is a special tactic for the building available
 	if (sBuildingName == "ork_giant_waagh_banner_sp_dxp3") then
 		return OrksHQTactic(oBuilding)
+	elseif (sBuildingName == "ork_commander_bomb") then
+		return OrkBombTactic(oBuilding)
+	elseif (sBuildingName == "ork_burna_bomm") then
+		return OrkBurnaBommTactic(oBuilding)
+	elseif (sBuildingName == "ork_waagh_banner") then
+		return BannerTurretTactic(oBuilding)
+	elseif (sBuildingName == "ork_wall") then
+		return WallTactic(oBuilding)
+	elseif (sBuildingName == "ork_bigger_generator") then
+		return OrkBigGeneratorTactic(oBuilding)
 	end
 	return nil
 end
@@ -179,7 +225,7 @@ function ork_race:GetBuildingType(sBuildingName)
 	elseif (sBuildingName == "ork_gork_totem") then
 		return "ListeningPost", 0
 		
-	elseif (sBuildingName == "ork_boomy_platform") then
+	elseif (sBuildingName == "ork_waagh_banner") then
 		return "Turret", 90
 		
 	elseif (sBuildingName == "ork_mine_field") then

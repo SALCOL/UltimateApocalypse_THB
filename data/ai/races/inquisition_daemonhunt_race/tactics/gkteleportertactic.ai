@@ -1,0 +1,35 @@
+----------------------------------------
+-- File: 'gkteleportertactic.ai'
+-- Edited by Thudmeizer		@ 17.04.2016
+
+class 'GKTeleporterTactic' (BaseTactic)
+
+GKTeleporter = {}
+
+function GKTeleporterTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("GK Teleporter Tactic")
+end
+
+function GKTeleporterTactic:InitAbilities()
+	
+	-- Init abilities
+	if (GKTeleporter.repair_id == nil) then
+		GKTeleporter.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function GKTeleporterTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( GKTeleporter.repair_id )) then
+			self.base_ai:DoSpecialAbility( GKTeleporter.repair_id )
+		end
+	end
+end
+
+function GKTeleporterTactic:CanDeepStrikeTroops()
+	return true
+end

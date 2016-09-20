@@ -1,0 +1,53 @@
+----------------------------------------
+-- File: 'destroyertactic.ai'
+-- Edited by Thudmeizer	@ 09.03.2016
+
+class 'DestroyerTactic' (NecronVehicleTactic)
+
+Destroyer = {}
+
+function DestroyerTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Destroyer Tactic")
+end
+
+function DestroyerTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Destroyer.veil_id == nil) then
+		Destroyer.veil_id = cpu_manager.stats:GetAbilityID( "necron_phase_shifter_veil" )
+	end
+	if (Destroyer.reassemble_id == nil) then
+		Destroyer.reassemble_id = cpu_manager.stats:GetAbilityID( "necron_reassemble" )
+	end
+	if (Destroyer.truegauss_id == nil) then
+		Destroyer.truegauss_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )
+	end
+end
+
+function DestroyerTactic:DoAbilities()
+	
+	--Shadow Shifter: Cloaks and disables the squad for several seconds, enabling quick regeneration and recovery from battle.
+	-- Infiltrated squad will also receive no damage from incoming attacks (if at all revealed), but cannot attack either.
+	if (self.squad_ai:IsInCombat()) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			self.squad_ai:DoSpecialAbility(Destroyer.veil_id)
+		end
+	end
+
+	-- Reassemble: - Reassembles any fallen Necron unit 7m away from the squad at a moderate cost of power.
+	if (self.squad_ai:IsInCombat()) then
+		-- Reassemble if squad strength is low.
+		if (self.squad_ai:CanDoAbility( Destroyer.reassemble_id ) and self.squad_ai:GetNumTroopers() < 3) then
+			Ability.DoAbility(self.squad_ai, Destroyer.reassemble_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = Destroyer.reassemble_id, min_bodies = 1 })
+		end
+	end
+
+	-- Gauss Weapon Overcharge: the squad will receive a boost in maximum damage, but a critical reduction in movement speed for a duration.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.5) then
+		Ability.DoAbilityArea( self.squad_ai, Destroyer.truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
+	end
+
+	-- Call standard method
+	NecronVehicleTactic.DoAbilities(self)
+end

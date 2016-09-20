@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'loctactic.ai'
 -- Edited by Cylarne_04 2011
+-- Edited by Thudmeizer	@	28.02.2016
 
 class 'LocTactic' (ChaosMarineInfantryTactic)
 
@@ -9,7 +10,23 @@ Loc = {}
 function LocTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Loc Tactic")
+end
 
+function LocTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function LocTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Lord of Change is allowed to retreat even directly after a jump
+function LocTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
 end
 
 function LocTactic:InitAbilities()
@@ -21,26 +38,74 @@ function LocTactic:InitAbilities()
 	if (Loc.invulnerability_id == nil) then
 		Loc.invulnerability_id = cpu_manager.stats:GetAbilityID( "chaos_invulnerability" )
 	end
+	if (Loc.warpstorm_id == nil) then
+		Loc.warpstorm_id = cpu_manager.stats:GetAbilityID( "chaos_warp_storm_mini" )
+	end
 	if (Loc.winds_id == nil) then
 		Loc.winds_id = cpu_manager.stats:GetAbilityID( "chaos_winds_loc" )
 	end
-	if (Loc.warpstorm_id == nil) then
-		Loc.warpstorm_id = cpu_manager.stats:GetAbilityID( "chaos_warp_storm_mini" )
+	if (Loc.run_id == nil) then
+		Loc.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
 end
 
 function LocTactic:DoAbilities()
 	
-	Ability.DoAbility( self.squad_ai, Loc.winds_id, Ability.Filters.IsInCombat )
+	-- Winds of Change: Summons a powerful psychic storm that extends out from the caster, expanding toward the enemy before receding.
+	-- All enemy units within a 100m area effect are flung with tremendous force, causing severe damage.
+	Ability.DoAbilityArea( self.squad_ai, Loc.winds_id, Ability.Filters.CloseEnemy, 20, 10 )
 	
-	Ability.DoAbility( self.squad_ai, Loc.invulnerability_id, Ability.Filters.IsInCombat )
+	-- Invulnerability: all units around the globe become invulnerable for several seconds! Long recharge time period.
+	--if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.6) then
+
+	-- Search a squad
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), 50, 4)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+
+		-- Enable invulnerability
+		if (self.squad_ai:CanDoAbility( Loc.invulnerability_id )) then
+			self.squad_ai:DoSpecialAbility( Loc.invulnerability_id )
+		end
+	end
 	
 	-- We are dying, lower requisites for attacks
 	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
-		Ability.DoAbilityTarget( self.squad_ai, Loc.change_id, Ability.Filters.CloseEnemy, 4 )
-		Ability.DoAbilityTarget( self.squad_ai, Loc.warpstorm_id, Ability.Filters.CloseEnemy, 6 )
+		-- Greater Bolt of Change: Target an enemy infantry, building or vehicle to activate.
+		Ability.DoAbilityPos( self.squad_ai, Loc.change_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, Loc.change_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, Loc.change_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+
+		-- Summon Mini Warp Storm: Cast a powerful maelstorm of destruction at a designated target. Executes a small radius of lightning strikes and unleashes a volley of meteors!
+		Ability.DoAbilityPos( self.squad_ai, Loc.warpstorm_id, Ability.Filters.CloseEnemy, 6 )
 	else
-		Ability.DoAbilityTarget( self.squad_ai, Loc._id, Ability.Filters.CloseInfantryEnemy, 6 )
-		Ability.DoAbilityTarget( self.squad_ai, Loc.warpstorm_id, Ability.Filters.CloseEnemy, 12 )
+		Ability.DoAbilityPos( self.squad_ai, Loc.change_id, Ability.Filters.CloseSquadEnemy, 6 )
+		Ability.DoAbilityPos( self.squad_ai, Loc.change_id, Ability.Filters.CloseVehicleEnemy, 2 )
+		Ability.DoAbilityPos( self.squad_ai, Loc.change_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+		Ability.DoAbilityPos( self.squad_ai, Loc.warpstorm_id, Ability.Filters.CloseEnemy, 12 )
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Loc.run_id )) then
+			self.squad_ai:DoSpecialAbility( Loc.run_id )
+		end
 	end
 end
+
+function LocTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+    
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end
+

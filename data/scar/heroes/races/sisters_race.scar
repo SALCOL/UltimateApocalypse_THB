@@ -147,6 +147,7 @@ UnitTypes.sisters_race =
 		Type = "SpecialForces",
 		UpgradeFunction = UpgradeMeleeSquad,
 		FXType = "Squad",
+		CanAttach = true,
 	},
 	sisters_squad_assassin =
 	{
@@ -208,6 +209,13 @@ UnitTypes.sisters_race =
 			"sisters_knife_missionary",
 		},
 	},
+	sisters_squad_redemptionist =
+	{
+		Title = "Redemptionist",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+	},
 	sisters_squad_legatine_superior =
 	{
 		Title = "Legatine Superior",
@@ -216,6 +224,21 @@ UnitTypes.sisters_race =
 		FXType = "Squad",
 	},
 	-- Commanders
+	sisters_inquisitor_squad =
+	{
+		Title = "Inquisitor",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		CanAttach = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"sisters_wargear_04",
+			"sisters_power_sword_canoness",
+		},
+	},
 	sisters_squad_canoness =
 	{
 		Title = "Canoness",
@@ -266,32 +289,18 @@ UnitTypes.sisters_race =
 	},
 	sisters_squad_nunciate_superior =
 	{
-		Title = "Nunciate Superor Command Squad",
+		Title = "Nunciate Superor",
 		Type = "Commander",
 		UpgradeFunction = UpgradeCommander,
 		FXType = "Squad",
+		CanAttach = true,
 		General = true,
 		Unique = true,
-		HasLeaders = true,
 		HasWeapons = true,
-		Leaders =
-		{
-			"sisters_veteran_superior_celestian",
-			"sisters_celestian_imagifer",
-			"sisters_repentia_mistress_standard",
-			"sisters_legatine_superior",
-		},
 		Weapons =
 		{
 			"sisters_bolt_pistol_canoness",
 			"sisters_ardent_blade_nunciate",
-			"sisters_bolt_pistol_veteran_superior_celestian",
-			"sisters_inferno_pistol_veteran_superior_celestian",
-			"sisters_chain_sword_veteran_superior_celestian",
-			"sisters_power_sword_veteran_superior_celestian",
-			"sisters_neural_whip",
-			"sisters_neural_whip_twin",
-			"sisters_ascension_angel_weapon",
 		},
 	},
 	-- Vehicles
@@ -349,6 +358,13 @@ UnitTypes.sisters_race =
 		Title = "Exorcist",
 		Type = "CommandoForces",
 		UpgradeFunction = UpgradeArtillery,
+		FXType = "Vehicle",
+	},
+	sisters_squad_capitol_imperialis = 
+	{
+		Title = "Capitol Imperialis",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeTank,
 		FXType = "Vehicle",
 	},
 	sisters_squad_living_saint =

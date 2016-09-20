@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'mekboytactic.ai'
--- Edited by Thudmeizer @ 09.03.2005
+-- Edited by Thudmeizer @ 23.02.2016
 -- Edited by LarkinVB   @ 16.08.2005
 
 class 'MekBoyTactic' (OrkInfantryTactic)
@@ -12,13 +12,18 @@ function MekBoyTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Mek Boy Tactic")
 end
 
--- Mek Boy is allowed to retreat even directly after a jump
-function MekBoyTactic:SetTarget( target, variant_type )
-
-	self.variant_type = variant_type
-	self.target = Vector3f(target)
-	self.m_iMoveDelay = 0
-	self.last_jump = 0
+function MekBoyTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelMekBoy = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelMekBoy ~= nil) then
+			local addOnID = buildChannelMekBoy:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelMekBoy:IsBuilding() == 0 and buildChannelMekBoy:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelMekBoy:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
 end
 
 -- Assassinate win condition -- never attack
@@ -31,12 +36,26 @@ function MekBoyTactic:IsDefender()
 	return (not cpu_manager.assassinate and self:IsCommanderDefender())
 end
 
+-- Mek Boy is allowed to retreat even directly after a jump
+function MekBoyTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
 -- Assassinate win condition -- never jump into combat
 function MekBoyTactic:JumpAttack()
 
 	if (not cpu_manager.assassinate) then
 		Tactic.JumpAttack(self)
 	end
+end
+
+-- Arkhan 03.2006: Inherited method used by commanders which are able to jump with an attached squad
+function MekBoyTactic:CanJumpAttached()
+	return true
 end
 
 function MekBoyTactic:InitAbilities()
@@ -48,33 +67,61 @@ function MekBoyTactic:InitAbilities()
 	if (MekBoy.superstick_id == nil) then
 		MekBoy.superstick_id = cpu_manager.stats:GetAbilityID( "ork_superstick_bomb_mekboy" )
 	end
-	if (MekBoy.zappa_id == nil) then
-		MekBoy.zappa_id = cpu_manager.stats:GetAbilityID( "ork_wierdboy_zzzap" )
+	if (MekBoy.nuke_id == nil) then
+		MekBoy.nuke_id = cpu_manager.stats:GetAbilityID( "ork_nuke_boyz" )
 	end
-	if (MekBoy.zappa2_id == nil) then
-		MekBoy.zappa2_id = cpu_manager.stats:GetAbilityID( "ork_wierdboy_zzzap_blast" )
+	if (MekBoy.waagh_id == nil) then
+		MekBoy.waagh_id = cpu_manager.stats:GetAbilityID( "ork_waagh!!!" )
 	end
-	if (MekBoy.frazzle_id == nil) then
-		MekBoy.frazzle_id = cpu_manager.stats:GetAbilityID( "ork_wierdboy_frazzle" )
+	if (MekBoy.run_id == nil) then
+		MekBoy.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
 	end
 end
 
 function MekBoyTactic:DoAbilities()
 
-	-- Big Mek's
-	Ability.DoAbilityTarget( self.squad_ai, MekBoy.zap_id, Ability.Filters.CloseVehicleEnemy ) 
-	Ability.DoAbilityTarget( self.squad_ai, MekBoy.superstick_id, Ability.Filters.CloseSquadEnemy ) 
-	
-	-- Wierboy's
-	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	Ability.DoAbilityTarget( self.squad_ai, MekBoy.zap_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
+	Ability.DoAbilityTarget( self.squad_ai, MekBoy.superstick_id, Ability.Filters.CloseSquadEnemy, 4 ) 
+	Ability.DoAbilityTarget( self.squad_ai, MekBoy.superstick_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
+	Ability.DoAbilityTargetEntity(self.squad_ai, MekBoy.superstick_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1)
 
-	if (iPower >= 900) then
-		Ability.DoAbilityTarget( self.squad_ai, MekBoy.zappa2_id, Ability.Filters.CloseVehicleEnemy ) 
-		Ability.DoAbilityTarget( self.squad_ai, MekBoy.zappa2_id, Ability.Filters.CloseSquadEnemy ) 
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, MekBoy.nuke_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, MekBoy.nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Charge if in combat and enemy is not adjacent or while broken
+	-- Don't waagh if health is too low or we are not moving !
+	local squad_pos = self.squad_ai:GetPosition()
+	if (((self.squad_ai:IsInCombat() and Ability.Filters.CloseEnemy( squad_pos, 20, 1 ) == nil) or
+	   	self.squad_ai:IsBroken()) and self.squad_ai:GetHealthPercentage() > 0.8 and self:IsMoving()) then 
+		if (self.squad_ai:CanDoAbility(MekBoy.waagh_id)) then
+			self.squad_ai:DoSpecialAbility(MekBoy.waagh_id)
+		end
 	end
-	
-	Ability.DoAbilityTarget( self.squad_ai, MekBoy.zappa_id, Ability.Filters.CloseVehicleEnemy ) 
-	Ability.DoAbilityTarget( self.squad_ai, MekBoy.frazzle_id, Ability.Filters.CloseSquadEnemy ) 
+
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( MekBoy.run_id )) then
+			self.squad_ai:DoSpecialAbility( MekBoy.run_id )
+		end
+	end
+end
+
+function MekBoyTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_population.lua			5/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support.lua			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_04] addon_commanders_increase_production.lua		5/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_05] addon_commanders_increase_health.lua			6/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_06] addon_commanders_increase_morale.lua			6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_07] addon_commanders_cap_population_2.lua		8
+--	self:AutoBuildAddOn(6)	-- 	[addon_08] addon_commanders_cap_support_2.lua			8
+--	self:AutoBuildAddOn(7)	-- 	[addon_09] addon_commanders_increase_production_2.lua		8
+
+	local addon_random_commander_upgrades = math.random( 0,7 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
 end
 
 function MekBoyTactic:Update()
@@ -88,9 +135,6 @@ function MekBoyTactic:Update()
 		return
 	end
 	
-	-- Check if we are in serious trouble
-	self:EmergencyRetreat()
-		
 	-- Assassinate win condition -- never attach to a squad
 	if (not cpu_manager.assassinate) then
 				
@@ -105,9 +149,8 @@ function MekBoyTactic:Update()
 			self:TryAttachSquadMelee()
 		end
 	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end
 
--- Arkhan 03.2006: Inherited method used by commanders which are able to jump with an attached squad
-function MekBoyTactic:CanJumpAttached()
-	return true
-end

@@ -1,0 +1,155 @@
+----------------------------------------
+-- File: 'dhinquisitortactic.ai'
+-- Edited by Thudmeizer @ 15.04.2016
+
+class 'DHInquisitorTactic' (DaemonhuntInfantryTactic)
+
+DHInquisitor = {}
+
+function DHInquisitorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DH Inquisitor Tactic")
+end
+
+function DHInquisitorTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDHInquisitor = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDHInquisitor ~= nil) then
+			local addOnID = buildChannelDHInquisitor:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelDHInquisitor:IsBuilding() == 0 and buildChannelDHInquisitor:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelDHInquisitor:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function DHInquisitorTactic:AutoBuildResearch( researchSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelDHInquisitor = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelDHInquisitor ~= nil) then
+			local ResearchID = buildChannelDHInquisitor:GetItemIDAt(BuildChannelAI.PQ_Research, researchSlot)
+			if (buildChannelDHInquisitor:IsBuilding() == 0 and buildChannelDHInquisitor:CanAddToQueue(BuildChannelAI.PQ_Research, ResearchID) == BuildChannelAI.CANBUILD_Ok) then			
+				buildChannelDHInquisitor:BuildResearch(ResearchID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function DHInquisitorTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function DHInquisitorTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function DHInquisitorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DHInquisitor.haste_id == nil) then
+	   	DHInquisitor.haste_id = cpu_manager.stats:GetAbilityID( "inquisition_inquisitor_ordo_malleus_haste" )	
+	end
+
+	if (DHInquisitor.orbitalb_id == nil) then
+		DHInquisitor.orbitalb_id = cpu_manager.stats:GetAbilityID( "inquisition_orbital_bombardment" )	
+	end
+
+	if (DHInquisitor.weaken_id == nil) then
+	  	 DHInquisitor.weaken_id = cpu_manager.stats:GetAbilityID( "marines_weaken_resolve_toth" )	
+	end
+
+	if (DHInquisitor.smite_id == nil) then
+	  	DHInquisitor.smite_id = cpu_manager.stats:GetAbilityID( "marines_smite_toth" )	
+	end
+
+	if (DHInquisitor.run_id == nil) then
+		DHInquisitor.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function DHInquisitorTactic:DoAbilities()
+	
+	-- If we are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		Ability.DoAbilityTarget( self.squad_ai, DHInquisitor.weaken_id, Ability.Filters.CloseInfantryEnemy, 4 )
+		Ability.DoAbilityTarget( self.squad_ai, DHInquisitor.smite_id, Ability.Filters.CloseEnemy, 4 )
+	else
+		Ability.DoAbilityTarget( self.squad_ai, DHInquisitor.weaken_id, Ability.Filters.CloseInfantryEnemy, 8 )
+		Ability.DoAbilityTarget( self.squad_ai, DHInquisitor.smite_id, Ability.Filters.CloseEnemy, 8 )
+	end
+
+	if (self.squad_ai:GetMoralePercentage() >= 0.8) then
+		Ability.DoAbilityArea( self.squad_ai, DHInquisitor.haste_id, Ability.Filters.CloseEnemy, 20, 1 ) 
+	end
+
+	Ability.DoAbilityPos(self.squad_ai, DHInquisitor.orbitalb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, DHInquisitor.orbitalb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DHInquisitor.run_id )) then
+			self.squad_ai:DoSpecialAbility( DHInquisitor.run_id )
+		end
+	end
+end
+
+function DHInquisitorTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_relic			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+--	self:AutoBuildResearch(0)	-- [research_01] inquisition_officers_weapons
+--	self:AutoBuildResearch(1)	-- [research_02] inquisition_temporal_power
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)	-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+
+	if not (cpu_manager.cpu_player:IsResearchComplete("inquisition_officers_weapons")) then
+		self:AutoBuildResearch(0) -- Officer Weapons
+	elseif not (cpu_manager.cpu_player:IsResearchComplete("inquisition_temporal_power")) then
+		self:AutoBuildResearch(1) -- Temporal Power
+	end
+end
+
+function DHInquisitorTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+	
+	-- Attach to melee in tier2+
+	if (cpu_manager:GetTierLevel() > 1) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+end
+

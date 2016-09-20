@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'dhbuildingtactic.ai'
+-- Edited by Thudmeizer	@ 17.04.2016
+
+class 'DHBuildingTactic' (BaseTactic)
+
+DHBuilding = {}
+
+function DHBuildingTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("DH Building Tactic")
+end
+
+function DHBuildingTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DHBuilding.repair_id == nil) then
+		DHBuilding.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
+	end
+end
+
+function DHBuildingTactic:DoAbilities()
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( DHBuilding.repair_id )) then
+			self.base_ai:DoSpecialAbility( DHBuilding.repair_id )
+		end
+	end
+end

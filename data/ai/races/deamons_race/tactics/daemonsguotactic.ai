@@ -1,0 +1,74 @@
+----------------------------------------
+-- File: 'daemonsguotactic.ai'
+-- Edited by fuggles 27.05.2013
+-- Edited by Thudmeizer	08.05.2016
+
+class 'DaemonsGuoTactic' (DaemonsInfantryTactic)
+
+DaemonsGuo = {}
+
+function DaemonsGuoTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Guo Tactic")
+
+	self.timedDirectSpawnAbility = Timer( DaemonsGuoTactic.DoDirectSpawnAbility, self, 5 )
+end
+
+function DaemonsGuoTactic:AlwaysAttack()
+	return true
+end
+
+function DaemonsGuoTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DaemonsGuo.puke_id == nil) then
+		DaemonsGuo.puke_id = cpu_manager.stats:GetAbilityID( "daemons_guo_puke" )
+	end
+	if (DaemonsGuo.spit_id == nil) then
+		DaemonsGuo.spit_id = cpu_manager.stats:GetAbilityID( "daemons_guo_spit" )
+	end
+end
+
+function DaemonsGuoTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	if ( iPower >= 40 ) then
+		Ability.DoAbilityPos( self.squad_ai, DaemonsGuo.puke_id, Ability.Filters.CloseEnemy, 6 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsGuo.puke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 5)
+	end
+	if ( iPower >= 60 ) then
+		Ability.DoAbilityPos( self.squad_ai, DaemonsGuo.spit_id, Ability.Filters.CloseEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsGuo.spit_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+	end
+
+	-- Try to spawn Nurglings
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		DaemonsGuoTactic.DoDirectSpawnAbility(self)
+	end	
+end
+
+function DaemonsGuoTactic:DoDirectSpawnAbility()
+
+	-- Spawn Nurglings in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+
+function DaemonsGuoTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

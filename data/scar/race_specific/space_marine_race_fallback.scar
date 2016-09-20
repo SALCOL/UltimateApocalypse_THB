@@ -1,0 +1,6 @@
+FallbackSettings.raceInfo["space_marine_race"] =
+{
+	"marines_rally",
+	"marines_battlecry",
+	"marines_word_of_emperer"
+}

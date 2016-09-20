@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'loader.ai'
--- Edited by Thudmeizer	@ 02.11.2006
+-- Edited by Thudmeizer	@ 24.03.2016
 -- Edited by Arkhan	@ 23.10.2006
 -- Edited by Cylarne_04 2011
 
@@ -26,30 +26,39 @@ function tau_race:LoadRace( eDifficulty )
 	import( "Races/tau_race/Strategies/TauStrategyInfo.ai" )
 	
 	-- Import tactics
-	import( 'Races/tau_race/Tactics/TauArkaCannonTactic.ai' )
-	import( 'Races/tau_race/Tactics/TauHQTactic.ai' )
-	import( 'Races/tau_race/Tactics/ShieldGeneratorTactic.ai' )
-	import( 'Races/tau_race/Tactics/TauBeaconTactic.ai' )
 	import( 'Races/tau_race/Tactics/TauInfantryTactic.ai' )
 	import( 'Races/tau_race/Tactics/TauVehicleTactic.ai' )
-	import( 'Races/tau_race/Tactics/DevilfishTactic.ai' )
-	import( 'Races/tau_race/Tactics/MakoTactic.ai' )
-	import( 'Races/tau_race/Tactics/MantaTactic.ai' )
+	import( 'Races/tau_race/Tactics/BuilderTactic.ai' )
 	import( 'Races/tau_race/Tactics/TetraTactic.ai' )
  	import( 'Races/tau_race/Tactics/FireWarriorTactic.ai' )
-	import( 'Races/tau_race/Tactics/KrootShaperTactic.ai' )
-	import( 'Races/tau_race/Tactics/KrootCarnivoreTactic.ai' )
+	import( 'Races/tau_race/Tactics/KrootSquadTactic.ai' )
+	import( 'Races/tau_race/Tactics/KrootKnarlocRiderTactic.ai' )
 	import( 'Races/tau_race/Tactics/StealthTeamTactic.ai' )
 	import( 'Races/tau_race/Tactics/VespidTactic.ai' )
 	import( 'Races/tau_race/Tactics/PathFinderTactic.ai' )
-	import( 'Races/tau_race/Tactics/BroadsideBattlesuitTactic.ai' )
 	import( 'Races/tau_race/Tactics/CrisisTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauBuilderTactic.ai' )
+	import( 'Races/tau_race/Tactics/EtherealTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauHonorGuardTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauBodyGuardTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauCommanderTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauXVCommanderTactic.ai' )
+	import( 'Races/tau_race/Tactics/OrcaTransportTactic.ai' )
+	import( 'Races/tau_race/Tactics/DevilfishTactic.ai' )
 	import( 'Races/tau_race/Tactics/HazardTactic.ai' )
 	import( 'Races/tau_race/Tactics/HarbingerDronesTactic.ai' )
 	import( 'Races/tau_race/Tactics/DroneHarbingerTactic.ai' )
-	import( 'Races/tau_race/Tactics/EtherealTactic.ai' )
-	import( 'Races/tau_race/Tactics/TauHonorGuardTactic.ai' )
-	import( 'Races/tau_race/Tactics/TauCommanderTactic.ai' )
+	import( 'Races/tau_race/Tactics/DroneSatelliteTactic.ai' )
+	import( 'Races/tau_race/Tactics/SkyrayTactic.ai' )
+	import( 'Races/tau_race/Tactics/MakoTactic.ai' )
+	import( 'Races/tau_race/Tactics/XVBattleSuitTactic.ai' )
+	import( 'Races/tau_race/Tactics/TigerSharkTactic.ai' )
+	import( 'Races/tau_race/Tactics/MantaTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauBeaconTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauArkaCannonTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauBigGeneratorTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauBuildingTactic.ai' )
+	import( 'Races/tau_race/Tactics/TauBombTactic.ai' )
 	return true
 end
 
@@ -75,71 +84,62 @@ function tau_race:CreateTactic(oSquadAI)
 	-- Get unit name and class
 	local sUnitName = oSquadAI:GetSquadName()
 	local eClass = oSquadAI:GetStats():GetClass()
-	
+
 	-- Check if there is a special tactic for the unit available
-	--if (sUnitName == "tau_fire_warrior_squad") then
-		--return FirewarriorTactic(oSquadAI)
-	if (sUnitName == "tau_kroot_shaper_squad") then
-		return KrootCarnivoreTactic(oSquadAI)
-	elseif (sUnitName == "tau_kroot_knarloc_rider_squad") then
-		return KrootShaperTactic(oSquadAI)
-	elseif (sUnitName == "tau_kroot_carnivore_squad") then
-		return KrootCarnivoreTactic(oSquadAI)
-	elseif (sUnitName == "tau_stealth_team_squad") then
-		return StealthTeamTactic(oSquadAI)
-	elseif (sUnitName == "tau_stealth_team_xv25_squad") then
+	if (sUnitName == "tau_builder_squad") then
+		return BuilderTactic(oSquadAI)
+	elseif (sUnitName == "tau_fire_warrior_squad") then
+		return FirewarriorTactic(oSquadAI)
+	elseif (sUnitName == "tau_kroot_carnivore_squad") or (sUnitName == "tau_kroot_hound_squad") or (sUnitName == "tau_krootox_squad") or (sUnitName == "tau_kroot_shaper_squad") or (sUnitName == "tau_greater_knarloc_squad") then
+		return KrootSquadTactic(oSquadAI)
+	elseif (sUnitName == "tau_stealth_team_squad") or (sUnitName == "tau_stealth_team_xv25_squad") then
 		return StealthTeamTactic(oSquadAI)
 	elseif (sUnitName == "tau_vespid_auxiliary_squad") then
 		return VespidTactic(oSquadAI)
+	elseif (sUnitName == "tau_tetra_squad") then
+		return TetraTactic(oSquadAI)
 	elseif (sUnitName == "tau_pathfinder_squad") then
 		return PathFinderTactic(oSquadAI)
-	--elseif (sUnitName == "tau_broadside_battlesuit_squad") then
-		--return BroadsideBattlesuitTactic(oSquadAI)
-	elseif (sUnitName == "tau_crisis_suit_squad") then
-		return CrisisTactic(oSquadAI)
-	elseif (sUnitName == "tau_xv81_crisis_suit_squad") then
-		return CrisisTactic(oSquadAI)
-	elseif (sUnitName == "tau_xv89_commander_squad") then
+	elseif (sUnitName == "tau_crisis_suit_squad") or (sUnitName == "tau_xv81_crisis_suit_squad") then
 		return CrisisTactic(oSquadAI)
 	elseif (sUnitName == "tau_xv9_hazard_suit_squad") then
 		return HazardTactic(oSquadAI)
-	elseif (sUnitName == "tau_xv101_riptide_suit_squad") then
-		return MakoTactic(oSquadAI)
-	elseif (sUnitName == "tau_xv104_riptide_suit_squad") then
-		return MakoTactic(oSquadAI)
-	elseif (sUnitName == "tau_xv202_mako_titan_squad") then
-		return MakoTactic(oSquadAI)
-	elseif (sUnitName == "tau_xv107_rvarna_suit_squad") then
-		return MakoTactic(oSquadAI)
-	elseif (sUnitName == "tau_manta_squad") then
-		return MantaTactic(oSquadAI)
-	elseif (sUnitName == "tau_tetra_squad") then
-		return TetraTactic(oSquadAI)
-	elseif (sUnitName == "tau_drone_harbinger_squad") then
-		return DroneHarbingerTactic(oSquadAI)
-	elseif (sUnitName == "tau_harbinger_drones_squad") then
-		return HarbingerDronesTactic(oSquadAI)
-	elseif (sUnitName == "tau_drone_squad") then
-		return HarbingerDronesTactic(oSquadAI)
-	elseif (sUnitName == "tau_sniper_drone_squad") then
-		return HarbingerDronesTactic(oSquadAI)
-	elseif (sUnitName == "tau_ethereal_squad") then
-		return EtherealTactic(oSquadAI)
 	elseif (sUnitName == "tau_shasui_fire_warrior_bodyguard_sp") then
 		return TauHonorGuardTactic(oSquadAI)
-	elseif (sUnitName == "tau_commander_squad") then
-		return TauCommanderTactic(oSquadAI)
-	elseif (sUnitName == "npc_squad_civilian_group") then
+	elseif (sUnitName == "tau_xv89_bodyguard_squad") then
+		return TauBodyGuardTactic(oSquadAI)
+	elseif (sUnitName == "tau_builder_commander_squad") then
+		return TauBuilderTactic(oSquadAI)
+	elseif (sUnitName == "tau_kroot_knarloc_rider_squad") then
+		return KrootKnarlocRiderTactic(oSquadAI)
+	elseif (sUnitName == "tau_ethereal_squad") then
+		return EtherealTactic(oSquadAI)
+	elseif (sUnitName == "tau_commander_squad") or (sUnitName == "npc_squad_civilian_group") then
 		return TauCommanderTactic(oSquadAI)
 	elseif (sUnitName == "tau_xv89_commander_squad") then
-		return TauCommanderTactic(oSquadAI)
-	elseif (sUnitName == "tau_builder_commander_squad") then
-		return FirewarriorTactic(oSquadAI)
+		return TauXVCommanderTactic(oSquadAI)
+	elseif (sUnitName == "tau_orca_dropship_squad") then
+		return OrcaTransportTactic(oSquadAI)
 	elseif (sUnitName == "tau_devilfish_troop_carrier") then
 		return DevilfishTactic(oSquadAI)
-	elseif (oSquadAI:IsEngineer()) then
-		return nil
-	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) then
+	elseif (sUnitName == "tau_sniper_drone_squad") or (sUnitName == "tau_drone_squad") or (sUnitName == "tau_drone_remora_squad") or (sUnitName == "tau_harbinger_drones_squad") then
+		return HarbingerDronesTactic(oSquadAI)
+	elseif (sUnitName == "tau_drone_harbinger_squad") then
+		return DroneHarbingerTactic(oSquadAI)
+	elseif (sUnitName == "tau_drone_satellite_squad") then
+		return DroneSatelliteTactic(oSquadAI)
+	elseif (sUnitName == "tau_skyray_squad") then
+		return SkyrayTactic(oSquadAI)
+	elseif (sUnitName == "tau_xv101_riptide_suit_squad") or (sUnitName == "tau_xv104_riptide_suit_squad") or (sUnitName == "tau_xv107_rvarna_suit_squad") then
+		return XVBattleSuitTactic(oSquadAI)
+	elseif (sUnitName == "tau_xv202_mako_titan_squad") then
+		return MakoTactic(oSquadAI)
+	elseif (sUnitName == "tau_tigershark_squad") then
+		return TigerSharkTactic(oSquadAI)
+	elseif (sUnitName == "tau_manta_squad") then
+		return MantaTactic(oSquadAI)
+	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
+	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return TauVehicleTactic(oSquadAI)
 	end
 	return TauInfantryTactic(oSquadAI)
@@ -147,18 +147,35 @@ end
 
 -- Creates a base tactic
 function tau_race:CreateBaseTactic(oBuilding)
+
 	-- Get building name
 	local sBuildingName = oBuilding:GetBaseName()
-	
+
 	-- Check if their is a special tactic for the building available
 	if (sBuildingName == "tau_arka_ion_cannon") then
 		return TauArkaCannonTactic(oBuilding)
-	elseif (sBuildingName == "tau_hq") then
-		return TauHQTactic(oBuilding)
-	elseif (sBuildingName == "tau_shield_generator") then
-		return ShieldGeneratorTactic(oBuilding)
 	elseif (sBuildingName == "tau_guidance_beacon") then
 		return TauBeaconTactic(oBuilding)
+	elseif (sBuildingName == "tau_thermoplasma_generator") then
+		return TauBigGeneratorTactic(oBuilding)
+	elseif (sBuildingName == "tau_hq") or
+		(sBuildingName == "tau_barracks") or
+		(sBuildingName == "tau_kroot_nest") or
+		(sBuildingName == "tau_listening_post") or
+		(sBuildingName == "tau_plasma_generator") or
+		(sBuildingName == "tau_research_building") or
+		(sBuildingName == "tau_vehicle_building") or
+		(sBuildingName == "tau_shield_generator") or
+		(sBuildingName == "tau_shrine_of_kauyon") or
+		(sBuildingName == "tau_shrine_of_montka") or
+		(sBuildingName == "tau_shrine_of_purpose") or
+		(sBuildingName == "tau_titan_building") or
+		(sBuildingName == "tau_turret") or
+		(sBuildingName == "tau_turret_sp") or
+		(sBuildingName == "tau_wall") then
+		return TauBuildingTactic(oBuilding)
+	elseif (sBuildingName == "tau_commander_bomb") then
+		return TauBombTactic(oBuilding)
 	end
 	return nil
 end

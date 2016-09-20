@@ -911,7 +911,7 @@ resources =
 		----------------------------------------------------------------------------------------
 		-- special bindings for DARK ELDAR:
 		----------------------------------------------------------------------------------------
-		dark_eldar = {
+		--[[dark_eldar = {
 			-- squad cap icon and label
 	            { bind = "image", ui = "iconCapInfantry", tt = tooltip_simple_template, tt_title = "$551006", tt_desc = "$551007" }, 
 			{bind = "player_population", pop_type = "squad", ui = "txtTroopsCap", tt = tooltip_simple_template, tt_title = "$551006", tt_desc = "$551007" }, 
@@ -922,7 +922,7 @@ resources =
 
 			-- power
 			{ bind = "player_resource", ui = "grpPower", text_widget = "txtPower", icon_widget ="iconPower", tt = tooltip_simple_template, tt_title = "$40750", tt_desc = "$40751"},
-		},
+		},]]
 		
 		----------------------------------------------------------------------------------------
 		-- standard bindings for DAEMONS:

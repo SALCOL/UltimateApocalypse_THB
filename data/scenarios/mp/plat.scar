@@ -1,0 +1,16 @@
+import("ScarUtil.scar")
+import("WXPScarUtil.scar")
+import("WCUtil.scar")
+
+
+function OnInit()
+g_Player1 = World_GetPlayerAt(0)
+Rule_Add(Rule_Teleport)
+end
+Scar_AddInit(OnInit)
+
+function Rule_Teleport()
+Player_GetAllSquadsNearMarker(g_Player1,"TelSquad"..World_GetGameTime() ,"Tel_Entrance")
+SGroup_DeSpawn("TelSquad"..World_GetGameTime() )
+SGroup_ReSpawnMarker("TelSquad"..World_GetGameTime() ,"Tel_Exit")
+end

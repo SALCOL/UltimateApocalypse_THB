@@ -1,0 +1,92 @@
+----------------------------------------
+-- File: 'stormtroopertactic.ai'
+-- Edited by Thudmeizer	@ 29.02.2016
+
+class 'StormtrooperTactic' (GuardInfantryTactic)
+
+Stormtrooper = {}
+
+function StormtrooperTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Stormtrooper Tactic")
+	
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+end
+
+function StormtrooperTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Stormtrooper.demo_id == nil) then
+		Stormtrooper.demo_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge" )	
+	end
+	if (Stormtrooper.detonate_id == nil) then
+		Stormtrooper.detonate_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge_detonate" )	
+	end
+	if (Stormtrooper.auspex_id == nil) then
+		Stormtrooper.auspex_id = cpu_manager.stats:GetAbilityID( "guard_auspex" )	
+	end
+	if (Stormtrooper.flashbang_id == nil) then
+		Stormtrooper.flashbang_id = cpu_manager.stats:GetAbilityID( "guard_flashbang_grenades" )	
+	end
+	if (Stormtrooper.smoke_id == nil) then
+		Stormtrooper.smoke_id = cpu_manager.stats:GetAbilityID( "guard_smoke_grenades" )	
+	end
+	if (Stormtrooper.rally_id == nil) then
+		Stormtrooper.rally_id = cpu_manager.stats:GetAbilityID( "guard_vox_rally" )	
+	end
+	if (Stormtrooper.run_id == nil) then
+		Stormtrooper.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function StormtrooperTactic:DoAbilities()
+
+	-- Place Demo Charge
+	if (self.squad_ai:CanDoAbility(Stormtrooper.demo_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, Stormtrooper.demo_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, Stormtrooper.demo_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, Stormtrooper.demo_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Detonate Charge!
+	if (self.squad_ai:CanDoAbility(Stormtrooper.detonate_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, Stormtrooper.detonate_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, Stormtrooper.detonate_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, Stormtrooper.detonate_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Throw flashbang grenades!
+	Ability.DoAbilityTarget(self.squad_ai, Stormtrooper.flashbang_id, Ability.Filters.CloseSquadEnemy, 6)
+
+	-- Execuate auspex to detect infiltrators!
+	Ability.DoAbilityArea(self.squad_ai, Stormtrooper.auspex_id, Ability.Filters.CloseInfiltrator, 20, 2)
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(Stormtrooper.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Stormtrooper.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(Stormtrooper.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	if (self.squad_ai:IsBroken()) or (self.squad_ai:GetMoralePercentage() < 0.6) then
+	
+		-- Check if I can repair my morale
+		if (self.squad_ai:CanDoAbility( Stormtrooper.rally_id )) then
+			self.squad_ai:DoSpecialAbility( Stormtrooper.rally_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Stormtrooper.run_id )) then
+			self.squad_ai:DoSpecialAbility( Stormtrooper.run_id )
+		end
+	end
+end

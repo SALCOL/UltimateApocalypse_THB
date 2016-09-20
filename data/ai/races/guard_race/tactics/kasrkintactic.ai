@@ -1,6 +1,10 @@
+----------------------------------------
+-- File: 'kasrkintactic.ai'
+-- Edited by Thudmeizer	@ 04.05.2016
 
 class 'KasrkinTactic' (GuardInfantryTactic)
 
+Kasrkin = {}
 
 function KasrkinTactic:__init( squad_ai ) super( squad_ai )
 
@@ -8,4 +12,145 @@ function KasrkinTactic:__init( squad_ai ) super( squad_ai )
 	
 	-- Squad is able to occupy bunkers
 	self.m_bBunkerSquad = true
+end
+
+function KasrkinTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Kasrkin.demo_id == nil) then
+		Kasrkin.demo_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge" )	
+	end
+	if (Kasrkin.detonate_id == nil) then
+		Kasrkin.detonate_id = cpu_manager.stats:GetAbilityID( "guard_demo_charge_detonate" )	
+	end
+	if (Kasrkin.flashbang_id == nil) then
+		Kasrkin.flashbang_id = cpu_manager.stats:GetAbilityID( "guard_flashbang_grenades" )	
+	end
+	if (Kasrkin.frag_id == nil) then
+		Kasrkin.frag_id = cpu_manager.stats:GetAbilityID( "guard_frag_grenades" )	
+	end
+	if (Kasrkin.kasrkinfrag_id == nil) then
+		Kasrkin.kasrkinfrag_id = cpu_manager.stats:GetAbilityID( "guard_kasrkin_frag_grenades" )	
+	end
+	if (Kasrkin.krak_id == nil) then
+		Kasrkin.krak_id = cpu_manager.stats:GetAbilityID( "guard_krak_grenades" )	
+	end
+	if (Kasrkin.smoke_id == nil) then
+		Kasrkin.smoke_id = cpu_manager.stats:GetAbilityID( "guard_smoke_grenades" )	
+	end
+	if (Kasrkin.bolster_id == nil) then
+		Kasrkin.bolster_id = cpu_manager.stats:GetAbilityID( "guard_bolster_defenses" )	
+	end
+	if (Kasrkin.run_id == nil) then
+		Kasrkin.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function KasrkinTactic:DoAbilities()
+
+	-- Place Demo Charge
+	if (self.squad_ai:CanDoAbility(Kasrkin.demo_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, Kasrkin.demo_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, Kasrkin.demo_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, Kasrkin.demo_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Detonate Charge!
+	if (self.squad_ai:CanDoAbility(Kasrkin.detonate_id)) then 
+		Ability.DoAbilityPos( self.squad_ai, Kasrkin.detonate_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, Kasrkin.detonate_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, Kasrkin.detonate_id, Ability.EntityFilters.CloseBaseEntityEnemy, 2)
+	end
+
+	-- Throw flashbang grenades!
+	Ability.DoAbilityTarget(self.squad_ai, Kasrkin.flashbang_id, Ability.Filters.CloseSquadEnemy, 6)
+
+	-- Throw frag grenades!
+	Ability.DoAbilityTarget(self.squad_ai, Kasrkin.frag_id, Ability.Filters.CloseInfantryEnemy, 4)
+
+	-- Throw kasrkin frag grenades!
+	Ability.DoAbilityTarget(self.squad_ai, Kasrkin.kasrkinfrag_id, Ability.Filters.CloseSquadEnemy, 4)
+
+	-- Throw melta grenades!
+	Ability.DoAbilityTarget(self.squad_ai, Kasrkin.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility(Kasrkin.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Kasrkin.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(Kasrkin.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Check if we can Bolster Defenses
+	if (self.squad_ai:CanDoAbility(Kasrkin.bolster_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Kasrkin.bolster_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(Kasrkin.bolster_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Kasrkin.run_id )) then
+			self.squad_ai:DoSpecialAbility( Kasrkin.run_id )
+		end
+	end
+end
+
+function KasrkinTactic:Reinforce()
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- Always try for the actual leader first
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+			return
+		end
+
+		-- Try for different types of squad members
+		local heavyweaponIndex = 0
+		local sergeantIndex = 1
+		local bannerIndex = 2
+		local medicIndex = 3
+	
+		-- Get current leader count
+		local numHeavyweapons = self.squad_ai:GetLeaderCount( heavyweaponIndex )
+		local numSergeant = self.squad_ai:GetLeaderCount( sergeantIndex)
+		local numBanners = self.squad_ai:GetLeaderCount( bannerIndex )
+		local numMedics = self.squad_ai:GetLeaderCount( medicIndex )
+
+		-- Desired number of each leader type
+		local desiredHeavyweapons = math.random(0,1)
+		local desiredSergeant = math.random(0,1)
+		local desiredBanners = math.random(0,1)
+		local desiredMedics = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if (numHeavyweapons < desiredHeavyweapons) then
+			if self.squad_ai:CanReinforce( true, heavyweaponIndex ) then
+				self.squad_ai:DoReinforce( true, heavyweaponIndex )
+			end
+		elseif (numSergeant < desiredSergeant) then
+			if self.squad_ai:CanReinforce( true, sergeantIndex ) then
+				self.squad_ai:DoReinforce( true, sergeantIndex )
+			end
+		elseif (numBanners < desiredBanners) then
+			if self.squad_ai:CanReinforce( true, bannerIndex ) then
+				self.squad_ai:DoReinforce( true, bannerIndex )
+			end
+		elseif (numMedics < desiredMedics) then
+			if self.squad_ai:CanReinforce( true, medicIndex ) then
+				self.squad_ai:DoReinforce( true, medicIndex )
+			end
+		end
+	end
 end

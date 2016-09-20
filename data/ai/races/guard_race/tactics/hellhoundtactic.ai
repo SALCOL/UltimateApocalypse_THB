@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'hellhoundtactic.ai'
 -- Edited by Arkhan		@ 09.11.2006
+-- Edited by Thudmeizer		@ 01.03.2016
 
 class 'HellhoundTactic' (GuardVehicleTactic)
 
@@ -15,7 +16,7 @@ function HellhoundTactic:InitAbilities()
 
 	-- Init ability ID's
 	if (Hellhound.burn_id == nil) then
-		Hellhound.burn_id = cpu_manager.stats:GetAbilityID("guard_let_it_burn")
+		Hellhound.burn_id = cpu_manager.stats:GetAbilityID( "guard_let_it_burn" )
 	end
 end
 

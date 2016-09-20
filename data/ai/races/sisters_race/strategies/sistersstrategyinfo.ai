@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersstrategyinfo.ai'
--- Edited by Thudmeizer    @ 02.02.2016
+-- Edited by Thudmeizer    @ 20.06.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -34,46 +34,55 @@ BuildBaseStrategyInfo =
 		{
 			-- Allround Strategy
 			{
-				{ 1, 75, 0, 0, 1,	"Unit",		"sisters_squad_missionary" }, -- Force a caturing squad
-				{ 1, 220, 50, 0, 1,	"Unit",		"sisters_squad_canoness" },
-				{ 1, 180, 0, 0, 3,	"Unit",		"sisters_squad_battle_sister" },
+				{ 1, 75, 0, 0, 1,	"Unit",		"sisters_squad_missionary" }, -- Force a capturing squad
+				{ 1, 260, 40, 0, 1,	"Unit",		"sisters_squad_canoness" },
+				{ 1, 180, 0, 0, 2,	"Unit",		"sisters_squad_battle_sister" },
+				{ 1, 200, 0, 0, 1,	"Unit",		"sisters_squad_seraphim" },
 				{ 1, 450, 0, 0, 1,	"Building",	"sisters_hq" },
 				{ 1, 250, 0, 0, 1,	"Building",	"sisters_infantry" },
 				{ 1, 135, 0, 0, 1,	"Building",	"sisters_plasma_generator" },
-				{ 1, 0, 0, 0, 1,	"Building",	"sisters_tanktrap_ai" },
-				{ 1, 0, 0, 0, 20,	"TurretAddon",	"addon_sisters_holy_icon" },
-				{ 1, 90, 80, 0, 40,	"TurretAddon",	"addon_sisters_list_post_1" },
+				{ 1, 100, 100, 0, 20,	"TurretAddon",	"addon_sisters_holy_icon" },
+				{ 1, 90, 80, 0, 50,	"TurretAddon",	"addon_sisters_list_post_1" },
 				{ 1, 135, 0, 0, 3,	"Building",	"sisters_plasma_generator" },
-				{ 1, 175, 50, 0, 1,	"Building",	"sisters_sanctuary" },
-				{ 1, 400, 130, 500, 1,	"Addon",	"addon_sisters_hq_1" },
-				{ 1, 90, 80, 0, 100,	"TurretAddon",	"addon_sisters_list_post_1" },
+				{ 1, 175, 50, 500, 1,	"Building",	"sisters_sanctuary" },
+				{ 1, 90, 80, 700, 100,	"TurretAddon",	"addon_sisters_list_post_1" },
 				{ 1, 135, 0, 0, 5,	"Building",	"sisters_plasma_generator" },
+				{ 1, 400, 130, 950, 1,	"Addon",	"addon_sisters_hq_1" },
 
+				{ 2, 120, 120, 0, 1,	"Unit",		"sisters_squad_rhino" },
+				{ 2, 150, 200, 0, 1,	"Unit",		"sisters_squad_immolator_tank" },
+				{ 2, 210, 30, 0, 1,	"Unit",		"sisters_squad_celestian" },
 				{ 2, 200, 125, 0, 1,	"Building",	"sisters_vehicle_building" },
 				{ 2, 135, 0, 0, 6,	"Building",	"sisters_plasma_generator" },
-				{ 2, 50, 90, 500, 30,	"TurretAddon",	"addon_sisters_turret" },
+				{ 2, 25, 90, 0, 50,	"TurretAddon",	"addon_sisters_turret" },
 				{ 2, 125, 50, 0, 1,	"Building",	"sisters_holy_reliquary" },
-				{ 2, 240, 160, 1000, 50,"TurretAddon",	"addon_sisters_list_post_2" },
-				{ 2, 105, 50, 500, 100,	"TurretAddon",	"addon_sisters_holy_icon" },
-				{ 2, 500, 500, 750, 1,	"Addon",	"addon_sisters_hq_2" },
-				{ 2, 700, 150, 750, 2,	"Building",	"sisters_hq" },
+				{ 2, 240, 160, 0, 50, 	"TurretAddon",	"addon_sisters_list_post_2" },
+				{ 2, 100, 100, 0, 100,	"TurretAddon",	"addon_sisters_holy_icon" },
+				{ 2, 700, 150, 0, 2,	"Building",	"sisters_hq" },
+				{ 2, 500, 500, 1000, 1,	"Addon",	"addon_sisters_hq_2" },
 
-				{ 3, 50, 90, 500, 100,	"TurretAddon",	"addon_sisters_turret" },
+				{ 3, 210, 30, 0, 1,	"Unit",		"sisters_squad_retributor" },
+				{ 3, 320, 140, 0, 1,	"Unit",		"sisters_squad_repentia" },
+				{ 3, 120, 260, 0, 1,	"Unit",		"sisters_squad_exorcist_tank" },
+				{ 3, 25, 90, 0, 100,	"TurretAddon",	"addon_sisters_turret" },
 				{ 3, 240, 160, 0, 100,	"TurretAddon",	"addon_sisters_list_post_2" },
-			      --{ 3, 305, 180, 0, 100,	"TurretAddon",	"addon_sisters_list_post_3" },
-				{ 3, 1000, 1000, 0, 1,	"Building",	"sisters_shrine" },
+				{ 3, 1000, 1000, 1500, 1,"Building",	"sisters_shrine" },
 
-				{ 4, 0, 0, 0, 1,	"Unit",		"sisters_squad_living_saint" },
-				{ 4, 135, 0, 0, 10,	"Building",	"sisters_plasma_generator" },
-				{ 4, 1500, 1500, 500, 1,"Research",	"sisters_research_hammer" },
+				{ 4, 180, 330, 0, 1,	"Unit",		"sisters_squad_exorcist_mk" },
+				{ 4, 190, 390, 0, 1,	"Unit",		"sisters_squad_penitent_engine" },
+				{ 4, 1350, 3000, 0, 1,  "Building",	"sisters_capitol_building" },
+				{ 4, 1500, 1500, 2000, 1,"Research",	"sisters_research_hammer" },
 
-				{ 5, 0, 0, 0, 1,	"Unit",		"sisters_squad_arch_angel" },
-				{ 5, 1000, 1000, 0, 2,	"Building",	"sisters_shrine" },
-				{ 5, 2000, 2000, 0, 1,	"Building",	"sisters_shrine_to_the_emperor" },
-				{ 5, 4000, 4000, 0, 1,	"Research",	"sisters_apocalypse_research" },
+				{ 5, 100, 100, 0, 1,	"Building",	"sisters_shrine_to_the_emperor" },
+				{ 5, 2000, 2000, 0, 1,	"Building",	"sisters_missile_silo" },
+				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
+				{ 5, 3000, 3000, 2500, 1,"Research",	"sisters_apocalypse_research" },
 				
-				{ 6, 300, 125, 1500, 100,"Addon",	"addon_sisters_hq_1" },
-				{ 6, 340, 340, 2000, 100,"Addon",	"addon_sisters_hq_2" }				
+				{ 6, 200, 60, 0, 1,	"Unit",		"sisters_squad_confessor" },
+				{ 6, 260, 40, 0, 1,	"Unit",		"sisters_squad_canoness" },
+				{ 6, 300, 80, 0, 1,	"Unit",		"sisters_inquisitor_squad" },
+				{ 6, 800, 210, 0, 1,	"Unit",		"sisters_squad_nunciate_superior" },
+				{ 6, 10000, 10000, 4000, 1,"Building",	"sisters_krak" }
 			},
 
 		},
@@ -82,7 +91,28 @@ BuildBaseStrategyInfo =
 		{
 			standard =
 			{
-				sisters_squad_ds_turret = 3,
+				sisters_squad_missionary = 6,
+				sisters_squad_battle_sister = 3,
+				sisters_squad_seraphim = 3,
+				sisters_squad_celestian = 3,
+				sisters_squad_saint_cherub = 6,
+				sisters_squad_retributor = 3,
+				sisters_squad_repentia = 3,
+				sisters_squad_assassin = 3,
+				sisters_squad_redemptionist = 3,
+				sisters_squad_legatine_superior = 3,
+				sisters_squad_rhino = 2,
+				sisters_squad_sentinel = 2,
+				sisters_squad_immolator_tank = 2,
+				sisters_squad_exorcist_tank = 2,
+				sisters_squad_exorcist_mk = 2,
+				sisters_squad_lightning = 2,
+				sisters_squad_lightning_strike = 2,
+				sisters_squad_penitent_engine = 2,
+				sisters_squad_capitol_imperialis = 2,
+				sisters_squad_living_saint_black = 1,
+				sisters_squad_living_saint_blue = 1,
+				sisters_squad_living_saint = 1,
 				sisters_squad_arch_angel = 1,
 			}
 		},
@@ -97,13 +127,14 @@ BuildOrderStrategyInfo =
 		{
 			{ "flag_capture" }, { "flag_capture" },
 			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" }, { "flag_capture" },
 			{ "squad", "sisters_squad_servitor" },
 			{ "squad", "sisters_squad_missionary" },
 			{ "squad", "sisters_squad_missionary" },
 			{ "squad", "sisters_squad_missionary" },
-			{ "squad", "sisters_squad_servitor" },
 			{ "squad", "sisters_squad_missionary" },
-			{ "post_builder" }, 
+			{ "squad", "sisters_squad_missionary" },
+			{ "post_builder" }, { "post_builder" }, 
 			{ "building", "sisters_infantry", true },
 			{ "building", "sisters_plasma_generator" }
 		},
@@ -127,13 +158,15 @@ BuildOrderStrategyInfo =
 		{
 			{ "flag_capture" }, { "flag_capture" }, 
 			{ "flag_capture" }, { "flag_capture" },
+			{ "flag_capture" }, { "flag_capture" },
 			{ "squad", "sisters_squad_missionary" },
 			{ "squad", "sisters_squad_servitor" },
+			{ "squad", "sisters_squad_missionary" },
 			{ "squad", "sisters_squad_servitor" },
 			{ "squad", "sisters_squad_missionary" },
 			{ "squad", "sisters_squad_missionary" },
 			{ "squad", "sisters_squad_missionary" },
-			{ "post_builder" }, 
+			{ "post_builder" }, { "post_builder" }, 
 			{ "building", "sisters_infantry", true },
 			{ "building", "sisters_plasma_generator" }
 		}

@@ -1,8 +1,10 @@
 ----------------------------------------
 -- File: 'guardhwttactic.ai'
--- Edited by Thudmeizer @ 23.10.2006
+-- Edited by Thudmeizer @ 29.02.2016
 
 class 'HeavyWeaponsTeamTactic' (GuardInfantryTactic)
+
+HeavyWeaponsTeam = {}
 
 function HeavyWeaponsTeamTactic:__init( squad_ai ) super( squad_ai )
 
@@ -24,10 +26,41 @@ function HeavyWeaponsTeamTactic:__init( squad_ai ) super( squad_ai )
 	end
 end
 
+function HeavyWeaponsTeamTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (HeavyWeaponsTeam.bolster_id == nil) then
+		HeavyWeaponsTeam.bolster_id = cpu_manager.stats:GetAbilityID( "guard_bolster_defenses" )	
+	end
+	if (HeavyWeaponsTeam.run_id == nil) then
+		HeavyWeaponsTeam.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
 function HeavyWeaponsTeamTactic:DoAbilities()
 
 	-- Try to entrench
 	self:DoEntrenchAbility()
+
+	-- Check if we can Bolster Defenses
+	if (self.squad_ai:CanDoAbility(HeavyWeaponsTeam.bolster_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(HeavyWeaponsTeam.bolster_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(HeavyWeaponsTeam.bolster_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( HeavyWeaponsTeam.run_id )) then
+			self.squad_ai:DoSpecialAbility( HeavyWeaponsTeam.run_id )
+		end
+	end
 end
 
 function HeavyWeaponsTeamTactic:DoEntrenchAbility()

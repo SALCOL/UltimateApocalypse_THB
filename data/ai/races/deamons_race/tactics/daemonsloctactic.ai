@@ -1,0 +1,107 @@
+----------------------------------------
+-- File: 'daemonsloctactic.ai'
+-- Created by Thudmeizer @ 08.05.2016
+
+class 'DaemonsLocTactic' (DaemonsInfantryTactic)
+
+DaemonsLoc = {}
+
+function DaemonsLocTactic:__init( squad_ai ) super( squad_ai )
+
+       self:SetName("Daemons Lord Of Change Tactic")
+end
+
+function DaemonsLocTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function DaemonsLocTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Lord Of Change is allowed to retreat even directly after a jump
+function DaemonsLocTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function DaemonsLocTactic:InitAbilities()
+
+	if (DaemonsLoc.bolt_id == nil) then
+	   	DaemonsLoc.bolt_id = cpu_manager.stats:GetAbilityID( "daemons_bolt_of_change_loc" )	
+	end
+
+	if (DaemonsLoc.invulnerability_id == nil) then
+	   	DaemonsLoc.invulnerability_id = cpu_manager.stats:GetAbilityID( "daemons_invulnerability" )	
+	end
+
+	if (DaemonsLoc.warpstorm_id == nil) then
+	   	DaemonsLoc.warpstorm_id = cpu_manager.stats:GetAbilityID( "daemons_warp_storm_mini" )	
+	end
+
+	if (DaemonsLoc.warptime_id == nil) then
+	   	DaemonsLoc.warptime_id = cpu_manager.stats:GetAbilityID( "daemons_warp_time_loc" )	
+	end
+
+	if (DaemonsLoc.winds_id == nil) then
+	   	DaemonsLoc.winds_id = cpu_manager.stats:GetAbilityID( "daemons_winds_of_chaos" )	
+	end
+end
+
+function DaemonsLocTactic:DoAbilities()
+
+	-- If we are dying, lower requisites for attacks
+	if ( self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4 ) then
+
+		Ability.DoAbilityPos( self.squad_ai, DaemonsLoc.bolt_id, Ability.Filters.CloseSquadEnemy, 4 ) 
+		Ability.DoAbilityPos( self.squad_ai, DaemonsLoc.bolt_id, Ability.Filters.CloseMonsterEnemy, 2 ) 
+
+		Ability.DoAbilityPos( self.squad_ai, DaemonsLoc.warpstorm_id, Ability.Filters.CloseEnemy, 5 ) 
+
+		Ability.DoAbilityArea( self.squad_ai, DaemonsLoc.warptime_id, Ability.Filters.CloseEnemy, 20, 5 ) 
+	else
+		Ability.DoAbilityPos( self.squad_ai, DaemonsLoc.bolt_id, Ability.Filters.CloseSquadEnemy, 8 ) 
+		Ability.DoAbilityPos( self.squad_ai, DaemonsLoc.bolt_id, Ability.Filters.CloseMonsterEnemy, 4 ) 
+
+		Ability.DoAbilityPos( self.squad_ai, DaemonsLoc.warpstorm_id, Ability.Filters.CloseEnemy, 10 ) 
+
+		Ability.DoAbilityArea( self.squad_ai, DaemonsLoc.warptime_id, Ability.Filters.CloseEnemy, 20, 10 ) 
+	end
+
+	-- Invulnerability
+	if (self.squad_ai:CanDoAbility(DaemonsLoc.invulnerability_id)) then
+		local range = self.squad_ai:GetAbilityRange( DaemonsLoc.invulnerability_id )	
+		local squad_filter = function( squad_ai )		
+			return squad_ai:IsInCombat() and squad_ai:GetHealthPercentage() < 0.5 or squad_ai:IsBroken()
+		end	
+   		local target_squad = cpu_manager:GetClosestSquad( self.squad_ai:GetPosition(), range, squad_filter )
+		if (target_squad ~= nil) then
+			self.squad_ai:DoSpecialAbilitySquad( DaemonsLoc.invulnerability_id, target_squad:GetSquad() )
+ 		end
+	end
+
+	-- Cast Winds of Chaos if enemies nearby, but NOT allies!
+	if (self.squad_ai:CanDoAbility(DaemonsLoc.winds_id) and self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.6) then
+		if (Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), 15, 5) ~= nil and Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), 20, 4) == nil) then
+			self.squad_ai:DoSpecialAbility(DaemonsLoc.winds_id)
+		end
+	end
+end
+
+function DaemonsLocTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+	
+	--state machine
+	if not InfantryTactic.Update( self ) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

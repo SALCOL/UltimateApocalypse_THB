@@ -1,0 +1,67 @@
+----------------------------------------
+-- File: 'dronesatellitetactic.ai'
+-- Edited by Thudmeizer @ 18.03.2016
+
+class 'DroneSatelliteTactic' (TauVehicleTactic)
+
+DroneSatellite = {}
+
+function DroneSatelliteTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Drone Satellite Tactic")
+end
+
+function DroneSatelliteTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DroneSatellite.nuke_id == nil) then
+		DroneSatellite.nuke_id = cpu_manager.stats:GetAbilityID( "tau_satellite_nuke" )	
+	end
+	if (DroneSatellite.mark_id == nil) then
+		DroneSatellite.mark_id = cpu_manager.stats:GetAbilityID( "tau_satellite_mark_squad" )	
+	end
+end
+
+function DroneSatelliteTactic:DoAbilities()
+
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Activate Prototype Area Eliminator.
+	if (self.squad_ai:CanDoAbility(DroneSatellite.nuke_id) and (iRequisition >= 45000 and iPower >= 45000)) then
+
+		-- If we are dying, lower requisites for attacks
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			Ability.DoAbilityPos(self.squad_ai, DroneSatellite.nuke_id, Ability.Filters.CloseEnemy, 25)
+			Ability.DoAbilityPos(self.squad_ai, DroneSatellite.nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
+		else
+			Ability.DoAbilityPos(self.squad_ai, DroneSatellite.nuke_id, Ability.Filters.CloseEnemy, 35)
+			Ability.DoAbilityPos(self.squad_ai, DroneSatellite.nuke_id, Ability.EntityFilters.CloseBaseEntityEnemy, 10)
+		end
+	end
+
+	-- Check if we can use mark squad ability
+	if (self.squad_ai:CanDoAbility(DroneSatellite.mark_id) and self.squad_ai:IsInCombat()) then
+	
+		-- Get closest squad in range
+		local iRange = self.squad_ai:GetAbilityRange(DroneSatellite.mark_id)
+		local oSquad = cpu_manager.cpu_player:FindFirstEnemy(self.squad_ai:GetPosition(), iRange, 1)
+		if (oSquad ~= nil) then
+		
+			-- Get stats
+			local oStats = oSquad:GetStats()
+			if (oStats ~= nil) then
+			
+				-- Check unit type
+				local eClass = oStats:GetClass()
+				if (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or
+					eClass == UnitStatsAI.UC_VehicleHigh or eClass == UnitStatsAI.UC_Commander or
+					eClass == UnitStatsAI.UC_MonsterHigh or oSquad:GetNumTroopers() >= 4) then
+					
+					-- Use mark ability on squad
+					self.squad_ai:DoSpecialAbilitySquad(DroneSatellite.mark_id, oSquad:GetSquad())
+				end
+			end	
+		end
+	end
+end

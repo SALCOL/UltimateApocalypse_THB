@@ -1,0 +1,344 @@
+----------------------------------------
+-- File: 'sistersbuildertactic.ai'
+-- Edited by Thudmeizer/Gambit @ 10.04.2016
+
+class 'SistersBuilderTactic' (SistersInfantryTactic)
+
+SistersBuilder = {}
+
+function SistersBuilderTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Builder Tactic")
+
+	-- Engineer Tactic Settings, modify as required
+	self.iBusy = g_iGMT
+	self.iSquadName = self.squad_ai:GetSquadName()   --> The name of the SQUAD with the dual role, so that not to repair itself!
+	self.iRepairVehicleRange = 40   --> The range within which the squad will perform the vehicle repairs
+	self.iRepairSuperVehiclesWhenInCombat = true  --> Will repair super vehicles, even if in combat
+	self.iRepairStrongVehiclesWhenInCombat = true  --> Will also repair super vehicles if true
+	self.isBuildingsRepairer  = true  --> Will also repair nearby structures if true
+	self.isBuildingsAssistant  = true  --> Will also help build nearby unfinished structures if true
+	self.iFixBuildingsRange = 30  --> The range within which the squad will perform building duties
+end
+
+-- Builder is allowed to retreat even directly after a jump
+function SistersServitorTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersBuilderTactic:IsAttacker()
+	return false
+end
+
+function SistersBuilderTactic:IsDefender()
+	return false
+end
+
+function SistersBuilderTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersBuilder.run_id == nil) then
+		SistersBuilder.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function SistersBuilderTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersBuilder.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersBuilder.run_id )
+		end
+	end
+end
+
+function SistersBuilderTactic:Upgrade()
+
+	-- If there are no ressources available, don't upgrade!
+	if (not Tactic.Options.can_reinforce) then
+		return
+	end
+  
+	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
+		self.squad_ai:DoBestUpgrade( class_type )
+end
+
+-----------------------------------------
+-- Update tactic for dual-duty squads  --
+-----------------------------------------
+
+function SistersBuilderTactic:Update()
+
+	-- State machine
+	if not Tactic.Update( self ) then
+		return false
+	end
+
+	-- Reinforce squads
+	self:Reinforce()
+
+	-- Upgrade weapons
+	self:Upgrade()
+
+	-- Do abilities even if this means interrupting engineer duties.
+	-- Place the following two lines AFTER the locked check below,
+	--  if you do not want abilities to interrupt them.
+	-- Alternative, make specific IF checks, in case you want each
+	--  ability to have different behaviour.
+	self:InitAbilities()
+	self:DoAbilities()
+
+	-- Check if locked, and not attacked while being so, so that to fulfil his tasks
+	if (self.squad_ai:IsLocked() and not self.squad_ai:WasRecentlyHurt()) then
+		return true
+   	end
+
+	if self.squad_ai:CanJump() then
+		self.tolerance_default = self.squad_ai:GetJumpDistance()
+	else
+		self.tolerance_default = 100
+	end
+
+	-- Update commander attach/detach health
+	local iSupportCap = build_manager:GetSupportCapCurrentMax() - build_manager:GetSupportCapLeft()
+	if (iSupportCap >= 4) then
+		self.m_fCommanderAttachHealth = 0.3
+	else
+		self.m_fCommanderAttachHealth = 0.1
+	end
+
+	self:SyncSubState()
+
+	self:CheckForBroken()
+
+	-- If not already in substate
+	if (self.stateID == Tactic.StateID.NoState) then
+	   
+		-- Check dance mode
+		if (CpuManager.AISettings.iDancing == 2) then
+		 	self:CheckForDeath()
+			if (self.stateID == Tactic.StateID.NoState) then
+				self:CheckForDance()
+				if (self.stateID == Tactic.StateID.NoState) then
+					self:CheckForStealthTroops()
+				end
+			end
+		elseif (CpuManager.AISettings.iDancing == 1 and g_iGMT > self.m_iDancing + 10) then
+			self:CheckForDeath()
+			if (self.stateID == Tactic.StateID.NoState) then
+				self:CheckForDance()
+				if (self.stateID == Tactic.StateID.NoState) then
+					self:CheckForStealthTroops()
+				end
+			end
+		end
+	end
+
+	if (self.stateID == Tactic.StateID.NoState) then
+	
+		for i in self.commander do
+		
+			if self.squad_ai:HasSquadAttached( self.commander[i][1] ) and self.commander[i][2] then
+				
+				--if I'm nearly dead, run away
+				if self.squad_ai:GetAttachedHealthPercentage() < 0.7 then
+				   self.squad_ai:DoMoveToClosestSafePoint( self.safe_point, self.tolerance )
+				end
+				return
+			end
+		end
+	end
+
+	if (self.squad_ai:IsAttached()) then
+		self:CheckForDetach()
+	end
+
+	-- Special moves after a while
+	if g_iGMT > self.iBusy + 6 then
+		self:CloseOnEnemy()
+	end
+
+	-- Check stance
+	self:UpdateStance()
+
+	-- Perform engineer duties
+	self:DoEngineerDuties()
+
+	-- If no tasks after a while, or attacked while building a structure, engage closest enemy.
+	if ((not (self:IsMoving() or self.squad_ai:IsInCombat()) and g_iGMT > self.iBusy + 6) or
+	(self.squad_ai:IsBuilding() ~= 0 and self.squad_ai:WasRecentlyHurt())) then
+		self:EngageClosestEnemyIfNeeded()
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+
+	-- Return success
+	return true
+end
+
+------------------------------------------------
+-- Code for dual-duty squads (also engineers) --
+------------------------------------------------
+
+-- Moves the squad to engage the enemy. Usually called if idle, or attacked during building a structure
+function SistersBuilderTactic:EngageClosestEnemyIfNeeded()
+	-- Define squad filter functor
+	local oSquadFilter = function( oSquadAI )
+		return not oSquadAI:IsBroken()
+	end
+	-- Get closest enemy squad to engage
+    local oEnemySquad = cpu_manager:FindClosestEnemy(self.squad_ai:GetPosition(), 1512, oSquadFilter)
+    if (oEnemySquad ~= nil) then
+		local targetPosition = oEnemySquad:GetPosition()
+		if Ability.Filters.CloseHurt(targetPosition, 40, 1) ~= nil then
+			self.squad_ai:DoMove(targetPosition)
+		end
+	end
+end
+
+
+-- Performs the repair and building tasks
+function SistersBuilderTactic:DoEngineerDuties()
+	-- Assisting boolean, so that not to call GetDmgdOrUnfnsdBuildingWithin twice
+	local iCheck = true
+
+	-- Try to repair a nearby damaged vehicle. If no vehicle, find a damaged building
+	if self.squad_ai:CanRepair() then
+		-- First, find the closest vehicle that can be repaired
+		local oVehicleToRepair = self:GetDamagedVehicleWithin(self.iRepairVehicleRange)
+		if (oVehicleToRepair ~= nil) then
+			-- Prefer to repair a powerful vehicle, even in battle
+			local superVehicle = false
+			local strongVehicle = false
+			if self.iRepairSuperVehiclesWhenInCombat then
+				local vStats = oVehicleToRepair:GetStats()
+				if  vStats ~= nil then
+					local vClass = vStats:GetClass()
+					if vClass ~= nil then
+						if vClass == UnitStatsAI.UC_VehicleHigh then
+							superVehicle = true
+						end
+					end
+				end
+
+			elseif self.iRepairStrongVehiclesWhenInCombat then
+				local vStats = oVehicleToRepair:GetStats()
+				if  vStats ~= nil then
+					local vClass = vStats:GetClass()
+					if vClass ~= nil then
+						if vClass == UnitStatsAI.UC_VehicleMed then
+
+							strongVehicle = true
+						end
+					end
+				end
+			end
+
+			if not self.squad_ai:IsInCombat() or superVehicle or strongVehicle then
+				aitrace("EngineerTactic: Repairing vehicle...")
+				self.squad_ai:DoRepairSquad(oVehicleToRepair)
+				self.iBusy = g_iGMT
+				return true
+			end
+		end
+		-- Then, find the closest building that can be repaired
+		if self.isBuildingsRepairer then
+			self:GetDmgdOrUnfnsdBuildingWithin(self.iFixBuildingsRange)
+			iCheck = false
+			if not self.squad_ai:IsInCombat() then
+				local oBuildingToRepair = self:GetDamagedBuilding()
+
+				if (oBuildingToRepair ~= nil) then
+					aitrace("EngineerTactic: Repairing building...")
+					self.squad_ai:DoRepairBase(oBuildingToRepair)
+					self.iBusy = g_iGMT
+					return true
+				end
+			end
+		end
+	end
+	-- Then, try to help finish a building
+	if self.isBuildingsAssistant then
+		if self.squad_ai:IsEngineer() and not self.squad_ai:IsInCombat() then
+			if iCheck then
+				self:GetDmgdOrUnfnsdBuildingWithin(self.iFixBuildingsRange)
+			end
+
+			local oBuildingToFinish = self:GetUnfinishedBuilding()
+			if (oBuildingToFinish ~= nil) then
+				aitrace("EngineerTactic: Help finishing a building...")
+				self.squad_ai:DoFinishBuilding(oBuildingToFinish)
+				self.iBusy = g_iGMT
+				return true
+			end
+		end
+	end
+end
+
+
+-- Called directly to find an ally repairable and damaged squad within range.
+function SistersBuilderTactic:GetDamagedVehicleWithin(iRange)
+local iEngineerSquadPosition = self.squad_ai:GetPosition()
+for oPlayer in cpu_manager.stats:GetPlayerStats() do
+	if not oPlayer:IsPlayerDead() then
+		if not cpu_manager.player_stats:IsEnemy(oPlayer) then
+			for oSquad in oPlayer:GetSquads() do
+				if oSquad:IsValid() then
+					if oSquad:CanBeRepaired() and oSquad:GetHealthPercentage() < 1.0
+					and oSquad:GetSquadName() ~= self.iSquadName then
+						if distance(oSquad:GetPosition(),iEngineerSquadPosition) < iRange then 
+							return oSquad
+						end
+					end
+				end
+			end
+		end
+	end
+end
+return nil
+end
+
+
+-- Called indirectly, to find an ally repairable and damaged building, or an unfinished within range.
+function SistersBuilderTactic:GetDmgdOrUnfnsdBuildingWithin(iRange)
+self.damagedBuilding = nil
+self.unfinishedBuilding = nil
+local iEngineerSquadPosition = self.squad_ai:GetPosition()
+for oPlayer in cpu_manager.stats:GetPlayerStats() do
+	if (not oPlayer:IsPlayerDead()) then
+		if (not cpu_manager.player_stats:IsEnemy(oPlayer)) then
+			for oBuilding in oPlayer:GetBases() do
+				if oBuilding:IsValid() then
+					if distance(oBuilding:GetPosition(),iEngineerSquadPosition) < iRange then
+						if (self.isBuildingsRepairer and oBuilding:CanBeRepaired() and oBuilding:GetHealthPercentage() < 1.0) then
+							self.damagedBuilding = oBuilding
+							return
+						elseif (self.isBuildingsAssistant and not oBuilding:IsConstructionDone()) then
+							self.unfinishedBuilding = oBuilding:GetEntity()
+							return
+						end
+					end
+				end
+			end
+		end
+	end
+end
+end
+
+
+function SistersBuilderTactic:GetDamagedBuilding()
+	return self.damagedBuilding
+end
+
+
+function SistersBuilderTactic:GetUnfinishedBuilding()
+	return self.unfinishedBuilding
+end
+

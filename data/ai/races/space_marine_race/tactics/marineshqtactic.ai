@@ -10,8 +10,6 @@ MarinesHQ = {}
 function MarinesHQTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Marines HQ Tactic")
-	
-	self.m_bCanDeepStrikeTroops = true
 end
 
 function MarinesHQTactic:InitAbilities()
@@ -31,4 +29,8 @@ function MarinesHQTactic:DoAbilities()
 			self.base_ai:DoSpecialAbility( MarinesHQ.repair_id )
 		end
 	end
+end
+
+function MarinesHQTactic:CanDeepStrikeTroops()
+	return true
 end

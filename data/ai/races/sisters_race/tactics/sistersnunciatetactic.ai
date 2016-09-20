@@ -1,0 +1,203 @@
+----------------------------------------
+-- File: 'sistersnunciatetactic.ai'
+-- Edited by Thudmeizer @ 11.04.2016
+-- Edited by Cylarne_04 2011
+
+class 'SistersNunciateTactic' (SistersInfantryTactic)
+
+SistersNunciate = {}
+
+function SistersNunciateTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Nunciate Tactic")
+
+	self.timedDirectSpawnAbility = Timer( SistersNunciateTactic.DoDirectSpawnAbility, self, 5 )
+end
+
+function SistersNunciateTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelSistersNunciate = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelSistersNunciate ~= nil) then
+			local addOnID = buildChannelSistersNunciate:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelSistersNunciate:IsBuilding() == 0 and buildChannelSistersNunciate:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelSistersNunciate:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function SistersNunciateTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function SistersNunciateTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Nuicate is allowed to retreat even directly after a jump
+function SistersNunciateTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersNunciateTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function SistersNunciateTactic:CanJumpAttached()
+	return true
+end
+
+function SistersNunciateTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersNunciate.ascension_id == nil) then
+		SistersNunciate.ascension_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_ascension" )
+	end
+
+	if (SistersNunciate.divinelight_id == nil) then
+		SistersNunciate.divinelight_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_divine_light" )
+	end
+
+	if (SistersNunciate.dolanphail_id == nil) then
+		SistersNunciate.dolanphail_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_dolan_phail" )
+	end
+
+	if (SistersNunciate.tears_id == nil) then
+		SistersNunciate.tears_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_emperors_tears" )
+	end
+
+	if (SistersNunciate.bomb_id == nil) then
+		SistersNunciate.bomb_id = cpu_manager.stats:GetAbilityID( "sisters_commander_bomb" )
+	end
+	
+	if (SistersNunciate.invulnerability_id == nil) then
+		SistersNunciate.invulnerability_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_invulnerability_nunciate" )
+	end
+
+	if (SistersNunciate.run_id == nil) then
+		SistersNunciate.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function SistersNunciateTactic:DoAbilities()
+
+	-- We are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		-- Act of Faith - Ascension: Summons non-player controlled angels to fight for a short period (Faith cost: 200)
+		Ability.DoAbilityArea( self.squad_ai, SistersNunciate.ascension_id, Ability.Filters.CloseEnemy, 10, 5 )
+
+		-- Act of Faith - Purifying Light: Reduces enemy weapon accuracy and increases own weapon damage (Faith cost: 60)
+		Ability.DoAbilityTarget( self.squad_ai, SistersNunciate.divinelight_id, Ability.Filters.CloseSquadEnemy, 1 )
+	else
+		Ability.DoAbilityArea( self.squad_ai, SistersNunciate.ascension_id, Ability.Filters.CloseEnemy, 10, 10 )
+		Ability.DoAbilityTarget( self.squad_ai, SistersNunciate.divinelight_id, Ability.Filters.CloseInfantryEnemy, 6 )
+	end
+
+	-- Phial of Dolain: Timed support ability, grants a boost of movement speed to the entire squad when used. (Faith cost: 125)
+	if (self.squad_ai:CanDoAbility(SistersNunciate.dolanphail_id)) then
+
+		if (self:IsMoving() or self:IsInSubState()) then
+			self.squad_ai:DoSpecialAbility(SistersNunciate.dolanphail_id) 
+		end
+	end
+	
+	-- Emperor's Tears: Timed aggressive ability, grants invulnerability and an extra boost of damage to the squad when used. (Faith cost: 200)
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.6) then
+	
+		if (self.squad_ai:CanDoAbility(SistersNunciate.tears_id)) then
+			self.squad_ai:DoSpecialAbility(SistersNunciate.tears_id) 
+		end
+	end
+
+	-- Invulnerability: Causes the user to phase out of the material universe, becoming invulnerable. While active, the user can attack and use abilities. (Faith cost: 300)
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+	
+		if (self.squad_ai:CanDoAbility(SistersNunciate.invulnerability_id)) then
+			self.squad_ai:DoSpecialAbility(SistersNunciate.invulnerability_id) 
+		end
+	end
+
+	-- Try to place bomb
+	Ability.DoAbilityPos(self.squad_ai, SistersNunciate.bomb_id, Ability.Filters.CloseEnemy, 24)
+	Ability.DoAbilityPos(self.squad_ai, SistersNunciate.bomb_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersNunciate.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersNunciate.run_id )
+		end
+	end
+
+	-- Try to spawn Legatine Superiors
+	if (self.timedDirectSpawnAbility ~= nil) then
+		self.timedDirectSpawnAbility:Call()
+	else
+		SistersNunciateTactic.DoDirectSpawnAbility(self)
+	end
+end
+
+function SistersNunciateTactic:DoDirectSpawnAbility()
+
+	-- Spawn Legatine Superiors in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
+	end
+end
+
+function SistersNunciateTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_faith			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function SistersNunciateTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+		
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sternguardtactic.ai'
--- Edited by Thudmeizer @ 01.02.2016
+-- Edited by Thudmeizer @ 07.06.2016
 
 class 'SternguardTactic' (SpaceMarineInfantryTactic)
 
@@ -77,9 +77,8 @@ function SternguardTactic:DoAbilities()
 		end
 	end
 
-	-- Check to make sure if no threats are nearby
-	local vSquadPos = self.squad_ai:GetPosition()
-	if not (self.squad_ai:IsInCombat()) and not (self.squad_ai:IsUnderAttack()) then
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
 
 		-- If I am safe I can run
 		if (self.squad_ai:CanDoAbility( Sternguard.run_id )) then
@@ -136,10 +135,10 @@ function SternguardTactic:Reinforce()
 		local numSkulls = self.squad_ai:GetLeaderCount( SkullIndex )
 
 		-- Desired number of each leader type
-		local desiredSergeants = math.random(0,1)
-		local desiredApothecaries = math.random(0,1)
-		local desiredBanners = math.random(0,1)
-		local desiredSkulls = math.random(0,1)
+		local desiredSergeants = 1
+		local desiredApothecaries = 1
+		local desiredBanners = 1
+		local desiredSkulls = 1
 		
 		-- Desired order of reinforcing
 		if numApothecaries < desiredApothecaries then

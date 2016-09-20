@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'daemonsvehicletactic.ai'
+-- Edited by Thudmeizer         @ 10.05.2016
+-- Edited by Cylarne_04 2011
+
+class 'DaemonsVehicleTactic' (VehicleTactic)
+
+function DaemonsVehicleTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Vehicle Tactic")
+end
+
+-- Check if the vehicle should dance away in melee
+function DaemonsVehicleTactic:CheckVehicleDance(sName)
+
+	if (sName == "daemon_squad_defiler_khorne" or
+		sName == "daemon_squad_defiler_nurgle" or
+		sName == "daemon_squad_defiler_slaanesh" or
+		sName == "daemon_squad_defiler_tzeentch" or
+		sName == "daemon_squad_soul_grinder" or
+		sName == "daemon_squad_greater_brass_scorpion") then
+		return true
+	end
+	return false
+end
+
+function DaemonsVehicleTactic:DoAbilities()
+
+	-- Call standard method
+	VehicleTactic.DoAbilities(self)
+end

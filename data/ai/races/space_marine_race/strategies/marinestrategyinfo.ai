@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marinestrategyinfo.ai'
--- Edited by Thudmeizer  @ 09.02.2016
+-- Edited by Thudmeizer  @ 20.06.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -34,20 +34,21 @@ BuildBaseStrategyInfo =
 		{
 			-- Allround strategy
 			{
-				{ 1, 100, 0, 0, 1,	"Unit",		"space_marine_squad_scout" }, -- Force a capturing squad
-			        { 1, 300, 70, 0, 1,	"Unit",		"space_marine_squad_force_commander_killeus" },
-				{ 1, 125, 25, 0, 1,	"Unit",		"space_marine_squad_tactical_bike" },
-				{ 1, 250, 0, 0, 2,	"Unit",		"space_marine_squad_tactical" },
+			        { 1, 100, 0, 0, 1,	"Unit",		"space_marine_squad_scout" }, -- Force a capturing squad
+			        { 1, 350, 80, 0, 1,	"Unit",		"space_marine_squad_force_commander_killeus" },
+			        { 1, 170, 30, 0, 1,	"Unit",		"space_marine_squad_tactical_bike" },
+			        { 1, 220, 0, 0, 2,	"Unit",		"space_marine_squad_tactical" },
+				{ 1, 240, 0, 0, 1,	"Unit",		"space_marine_squad_assault" },
 				{ 1, 450, 0, 0, 1,	"Building",	"space_marine_hq" },
 				{ 1, 250, 0, 0, 1,	"Building",	"space_marine_barracks" },
 				{ 1, 135, 0, 0, 3,	"Building",	"space_marine_generator" },
-				{ 1, 100, 0, 0, 60,	"TurretAddon",	"space_marine_list_post_addon_1" },
+				{ 1, 90, 0, 0, 60,	"TurretAddon",	"space_marine_list_post_addon_1" },
 				{ 1, 140, 50, 0, 2,	"Building",	"space_marine_turret_bolter" },
-				{ 1, 175, 50, 0, 1,	"Building",     "space_marine_armoury" },
-				{ 1, 400, 130, 800, 1,	"Addon",	"space_marine_hq_addon_1" },
+				{ 1, 175, 50, 750, 1,	"Building",     "space_marine_armoury" },
 				{ 1, 140, 50, 0, 3,	"Building",	"space_marine_turret_bolter" },
-				{ 1, 100, 0, 250, 100,	"TurretAddon",	"space_marine_list_post_addon_1" },
+				{ 1, 90, 0, 250, 100,	"TurretAddon",	"space_marine_list_post_addon_1" },
 				{ 1, 135, 0, 0, 5,	"Building",	"space_marine_generator" },
+				{ 1, 400, 130, 950, 1,	"Addon",	"space_marine_hq_addon_1" },
 
 				{ 2, 130, 100, 0, 1,	"Unit",		"space_marine_squad_land_speeder" },
 				{ 2, 170, 140, 0, 1,	"Unit",		"space_marine_squad_razorback" },
@@ -57,7 +58,7 @@ BuildBaseStrategyInfo =
 				{ 2, 135, 0, 0, 6,	"Building",	"space_marine_generator" },
 				{ 2, 25, 90, 500, 35,	"TurretAddon",	"space_marine_turret_addon" },
 				{ 2, 140, 50, 0, 5,	"Building",	"space_marine_turret_bolter" },
-				{ 2, 250, 160, 500, 100,"TurretAddon",	"space_marine_list_post_addon_2" },
+				{ 2, 240, 150, 500, 100,"TurretAddon",	"space_marine_list_post_addon_2" },
 				{ 2, 140, 50, 0, 4,	"Building",	"space_marine_turret_bolter" },
 				{ 2, 125, 50, 0, 1,	"Building",	"space_marine_ability_building" },
 				{ 2, 500, 500, 1500, 1,	"Addon",	"space_marine_hq_addon_2" },
@@ -71,10 +72,9 @@ BuildBaseStrategyInfo =
 				{ 3, 175, 100, 0, 1,	"Building",	"space_marine_orbital_relay" },
 				{ 3, 700, 150, 500, 2,	"Building",	"space_marine_hq" },
 				{ 3, 140, 50, 700, 6,	"Building",	"space_marine_turret_bolter" },
-				{ 3, 10, 85, 1000, 25,	"TurretAddon",	"space_marine_turret_addon_probe" },
-				{ 3, 1000, 1000, 2500, 1,"Research",	"marine_heavy_armor_deployment" },
+				{ 3, 1000, 1000, 2000, 1,"Research",	"marine_heavy_armor_deployment" },
 
-				{ 4, 230, 390, 0, 1,	"Unit",		"space_marine_squad_predator" },
+				{ 4, 230, 410, 0, 1,	"Unit",		"space_marine_squad_predator" },
 				{ 4, 280, 410, 0, 1,	"Unit",		"space_marine_squad_dreadnought_venerable" },
 				{ 4, 310, 515, 0, 1,	"Unit",		"space_marine_squad_predator_murderer" },
 				{ 4, 520, 120, 0, 1,	"Unit",		"space_marine_squad_terminator" },
@@ -85,16 +85,23 @@ BuildBaseStrategyInfo =
 				{ 4, 25, 150, 800, 50,	"TurretAddon",	"space_marine_turret_addon_lascannon" },
 				{ 4, 400, 1750, 1000, 25,"TurretAddon",	"space_marine_beacon_addon" },
 				{ 4, 400, 240, 1500, 2,	 "Building",	"space_marine_turret_missile_sp" },
-				{ 4, 1500, 1500, 3000, 1,"Research",	"marines_research_bombardment" },
+				{ 4, 1500, 1500, 2500, 1,"Research",	"marines_research_bombardment" },
 				
 				{ 5, 520, 120, 0, 1,	"Unit",		"space_marine_squad_terminator_assault" },
 				{ 5, 400, 240, 0, 3,	"Building",	"space_marine_turret_missile_sp" },
 				{ 5, 890, 410, 0, 1,	"Building",	"space_marine_titan_facility" },
-				{ 5, 2800, 2800, 0, 1,	"Building",	"space_marine_hq_super" },
-				{ 5, 400, 240, 1500, 4,	"Building",	"space_marine_turret_missile_sp" },
-				{ 5, 4000, 4000, 4000, 1,"Research",	"marine_apocalypse_research" },
+				{ 5, 3000, 3000, 0, 1,	"Building",	"space_marine_hq_super" },
+				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
+				{ 5, 5100, 2400, 1000, 1,"Building",	"space_marine_armoury_emperor" },
+				{ 5, 2500, 0, 1500, 1,	"Building",	"space_marine_thermonuclear_generator" },
+				{ 5, 400, 240, 2000, 4,	"Building",	"space_marine_turret_missile_sp" },
+				{ 5, 8000, 8000, 3000, 1,"Research",	"marine_apocalypse_research" },
 				
-				{ 6, 5000, 5000, 800, 75,"TurretAddon",	"space_marine_beacon_destabilization_addon" }
+				{ 6, 280, 80, 0, 1,	"Unit",		"space_marine_squad_librarian" },
+				{ 6, 400, 110, 0, 1,	"Unit",		"space_marine_squad_chaplain_advance_sp" },
+				{ 6, 1500, 1500, 700, 100,"Addon",	"space_marine_thermonuclear_addon" },
+				{ 6, 5000, 5000, 800, 75,"TurretAddon",	"space_marine_beacon_destabilization_addon" },
+				{ 6, 8000, 8000, 4000, 3,"Building",	"space_marine_hq_super" }
 			},
 		},
 				
@@ -102,7 +109,44 @@ BuildBaseStrategyInfo =
 		{
 			standard = 
 			{
+				space_marine_squad_scout = 2,
+				space_marine_squad_tactical = 3,
+				space_marine_squad_tactical_bike = 3,
+				space_marine_squad_assault = 3,
+				space_marine_squad_devastator = 3,
+				space_marine_squad_servitor_weapons = 2,
+				space_marine_squad_vanguard_veteran = 3,
+				space_marine_squad_sternguard_veteran = 3,
+				space_marine_squad_lotd_tactical = 2,
+				space_marine_squad_terminator = 3,
+				space_marine_squad_terminator_assault = 3,
 				space_marine_squad_ds_turret = 3,
+				space_marine_squad_rhino = 3,
+				space_marine_squad_razorback = 3,
+				space_marine_squad_land_speeder = 3,
+				space_marine_squad_tempest = 3,
+				space_marine_squad_dreadnought = 3,
+				space_marine_squad_dreadnought_hellfire = 3,
+				space_marine_squad_dreadnought_ironclad = 3,
+				space_marine_squad_dreadnought_venerable = 3,
+				space_marine_squad_damocles = 3,
+				space_marine_squad_rhino_stalker = 2,
+				space_marine_squad_vindicator = 3,
+				space_marine_squad_whirlwind = 3,
+				space_marine_squad_predator = 3,
+				space_marine_squad_predator_advance_sp = 3,
+				space_marine_squad_predator_murderer = 3,
+				space_marine_squad_thunderhawk_uamod = 1,
+				space_marine_squad_land_raider_terminus = 1,
+				space_marine_squad_land_raider = 1,
+				space_marine_squad_land_raider_redeemer = 1,
+				space_marine_squad_land_raider_crusader = 1,
+				space_marine_squad_land_raider_helios = 1,
+				space_marine_squad_land_raider_prometheus = 1,
+				space_marine_squad_land_raider_ares = 1,
+				space_marine_squad_stormraven = 1,
+				space_marine_squad_warhound_titan = 1,
+				space_marine_squad_reaver_titan = 1,
 			}
 		}
 	},
@@ -120,7 +164,9 @@ BuildOrderStrategyInfo =
 			{ "squad", "space_marine_squad_scout" },
 			{ "squad", "space_marine_squad_scout" },
 			{ "squad", "space_marine_squad_scout" },
+			{ "squad", "space_marine_squad_scout" },
 			{ "squad", "space_marine_squad_servitor" },
+			{ "squad", "space_marine_squad_scout" },
 			{ "post_builder" }, { "post_builder" },
 			{ "building", "space_marine_barracks", true },
 			{ "building", "space_marine_generator" }
@@ -131,6 +177,8 @@ BuildOrderStrategyInfo =
 			{ "flag_capture" }, { "flag_capture" }, 
 			{ "flag_capture" },
 			{ "squad", "space_marine_squad_servitor" },
+			{ "squad", "space_marine_squad_scout" },
+			{ "squad", "space_marine_squad_scout" },
 			{ "squad", "space_marine_squad_scout" },
 			{ "squad", "space_marine_squad_scout" },
 			{ "squad", "space_marine_squad_servitor" },
@@ -150,6 +198,7 @@ BuildOrderStrategyInfo =
 			{ "squad", "space_marine_squad_scout" },
 			{ "squad", "space_marine_squad_servitor" },
 			{ "squad", "space_marine_squad_scout" },
+			{ "squad", "space_marine_squad_scout" },
 			{ "post_builder" }, { "post_builder" },
 			{ "building", "space_marine_barracks", true },
 			{ "building", "space_marine_generator" }
@@ -161,6 +210,6 @@ AttackStrategyInfo =
 {
 	space_marine_race =
 	{
-		MinArmyStrength = 750,
+		MinArmyStrength = 550,
 	},
 }

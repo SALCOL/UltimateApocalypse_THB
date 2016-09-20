@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'hazardtactic.ai'
 -- Edited by Cylarne @ 4/30/2011
+-- Edited by Thudmeizer	@ 18.03.2016
 
 class 'HazardTactic' (TauInfantryTactic)
 
@@ -14,21 +15,21 @@ end
 function HazardTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Hazard.pulse == nil) then
-		Hazard.pulse = cpu_manager.stats:GetAbilityID( "tau_xv9_pulse" )	
+	if (Hazard.pulse_id == nil) then
+		Hazard.pulse_id = cpu_manager.stats:GetAbilityID( "tau_xv9_pulse" )	
 	end
 end
 
 function HazardTactic:DoAbilities()
 
 	-- Target generic enemy 
-	Ability.DoAbilityArea(self.squad_ai, Hazard.pulse, Ability.Filters.CloseInfantryEnemy, 18, 4)
-	
+	Ability.DoAbilityArea(self.squad_ai, Hazard.pulse_id, Ability.Filters.CloseSquadEnemy, 18, 4)
+	Ability.DoAbilityArea(self.squad_ai, Hazard.pulse_id, Ability.Filters.CloseVehicleEnemy, 18, 2)
 end
 
 function HazardTactic:Upgrade()
 
-	-- Check if we have free ressources
+	-- Check if we have free resources
 	if (not Tactic.Options.can_reinforce) then
 		return
 	end

@@ -1,0 +1,75 @@
+----------------------------------------
+-- File: 'exorcisttactic.ai'
+-- Edited by Thudmeizer @ 18.04.2016
+
+class 'ExorcistTactic' (DaemonhuntInfantryTactic)
+
+Exorcist = {}
+
+function ExorcistTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Exorcist Tactic")
+end
+
+function ExorcistTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function ExorcistTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+function ExorcistTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Exorcist.medikits_id == nil) then
+	    	Exorcist.medikits_id = cpu_manager.stats:GetAbilityID( "inquisition_medikits_exorcist" )	
+	end
+
+	if (Exorcist.run_id == nil) then
+		Exorcist.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function ExorcistTactic:DoAbilities()
+
+	-- Use Medkits if low on health and attached
+	if (self.squad_ai:IsAttached() and self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		
+		if (self.squad_ai:CanDoAbility( Exorcist.medikits_id )) then
+			self.squad_ai:DoSpecialAbility( Exorcist.medikits_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Exorcist.run_id )) then
+			self.squad_ai:DoSpecialAbility( Exorcist.run_id )
+		end
+	end
+end
+
+function ExorcistTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+		
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+end

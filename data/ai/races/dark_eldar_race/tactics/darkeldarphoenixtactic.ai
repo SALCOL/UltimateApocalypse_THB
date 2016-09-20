@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'DarkEldarPhoenixtactic.ai'
+-- File: 'darkeldarphoenixtactic.ai'
 -- Created by Cylarne_04 2011
+-- Edited by Thudmeizer	@ 05.04.2016
 
 class 'DarkEldarPhoenixTactic' (DarkEldarVehicleTactic)
 
@@ -9,56 +10,41 @@ DarkEldarPhoenix = {}
 function DarkEldarPhoenixTactic:__init( squad_ai ) super( squad_ai )
 	
 	self:SetName("Dark Eldar Phoenix Tactic")
+
+	self.timedDirectSpawnAbility = Timer( DarkEldarPhoenixTactic.DoDirectSpawnAbility, self, 5 )
 end
 
 function DarkEldarPhoenixTactic:InitAbilities()
 
-	if (DarkEldarPhoenix.bomb_id == nil) then
-		DarkEldarPhoenix.bomb_id = cpu_manager.stats:GetAbilityID( "dark_eldar_bombard_phoenix" )	
+	if (DarkEldarPhoenix.bombard_id == nil) then
+		DarkEldarPhoenix.bombard_id = cpu_manager.stats:GetAbilityID( "dark_eldar_bombard_phoenix" )	
 	end
-	if (DarkEldarPhoenix.bomb_improved_id == nil) then
-		DarkEldarPhoenix.bomb_improved_id = cpu_manager.stats:GetAbilityID( "dark_eldar_bombard_voidraven" )	
-	end
-	
 end
 
 function DarkEldarPhoenixTactic:DoAbilities()
 
-	if (self.squad_ai:CanDoAbility(DarkEldarPhoenix.bomb_id)) then
+	if (self.squad_ai:CanDoAbility(DarkEldarPhoenix.bombard_id)) then
 	
-		-- Search a squad
-		local iRange = self.squad_ai:GetAbilityRange(DarkEldarPhoenix.bomb_id)
-		local oUnit = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 1)
-		if (oUnit ~= nil) then
-			self.squad_ai:DoSpecialAbilitySquad(DarkEldarPhoenix.bomb_id, oUnit:GetSquad())
-		end
+		Ability.DoAbilityPos(self.squad_ai, DarkEldarPhoenix.bombard_id, Ability.Filters.CloseEnemy, 24)
+		Ability.DoAbilityPos(self.squad_ai, DarkEldarPhoenix.bombard_id, Ability.EntityFilters.CloseBaseEntityEnemy, 5)
 	end
 	
-	if (self.squad_ai:CanDoAbility(DarkEldarPhoenix.bomb_improved_id)) then
-	
-		-- Search a squad
-		local iRange = self.squad_ai:GetAbilityRange(DarkEldarPhoenix.bomb_improved_id)
-		local oUnit = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 1)
-		if (oUnit ~= nil) then
-			self.squad_ai:DoSpecialAbilitySquad(DarkEldarPhoenix.bomb_improved_id, oUnit:GetSquad())
-		end
-	end
-	
-	-- Try to spawn Fighters
+	-- Try to spawn Ravens
 	if (self.timedDirectSpawnAbility ~= nil) then
 		self.timedDirectSpawnAbility:Call()
 	else
 		DarkEldarPhoenixTactic.DoDirectSpawnAbility(self)
 	end
-
 end
 
 function DarkEldarPhoenixTactic:DoDirectSpawnAbility()
 
-	if (self.squad_ai:CanDirectSpawn() and self.squad_ai:IsInCombat()) then 
-		--self.squad_ai:DoDirectSpawn()
+	-- Spawn Ravens in combat
+	if (self.squad_ai:CanDirectSpawn()) then 
+		self.squad_ai:DoDirectSpawn()
 	end
 end
+
 function DarkEldarPhoenixTactic:JumpAttackRanged()
 
 	-- Call standard method

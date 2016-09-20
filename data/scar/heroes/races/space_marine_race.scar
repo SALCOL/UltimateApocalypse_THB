@@ -122,6 +122,39 @@ UnitTypes.space_marine_race =
 			"space_marine_chainsword_apothecary",
 		},
 	},
+	space_marine_squad_lotd_tactical = 
+	{
+		Title = "Deathwatch Marine Squad",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeRangedSquad,
+		FXType = "Squad",
+		Unique = true,
+		HasLeaders = true,
+		HasWeapons = true,
+		Leaders =
+		{
+			"sergeant",
+			"apothecary_leader",
+			"banner_bearer_leader",
+			"skull_probe_leader",
+		},
+		Weapons =
+		{
+			"space_marine_bolter_tactical",
+			"space_marine_flamer_tactical",
+			"space_marine_heavy_bolter_tactical",
+			"space_marine_plasma_gun",
+			"space_marine_missile_launcher_tactical",
+			"space_marine_knife_tactical",
+			"space_marine_bolt_pistol_sergeant",
+			"space_marine_plasma_pistol_sergeant",
+			"space_marine_chainsword_sergeant",
+			"space_marine_power_sword_sergeant",
+			"space_marine_power_fist_sergeant",
+			"space_marine_bolt_pistol_apothecary",
+			"space_marine_chainsword_apothecary",
+		},
+	},
 	space_marine_squad_sternguard_veteran =
 	{
 		Title = "Sternguard Veteran Marine Squad",
@@ -458,6 +491,13 @@ UnitTypes.space_marine_race =
 	space_marine_squad_razorback =
 	{
 		Title = "Razorback",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+	},
+	space_marine_squad_rhino_stalker = 
+	{
+		Title = "Rhino Stalker",
 		Type = "RegularForces",
 		UpgradeFunction = UpgradeTank,
 		FXType = "Vehicle",

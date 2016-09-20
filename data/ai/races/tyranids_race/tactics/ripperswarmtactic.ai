@@ -1,14 +1,41 @@
 ----------------------------------------
 -- File: 'ripperswarmtactic.ai'
--- Edited by Thudmeizer @ 05.01.2008
+-- Edited by Thudmeizer @ 25.04.2016
 
-class 'RipperSwarmTactic' (InfantryTactic)
+class 'RipperSwarmTactic' (EngineerTactic)
+
+RipperSwarm = {}
 
 function RipperSwarmTactic:__init( squad_ai ) super( squad_ai )
 
        self:SetName("Ripper Swarm Tactic")
 end
 
-function RipperSwarmTactic:CanOnlyDecap()
-		return true
+function RipperSwarmTactic:InitAbilities()
+
+	if (RipperSwarm.run_id == nil) then
+		RipperSwarm.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function RipperSwarmTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( RipperSwarm.run_id )) then
+			self.squad_ai:DoSpecialAbility( RipperSwarm.run_id )
+		end
+	end
+end
+
+function RipperSwarmTactic:Reinforce()
+
+	-- Don't reinforce more than 3 rippers -- they get stuck
+	if (not self.squad_ai:IsReinforcing() and self.squad_ai:GetNumTroopers() < 3) then
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end
+	end
 end

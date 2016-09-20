@@ -1,0 +1,42 @@
+----------------------------------------
+-- File: 'xvbattlesuittactic.ai'
+-- Created by Cylarne @ 2011
+-- Edited by Thudmeizer	@ 18.03.2016
+
+class 'XVBattleSuitTactic' (TauVehicleTactic)
+
+XVBattleSuit = {}
+
+function XVBattleSuitTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("XVBattleSuit Tactic")
+end
+
+function XVBattleSuitTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (XVBattleSuit.overshield_id == nil) then
+		XVBattleSuit.overshield_id = cpu_manager.stats:GetAbilityID( "tau_overshield_riptide" )
+	end
+
+	if (XVBattleSuit.selfdestruct_id == nil) then
+		XVBattleSuit.selfdestruct_id = cpu_manager.stats:GetAbilityID( "tau_selfdestruct" )
+	end
+end
+
+function XVBattleSuitTactic:DoAbilities()
+	
+	-- Replenish damaged shields
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) or (self.squad_ai:GetMoralePercentage() < 0.3) then
+		if (self.squad_ai:CanDoAbility( XVBattleSuit.overshield_id )) then
+			self.squad_ai:DoSpecialAbility( XVBattleSuit.overshield_id )
+		end
+	end
+
+	-- Initiate Self-Destruct!
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.3) then
+		if (self.squad_ai:CanDoAbility(XVBattleSuit.selfdestruct_id)) then
+			Ability.DoAbilityArea( self.squad_ai, XVBattleSuit.selfdestruct_id, Ability.Filters.CloseEnemy, 10, 1 )
+		end
+	end
+end

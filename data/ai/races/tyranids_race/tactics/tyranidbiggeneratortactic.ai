@@ -1,0 +1,87 @@
+----------------------------------------
+-- File: 'tyranidbiggeneratortactic.ai'
+-- Edited by Thudmeizer @ 12.06.2016
+
+class 'TyranidBigGeneratorTactic' (BaseTactic)
+
+TyranidBigGenerator = {}
+
+function TyranidBigGeneratorTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Tyranid Big Generator Tactic")
+
+	self.m_iNukeID = cpu_manager.stats:GetBuildingID( "tyranids_capillary_tower" )
+
+	ResourcesGenTMR = g_iGMT
+end
+
+function TyranidBigGeneratorTactic:AutoBuildTurretAddOn( addonSlot, iID )
+	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
+	if (buildChannelLP ~= nil) then
+		local addOnID = buildChannelLP:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+		if (buildChannelLP:IsBuilding() == 0 and buildChannelLP:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+			buildChannelLP:BuildAddOn(addOnID)
+		end
+	end
+end
+
+function TyranidBigGeneratorTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TyranidBigGenerator.inhibitor_id == nil) then
+		TyranidBigGenerator.inhibitor_id = cpu_manager.stats:GetAbilityID( "all_apocalypse_inhibitor" )
+	end
+	if (TyranidBigGenerator.powerdump_id == nil) then
+		TyranidBigGenerator.powerdump_id = cpu_manager.stats:GetAbilityID( "all_thermo_dump_power" )
+	end
+	if (TyranidBigGenerator.reqdump_id == nil) then
+		TyranidBigGenerator.reqdump_id = cpu_manager.stats:GetAbilityID( "all_thermo_dump_requisition" )
+	end
+end
+
+function TyranidBigGeneratorTactic:DoAbilities()
+
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	if ((cpu_manager.player_stats:GetNumBasesByBPID(self.m_iNukeID, true) > 0) and (iPower >= 30000)) then
+
+		-- Increase charge rate of super weapons
+		if (self.base_ai:CanDoAbility( TyranidBigGenerator.inhibitor_id )) then
+			self.base_ai:DoSpecialAbility( TyranidBigGenerator.inhibitor_id )
+		end
+	end
+
+	-- Check resources needs every (at least) 6 secs, to avoid issues with multiple ability castings
+	if  g_iGMT > ResourcesGenTMR + 6 then
+    		local iReq = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+    		local iPow = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+    		-- Check if we have enough Power to dump, but keep 3500 Power as reserve (ability costs 6000 Pow)
+    		if iPow > 9500 then
+       			-- Check if we actually need Requisition
+        		if iReq < 1000 then
+            			-- Dump Power for Requisition
+            			if self.base_ai:CanDoAbility(TyranidBigGenerator.powerdump_id) then
+                			self.base_ai:DoSpecialAbility(TyranidBigGenerator.powerdump_id)
+                			ResourcesGenTMR = g_iGMT
+            			end
+        		end
+    		end
+    
+    		-- Check if we have enough Requisition to dump, but keep 4000 Requisition as reserve (ability costs 5000 Req)
+    		if iReq > 9000 then
+        		-- Check if we actually need Power
+        		if iPow < 1000 then
+            			-- Dump Requisition for Power
+            			if self.base_ai:CanDoAbility(TyranidBigGenerator.reqdump_id) then
+                			self.base_ai:DoSpecialAbility(TyranidBigGenerator.reqdump_id)
+                			ResourcesGenTMR = g_iGMT
+           			end
+        		end
+    		end
+	end
+
+--	self:AutoBuildAddOn(0) -- Shield Addon		-- tyranids_structure_shield_addon
+
+	-- Always build the Shield Addon
+	self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())	-- Shield Addon
+end

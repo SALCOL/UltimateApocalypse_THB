@@ -1,0 +1,65 @@
+----------------------------------------
+-- File: 'commissarcadettactic.ai'
+-- Edited by Thudmeizer @ 29.02.2016
+
+class 'CommissarCadetTactic' (GuardInfantryTactic)
+
+CommissarCadet = {}
+
+function CommissarCadetTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Commissar Cadets Tactic")
+
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
+	
+	-- Init execute delay time
+	CommissarCadet.NextExecuteCheck = 0
+end
+
+function CommissarCadetTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (CommissarCadet.execute_id == nil or CommissarCadet.NextExecuteCheck == nil) then
+		CommissarCadet.execute_id = cpu_manager.stats:GetAbilityID( "guard_commissar_execute" )
+		CommissarCadet.NextExecuteCheck = iGMT
+	end
+	if (CommissarCadet.run_id == nil) then
+		CommissarCadet.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function CommissarCadetTactic:DoAbilities()
+
+	-- TargetSelf: When attached to squad, executes one of his own soldiers to increase their fighting potential
+	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(CommissarCadet.execute_id)) then
+		if (self.squad_ai:GetNumTroopers() > 3) then
+		
+			-- Use execute ability
+			self.squad_ai:DoSpecialAbility(CommissarCadet.execute_id) 
+			--CommissarCadet.NextExecuteCheck = g_iGMT + 20
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( CommissarCadet.run_id )) then
+			self.squad_ai:DoSpecialAbility( CommissarCadet.run_id )
+		end
+	end
+end
+
+function CommissarCadetTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+end
+ 

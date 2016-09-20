@@ -1,0 +1,34 @@
+----------------------------------------
+-- File: 'taubombtactic.ai'
+-- Edited by Thudmeizer	@ 17.03.2016
+
+class 'TauBombTactic' (BaseTactic)
+
+TauBomb = {}
+
+function TauBombTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Tau Bomb Tactic")
+end
+
+function TauBombTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (TauBomb.detonate_id == nil) then
+		TauBomb.detonate_id = cpu_manager.stats:GetAbilityID( "nuke_detonate" )
+	end
+end
+
+function TauBombTactic:DoAbilities()
+	
+	-- Detonate Bomb with enemies in vicinity!
+	Ability.DoAbilityArea(self.base_ai, TauBomb.detonate_id, Ability.Filters.CloseEnemy, 10, 5)
+
+	-- Search a building
+	local iRange = self.base_ai:GetAbilityRange(TauBomb.detonate_id)
+	local oBuilding = Ability.EntityFilters.CloseBaseEntityEnemy(self.base_ai:GetPosition(), iRange, 1)
+	if (oBuilding ~= nil) then
+		-- Detonate the Bomb!
+		self.base_ai:DoSpecialAbilityEntity(TauBomb.detonate_id, oBuilding) 
+	end
+end

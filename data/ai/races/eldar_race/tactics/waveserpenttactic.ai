@@ -1,0 +1,71 @@
+----------------------------------------
+-- File: 'waveserpenttactic.ai'
+-- Edited by Thudmeizer		@ 04.05.2016
+
+class 'WaveSerpentTactic' (EldarVehicleTactic)
+
+WaveSerpent = {}
+
+function WaveSerpentTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Wave Serpent Grav Tank Tactic")
+	
+	-- Vehicle is a light transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 2
+end
+
+function WaveSerpentTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (WaveSerpent.laymines_id == nil) then
+		WaveSerpent.laymines_id = cpu_manager.stats:GetAbilityID( "eldar_laymines" )
+	end
+	if (WaveSerpent.abilityrecharge_id == nil) then
+		WaveSerpent.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+	if (WaveSerpent.heal_id == nil) then
+		WaveSerpent.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+	if (WaveSerpent.reinforce_id == nil) then
+		WaveSerpent.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+end
+
+function WaveSerpentTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+	
+	-- Try to activate abilities.
+	if (self.squad_ai:CanDoAbility( WaveSerpent.laymines_id )) then
+		if (iRequisition >= 4000 and iPower >= 4000 and self:IsMoving()) or 
+			(iRequisition >= 2000 and iPower >= 2000 and self.squad_ai:IsInCombat()) then
+			self.squad_ai:DoSpecialAbility( WaveSerpent.laymines_id )
+		end
+	end
+
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(WaveSerpent.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(WaveSerpent.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(WaveSerpent.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(WaveSerpent.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(WaveSerpent.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(WaveSerpent.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Call standard method
+	EldarVehicleTactic.DoAbilities(self)
+end

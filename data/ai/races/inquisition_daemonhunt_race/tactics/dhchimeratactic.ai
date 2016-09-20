@@ -1,0 +1,74 @@
+----------------------------------------
+-- File: 'dhchimeratactic.ai'
+-- Edited by Thudmeizer		@ 24.05.2016
+
+class 'DHChimeraTactic' (DaemonhuntVehicleTactic)
+
+DHChimera = {}
+
+function DHChimeraTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DH Chimera Tactic")
+	
+	-- Vehicle is a light transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 2
+end
+
+function DHChimeraTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DHChimera.abilityrecharge_id == nil) then
+		DHChimera.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+
+	if (DHChimera.heal_id == nil) then
+		DHChimera.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+
+	if (DHChimera.reinforce_id == nil) then
+		DHChimera.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+
+	if (DHChimera.smoke_id == nil) then
+		DHChimera.smoke_id = cpu_manager.stats:GetAbilityID( "inquisition_smoke_launchers" )	
+	end
+end
+
+function DHChimeraTactic:DoAbilities()
+	
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(DHChimera.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(DHChimera.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(DHChimera.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(DHChimera.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(DHChimera.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(DHChimera.reinforce_id, oUnit:GetSquad())
+	end
+
+	-- Check if we can throw smoke
+	if (self.squad_ai:CanDoAbility(DHChimera.smoke_id)) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(DHChimera.smoke_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(DHChimera.smoke_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Call standard method
+	DaemonhuntVehicleTactic.DoAbilities(self)
+end

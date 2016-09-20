@@ -1,0 +1,28 @@
+----------------------------------------
+-- File: 'dhtitantactic.ai'
+-- Edited by Cylarne @ 2012
+-- Edited by Thudmeizer	@ 18.04.2016
+
+class 'DHTitanTactic' (DaemonhuntVehicleTactic)
+
+DHTitan = {}
+
+function DHTitanTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DH Titan Tactic")
+end
+
+function DHTitanTactic:InitAbilities()
+
+	if (DHTitan.stomp_id == nil) then
+		DHTitan.stomp_id = cpu_manager.stats:GetAbilityID( "titan_stomp" )	
+	end
+end
+
+function DHTitanTactic:DoAbilities()
+
+	-- Stomp them all!
+	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(DHTitan.stomp_id)) then
+		Ability.DoAbilityTarget(self.squad_ai, DHTitan.stomp_id, Ability.Filters.CloseSquadEnemy, 4)
+	end
+end

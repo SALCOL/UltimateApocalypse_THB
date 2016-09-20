@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldardaisofdestructiontactic.ai'
--- Edited by Thudmeizer @ 24.10.2008
+-- Edited by Thudmeizer @ 05.04.2016
 
 class 'DarkEldarDaisOfDestructionTactic' (DarkEldarVehicleTactic)
 
@@ -32,4 +32,7 @@ function DarkEldarDaisOfDestructionTactic:DoAbilities()
 		Ability.DoAbilityPos( self.squad_ai, DarkEldarDaisOfDestruction.darklance_id, Ability.Filters.CloseEnemy, 5 )
 		Ability.DoAbilityPos( self.squad_ai, DarkEldarDaisOfDestruction.darklance2_id, Ability.Filters.CloseEnemy, 2 ) 
 	end
+
+	-- Call standard method
+	DarkEldarVehicleTactic.DoAbilities(self)
 end

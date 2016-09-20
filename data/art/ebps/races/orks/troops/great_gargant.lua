@@ -7,8 +7,8 @@ simvis_attributes =
 	selection_child			= 1,
 	selection_ground		= 1,
 
-	vis_scale_min			= 0.8,	
-	vis_scale_max			= 0.8,	
+	vis_scale_min			= 0.9,	
+	vis_scale_max			= 0.9,	
 	
 	-- Shadow Types:
 	-- 0 = None

@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'chaoshqtactic.ai'
 -- Edited by Krronus @ 04.06.2010
+-- Edited by Thudmeizer @ 12.03.2016
 -- Edited by Cylarne_04 2011
 
 class 'ChaosHQTactic' (BaseTactic)
@@ -10,55 +11,41 @@ ChaosHQ = {}
 function ChaosHQTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Chaos HQ Tactic")
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
 end
 
 function ChaosHQTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (ChaosHQ.warp_storm == nil) then
-		ChaosHQ.warp_storm = cpu_manager.stats:GetAbilityID( "chaos_nuke" )
-		ChaosHQ.warp_storm2 = cpu_manager.stats:GetAbilityID( "chaos_warp_storm_super_world_end" )
-		--ChaosHQ.warp_storm3 = cpu_manager.stats:GetAbilityID( "chaos_nuke3" )
-		--ChaosHQ.warp_storm4 = cpu_manager.stats:GetAbilityID( "chaos_nuke4" )
-		--ChaosHQ.global = cpu_manager.stats:GetAbilityID( "chaos_nuke_global" )
+	if (ChaosHQ.warp_id == nil) then
+		ChaosHQ.warp_id = cpu_manager.stats:GetAbilityID( "chaos_eye_of_warp" )
 	end
-	
-	if (ChaosHQ.eye_of_the_warp == nil) then
-		ChaosHQ.eye_of_the_warp = cpu_manager.stats:GetAbilityID( "chaos_eye_of_warp" )
+
+	if (ChaosHQ.repair_id == nil) then
+		ChaosHQ.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end
 end
 
 function ChaosHQTactic:DoAbilities()
 
-	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	
-	-- Activate Apocalyptic Superweapon.
-	if (self.base_ai:CanDoAbility(ChaosHQ.warp_storm2) and iRequisition >= 30000 and iPower >= 30000) then
-		
-		Ability.DoAbilityPos(self.base_ai, ChaosHQ.warp_storm2, Ability.Filters.CloseEnemy, 35)
-		Ability.DoAbilityTargetEntity(self.base_ai, ChaosHQ.warp_storm2, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
-		
-	elseif (self.base_ai:CanDoAbility(ChaosHQ.warp_storm)) then
-		
-		Ability.DoAbilityPos(self.base_ai, ChaosHQ.warp_storm, Ability.Filters.CloseEnemy, 35)
-		Ability.DoAbilityTargetEntity(self.base_ai, ChaosHQ.warp_storm, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
-		
-	end
-	
 	-- Try to activate detection field
-	if (self.base_ai:CanDoAbility(ChaosHQ.eye_of_the_warp)) then
+	if (self.base_ai:CanDoAbility(ChaosHQ.warp_id)) then
 	
-		local iRange = self.base_ai:GetAbilityRange(ChaosHQ.eye_of_the_warp)
+		local iRange = self.base_ai:GetAbilityRange(ChaosHQ.warp_id)
 		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 7)
 		if (oSquad ~= nil) then
 			
 			-- Only try to detect if the infiltrated unit is attacking or capturing
 			if (oSquad:IsAttacking()) then
-				self.base_ai:DoSpecialAbilitySquad(ChaosHQ.eye_of_the_warp, oSquad:GetSquad())
+				self.base_ai:DoSpecialAbilitySquad(ChaosHQ.warp_id, oSquad:GetSquad())
 			end
+		end
+	end
+
+	-- Base Repair!
+	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
+
+		if (self.base_ai:CanDoAbility( ChaosHQ.repair_id )) then
+			self.base_ai:DoSpecialAbility( ChaosHQ.repair_id )
 		end
 	end
 end

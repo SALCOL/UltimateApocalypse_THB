@@ -1,0 +1,30 @@
+Legio Titanicus for Ultimate Apocalypse Mod Add On - Version 1.01
+
+The Legio Titanicus for UA add-on adds the Imperator, Warlord Lucius Pattern Reaver and Cavalier Titans to Ultimate Apocalypse 1.73.9 and requires that full mod package be installed and selected in Game Manager to be usable.
+
+Instructions:
+Unpack contents to UltimateApocalypse folder, overwriting the data and locale folders. Say yes to any overwrite pop up screens. Nothing more should need to be done as this is an add on to an existing mod, not a mod in itself so as long as Ultimate Apocalypse is selected in Game Manager, this add-on will be active.
+
+
+Legio Titanicus for Ultimate Apocalypse is the continuation of Imperial Warlord for UA. This would be version 008, but the addition of two new titans required a mod rename, hence the new version numbering.
+
+
+Special Thanks to Lord Cylarne for taking the time to give the Warlord a voice of it's own. And thanks goes out to QueenOfGore for helping give me ideas about mapping the skin out for better detail levels. And a huge thanks to everybody else for all the encouragement you've all been dishing out!
+
+Titans currently working:
+1. Cavalier (60% complete, fully operational, rebalanced to UA specs)
+2. Reaver, Lucius Pattern (60% complete, fully operational, rebalanced to UA specs)
+3. Warlord (90% complete, fully operational, rebalanced to UA specs)
+4. Imperator (80% complete, mostly operational - missing some weapons, rebalanced to UA specs)
+
+Bugs fixed:
+1. Warlord voice over fixed again, old build had snuck back in, apologies!
+
+To do list:
+1. complete weapon config file overhaul, create individual weapons files, no more sharing stats!!!
+2. Add other races access
+3. create Chaos versions Warlord and Imperator only
+4. sounds for Cavalier, Reaver LP, and Imperator.
+5. reskins for Cavalier and Reaver LP
+6. various bug squashing
+

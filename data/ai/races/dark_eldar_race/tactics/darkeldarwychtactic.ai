@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarwychtactic.ai'
--- Edited by Thudmeizer @ 23.10.2008
+-- Edited by Thudmeizer @ 05.04.2016
 
 class 'DarkEldarWychTactic' (DarkEldarInfantryTactic)
 
@@ -16,18 +16,79 @@ function DarkEldarWychTactic:InitAbilities()
 	if (DarkEldarWych.combatdrugs_id == nil) then
 		DarkEldarWych.combatdrugs_id = cpu_manager.stats:GetAbilityID( "dark_eldar_combat_drugs" )	
 	end
+	if (DarkEldarWych.gravitic_id == nil) then
+		DarkEldarWych.gravitic_id = cpu_manager.stats:GetAbilityID( "dark_eldar_gravitic_grenade" )	
+	end
+	if (DarkEldarWych.haywire_id == nil) then
+		DarkEldarWych.haywire_id = cpu_manager.stats:GetAbilityID( "dark_eldar_haywire_bombs" )	
+	end
+	if (DarkEldarWych.horrorfex_id == nil) then
+		DarkEldarWych.horrorfex_id = cpu_manager.stats:GetAbilityID( "dark_eldar_horrorfex_grenade" )	
+	end
+	if (DarkEldarWych.leach_id == nil) then
+		DarkEldarWych.leach_id = cpu_manager.stats:GetAbilityID( "dark_eldar_soul_leach" )
+	end
+	if (DarkEldarWych.terrorfex_id == nil) then
+		DarkEldarWych.terrorfex_id = cpu_manager.stats:GetAbilityID( "dark_eldar_terrorfex_grenade" )
+	end
+	if (DarkEldarWych.run_id == nil) then
+		DarkEldarWych.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function DarkEldarWychTactic:DoAbilities()
-
-	--Ability.DoAbilityArea( self.squad_ai, DarkEldarWych.combatdrugs_id, Ability.Filters.CloseInfantryEnemy, 10, 5 )
-
+--[[
 	-- Check if I can use combat drugs (Wyches) (Bugged!!! Unit freezes.) --SS 1.10 check if unbugged
 	if (self.squad_ai:IsInCombat()) then
 
 		-- Use drugs!
 		if (self.squad_ai:CanDoAbility( DarkEldarWych.combatdrugs_id )) then
 			self.squad_ai:DoSpecialAbility( DarkEldarWych.combatdrugs_id )
+		end
+	end
+]]
+	if (self.squad_ai:IsInCombat()) then
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWych.gravitic_id)) then
+
+			-- Send grenade against enemy infantry
+			Ability.DoAbilityPos( self.squad_ai, DarkEldarWych.gravitic_id, Ability.Filters.CloseSquadEnemy, 3 ) 
+		end
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWych.haywire_id)) then
+
+			-- Send grenade against enemy infantry
+			Ability.DoAbilityPos( self.squad_ai, DarkEldarWych.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
+		end
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWych.horrorfex_id)) then
+
+			-- Send grenade against enemy infantry
+			Ability.DoAbilityPos( self.squad_ai, DarkEldarWych.horrorfex_id, Ability.Filters.CloseSquadEnemy, 2 ) 
+		end
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWych.terrorfex_id)) then
+
+			-- Send bomb against enemy infantry
+			Ability.DoAbilityPos( self.squad_ai, DarkEldarWych.terrorfex_id, Ability.Filters.CloseInfantryEnemy, 4 ) 
+		end
+	end
+
+	-- Luster of Souls: Restore the strength of your squad by concealing them and regaining their health. Exchange this great ritual in exchange for souls.
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+
+		if (self.squad_ai:CanDoAbility(DarkEldarWych.leach_id)) then
+			Ability.DoAbilityArea(self.squad_ai, DarkEldarWych.leach_id, Ability.Filters.CloseSquadEnemy, 15, 4)
+			Ability.DoAbilityArea(self.squad_ai, DarkEldarWych.leach_id, Ability.Filters.CloseCommanderEnemy, 15, 1)
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( DarkEldarWych.run_id )) then
+			self.squad_ai:DoSpecialAbility( DarkEldarWych.run_id )
 		end
 	end
 	
@@ -46,3 +107,4 @@ function DarkEldarWychTactic:Update()
 		return
 	end
 end
+

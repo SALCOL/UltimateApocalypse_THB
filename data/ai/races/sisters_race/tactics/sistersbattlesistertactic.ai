@@ -1,0 +1,227 @@
+----------------------------------------
+-- File: 'sistersbattlesistertactic.ai'
+-- Edited by Thudmeizer		@ 11.04.2016
+
+class 'SistersBattleSisterTactic' (SistersInfantryTactic)
+
+SistersBattleSister = {}
+
+function SistersBattleSisterTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Battle Sister Tactic")
+end
+
+-- Battle Sisters are allowed to retreat even directly after a jump
+function SistersBattleSisterTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersBattleSisterTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function SistersBattleSisterTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersBattleSister.touch_id == nil) then
+		SistersBattleSister.touch_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_an_emperors_touch" )
+	end
+
+	if (SistersBattleSister.retribution_id == nil) then
+		SistersBattleSister.retribution_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_divine_retribution" )
+	end
+
+	if (SistersBattleSister.passion_id == nil) then
+		SistersBattleSister.passion_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_holy_passion" )
+	end
+
+	if (SistersBattleSister.medics_id == nil) then
+		SistersBattleSister.medics_id = cpu_manager.stats:GetAbilityID( "sisters_battlefield_medics" )
+	end
+
+	if (SistersBattleSister.flashbang_id == nil) then
+		SistersBattleSister.flashbang_id = cpu_manager.stats:GetAbilityID( "sisters_flashbang_grenades" )
+	end
+
+	if (SistersBattleSister.krak_id == nil) then
+		SistersBattleSister.krak_id = cpu_manager.stats:GetAbilityID( "sisters_krak_grenades" )
+	end
+
+	if (SistersBattleSister.phosphor_id == nil) then
+		SistersBattleSister.phosphor_id = cpu_manager.stats:GetAbilityID( "sisters_phosphor_grenades" )
+	end
+
+	if (SistersBattleSister.smoke_id == nil) then
+		SistersBattleSister.smoke_id = cpu_manager.stats:GetAbilityID( "sisters_smoke_grenades" )
+	end
+
+	if (SistersBattleSister.run_id == nil) then
+		SistersBattleSister.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function SistersBattleSisterTactic:DoAbilities()
+
+	-- Ranged squads do extra damage (Faith cost: 165) 
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsAttacking()) then
+
+		if (self.squad_ai:CanDoAbility(SistersBattleSister.touch_id)) then
+			self.squad_ai:DoSpecialAbility(SistersBattleSister.touch_id) 
+		end
+	end
+
+	-- Enemies take additional damage when they attack the squad (Faith cost: 120)
+	if (self.squad_ai:IsUnderAttack()) then
+
+		if (self.squad_ai:CanDoAbility(SistersBattleSister.retribution_id)) then
+			self.squad_ai:DoSpecialAbility(SistersBattleSister.retribution_id) 
+		end
+	end
+
+	-- Recover morale immediately (Faith cost: 60)
+	if (self.squad_ai:IsBroken()) then
+
+		 if (self.squad_ai:CanDoAbility(SistersBattleSister.passion_id)) then
+			self.squad_ai:DoSpecialAbility(SistersBattleSister.passion_id) 
+		end
+	end
+
+	-- Heals squad (Faith cost: 50)
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+	
+		if (self.squad_ai:CanDoAbility(SistersBattleSister.medics_id)) then
+			self.squad_ai:DoSpecialAbility(SistersBattleSister.medics_id) 
+		end
+	end
+
+	-- Throw flashbang grenades!
+	if (self.squad_ai:CanDoAbility( SistersBattleSister.flashbang_id )) then
+		Ability.DoAbilityPos( self.squad_ai, SistersBattleSister.flashbang_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, SistersBattleSister.flashbang_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, SistersBattleSister.flashbang_id, Ability.Filters.CloseMonsterEnemy, 2 )
+	end
+
+	-- Throw krak grenades!
+	if (self.squad_ai:CanDoAbility( SistersBattleSister.krak_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, SistersBattleSister.krak_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, SistersBattleSister.krak_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1 )
+	end
+
+	-- Throw phosphor grenades!
+	if (self.squad_ai:CanDoAbility( SistersBattleSister.phosphor_id )) then
+		Ability.DoAbilityPos( self.squad_ai, SistersBattleSister.phosphor_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, SistersBattleSister.phosphor_id, Ability.Filters.CloseMonsterEnemy, 2 )
+		Ability.DoAbilityPos( self.squad_ai, SistersBattleSister.phosphor_id, Ability.Filters.CloseInfantryEnemy, 4 )
+	end
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility( SistersBattleSister.smoke_id )) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange( SistersBattleSister.smoke_id )
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad( SistersBattleSister.smoke_id, oUnit:GetSquad() )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersBattleSister.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersBattleSister.run_id )
+		end
+	end
+end
+
+function SistersBattleSisterTactic:Upgrade()
+
+	-- Check if I can upgrade
+	if (self.squad_ai:IsReinforcing() or not self.squad_ai:HasUpgradableTrooper()) then
+		return
+	end
+
+	-- If I am broken, don't upgrade!
+	if (self:IsAffectedByMorale() and self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- Only upgrade if not reinforcing
+	if (not self.squad_ai:IsUnderAttack() and self.squad_ai:GetNumTroopers() >= 3) then
+	
+		-- Figure out my enemy's favourite class
+		local oEnemy = cpu_manager:FindClosestEnemyPlayer()
+		if (oEnemy ~= nil) then
+			self.squad_ai:DoBestUpgrade(oEnemy:GetMajorityClassType())
+		end
+	end
+end
+
+function SistersBattleSisterTactic:Reinforce()
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- Always try for the actual leader first
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+			return
+		end
+
+		-- Try for different types of squad members
+		local veteranIndex = 0
+		local imagiferIndex = 1
+		local curiaIndex = 2
+		local missionaryIndex = 3
+	
+		-- Get current leader count
+		local numVeterans = self.squad_ai:GetLeaderCount( veteranIndex )
+		local numImagifers = self.squad_ai:GetLeaderCount( imagiferIndex)
+		local numCurias = self.squad_ai:GetLeaderCount( curiaIndex )
+		local numMissionaries = self.squad_ai:GetLeaderCount( missionaryIndex )
+
+		-- Desired number of each leader type
+		local desiredVeterans = math.random(0,1)
+		local desiredImagifers = math.random(0,1)
+		local desiredCurias = math.random(0,1)
+		local desiredMissionaries = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if (numVeterans < desiredVeterans) then
+			if self.squad_ai:CanReinforce( true, veteranIndex ) then
+				self.squad_ai:DoReinforce( true, veteranIndex )
+			end
+		elseif (numImagifers < desiredImagifers) then
+			if self.squad_ai:CanReinforce( true, imagiferIndex ) then
+				self.squad_ai:DoReinforce( true, imagiferIndex )
+			end
+		elseif (numCurias < desiredCurias) then
+			if self.squad_ai:CanReinforce( true, curiaIndex ) then
+				self.squad_ai:DoReinforce( true, curiaIndex )
+			end
+		elseif (numMissionaries < desiredMissionaries) then
+			if self.squad_ai:CanReinforce( true, missionaryIndex ) then
+				self.squad_ai:DoReinforce( true, missionaryIndex )
+			end
+		end
+	end
+end
+
+function SistersBattleSisterTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update( self )) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

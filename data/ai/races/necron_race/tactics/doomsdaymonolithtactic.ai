@@ -2,6 +2,7 @@
 -- File: 'doomsdaymonolithtactic.ai'
 -- Created by ProfessorGenius @ 1.17.2011
 -- Assisted by Thudmeizer and Corncobman
+-- Edited by Thudmeizer	@ 10.03.2016
 
 class 'DoomsdayMonolithTactic' (NecronVehicleTactic)
 
@@ -10,6 +11,23 @@ DoomsdayMonolith = {}
 function DoomsdayMonolithTactic:__init( squad_ai ) super( squad_ai )
 	
 	self:SetName("Doomsday Monolith Tactic")
+
+	self.timedDirectSpawnAbility = Timer( DoomsdayMonolithTactic.DoDirectSpawnAbility, self, 5 )
+
+	self.m_oTimedSpecialAbilities = Timer( DoomsdayMonolithTactic.DoTimedSpecialAbilities, self, 7 )
+end
+
+function DoomsdayMonolithTactic:AlwaysAttack()
+	return true
+end
+
+-- Doomsday Monolith is allowed to retreat even directly after a jump
+function DoomsdayMonolithTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
 end
 
 function DoomsdayMonolithTactic:InitAbilities()
@@ -24,39 +42,68 @@ function DoomsdayMonolithTactic:InitAbilities()
 	if (DoomsdayMonolith.resurrection_id == nil) then
 		DoomsdayMonolith.resurrection_id = cpu_manager.stats:GetAbilityID( "necron_mass_resurrection_monolith" )
 	end
-	
 end
 
 function DoomsdayMonolithTactic:DoAbilities()
 
-	Ability.DoAbility( self.squad_ai, DoomsdayMonolith.shifter_id, Ability.Filters.IsInCombat )
+	-- Phase Shift Generator: While active, the vehicle undergoes repairs, but loses its ability to attack for the duration of these effects.
+	if (self.squad_ai:IsInCombat()) then
+		if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+			self.squad_ai:DoSpecialAbility(DoomsdayMonolith.shifter_id)
+		end
+	end
 
-	
-	-- Try to activate the Unnatural Solar Pulses ability
+	-- Try to activate the Unnatural Solar Pulses ability: infiltrated units in a large area are revealed and blinds others for several seconds.
 	if (self.squad_ai:CanDoAbility(DoomsdayMonolith.pulse_id)) then
 		Ability.DoAbilityPos(self.squad_ai, DoomsdayMonolith.pulse_id, Ability.Filters.CloseInfiltratedEnemy, 1)
-		Ability.DoAbilityPos(self.squad_ai, DoomsdayMonolith.pulse_id, Ability.Filters.CloseEnemy, 2)
-	end
-	-- Try to activate the Greater Resurrection ability
-	if (self.squad_ai:CanDoAbility(DoomsdayMonolith.resurrection_id)) then
-		Ability.DoAbility(self.squad_ai, DoomsdayMonolith.resurrection_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = NecronCore.resurrection_id, min_bodies = 10 })
+		Ability.DoAbilityPos(self.squad_ai, DoomsdayMonolith.pulse_id, Ability.Filters.CloseEnemy, 5)
 	end
 	
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	
 	if (iPower >= 2000) then
+
+		-- Try to spawn Siege Monoliths
 		if (self.timedDirectSpawnAbility ~= nil) then
 			self.timedDirectSpawnAbility:Call()
 		else
 			DoomsdayMonolithTactic.DoDirectSpawnAbility(self)
 		end
 	end
+
+	-- Try to use mass resurrection ability
+	if (self.m_oTimedSpecialAbilities ~= nil) then
+		self.m_oTimedSpecialAbilities:Call()
+	else
+		DoomsdayMonolithTactic.DoTimedSpecialAbilities(self)
+	end
 end
 
 function DoomsdayMonolithTactic:DoDirectSpawnAbility()
 
+	-- Spawn Siege Monoliths in combat
 	if (self.squad_ai:CanDirectSpawn() and self.squad_ai:IsInCombat()) then 
 		self.squad_ai:DoDirectSpawn()
 	end
 end
 
+function DoomsdayMonolithTactic:DoTimedSpecialAbilities()
+
+	-- Try to use mass resurrection ability
+	Ability.DoAbility(self.squad_ai, DoomsdayMonolith.resurrection_id, Ability.PredicateFilters.HasUsableBodies, { ability_id = DoomsdayMonolith.resurrection_id, min_bodies = 5 })
+end
+
+function DoomsdayMonolithTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not VehicleTactic.Update(self)) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

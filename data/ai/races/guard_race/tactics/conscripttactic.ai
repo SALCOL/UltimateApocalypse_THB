@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'conscripttactic.ai'
 -- Created by Cylarne
+-- Edited by Thudmeizer	@ 30.04.2016
 
 class 'ConscriptTactic' (GuardInfantryTactic)
 
@@ -10,21 +11,48 @@ function ConscriptTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Conscript Tactic")
 
-	-- Squad is NOT able to occupy bunkers, nope
-	self.m_bBunkerSquad = false
+	-- Squad is able to occupy bunkers
+	self.m_bBunkerSquad = true
 	
-	self.m_iTacticaID = cpu_manager.stats:GetBuildingID("guard_tactica")
+	self.m_iTacticaID = cpu_manager.stats:GetBuildingID( "guard_tactica" )
+end
+
+function ConscriptTactic:AlwaysAttack()
+	return (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iTacticaID, true) > 0)
 end
 
 function ConscriptTactic:InitAbilities()
 
-	-- None
+	-- Init ability ID's
+	if (Conscript.bolster_id == nil) then
+		Conscript.bolster_id = cpu_manager.stats:GetAbilityID( "guard_bolster_defenses" )	
+	end
+	if (Conscript.run_id == nil) then
+		Conscript.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
 end
 
 function ConscriptTactic:DoAbilities()
 
-	-- None
+	-- Check if we can Bolster Defenses
+	if (self.squad_ai:CanDoAbility(Conscript.bolster_id)) then
 	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(Conscript.bolster_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad(Conscript.bolster_id, oUnit:GetSquad())
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( Conscript.run_id )) then
+			self.squad_ai:DoSpecialAbility( Conscript.run_id )
+		end
+	end	
 end
 
 function ConscriptTactic:Reinforce()
@@ -34,15 +62,13 @@ function ConscriptTactic:Reinforce()
 		return
 	end
 	
-	-- Always try to reinforce if we have a Tactica Control, and is ready to spam attack.
+	-- Always try to reinforce more than 12 squad members (they both get stuck or don't capture points properly) and if we have a Tactica Control, and is ready to spam attack  
 	local iRequisition = resource_manager:GetResourceAmount():Get(ResourceAmount.RT_Requisition)
-	if (not self.squad_ai:IsReinforcing() and cpu_manager.player_stats:GetNumBasesByBPID(self.m_iTacticaID, true) > 0 and iRequisition > 300) then
-	    self.squad_ai:DoReinforce( false, 0 )
+	if (not self.squad_ai:IsReinforcing() and cpu_manager.player_stats:GetNumBasesByBPID(self.m_iTacticaID, true) > 0 and self.squad_ai:GetNumTroopers() < 12) then
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end
 	else 
 		return
 	end
-end
-
-function ConscriptTactic:AlwaysAttack()
-	return (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iTacticaID, true) > 0)
 end

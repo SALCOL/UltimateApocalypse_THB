@@ -1,6 +1,7 @@
 ----------------------------------------
 -- File: 'guardinfantrytactic.ai'
 -- Created by Arkhan		@ 12.01.2006
+-- Edited by Thudmeizer		@ 21.06.2016
 
 class 'GuardInfantryTactic' (InfantryTactic)
 
@@ -8,8 +9,52 @@ function GuardInfantryTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Guard Infantry Tactic")
 	
-	-- Guard infantry is able to enter transport vehicles
-	self.m_iTransportable = 1
+	-- Basic infantry is able to enter transport vehicles
+	local sSquadName = squad_ai:GetSquadName()
+	if (sSquadName == "guard_squad_guardsmen_conscript" or
+		sSquadName == "guard_squad_guardsmen" or
+		sSquadName == "guard_squad_guardsmen_rider" or
+		sSquadName == "guard_heavy_weapons_team_antitank_squad" or
+		sSquadName == "guard_heavy_weapons_team_mortar_squad" or
+		sSquadName == "guard_heavy_weapons_team_squad" or
+		sSquadName == "guard_heavy_weapons_team_support_squad" or
+		sSquadName == "guard_squad_guardsmen_specialweapons" or
+		sSquadName == "guard_squad_commissar_cadet" or
+	        sSquadName == "guard_squad_ogryns" or
+		sSquadName == "guard_squad_kasrkin" or
+		sSquadName == "guard_squad_stormtrooper" or
+		sSquadName == "guard_squad_command_squad_psykers" or
+		sSquadName == "guard_squad_assassin" or
+		sSquadName == "guard_squad_command_squad_colonel" or
+		sSquadName == "guard_squad_command_squad_advance_sp") then
+
+		-- Infantry is able to enter transport vehicles
+		self.m_iTransportable = 1	-- Chimera variants // Valkyrie // Storm Lord // Convoy
+ 		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "guard_comms_array" )
+
+	elseif (sSquadName == "guard_squad_command_squad") then
+
+		-- Infantry is able to enter transport vehicles
+		self.m_iTransportable = 1	-- Chimera variants // Valkyrie // Storm Lord // Captain Reaver
+
+	elseif (sSquadName == "guard_squad_banner_bearer" or
+		sSquadName == "guard_squad_field_medic" or
+		sSquadName == "guard_squad_master_vox" or
+		sSquadName == "guard_squad_commissar" or
+		sSquadName == "guard_squad_psyker" or
+		sSquadName == "guard_squad_priest") then
+
+		-- Elite infantry are able to enter transport vehicles
+		self.m_iTransportable = 1	-- Chimera variants // Valkyrie // Storm Lord // Convoy
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "guard_comms_array" )
+
+	elseif (sSquadName == "guard_squad_officer_squad" or
+		sSquadName == "guard_squad_officer_support_squad") then
+
+		-- Officers are able to enter transport vehicles
+		self.m_iTransportable = 2	-- Vanquisher Command Tank
+		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "guard_comms_array" )
+	end
 end
 
 function GuardInfantryTactic:AddTargetAbilities()
@@ -31,14 +76,26 @@ end
 
 function GuardInfantryTactic:DoAbilities()
 
-	-- Check if I can assassinate
-	local assassinate_id = cpu_manager.stats:GetAbilityID( "guard_assassin_assassinate" )
-	Ability.DoAbility( self.squad_ai, assassinate_id, Ability.Filters.IsInCombat )
+	-- Check to make sure if no threats are nearby
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		local run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+		if (self.squad_ai:CanDoAbility( run_id )) then
+			self.squad_ai:DoSpecialAbility( run_id )
+		end
+	end
 
 	-- I might have these attached
 	if (self.squad_ai:IsAttached()) then
 	
-		if (self.squad_ai:HasSquadAttached("guard_squad_commissar")) then
+		if (self.squad_ai:HasSquadAttached("guard_squad_officer_squad")) then
+			OfficerMaleTactic.InitAbilities( self )
+			OfficerMaleTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("guard_squad_officer_support_squad")) then
+			OfficerFemaleTactic.InitAbilities( self )
+			OfficerFemaleTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("guard_squad_commissar")) then
 			CommissarTactic.InitAbilities( self )
 			CommissarTactic.DoAbilities( self )
 		elseif (self.squad_ai:HasSquadAttached("guard_squad_psyker")) then
@@ -47,23 +104,20 @@ function GuardInfantryTactic:DoAbilities()
 		elseif (self.squad_ai:HasSquadAttached("guard_squad_priest")) then
 			PriestTactic.InitAbilities( self )
 			PriestTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("guard_squad_assassin")) then
+			AssassinTactic.InitAbilities( self )
+			AssassinTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("guard_squad_banner_bearer")) then
+			BannerBearerTactic.InitAbilities( self )
+			BannerBearerTactic.DoAbilities( self )
 		elseif (self.squad_ai:HasSquadAttached("guard_squad_field_medic")) then
-			PriestTactic.InitAbilities( self )
-			PriestTactic.DoAbilities( self )
+			MedicTactic.InitAbilities( self )
+			MedicTactic.DoAbilities( self )
 		elseif (self.squad_ai:HasSquadAttached("guard_squad_master_vox")) then
-			PriestTactic.InitAbilities( self )
-			PriestTactic.DoAbilities( self )
+			MasterVoxTactic.InitAbilities( self )
+			MasterVoxTactic.DoAbilities( self )
 		end
 	end
-	
-	-- Check if we can launch smoke
-	--[[local iSmokeID = cpu_manager.stats:GetAbilityID( "guard_bolster_defenses" )
-	if (self.squad_ai:CanDoAbility(iSmokeID)) then
-	
-		if (self.squad_ai:IsInCombat()) then
-			self.squad_ai:DoSpecialAbility(iSmokeID)
-		end
-	end]]
 	
 	-- Call basic DoAbilities methods
 	InfantryTactic.DoAbilities(self)

@@ -3,21 +3,32 @@
 -- AbilsThem are abilities used against enemy targets
 AutoAbilsSettings.AbilsThem["necron_race"] =
 {
+	{ "necron_mark_squad", 50 },
+	{ "necron_gauss_lightning_arc", 45 },
+	{ "necron_gauss_lightning_arc_improved", 45 },
+	{ "necron_gauss_lightning_arc_improved_1", 45 },
+	{ "necron_gauss_lightning_arc_improved_2", 45 },
+	{ "necron_deceiver_deceive", 40 },
 	{ "necron_listening_post", 35 },
+	{ "necron_solar_pulse_monolith", 30 },
+	{ "necron_listening_post_improved", 25 },
 	{ "necron_solar_pulse", 15 },
-	{ "necron_blind", 10 },
-	{ "necron_deceiver_deceive", 0 },
-	{ "necron_stun", 0 },
-	{ "necron_lightning_field", 0 },
+	{ "necron_veiling_spike", 15 },
+	{ "necron_solar_pulse_overseer", 15 },
+	{ "necron_blind_spike", 10 },
+	{ "necron_blind", 10 }
 }
 
 -- AbilsUs are abilities used on self
 AutoAbilsSettings.AbilsUs["necron_race"] =
-{
-	{ "necron_chronometron", 10 },
-	{ "necron_wraith_phase_shift", 10 },
-	{ "necron_wraith_phase_shift_advance_sp", 0 },
-	{ "necron_mass_resurrection", 0 },
-	{ "necron_mass_resurrection_beacon", 0 },
-	{ "necron_phase_shifter", 0 },
+{	
+	{ "necron_gauss_lightning_cloud", 10 },
+	{ "necron_lightning_field", 10 },
+	{ "necron_lightning_storm", 10 },
+	{ "necron_lightning_storm_overseer", 10 },
+	{ "necron_lightning_storm_lychguard", 10 },
+	{ "necron_chronometron_deathlord", 10 },
+	{ "necron_chronometron_beacon", 10 },
+	{ "necron_chronometron", 10 }
+	
 }

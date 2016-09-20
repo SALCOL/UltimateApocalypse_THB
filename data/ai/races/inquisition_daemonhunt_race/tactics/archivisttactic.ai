@@ -1,0 +1,39 @@
+----------------------------------------
+-- File: 'archivisttactic.ai'
+-- Edited by Thudmeizer @ 18.04.2016
+
+class 'ArchivistTactic' (EngineerTactic)
+
+function ArchivistTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Archivist Tactic")
+end
+
+-- Archivist is allowed to retreat even directly after a jump
+function ArchivistTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function ArchivistTactic:CanRepair()
+
+	-- Archivists cannot repair
+	return false
+end
+
+function ArchivistTactic:Update()
+--[[
+	if (self:IsComplete()) then
+		return
+	end
+
+	if not EngineerTactic.Update( self ) then
+		return false
+	end
+]]
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

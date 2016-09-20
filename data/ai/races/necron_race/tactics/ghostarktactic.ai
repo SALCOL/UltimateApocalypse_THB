@@ -1,6 +1,7 @@
 ----------------------------------------
--- File: 'GhostArktactic.ai'
+-- File: 'ghostarktactic.ai'
 -- Edited by Cylarne @ 9-3-2014
+-- Edited by Thudmeizer @ 08.03.2016
 
 class 'GhostArkTactic' (NecronVehicleTactic)
 
@@ -15,11 +16,34 @@ function GhostArkTactic:__init( squad_ai ) super( squad_ai )
 end
 
 function GhostArkTactic:InitAbilities()
-
 	
+	-- Init ability ID's
+	if (GhostArk.shift_id == nil) then
+		GhostArk.shift_id = cpu_manager.stats:GetAbilityID( "necron_ghost_ark_shift" )
+	end
+	if (GhostArk.truegauss_id == nil) then
+		GhostArk.truegauss_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )
+	end
 end
 
 function GhostArkTactic:DoAbilities()
 
+	-- Check if we can phase shift: phases all nearby Necron units out of the material Universe, making all units immune to attacks, while also able to attack
+	if (self.squad_ai:CanDoAbility(GhostArk.shift_id)) then
 	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange(GhostArk.shift_id)
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbility(GhostArk.shift_id)
+		end
+	end
+
+	-- Gauss Weapon Overcharge: the squad will receive a boost in maximum damage, but a critical reduction in movement speed for a duration.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.5) then
+		Ability.DoAbilityArea( self.squad_ai, GhostArk.truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
+	end
+
+	-- Call standard method
+	NecronVehicleTactic.DoAbilities(self)
 end
