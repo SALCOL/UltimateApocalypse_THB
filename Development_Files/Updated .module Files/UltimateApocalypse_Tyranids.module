@@ -1,0 +1,11 @@
+[global]
+UIName = Ultimate Apocalypse: New Races
+Description = Extra race expansion, developed by the Apocalypse mod team.
+Playable = 0
+DllName = WXPMod
+ModFolder = UltimateApocalypse_Tyranids
+ModVersion = 0.0
+TextureFE = 
+TextureIcon = 
+
+DataFolder.1 = Data
