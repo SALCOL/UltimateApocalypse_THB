@@ -1,0 +1,25 @@
+[global]
+
+UIName = UA: The Hunt Begins
+Description = The Apocalypse project, developed by the Apocalypse mod team.
+DllName = WXPMod
+;; DllName = WXPMod_DCMod
+Playable = 1
+ModFolder = UltimateApocalypse_THB
+ModVersion = 1.88.2
+TextureFE = Art/UI/Textures/Title_winter_assault.tga
+TextureIcon =
+
+DataFolder.1 = Data
+//ArchiveFile.1 = UA_Core_1.73
+
+RequiredMod.1 = objective_points_UA
+RequiredMod.2 = DXP2
+RequiredMod.3 = W40k
+//RequiredMod.4 = UltimateApocalypse_Tyranids
+//RequiredMod.5 = Tyranids
+//RequiredMod.6 = UltimateApocalypse_Daemons
+//RequiredMod.7 = Chaos_Daemons
+//RequiredMod.8 = UltimateApocalypse_Inquisition
+
+
