@@ -10,7 +10,7 @@ import("ScarUtil.scar");
 
 function LegioTitanicus_Init()
 	
-	Rule_Add( LegioTitanicus )
+	Rule_AddOneShot( LegioTitanicus, 0 )
 
 end
 

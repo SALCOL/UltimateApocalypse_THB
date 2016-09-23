@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'guardloader.ai'
 -- Edited by Arkhan	@ 23.10.2006
--- Edited by Thudmeizer @ 20.06.2016
+-- Edited by Thudmeizer @ 23.06.2016
 -- Renamed by Corsix    @ 13.02.2006
 -- Edited by Cylarne_04 2011
 
@@ -68,6 +68,7 @@ function guard_race:LoadRace( eDifficulty )
 	import( 'Races/guard_race/Tactics/StormlordTactic.ai' )
 	import( 'Races/guard_race/Tactics/TitanTactic.ai' )
 	import( 'Races/guard_race/Tactics/ReaverCaptainTactic.ai' )
+	import( 'Races/guard_race/Tactics/ImperatorTactic.ai' )
 	import( 'Races/guard_race/Tactics/GuardHQTactic.ai' )
 	import( 'Races/guard_race/Tactics/GuardArrayTactic.ai' )
 	import( 'Races/guard_race/Tactics/GuardMarsPatternTactic.ai' )
@@ -179,10 +180,12 @@ function guard_race:CreateTactic(oSquadAI)
 		return ShadowswordTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_stormlord") then
 		return StormlordTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_warhound_titan") or (sUnitName == "guard_squad_reaver_titan") then
+	elseif (sUnitName == "guard_squad_warhound_titan") or (sUnitName == "guard_squad_reaver_titan") or (sUnitName == "guard_squad_reaver_lucius_full_titan") or (sUnitName == "guard_squad_warlord_titan_aio") then
 		return TitanTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_reaver_titan_captain") then
 		return ReaverCaptainTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_imperator_titan") then
+		return ImperatorTactic(oSquadAI)
 	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
 	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return GuardVehicleTactic(oSquadAI)

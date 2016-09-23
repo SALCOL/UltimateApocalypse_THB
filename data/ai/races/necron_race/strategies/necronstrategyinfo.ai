@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'necronstrategyinfo.ai'
--- Edited by Thudmeizer   @ 20.06.2016
+-- Edited by Thudmeizer   @ 23.08.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -50,7 +50,7 @@ BuildBaseStrategyInfo =
 				{ 2, 0, 125, 150, 6,	"Building",	"necron_plasma_generator" },
 				{ 2, 0, 250, 250, 1,	"Building",	"necron_greater_summoning_core" },
 				{ 2, 0, 150, 500, 1,	"Building",	"necron_turret_missile_sp" },
-				{ 2, 0, 600, 950, 1,	"Addon",	"addon_necron_hq_2" },
+				{ 2, 0, 750, 950, 1,	"Addon",	"addon_necron_hq_2" },
 
 				{ 3, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
 				{ 3, 0, 65, 400, 50,	"TurretAddon",	"addon_necron_turret" },
@@ -59,7 +59,7 @@ BuildBaseStrategyInfo =
 				{ 3, 0, 150, 500, 2,	"Building",	"necron_turret_missile_sp" },
 				{ 3, 0, 600, 600, 3,	"Building",	"monolith" },
 			        { 3, 0, 200, 650, 50,	"TurretAddon",	"addon_necron_wall" },
-				{ 3, 0, 1800, 1000, 1,	"Building",	"necron_summoning_core_big" },
+				{ 3, 0, 1500, 1000, 1,	"Building",	"necron_summoning_core_big" },
 
 				{ 4, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
 				{ 4, 0, 280, 200, 1,	"Building",	"necron_forbidden_archive" },
@@ -67,7 +67,7 @@ BuildBaseStrategyInfo =
 				{ 4, 0, 150, 300, 3,	"Building",	"necron_turret_missile_sp" },
 				{ 4, 0, 125, 450, 15,	"Building",	"necron_plasma_generator" },
 				{ 4, 0, 65, 500, 100,	"TurretAddon",	"addon_necron_turret" },
-				{ 4, 0, 2250, 1250, 1,	"Building",	"necron_energy_core" },
+				{ 4, 0, 2000, 1250, 1,	"Building",	"necron_energy_core" },
 				
 				{ 5, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
 				{ 5, 0, 3500, 0, 1,	"Building",	"necron_heavy_thermoplasma_generator" },

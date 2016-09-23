@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersvehicletactic.ai'
--- Edited by Thudmeizer			@ 20.06.2016
+-- Edited by Thudmeizer			@ 10.08.2016
 -- Edited by Arkhan			@ 16.03.2008
 
 class 'SistersVehicleTactic' (VehicleTactic)
@@ -15,6 +15,7 @@ function SistersVehicleTactic:__init( squad_ai ) super( squad_ai )
 		sSquadName == "sisters_squad_sentinel" or
 		sSquadName == "sisters_squad_exorcist_mk" or
 		sSquadName == "sisters_squad_exorcist_tank" or
+		sSquadName == "sisters_squad_incarcerator_tank" or
 		sSquadName == "sisters_squad_immolator_tank") then
 
 		-- Squads are transportable
@@ -43,6 +44,16 @@ function SistersVehicleTactic:DoAbilities()
 	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
 		if (self.squad_ai:CanDoAbility( rammingspeed_id )) then
 			self.squad_ai:DoSpecialAbility( rammingspeed_id )
+		end
+	end
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		local run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+		if (self.squad_ai:CanDoAbility( run_id )) then
+			self.squad_ai:DoSpecialAbility( run_id )
 		end
 	end
 

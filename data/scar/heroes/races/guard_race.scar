@@ -810,7 +810,80 @@ UnitTypes.guard_race =
 			"npc_missile_launcher_reaver_left",
 		},
 	},
-
+	guard_squad_reaver_lucius_titan = 
+	{
+		Title = "Imperial Reaver Titan Lucius Pattern",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"titan_mega_bolter_warlord_left",
+			"npc_titan_megamelta_reaver",
+			"npc_titan_double_turbo_laser_right",
+			"npc_titan_plasma_blastgun",
+			"titan_volcano_cannon_right",
+			"npc_missile_launcher_reaver_left",
+		},
+	},
+	guard_squad_reaver_lucius_full_titan = 
+	{
+		Title = "Imperial Reaver Titan Lucius Pattern Full",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"titan_mega_bolter_warlord_left",
+			"titan_volcano_cannon_left",
+			"npc_titan_plasma_blastgun",
+			"titan_quake_cannon_warlord_right",
+			"npc_missile_launcher_reaver",
+			"npc_missile_launcher_reaver_left",
+		},
+	},
+	guard_squad_warlord_titan_aio = 
+	{
+		Title = "Warlord Titan",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"titan_mega_bolter_warlord_right",
+			"titan_quake_cannon_warlord_right",
+			"titan_volcano_cannon_right",
+			"titan_mega_bolter_warlord_left",
+			"titan_quake_cannon_warlord_left",
+			"titan_volcano_cannon_left",
+			"titan_megalaser_warlord",
+			"titan_plasma_blastgun_right",
+			"npc_missile_launcher_reaver",
+			"titan_megalaser_warlord_left",
+			"titan_plasma_blastgun_left",
+			"npc_missile_launcher_reaver_left",
+		},
+	},
+	guard_squad_imperator_titan = 
+	{
+		Title = "Imperator Titan",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"titan_imperator_volcano_cannon",
+			"titan_imperator_megalaser",
+		},
+	},
 
 	-- Campaign units
 	guard_squad_command_squad_advance_sp =

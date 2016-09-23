@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'titantactic.ai'
--- Edited by Thudmeizer	@ 23.04.2016
+-- Edited by Thudmeizer	@ 02.07.2016
 
 class 'TitanTactic' (EldarVehicleTactic)
 
@@ -19,6 +19,10 @@ function TitanTactic:InitAbilities()
 
 	if (Titan.velocious_id == nil) then
 		Titan.velocious_id = cpu_manager.stats:GetAbilityID( "eldar_velocious_weapons" )	
+	end
+
+	if (Titan.turret_id == nil) then
+		Titan.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
 	end
 end
 
@@ -44,4 +48,16 @@ function TitanTactic:DoAbilities()
 			self.squad_ai:DoSpecialAbility(Titan.velocious_id)
 		end
 	end
+
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( Titan.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, Titan.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, Titan.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
+		end
+	end
+
+	-- Call standard method
+	EldarVehicleTactic.DoAbilities(self)
 end

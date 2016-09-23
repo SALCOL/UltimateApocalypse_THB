@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'orkunitstats.ai'
--- Edited by Thudmeizer @ 23.02.2016
+-- Edited by Thudmeizer @ 23.08.2016
 -- Edited by Cylarne_04 2011
 
 --XP3
@@ -60,10 +60,12 @@ UnitStrengths.ork_squad_mek_boy = 550
 UnitStrengths.ork_squad_warboss = 650
 UnitStrengths.ork_squad_trukk = 150
 UnitStrengths.ork_squad_wartrak = 160
+UnitStrengths.ork_squad_looted_rhino = 160
 UnitStrengths.ork_squad_killa_kan = 310
 UnitStrengths.ork_squad_gun_wagon = 350
 UnitStrengths.ork_squad_fighta_bomba = 320
 UnitStrengths.ork_squad_battle_wagon = 450
+UnitStrengths.ork_squad_battle_wagon_armageddon = 450
 UnitStrengths.ork_squad_deff_dread = 480
 UnitStrengths.ork_squad_looted_tank = 450
 UnitStrengths.ork_squad_nukklear_bomba = 550
@@ -71,6 +73,7 @@ UnitStrengths.ork_squad_kill_bursta = 600
 UnitStrengths.ork_squad_kill_krusha = 600
 UnitStrengths.ork_squad_squiggoth = 700
 UnitStrengths.ork_squad_battlefortress = 700
+UnitStrengths.ork_squad_battlefortress_armageddon = 700
 UnitStrengths.ork_squad_kustim_stompa = 900
 UnitStrengths.ork_squad_squiggoth_gargantaun = 900
 UnitStrengths.ork_squad_ork_gargant = 1000
@@ -657,6 +660,26 @@ OrkUnitStats =
 		}
 	},
 	{
+		name = "Looted Rhino",
+		sbp_name = "ork_squad_looted_rhino",
+		ebp_name = "ork_looted_rhino",
+		class = UnitStatsAI.UC_VehicleLow,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "ork_big_shoota_twin_wartrak",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "ork_skorcha_rhino",
+				effectiveness = GenerateUnitEffectiveness(8.0,7.5,7.5,7.8,8.0,4.2,4.6,4.0,8.0,8.0,7.1,3.0,2.1,0.9,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
+		}
+	},
+	{
 		name = "Grot Tanks",
 		sbp_name = "ork_squad_grot_tank",
 		ebp_name = "ork_grot_tank",
@@ -819,6 +842,31 @@ OrkUnitStats =
 				name = "ork_battlefortress_roller",
 				effectiveness = GenerateUnitEffectiveness(5.9,6.4,6.1,5.3,4.5,6.4,6.6,5.7,6.0,0.0,5.4,4.1,4.1,1.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Battle Wagon Armageddon",
+		sbp_name = "ork_squad_battle_wagon_armageddon",
+		ebp_name = "ork_battle_wagon_armageddon",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "ork_zzzap_gun_battlewagon",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "ork_big_shoota_twin_battle_wagon_r",
+				effectiveness = GenerateUnitEffectiveness(5.9,6.4,6.1,5.3,4.5,6.4,6.6,5.7,6.0,0.0,5.4,4.1,4.1,1.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "ork_big_shoota_twin_battle_wagon_l",
+				effectiveness = GenerateUnitEffectiveness(5.9,6.4,6.1,5.3,4.5,6.4,6.6,5.7,6.0,0.0,5.4,4.1,4.1,1.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
 			},
 		}
 	},
@@ -1069,6 +1117,41 @@ OrkUnitStats =
 				name = "ork_zzzap_gun_battlefortess_r_melee",
 				effectiveness = GenerateUnitEffectiveness(5.9,6.4,6.1,5.3,4.5,6.4,6.6,5.7,6.0,0.0,5.4,4.1,4.1,1.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Battlefortress Armageddon",
+		sbp_name = "ork_squad_battlefortress_armageddon",
+		ebp_name = "ork_battlefortress_armageddon",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 9,
+		potential =
+		{
+			{
+				name = "ork_zzzap_gun",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "ork_big_shoota_twin_battlefortress_r",
+				effectiveness = GenerateUnitEffectiveness(8.2,7.4,6.0,2.7,2.7,10.0,10.0,10.0,8.2,10.0,8.2,3.7,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "ork_big_shoota_twin_battlefortress_l",
+				effectiveness = GenerateUnitEffectiveness(8.2,7.4,6.0,2.7,2.7,10.0,10.0,10.0,8.2,10.0,8.2,3.7,0.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "ork_zzzap_gun_battlefortess_l",
+				effectiveness = GenerateUnitEffectiveness(5.9,6.4,6.1,5.3,4.5,6.4,6.6,5.7,6.0,0.0,5.4,4.1,4.1,1.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "ork_zzzap_gun_battlefortess_r",
+				effectiveness = GenerateUnitEffectiveness(5.9,6.4,6.1,5.3,4.5,6.4,6.6,5.7,6.0,0.0,5.4,4.1,4.1,1.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
 			},
 		}
 	},

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'gkherotactic.ai'
--- Edited by Thudmeizer @ 18.04.2016
+-- Edited by Thudmeizer @ 02.07.2016
 
 class 'GKHeroTactic' (DaemonhuntInfantryTactic)
 
@@ -71,10 +71,6 @@ function GKHeroTactic:InitAbilities()
 		GKHero.bombard_id = cpu_manager.stats:GetAbilityID( "inquisition_psycannon_bombard_hero" )	
 	end
 
-	if (GKHero.medikits_id == nil) then
-	    	GKHero.medikits_id = cpu_manager.stats:GetAbilityID( "inquisition_medikits" )	
-	end
-
 	if (GKHero.run_id == nil) then
 		GKHero.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
@@ -102,14 +98,6 @@ function GKHeroTactic:DoAbilities()
 
 		Ability.DoAbilityPos( self.squad_ai, GKHero.purge_id, Ability.Filters.CloseEnemy, 6 )
 		Ability.DoAbilityPos( self.squad_ai, GKHero.bombard_id, Ability.Filters.CloseEnemy, 24)
-	end
-
-	-- Use Medkits if low on health
-	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
-		
-		if (self.squad_ai:CanDoAbility( GKHero.medikits_id )) then
-			self.squad_ai:DoSpecialAbility( GKHero.medikits_id )
-		end
 	end
 
 	-- Try to place bomb

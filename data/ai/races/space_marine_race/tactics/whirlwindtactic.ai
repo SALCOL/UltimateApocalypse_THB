@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'whirlwindtactic.ai'
 -- Edited by Cylarne_04 2011
--- Edited by Thudmeizer	@	03.02.2016
+-- Edited by Thudmeizer	@	26.06.2016
 
 class 'WhirlwindTactic' (SpaceMarineVehicleTactic)
 
@@ -23,33 +23,40 @@ end
 function WhirlwindTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (Whirlwind.barrage == nil) then
-		Whirlwind.barrage = cpu_manager.stats:GetAbilityID( "marines_whirlwind_missiles" )
+	if (Whirlwind.barrage_id == nil) then
+		Whirlwind.barrage_id = cpu_manager.stats:GetAbilityID( "marines_whirlwind_missiles" )
 	end
 
-	if (Whirlwind.incendiary == nil) then
-		Whirlwind.incendiary = cpu_manager.stats:GetAbilityID( "marines_whirlwind_incendiary_missile" )
+	if (Whirlwind.incendiary_id == nil) then
+		Whirlwind.incendiary_id = cpu_manager.stats:GetAbilityID( "marines_whirlwind_incendiary_missile" )
 	end
 end
 
 function WhirlwindTactic:DoAbilities()
 
-	-- Use the Missile Barrage
-	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(Whirlwind.barrage)) then
-		Ability.DoAbilityTarget( self.squad_ai, Whirlwind.barrage, Ability.Filters.CloseVehicleEnemy, 1 )
-		Ability.DoAbilityTarget( self.squad_ai, Whirlwind.barrage, Ability.Filters.CloseSquadEnemy, 6 )
+	local hkChance = math.random(1,100)
+
+	-- Check if we are attacking and not in home base
+	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(Whirlwind.barrage_id)) then
+		if ( (cpu_manager.terrain_analyzer:HasThreat( self.squad_ai:GetPosition(), 75 ) and hkChance > 25)
+		or (cpu_manager.terrain_analyzer:HasThreat( self.squad_ai:GetPosition(), 100 ) and hkChance > 75) ) then
+		
+			-- Launch a Missile Barrage at either Vehicles or Squads
+			Ability.DoAbilityTarget( self.squad_ai, Whirlwind.barrage_id, Ability.Filters.CloseVehicleEnemy, 1 )
+    			Ability.DoAbilityTarget( self.squad_ai, Whirlwind.barrage_id, Ability.Filters.CloseSquadEnemy, 4 )
+		end
 	end
 
 	-- Enable Incendiary Missile barrage only when attacking and with enough health (Whirlwind MK2)
-	if (self.squad_ai:IsUsingAbility(Whirlwind.incendiary)) then
+	if (self.squad_ai:IsUsingAbility(Whirlwind.incendiary_id)) then
 
 		-- Turn barrage OFF if stopped attacking, OR if health < 50%
 		if ((not self.squad_ai:IsAttacking()) or self.squad_ai:GetHealthPercentage() < 0.5) then
-			self.squad_ai:DoSpecialAbility(Whirlwind.incendiary)
+			self.squad_ai:DoSpecialAbility(Whirlwind.incendiary_id)
 		end
 		-- Turn barrage ON only when attacking, AND when health > 50%
 		elseif (self.squad_ai:IsAttacking() and self.squad_ai:GetHealthPercentage() > 0.5) then
-			self.squad_ai:DoSpecialAbility(Whirlwind.incendiary)
+			self.squad_ai:DoSpecialAbility(Whirlwind.incendiary_id)
 	end
 
 	-- Call standard method

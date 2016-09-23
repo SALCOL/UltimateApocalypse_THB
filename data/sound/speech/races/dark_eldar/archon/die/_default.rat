@@ -2,10 +2,10 @@
 
 version = 9
 
-patch = 0
-numChannels = 1
-coneMin = 0.000000
-coneMax = 0.000000
+priority = 20
+source = 0
+maxPolyphony = 1
+type3D = 1
 envelope = {
   {
     distance = 0.000000,

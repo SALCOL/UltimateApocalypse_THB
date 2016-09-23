@@ -1,0 +1,49 @@
+- The race is apocalyzed:
+	- All structures build zone radius decreased to the standard sizes of structures (0).
+	- All structures now have build zones when constructed (25m standard, 50m HQ, 12-20m generators/turrets.
+	- Turrets require control zones.
+	- Limits removed for almost all units.
+	- Builder unit limit expanded to 8.
+	- Added turret researches to turrets.
+	- Listening Post addon costs were changed.
+	- Listening Post Strategic Hold research added.
+	- Infiltration System added.
+	- Auto Repair and Cease Fire abilities added to structures.
+	- HQs can now detect super structures on radar.
+	- Resource cap increased to +1000/+800 Req./Power.
+	- Validated the relic resource to the race.
+	- Restored Soulstorm and Dark Crusade vehicle caps to base DOW and Winter Assault vehicle caps.
+	- Added vehicle explosion deaths to all vehicle units.
+	- All abilities set within the command area of the gui are now set within the abilities column.
+	- Squads that can jump or teleport will now knockback and deal minor damage to infantry within a short radius of a squad jump.
+	- Applied unlimited amounts of repair units required to repair structures and vehicles.
+	- Each generator built decreases the cost of the super structure. Thermo generators are included, decreasing the costs of super structures even more.
+	- Weapon upgrades are acquired much faster. Reinforcements are acquired 80% of the overall time.
+	- Squad reinforcements and upgrades while in combat takes 2x longer to fortify. 
+	- Grenades concept applied with the option to RUN!!! for all infantry.
+	- All commanders if died will weaken the morale of all units within a 100 meter radius.
+	- All commanders received the statistics of other commanders: Hero upgrades, health regeneration, health overall decrement, new abilities). They are also located at the top of the build menu like other factions.
+	- Added wargear required attributes from version 1.73's wargear system.
+	- Added wargear required attributes from version 1.8's wargear system.
+	- Added Inspiring choices to all commanders via version 1.85's wargear system.
+	- Added commander wargear was added to the Apocalypse Rules wincondition.
+	- Applied all necessary attributes of the race within winconditions.
+	- All heroes who have a squad/vehicle cap no longer contains a squad or vehicle cap.
+	- All weapons apocalyzed. Obey terrain, value at 0.6, infantry weapons damage versus armor reduction, titan, living metal, and super structure damages. Ucs. Damage versus commanders decreased. Pistols are accurate on the move. Flamers are very accurate.
+	- Tier IV implemented.
+	- Tier V implemented.
+	- Tier III income researches implemented.
+	- Tier IV income researches implemented.
+	- Tier V income researches implemented.
+	- Walls/Turrets:
+	- Super structure: 
+	- Superweapons: 
+	- Titans: 
+	- Winbuttons/gods: 
+	- AI updated
+	- All ucs apocalyzed.
+	- All hotkeys apocalyzed.
+	- Version 1.86 transport rule applied to faction.
+	- New 1.86 rule: All listening Posts and generators decay percentage decreased from 45% minimum amount of resource to 10% (except for HQs). So now the mod encourages you to go find resources and not turtle very late game. 10% resources happens usually around the 30 minute mark instead of 15 minute mark. 
+	- Version 1.86 vehicle durability researches.
+	

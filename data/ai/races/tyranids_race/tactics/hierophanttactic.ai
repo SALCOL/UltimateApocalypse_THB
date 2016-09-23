@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'hierophanttactic.ai'
--- Created by Thudmeizer @ 25.04.2016
+-- Created by Thudmeizer @ 02.07.2016
 
 class 'HierophantTactic' (TyranidInfantryTactic)
 
@@ -22,6 +22,10 @@ function HierophantTactic:InitAbilities()
 
 	if (Hierophant.infest_id == nil) then
 		Hierophant.infest_id = cpu_manager.stats:GetAbilityID( "tyranids_hierophant_infest" )
+	end
+
+	if (Hierophant.turret_id == nil) then
+		Hierophant.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
 	end
 end
 
@@ -46,6 +50,15 @@ function HierophantTactic:DoAbilities()
 		if (oBuilding ~= nil) then
 			-- Activate infestation against enemy buildings
 			self.squad_ai:DoSpecialAbilityEntity(Hierophant.infest_id, oBuilding) 
+		end
+	end
+
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( Hierophant.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, Hierophant.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, Hierophant.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
 		end
 	end
 end

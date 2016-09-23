@@ -2,7 +2,7 @@
 -- File: 'doomsdaymonolithtactic.ai'
 -- Created by ProfessorGenius @ 1.17.2011
 -- Assisted by Thudmeizer and Corncobman
--- Edited by Thudmeizer	@ 10.03.2016
+-- Edited by Thudmeizer	@ 02.07.2016
 
 class 'DoomsdayMonolithTactic' (NecronVehicleTactic)
 
@@ -77,6 +77,9 @@ function DoomsdayMonolithTactic:DoAbilities()
 	else
 		DoomsdayMonolithTactic.DoTimedSpecialAbilities(self)
 	end
+
+	-- Call standard method
+	NecronVehicleTactic.DoAbilities(self)
 end
 
 function DoomsdayMonolithTactic:DoDirectSpawnAbility()

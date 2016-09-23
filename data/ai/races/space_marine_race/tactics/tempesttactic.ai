@@ -1,8 +1,8 @@
 ----------------------------------------
 -- File: 'tempesttactic.ai'
--- Edited by Thudmeizer @ 01.11.2007
+-- Edited by Thudmeizer @ 26.06.2016
 
-class 'TempestTactic' (SpaceMarineInfantryTactic)
+class 'TempestTactic' (SpaceMarineVehicleTactic)
 
 function TempestTactic:__init( squad_ai ) super( squad_ai )
 

@@ -3,7 +3,7 @@
 -- Created by Krronus	@ 5/1/2008
 -- Edited by fuggles 27/05/2013
 -- Edited by Cylarne 6/16/2014
--- Edited by Thudmeizer	09.05.2016
+-- Edited by Thudmeizer	02.07.2016
 
 class 'deamons_race'
 
@@ -53,6 +53,7 @@ function deamons_race:LoadRace( eDifficulty )
 	import( 'Races/deamons_race/Tactics/DaemonsLocTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsJuggTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsDefilerTactic.ai' )
+	import( 'Races/deamons_race/Tactics/DaemonsBrassScorpionTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsWarpSpawnTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsHellSpawnTactic.ai' )
 	import( 'Races/deamons_race/Tactics/DaemonsSoulGrinderTactic.ai' )
@@ -134,6 +135,8 @@ function deamons_race:CreateTactic(oSquadAI)
 		return DaemonsJuggTactic(oSquadAI)
 	elseif (sUnitName == "daemon_squad_defiler_nurgle") then
 		return DaemonsDefilerTactic(oSquadAI)
+	elseif (sUnitName == "daemon_squad_greater_brass_scorpion") then
+		return DaemonsBrassScorpionTactic(oSquadAI)
 	elseif (sUnitName == "daemon_squad_bloodthirster") then
 		return DaemonsBloodThirsterTactic(oSquadAI)
 	elseif (sUnitName == "daemon_squad_guo") then

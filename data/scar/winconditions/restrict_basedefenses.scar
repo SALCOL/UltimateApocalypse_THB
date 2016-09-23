@@ -1,0 +1,55 @@
+-- Restrict Base Defenses
+-- Remade by Cylarne_04, smaller in code length and simplified. 2011
+-- Edited by Cylarne_04 @ 2016: Restrict Base Defenses
+
+import("Player.scar");
+import("GroupCallers.scar");
+import("Command.scar");
+import("Groups.scar");
+import("ScarUtil.scar");
+import("WXPGroups.scar");
+
+function RestrictFortress_Main()
+	
+	-- Setup the Fortress list above.
+	-- Add the health bonus modifier, making the defenses stronger.
+	
+	local playerCount = World_GetPlayerCount()
+
+	print "Turrets and base defenses deactivated.";
+	
+	import("UA_SCARCore/K_04/FortressDefenses.scar");
+	
+	for i = 0, playerCount - 1 do
+		local player = World_GetPlayerAt(i)
+		local race = Player_GetRaceName(player)
+		
+		for i=1,table.getn(t_fortress_list.Actual) do
+			Player_RestrictBuilding(player, t_fortress_list.Actual[i]);
+		end 
+		if (Mod_Includes_Tyranids == true) then
+			for i=1,table.getn(t_fortress_list.Tyranids) do
+				Player_RestrictBuilding(player, t_fortress_list.Tyranids[i]);
+			end 
+		end
+		if (Mod_Includes_Inquisition == true) then
+			for i=1,table.getn(t_fortress_list.Inquisition) do
+				Player_RestrictBuilding(player, t_fortress_list.Inquisition[i]);
+			end 
+		end
+		if (Mod_Includes_Daemons == true) then
+			for i=1,table.getn(t_fortress_list.Daemons) do
+				Player_RestrictBuilding(player, t_fortress_list.Daemons[i]);
+			end 
+		end
+	end
+end
+	
+
+-- Init fortress rule system
+function RestrictFortress_Init()
+	Rule_AddOneShot(RestrictFortress_Main, 0.8)
+end
+
+-- Init SCAR
+Scar_AddInit(RestrictFortress_Init)

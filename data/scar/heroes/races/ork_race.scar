@@ -239,6 +239,13 @@ UnitTypes.ork_race =
 		UpgradeFunction = UpgradeTank,
 		FXType = "Vehicle",
 	},
+	ork_squad_looted_rhino =
+	{
+		Title = "Looted Rhino",
+		Type = "RegularForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Squad",
+	},
 	ork_squad_grot_tank =
 	{
 		Title = "Grot Tanks",
@@ -263,6 +270,13 @@ UnitTypes.ork_race =
 	ork_squad_battle_wagon =
 	{
 		Title = "Battle Wagon",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+	},
+	ork_squad_battle_wagon_armageddon =
+	{
+		Title = "Battle Wagon Armageddon",
 		Type = "SpecialForces",
 		UpgradeFunction = UpgradeTank,
 		FXType = "Vehicle",
@@ -347,6 +361,23 @@ UnitTypes.ork_race =
 			"ork_battlefortress_roller",
 			"ork_zzzap_gun_battlefortess_l_melee",
 			"ork_zzzap_gun_battlefortess_r_melee",
+		},
+	},
+	ork_squad_battlefortress_armageddon =
+	{
+		Title = "Battle Fortress Armageddon",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"ork_zzzap_gun",
+			"ork_big_shoota_twin_battlefortress_r",
+			"ork_big_shoota_twin_battlefortress_l",
+			"ork_zzzap_gun_battlefortess_l",
+			"ork_zzzap_gun_battlefortess_r",
 		},
 	},
 	ork_squad_kustim_stompa = 

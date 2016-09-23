@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonhuntbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 20.06.2016
+-- Edited by Thudmeizer @ 02.07.2016
 
 class 'DaemonhuntBuildBaseStrategy' (BuildBaseStrategy)
 
@@ -29,7 +29,6 @@ function DaemonhuntBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	CpuPrerequisites2.AddSpecialItem("inquisition_dedication_research_addon", CpuPrerequisites.BT_AddOn)
 	CpuPrerequisites2.AddSpecialItem("inquisition_dedication_tomes_addon", CpuPrerequisites.BT_AddOn)
 	CpuPrerequisites2.AddSpecialItem("inquisition_turret_addon_probe", CpuPrerequisites.BT_AddOn)
-	CpuPrerequisites2.AddSpecialItem("addon_sisters_wall_probe", CpuPrerequisites.BT_AddOn)
 
 	CpuPrerequisites2.AddSpecialItem("inquisition_schematic_land_raider_special", CpuPrerequisites.BT_Research)
 
@@ -147,13 +146,7 @@ function DaemonhuntBuildBaseStrategy:GetAddonBuilding( sType )
 	elseif (sType == "inquisition_dedication_tomes_addon") then
 		return "inquisition_librarium"
 
-	elseif (sType == "addon_sisters_wall_bolters") then
-		return "inquisition_infantry_bunker"
-
-	elseif (sType == "addon_sisters_wall_flamers") then
-		return "inquisition_infantry_bunker"
-
-	elseif (sType == "addon_sisters_wall_probe") then
+	elseif (sType == "inquisition_bunker_addon") then
 		return "inquisition_infantry_bunker"
 
 	elseif (sType == "inquisition_dedication_power_addon") then
@@ -432,14 +425,14 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 		if (self.tierLevel >= 1) then
 
 			-- Compute Bodyguards researches
-			self:DynamicResearch("inquisition_bodyguard_upgrade_1", 1, 70, 30, 0, 0, "inquisition_squad_bodyguard", 1)
+			self:DynamicResearch("inquisition_bodyguard_upgrade_1", 1, 110, 50, 0, 0, "inquisition_squad_bodyguard", 1)
 
 			-- Compute infantry researches
 			if (num_infantry_squads >= 3) then
 				self:DynamicResearch("inquisition_frag_grenade_research", 1, 25, 75, 0, 0, nil, 0)
 				self:DynamicResearch("inquisition_tome_invigorate_soul", 1, 150, 50, 0, 0, "inquisition_squad_scholars", 1)
-				self:DynamicResearch("inquisition_squad_cap", 1, 100, 50, 0, 0, nil, 0)
-				self:DynamicResearch("inquisition_advanced_weapons", 1, 50, 25, 0, 0, nil, 0)
+				self:DynamicResearch("inquisition_squad_cap", 1, 125, 75, 0, 0, nil, 0)
+				self:DynamicResearch("inquisition_advanced_weapons", 1, 100, 50, 0, 0, nil, 0)
 			end
 
 			-- Compute infantry/Grey Knight researches
@@ -462,20 +455,16 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 		if (self.tierLevel >= 2) then
 
 			-- Compute Bodyguards researches
-			self:DynamicResearch("inquisition_bodyguard_upgrade_2", 2, 90, 60, 0, 0, "inquisition_squad_bodyguard", 2)
+			self:DynamicResearch("inquisition_bodyguard_upgrade_2", 2, 130, 70, 0, 0, "inquisition_squad_bodyguard", 2)
 
 			-- Computer Maintenance Servitors (as we need repairers quickly as vehicles arrive damaged)
 			self:DynamicResearch("inquisition_schematic_servitors_maintenance", 2, 20, 20, 0, 0, nil, 0)
-
-			-- Compute resource researches
-		      --self:DynamicResearch("inquisition_purification_1", 2, 50, 300, 0, 0, nil, 0)
-		      --self:DynamicResearch("inquisition_increase_power_1", 2, 200, 20, 0, 0, nil, 0)
 
 			-- Compute infantry researches
 			if (num_infantry_squads >= 3) then
 				self:DynamicResearch("inquisition_krak_grenades_research", 2, 75, 75, 0, 0, nil, 0)
 				self:DynamicResearch("inquisition_special_squads", 2, 150, 100, 0, 0, nil, 0)
-				self:DynamicResearch("inquisition_advanced_weapons_2", 2, 80, 50, 0, 0, nil, 0) 
+				self:DynamicResearch("inquisition_advanced_weapons_2", 2, 150, 100, 0, 0, nil, 0) 
 				self:DynamicResearch("inquisition_targeters", 2, 120, 60, 0, 0, nil, 0)
 			end
 
@@ -532,10 +521,6 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 				self:DynamicResearch("inquisition_tome_daemonica_1", 3, 160, 90, 0, 0, nil, 0)
 				self:DynamicResearch("inquisition_tome_psykers", 3, 190, 100, 0, 0, nil, 0)
 			end
-
-			-- Compute resource researches
-			--self:DynamicResearch("inquisition_purification_2", 3, 80, 525, 0, 0, nil, 0)
-			--self:DynamicResearch("inquisition_increase_power_2", 3, 350, 40, 0, 0, nil, 0)
 
 			-- Compute Vehicle researches
 			if (num_vehicle_squads + num_dread_squads >= 6) then

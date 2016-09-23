@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'darkeldartormentorTactic.ai'
 -- Edited by Cylarne @ 2012
--- Edited by Thudmeizer	@ 05.04.2016
+-- Edited by Thudmeizer	@ 01.07.2016
 
 class 'DarkEldarTormentorTactic' (DarkEldarVehicleTactic)
 
@@ -21,6 +21,10 @@ function DarkEldarTormentorTactic:InitAbilities()
 	if (Tormentor.rage_id == nil) then
 		Tormentor.rage_id = cpu_manager.stats:GetAbilityID( "dark_eldar_rekindle_rage_titan" )	
 	end
+
+	if (Tormentor.turret_id == nil) then
+		Tormentor.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
+	end
 end
 
 function DarkEldarTormentorTactic:DoAbilities()
@@ -33,30 +37,15 @@ function DarkEldarTormentorTactic:DoAbilities()
 		Ability.DoAbilityArea(self.squad_ai, Tormentor.rage_id, Ability.Filters.CloseEnemy, 20, 1)
 	end
 	
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( Tormentor.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, Tormentor.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, Tormentor.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
+		end
+	end
+
 	-- Call standard method
 	DarkEldarVehicleTactic.DoAbilities(self)
-
-	--self:DoAbilityVoidShields()
 end
---[[
-function DarkEldarTormentorTactic:DoAbilityVoidShields()
-
-	-- Check if we should toggle Void Shields
-	local id_VoidShields = cpu_manager.stats:GetAbilityID( "dark_eldar_soulshield" )
-	local bToggleVoidShields = false
-	
-	local bIsUsing = self.squad_ai:IsUsingAbility(id_VoidShields)
-	local bIsVSonline = self.squad_ai:GetMoralePercentage()
-	
-	-- Void Shield checker.
-	if ((bIsUsing == true and bIsVSonline < 0.1) or
-		(bIsUsing == false and bIsVSonline == 1)) then
-		bToggleVoidShields = true
-	end
-	
-	-- Void Shields enable/disable
-	if (bToggleVoidShields == true and self.squad_ai:CanDoAbility(id_VoidShields)) then
-		self.squad_ai:DoSpecialAbility(id_VoidShields)
-	end
-end
-]]

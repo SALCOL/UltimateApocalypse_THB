@@ -1,0 +1,36 @@
+----------------------------------------
+-- File: 'orkhqtactic.ai'
+-- Edited by Krronus @ 05.23.2010
+-- Edited by Thudmeizer	@ 23.08.2016
+
+class 'OrkHQTactic' (BaseTactic)
+
+OrkHQ = {}
+
+function OrkHQTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Ork HQ Tactic")
+end
+
+function OrkHQTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (OrkHQ.superweapon_id == nil) then
+		OrkHQ.superweapon_id = cpu_manager.stats:GetAbilityID( "ork_fighta_bomma_bombs" )
+	end
+end
+
+function OrkHQTactic:DoAbilities()
+
+	-- Try to activate the Bombs superweapon
+	if (self.base_ai:CanDoAbility(OrkHQ.superweapon_id)) then
+	
+		local iRange = self.base_ai:GetAbilityRange(OrkHQ.superweapon_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.base_ai:GetPosition(), iRange, 25)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.base_ai:DoSpecialAbilitySquad(OrkHQ.superweapon_id, oSquad:GetSquad())
+			end
+		end
+	end
+end

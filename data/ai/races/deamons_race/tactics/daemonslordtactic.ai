@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonslordtactic.ai'
--- Edited by Thudmeizer @ 06.05.2016
+-- Edited by Thudmeizer @ 02.07.2016
 
 class 'DaemonsLordTactic' (DaemonsInfantryTactic)
 
@@ -78,6 +78,10 @@ function DaemonsLordTactic:InitAbilities()
 		DaemonsLord.warpfire_id = cpu_manager.stats:GetAbilityID( "daemons_warpfire_lord" )	
 	end
 
+	if (DaemonsLord.warpstorm_id == nil) then
+	   	DaemonsLord.warpstorm_id = cpu_manager.stats:GetAbilityID( "daemons_warp_storm_mini_lord" )	
+	end
+
 	if (DaemonsLord.run_id == nil) then
 		DaemonsLord.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end	
@@ -93,6 +97,7 @@ function DaemonsLordTactic:DoAbilities()
 		Ability.DoAbilityPos( self.squad_ai, DaemonsLord.warpportal_id, Ability.Filters.CloseSquadEnemy, 3 )
 		Ability.DoAbilityPos( self.squad_ai, DaemonsLord.warpportal_id, Ability.Filters.CloseMonsterEnemy, 3 )
 		Ability.DoAbilityPos( self.squad_ai, DaemonsLord.warpfire_id, Ability.Filters.CloseEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsLord.warpstorm_id, Ability.Filters.CloseEnemy, 6 ) 
 	else
 		Ability.DoAbilityTarget( self.squad_ai, DaemonsLord.murder_id, Ability.Filters.CloseCommanderEnemy, 1 )
 		Ability.DoAbilityTarget( self.squad_ai, DaemonsLord.murder_id, Ability.Filters.CloseSquadEnemy, 4 )
@@ -100,6 +105,7 @@ function DaemonsLordTactic:DoAbilities()
 		Ability.DoAbilityPos( self.squad_ai, DaemonsLord.warpportal_id, Ability.Filters.CloseSquadEnemy, 6 )
 		Ability.DoAbilityPos( self.squad_ai, DaemonsLord.warpportal_id, Ability.Filters.CloseMonsterEnemy, 6 )
 		Ability.DoAbilityPos( self.squad_ai, DaemonsLord.warpfire_id, Ability.Filters.CloseEnemy, 8 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsLord.warpstorm_id, Ability.Filters.CloseEnemy, 10 ) 
 	end
 
 	-- Run if safe

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'eldarbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 20.06.2016
+-- Edited by Thudmeizer @ 23.06.2016
 -- Edited by Cylarne_04 2011
 
 class 'EldarBuildBaseStrategy' (BuildBaseStrategy)
@@ -11,21 +11,7 @@ function EldarBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	self:AddDetectorUnit("eldar_squad_seer_council")
 	self:AddDetectorUnit("eldar_guardian_squad")
 	self:AddDetectorUnit("eldar_harlequin_squad")
---[[
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_guide_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_embolden_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_blind_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_entanglement_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_mind_war_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_storm_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_farsight_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_shroud_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_eldritch_storm_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_eldritch_storm_improved_addon", CpuPrerequisites.BT_Research)
-	CpuPrerequisites2.AddSpecialItem("eldar_spell_focused_mind_addon", CpuPrerequisites.BT_Research)
-	
-	CpuPrerequisites2.AddSpecialItem("eldar_squad_farseer", CpuPrerequisites.BT_Squad)
-]]
+
 	CpuPrerequisites2.AddSpecialItem("eldar_support_platform_addon_probe", CpuPrerequisites.BT_AddOn)
 
 	-- Phases of attacks. If army is decreased substantially, or build only titans: modify.
@@ -468,7 +454,6 @@ function EldarBuildBaseStrategy:BuildFlexible()
 
 			-- Compute Shining Spear researches
 			if (self:CountSquads("eldar_squad_shining_spears") >= 1) then
-				self:DynamicResearch("eldar_research_stealth_stone_shining_spears", 3, 150, 150, 0, 0, nil, 0)
 				self:DynamicResearch("eldar_research_shining_spear_squadsize", 3, 250, 60, 0, 0, nil, 0)
 			end
 
@@ -522,6 +507,10 @@ function EldarBuildBaseStrategy:BuildFlexible()
 			-- Compute Heart of Khaine researches
 			self:DynamicResearch("eldar_khaine_research_1", 4, 100, 100, 0, 0, nil, 0)
 
+			-- Compute Shining Spear researches
+			if (self:CountSquads("eldar_squad_shining_spears") >= 1) then
+				self:DynamicResearch("eldar_research_stealth_stone_shining_spears", 4, 300, 300, 0, 0, nil, 0)
+			end
 
 			-- Compute Support Portal Addons
 			if (self:GetBuildingCountByName("eldar_support_portal_super") > 0 and iRequisition >= 500) then

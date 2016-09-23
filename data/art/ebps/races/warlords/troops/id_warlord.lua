@@ -1,8 +1,8 @@
 simvis_attributes =
 {
 
-	vis_scale_min = 0.75,
-	vis_scale_max = 0.75,	
+	vis_scale_min = 1,
+	vis_scale_max = 1,	
 
 	selection_ground		= 1,
 

@@ -1412,7 +1412,12 @@ DaemonhuntUnitStats =
 			},
 			{
 				name = "npc_titan_inferno_cannon_improved",
-				effectiveness = GenerateUnitEffectiveness(8.0,7.0,6.0,7.0,7.0,10.0,10.0,10.0,10.0,8.5,8.5,7.0,7.0,0.0,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(8.0,7.0,6.0,7.0,7.0,9.0,9.0,9.0,9.0,8.5,8.5,7.0,7.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_titan_plasma_blastgun_godly",
+				effectiveness = GenerateUnitEffectiveness(8.0,7.0,6.0,7.0,10.0,10.0,10.0,10.0,10.0,8.5,8.5,7.0,7.0,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}
@@ -1433,6 +1438,11 @@ DaemonhuntUnitStats =
 			{
 				name = "npc_titan_plasma_blastgun",
 				effectiveness = GenerateUnitEffectiveness(9.5,9.5,9.5,9.5,9.5,8.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "inquisition_titan_plasma_blastgun_godly",
+				effectiveness = GenerateUnitEffectiveness(8.0,7.0,6.0,7.0,10.0,10.0,10.0,10.0,10.0,8.5,8.5,7.0,7.0,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}

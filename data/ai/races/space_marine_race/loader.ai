@@ -48,6 +48,7 @@ function space_marine_race:LoadRace( eDifficulty )
 	import( 'Races/space_marine_race/Tactics/ChaplainTerminatorTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/LibrarianTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/ForceCommanderTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/ForceCommanderLotdTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/ForceCommanderTerminatorTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/ForceCommanderAdvancedTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/ForceCommanderCampaignTactic.ai' )
@@ -135,6 +136,8 @@ function space_marine_race:CreateTactic(oSquadAI)
 		return ForceCommanderTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_force_commander_killeus") then
 		return ForceCommanderTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_force_commander_lotd") then
+		return ForceCommanderLotdTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_force_commander_terminator") then
 		return ForceCommanderTerminatorTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_force_commander_advance_sp") then

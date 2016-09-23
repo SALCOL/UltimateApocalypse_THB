@@ -17,6 +17,8 @@ function Rule_RestrictSupers()
 		local player = World_GetPlayerAt(i);
 		
 		Player_RestrictSquad(player, "guard_squad_deathstrike_missile_launcher");
+		Player_RestrictSquad(player, "necron_aeonic_orb_squad");
+		Player_RestrictResearch(player, "necron_solar_power_research");
 		Player_RestrictSquad(player, "tau_drone_satellite_squad");
 		Player_RestrictSquad(player, "ork_squad_nukklear_bomba");
 		Player_RestrictResearch(player, "ork_research_tech_nukklear_bomma");

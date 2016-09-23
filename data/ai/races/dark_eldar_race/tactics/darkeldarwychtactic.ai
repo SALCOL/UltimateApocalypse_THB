@@ -60,13 +60,14 @@ function DarkEldarWychTactic:DoAbilities()
 			-- Send grenade against enemy infantry
 			Ability.DoAbilityPos( self.squad_ai, DarkEldarWych.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
 		end
-
+--[[
 		if (self.squad_ai:CanDoAbility(DarkEldarWych.horrorfex_id)) then
 
+			-- Bugged: will cause crash when Horrorfex ability is used. Reason undetermined.
 			-- Send grenade against enemy infantry
-			Ability.DoAbilityPos( self.squad_ai, DarkEldarWych.horrorfex_id, Ability.Filters.CloseSquadEnemy, 2 ) 
+			--Ability.DoAbilityPos( self.squad_ai, DarkEldarWych.horrorfex_id, Ability.Filters.CloseSquadEnemy, 2 ) 
 		end
-
+]]
 		if (self.squad_ai:CanDoAbility(DarkEldarWych.terrorfex_id)) then
 
 			-- Send bomb against enemy infantry

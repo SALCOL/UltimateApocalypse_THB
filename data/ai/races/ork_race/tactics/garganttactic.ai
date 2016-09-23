@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'garganttactic.ai'
 -- Created by Cylarne_04 @ 2014
--- Edited by Thudmeizer		@ 23.02.2016
+-- Edited by Thudmeizer		@ 02.07.2016
 
 class 'GargantTactic' (OrkVehicleTactic)
 
@@ -31,8 +31,8 @@ function GargantTactic:InitAbilities()
 		Gargant.shield_id = cpu_manager.stats:GetAbilityID( "ork_super_chargy" )
 	end
 
-	if (Gargant.run_id == nil) then
-		Gargant.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )
+	if (Gargant.turret_id == nil) then
+		Gargant.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
 	end
 end
 
@@ -55,12 +55,12 @@ function GargantTactic:DoAbilities()
 		end
 	end
 
-	-- Check to make sure if no threats are nearby
-	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
-
-		-- If I am safe I can run
-		if (self.squad_ai:CanDoAbility( Gargant.run_id )) then
-			self.squad_ai:DoSpecialAbility( Gargant.run_id )
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( Gargant.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, Gargant.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, Gargant.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
 		end
 	end
 end

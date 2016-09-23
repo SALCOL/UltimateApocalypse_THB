@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'aeonicorbtactic.ai'
 -- Edited by Cylarne @ 12-31-2010
--- Edited by Thudmeizer	@ 09.03.2016
+-- Edited by Thudmeizer	@ 02.07.2016
 
 class 'AeonicOrbTactic' (NecronVehicleTactic)
 
@@ -84,6 +84,9 @@ function AeonicOrbTactic:DoAbilities()
 			Ability.DoAbilityPos( self.squad_ai, AeonicOrb.annihilator_id, Ability.EntityFilters.CloseBaseEntityEnemy, 6)
 		end
 	end
+
+	-- Call standard method
+	NecronVehicleTactic.DoAbilities(self)
 end
 
 function AeonicOrbTactic:Update()

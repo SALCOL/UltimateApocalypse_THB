@@ -1,0 +1,420 @@
+Hint: 
+* = Fixes.
+- = Ideas not taken to effect yet.
+!* = Applied ingame, but as rough drafts (non final product)
+> = Noted for next version.
+>> = Noted, but not for another two versions or more.
+
+------------------------
+
+PLANS FOR FUTURE VERSIONS:
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+See changes from lybio on MOD DB.
+Credits - Akrandas and OrkA mod.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+------------------------
+Global: 
+------------------------
+
+* Auto Repairing now properly works.
+* All AI were further updated and improved.
+* All Warhound Titan Stomp abilities now deals 50% more damage and deals critical morale damage to all squad types.
+* Vehicle RAM!!! mode area affect radius decreased from 14m to 11m.
+* All Legio Titanicus Turret modes were reverted to a Titan Stomp execution move similar to vehicle RAMMING!
+* All Stomp Modes were given to all walker titans.
+* Reaver Titan Mega Melta damage decreased by 50%. All modifiers are properly working as they should now.
+* Transport Ability Recharge ability will now increase the ability ranges of affected squads around the transport.
+* Transport reinforcing works differently now and is kind of fixed. Please see ingame.
+* Production Inspiring Commander Choice addon now affects researches and properly works.
+* Health and morale Inspiring Choice limit is now one throughout all commanders in your army.
+* Tanktraps no longer affect enemies.
+- Elite Builders should build faster. Update tooltip.
+
+AI Changes ------------------------
+
+------------------------
+Chaos Marines: 
+------------------------
+
+* New Endgame Addon: The Great Ruinous Castle I
+* New Endgame Addon: The Great Ruinous Castle II
+* New Research: Titan Armor Research.
+* New Research: Squad Size research 1+2.
+* New Research: Vehicle Armor Upgrade
+* New Research: A new special research.
+* Lord of Change Greater Bolts of Change damage and area effect radius decreased by 25%.
+* Warp Storm of World End now expands gloabally, killing off everything that is not daemon. FX was changed up and improved!
+- Warp Storm of World End free daemon limit was increased to 40 from 20.
+
+AI Changes-------------
+
+------------------------
+Chaos Daemons:
+------------------------
+
+* Primarch Angron is now invulnerable 50% of the time decreased from 75% of the time. Angron will also lose invulnerability half the time if his morale is broken.
+* All lesser daemons are now cheaper to reinforce.
+* Blight Drones can now vault over terrain throughout the globe.
+* Daemon Lord and Greater Daemon Prince can now cast Mini Warp Storms upon Commander: Level 8 research.
+* Lord of Change Greater Bolts of Change damage and area effect radius decreased by 25%.
+* Structure warpfire fx was removed due to major lag issues.
+* Yellow Horror and Hellspawn artillery damage against builder units and vehicles decreased by 15%.
+* Planetary Exterminator and Warp Storm of World End can no longer fire at the same time, also breaking one of the superweapons if fired off.
+* Warp Storm of World End now expands gloabally, killing off everything that is not daemon. FX was changed up and improved!
+- Warp Storm of World End free daemon limit was increased to 40 from 20.
+- Trading for resources gives the player 50% of the amount of resources to trade instead of 75% the amount.
+- The economy of the Chaos Daemons is now stabilized compared to any other faction. Daemons will no longer get ridiculous economic boosts of income.
+- Daemon Claws Turret health decreased by 100hp.
+- Eye of Madness cost increased by 15 requisition and its madness aura decreased from 6 meters to 3 meters, only engaging infantry or commanders that are really close by. 
+- Eye of Madness health decreased by 100hp.
+
+AI Changes-------------
+
+------------------------
+Dark Eldar: 
+------------------------ 
+
+> New Unit: Agony Titan (Legio Titanicus).
+* Reaper Shards damage decreased by 20%.
+* Instigator Titan weapons no longer fire backwards.
+* Instigator Titans now costs 3990/8100 req/power to produce.
+* Turret damages decreased by 20%.
+- Haemonculus keen sight radius increased by 15m.
+- Wych keen sight radius increased by 10m.
+- Clawed Fiends globally increases the morale of Warp Beasts by 50 per unit.
+- Clawed Fiend health decreased by 500hp.
+
+
+AI Changes-------------
+
+------------------------
+Eldar: 
+------------------------
+
+* Prism Shards damage decreased by 20%.
+* Hornet brightlances now only fire forward and not off to the side.
+* War Walker Brightlance damage decreased by 30%.
+* Revenant Titan can now activate Gravity Boosters just like other vehicles.
+* Warlock required build time increased from 3 to 7 seconds.
+* Shining Spears squad loadout decreased by 1.
+* Shining Spears health decreased by 75hp.
+* Shining Spear Veterans Upgrade squad increase decreased by 1.
+* Avatar of Khaine armor increased by 2.
+- Avatar of Khaine melee weapon damage increased by 5%.
+- The Laughing God's Dance of Death ability movement speed modifiers decreased by 25%.
+- The Laughing God's new ability released in version 1.86 damage increased by 20%.
+* All Brightlances damage decreased by 15%.
+* Ancient Wraithlord melee damage decreased by 25%.
+- Rangers maximum squad size decreased by 1.
+- Rangers damage output for all sniper rifle variants decreased by 20%.
+
+AI Changes-------------
+
+------------------------
+Imperial Guard: 
+------------------------
+
+* Lucius Pattern Reaver and Cavalier weapons were changed up.
+* Techpriest Enginseer health increased by 250hp. Damage increased by 20%.
+* Mars Pattern Convoys no longer affects Mars Pattern Commands globally by increasing their production.
+* General's Reaver Titan Arm Autocannon damage decreased by 40%.
+- Medusa unit was changed up completely. Their accuracy is very good now and can shoot 2x greater distances than a Basilisk, but shoot much slower and move slowly.
+- Special Weapons Team costs more, can no longer upgrade all of their units, and squad members total decreased by 1.
+
+AI Changes-------------
+
+------------------------
+Inquisition:
+------------------------
+
+- New Unit: Imperator Titan (Legio Titanicus).
+> New Unit: Knight of Flame (return of a once loved unit).
+* Grey Knight Terminator and Paladin damage against vehicles increased by 30%.
+* Grey Knight Paladin morale increased by 50%.
+* New Weapon Upgrade for both Warhound Titans: Emperor's Artifact: Rapid Fire Plasma Blast Gun.
+* Bunkers are now equipped with one addon, Flaming Death for the Inquisition. Unlike the Sisters of Battle, Flaming Death addon is available earlier and grants health.
+* Omnissiah Missile Launcher weapon damage decreased by 30%.
+* Shrine To The Emperor researches now work and affect Grey Knights/vehicle units.
+* Grand Master cost decreased by 2000/1000 req/power.
+* Inquisition Tribunal cost decreased by 300/300 req/power.
+* Troop researches are available later or are more expensive to get.
+* Psycannon Bombard global ability damage decreased by 46%. Cost decreased from 800/800 to 700/700 req/power.
+
+
+
+AI Changes-------------
+
+
+------------------------
+Necrons: 
+------------------------
+
+- New Unit: Triolith (Legio Titanicus).
+* New Research: Wraith Cryptek
+- New Endgame Research/winbutton: Necronium Vortex.
+* All Monoliths now contain a new ability called RAM!!!
+* Doomsday Monolith cost decreased from 5000 to 4000 power.
+* Gauss Pylon cost decreased from 7000 to 6000 power.
+* Plasma Generator limit per Obelisk was removed.
+* Generators decay less often.
+* Amplification Generator bonus aura radius increased from 60m to 70m.
+* Immortal weapon damage increased by 10%. Weapon range increased by 5m.
+* Annihilation Barge weapon damage increased by 5%.
+* Necron Warrior health decreased by 35hp.
+* Immortals health increased by 15hp.
+* Wraith cost decreased from 120 power to 100 power.
+* Energy Core now costs 2000 power from 2250 power.
+* Ancient Summoning Core now costs 1500 power from 1800 power.
+* Engaged Monolith (tier II addon) cost increased from 600 to 750 power.
+* The Overloaded Gauss Weaponry fx was changed up and fixed.
+* Lychguard health increased by 200hp.
+* Doomsday Arks can now attack aircraft. Reload time decreased by 3 seconds.
+* Amplifier: Superweapons modifiers decreased for the Aeonic Orb, decreasing the maximum range.
+* Deathmarks cost increased by 10 power each unit.
+* Deathmarks squad size no longer increases after researching the Deathmark Disruption Field upgrades.
+* Reassemble ability now costs 115 power to activate!
+
+AI Changes-------------
+
+------------------------
+Orks: 
+------------------------
+* All Ork titan researches were renamed to "Gargant Dakka" and "Gargant Armor".
+* Structure model update: Boomy Platform (Thanks to Orks: Armageddon mod)
+* New Structure: Gork Resource Shop (provides resource benefits.)
+* New Unit: Looted Rhino
+* New Unit: Armageddon Battle Fortress
+* New Unit: Armageddon Battle Wagon
+* New Research (Klan): Orks of Armageddon
+* New Research (Klan): Orks of Klan Gorgutz
+* New Research (Klan): Orks of Klan Nuddyfist
+* New Research (Klan): Orks of Klan Zagdakka
+* New Research: More Mega Armor
+* New Research: Even More Mega Armor!
+* New Research: More Mega Dakka
+* New Research: Even More Mega Dakka!
+* New Research: Killa Kan Reinforcements!
+* New Addon: Nukklear Kaboom Bomms! (AddOn)
+* Boomy Platform was completely redone. It is now permanently an artillery emplacement much like the Imperial Guard Earthshaker Platform.
+* All Teknolojee Tree researches costs decreased.
+* Population addons no longer requires the Teknolojee Tree.
+* Waaaagh! Banners limit was removed.
+* Waaagh! Banners now cost 50 +25 requisition per banner constructed.
+* Waagh! Banners now follow what the tooltip says.
+* Waaagh! Banner health decreased, due to possible health increase per Waaagh! Banner exploit.
+- Waaagh! Banners now contains a visual effect that will tell the player that it is upgraded with more pop!
+* Population addons limit was set to 10.
+* Ork Mob modifiers were changed. The more Orks are gathered together, the more health, morale, damage, and health regeneration is added to each individual Ork unit. The Orks if big enough will also increase the requisition rate of the Ork Waagh! So play the Orks with large numbers, always.
+* Ouchy Platforms are cheaper to construct.
+* Ouchy Platform addon requirement pop decreased from 90 to 55.
+* Great Gargants no longer crashes the game.
+* Great Gargants were given a new ability "Repair Me Ya Gitz!".
+* Wartrukks no longer lays minefields very fast.
+* Grots knife is now affected by More Choppy and Even More Choppy researches.
+* Grot pistols are now affected by More Shooty and Even More Shooty researches.
+* Tougher Orks research costs greatly decreased.
+* Bad Doks are now affected by Boss researches.
+* Killa Kans and Shoota Boy Big Shootas are now affected by More Dakka and Even More Dakka researches.
+* Extra Vehicle Armor and Even More Vehicle Armor research modifiers increased.
+* Extra Vehicle Armor upgrade 2 now requires more population.
+* Bombsquig ability power requirement decreased by half.
+* Nukklear Bombard ability cost decreased from 3500/3500 to 3000/3000.
+* Slugga Boy limit was removed.
+* Boomy Stikk Bomms range increased by 15m.
+* Grot Gangs no longer require population to purchase (besides reinforcing).
+* Kustim Stompa Hammer attack radius and damage output increased.
+* Kustim Stompa and Ork Stompa no longer direct spawns Slugga Boyz for free.
+* Burna Bomms global support ability now contains a cost requirement.
+* Supa Dupa Money research 2 modifiers decreased by half.
+* Lootas health, armor, and damage output increased to match the price of the unit.
+* Lootas are now effective against most unit types.
+* Flash Gitz health increased from 390 to 560 hp.
+* 'Ard Boy health decreased from 950 to 700hp.
+* 'Ard Boy morale increased from 300 to 500.
+* Nobz health increased from 800 to 980hp.
+* Teknolojee Tree cost decreased from 400/130 to 200/100.
+* Bombsquig blowup damage increased by 30%.
+* Tankbustaz damage output increased by 35%.
+* Tankbustaz health increased. Knockback resistance also increased.
+* Shoota Boyz can now be upgraded with 8 of 15 special weapons within the squad increased from 5/15.
+* Shoota Boyz Big Shoota damage output increased by 5%.
+* Slugga Boyz can now be upgraded with 5 of 15 special weapons within the squad increased from 3/15.
+* All Ork squads morale increased.
+* Trukk Turbo Boost is now affected by the Turbo Boost research.
+* Listening Posts and their addons are now cheaper to produce.
+* Tank Busta Bombs ability damage increased by 35%.
+* Orks now reinforce 2x slower instead of 6x slower in combat.
+* Supa Dupa Money Researches are now 200% more expensive.
+* Supa Dupa Money since it is so effective at increasing requisition income now requires a relic and a critical location. Supa Dupa Money is now the only research in the game that requires both critical resources to be completed, but is worth it.
+* Ork units and titans can now be transported through Meanest Tellyportas similar to Eldar Webway Gates. Description updated.
+! Do something about the Ork bombs research.
+
+AI Changes-------------
+
+------------------------
+Sisters of Battle:
+------------------------
+
+* Winbutton lag was drastically dropped and was slightly redone. There is no immediate impact upon using the winbutton anymore.
+* The relic resource was changed up to where the required faith cost is equal to the relic points of the Sisters of Battle.
+* Relic resource initial starting is 1,000 and is increased by 1,000 per relic tier research.
+* Aura of Invincibility no longer affects structures.
+* Auto Turret Defense addons for Bunkers no longer provides auto turret defense systems and only increases health. For now on, for squads to shoot bolters at enemy targets, they must be garrissoned unless flamers addon is built.
+* Flamer defense systems addon for bunkers cost greatly increased and requires tier 3 now.
+* Adepta Sororatis Bunker health decreased from 7000 to 6500hp. Cost increased by 10 requisition to build.
+* Bunker Bolters range increased by 15 meters, making it slightly more useful compared to the flame addon.
+* Capitol Imperialis is still unlimited, but constructing just 3 will make the fourth Imperialis take 30 minutes to produce.
+* Capitol Imperialis can now produce units without the need of unloading its doors.
+* Capitol Imperialis is now available within the army painter.
+* Ordo Heritcus Inquisitor is located in the commanders slot of the army painter.
+
+AI Changes-------------
+
+
+------------------------
+Space Marines: 
+------------------------
+
+- New Unit: Warlord Titan (Legio Titanicus).
+- New Unit: Imperator Titan (Legio Titanicus).
+- New Unit Update: The Chaplain in Terminator Armor.
+> New Unit: Legion of the Damned Predator
+> New Unit: Dark Angels
+> New Research: Chapter: Blood Ravens
+> New Research: Chapter: Legion of the Damned
+> New Research: Chapter: Dark Angels
+> New Research: Chapter: Blood Angels
+> New Research: Chapter: Space Wolves
+- New chapters were introduced (like marks of Chaos) to the Space Marines!
+- Space Marine chapters unlock different units to recruit and relics found within the Emperor's Armory.
+* Emperor's Armory sight radius greatly decreased.
+* Deathwatch squad was renamed to "Legion of the Damned". Squad is no longer affected by morale.
+* Legion of the Damned squad initial weapon loadout is now flame throwers.
+* Legion of the Damned squad loadout decreased by half. Squad cap decreased from 4 to 2.
+- Legion of the Damned squads are now produced from the barracks, but require the Sacred Artifact.
+- Legion of the Damned squads are now ignited in fire for visual fx.
+- Legion of the Damned squads vo were changed up!
+* Protocol Battlefleet Gothic winbutton research cost decreased from 45000/45000 to 30000/30000.
+* Protocol Battlefleet Gothic will now reveal the map so you no longer need to upgrade your beacons.
+* All Emperor's Artifact researches that affect titans, vehicles, and Space Marine infantry now requires the Emperor's Armory to be valid even after research is completed.
+* Predator MKII Executioner Cannon fires faster and can now be upgraded.
+* Assault Terminators are now affected by Emperor's Finest: Space Marines research.
+
+AI Changes-------------
+
+------------------------
+Tau: 
+------------------------
+
+- Fire Warrior base weapon damage decreased by 10%.
+- Fire Warrior Rail Rifle damage decreased by 5%.
+
+
+AI Changes-------------
+
+------------------------
+Tyranids: 
+------------------------
+- New Unit: Tervigon
+* Hierophant health decreaed from 35775hp to 30775hp as the gaunt health increment stacks way too much for Hierophants.
+* Trygon health decreased from 14700 to 11700. Gaunt health modifiers stacks way too high for Trygons.
+* Trygons now cost 1000 requisition from 1200.
+* Zoanthrope invulnerability bug was fixed.
+* All gaunts no longer grant a global bonus of health to everything. Instead, while Gaunts are formed in swarms, they then grant several bonuses like more attack damage, health, health regeneration, and even production rate much like the Orks only it affects everything. Always gather Gaunts together.
+* Genestealers are now affected by the Gaunt modifiers.
+
+AI Changes-------------
+
+--------------------------------------------------------|
+Tech Trees (Visual Images Separate from mod): | 
+--------------------------------------------------------|
+
+
+
+--------------------------------------------------------|
+SCAR (Winconditions): | 
+--------------------------------------------------------|
+
+* Legio Titanicus wincondition is properly fixed and will no longer spam ingame messages or cause sync errors.
+* Inquisition Bunker is now an exception within the Annihilate wincondition.
+* Restriction: Commanders now works.
+* Orks are now affected by squad increase winconditions.
+* Titan Wars: Infinite increases relic income by +25 instead of +125. Fixing also Chaos Daemons and making it slightly fair.
+* Blight Drone was added to the list of restrict aircraft.
+
+--------------------------------------------------------|
+SCENARIOS: | 
+--------------------------------------------------------|
+
+
+Forum Feedback: >1.86.3 onwards
+
+Key
+---
+* Slight importance (only one or so people mentioning it)
+** More importance (a bunch of people mentioning it)
+*** Most important (everyone mentioning/agreeing with it)
+
+Overall
+-------
+* The following heroes need buffing:
+Grand Master
+CSM Greater Daemons
+War Boss
+Greater Daemon Prince
+Daemon Prince(s) (god specific)
+CSM Daemon Prince
+Avatar/Laughing God
+Swarm Lord
+Hell Spawn
+Kroot Alpha Knarloc Rider
+
+Chaos
+-----
+
+Daemons
+-------
+*Daemons reportedly have insane damage resistance to bullets
+
+Dark Eldar
+----------
+
+Eldar
+-----
+***Rangers reportedly OP against anything but vehicles/structures
+*Vampire Raider moved to Tier 5
+*Upgraded Soul Walker Lances can apparently trash everything
+*Dire Avengers to have more anti-vehicle weapon/ability options
+
+Imperial Guard
+--------------
+
+Inquisition
+-----------
+
+Necrons
+-------
+*Increase amplification generator explosion damage
+
+Orks
+----
+*Squiggoths need cost increase or nerf
+
+Sisters of Battle
+-----------------
+
+Space Marines
+-------------
+
+Tau
+---
+
+Tyranids
+--------
+***Superweapons no worky worky
+*Hive Tyrant's ability no worky worky

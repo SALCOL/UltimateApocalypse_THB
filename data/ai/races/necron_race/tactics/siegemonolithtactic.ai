@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'siegemonolithtactic.ai'
--- Edited by Thudmeizer	@ 09.03.2016
+-- Edited by Thudmeizer	@ 02.07.2016
 
 class 'SiegeMonolithTactic' (NecronVehicleTactic)
 
@@ -50,6 +50,9 @@ function SiegeMonolithTactic:DoAbilities()
 			end
 		end
 	end
+
+	-- Call standard method
+	NecronVehicleTactic.DoAbilities(self)
 end
 
 function SiegeMonolithTactic:DoDirectSpawnAbility()

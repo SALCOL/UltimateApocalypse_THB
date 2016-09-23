@@ -56,12 +56,7 @@ function DarkEldarInfantryTactic:__init( squad_ai ) super( squad_ai )
 end
 
 function DarkEldarInfantryTactic:AddTargetAbilities()
---[[
-	table.insert(InfantryTactic.TargetAbilities, { nil, "dark_eldar_gravitic_grenade", Ability.Filters.CloseSquadEnemy, 3, 0 })
-	table.insert(InfantryTactic.TargetAbilities, { nil, "dark_eldar_horrorfex_grenade", Ability.Filters.CloseSquadEnemy, 2, 0 })
-	table.insert(InfantryTactic.TargetAbilities, { nil, "dark_eldar_terrorfex_grenade", Ability.Filters.CloseSquadEnemy, 1, 0 })
-	table.insert(InfantryTactic.TargetAbilities, { nil, "dark_eldar_haywire_bombs", Ability.Filters.CloseVehicleEnemy, 1, 0 })
-]]
+
 end
 
 function DarkEldarInfantryTactic:AddCommanders()

@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'bunkertactic.ai'
 -- Edited by Cylarne
--- Edited by Thudmeizer	@ 24.05.2016
+-- Edited by Thudmeizer	@ 02.07.2016
 
 class 'BunkerTactic' (BaseTactic)
 
@@ -41,13 +41,9 @@ end
 
 function BunkerTactic:DoAbilities()
 
---	self:AutoBuildAddOn(0) -- Bolters		-- addon_sisters_wall_bolters
---	self:AutoBuildAddOn(1) -- Flamers		-- addon_sisters_wall_flamers
---	self:AutoBuildAddOn(2) -- Probe			-- addon_sisters_wall_probe
+--	self:AutoBuildAddOn(0) -- Bolters		-- inquisition_bunker_addon
 
-	-- Randomly choose between all three bunker addons
-	local addon_bunker_ports = math.random( 0,2 )
-	self:AutoBuildTurretAddOn(addon_bunker_ports, self.base_ai:GetEntity():GetID())	-- Randomly choose between all three building addons
+	self:AutoBuildTurretAddOn(0, self.base_ai:GetEntity():GetID())	-- Always build bunker addon
 
 	-- Try to activate detection field
 	if (self.base_ai:CanDoAbility(Bunker.detection_id)) then

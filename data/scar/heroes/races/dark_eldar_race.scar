@@ -351,6 +351,50 @@ UnitTypes.dark_eldar_race =
 			"dark_eldar_dark_lance_titan_greater",
 			"dark_eldar_reaper_cannon_instigator",
 		},
+	},
+	dark_eldar_squad_agony_titan = 
+	{
+		Title = "Agony Titan",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		HeavyWeaponsTeam = true,
+		HWT = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"dark_eldar_mega_disintergrator",
+			"dark_eldar_splinter_cannon_scourge",
+			"dark_eldar_dark_lance_scourge",
+			"dark_eldar_splinter_rifle_warrior",
+			"dark_eldar_splinter_cannon_scourge",
+			"dark_eldar_dark_lance_scourge",
+			"dark_eldar_poisoned_blade_warrior",
+			"dark_eldar_poisoned_blade_warrior_improved",
+		},
+	},
+	dark_eldar_squad_agony_titan_deployed = 
+	{
+		Title = "Agony Titan Deployed",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		HeavyWeaponsTeam = true,
+		HWTE = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"dark_eldar_mega_disintergrator",
+			"dark_eldar_splinter_cannon_scourge",
+			"dark_eldar_dark_lance_scourge",
+			"dark_eldar_splinter_rifle_warrior",
+			"dark_eldar_splinter_cannon_scourge",
+			"dark_eldar_dark_lance_scourge",
+			"dark_eldar_poisoned_blade_warrior",
+			"dark_eldar_poisoned_blade_warrior_improved",
+		},
 	},	
 }
 

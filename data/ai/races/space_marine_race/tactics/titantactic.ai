@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'Titantactic.ai'
 -- Edited by Cylarne @ 2012
--- Edited by Thudmeizer		@ 28.02.2016
+-- Edited by Thudmeizer		@ 01.07.2016
 
 class 'TitanTactic' (SpaceMarineVehicleTactic)
 
@@ -21,6 +21,10 @@ function TitanTactic:InitAbilities()
 	if (Titan.missiles_id == nil) then
 		Titan.missiles_id = cpu_manager.stats:GetAbilityID( "marines_apocalypse_missiles" )	
 	end
+
+	if (Titan.turret_id == nil) then
+		Titan.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
+	end
 end
 
 function TitanTactic:DoAbilities()
@@ -31,9 +35,20 @@ function TitanTactic:DoAbilities()
 	end
 
 	-- Launch the crippling Apocalypse Missiles!
-	Ability.DoAbilityPos(self.squad_ai, Titan.missiles_id, Ability.Filters.CloseEnemy, 24)
-	Ability.DoAbilityPos(self.squad_ai, Titan.missiles_id, Ability.Filters.CloseVehicleEnemy, 3)
-	Ability.DoAbilityPos(self.squad_ai, Titan.missiles_id, Ability.EntityFilters.CloseBaseEntityEnemy, 4)
+	if (self.squad_ai:CanDoAbility(Titan.missiles_id)) then
+		Ability.DoAbilityPos(self.squad_ai, Titan.missiles_id, Ability.Filters.CloseEnemy, 24)
+		Ability.DoAbilityPos(self.squad_ai, Titan.missiles_id, Ability.Filters.CloseVehicleEnemy, 3)
+		Ability.DoAbilityPos(self.squad_ai, Titan.missiles_id, Ability.EntityFilters.CloseBaseEntityEnemy, 4)
+	end
+
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( Titan.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, Titan.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, Titan.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
+		end
+	end
 end
 
 function TitanTactic:Upgrade()

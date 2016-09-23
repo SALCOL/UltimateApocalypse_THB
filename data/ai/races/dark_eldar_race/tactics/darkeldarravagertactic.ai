@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarravagertactic.ai'
--- Edited by Thudmeizer @ 05.04.2016
+-- Edited by Thudmeizer @ 25.08.2016
 
 class 'DarkEldarRavagerTactic' (DarkEldarVehicleTactic)
 
@@ -19,13 +19,14 @@ function DarkEldarRavagerTactic:InitAbilities()
 end
 
 function DarkEldarRavagerTactic:DoAbilities()
-
+--[[
+	-- Bugged: will cause crash when Horrorfex ability is used. Reason undetermined.
 	if (self.squad_ai:IsInCombat()) then
 
 		-- Send bomb against enemy infantry
-		Ability.DoAbilityPos( self.squad_ai, DarkEldarRavager.horrorfex_id, Ability.Filters.CloseSquadEnemy, 1 ) 
+		Ability.DoAbilityPos( self.squad_ai, DarkEldarRavager.horrorfex_id, Ability.Filters.CloseSquadEnemy, 3 ) 
 	end
-	
+]]
 	-- Call standard method
 	DarkEldarVehicleTactic.DoAbilities(self)
 end

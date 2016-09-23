@@ -6,5 +6,5 @@ always_on = false,
 title = "Addon: Sandbox Mode",
 win_message = "",
 lose_message = "",
-description = "Sets up sandbox mode. Disables all AI and allows the player to switch between CPUs."
+description = "WARNING! Does not work after saving your game! Sets up sandbox mode. Allows the player to switch between CPUs, but does not disable AI."
 }

@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'guardinfantrytactic.ai'
 -- Created by Arkhan		@ 12.01.2006
--- Edited by Thudmeizer		@ 21.06.2016
+-- Edited by Thudmeizer		@ 23.06.2016
 
 class 'GuardInfantryTactic' (InfantryTactic)
 
@@ -29,7 +29,7 @@ function GuardInfantryTactic:__init( squad_ai ) super( squad_ai )
 		sSquadName == "guard_squad_command_squad_advance_sp") then
 
 		-- Infantry is able to enter transport vehicles
-		self.m_iTransportable = 1	-- Chimera variants // Valkyrie // Storm Lord // Convoy
+		self.m_iTransportable = 1	-- Chimera variants // Valkyrie // Storm Lord // Convoy // Imperator Titan
  		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "guard_comms_array" )
 
 	elseif (sSquadName == "guard_squad_command_squad") then

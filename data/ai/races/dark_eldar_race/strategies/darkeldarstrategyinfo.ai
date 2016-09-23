@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarstrategyinfo.ai'
--- Edited by Thudmeizer    @ 20.06.2016
+-- Edited by Thudmeizer    @ 10.08.2016
 
 BuildBaseStrategyInfo = 
 {
@@ -68,6 +68,7 @@ BuildBaseStrategyInfo =
 				{ 2, 120, 50, 0, 5,	"Building",	"dark_eldar_turret" },
 				{ 2, 500, 500, 1000, 1,	"Addon",	"addon_dark_eldar_hq_2" },
 				
+				{ 3, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },
 				{ 3, 240, 105, 0, 1,	"Unit",		"dark_eldar_squad_incubus" },
 				{ 3, 240, 160, 500, 100,"TurretAddon",	"addon_dark_eldar_list_post_2" },
 				{ 3, 25, 90, 0, 75,	"TurretAddon",	"addon_dark_eldar_turret" },
@@ -76,19 +77,23 @@ BuildBaseStrategyInfo =
 				{ 3, 0, 0, 0, 100,	"Addon",	"addon_dark_eldar_slave_graveyard" },
 				{ 3, 1000, 1000, 1500, 1,"Research",	"dark_eldar_tier3_research" },
 				
+				{ 4, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },
 				{ 4, 180, 360, 0, 1,	"Unit",		"dark_eldar_squad_ravager" },
 				{ 4, 300, 100, 0, 1,	"Building",	"dark_eldar_soul_cage" },
 			        { 4, 25, 90, 0, 100,	"TurretAddon",	"addon_dark_eldar_turret" },
 			        { 4, 50, 25, 0, 100,	"TurretAddon",	"addon_dark_eldar_list_post_dark_lance" },
 				{ 4, 1500, 1500, 2000, 1,"Research",	"dark_eldar_tier4_research" },
 				
+				{ 5, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },
 				{ 5, 550, 260, 0, 1,	"Building",	"dark_eldar_corruptedgate" },
 				{ 5, 5500, 5500, 0, 1,	"Building",	"dark_eldar_hq_sp_dxp3" },
 				{ 5, 3000, 3000, 2500, 1,"Research",	"dark_eldar_apocalypse_research" },
 
+				{ 6, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },
 				{ 6, 240, 40, 0, 1,	"Unit",		"dark_eldar_squad_archon" },
 				{ 6, 75, 125, 0, 1,	"Unit",		"dark_eldar_squad_haemonculus" },
-				{ 6, 8000, 8000, 4000, 3,"Building",	"dark_eldar_hq_sp_dxp3" }
+				{ 6, 8000, 8000, 3000, 2,"Building",	"dark_eldar_hq_sp_dxp3" },
+				{ 6, 10000, 10000, 4000, 3,"Building",	"dark_eldar_hq_sp_dxp3" }
 			},
 		},
 		SquadLimits = 
@@ -116,6 +121,8 @@ BuildBaseStrategyInfo =
 				dark_eldar_squad_tormentor = 1,
 				dark_eldar_squad_tormentor_assault = 1,
 				dark_eldar_squad_instigator = 1,
+				dark_eldar_squad_agony_titan = 1,
+				dark_eldar_squad_agony_titan_deployed = 1,
 				dark_eldar_squad_phoenix = 1,
 				dark_eldar_squad_voidraven = 1,
 				dark_eldar_squad_voidraven_variant = 1,

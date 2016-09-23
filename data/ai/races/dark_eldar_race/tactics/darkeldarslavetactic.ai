@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarslavetactic.ai'
--- Edited by Thudmeizer @ 22.04.2016
+-- Edited by Thudmeizer @ 22.06.2016
 
 class 'DarkEldarSlaveTactic' (EngineerTactic)
 
@@ -9,9 +9,6 @@ DarkEldarSlave = {}
 function DarkEldarSlaveTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Dark Eldar Slave Tactic")
-
-	-- Set FoF range
-	self.m_iFoFRange = 1
 end
 
 function DarkEldarSlaveTactic:IsAttacker()
@@ -49,7 +46,9 @@ function DarkEldarSlaveTactic:DoAbilities()
 			self.squad_ai:DoSpecialAbility( DarkEldarSlave.run_id )
 		end
 	end
-
+	
+	self:Cannibalize()
+--[[
 	if (cpu_manager:GetTierLevel() < 3) then 
 
 		if (not self.squad_ai:IsBuilding() or self.squad_ai:IsIdle()) then
@@ -60,83 +59,31 @@ function DarkEldarSlaveTactic:DoAbilities()
 				self.squad_ai:DoCannibalize();
 			end
 		end
+	end
 
-	elseif (cpu_manager:GetTierLevel() > 2) then 
+	if (cpu_manager:GetTierLevel() > 2) then 
 
 		if (not self.squad_ai:IsBuilding() or self.squad_ai:IsIdle()) then
 
 			-- Check if we have corpses in range (get additional souls due to late tier requirements needing far more of them)
-			local numCorpses = self.squad_ai:GetNumCorpses(200);
+			local numCorpses = self.squad_ai:GetNumCorpses(70);
 			if (numCorpses > 0) then
 				self.squad_ai:DoCannibalize();
 			end
 		end
-
 	end
-
-
-
-	-- Check if I should enable/disable foot on fire
-	--self:DoAbilityFoF()
+]]
 end
 
-function DarkEldarSlaveTactic:ToggleFoF( squad_ai, state )
+function DarkEldarSlaveTactic:Cannibalize()
 
-	-- Check if the squad can handle foot on fire
-	local id = cpu_manager.stats:GetAbilityID( "dark_eldar_footonfire" )
-	if (not squad_ai:CanDoAbility(id)) then
-		return
-	end
+	if (not self.squad_ai:IsBuilding()) or self.squad_ai:IsIdle() then
 	
-	-- Check if it's already in desired state
-	if (squad_ai:IsUsingAbility(id) == state) then
-		return 
-	end
-	
-	-- Activate foot on fire
-	squad_ai:DoSpecialAbility(id)
-end
-
--- Dreddnott edit (April 16th)
-function DarkEldarSlaveTactic:DoAbilityFoF()
-
-	-- Check if we should toggle FoF
-    	local iFoFID = cpu_manager.stats:GetAbilityID( "dark_eldar_footonfire" )
-    	local bToggleFoF = false
-
-    	-- Check whether we're using the ability
-    	local bIsUsing = self.squad_ai:IsUsingAbility(iFoFID)
-
-    	-- Check if we're attacking
-    	local bIsAttacking = self.squad_ai:IsInStateAttackMove()
-    
-    	-- Check if we are shooting or fighting in melee
-    	local bIsFighting = self.squad_ai:IsAttacking()
-    
-   	-- Check if we're moving normally
-    	local bIsMoving = (self.squad_ai:IsInStateMove() and not bIsAttacking)
-
-    	-- Check if we're in a state that should FoF regardless of enemy presence
-    	local bAvoidCombat = (self.squad_ai:IsBroken() or self:IsInSubState() or self.squad_ai:IsCapturing() or bIsMoving)
-
-    	-- Check if we should slow down for enemies nearing range
-    	local vSquadPos = self.squad_ai:GetPosition()
-    	local oEnemy = cpu_manager.cpu_player:FindFirstEnemy(vSquadPos, self.m_iFoFRange, 1)
-    	local bCloseEnemy = (oEnemy ~= nil)
-    
-    	-- Helper flags
-    	local bIsCharging = (bIsAttacking and bCloseEnemy)
-    	local bIsDefending = (not bIsMoving and bCloseEnemy)
-    	local bIsInCombat = (bIsFighting or bIsCharging or bIsDefending)
-
-    	-- Check if FoF should be toggled
-    	if ((bIsUsing and bIsInCombat and not bAvoidCombat) or (not bIsUsing and (not bIsInCombat or bAvoidCombat))) then        
-        	bToggleFoF = true
-    	end
-
-    	-- Toggle FoF
-    	if (bToggleFoF and self.squad_ai:CanDoAbility(iFoFID)) then
-        	self.squad_ai:DoSpecialAbility(iFoFID)
+		-- Check if we have corpses in range
+		local numCorpses = self.squad_ai:GetNumCorpses(70);
+		if (numCorpses > 0) then
+			self.squad_ai:DoCannibalize();
+		end
 	end
 end
 

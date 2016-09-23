@@ -216,45 +216,46 @@ function Rule_WarpGate_Titan()
 				local warning = ("Titan has been spawned from the Warp Gate!")
 				EventCue_DoEvent("warning", "general_ping", warning, warning)
 				Ping_Marker("titan_marker", false)
-				world_spamtimer_titan = 601;
+				
 				if (Player_GetRaceName(player) == "chaos_marine_race") then
-					Util_CreateSquadsAtMarker(player, "sg_titan", "chaos_squad_warhound_titan", "titan_marker", 1)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "chaos_squad_reaver_titan", "titan_marker", 2)
 					
 				elseif (Player_GetRaceName(player) == "dark_eldar_race") then
-					Util_CreateSquadsAtMarker(player, "sg_titan", "dark_eldar_squad_tormentor", "titan_marker", 1)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "dark_eldar_squad_instigator", "titan_marker", 2)
 					
 				elseif (Player_GetRaceName(player) == "eldar_race") then
-					Util_CreateSquadsAtMarker(player, "sg_titan", "eldar_squad_titan_revenant", "titan_marker", 1)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "eldar_squad_titan_phantom", "titan_marker", 2)
 					
 				elseif (Player_GetRaceName(player) == "guard_race") then
-					Util_CreateSquadsAtMarker(player, "sg_titan", "guard_squad_warhound_titan", "titan_marker", 1)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "guard_squad_warlord_titan", "titan_marker", 1)
 					
 				elseif (Player_GetRaceName(player) == "necron_race") then
-					Util_CreateSquadsAtMarker(player, "sg_titan", "necron_doomsday_monolith_squad", "titan_marker", 1)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "necron_doomsday_monolith_squad", "titan_marker", 2)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "necron_siege_monolith_squad", "titan_marker", 4)
 					
 				elseif (Player_GetRaceName(player) == "ork_race") then
-					Util_CreateSquadsAtMarker(player, "sg_titan", "ork_squad_squiggoth_gargantaun", "titan_marker", 1)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "ork_squad_great_gargant", "titan_marker", 1)
 					
 				elseif (Player_GetRaceName(player) == "sisters_race") then
-					Util_CreateSquadsAtMarker(player, "sg_titan", "sisters_squad_arch_angel", "titan_marker", 1)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "sisters_squad_arch_angel", "titan_marker", 2)
 					
 				elseif (Player_GetRaceName(player) == "space_marine_race") then
-					Util_CreateSquadsAtMarker(player, "sg_titan", "space_marine_squad_warhound_titan", "titan_marker", 1)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "space_marine_squad_warlord_titan", "titan_marker", 1)
 					
 				elseif (Player_GetRaceName(player) == "tau_race") then
 					Util_CreateSquadsAtMarker(player, "sg_titan", "tau_manta_squad", "titan_marker", 1)
 					
-				elseif (Mod_IsXP2) then
-					if (Player_GetRaceName(player) == "inquisition_daemonhunt_race") then
-						Util_CreateSquadsAtMarker(player, "sg_titan", "inquisition_squad_warhound_titan", "titan_marker", 1)
-						
-					elseif (Player_GetRaceName(player) == "daemons_race") then
-						Util_CreateSquadsAtMarker(player, "sg_titan", "daemon_squad_hell_spawn", "titan_marker", 1)
-						
-					elseif (Player_GetRaceName(player) == "tyranids_race") then
-						Util_CreateSquadsAtMarker(player, "sg_titan", "tyranids_squad_hierophant", "titan_marker", 1)
-					end
+				elseif (Player_GetRaceName(player) == "inquisition_daemonhunt_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "inquisition_squad_imperator_titan", "titan_marker", 1)
+					
+				elseif (Player_GetRaceName(player) == "daemons_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "daemon_squad_greater_brass_scorpion", "titan_marker", 3)
+					
+				elseif (Player_GetRaceName(player) == "tyranids_race") then
+					Util_CreateSquadsAtMarker(player, "sg_titan", "tyranids_squad_hierophant", "titan_marker", 3)
+				
 				end
+				world_spamtimer_titan = 601;
 			end
 			
 		elseif not (world_spamtimer_titan) == nil then
