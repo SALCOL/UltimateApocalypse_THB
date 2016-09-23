@@ -6,7 +6,6 @@ playlist =
 		"daorks",
 		"mu_ig_vic_ork",
 		"MU_IG_STR_Ork",
-		"music_ork_theme",
 	},
 	
 	silence_min = 10.0,

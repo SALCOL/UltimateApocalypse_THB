@@ -1,0 +1,38 @@
+------------------------
+Imperial Guard: 
+------------------------
+
+- 1.86 Transport Rule: Chimera, Chimera Assaulttank, Baneblade Convoy, and Stormlord (Ability quick recharge, Health recovery, Deploy Sandbags, Deploy Minefield (Tier 2), Extra Reinforcements (Tier 2)) 
+- New Research: Defensive Walls Upgrade II 
+* The basic role of the IG now is to not produce any base defenses or good military until tier V.
+* IG Turrets are no longer OP.
+* IG Turret researches now cost 10,000 requisition/power per upgrade, for true apocalypse.
+* IG Turrets are now restricted until tier V.
+* Nuclear Weapons Center is now extemely hard to get. Cost increased by 10,000 req/power each and requires a thermo generator. Required wait time increased by 1000 seconds.
+* All IG units health, movement speed, and damage decreased by 50%; But to make up for this, all structures health increased by 2.
+* Hydra VO volume increased on one ear as a popular request. The other ear can listen to other epic stuff.
+* Hydra AA damage versus aircraft decreased by 75% as it was too powerful versus aircraft.
+* Basilisks artillery range decreased from 160m to 1m as it was too long of a distance.
+* Earthshaker Platforms are restricted until tier V and cost 6000 resources each as it was OP.
+* Shadowswords now cost 40,000 requisition to field and cannot be deepstriked as it was OP.
+* Shadowswords no longer deal damage to titans.
+* Shadowswords health decreased by 70% as it was too powerful.
+* Shadowswords damage decreased by 70% as it was too powerful.
+* Shadowsword movement speed decreased by 50% as it was too fast.
+* Shadowsword Volcano shot ability cost increased from 300/300 req/power to 30,000/30,000 each resource as it was OP.
+* Conscripts are no longer OP.
+* Conscripts were heavily nerfed. Conscripts now miss their shot 50% of the time are underaccurate. Damage decreased by 95%. 
+* Conscript reinforce speed increased from 1 second to 50 second wait time. Reinforce cost increased from 2 requisition to 40 requisition per soldier.
+* Conscript health decreased by 99% and truly die like flies.
+* Conscripts cost 1,000 requisition at the start of the game.
+* Conscripts can no longer capture strategic points.
+* Conscripts sight radius decreased by 95%.
+* Conscripts now move as slow as a Necron Monolith, making them scary to go up against.
+* Conscripts morale decreased by 90%, making them flee like cowards by just one heavy bolter shot.
+* Conscripts now have a 50% chance in nuking your own base on death. Use Conscripts wisely.
+* Ogryns are no longer OP.
+* Ogryns cost increased by 1,000 requisition each.
+* Ogryns health decreased by 80% as they were too durable.
+* Ogryns damage decreased by 98% as they hit too hard.
+* Ogryns now run away and attack each other if their morale is depleted.
+* Ogryns Morale is now worse than a Conscript squad.

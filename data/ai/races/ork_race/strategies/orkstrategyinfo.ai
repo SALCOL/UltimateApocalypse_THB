@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'orkstrategyinfo.ai'
--- Edited by Thudmeizer  @ 20.06.2016
+-- Edited by Thudmeizer  @ 29.08.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -41,11 +41,11 @@ BuildBaseStrategyInfo =
 				{ 1, 400, 0, 0, 1,	"Building",	"ork_hq" },
 				{ 1, 225, 0, 100, 1,	"Building",	"ork_boy_hut" },
 				{ 1, 120, 0, 150, 1,	"Building",	"ork_generator" },
-				{ 1, 160, 0, 200, 1,	"Building",	"ork_waagh_banner" },
-				{ 1, 90, 80, 300, 85,	"TurretAddon",	"ork_gork_totem_addon_1" },
-				{ 1, 160, 0, 400, 3,	"Building",	"ork_waagh_banner" },
+				{ 1, 50, 0, 200, 1,	"Building",	"ork_waagh_banner" },
+				{ 1, 50, 50, 300, 85,	"TurretAddon",	"ork_gork_totem_addon_1" },
+				{ 1, 50, 0, 400, 3,	"Building",	"ork_waagh_banner" },
 				{ 1, 35, 5, 500, 100,	"TurretAddon",	"ork_waagh_banner_gunzaddon" },
-				{ 1, 400, 130, 900, 1,	"Building",	"ork_bilda_pit" },
+				{ 1, 200, 100, 900, 1,	"Building",	"ork_bilda_pit" },
 				{ 1, 100, 50, 950, 100,	"Addon",	"ork_hq_addon" },
 
 				{ 2, 100, 30, 0, 1,	"Unit",		"ork_squad_kommandoz" },
@@ -53,31 +53,33 @@ BuildBaseStrategyInfo =
 				{ 2, 80, 100, 0, 1,	"Unit",		"ork_squad_wartrak" },
 				{ 2, 300, 100, 0, 1,	"Unit",		"ork_squad_wierdboy" },
 				{ 2, 235, 135, 200, 1,	"Building",	"ork_mek_shop" },
-				{ 2, 160, 0, 300, 4,	"Building",	"ork_waagh_banner" },
-				{ 2, 190, 80, 600, 1,	"Building",	"ork_waagh_banner_turret_sp" },
+				{ 2, 50, 0, 300, 4,	"Building",	"ork_waagh_banner" },
+				{ 2, 140, 50, 600, 1,	"Building",	"ork_waagh_banner_turret_sp" },
 				{ 2, 25, 80, 700, 50,	"TurretAddon",	"ork_turret_addon" },
-			        { 2, 90, 80, 850, 100,	"TurretAddon",	"ork_gork_totem_addon_1" },
-				{ 2, 160, 0, 900, 6,	"Building",	"ork_waagh_banner" },
+				{ 2, 450, 240, 800, 1,	"Building",	"ork_boomy_platform" },
+			        { 2, 50, 50, 850, 100,	"TurretAddon",	"ork_gork_totem_addon_1" },
+				{ 2, 50, 0, 900, 6,	"Building",	"ork_waagh_banner" },
+				{ 2, 500, 500, 950, 1,	"Building",	"ork_burna_bomm" },
 				{ 2, 15, 70, 1000, 50,	"TurretAddon",	"ork_waagh_banner_gunzaddon_2" },
-				{ 2, 160, 0, 1500, 7,	"Building",	"ork_waagh_banner" },
+				{ 2, 50, 0, 1500, 7,	"Building",	"ork_waagh_banner" },
 				
 				{ 3, 700, 210, 0, 1,	"Unit",		"ork_squad_warboss" },
-				{ 3, 50, 180, 300, 25,	"TurretAddon",	"ork_boomy_platform_addon" },
+				{ 3, 300, 300, 300, 25,	"TurretAddon",	"ork_boomy_platform_addon" },
 				{ 3, 35, 5, 400, 100,	"TurretAddon",	"ork_wall_gunzaddon" },
-				{ 3, 190, 80, 500, 2,	"Building",	"ork_waagh_banner_turret_sp" },
-				{ 3, 250, 0, 700, 50,	"TurretAddon",	"ork_waagh_banner_population_addon" },
+				{ 3, 140, 50, 500, 2,	"Building",	"ork_waagh_banner_turret_sp" },
+				{ 3, 100, 0, 700, 50,	"TurretAddon",	"ork_waagh_banner_population_addon" },
 				{ 3, 1000, 400, 1000, 1,"Building",	"ork_waagh_banner_missile_sp" },
-				{ 3, 240, 160, 1500, 100,"TurretAddon",	"ork_gork_totem_addon_2" },
-				{ 3, 160, 0, 2000, 10,	"Building",	"ork_waagh_banner" },
+				{ 3, 200, 400, 1250, 1,	"Building",	"ork_gork_factory" },
+				{ 3, 200, 100, 1500, 100,"TurretAddon",	"ork_gork_totem_addon_2" },
+				{ 3, 50, 0, 2000, 10,	"Building",	"ork_waagh_banner" },
 				
-				{ 4, 50, 180, 500, 100,	"TurretAddon",	"ork_boomy_platform_addon" },
-				{ 4, 190, 80, 750, 3,	"Building",	"ork_waagh_banner_turret_sp" },
+				{ 4, 50, 0, 200, 12,	"Building",	"ork_waagh_banner" },
+				{ 4, 300, 300, 500, 75,	"TurretAddon",	"ork_boomy_platform_addon" },
+				{ 4, 140, 50, 750, 3,	"Building",	"ork_waagh_banner_turret_sp" },
 				{ 4, 25, 80, 1000, 100,	"TurretAddon",	"ork_turret_addon" },
-				{ 4, 1000, 400, 2000, 2,"Building",	"ork_waagh_banner_missile_sp" },
-				{ 4, 160, 0, 2500, 12,	"Building",	"ork_waagh_banner" },
+				{ 4, 1000, 400, 2500, 2,"Building",	"ork_waagh_banner_missile_sp" },
 				
-				{ 5, 0, 2000, 400, 1,	"Research",	"ork_research_tech_great_gargant" },
-				{ 5, 250, 0, 750, 100,	"TurretAddon",	"ork_waagh_banner_population_addon" },
+				{ 5, 100, 0, 750, 100,	"TurretAddon",	"ork_waagh_banner_population_addon" },
 				{ 5, 1000, 750, 1000, 1,"Building",	"ork_hq_super" },
 				{ 5, 680, 410, 2000, 100,"TurretAddon",	"ork_turret_supa_dupa_addon" },
 				{ 5, 3000, 3000, 3000, 1,"Research",	"ork_waagh_research" },
@@ -86,7 +88,9 @@ BuildBaseStrategyInfo =
 				{ 6, 220, 50, 0, 2,	"Unit",		"ork_squad_bad_dok" },
 				{ 6, 300, 100, 0, 1,	"Unit",		"ork_squad_wierdboy" },
 				{ 6, 700, 210, 0, 1,	"Unit",		"ork_squad_warboss" },
-				{ 6, 5110, 13610, 4000, 1, "Unit",	"ork_squad_great_gargant" }
+				{ 6, 0, 2000, 2000, 1,	"Research",	"ork_research_tech_great_gargant" },
+				{ 6, 5110, 13610, 3000, 1, "Unit",	"ork_squad_great_gargant" }, 
+				{ 6, 10000, 10000, 4000, 25,"TurretAddon","ork_boomy_platform_kaboom_addon" }
 			},
 		},
 		
@@ -107,6 +111,7 @@ BuildBaseStrategyInfo =
 				ork_squad_lootas = 3,
 				ork_squad_nob = 3,
 				ork_squad_armored_nob = 3,
+				ork_squad_looted_rhino = 2,
 				ork_squad_grot_tank = 3,
 				ork_squad_trukk = 2,
 				ork_squad_wartrak = 3,
@@ -114,6 +119,7 @@ BuildBaseStrategyInfo =
 				ork_squad_gun_wagon = 3,
 				ork_squad_fighta_bomba = 3,
 				ork_squad_battle_wagon = 3,
+				ork_squad_battle_wagon_armageddon = 2,
 				ork_squad_deff_dread = 3,
 				ork_squad_looted_tank = 2,
 				ork_squad_nukklear_bomba = 2,
@@ -121,6 +127,7 @@ BuildBaseStrategyInfo =
 				ork_squad_kill_krusha = 2,
 				ork_squad_squiggoth = 1,
 				ork_squad_battlefortress = 1,
+				ork_squad_battlefortress_armageddon = 1,
 				ork_squad_kustim_stompa = 1,
 				ork_squad_squiggoth_gargantaun = 1,
 				ork_squad_ork_gargant = 1,

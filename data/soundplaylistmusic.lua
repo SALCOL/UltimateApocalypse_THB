@@ -12,7 +12,6 @@ playlist =
 		"music_warhammer40ktheme",
 		"uamod_music4",
 		"uamod_music5",
-		"music_ork_theme",
 		"uamod_music6",
 		"uamod_music7",
 		"music_necron_theme_remix",

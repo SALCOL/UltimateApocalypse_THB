@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersstrategyinfo.ai'
--- Edited by Thudmeizer    @ 20.06.2016
+-- Edited by Thudmeizer    @ 03.09.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -57,6 +57,7 @@ BuildBaseStrategyInfo =
 				{ 2, 25, 90, 0, 50,	"TurretAddon",	"addon_sisters_turret" },
 				{ 2, 125, 50, 0, 1,	"Building",	"sisters_holy_reliquary" },
 				{ 2, 240, 160, 0, 50, 	"TurretAddon",	"addon_sisters_list_post_2" },
+				{ 2, 250, 0, 500, 1,	"Building",	"sisters_inquisitorial_building" },
 				{ 2, 100, 100, 0, 100,	"TurretAddon",	"addon_sisters_holy_icon" },
 				{ 2, 700, 150, 0, 2,	"Building",	"sisters_hq" },
 				{ 2, 500, 500, 1000, 1,	"Addon",	"addon_sisters_hq_2" },
@@ -64,13 +65,15 @@ BuildBaseStrategyInfo =
 				{ 3, 210, 30, 0, 1,	"Unit",		"sisters_squad_retributor" },
 				{ 3, 320, 140, 0, 1,	"Unit",		"sisters_squad_repentia" },
 				{ 3, 120, 260, 0, 1,	"Unit",		"sisters_squad_exorcist_tank" },
-				{ 3, 25, 90, 0, 100,	"TurretAddon",	"addon_sisters_turret" },
+				{ 3, 25, 90, 0, 80,	"TurretAddon",	"addon_sisters_turret" },
+				{ 3, 390, 190, 0, 1,	"Building",	"sisters_turret_heavy_flamer" },
 				{ 3, 240, 160, 0, 100,	"TurretAddon",	"addon_sisters_list_post_2" },
 				{ 3, 1000, 1000, 1500, 1,"Building",	"sisters_shrine" },
 
 				{ 4, 180, 330, 0, 1,	"Unit",		"sisters_squad_exorcist_mk" },
 				{ 4, 190, 390, 0, 1,	"Unit",		"sisters_squad_penitent_engine" },
-				{ 4, 1350, 3000, 0, 1,  "Building",	"sisters_capitol_building" },
+				{ 4, 1000, 2500, 0, 1,  "Building",	"sisters_capitol_building" },
+				{ 4, 390, 190, 0, 2,	"Building",	"sisters_turret_heavy_flamer" },
 				{ 4, 1500, 1500, 2000, 1,"Research",	"sisters_research_hammer" },
 
 				{ 5, 100, 100, 0, 1,	"Building",	"sisters_shrine_to_the_emperor" },
@@ -79,12 +82,11 @@ BuildBaseStrategyInfo =
 				{ 5, 3000, 3000, 2500, 1,"Research",	"sisters_apocalypse_research" },
 				
 				{ 6, 200, 60, 0, 1,	"Unit",		"sisters_squad_confessor" },
+				{ 6, 250, 0, 0, 1,	"Unit",		"sisters_inquisitor_squad" },
 				{ 6, 260, 40, 0, 1,	"Unit",		"sisters_squad_canoness" },
-				{ 6, 300, 80, 0, 1,	"Unit",		"sisters_inquisitor_squad" },
 				{ 6, 800, 210, 0, 1,	"Unit",		"sisters_squad_nunciate_superior" },
 				{ 6, 10000, 10000, 4000, 1,"Building",	"sisters_krak" }
 			},
-
 		},
 				
 		SquadLimits = 
@@ -97,13 +99,16 @@ BuildBaseStrategyInfo =
 				sisters_squad_celestian = 3,
 				sisters_squad_saint_cherub = 6,
 				sisters_squad_retributor = 3,
+				sisters_squad_arco_flagellants = 3,
 				sisters_squad_repentia = 3,
 				sisters_squad_assassin = 3,
+				sisters_squad_callidus_assassin = 2,
 				sisters_squad_redemptionist = 3,
 				sisters_squad_legatine_superior = 3,
 				sisters_squad_rhino = 2,
 				sisters_squad_sentinel = 2,
 				sisters_squad_immolator_tank = 2,
+				sisters_squad_incarcerator_tank = 2,
 				sisters_squad_exorcist_tank = 2,
 				sisters_squad_exorcist_mk = 2,
 				sisters_squad_lightning = 2,

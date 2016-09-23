@@ -3,8 +3,8 @@ simvis_attributes =
 	selection_volume		= 1,
 	selection_ground		= 1,
 
-	vis_scale_min			= 1,	
-	vis_scale_max			= 1,
+	vis_scale_min			= 1.05,	
+	vis_scale_max			= 1.10,
 
 	-- Shadow Types:
 	-- 0 = None
@@ -13,8 +13,11 @@ simvis_attributes =
 	-- 3 = shadow map
 	-- 4 = stencil shadow volume
 	shadow_type			= 3,
-	shadow_scale			= 0.035,
+	shadow_scale			= 0.0275,
 	
-	occludee	= 1,
+	infantry_physics	    					= 1,
+	infantry_sway_update_time		= 2,
+	infantry_sway_random_radius	= 0.4,
+	
+		occludee	= 1,
 }
-

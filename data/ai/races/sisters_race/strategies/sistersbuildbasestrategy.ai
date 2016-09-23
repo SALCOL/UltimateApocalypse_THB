@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 20.06.2016
+-- Edited by Thudmeizer @ 03.09.2016
 -- Edited by Cylarne_04 2011
 
 class 'SistersBuildBaseStrategy' (BuildBaseStrategy)
@@ -18,6 +18,7 @@ function SistersBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
 
 	CpuPrerequisites2.AddSpecialItem("addon_sisters_wall_probe", CpuPrerequisites.BT_AddOn)
+	CpuPrerequisites2.AddSpecialItem("addon_sisters_turret_probe", CpuPrerequisites.BT_AddOn)
 end
 
 function SistersBuildBaseStrategy:ChooseBuildProgram()
@@ -108,6 +109,15 @@ function SistersBuildBaseStrategy:GetAddonBuilding( sType )
 	if (sType == "addon_sisters_turret") then
 		return "sisters_turret_flamer"
 		
+	elseif (sType == "addon_sisters_turret_probe") then
+		return "sisters_turret_flamer"
+
+	elseif (sType == "addon_sisters_turret") then
+		return "sisters_turret_heavy_flamer"
+
+	elseif (sType == "addon_sisters_turret_probe") then
+		return "sisters_turret_heavy_flamer"
+
 	elseif (sType == "addon_sisters_wall_bolters") then
 		return "sisters_wall"
 
@@ -170,6 +180,8 @@ function SistersBuildBaseStrategy:GetUnitStats(sSquadName)
 		return 3, 0
 	elseif (sSquadName == "sisters_squad_retributor") then
 		return 3, 0
+	elseif (sSquadName == "sisters_squad_arco_flagellants") then
+		return 3, 0
 	elseif (sSquadName == "sisters_squad_legatine_superior") then
 		return 6, 0
 	elseif (sSquadName == "sisters_squad_redemptionist") then
@@ -183,6 +195,8 @@ function SistersBuildBaseStrategy:GetUnitStats(sSquadName)
 	elseif (sSquadName == "sisters_squad_lightning") then
 		return 0, 2
 	elseif (sSquadName == "sisters_squad_immolator_tank") then
+		return 0, 2
+	elseif (sSquadName == "sisters_squad_incarcerator_tank") then
 		return 0, 2
 	elseif (sSquadName == "sisters_squad_exorcist_tank") then
 		return 0, 3
@@ -447,6 +461,11 @@ function SistersBuildBaseStrategy:BuildFlexible()
 					self:DynamicResearch("sisters_ranged_damage_research", 3, 150, 50, 0, 0, "sisters_squad_battle_sister", 1)
 				end
 			end
+
+			-- Compute Probe Addon for emplacements if enemy has infiltrators
+			if (cpu_manager:EnemyHasUnitInfiltrators() or cpu_manager:EnemyHasBaseInfiltrators()) then
+				self:DynamicAddon("addon_sisters_turret_probe", 5, 3, 10, 85, 0, 0, nil, nil, false)
+			end
 			
 			-- Compute bonus researches
 			if (iArmyStrength >= 2250) then
@@ -534,10 +553,13 @@ function SistersBuildBaseStrategy:BuildFlexible()
 
 			-- Tier 3
 			self:DynamicBuild("sisters_turret_flamer", 15, 3, 1000, 1500, 0, 0)
+			self:DynamicBuild("sisters_inquisitorial_building", 2, 3, 900, 0, 0, 0)
+			self:DynamicBuild("sisters_turret_heavy_flamer", 10, 4, 1000, 1000, 0, 0)
 			self:DynamicBuild("sisters_shrine", 2, 4, 3000, 2000, 0, 0)
 
 			-- Tier 4
 			self:DynamicBuild("sisters_wall", 10, 5, 1000, 0, 0, 0)
+			self:DynamicBuild("sisters_turret_heavy_flamer", 15, 5, 2000, 1500, 0, 0)
 		end
 
 		-- Build additional uber buildings
@@ -545,7 +567,7 @@ function SistersBuildBaseStrategy:BuildFlexible()
 		self:DynamicBuild("sisters_capitol_building", 2, 6, 3000, 4000, 0, 0)
 		self:DynamicBuild("sisters_infantry", 3, 5, 3500, 0, 0, 0)
 		self:DynamicBuild("sisters_vehicle_building", 3, 5, 4500, 3000, 0, 0)
-		self:DynamicBuild("sisters_shrine_to_the_emperor", 2, 6, 6000, 6000, 0, 0)
+		self:DynamicBuild("sisters_inquisitorial_building", 3, 5, 5000, 3000, 0, 0)
 		self:DynamicBuild("sisters_missile_silo", 2, 5, 6000, 6000, 0, 0)
 		self:DynamicBuild("sisters_missile_silo", 3, 6, 9000, 9000, 0, 0)
 		self:DynamicBuild("sisters_krak", 2, 6, 12000, 12000, 0, 0)
@@ -628,11 +650,13 @@ function SistersBuildBaseStrategy:GetPlacementType(iBuildingID)
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_infantry") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_vehicle_building") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_shrine") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_inquisitorial_building") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_capitol_building")) then
 		return "Military"
 	--elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_wall")) then
 		--return "Front1"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_turret_flamer") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_turret_heavy_flamer") or 
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_wall")) then
 		return "Front2"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_mines") or

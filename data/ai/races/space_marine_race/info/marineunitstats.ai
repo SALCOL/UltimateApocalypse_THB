@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marineunitstats.ai'
--- Edited by Thudmeizer @ 20.06.2016
+-- Edited by Thudmeizer @ 01.07.2016
 -- Edited by Cylarne_04 2011
 
 --XP3
@@ -59,6 +59,7 @@ UnitStrengths.space_marine_squad_apothecary = 110
 UnitStrengths.space_marine_squad_librarian = 200
 UnitStrengths.space_marine_squad_chaplain = 310
 UnitStrengths.space_marine_squad_force_commander = 310
+UnitStrengths.space_marine_squad_force_commander_lotd = 320
 UnitStrengths.space_marine_squad_chapter_master = 400
 UnitStrengths.space_marine_squad_force_commander_killeus = 310
 UnitStrengths.space_marine_squad_force_commander_terminator = 400
@@ -104,16 +105,16 @@ LeaderStrengths.space_marine_squad_terminator = 0
 LeaderStrengths.space_marine_squad_terminator_assault = 0
 LeaderStrengths.space_marine_squad_honor_guard_gladiator = 0
 
-Attachments.space_marine_squad_servitor_weapons = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
-Attachments.space_marine_squad_scout = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
-Attachments.space_marine_squad_tactical = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
-Attachments.space_marine_squad_assault = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
-Attachments.space_marine_squad_devastator = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
-Attachments.space_marine_squad_sternguard_veteran = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
-Attachments.space_marine_squad_vanguard_veteran = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
-Attachments.space_marine_squad_terminator = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
-Attachments.space_marine_squad_terminator_assault = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
-Attachments.space_marine_squad_honor_guard_gladiator = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_servitor_weapons = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_scout = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_tactical = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_assault = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_devastator = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_sternguard_veteran = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_vanguard_veteran = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_terminator = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_terminator_assault = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
+Attachments.space_marine_squad_honor_guard_gladiator = { "space_marine_squad_skull_probe", "space_marine_squad_thunderfire_cannon", "space_marine_squad_apothecary", "space_marine_squad_banner_bearer", "space_marine_squad_force_commander", "space_marine_squad_force_commander_lotd", "space_marine_squad_force_commander_killeus", "space_marine_squad_force_commander_terminator", "space_marine_squad_librarian", "space_marine_squad_chaplain", "space_marine_squad_chaplain_advance_sp", "space_marine_squad_chapter_master" }
 
 SpaceMarineUnitStats =
 {
@@ -392,27 +393,17 @@ SpaceMarineUnitStats =
 		potential =
 		{
 			{
-				name = "space_marine_bolter_tactical",
-				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
 				name = "space_marine_flamer_tactical",
-				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,0.3,0.0,0.0,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,2.5,2.0,1.2,0.6,0.0,0.0,0.0),
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,math.random(5*10,6*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
-				name = "space_marine_heavy_bolter_tactical",
-				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,0.3,0.0,0.0,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,2.5,2.0,1.2,0.6,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "space_marine_plasma_gun",
+				name = "space_marine_meltagun_tactical",
 				effectiveness = GenerateUnitEffectiveness(1.1,1.3,0.4,1.1,1.1,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,1.3,1.0,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,0.3,0.0,2.8,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "space_marine_missile_launcher_tactical",
+				name = "space_marine_multi_melta_devastator",
 				effectiveness = GenerateUnitEffectiveness(1.1,1.3,0.4,1.1,1.1,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,1.3,1.0,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,0.3,0.0,2.8,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -833,6 +824,36 @@ SpaceMarineUnitStats =
 			},
 			{
 				name = "space_marine_thunder_hammer_commander",
+				effectiveness = GenerateUnitEffectiveness(6.0,6.5,5.9,6.7,6.0,5.0,3.9,0.0,6.6,4.3,5.4,6.2,3.5,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Force Commander Legion of the Damned",
+		sbp_name = "space_marine_squad_force_commander_lotd",
+		ebp_name = "force_commander_lotd",
+		class = UnitStatsAI.UC_Commander,
+		rating = math.random(8*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "space_marine_bolt_pistol_forcecommander",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_plasma_pistol_commander",
+				effectiveness = GenerateUnitEffectiveness(6.0,6.5,5.9,6.7,6.0,5.0,3.9,0.0,6.6,4.3,5.4,6.2,3.5,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_bolt_pistol_combi_chaingun_forcecommander",
+				effectiveness = GenerateUnitEffectiveness(6.0,6.5,5.9,6.7,6.0,5.0,3.9,0.0,6.6,4.3,5.4,6.2,3.5,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "space_marine_chainsword_force_commander",
 				effectiveness = GenerateUnitEffectiveness(6.0,6.5,5.9,6.7,6.0,5.0,3.9,0.0,6.6,4.3,5.4,6.2,3.5,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},

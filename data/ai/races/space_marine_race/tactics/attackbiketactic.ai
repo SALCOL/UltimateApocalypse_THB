@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'Attackbiketactic.ai'
 -- Created by Cylarne
--- Edited by Thudmeizer		@ 09.02.2016
+-- Edited by Thudmeizer		@ 26.06.2016
 
 class 'AttackbikeTactic' (SpaceMarineVehicleTactic)
 
@@ -10,6 +10,10 @@ Attackbike = {}
 function AttackbikeTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Attackbike Tactic")
+end
+
+function AttackbikeTactic:AlwaysAttack()
+	return true
 end
 
 function AttackbikeTactic:InitAbilities()
@@ -70,10 +74,6 @@ function AttackbikeTactic:Upgrade()
   
 	local class_type = cpu_manager:FindClosestEnemyPlayer():GetMajorityClassType()
 		self.squad_ai:DoBestUpgrade( class_type )
-end
-
-function AttackbikeTactic:AlwaysAttack()
-	return true
 end
 
 function AttackbikeTactic:CanOnlyDecap()

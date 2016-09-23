@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'superstructuretactic.ai'
 -- Edited by Cylarne_04 @ 05.23.2010
--- Edited by Thudmeizer @ 24.05.2016
+-- Edited by Thudmeizer @ 26.06.2016
 
 class 'SuperStructureTactic' (BaseTactic)
 
@@ -29,23 +29,7 @@ function SuperStructureTactic:InitAbilities()
 	if (SuperStructure.curtain_id == nil) then
 		SuperStructure.curtain_id = cpu_manager.stats:GetAbilityID( "marines_nuke4" )					-- Iron Curtain (All)
 	end
---[[
-	if (SuperStructure.gothic_id == nil) then
-		SuperStructure.gothic_id = cpu_manager.stats:GetAbilityID( "marines_orbital_strike_battlefleet_gothic" )	-- Orbital Lance (All)
-	end
-	
-	if (SuperStructure.gothic2_id == nil) then
-		SuperStructure.gothic2_id = cpu_manager.stats:GetAbilityID( "marines_orbital_strike_battlefleet_gothic_2" )	-- Orbital Lance (All)
-	end
 
-	if (SuperStructure.gothic3_id == nil) then
-		SuperStructure.gothic3_id = cpu_manager.stats:GetAbilityID( "marines_orbital_strike_battlefleet_gothic_3" )	-- Orbital Lance (All)
-	end
-
-	if (SuperStructure.gothic4_id == nil) then
-		SuperStructure.gothic4_id = cpu_manager.stats:GetAbilityID( "marines_orbital_strike_battlefleet_gothic_4" )	-- Orbital Lance (All)
-	end
-]]
 	if (SuperStructure.repair_id == nil) then
 		SuperStructure.repair_id = cpu_manager.stats:GetAbilityID( "all_autorepair" )
 	end

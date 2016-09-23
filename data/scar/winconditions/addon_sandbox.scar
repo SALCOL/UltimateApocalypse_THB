@@ -14,7 +14,7 @@ function OnInit()
 		g_player[i].team = Player_GetTeam( g_player[i].playerID )
 		g_player[i].name = Player_GetDisplayName( g_player[i].playerID )
 		g_player[i].text = "$35000"
-		Cpu_Enable(g_player[i].playerID, false)
+		--Cpu_Enable(g_player[i].playerID, false)
 		FOW_RevealAll()
 	end
 	g_activePlayer = 0

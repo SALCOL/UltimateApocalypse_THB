@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'orkvehicletactic.ai'
--- Edited by Thudmeizer		@ 20.06.2016
+-- Edited by Thudmeizer		@ 23.08.2016
 
 class 'OrkVehicleTactic' (VehicleTactic)
 
@@ -14,14 +14,17 @@ function OrkVehicleTactic:CheckVehicleDance(sName)
 
 	if (sName == "ork_squad_trukk" or
 		sName == "ork_squad_wartrak" or
+		sName == "ork_squad_looted_rhino" or
 		sName == "ork_squad_killa_kan" or
 		sName == "ork_squad_gun_wagon" or
 		sName == "ork_squad_battle_wagon" or
+		sName == "ork_squad_battle_wagon_armageddon" or
 		sName == "ork_squad_deff_dread" or
 		sName == "ork_squad_looted_tank" or
 		sName == "ork_squad_kill_bursta" or
 		sName == "ork_squad_kill_krusha" or
-		sName == "ork_squad_battlefortress") then
+		sName == "ork_squad_battlefortress" or
+		sName == "ork_squad_battlefortress_armageddon") then
 		return true
 	end
 	return false

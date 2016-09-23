@@ -3,6 +3,7 @@ playlist =
 	tracks = 
 	{
 		"music_daemons_main",
+		"outcast",
 		"idh_menu",
 	},
 	

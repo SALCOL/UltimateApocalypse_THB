@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'orkbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 08.06.2016
+-- Edited by Thudmeizer @ 03.09.2016
 -- Edited by Cylarne_04 2011
 
 class 'OrkBuildBaseStrategy' (BuildBaseStrategy)
@@ -15,6 +15,19 @@ function OrkBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	-- Phases of attacks. If army is decreased substantially, or build only titans: modify.
 	self.m_iArmyBuild = math.random(0, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
 	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
+
+	-- Choose a path, unless already chosen (Save, Wincondition, etc.)
+	if cpu_manager.cpu_player:IsResearchComplete("ork_research_klan_armageddon") then
+		self.m_iOrkResearchPattern = 1
+	elseif cpu_manager.cpu_player:IsResearchComplete("ork_research_klan_gorgutz") then
+		self.m_iOrkResearchPattern = 2
+	elseif cpu_manager.cpu_player:IsResearchComplete("ork_research_klan_nuddyfist") then
+		self.m_iOrkResearchPattern = 3
+	elseif cpu_manager.cpu_player:IsResearchComplete("ork_research_klan_zagdakka") then
+		self.m_iOrkResearchPattern = 4
+	else
+		self.m_iOrkResearchPattern = math.random(1, 4)
+	end
 end
 
 function OrkBuildBaseStrategy:ChooseBuildProgram()
@@ -37,7 +50,7 @@ function OrkBuildBaseStrategy:EvaluateSquadCap()
 	end
 	
 	-- Check squad and support cap
-	if (self:CheckSquadCap(300, 0) or self:CheckSupportCap(150, 300) or self.tierLevel >= 4) then
+	if (self:CheckSquadCap(300, 0) or self:CheckSupportCap(150, 300)) then
 	
 		-- Build a Waagh Banner
 		local tBuildType = CpuBuildType()
@@ -99,6 +112,9 @@ function OrkBuildBaseStrategy:GetAddonBuilding( sType )
 		
 	elseif (sType == "ork_boomy_platform_addon") then
 		return "ork_boomy_platform"
+
+	elseif (sType == "ork_boomy_platform_kaboom_addon") then
+		return "ork_boomy_platform"
 		
 	elseif (sType == "ork_turret_addon") then
 		return "ork_waagh_banner_turret_sp"
@@ -117,6 +133,8 @@ function OrkBuildBaseStrategy:GetUnitStats(sSquadName)
 
 	if (sSquadName == "ork_squad_wartrak") then
 		return 0, 1
+	elseif (sSquadName == "ork_squad_looted_rhino") then
+		return 0, 1
 	elseif (sSquadName == "ork_squad_grot_tank") then
 		return 0, 1
 	elseif (sSquadName == "ork_squad_trukk") then
@@ -133,11 +151,15 @@ function OrkBuildBaseStrategy:GetUnitStats(sSquadName)
 		return 0, 4
 	elseif (sSquadName == "ork_squad_battle_wagon") then
 		return 0, 4
+	elseif (sSquadName == "ork_squad_battle_wagon_armageddon") then
+		return 0, 4
 	elseif (sSquadName == "ork_squad_kill_bursta") then
 		return 0, 5
 	elseif (sSquadName == "ork_squad_kill_krusha") then
 		return 0, 5
 	elseif (sSquadName == "ork_squad_battlefortress") then
+		return 0, 6
+	elseif (sSquadName == "ork_squad_battlefortress_armageddon") then
 		return 0, 6
 	elseif (sSquadName == "ork_squad_nukklear_bomba") then
 		return 0, 10
@@ -194,6 +216,17 @@ end
 
 function OrkBuildBaseStrategy:BuildFlexible()
 
+	-- Choose Ork research pattern
+	if (self.m_iOrkResearchPattern == 1) then
+		self:DynamicResearch("ork_research_klan_armageddon", 1, 0, 0, 0, 0, nil, 0)
+	elseif (self.m_iOrkResearchPattern == 2) then
+		self:DynamicResearch("ork_research_klan_gorgutz", 1, 0, 0, 0, 0, nil, 0)
+	elseif (self.m_iOrkResearchPattern == 3) then
+		self:DynamicResearch("ork_research_klan_nuddyfist", 1, 0, 0, 0, 0, nil, 0)
+	elseif (self.m_iOrkResearchPattern == 4) then
+		self:DynamicResearch("ork_research_klan_zagdakka", 1, 0, 0, 0, 0, nil, 0)
+	end
+
 	-- Locales
 	local iArmyStrength = cpu_manager:GetArmyStrength()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
@@ -225,30 +258,30 @@ function OrkBuildBaseStrategy:BuildFlexible()
 		self:DynamicResearch("ork_research_tech_deff_dread", 3, 0, 200, 0, 0, nil, 0)
 		self:DynamicResearch("ork_research_tech_battlewagon", 3, 0, 180, 0, 0, nil, 0)
 	elseif (self.m_iJeeChoice <= 86) then
-		self:DynamicResearch("ork_research_tech_bomb_squigs", 2, 0, 140, 0, 0, nil, 0)
-		self:DynamicResearch("ork_research_tech_gunwagon", 2, 0, 180, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_bomb_squigs", 2, 0, 100, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_gunwagon", 2, 0, 150, 0, 0, nil, 0)
 	elseif (self.m_iJeeChoice <= 144) then
-		self:DynamicResearch("ork_research_tech_tankbustaz", 1, 0, 130, 0, 0, nil, 0)
-		self:DynamicResearch("ork_research_tech_ard_boyz", 1, 0, 120, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_tankbustaz", 1, 0, 60, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_ard_boyz", 1, 0, 60, 0, 0, nil, 0)
 	elseif (self.m_iJeeChoice <= 235) then
-		self:DynamicResearch("ork_research_tech_burna_boyz", 1, 0, 90, 0, 0, nil, 0)
-		self:DynamicResearch("ork_research_tech_killa_kan", 2, 0, 140, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_burna_boyz", 1, 0, 30, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_killa_kan", 2, 0, 150, 0, 0, nil, 0)
 	elseif (self.m_iJeeChoice <= 450) then
-		self:DynamicResearch("ork_research_tech_lootas", 5, 0, 300, 0, 0, nil, 0)
-		self:DynamicResearch("ork_research_tech_nobz_armored", 5, 0, 300, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_lootas", 5, 0, 200, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_nobz_armored", 5, 0, 200, 0, 0, nil, 0)
 	elseif (self.m_iJeeChoice <= 650) then
-		self:DynamicResearch("ork_research_tech_kill_bursta", 4, 0, 340, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_kill_bursta", 4, 0, 300, 0, 0, nil, 0)
 		self:DynamicResearch("ork_research_tech_kill_krusha", 4, 0, 300, 0, 0, nil, 0)
 	elseif (self.m_iJeeChoice <= 725) then
-		self:DynamicResearch("ork_research_tech_looted_tank", 4, 0, 290, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_looted_tank", 4, 0, 200, 0, 0, nil, 0)
 		self:DynamicResearch("ork_research_tech_nukklear_bomma", 5, 0, 650, 0, 0, nil, 0)
 	elseif (self.m_iJeeChoice <= 810) then
-		self:DynamicResearch("ork_research_tech_nobz", 3, 0, 200, 0, 0, nil, 0)
-		self:DynamicResearch("ork_research_tech_flash_gitz", 3, 0, 200, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_nobz", 3, 0, 150, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_flash_gitz", 3, 0, 150, 0, 0, nil, 0)
 	else
-		self:DynamicResearch("ork_research_tech_squiggoth", 4, 0, 400, 0, 0, nil, 0)
-		self:DynamicResearch("ork_research_tech_battlefortress", 4, 0, 500, 0, 0, nil, 0)
-		self:DynamicResearch("ork_research_tech_gargant", 5, 0, 800, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_squiggoth", 4, 0, 300, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_battlefortress", 4, 0, 400, 0, 0, nil, 0)
+		self:DynamicResearch("ork_research_tech_gargant", 5, 0, 1000, 0, 0, nil, 0)
 		self:DynamicResearch("ork_research_tech_great_gargant", 5, 0, 2000, 0, 0, nil, 0)
 	end
 	
@@ -271,7 +304,7 @@ function OrkBuildBaseStrategy:BuildFlexible()
 
 				-- Compute infantry research
 				if (iInfantrySquads >= 3) then
-					self:DynamicResearch("ork_research_tougherorks", 1, 30, 10, 0, 0, nil, 0)
+					self:DynamicResearch("ork_research_tougherorks", 1, 20, 5, 0, 0, nil, 0)
 					self:DynamicResearch("ork_research_eavy_armor_boyz", 1, 50, 15, 0, 0, nil, 0)
 					self:DynamicResearch("ork_research_burna", 1, 50, 10, 0, 0, "ork_squad_slugga", 1)
 				end
@@ -327,6 +360,11 @@ function OrkBuildBaseStrategy:BuildFlexible()
 				if (self:CountSquads("ork_squad_trukk") + self:CountSquads("ork_squad_wartrak") > 1) then
 					self:DynamicResearch("ork_research_speed_boost", 2, 50, 50, 0, 0, nil, 0) 
 				end
+
+				-- Compute Kill Kan researches
+				if (self:CountSquads("ork_squad_killa_kan") > 0) then
+					self:DynamicResearch("ork_research_killa_kan_reinforce", 2, 100, 75, 0, 0, nil, 0) 
+				end
 --[[				
 				-- Compute commander researches
 				if (iCommanderSquads >= 1) then
@@ -357,12 +395,12 @@ function OrkBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("ork_power_research_2", 3, 300, 80, 0, 0, nil, 0)
 			self:DynamicResearch("ork_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
 			
-			-- Compute Even More Armor research
-			self:DynamicResearch("ork_bombs_research", 4, 125, 75, 0, 0, nil, 0)
+			-- Compute Bomb research
+			self:DynamicResearch("ork_bombs_research", 3, 125, 75, 0, 0, nil, 0)
 			
 			-- Compute infantry research
 			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("ork_research_tougherorks_2", 1, 40, 20, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_tougherorks_2", 3, 30, 10, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_eavy_armor_boyz_2", 3, 80, 20, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_evenmoredakka", 3, 60, 30, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_rokkit_launcha_2", 3, 115, 45, 0, 0, nil, 0)
@@ -412,18 +450,24 @@ function OrkBuildBaseStrategy:BuildFlexible()
 			
 			-- Compute resource research
 			self:DynamicResearch("ork_power_research_5", 5, 800, 100, 0, 0, nil, 0)
-			self:DynamicResearch("ork_requisition_research_5", 5, 300, 1000, 0, 0, nil, 0)
-			self:DynamicResearch("ork_requisition_research_6", 5, 1200, 4000, 0, 0, nil, 0)
-	
+			self:DynamicResearch("ork_requisition_research_5", 5, 900, 3000, 0, 0, nil, 0)
+
 			-- Compute Ork Titan researches
 			if (iUberSquads >= 1) then
 				self:DynamicResearch("ork_research_titan_armor", 5, 300, 300, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_titan_armor_2", 5, 600, 600, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_titan_armor_3", 5, 900, 900, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_titan_dakka", 5, 300, 300, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_titan_dakka_2", 5, 600, 600, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_titan_dakka_3", 5, 900, 900, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_titan_cost", 5, 1300, 1300, 0, 0, nil, 0)
 			end
 	
 			-- Compute major Waagh research
-			self:DynamicResearch("ork_waagh_research", 5, 3000, 3000, 0, 0, nil, 0)
+			self:DynamicResearch("ork_waagh_research", 5, 1000, 1000, 0, 0, nil, 0)
+
+			-- Compute resource research
+			self:DynamicResearch("ork_requisition_research_6", 5, 3600, 20000, 0, 0, nil, 0)
 		end
 	end
 
@@ -459,30 +503,38 @@ function OrkBuildBaseStrategy:BuildFlexible()
 				self:DynamicBuild("ork_mek_shop", 2, 2, 800, 500, 0, 0)
 				
 				-- tier 2
-				self:DynamicBuild("ork_boomy_platform", 5, 3, 1500, 500, 0, 0)
-				
+				self:DynamicBuild("ork_burna_bomm", 1, 3, 750, 750, 0, 0)
+				self:DynamicBuild("ork_boomy_platform", 3, 3, 1500, 500, 0, 0)
+				self:DynamicBuild("ork_gork_factory", 2, 3, 1000, 1000, 0, 0)
+
 				-- tier 3
 				self:DynamicBuild("ork_hq", 3, 4, 1500, 1500, 0, 0)
+				self:DynamicBuild("ork_burna_bomm", 2, 4, 1500, 1500, 0, 0)
 				self:DynamicBuild("ork_waagh_banner_turret_sp", 3, 4, 2000, 2000, 0, 0)
-					
+				self:DynamicBuild("ork_boomy_platform", 5, 4, 2500, 3000, 0, 0)
+
 				-- tier 4
 				self:DynamicBuild("ork_boy_hut", 3, 5, 3000, 0, 0, 0)
-				self:DynamicBuild("ork_mek_shop", 3, 5, 3500, 3500, 0, 0)
+				self:DynamicBuild("ork_mek_shop", 3, 5, 3000, 3000, 0, 0)
+				self:DynamicBuild("ork_burna_bomm", 4, 5, 3500, 2500, 0, 0)
+				self:DynamicBuild("ork_gork_factory", 3, 5, 4000, 4000, 0, 0)
 				self:DynamicBuild("ork_hq_super", 2, 5, 4500, 4500, 0, 0)
 				self:DynamicBuild("ork_waagh_banner_missile_sp", 4, 5, 3000, 3000, 0, 0)
 			end
 			
 		else
-			self:DynamicBuild("ork_wall", 20, 1, 700, 0, 0, 0)
+			self:DynamicBuild("ork_wall", 15, 1, 700, 0, 0, 0)
 			self:DynamicBuild("ork_burna_bomm", 2, 3, 750, 750, 0, 0)
 			self:DynamicBuild("ork_mine_field", 10, 3, 500, 200, 0, 0)
 			self:DynamicBuild("ork_tanktrap", 8, 3, 500, 500, 0, 0)
 			self:DynamicBuild("ork_waagh_banner_turret_sp", 5, 3, 800, 800, 0, 0)
-			self:DynamicBuild("ork_boomy_platform", 40, 3, 1500, 1000, 0, 0)
+			self:DynamicBuild("ork_boomy_platform", 10, 3, 1500, 1000, 0, 0)
 			self:DynamicBuild("ork_waagh_banner_missile_sp", 4, 4, 2500, 3000, 0, 0)
+			self:DynamicBuild("ork_burna_bomm", 3, 4, 3000, 2500, 0, 0)
 			self:DynamicBuild("ork_boy_hut", 4, 5, 3000, 0, 0, 0)
 			self:DynamicBuild("ork_mek_shop", 4, 5, 3500, 3500, 0, 0)
 			self:DynamicBuild("ork_hq", 4, 5, 4000, 4000, 0, 0)
+			self:DynamicBuild("ork_burna_bomm", 6, 5, 4000, 4500, 0, 0)
 			self:DynamicBuild("ork_hq_super", 3, 5, 4500, 4500, 0, 0)
 		end
 	end
@@ -603,6 +655,7 @@ function OrkBuildBaseStrategy:GetPlacementType(iBuildingID)
 		return "Safeplace"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("ork_boy_hut") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("ork_mek_shop") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("ork_gork_factory") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("ork_bilda_pit") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("ork_giant_waagh_banner_sp_dxp3") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("ork_hq_super")) then

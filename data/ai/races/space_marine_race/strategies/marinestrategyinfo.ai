@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marinestrategyinfo.ai'
--- Edited by Thudmeizer  @ 20.06.2016
+-- Edited by Thudmeizer  @ 04.09.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -35,7 +35,7 @@ BuildBaseStrategyInfo =
 			-- Allround strategy
 			{
 			        { 1, 100, 0, 0, 1,	"Unit",		"space_marine_squad_scout" }, -- Force a capturing squad
-			        { 1, 350, 80, 0, 1,	"Unit",		"space_marine_squad_force_commander_killeus" },
+			        { 1, 300, 60, 0, 1,	"Unit",		"space_marine_squad_force_commander" },
 			        { 1, 170, 30, 0, 1,	"Unit",		"space_marine_squad_tactical_bike" },
 			        { 1, 220, 0, 0, 2,	"Unit",		"space_marine_squad_tactical" },
 				{ 1, 240, 0, 0, 1,	"Unit",		"space_marine_squad_assault" },
@@ -44,7 +44,7 @@ BuildBaseStrategyInfo =
 				{ 1, 135, 0, 0, 3,	"Building",	"space_marine_generator" },
 				{ 1, 90, 0, 0, 60,	"TurretAddon",	"space_marine_list_post_addon_1" },
 				{ 1, 140, 50, 0, 2,	"Building",	"space_marine_turret_bolter" },
-				{ 1, 175, 50, 750, 1,	"Building",     "space_marine_armoury" },
+				{ 1, 175, 50, 250, 1,	"Building",     "space_marine_armoury" },
 				{ 1, 140, 50, 0, 3,	"Building",	"space_marine_turret_bolter" },
 				{ 1, 90, 0, 250, 100,	"TurretAddon",	"space_marine_list_post_addon_1" },
 				{ 1, 135, 0, 0, 5,	"Building",	"space_marine_generator" },

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarrampagetactic.ai'
--- Edited by Thudmeizer @ 02.04.2016
+-- Edited by Thudmeizer @ 25.08.2016
 
 class 'DarkEldarRampageTactic' (DarkEldarVehicleTactic)
 
@@ -37,8 +37,9 @@ end
 
 function DarkEldarRampageTactic:DoAbilities()
 	
+	-- Bugged: will cause crash when Horrorfex ability is used. Reason undetermined.
 	-- Send bomb against enemy infantry
-	Ability.DoAbilityPos( self.squad_ai, DarkEldarRampage.barrage_id, Ability.Filters.CloseSquadEnemy, 1 ) 
+	--Ability.DoAbilityPos( self.squad_ai, DarkEldarRampage.barrage_id, Ability.Filters.CloseSquadEnemy, 4 ) 
 
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )

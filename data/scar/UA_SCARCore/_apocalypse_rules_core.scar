@@ -97,9 +97,10 @@ function ApocalypseRules_SS_Check()
 		local ar_entity_pos = Player_GetAllEntitiesNearPos(Player, "ar_entity_structure", pos, 2000)
 		eg_PlayerAll = Player_GetEntities(Player)
 		
-		if (EGroup_Exists("ar_eg_superstructure_"..j) == false) then
-			ApocalypseRules_AddBuildings = function( ar_entity_pos, itemindex, ar_entityID )
-				-- Every single super structure blueprint or Add-on goes here...
+		
+		ApocalypseRules_AddBuildings = function( ar_entity_pos, itemindex, ar_entityID )
+			-- Every single super structure blueprint or Add-on goes here...
+			if (EGroup_Exists("ar_eg_superstructure_"..j) == false) then
 				if (Entity_GetBlueprintName(ar_entityID) == "chaos_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "dark_eldar_hq_sp_dxp3" and Entity_GetBuildingProgress(ar_entityID) >= 0.5 or
 					Entity_GetBlueprintName(ar_entityID) == "eldar_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
@@ -116,7 +117,8 @@ function ApocalypseRules_SS_Check()
 					Entity_GetBlueprintName(ar_entityID) == "daemon_doom_pit" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "inquisition_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 					Entity_GetBlueprintName(ar_entityID) == "inquisition_shrine_to_the_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "tyranids_capillary_tower" and Entity_GetBuildingProgress(ar_entityID) == 1.0) then
+					Entity_GetBlueprintName(ar_entityID) == "tyranids_capillary_tower" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+					Entity_GetBlueprintName(ar_entityID) == "ork_boomy_platform" and Entity_GetBuildingProgress(ar_entityID) == 1.0) and Entity_ContainsAddOn(ar_entityID, "ork_boomy_platform_kaboom_addon") then
 					
 					-- Give the warning.
 					local warning = ("WARNING! Super Structure or critical threat spotted!")
@@ -129,49 +131,72 @@ function ApocalypseRules_SS_Check()
 					Ping_Position(EGroup_GetPosition("ar_eg_superstructure_"..j), false, "attack")
 					ApocalypseRules_RevealSS("ar_eg_superstructure_"..j)
 					--Sound_PlayStinger("warning_ua")
-					
-				-- Capitol Imperialis
-				-- From Adeptus Mechanicus mod. This will spawn a Capitol Imperialis in place of a CI structure.
-				elseif (Entity_GetBlueprintName(ar_entityID) == "sisters_capitol_building" and Entity_GetBuildingProgress(ar_entityID) == 1.0) then
-					
-					-- Local variables.
-					local healthPercent = Entity_GetHealth(ar_entityID)/Entity_GetHealthMax(ar_entityID)
-					if healthPercent > 1 or healthPercent < 0 then healthPercent = 1 end
-					local Owner = Entity_GetPlayerOwner(ar_entityID)
-					local Spawnpos = Entity_GetPosition(ar_entityID)
-					
-					-- Despawn Capitol, then spawn mobile version.
-					Entity_DeSpawn(ar_entityID)
-					Entity_Destroy(ar_entityID)
-					
-					-- Attempt to modify position, so that the squad to appear at the precise point the entity was.
-					--AMspawnpos.x = AMspawnpos.x - 0.0001
-					Spawnpos.z = Spawnpos.z - 0.0001
-					eID = Entity_Create("sisters_capitol_dummy", Owner, Spawnpos)
-					spawnSquad = Squad_Create("sisters_squad_capitol_imperialis", Owner, Spawnpos, 1)
-					nID = Entity_FromWorldID(eID.id+1)
-					Squad_Spawn(spawnSquad, Spawnpos)
-					Squad_SetHealth(spawnSquad, healthPercent)
-					Entity_Destroy(eID)
-					
-					
 				end
+				
+			-- Is the created super structure destroyed? Yes.
+			elseif (EGroup_Exists("ar_eg_superstructure_"..j) and EGroup_Count("ar_eg_superstructure_"..j) == 0) then
+				
+				-- Delete the no longer needed EGroup SS and remove all effects taken by the SS.
+				ApocalypseRules_RemoveSS(j)
+				
+			-- Is the created super structure destroyed? No.
+			elseif (EGroup_Exists("ar_eg_superstructure_"..j) and EGroup_Count("ar_eg_superstructure_"..j) > 0) then
+				
+				--ApocalypseRules_SuperweaponWarning(j)
 			end
 			
-			EGroup_ForEach(eg_PlayerAll, ApocalypseRules_AddBuildings)
-			
-		-- Is the created super structure destroyed? Yes.
-		elseif (EGroup_Exists("ar_eg_superstructure_"..j) and EGroup_Count("ar_eg_superstructure_"..j) == 0) then
-			
-			-- Delete the no longer needed EGroup SS and remove all effects taken by the SS.
-			ApocalypseRules_RemoveSS(j)
-			
-		-- Is the created super structure destroyed? No.
-		elseif (EGroup_Exists("ar_eg_superstructure_"..j) and EGroup_Count("ar_eg_superstructure_"..j) > 0) then
-			
-			--ApocalypseRules_SuperweaponWarning(j)
-			
+			-- Capitol Imperialis
+			-- From Adeptus Mechanicus mod. This will spawn a Capitol Imperialis in place of a CI structure.
+			if (Entity_GetBlueprintName(ar_entityID) == "sisters_capitol_building" and Entity_GetBuildingProgress(ar_entityID) == 1.0) then
+				
+				-- Local variables.
+				local healthPercent = Entity_GetHealth(ar_entityID)/Entity_GetHealthMax(ar_entityID)
+				if healthPercent > 1 or healthPercent < 0 then healthPercent = 1 end
+				local Owner = Entity_GetPlayerOwner(ar_entityID)
+				local Spawnpos = Entity_GetPosition(ar_entityID)
+				
+				-- Despawn Capitol, then spawn mobile version.
+				Entity_DeSpawn(ar_entityID)
+				Entity_Destroy(ar_entityID)
+				
+				-- Attempt to modify position, so that the squad to appear at the precise point the entity was.
+				--AMspawnpos.x = AMspawnpos.x - 0.0001
+				Spawnpos.z = Spawnpos.z - 0.0001
+				eID = Entity_Create("sisters_capitol_dummy", Owner, Spawnpos)
+				spawnSquad = Squad_Create("sisters_squad_capitol_imperialis", Owner, Spawnpos, 1)
+				nID = Entity_FromWorldID(eID.id+1)
+				Squad_Spawn(spawnSquad, Spawnpos)
+				Squad_SetHealth(spawnSquad, healthPercent)
+				Entity_Destroy(eID)
+				
+			-- GRGE Restored Monolith
+			-- From Adeptus Mechanicus mod. This will spawn a Capitol Imperialis in place of a CI structure.
+			elseif (Entity_GetBlueprintName(ar_entityID) == "monolith" and Entity_ContainsAddOn(ar_entityID, "addon_necron_monolith_3")) then
+				
+				-- Local variables.
+				local healthPercent = Entity_GetHealth(ar_entityID)/Entity_GetHealthMax(ar_entityID)
+				if healthPercent > 1 or healthPercent < 0 then healthPercent = 1 end
+				local Owner = Entity_GetPlayerOwner(ar_entityID)
+				local Spawnpos = Entity_GetPosition(ar_entityID)
+				
+				-- Despawn Monolith, then spawn mobile version.
+				Entity_DeSpawn(ar_entityID)
+				Entity_Destroy(ar_entityID)
+				
+				-- Attempt to modify position, so that the squad to appear at the precise point the entity was.
+				--AMspawnpos.x = AMspawnpos.x - 0.0001
+				Spawnpos.z = Spawnpos.z - 0.0001
+				eID = Entity_Create("sisters_capitol_dummy", Owner, Spawnpos)
+				spawnSquad = Squad_Create("necron_restored_monolith_squad", Owner, Spawnpos, 1)
+				nID = Entity_FromWorldID(eID.id+1)
+				Squad_Spawn(spawnSquad, Spawnpos)
+				Squad_SetHealth(spawnSquad, healthPercent)
+				Entity_Destroy(eID)
+				
+			end
 		end
+		
+		EGroup_ForEach(eg_PlayerAll, ApocalypseRules_AddBuildings)
 		
 	end 
 
@@ -335,6 +360,7 @@ function ApocalypseRules_Wargear_GrantToAI(ar_f_player, ar_f_wargearoption)
 					Player_GrantResearch(ar_f_player, "marine_spell_weaken_resolve")
 					Player_GrantResearch(ar_f_player, "marine_spell_word_of_emperor")
 					Player_GrantResearch(ar_f_player, "marine_spell_inquisition")
+					Player_GrantResearch(ar_f_player, "marine_wargear25")
 					Player_GrantResearch(ar_f_player, "eldar_spell_blind")
 					Player_GrantResearch(ar_f_player, "eldar_spell_eldritch_storm")
 					Player_GrantResearch(ar_f_player, "eldar_spell_embolden")

@@ -1,0 +1,99 @@
+----------------------------------------
+-- File: 'sisterssainttactic.ai'
+-- Edited by Thudmeizer @ 10.08.2016
+
+class 'SistersSaintTactic' (SistersInfantryTactic)
+
+SistersSaint = {}
+
+function SistersSaintTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Saint Tactic")
+end
+
+function SistersSaintTactic:AutoBuildAddOn( addonSlot )
+	for e in self.squad_ai:GetEntities() do
+		local buildChannelSistersSaint = build_manager:GetBuildChannelFromID(e:GetID())
+		if (buildChannelSistersSaint ~= nil) then
+			local addOnID = buildChannelSistersSaint:GetItemIDAt(BuildChannelAI.PQ_AddOn, addonSlot)
+			if (buildChannelSistersSaint:IsBuilding() == 0 and buildChannelSistersSaint:CanAddToQueue(BuildChannelAI.PQ_AddOn, addOnID) == BuildChannelAI.CANBUILD_Ok) then
+				buildChannelSistersSaint:BuildAddOn(addOnID)
+				return
+			end
+		end
+	end
+	return
+end
+
+function SistersSaintTactic:AlwaysAttack()
+	return true
+end
+
+-- Saint is allowed to retreat even directly after a jump
+function SistersSaintTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersSaintTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function SistersSaintTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (SistersSaint.run_id == nil) then
+		SistersSaint.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function SistersSaintTactic:DoAbilities()
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersSaint.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersSaint.run_id )
+		end
+	end
+end
+
+function SistersSaintTactic:Upgrade()
+
+--	self:AutoBuildAddOn(0)	--	[addon_01] addon_commanders_cap_squad			4/1
+--	self:AutoBuildAddOn(1)	-- 	[addon_02] addon_commanders_cap_support			5/1
+--	self:AutoBuildAddOn(2)	-- 	[addon_03] addon_commanders_cap_faith			6/1
+--	self:AutoBuildAddOn(3)	-- 	[addon_04] addon_commanders_increase_production		5/1
+--	self:AutoBuildAddOn(4)	-- 	[addon_05] addon_commanders_increase_health		6/1
+--	self:AutoBuildAddOn(5)	-- 	[addon_06] addon_commanders_increase_morale		6/1
+--	self:AutoBuildAddOn(6)	-- 	[addon_07] addon_commanders_cap_squad_2			6
+--	self:AutoBuildAddOn(7)	-- 	[addon_08] addon_commanders_cap_support_2		8
+--	self:AutoBuildAddOn(8)	-- 	[addon_09] addon_commanders_increase_production_2	8
+
+   	if (cpu_manager:GetTierLevel() <= 4) then 
+		local addon_random_commander_upgrades = math.random( 0,8 )	-- Randomize these addons
+		self:AutoBuildAddOn(addon_random_commander_upgrades)
+	end
+
+   	if (cpu_manager:GetTierLevel() > 4) then 
+		self:AutoBuildAddOn(2)		-- Always build in late tiers to support the construction of Titans and late game ubers.
+	end
+end
+
+function SistersSaintTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	if not InfantryTactic.Update( self ) then
+		return false
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

@@ -1,0 +1,31 @@
+----------------------------------------
+-- File: 'daemonsbrassscorpiontactic.ai'
+-- Edited by Thudmeizer		@ 02.07.2016
+
+class 'DaemonsBrassScorpionTactic' (DaemonsVehicleTactic)
+
+DaemonsBrassScorpion = {}
+
+function DaemonsBrassScorpionTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Daemons Brass Scorpion Tactic")
+end
+
+function DaemonsBrassScorpionTactic:InitAbilities()
+
+	if (DaemonsBrassScorpion.turret_id == nil) then
+		DaemonsBrassScorpion.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
+	end
+end
+
+function DaemonsBrassScorpionTactic:DoAbilities()
+
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( DaemonsBrassScorpion.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, DaemonsBrassScorpion.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, DaemonsBrassScorpion.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
+		end
+	end
+end

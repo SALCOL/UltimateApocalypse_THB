@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersinfantrytactic.ai'
--- Edited by Thudmeizer		@ 12.04.2016
+-- Edited by Thudmeizer		@ 10.08.2016
 
 class 'SistersInfantryTactic' (InfantryTactic)
 
@@ -13,11 +13,13 @@ function SistersInfantryTactic:__init( squad_ai ) super( squad_ai )
 	if (sSquadName == "sisters_squad_missionary" or
 		sSquadName == "sisters_squad_battle_sister" or
 		sSquadName == "sisters_squad_seraphim" or
+		sSquadName == "sisters_squad_arco_flagellants" or
 		sSquadName == "sisters_squad_retributor" or
 		sSquadName == "sisters_squad_celestian" or
 		sSquadName == "sisters_squad_repentia" or
 		sSquadName == "sisters_squad_nunciate_superior" or
 		sSquadName == "sisters_squad_assassin" or
+		sSquadName == "sisters_squad_callidus_assassin" or
 		sSquadName == "sisters_squad_almoness" or
 		sSquadName == "sisters_squad_legatine_superior" or
 		sSquadName == "sisters_squad_redemptionist" or
@@ -52,6 +54,7 @@ function SistersInfantryTactic:AddCommanders()
 	table.insert(self.commander, { "sisters_squad_almoness", false })
 	table.insert(self.commander, { "sisters_squad_nunciate_superior", false })
 	table.insert(self.commander, { "sisters_squad_assassin", false })
+	table.insert(self.commander, { "sisters_squad_callidus_assassin", false })
 end
 
 function SistersInfantryTactic:DoAbilities()
@@ -75,9 +78,12 @@ function SistersInfantryTactic:DoAbilities()
 		elseif (self.squad_ai:HasSquadAttached("sisters_squad_confessor")) then
 			SistersConfessorTactic.InitAbilities( self )
 			SistersConfessorTactic.DoAbilities( self )
-		elseif (self.squad_ai:HasSquadAttached("sisters_inquisitor_squad")) then
-			SistersInquisitorTactic.InitAbilities( self )
-			SistersInquisitorTactic.DoAbilities( self )
+		--elseif (self.squad_ai:HasSquadAttached("sisters_inquisitor_squad")) then
+			--SistersInquisitorTactic.InitAbilities( self )
+			--SistersInquisitorTactic.DoAbilities( self )
+		elseif (self.squad_ai:HasSquadAttached("sisters_squad_callidus_assassin")) then
+			SistersCallidusTactic.InitAbilities( self )
+			SistersCallidusTactic.DoAbilities( self )
 		elseif (self.squad_ai:HasSquadAttached("sisters_squad_nunciate_superior")) then
 			SistersNunciateTactic.InitAbilities( self )
 			SistersNunciateTactic.DoAbilities( self )

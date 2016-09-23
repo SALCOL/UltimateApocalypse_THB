@@ -1,0 +1,38 @@
+----------------------------------------
+-- File: 'greatgarganttactic.ai'
+-- Edited by Thudmeizer		@ 23.07.2016
+
+class 'GreatGargantTactic' (OrkVehicleTactic)
+
+GreatGargant = {}
+
+function GreatGargantTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Great Gargant Tactic")
+end
+
+function GreatGargantTactic:AlwaysAttack()
+	return true
+end
+
+function GreatGargantTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (GreatGargant.repair_id == nil) then
+		GreatGargant.repair_id = cpu_manager.stats:GetAbilityID( "ork_gargant_autorepair" )
+	end
+end
+
+function GreatGargantTactic:DoAbilities()
+	
+	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.5) then
+		if (iRequisition >= 2500 and iPower >= 2500) then
+			if (self.squad_ai:CanDoAbility( GreatGargant.repair_id )) then
+				self.squad_ai:DoSpecialAbility( GreatGargant.repair_id )
+			end
+		end
+	end
+end

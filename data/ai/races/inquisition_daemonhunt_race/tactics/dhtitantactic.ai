@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'dhtitantactic.ai'
 -- Edited by Cylarne @ 2012
--- Edited by Thudmeizer	@ 18.04.2016
+-- Edited by Thudmeizer	@ 02.07.2016
 
 class 'DHTitanTactic' (DaemonhuntVehicleTactic)
 
@@ -17,6 +17,10 @@ function DHTitanTactic:InitAbilities()
 	if (DHTitan.stomp_id == nil) then
 		DHTitan.stomp_id = cpu_manager.stats:GetAbilityID( "titan_stomp" )	
 	end
+
+	if (DHTitan.turret_id == nil) then
+		DHTitan.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
+	end
 end
 
 function DHTitanTactic:DoAbilities()
@@ -24,5 +28,14 @@ function DHTitanTactic:DoAbilities()
 	-- Stomp them all!
 	if (self.squad_ai:IsAttacking() and self.squad_ai:CanDoAbility(DHTitan.stomp_id)) then
 		Ability.DoAbilityTarget(self.squad_ai, DHTitan.stomp_id, Ability.Filters.CloseSquadEnemy, 4)
+	end
+
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( DHTitan.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, DHTitan.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, DHTitan.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
+		end
 	end
 end

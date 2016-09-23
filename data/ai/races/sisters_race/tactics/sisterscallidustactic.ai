@@ -1,0 +1,97 @@
+----------------------------------------
+-- File: 'sisterscallidustactic.ai'
+-- Edited by Thudmeizer @ 10.08.2016
+
+class 'SistersCallidusTactic' (SistersInfantryTactic)
+
+SistersCallidus = {}
+
+function SistersCallidusTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Callidus Tactic")
+end
+
+function SistersCallidusTactic:IsAttacker()
+	return self:IsCommanderAttacker()
+end
+
+function SistersCallidusTactic:IsDefender()
+	return self:IsCommanderDefender()
+end
+
+-- Callidus is allowed to retreat even directly after a jump
+function SistersCallidusTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
+function SistersCallidusTactic:JumpAttack()
+	Tactic.JumpAttack(self)
+end
+
+function SistersCallidusTactic:CanJumpAttached()
+	return true
+end
+
+function SistersCallidusTactic:InitAbilities()
+
+	if (SistersCallidus.polymorphine_id == nil) then
+		SistersCallidus.polymorphine_id = cpu_manager.stats:GetAbilityID( "witch_hunters_callidus_polymorphine" )
+	end
+
+	if (SistersCallidus.touch_id == nil) then
+		SistersCallidus.touch_id = cpu_manager.stats:GetAbilityID( "witch_hunters_callidus_assassin_touch" )
+	end
+
+	if (SistersCallidus.run_id == nil) then
+		SistersCallidus.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
+	end
+end
+
+function SistersCallidusTactic:DoAbilities()
+
+	Ability.DoAbilityArea( self.squad_ai, SistersCallidus.polymorphine_id, Ability.Filters.CloseSquadEnemy, 10, 4 )
+	Ability.DoAbilityArea( self.squad_ai, SistersCallidus.polymorphine_id, Ability.Filters.CloseMonsterEnemy, 10, 4 )
+	Ability.DoAbilityTarget( self.squad_ai, SistersCallidus.touch_id, Ability.Filters.CloseCommanderEnemy, 1 )
+	Ability.DoAbilityTarget( self.squad_ai, SistersCallidus.touch_id, Ability.Filters.CloseSquadEnemy, 4 )
+	Ability.DoAbilityTarget( self.squad_ai, SistersCallidus.touch_id, Ability.Filters.CloseMonsterEnemy, 4 )
+
+	-- Run if safe
+	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
+
+		-- If I am safe I can run
+		if (self.squad_ai:CanDoAbility( SistersCallidus.run_id )) then
+			self.squad_ai:DoSpecialAbility( SistersCallidus.run_id )
+		end
+	end
+end
+
+function SistersCallidusTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+	
+	-- State machine
+	if (not InfantryTactic.Update(self)) then
+		return
+	end
+	
+	-- Attach to melee in tier3+
+	if (cpu_manager:GetTierLevel() > 2) then
+	
+		if (self:TryAttachSquad(true, true, 50, 100, nil) ~= nil) then
+			return
+		end
+	end
+
+	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+		self:TryAttachSquadMelee()
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

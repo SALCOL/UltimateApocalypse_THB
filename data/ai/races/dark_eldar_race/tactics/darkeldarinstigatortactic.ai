@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarinstigatortactic.ai'
--- Edited by Thudmeizer	@ 21.04.2016
+-- Edited by Thudmeizer	@ 01.07.2016
 
 class 'DarkEldarInstigatorTactic' (DarkEldarVehicleTactic)
 
@@ -29,6 +29,10 @@ function DarkEldarInstigatorTactic:InitAbilities()
 	if (DarkEldarInstigator.velocious_id == nil) then
 		DarkEldarInstigator.velocious_id = cpu_manager.stats:GetAbilityID( "dark_eldar_velocious_weapons" )	
 	end
+
+	if (DarkEldarInstigator.turret_id == nil) then
+		DarkEldarInstigator.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
+	end
 end
 
 function DarkEldarInstigatorTactic:DoAbilities()
@@ -38,6 +42,15 @@ function DarkEldarInstigatorTactic:DoAbilities()
 
 		if (self.squad_ai:IsInCombat()) then
 			self.squad_ai:DoSpecialAbility(DarkEldarInstigator.velocious_id)
+		end
+	end
+
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( DarkEldarInstigator.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, DarkEldarInstigator.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, DarkEldarInstigator.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
 		end
 	end
 end

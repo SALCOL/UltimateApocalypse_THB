@@ -2,7 +2,7 @@
 -- File: 'restoredmonolithtactic.ai'
 -- Created by Arkhan @ 31.10.2006
 -- Edited by Cylarne_04 2011
--- Edited by Thudmeizer	@ 20.06.2016
+-- Edited by Thudmeizer	@ 02.07.2016
 
 class 'RestoredMonolithTactic' (NecronVehicleTactic)
 
@@ -58,6 +58,9 @@ function RestoredMonolithTactic:DoAbilities()
 			Ability.DoAbilityArea( self.squad_ai, RestoredMonolith.truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
 		end
 	end
+
+	-- Call standard method
+	NecronVehicleTactic.DoAbilities(self)
 end
 
 function RestoredMonolithTactic:JumpAttackRanged()

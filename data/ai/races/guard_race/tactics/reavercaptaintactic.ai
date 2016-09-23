@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'reavercaptaintactic.ai'
 -- Edited by Cylarne @ 2012
--- Edited by Thudmeizer		@ 04.03.2016
+-- Edited by Thudmeizer		@ 01.07.2016
 
 class 'ReaverCaptainTactic' (GuardVehicleTactic)
 
@@ -54,6 +54,10 @@ function ReaverCaptainTactic:InitAbilities()
 	if (ReaverCaptain.inhibitor_id == nil) then
 		ReaverCaptain.inhibitor_id = cpu_manager.stats:GetAbilityID( "guard_apocalypse_inhibitor" )	
 	end
+
+	if (ReaverCaptain.turret_id == nil) then
+		ReaverCaptain.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
+	end
 end
 
 function ReaverCaptainTactic:DoAbilities()
@@ -73,6 +77,15 @@ function ReaverCaptainTactic:DoAbilities()
 			if (self.squad_ai:CanDoAbility( ReaverCaptain.inhibitor_id )) then
 				self.squad_ai:DoSpecialAbility( ReaverCaptain.inhibitor_id )
 			end
+		end
+	end
+
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( ReaverCaptain.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, ReaverCaptain.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, ReaverCaptain.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
 		end
 	end
 end

@@ -1,0 +1,59 @@
+----------------------------------------
+-- File: 'orkfactorytactic.ai'
+-- Edited by Thudmeizer @ 23.08.2016
+
+class 'OrkFactoryTactic' (BaseTactic)
+
+OrkFactory = {}
+
+function OrkFactoryTactic:__init( base_ai ) super( base_ai )
+
+	self:SetName("Ork Factory Tactic")
+
+	ResourcesGenTMR = g_iGMT
+end
+
+function OrkFactoryTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (OrkFactory.powerdump_id == nil) then
+		OrkFactory.powerdump_id = cpu_manager.stats:GetAbilityID( "ork_resource_dump_power" )
+	end
+
+	if (OrkFactory.reqdump_id == nil) then
+		OrkFactory.reqdump_id = cpu_manager.stats:GetAbilityID( "ork_resource_dump_requisition" )
+	end
+end
+
+function OrkFactoryTactic:DoAbilities()
+
+	-- Check resources needs every (at least) 6 secs, to avoid issues with multiple ability castings
+	if  g_iGMT > ResourcesGenTMR + 6 then
+    		local iReq = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
+    		local iPow = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+    		-- Check if we have enough Power to dump, but keep 3500 Power as reserve (ability costs 6000 Pow)
+    		if iPow > 9500 then
+       			-- Check if we actually need Requisition
+        		if iReq < 1000 then
+            			-- Dump Power for Requisition
+            			if self.base_ai:CanDoAbility(OrkFactory.powerdump_id) then
+                			self.base_ai:DoSpecialAbility(OrkFactory.powerdump_id)
+                			ResourcesGenTMR = g_iGMT
+            			end
+        		end
+    		end
+    
+    		-- Check if we have enough Requisition to dump, but keep 4000 Requisition as reserve (ability costs 5000 Req)
+    		if iReq > 9000 then
+        		-- Check if we actually need Power
+        		if iPow < 1000 then
+            			-- Dump Requisition for Power
+            			if self.base_ai:CanDoAbility(OrkFactory.reqdump_id) then
+                			self.base_ai:DoSpecialAbility(OrkFactory.reqdump_id)
+                			ResourcesGenTMR = g_iGMT
+           			end
+        		end
+    		end
+	end
+end

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarreavertactic.ai'
--- Edited by Thudmeizer @ 05.04.2016
+-- Edited by Thudmeizer @ 25.08.2016
 
 class 'DarkEldarReaverTactic' (DarkEldarVehicleTactic)
 
@@ -31,8 +31,9 @@ function DarkEldarReaverTactic:DoAbilities()
 		-- Send grenade against enemy infantry
 		Ability.DoAbilityPos( self.squad_ai, DarkEldarReaver.haywire_id, Ability.Filters.CloseVehicleEnemy, 1 ) 
 
+		-- Bugged: will cause crash when Horrorfex ability is used. Reason undetermined.
 		-- Send grenade against enemy infantry
-		Ability.DoAbilityPos( self.squad_ai, DarkEldarReaver.horrorfex_id, Ability.Filters.CloseSquadEnemy, 1 ) 
+		--Ability.DoAbilityPos( self.squad_ai, DarkEldarReaver.horrorfex_id, Ability.Filters.CloseSquadEnemy, 3 ) 
 
 		-- Send bomb against enemy infantry
 		Ability.DoAbilityPos( self.squad_ai, DarkEldarReaver.terrorfex_id, Ability.Filters.CloseInfantryEnemy, 4 ) 

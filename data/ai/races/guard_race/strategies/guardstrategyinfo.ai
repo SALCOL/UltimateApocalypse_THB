@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'guardstrategyinfo.ai'
--- Edited by Thudmeizer  @ 20.06.2016
+-- Edited by Thudmeizer  @ 23.06.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -176,6 +176,10 @@ BuildBaseStrategyInfo =
 				guard_squad_warhound_titan = 1,
 				guard_squad_reaver_titan = 1,
 				guard_squad_reaver_titan_captain = 1,
+				guard_squad_reaver_lucius_titan = 1,
+				guard_squad_reaver_lucius_full_titan = 1,
+				guard_squad_warlord_titan_aio = 1,
+				guard_squad_imperator_titan = 1,
 			}
 		}
 	}

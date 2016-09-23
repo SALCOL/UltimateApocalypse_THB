@@ -2,7 +2,7 @@
 
 version = 9
 
-priority = 60
+priority = 99
 volume = 1.000000
 volumeRand = -1.000000
 pitch = 1.000000
@@ -10,7 +10,7 @@ pitchRand = 0.000000
 source = 0
 patch = 0
 numChannels = 1
-maxPolyphony = 3
+maxPolyphony = 1
 loopStart = 0
 loopEnd = -1
 startOffset = 0
@@ -39,7 +39,7 @@ envelope = {
   },
   {
     distance = 50.000000,
-    volume = 1.000000,
+    volume = 0.900000,
     reverb = 0.000000,
     duration = 0,
     equalizer = {
@@ -55,7 +55,7 @@ envelope = {
   },
   {
     distance = 100.000000,
-    volume = 1.000000,
+    volume = 0.600000,
     reverb = 0.000000,
     duration = 0,
     equalizer = {
@@ -71,7 +71,7 @@ envelope = {
   },
   {
     distance = 150.000000,
-    volume = 1.000000,
+    volume = 0.250000,
     reverb = 0.000000,
     duration = 0,
     equalizer = {

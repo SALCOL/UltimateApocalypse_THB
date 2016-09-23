@@ -149,9 +149,25 @@ UnitTypes.sisters_race =
 		FXType = "Squad",
 		CanAttach = true,
 	},
+	sisters_squad_arco_flagellants = 
+	{
+		Title = "Arcoflagellants",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+		CanAttach = true,
+	},
 	sisters_squad_assassin =
 	{
 		Title = "Assassin",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeMeleeSquad,
+		FXType = "Squad",
+		CanAttach = true,
+	},
+	sisters_squad_callidus_assassin = 
+	{
+		Title = "Callidus Assassin",
 		Type = "CommandoForces",
 		UpgradeFunction = UpgradeMeleeSquad,
 		FXType = "Squad",
@@ -325,6 +341,13 @@ UnitTypes.sisters_race =
 		UpgradeFunction = UpgradeTank,
 		FXType = "Vehicle",
 	},
+	sisters_squad_incarcerator_tank =
+	{
+		Title = "Incarcerator",
+		Type = "SpecialForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+	},
 	sisters_squad_penitent_engine =
 	{
 		Title = "Penitent Engine",
@@ -366,6 +389,14 @@ UnitTypes.sisters_race =
 		Type = "CommandoForces",
 		UpgradeFunction = UpgradeTank,
 		FXType = "Vehicle",
+	},
+	sisters_squad_throne = 
+	{
+		Title = "Throne of Judgement",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+		Unique = true,
 	},
 	sisters_squad_living_saint =
 	{
@@ -429,6 +460,22 @@ UnitTypes.sisters_race =
 		Weapons =
 		{
 			"sisters_ardent_blade_improved",
+		},
+	},
+	sisters_squad_saint_celestine = 
+	{
+		Title = "The Living Saint",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeTank,
+		FXType = "Vehicle",
+		CanMorph = true,
+		CanResurrect = true,
+		MorphID = 1,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"sisters_ardent_blade",
 		},
 	},
 }

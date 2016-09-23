@@ -11,6 +11,7 @@ relic_squad_list =
 	"chaos_squad_lord_of_change",
 	"chaos_squad_warhound_titan",
 	"chaos_squad_reaver_titan",
+	"dark_eldar_squad_agony_titan",
 	"dark_eldar_squad_clawed_warp_beast",
 	"dark_eldar_squad_shadow",
 	"dark_eldar_squad_rampage",
@@ -49,6 +50,7 @@ relic_squad_list =
 	"necron_pylon_squad",
 	"ork_squad_squiggoth",
 	"ork_squad_battlefortress",
+	"ork_squad_battlefortress_armageddon",
 	"ork_squad_kill_bursta",
 	"ork_squad_kill_krusha",
 	"ork_squad_kustim_stompa",
@@ -68,8 +70,10 @@ relic_squad_list =
 	"space_marine_squad_land_raider_redeemer",
 	"space_marine_squad_land_raider_terminus",
 	"space_marine_squad_stormraven",
+	"space_marine_squad_imperator_titan",
 	"space_marine_squad_warhound_titan",
 	"space_marine_squad_reaver_titan",
+	"space_marine_squad_warlord_titan",
 	"tau_eel_battletank_squad",
 	"tau_greater_knarloc_squad",
 	"tau_swordfish_squad",
@@ -83,6 +87,7 @@ relic_squad_list =
 relic_squad_list_tyranids = 
 {	
 	"tyranids_squad_carnifex_uber",
+	"tyranids_squad_carnifex_tervigon",
 	"tyranids_squad_trygon",
 	"tyranids_squad_hierophant",
 	"tyranids_squad_hierophant_max",
@@ -97,6 +102,7 @@ relic_squad_list_inquisition =
 	"inquisition_squad_warhound_vengence_titan",
 	"inquisition_squad_dreadknight_titan",
 	"inquisition_squad_stormraven_fury",
+	"inquisition_squad_imperator_titan",
 }
 relic_squad_list_daemons = 
 {	
@@ -113,6 +119,7 @@ titan_squad_list =
 	"chaos_squad_heldrake",
 	"chaos_squad_warhound_titan",
 	"chaos_squad_reaver_titan",
+	"dark_eldar_squad_agony_titan",
 	"dark_eldar_squad_instigator",
 	"dark_eldar_squad_tormentor",
 	"dark_eldar_squad_tormentor_assault",
@@ -136,6 +143,8 @@ titan_squad_list =
 	"sisters_squad_arch_angel",
 	"space_marine_squad_warhound_titan",
 	"space_marine_squad_reaver_titan",
+	"space_marine_squad_warlord_titan",
+	"space_marine_squad_imperator_titan",
 	"tau_manta_squad",
 	"tau_tigershark_squad",
 	"tau_xv101_riptide_suit_squad",
@@ -151,6 +160,7 @@ titan_squad_list_inquisition =
 {	
 	"inquisition_squad_warhound_titan",
 	"inquisition_squad_warhound_vengence_titan",
+	"inquisition_squad_imperator_titan",
 }
 titan_squad_list_daemons = 
 {	
@@ -163,6 +173,7 @@ relic_entity_list =
 	"ork_squiggoth",
 	"ork_gargantuan_squiggoth",
 	"ork_battlefortress",
+	"ork_battlefortress_armageddon",
 	"ork_kill_bursta",
 	"ork_kill_krusha",
 	"ork_kustim_stompa",
@@ -234,6 +245,7 @@ relic_uber_list =
 	"ork_squiggoth",
 	"ork_gargantuan_squiggoth",
 	"ork_battlefortress",
+	"ork_battlefortress_armageddon",
 	"ork_kustim_stompa",
 	"ork_ork_gargant",
 	"ork_great_gargant",
@@ -268,6 +280,7 @@ relic_uber_list =
 	"tau_xv104_riptide_suit",
 	"tau_xv107_rvarna_suit",
 	"tau_xv202_mako_titan",
+	"tyranids_carnifex_tervigon",
 	"tyranids_carnifex_uber",
 	"tyranids_trygon",
 	"tyranids_hierophant",

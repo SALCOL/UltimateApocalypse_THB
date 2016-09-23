@@ -1,0 +1,35 @@
+----------------------------------------
+-- File: 'sistersincarceratortactic.ai'
+-- Edited by Thudmeizer @ 10.08.2016
+
+class 'SistersIncarceratorTactic' (SistersVehicleTactic)
+
+SistersIncarcerator = {}
+
+function SistersIncarceratorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Sisters Incarcerator Tactic")
+end
+
+function SistersIncarceratorTactic:InitAbilities()
+
+        if (SistersIncarcerator.horrortorture_id == nil) then
+		SistersIncarcerator.horrortorture_id = cpu_manager.stats:GetAbilityID( "witch_hunters_incarcerator_horror_torture" )
+	end
+end
+
+function SistersIncarceratorTactic:DoAbilities()
+
+	-- If using the ability, but must stop, then stop it.
+	if (self.squad_ai:IsUsingAbility(SistersIncarcerator.horrortorture_id)) then
+		if ((not self.squad_ai:IsAttacking()) or (self.squad_ai:GetHealthPercentage() < 0.6)) then
+			self.squad_ai:DoSpecialAbility(SistersIncarcerator.horrortorture_id)
+		end
+	-- If not using the ability, start using it if need be.
+	elseif (self.squad_ai:IsAttacking() and self.squad_ai:GetHealthPercentage() > 0.8) then
+		self.squad_ai:DoSpecialAbility(SistersIncarcerator.horrortorture_id)
+	end
+
+	-- Call standard method
+	SistersVehicleTactic.DoAbilities(self)
+end

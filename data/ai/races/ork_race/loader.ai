@@ -54,10 +54,12 @@ function ork_race:LoadRace( eDifficulty )
 	import( 'Races/ork_race/Tactics/FightaBommaTactic.ai' )
 	import( 'Races/ork_race/Tactics/NukklearBommaTactic.ai' )
 	import( 'Races/ork_race/Tactics/BattlefortressTactic.ai' )
+	import( 'Races/ork_race/Tactics/KustimStompaTactic.ai' )
 	import( 'Races/ork_race/Tactics/GargantTactic.ai' )
 	import( 'Races/ork_race/Tactics/GargantuanTactic.ai' )
-	import( 'Races/ork_race/Tactics/KustimStompaTactic.ai' )
-	import( 'Races/ork_race/Tactics/OrksHQTactic.ai' )
+	import( 'Races/ork_race/Tactics/GreatGargantTactic.ai' )
+	import( 'Races/ork_race/Tactics/OrkHQTactic.ai' )
+	import( 'Races/ork_race/Tactics/OrkFactoryTactic.ai' )
 	import( 'Races/ork_race/Tactics/OrkBombTactic.ai' )
 	import( 'Races/ork_race/Tactics/OrkBurnaBommTactic.ai' )
 	import( 'Races/ork_race/Tactics/BannerTurretTactic.ai' )
@@ -128,17 +130,17 @@ function ork_race:CreateTactic(oSquadAI)
 		return WierdBoyEntrenchedTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_warboss") then
 		return WarBossTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_trukk") then
+	elseif (sUnitName == "ork_squad_trukk") or (sUnitName == "ork_squad_looted_rhino") then
 		return TrukkTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_kill_krusha") or (sUnitName == "ork_squad_kill_bursta") or (sUnitName == "ork_squad_squiggoth") then
 		return WartrukkTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_gunwagon") or (sUnitName == "ork_squad_battlewagon") then
+	elseif (sUnitName == "ork_squad_gunwagon") or (sUnitName == "ork_squad_battlewagon") or (sUnitName == "ork_squad_battle_wagon_armageddon") then
 		return WagonTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_fighta_bomba") then
 		return FightaBommaTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_nukklear_bomba") then
 		return NukklearBommaTactic(oSquadAI)
-	elseif (sUnitName == "ork_squad_battlefortress") then
+	elseif (sUnitName == "ork_squad_battlefortress") or (sUnitName == "ork_squad_battlefortress_armageddon") then
 		return BattlefortressTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_kustim_stompa") then
 		return KustimStompaTactic(oSquadAI)
@@ -146,6 +148,8 @@ function ork_race:CreateTactic(oSquadAI)
 		return GargantTactic(oSquadAI)
 	elseif (sUnitName == "ork_squad_squiggoth_gargantaun") then
 		return GargantuanTactic(oSquadAI)
+	elseif (sUnitName == "ork_squad_great_gargant") then
+		return GreatGargantTactic(oSquadAI)
 	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
 	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return OrkVehicleTactic(oSquadAI)
@@ -160,7 +164,9 @@ function ork_race:CreateBaseTactic(oBuilding)
 	
 	-- Check if their is a special tactic for the building available
 	if (sBuildingName == "ork_giant_waagh_banner_sp_dxp3") then
-		return OrksHQTactic(oBuilding)
+		return OrkHQTactic(oBuilding)
+	elseif (sBuildingName == "ork_gork_factory") then
+		return OrkFactoryTactic(oBuilding)
 	elseif (sBuildingName == "ork_commander_bomb") then
 		return OrkBombTactic(oBuilding)
 	elseif (sBuildingName == "ork_burna_bomm") then

@@ -47,6 +47,7 @@ t_aircraft_list =
 	},
 	Daemons = 
 	{
+		"daemon_squad_blight_drones",
 		"daemon_squad_hell_drake",
 	}
 }

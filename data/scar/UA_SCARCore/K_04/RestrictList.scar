@@ -19,9 +19,12 @@ hg_squad_list =
 	"guard_squad_reaver_lucius_titan",
 	"guard_squad_warlord_titan_aio",
 	"guard_squad_imperator_titan",
+	"space_marine_squad_warlord_titan",
+	"space_marine_squad_imperator_titan",
 }
 hg_squad_list_inquisition = 
 {	
+	"inquisition_squad_imperator_titan",
 }
 hg_squad_list_daemons = 
 {	

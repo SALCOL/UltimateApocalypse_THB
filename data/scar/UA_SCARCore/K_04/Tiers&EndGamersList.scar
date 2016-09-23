@@ -6,11 +6,11 @@ _Actual =
 	{
 		addon_list = 
 		{
-			"chaos_hq_addon_1", "addon_dark_eldar_hq_1", "addon_guard_hq_1", "addon_necron_hq_1", "addon_sisters_hq_1", "space_marine_hq_addon_1",
+			"chaos_hq_addon_1", "addon_dark_eldar_hq_1", "addon_guard_hq_1", "addon_necron_hq_1", "addon_sisters_hq_1", "space_marine_hq_addon_1", "ork_waagh_banner_population_addon", 
 		},
 		structure_list =
 		{
-			"tau_research_building", "eldar_soul_shrine", "ork_bilda_pit", "ork_mek_shop", "ork_giant_waagh_banner_sp_dxp3", "ork_hq_super",
+			"tau_research_building", "eldar_soul_shrine", "ork_bilda_pit", "ork_mek_shop", "ork_giant_waagh_banner_sp_dxp3", "ork_gork_factory", "ork_hq_super", "ork_even_bigger_generator",
 		},
 		research_list =
 		{
@@ -24,7 +24,7 @@ _Actual =
 		},
 		structure_list =
 		{
-			"tau_shrine_of_montka", "tau_shrine_of_kauyon", "ork_giant_waagh_banner_sp_dxp3", "ork_hq_super",
+			"tau_shrine_of_montka", "tau_shrine_of_kauyon", "ork_giant_waagh_banner_sp_dxp3", "ork_gork_factory", "ork_hq_super", "ork_even_bigger_generator",
 		},
 		research_list =
 		{
@@ -39,7 +39,7 @@ _Actual =
 		},
 		structure_list =
 		{
-			"necron_summoning_core_big", "sisters_shrine", "ork_hq_super",
+			"necron_summoning_core_big", "sisters_shrine", "ork_hq_super", "ork_even_bigger_generator",
 		},
 		research_list =
 		{
@@ -54,7 +54,7 @@ _Actual =
 		},
 		structure_list =
 		{
-			"necron_energy_core", "ork_hq_super",
+			"necron_energy_core", "ork_hq_super", "ork_even_bigger_generator",
 		},
 		research_list =
 		{
@@ -80,7 +80,7 @@ _Actual =
 		"monolith_super",
 		
 		-- Orks
-		-- Orks don't have superstructures.
+		"ork_boomy_platform",
 		
 		-- Sisters of Battle
 		"sisters_shrine_to_the_emperor",

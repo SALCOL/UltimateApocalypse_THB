@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersunitstats.ai'
--- Edited by Thudmeizer @ 12.04.2016
+-- Edited by Thudmeizer @ 23.08.2016
 -- Edited by Cylarne_04 2011
 
 -- XP3
@@ -32,8 +32,10 @@ UnitStrengths.sisters_squad_missionary = 55
 UnitStrengths.sisters_squad_battle_sister = 60
 UnitStrengths.sisters_squad_seraphim = 65
 UnitStrengths.sisters_squad_retributor = 70
+UnitStrengths.sisters_squad_arco_flagellants = 65
 UnitStrengths.sisters_squad_celestian = 70
 UnitStrengths.sisters_squad_assassin = 70
+UnitStrengths.sisters_squad_callidus_assassin = 80 
 UnitStrengths.sisters_squad_repentia = 190
 UnitStrengths.sisters_squad_almoness = 280
 UnitStrengths.sisters_squad_redemptionist = 280
@@ -47,15 +49,18 @@ UnitStrengths.sisters_squad_ds_turret = 100
 UnitStrengths.sisters_squad_rhino = 145
 UnitStrengths.sisters_squad_sentinel = 150
 UnitStrengths.sisters_squad_immolator_tank = 200
+UnitStrengths.sisters_squad_incarcerator_tank = 250
 UnitStrengths.sisters_squad_lightning = 260
 UnitStrengths.sisters_squad_exorcist_tank = 470
 UnitStrengths.sisters_squad_penitent_engine = 500
 UnitStrengths.sisters_squad_exorcist_mk = 500
 UnitStrengths.sisters_squad_lightning_strike = 500
 UnitStrengths.sisters_squad_capitol_imperialis = 600
+UnitStrengths.sisters_squad_throne = 700
 UnitStrengths.sisters_squad_living_saint = 700
 UnitStrengths.sisters_squad_living_saint_blue = 720
 UnitStrengths.sisters_squad_living_saint_black = 720
+UnitStrengths.sisters_squad_saint_celestine = 900
 UnitStrengths.sisters_squad_arch_angel = 1000
 
 LeaderStrengths.sisters_squad_battle_sister = 0
@@ -63,15 +68,17 @@ LeaderStrengths.sisters_squad_seraphim = 75
 LeaderStrengths.sisters_squad_repentia = 0
 LeaderStrengths.sisters_squad_celestian = 0
 LeaderStrengths.sisters_squad_retributor = 0
+LeaderStrengths.sisters_inquisitor_squad  = 0
 
-Attachments.sisters_squad_battle_sister = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
-Attachments.sisters_squad_celestian = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
-Attachments.sisters_squad_nunciate_superior = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
-Attachments.sisters_squad_repentia = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
-Attachments.sisters_squad_retributor = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
-Attachments.sisters_squad_ascension_angel2 = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
-Attachments.sisters_squad_redemptionist = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
-Attachments.sisters_squad_legatine_superior = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
+Attachments.sisters_squad_battle_sister = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_callidus_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
+Attachments.sisters_squad_arco_flagellants = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_callidus_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
+Attachments.sisters_squad_celestian = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_callidus_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
+Attachments.sisters_squad_nunciate_superior = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_callidus_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
+Attachments.sisters_squad_repentia = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_callidus_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
+Attachments.sisters_squad_retributor = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_callidus_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
+Attachments.sisters_squad_ascension_angel2 = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_callidus_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
+Attachments.sisters_squad_redemptionist = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_callidus_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
+Attachments.sisters_squad_legatine_superior = { "sisters_squad_missionary", "sisters_squad_saint_cherub", "sisters_squad_almoness", "sisters_squad_assassin", "sisters_squad_callidus_assassin", "sisters_squad_nunciate_superior", "sisters_squad_canoness", "sisters_squad_confessor" }
 
 SistersUnitStats =
 {
@@ -150,22 +157,12 @@ SistersUnitStats =
 				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
-				name = "sisters_heavy_flamer_battle_sister",
+				name = "sisters_melta_battle_sister",
 				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_ShortRanged,
 			},
 			{
-				name = "sisters_heavy_bolter_battle_sister",
-				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "sisters_melta_battle_sister",
-				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
-				range = UnitStatsAI.RT_Ranged,
-			},
-			{
-				name = "sisters_multi_melta_battle_sister",
+				name = "sisters_storm_bolter_battle_sister",
 				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -202,6 +199,26 @@ SistersUnitStats =
 			{
 				name = "sisters_chain_sword_seraphim",
 				effectiveness = GenerateUnitEffectiveness(3.1,4.1,3.1,4.1,3.1,5.0,4.0,5.8,6.2,9.2,6.1,6.4,5.6,5.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+			{
+				name = "sisters_ascension_angel_weapon",
+				effectiveness = GenerateUnitEffectiveness(3.1,4.1,3.1,4.1,3.1,5.0,4.0,5.8,6.2,9.2,6.1,6.4,5.6,5.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Arco Flagellants",
+		sbp_name = "sisters_squad_arco_flagellants",
+		ebp_name = "sisters_arco_flagellants",
+		class = UnitStatsAI.UC_HeavyInfantryMed,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "witch_hunters_archoflagellant_cutting_claws",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -245,12 +262,12 @@ SistersUnitStats =
 		potential =
 		{
 			{
-				name = "sisters_heavy_flamer_battle_sister",
+				name = "sisters_heavy_bolter_battle_sister",
 				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "sisters_heavy_bolter_battle_sister",
+				name = "sisters_heavy_flamer_battle_sister",
 				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.3,8.9,4.5,6,6,2.6,4.8,1.8,8.0,6.3,5.9,4.2,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_ShortRanged,
 			},
@@ -289,6 +306,11 @@ SistersUnitStats =
 				effectiveness = GenerateUnitEffectiveness(3.1,4.1,3.1,4.1,3.1,5.0,4.0,5.8,6.2,9.2,6.1,6.4,5.6,5.8,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
+			{
+				name = "sisters_flamer_battle_sister",
+				effectiveness = GenerateUnitEffectiveness(3.1,4.1,3.1,4.1,3.1,5.0,4.0,5.8,6.2,9.2,6.1,6.4,5.6,5.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_ShortRanged,
+			},
 		}
 	},
 	{
@@ -302,6 +324,26 @@ SistersUnitStats =
 			{
 				name = "sisters_assassin_weapon",
 				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Callidus Assassin",
+		sbp_name = "sisters_squad_callidus_assassin",
+		ebp_name = "sisters_callidus_assassin",
+		class = UnitStatsAI.UC_HeavyInfantryHigh,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "witch_hunters_callidus_neural_shredder",
+				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "witch_hunters_callidus_ctanphase_sword",
+				effectiveness = GenerateUnitEffectiveness(5.8,5.0,0.3,7.3,5.9,1.3,1.6,1.8,6.2,6.0,6.0,4.5,2.6,1.9,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}
@@ -517,6 +559,26 @@ SistersUnitStats =
 		}
 	},
 	{
+		name = "Incarcerator Tank",
+		sbp_name = "sisters_squad_incarcerator_tank",
+		ebp_name = "sisters_incarcerator_tank",
+		class = UnitStatsAI.UC_VehicleMed,
+		rating = 6,
+		potential =
+		{
+			{
+				name = "witch_hunters_incarcerator_warp_fire_up",
+				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "witch_hunters_incarcerator_warp_fire_down",
+				effectiveness = GenerateUnitEffectiveness(3.2,3.2,3.2,3.2,7.2,8.2,8.2,8.2,3.2,7.2,3.2,8.0,8.2,8.2,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
 		name = "Lightning Fighter",
 		sbp_name = "sisters_squad_lightning",
 		ebp_name = "sisters_lightning",
@@ -658,6 +720,41 @@ SistersUnitStats =
 				name = "sisters_heavy_bolter_capitol",
 				effectiveness = GenerateUnitEffectiveness(5.0,5.2,5.0,5.2,5.1,3.7,5.8,3.1,7.3,6.0,4.0,8.2,6.7,5.8,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Throne Of Judgement",
+		sbp_name = "sisters_squad_throne",
+		ebp_name = "sisters_throne",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = 8,
+		potential =
+		{
+			{
+				name = "witch_hunters_throne_judgement_melta_gun",
+				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "witch_hunters_throne_judgement_power_sword",
+				effectiveness = GenerateUnitEffectiveness(5.0,5.2,5.0,5.2,5.1,3.7,5.8,3.1,7.3,6.0,4.0,8.2,6.7,5.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Living Saint",
+		sbp_name = "sisters_squad_saint_celestine",
+		ebp_name = "sisters_saint_celestine",
+		class = UnitStatsAI.UC_MonsterHigh,
+		rating = math.random(7*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "sisters_ardent_blade",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,math.random(7*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
 			},
 		}
 	},

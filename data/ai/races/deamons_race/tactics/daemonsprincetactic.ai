@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'daemonsprincetactic.ai'
 -- Edited by CornCobMan @ 29.05.2013
--- Edited by Thudmeizer @ 08.05.2016
+-- Edited by Thudmeizer @ 02.07.2016
 
 class 'DaemonsPrinceTactic' (DaemonsInfantryTactic)
 
@@ -75,6 +75,10 @@ function DaemonsPrinceTactic:InitAbilities()
 	if (DaemonsPrince.hellmouth_id == nil) then
 		DaemonsPrince.hellmouth_id = cpu_manager.stats:GetAbilityID( "daemons_warpfire_roar" )	
 	end
+
+	if (DaemonsPrince.warpstorm_id == nil) then
+	   	DaemonsPrince.warpstorm_id = cpu_manager.stats:GetAbilityID( "daemons_warp_storm_mini_lord" )	
+	end
 end
 
 function DaemonsPrinceTactic:DoAbilities()
@@ -89,6 +93,7 @@ function DaemonsPrinceTactic:DoAbilities()
 		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpportal_id, Ability.Filters.CloseMonsterEnemy, 3 )
 		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpfire_id, Ability.Filters.CloseEnemy, 4 )
 		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.hellmouth_id, Ability.Filters.CloseEnemy, 5 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpstorm_id, Ability.Filters.CloseEnemy, 6 ) 
 	else
 		Ability.DoAbilityArea( self.squad_ai, DaemonsPrince.obliteration_id, Ability.Filters.CloseEnemy, 10, 4 )
 		Ability.DoAbilityTarget( self.squad_ai, DaemonsPrince.murder_id, Ability.Filters.CloseCommanderEnemy, 1 )
@@ -98,6 +103,7 @@ function DaemonsPrinceTactic:DoAbilities()
 		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpportal_id, Ability.Filters.CloseMonsterEnemy, 6 )
 		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpfire_id, Ability.Filters.CloseEnemy, 8 )
 		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.hellmouth_id, Ability.Filters.CloseEnemy, 10 )
+		Ability.DoAbilityPos( self.squad_ai, DaemonsPrince.warpstorm_id, Ability.Filters.CloseEnemy, 12 ) 
 	end
 end
 

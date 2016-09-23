@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersinquisitortactic.ai'
--- Edited by Thudmeizer @ 12.04.2016
+-- Edited by Thudmeizer @ 10.08.2016
 
 class 'SistersInquisitorTactic' (SistersInfantryTactic)
 
@@ -45,16 +45,48 @@ end
 function SistersInquisitorTactic:JumpAttack()
 	Tactic.JumpAttack(self)
 end
-
+--[[
 function SistersInquisitorTactic:CanJumpAttached()
 	return true
 end
-
+]]
 function SistersInquisitorTactic:InitAbilities()
 
 	-- Init ability ID's
-	if (SistersInquisitor.holymurder_id == nil) then
-		SistersInquisitor.holymurder_id = cpu_manager.stats:GetAbilityID( "sisters_holy_murder_inquisitor" )
+	if (SistersInquisitor.ascension_id == nil) then
+		SistersInquisitor.ascension_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_ascension" )
+	end
+
+	if (SistersInquisitor.touch_id == nil) then
+		SistersInquisitor.touch_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_an_emperors_touch" )
+	end
+
+	if (SistersInquisitor.retribution_id == nil) then
+		SistersInquisitor.retribution_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_divine_retribution" )
+	end
+
+	if (SistersInquisitor.passion_id == nil) then
+		SistersInquisitor.passion_id = cpu_manager.stats:GetAbilityID( "sisters_act_of_faith_holy_passion" )
+	end
+
+	if (SistersInquisitor.medics_id == nil) then
+		SistersInquisitor.medics_id = cpu_manager.stats:GetAbilityID( "sisters_battlefield_medics" )
+	end
+
+	if (SistersInquisitor.flashbang_id == nil) then
+		SistersInquisitor.flashbang_id = cpu_manager.stats:GetAbilityID( "sisters_flashbang_grenades" )
+	end
+
+	if (SistersInquisitor.krak_id == nil) then
+		SistersInquisitor.krak_id = cpu_manager.stats:GetAbilityID( "sisters_krak_grenades" )
+	end
+
+	if (SistersInquisitor.phosphor_id == nil) then
+		SistersInquisitor.phosphor_id = cpu_manager.stats:GetAbilityID( "sisters_phosphor_grenades" )
+	end
+
+	if (SistersInquisitor.smoke_id == nil) then
+		SistersInquisitor.smoke_id = cpu_manager.stats:GetAbilityID( "sisters_smoke_grenades" )
 	end
 
 	if (SistersInquisitor.run_id == nil) then
@@ -66,9 +98,74 @@ function SistersInquisitorTactic:DoAbilities()
 
 	-- We are dying, lower requisites for attacks
 	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
-		Ability.DoAbilityArea( self.squad_ai, SistersInquisitor.holymurder_id, Ability.Filters.CloseSquadEnemy, 10, 6 )
+
+		-- Act of Faith - Ascension: Summons non-player controlled angels to fight for a short period (Faith cost: 200)
+		Ability.DoAbilityArea( self.squad_ai, SistersInquisitor.ascension_id, Ability.Filters.CloseEnemy, 10, 5 )
 	else
-		Ability.DoAbilityArea( self.squad_ai, SistersInquisitor.holymurder_id, Ability.Filters.CloseSquadEnemy, 10, 10 )
+		Ability.DoAbilityArea( self.squad_ai, SistersInquisitor.ascension_id, Ability.Filters.CloseEnemy, 10, 10 )
+	end
+
+	-- Ranged squads do extra damage (Faith cost: 165) 
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsAttacking()) then
+
+		if (self.squad_ai:CanDoAbility(SistersInquisitor.touch_id)) then
+			self.squad_ai:DoSpecialAbility(SistersInquisitor.touch_id) 
+		end
+	end
+
+	-- Enemies take additional damage when they attack the squad (Faith cost: 120)
+	if (self.squad_ai:IsUnderAttack()) then
+
+		if (self.squad_ai:CanDoAbility(SistersInquisitor.retribution_id)) then
+			self.squad_ai:DoSpecialAbility(SistersInquisitor.retribution_id) 
+		end
+	end
+
+	-- Recover morale immediately (Faith cost: 60)
+	if (self.squad_ai:IsBroken()) then
+
+		 if (self.squad_ai:CanDoAbility(SistersInquisitor.passion_id)) then
+			self.squad_ai:DoSpecialAbility(SistersInquisitor.passion_id) 
+		end
+	end
+
+	-- Heals squad (Faith cost: 50)
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+	
+		if (self.squad_ai:CanDoAbility(SistersInquisitor.medics_id)) then
+			self.squad_ai:DoSpecialAbility(SistersInquisitor.medics_id) 
+		end
+	end
+
+	-- Throw flashbang grenades!
+	if (self.squad_ai:CanDoAbility( SistersInquisitor.flashbang_id )) then
+		Ability.DoAbilityPos( self.squad_ai, SistersInquisitor.flashbang_id, Ability.Filters.CloseSquadEnemy, 4 )
+		Ability.DoAbilityPos( self.squad_ai, SistersInquisitor.flashbang_id, Ability.Filters.CloseCommanderEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, SistersInquisitor.flashbang_id, Ability.Filters.CloseMonsterEnemy, 2 )
+	end
+
+	-- Throw krak grenades!
+	if (self.squad_ai:CanDoAbility( SistersInquisitor.krak_id )) then
+		Ability.DoAbilityTarget( self.squad_ai, SistersInquisitor.krak_id, Ability.Filters.CloseVehicleEnemy, 1 )
+		Ability.DoAbilityTargetEntity( self.squad_ai, SistersInquisitor.krak_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1 )
+	end
+
+	-- Throw phosphor grenades!
+	if (self.squad_ai:CanDoAbility( SistersInquisitor.phosphor_id )) then
+		Ability.DoAbilityPos( self.squad_ai, SistersInquisitor.phosphor_id, Ability.EntityFilters.CloseBaseEntityEnemy, 1 )
+		Ability.DoAbilityPos( self.squad_ai, SistersInquisitor.phosphor_id, Ability.Filters.CloseMonsterEnemy, 2 )
+		Ability.DoAbilityPos( self.squad_ai, SistersInquisitor.phosphor_id, Ability.Filters.CloseInfantryEnemy, 4 )
+	end
+
+	-- Check if we can launch smoke
+	if (self.squad_ai:CanDoAbility( SistersInquisitor.smoke_id )) then
+	
+		-- Search a squad
+		local iRange = self.squad_ai:GetAbilityRange( SistersInquisitor.smoke_id )
+		local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+		if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+			self.squad_ai:DoSpecialAbilitySquad( SistersInquisitor.smoke_id, oUnit:GetSquad() )
+		end
 	end
 
 	-- Run if safe
@@ -103,6 +200,55 @@ function SistersInquisitorTactic:Upgrade()
 	end
 end
 
+function SistersInquisitorTactic:Reinforce()
+
+	if not self.squad_ai:IsReinforcing() then
+
+		-- Always try for the actual leader first
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+			return
+		end
+
+		-- Try for different types of squad members
+		local crusaderIndex = 0
+		local cherubIndex = 1
+		local curiaIndex = 2
+		local missionaryIndex = 3
+	
+		-- Get current leader count
+		local numCrusaders = self.squad_ai:GetLeaderCount( crusaderIndex )
+		local numCherubs = self.squad_ai:GetLeaderCount( cherubIndex)
+		local numCurias = self.squad_ai:GetLeaderCount( curiaIndex )
+		local numMissionaries = self.squad_ai:GetLeaderCount( missionaryIndex )
+
+		-- Desired number of each leader type
+		local desiredCrusaders = math.random(0,1)
+		local desiredCherubs = math.random(0,1)
+		local desiredCurias = math.random(0,1)
+		local desiredMissionaries = math.random(0,1)
+
+		-- Desired order of reinforcing
+		if (numCrusaders < desiredCrusaders) then
+			if self.squad_ai:CanReinforce( true, crusaderIndex ) then
+				self.squad_ai:DoReinforce( true, crusaderIndex )
+			end
+		elseif (numCherubs < desiredCherubs) then
+			if self.squad_ai:CanReinforce( true, cherubIndex ) then
+				self.squad_ai:DoReinforce( true, cherubIndex )
+			end
+		elseif (numCurias < desiredCurias) then
+			if self.squad_ai:CanReinforce( true, curiaIndex ) then
+				self.squad_ai:DoReinforce( true, curiaIndex )
+			end
+		elseif (numMissionaries < desiredMissionaries) then
+			if self.squad_ai:CanReinforce( true, missionaryIndex ) then
+				self.squad_ai:DoReinforce( true, missionaryIndex )
+			end
+		end
+	end
+end
+
 function SistersInquisitorTactic:Update()
 
 	if (self:IsComplete()) then
@@ -113,7 +259,7 @@ function SistersInquisitorTactic:Update()
 	if (not InfantryTactic.Update( self )) then
 		return
 	end
-		
+--[[			
 	-- Attach to melee in tier3+
 	if (cpu_manager:GetTierLevel() > 2) then
 		
@@ -121,11 +267,11 @@ function SistersInquisitorTactic:Update()
 			return
 		end
 	end
-	
+
 	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
 		self:TryAttachSquadMelee()
 	end
-
+]]
 	-- Check if we are in serious trouble
 	self:EmergencyRetreat()
 end
