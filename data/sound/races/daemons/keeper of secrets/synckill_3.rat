@@ -2,8 +2,7 @@
 
 version = 9
 
-priority = 70
-maxPolyphony = 2
+priority = 80
 type3D = 1
 cardiodScale = 0.000000
 cardiodLowFreq = 0
