@@ -4,7 +4,7 @@
 -- Edited by fuggles 10/06/2013
 -- Edited by Gambit 26/07/2013
 -- Edited by Cylarne 6/16/2014
--- Edited by Thudmeizer	@ 14.06.2016
+-- Edited by Thudmeizer	@ 23.09.2016
 
 BuildBaseStrategyInfo = 
 {
@@ -50,41 +50,40 @@ BuildBaseStrategyInfo =
 				{ 1, 0, 120, 750, 100,	"TurretAddon",	"addon_daemons_list_post_1" },
 				{ 1, 400, 130, 800, 100,"Addon",	"addon_daemons_hq_1" },
 
-				{ 2, 100, 0, 0, 1,	"Unit",		"daemon_squad_fury" }, -- Force a capturing squad
+				{ 2, 100, 0, 0, 1,	"Unit",		"daemon_squad_fury" },
 				{ 2, 100, 0, 0, 1,	"Unit",		"daemon_squad_horblu" },
 				{ 2, 150, 0, 0, 6,	"Building",	"daemon_icon" },
 				{ 2, 320, 0, 250, 1,	"Building",	"daemon_daemon_pit" },
 				{ 2, 0, 100, 600, 80,	"TurretAddon",	"addon_daemons_turret" },
 				{ 2, 0, 385, 700, 25,	"TurretAddon",	"addon_daemons_list_post_2" },
-				{ 2, 250, 0, 750, 1,	"Building",	"daemon_sacrificial_circle" },
 				{ 2, 750, 200, 800, 2,	"Building",	"daemon_hq" },
-				{ 2, 150, 0, 850, 8,	"Building",	"daemon_icon" },
+			        { 2, 150, 0, 850, 8,	"Building",	"daemon_icon" },
 				{ 2, 500, 500, 850, 100,"Addon",	"addon_daemons_hq_2" },
 
-				{ 3, 100, 0, 0, 1,	"Unit",		"daemon_squad_fury" }, -- Force a capturing squad
-				{ 3, 150, 0, 500, 10,	"Building",	"daemon_icon" },
+				{ 3, 100, 0, 0, 1,	"Unit",		"daemon_squad_fury" },
+			        { 3, 150, 0, 500, 10,	"Building",	"daemon_icon" },
 				{ 3, 0, 385, 600, 75,	"TurretAddon",	"addon_daemons_list_post_2" },
-				{ 3, 150, 0, 700, 12,	"Building",	"daemon_icon" },
+			        { 3, 150, 0, 700, 12,	"Building",	"daemon_icon" },
 				{ 3, 1250, 400, 800, 3,	"Building",	"daemon_hq" },
 				{ 3, 1000, 1000, 900, 100,"Addon",	"addon_daemons_hq_3" },
 
-				{ 4, 100, 0, 0, 1,	"Unit",		"daemon_squad_fury" }, -- Force a capturing squad
+				{ 4, 100, 0, 0, 1,	"Unit",		"daemon_squad_fury" },
 				{ 4, 0, 385, 500, 100,	"TurretAddon",	"addon_daemons_list_post_2" },
-			        { 4, 0, 960, 900, 25,	"TurretAddon",	"addon_daemons_list_post_3" },
+			        { 4, 0, 770, 900, 25,	"TurretAddon",	"addon_daemons_list_post_3" },
 				{ 4, 1500, 1500, 950, 75,"Addon",	"addon_daemons_hq_4" },
 				
-			        { 5, 100, 0, 0, 1,	"Unit",		"daemon_squad_fury" }, -- Force a capturing squad
+			        { 5, 100, 0, 0, 1,	"Unit",		"daemon_squad_fury" },
 				{ 5, 1250, 0, 0, 1,	"Building",	"daemon_doom_gateway" },
 				{ 5, 2000, 2000, 0, 1,  "Building",	"daemon_doom_pit" },
 				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
 				{ 5, 0, 220, 600, 50,	"TurretAddon",	"addon_daemons_turret_warpstorm" },
-				{ 5, 0, 960, 700, 50,	"TurretAddon",	"addon_daemons_list_post_3" },
+				{ 5, 0, 770, 700, 50,	"TurretAddon",	"addon_daemons_list_post_3" },
 				{ 5, 0, 2000, 800, 25,	"TurretAddon",	"addon_daemons_hell_fire" },
 				{ 5, 6000, 6000, 1000, 50, "Addon",	"addon_daemons_hq_5" },
 				
 				{ 6, 0, 0, 0, 1,	"Unit",		"daemon_squad_primarch_angron" }, 
 				{ 6, 6000, 6000, 2000, 3,"Building",	"daemon_doom_pit" },
-				{ 6, 0, 960, 3000, 100,	"TurretAddon",	"addon_daemons_list_post_3" },
+				{ 6, 0, 770, 3000, 100,	"TurretAddon",	"addon_daemons_list_post_3" },
 				{ 6, 0, 2000, 3500, 50, "TurretAddon",	"addon_daemons_hell_fire" }
 			},
 		},

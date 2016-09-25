@@ -747,6 +747,7 @@ UnitTypes.chaos_marine_race =
 			"npc_titan_autocannon_reaver_chaos",
 			"npc_titan_megalaser_reaver_chaos",
 			"npc_missile_launcher_reaver",
+			"npc_missile_launcher_reaver_apocalypse_chaos",
 			"npc_missile_launcher_reaver_left",
 		},
 	},

@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'orkloader.ai'
 -- Edited by Arkhan	@ 23.10.2006
--- Edited by Thudmeizer @ 20.06.2016
+-- Edited by Thudmeizer @ 15.09.2016
 -- Renamed by Corsix    @ 13.02.2006
 -- Edited by Cylarne_04 2011
 
@@ -175,7 +175,7 @@ function ork_race:CreateBaseTactic(oBuilding)
 		return BannerTurretTactic(oBuilding)
 	elseif (sBuildingName == "ork_wall") then
 		return WallTactic(oBuilding)
-	elseif (sBuildingName == "ork_bigger_generator") then
+	elseif (sBuildingName == "ork_bigger_generator") or (sBuildingName == "ork_even_bigger_generator") then
 		return OrkBigGeneratorTactic(oBuilding)
 	end
 	return nil

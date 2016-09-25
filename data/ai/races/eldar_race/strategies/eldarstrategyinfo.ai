@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'eldarstrategyinfo.ai'
--- Edited by Thudmeizer  @ 20.06.2016
+-- Edited by Thudmeizer  @ 22.09.2016
 -- Edited by Cylarne_04  @	 2011
 
 BuildBaseStrategyInfo = 
@@ -61,16 +61,12 @@ BuildBaseStrategyInfo =
 			        { 2, 50, 0, 0, 10,	"Addon",	"eldar_aspect_stone_swooping_hawk" },
 				{ 2, 150, 0, 0, 6,	"Building",	"eldar_warp_generator" },
 				{ 2, 100, 0, 0, 3,	"Building",	"eldar_webway_gate" },
-			        { 2, 90, 25, 0, 2,	"Building",	"eldar_support_platform_scatterlaser" },
 			        { 2, 50, 0, 500, 10,	"Addon",	"eldar_aspect_stone_vyper" },
 			        { 2, 50, 0, 250, 10,	"Addon",	"eldar_aspect_stone_wraithlord" },
 			        { 2, 50, 0, 250, 10,	"Addon",	"eldar_aspect_stone_nightwing" },
-				{ 2, 160, 80, 250, 2,	"Building",	"eldar_support_platform_cannon_sp" },
 			        { 2, 50, 0, 250, 10,	"Addon",	"eldar_aspect_stone_war_walker" },
 				{ 2, 20, 80, 500, 80,	"TurretAddon",	"eldar_support_platform_addon" },
 				{ 2, 35, 120, 0, 25,	"TurretAddon",	"eldar_support_platform_addon_shadow_weaver" },
-			        { 2, 90, 30, 0, 4,	"Building",	"eldar_support_platform_scatterlaser" },
-				{ 2, 160, 80, 700, 3,	"Building",	"eldar_support_platform_cannon_sp" },
 				{ 2, 240, 160, 0, 100,	"TurretAddon",	"eldar_list_post_addon_2" },
 				{ 2, 150, 0, 0, 7,	"Building",	"eldar_warp_generator" },
 				{ 2, 450, 450, 1500, 1,	"Research",	"eldar_tier2_research" },
@@ -85,7 +81,6 @@ BuildBaseStrategyInfo =
 				{ 3, 150, 150, 0, 1,	"Building",	"eldar_khaine_shrine" },
 				{ 3, 35, 110, 1400, 40,	"TurretAddon",	"eldar_support_platform_addon_vibrocannon" },
 				{ 3, 560, 200, 1500, 2,	"Building",	"eldar_hq" },
-				{ 3, 160, 80, 1600, 5,	"Building",	"eldar_support_platform_cannon_sp" },
 				{ 3, 150, 0, 0, 8,	"Building",	"eldar_warp_generator" },
 				{ 3, 150, 150, 1750, 1,	"Building",	"eldar_laughing_god_shrine" },
 				{ 3, 900, 900, 2000, 1, "Research",	"eldar_annihilate_the_enemy" },
@@ -93,18 +88,15 @@ BuildBaseStrategyInfo =
 				{ 4, 200, 390, 0, 1,	"Unit",		"eldar_squad_wraithwalker" },
 				{ 4, 400, 170, 0, 1,	"Unit",		"eldar_squad_wraithguard" },
 				{ 4, 420, 180, 250, 1,	"Building",	"eldar_support_portal_super" },
-				{ 4, 160, 80, 0, 6,	"Building",	"eldar_support_platform_cannon_sp" },
 				{ 4, 420, 300, 0, 1,	"Building",	"eldar_support_platform_uberturret_sp_dxp3" },
 			        { 4, 50, 0, 0, 10,	"Addon",	"eldar_aspect_stone_prism" },
 			        { 4, 50, 0, 0, 10,	"Addon",	"eldar_aspect_stone_wraithwalker" },
 			        { 4, 50, 0, 0, 10,	"Addon",	"eldar_aspect_stone_wraithguard" },
 		                { 4, 50, 0, 0, 10,	"Addon",	"eldar_aspect_stone_wraithking" },
 			        { 4, 50, 0, 0, 10,	"Addon",	"eldar_aspect_stone_wraithguard_ancient" },
-				{ 4, 420, 300, 0, 2,	"Building",	"eldar_support_platform_uberturret_sp_dxp3" },
 				{ 4, 1350, 1350, 2500, 1,"Research",	"eldar_farseer_ability_research_3" },
 				
 				{ 5, 500, 250, 0, 1,	"Building",	"eldar_webway_sail" },
-				{ 5, 420, 300, 0, 3,	"Building",	"eldar_support_platform_uberturret_sp_dxp3" },
 				{ 5, 100, 280, 500, 50,	"TurretAddon",	"eldar_support_platform_addon_uber" },
 				{ 5, 2000, 2000, 2500, 1,"Building",	"eldar_hq_super" },
 				{ 5, 4000, 4000, 3000, 1,"Research",	"eldar_apocalypse_research" },
@@ -113,7 +105,6 @@ BuildBaseStrategyInfo =
 			        { 6, 300, 60, 0, 1,	"Unit",		"eldar_squad_farseer" },
 				{ 6, 200, 400, 0, 1,	"Unit",		"eldar_squad_shadowseer" },
 				{ 6, 3600, 1900, 0, 1,	"Building",	"eldar_vaul_portal" },
-				{ 6, 420, 300, 3000, 4,	"Building",	"eldar_support_platform_uberturret_sp_dxp3" },
 				{ 6, 6000, 6000, 4000, 3,"Building",	"eldar_hq_super" }
 			},
 		},

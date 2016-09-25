@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'ogryntactic.ai'
--- Edited by Thudmeizer	@ 29.02.2016
+-- Edited by Thudmeizer	@ 15.09.2016
 
 class 'OgrynTactic' (GuardInfantryTactic)
 
@@ -20,9 +20,11 @@ function OgrynTactic:InitAbilities()
 	if (Ogryn.bolster_id == nil) then
 		Ogryn.bolster_id = cpu_manager.stats:GetAbilityID( "guard_bolster_defenses" )	
 	end
+--[[
 	if (Ogryn.fanatical_id == nil) then
 		Ogryn.fanatical_id = cpu_manager.stats:GetAbilityID( "guard_priest_fanatical" )	
 	end
+]]
 	if (Ogryn.run_id == nil) then
 		Ogryn.run_id = cpu_manager.stats:GetAbilityID( "all_run!" )	
 	end
@@ -40,12 +42,12 @@ function OgrynTactic:DoAbilities()
 			self.squad_ai:DoSpecialAbilitySquad(Ogryn.bolster_id, oUnit:GetSquad())
 		end
 	end
-
+--[[
 	-- No fanatism while retreating
 	if (not self:IsMoving() and self.squad_ai:IsInCombat()) then
 		Ability.DoAbility( self.squad_ai, Ogryn.fanatical_id, Ability.Filters.IsInCombat ) 
 	end
-
+]]
 	-- Run if safe
 	if ((not self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) or self.stateID ~= Tactic.StateID.NoState) then
 
@@ -80,7 +82,7 @@ function OgrynTactic:Upgrade()
 		end
 	end
 end
-
+--[[
 function OgrynTactic:Reinforce()
 
 	--always try for the actual leader first
@@ -115,4 +117,4 @@ function OgrynTactic:Reinforce()
 		end
 	end
 end
-
+]]

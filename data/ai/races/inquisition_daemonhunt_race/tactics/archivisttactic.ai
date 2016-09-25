@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'archivisttactic.ai'
--- Edited by Thudmeizer @ 18.04.2016
+-- Edited by Thudmeizer @ 13.09.2016
 
 class 'ArchivistTactic' (EngineerTactic)
 
@@ -25,15 +25,15 @@ function ArchivistTactic:CanRepair()
 end
 
 function ArchivistTactic:Update()
---[[
-	if (self:IsComplete()) then
+
+	if self:IsComplete() then
 		return
 	end
 
 	if not EngineerTactic.Update( self ) then
 		return false
 	end
-]]
+
 	-- Check if we are in serious trouble
 	self:EmergencyRetreat()
 end

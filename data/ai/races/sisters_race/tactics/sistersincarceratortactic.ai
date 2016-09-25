@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersincarceratortactic.ai'
--- Edited by Thudmeizer @ 10.08.2016
+-- Edited by Thudmeizer @ 15.09.2016
 
 class 'SistersIncarceratorTactic' (SistersVehicleTactic)
 
@@ -14,7 +14,7 @@ end
 function SistersIncarceratorTactic:InitAbilities()
 
         if (SistersIncarcerator.horrortorture_id == nil) then
-		SistersIncarcerator.horrortorture_id = cpu_manager.stats:GetAbilityID( "witch_hunters_incarcerator_horror_torture" )
+		SistersIncarcerator.horrortorture_id = cpu_manager.stats:GetAbilityID( "sisters_incarcerator_horror_torture" )
 	end
 end
 

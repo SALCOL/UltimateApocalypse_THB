@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sisterscallidustactic.ai'
--- Edited by Thudmeizer @ 10.08.2016
+-- Edited by Thudmeizer @ 15.09.2016
 
 class 'SistersCallidusTactic' (SistersInfantryTactic)
 
@@ -39,11 +39,11 @@ end
 function SistersCallidusTactic:InitAbilities()
 
 	if (SistersCallidus.polymorphine_id == nil) then
-		SistersCallidus.polymorphine_id = cpu_manager.stats:GetAbilityID( "witch_hunters_callidus_polymorphine" )
+		SistersCallidus.polymorphine_id = cpu_manager.stats:GetAbilityID( "sisters_callidus_polymorphine" )
 	end
 
 	if (SistersCallidus.touch_id == nil) then
-		SistersCallidus.touch_id = cpu_manager.stats:GetAbilityID( "witch_hunters_callidus_assassin_touch" )
+		SistersCallidus.touch_id = cpu_manager.stats:GetAbilityID( "sisters_callidus_assassin_touch" )
 	end
 
 	if (SistersCallidus.run_id == nil) then

@@ -379,6 +379,24 @@ UnitTypes.space_marine_race =
 			"space_marine_daemon_hammer_advance_sp",
 		},
 	},
+	space_marine_squad_force_commander_lotd =
+	{
+		Title = "Force Commander Legion of the Damned",
+		Type = "Commander",
+		UpgradeFunction = UpgradeCommander,
+		FXType = "Squad",
+		General = true,
+		CanAttach = true,
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"space_marine_bolt_pistol_forcecommander",
+			"space_marine_plasma_pistol_commander",
+			"space_marine_bolt_pistol_combi_chaingun_forcecommander",
+			"space_marine_chainsword_force_commander",
+		},
+	},
 	space_marine_squad_force_commander_terminator =
 	{
 		Title = "Force Commander (Terminator)",
@@ -765,6 +783,44 @@ UnitTypes.space_marine_race =
 			"npc_titan_megamelta_reaver",
 			"npc_missile_launcher_reaver",
 			"npc_missile_launcher_reaver_left",
+		},
+	},
+	space_marine_squad_warlord_titan = 
+	{
+		Title = "Warlord Titan",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"titan_mega_bolter_warlord_right",
+			"titan_quake_cannon_warlord_right",
+			"titan_volcano_cannon_right",
+			"titan_mega_bolter_warlord_left",
+			"titan_quake_cannon_warlord_left",
+			"titan_volcano_cannon_left",
+			"titan_megalaser_warlord",
+			"titan_plasma_blastgun_right",
+			"npc_missile_launcher_reaver",
+			"titan_megalaser_warlord_left",
+			"titan_plasma_blastgun_left",
+			"npc_missile_launcher_reaver_left",
+		},
+	},
+	space_marine_squad_imperator_titan = 
+	{
+		Title = "Imperator Titan",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"titan_imperator_volcano_cannon",
+			"titan_imperator_megalaser",
 		},
 	},
 	-- Campaign units

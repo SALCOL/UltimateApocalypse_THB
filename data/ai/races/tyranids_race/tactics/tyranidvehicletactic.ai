@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'tyranidvehicletactic.ai'
--- Created by Thudmeizer @ 25.04.2016
+-- Created by Thudmeizer @ 23.09.2016
 
 class 'TyranidVehicleTactic' (VehicleTactic)
 
@@ -15,6 +15,7 @@ function TyranidVehicleTactic:CheckVehicleDance(sName)
 	if (sName == "tyranids_squad_carnifex" or
 		sName == "tyranids_squad_carnifex_skiller" or
 		sName == "tyranids_squad_carnifex_hellfex" or
+		sName == "tyranids_squad_carnifex_tervigon" or
 		sName == "tyranids_squad_carnifex_uber") then
 		return true
 	end

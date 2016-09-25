@@ -1,0 +1,139 @@
+----------------------------------------
+-- File: 'dhimpertatortactic.ai'
+-- Edited by Thudmeizer		@ 23.09.2016
+
+class 'DHImperatorTactic' (DaemonhuntVehicleTactic)
+
+DHImperator = {}
+
+function DHImperatorTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("DH Imperator Tactic")
+
+	-- Vehicle is a super heavy transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 8
+
+	DHImperator.detectDelay = -1
+end
+
+function DHImperatorTactic:InitAbilities()
+
+	--Init ability ID's
+	if (DHImperator.valkstrike_id == nil) then
+		DHImperator.valkstrike_id = cpu_manager.stats:GetAbilityID( "guard_valkyrie_strike_doctrine" )
+	end
+	if (DHImperator.valkstrike2_id == nil) then
+		DHImperator.valkstrike2_id = cpu_manager.stats:GetAbilityID( "guard_valkyrie_strike2" )
+	end
+	if (DHImperator.vultstrike_id == nil) then
+		DHImperator.vultstrike_id = cpu_manager.stats:GetAbilityID( "guard_vulture_strike_doctrine" )
+	end
+	if (DHImperator.vultstrike2_id == nil) then
+		DHImperator.vultstrike2_id = cpu_manager.stats:GetAbilityID( "guard_vulture_strike" )
+	end
+	if (DHImperator.detection_id == nil) then
+		DHImperator.detection_id = cpu_manager.stats:GetAbilityID( "guard_detection_field" )
+	end
+end
+
+function DHImperatorTactic:DoAbilities()
+
+	-- Try to activate detection field
+	if (self.squad_ai:CanDoAbility(DHImperator.detection_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(DHImperator.detection_id)
+		local oSquad = Ability.Filters.CloseInfiltratedEnemy(self.squad_ai:GetPosition(), iRange, 1)
+		
+		if (oSquad ~= nil) then
+			if(DHImperator.detectDelay == -1) then
+				DHImperator.detectDelay = math.max(0, 30)
+				DHImperator.detectTime = g_iGMT + DHImperator.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < DHImperator.detectTime) then
+				return
+			end
+
+			-- Only try to detect if the infiltrated unit is attacking
+			if (oSquad:IsAttacking()) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.squad_ai:DoSpecialAbilityPos( DHImperator.detection_id, pos )
+
+				DHImperator.detectDelay = -1
+			end
+		else 
+			--if no infiltrated units within range, scan other enemies
+			local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 1)
+			if(DHImperator.detectDelay == -1) then
+				DHImperator.detectDelay = math.max(0, 30)
+				DHImperator.detectTime = g_iGMT + DHImperator.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < DHImperator.detectTime) then
+				return
+			end
+
+			if (oSquad ~= nil) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.squad_ai:DoSpecialAbilityPos( DHImperator.detection_id, pos )
+
+				DHImperator.detectDelay = -1
+			end
+		end
+	end
+
+	if (self.squad_ai:CanDoAbility(DHImperator.valkstrike_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(DHImperator.valkstrike_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 8)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.squad_ai:DoSpecialAbilitySquad(DHImperator.valkstrike_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	if (self.squad_ai:CanDoAbility(DHImperator.valkstrike2_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(DHImperator.valkstrike2_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 12)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.squad_ai:DoSpecialAbilitySquad(DHImperator.valkstrike2_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	if (self.squad_ai:CanDoAbility(DHImperator.vultstrike_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(DHImperator.vultstrike_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 8)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.squad_ai:DoSpecialAbilitySquad(DHImperator.vultstrike_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	if (self.squad_ai:CanDoAbility(DHImperator.vultstrike2_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(DHImperator.vultstrike2_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 12)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.squad_ai:DoSpecialAbilitySquad(DHImperator.vultstrike2_id, oSquad:GetSquad())
+			end
+		end
+	end
+end

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'nidloader.ai'
--- Edited by Thudmeizer   @ 25.04.2016
+-- Edited by Thudmeizer   @ 23.09.2016
 
 class 'tyranids_race'
 
@@ -39,6 +39,7 @@ function tyranids_race:LoadRace( eDifficulty )
 	import( 'Races/tyranids_race/Tactics/SwarmLordTactic.ai' )
         import( 'Races/tyranids_race/Tactics/CarnifexTactic.ai' )
         import( 'Races/tyranids_race/Tactics/CarnifexSkillerTactic.ai' )
+        import( 'Races/tyranids_race/Tactics/CarnifexTervigonTactic.ai' )
         import( 'Races/tyranids_race/Tactics/CarnifexUberTactic.ai' )
 	import( 'Races/tyranids_race/Tactics/TrygonTactic.ai' )
 	import( 'Races/tyranids_race/Tactics/HierophantTactic.ai' )
@@ -109,6 +110,8 @@ function tyranids_race:CreateTactic(oSquadAI)
 		return CarnifexTactic(oSquadAI)
 	elseif (sUnitName == "tyranids_squad_carnifex_skiller") then
 		return CarnifexSkillerTactic(oSquadAI)
+	elseif (sUnitName == "tyranids_squad_carnifex_tervigon") then
+		return CarnifexTervigonTactic(oSquadAI)
 	elseif (sUnitName == "tyranids_squad_carnifex_uber") then
 		return CarnifexUberTactic(oSquadAI)
 	elseif (sUnitName == "tyranids_squad_trygon") then
@@ -152,7 +155,7 @@ function tyranids_race:GetInfo(sType)
 	if (sType == "TurretPower") then
 		return 300
 	elseif (sType == "SupportAllyFactor") then
-		return 7 / 4
+		return  7 / 4
 	elseif (sType == "AttackModifier") then
 		return 0
 	elseif (sType == "CriticalRangeIncreasePerTier") then

@@ -1,3 +1,7 @@
+----------------------------------------
+-- File: 'servitortactic.ai'
+-- Edited by Thudmeizer @ 13.09.2016
+
 class 'ServitorTactic' (EngineerTactic)
 
 function ServitorTactic:__init( squad_ai ) super( squad_ai )
@@ -9,3 +13,17 @@ function ServitorTactic:IsAffectedByMorale()
 	return false
 end
 
+function ServitorTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+    
+	-- State machine
+	if not EngineerTactic.Update( self ) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

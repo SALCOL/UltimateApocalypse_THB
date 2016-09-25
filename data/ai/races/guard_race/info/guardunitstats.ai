@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'guardunitstats.ai'
--- Edited by Thudmeizer @ 23.06.2016
+-- Edited by Thudmeizer @ 15.09.2016
 -- Edited by Arkhan	@ 24.10.2006
 -- Edited by Cylarne_04 2011
 
@@ -110,7 +110,7 @@ LeaderStrengths.guard_squad_guardsmen = 0
 LeaderStrengths.guard_squad_guardsmen_specialweapons = 0
 LeaderStrengths.guard_squad_kasrkin = 90
 LeaderStrengths.guard_squad_guardsmen_rider = 75
-LeaderStrengths.guard_squad_ogryns = 0
+LeaderStrengths.guard_squad_ogryns = 75
 LeaderStrengths.guard_squad_commissar_cadet = 75
 LeaderStrengths.guard_squad_stormtrooper = 75
 LeaderStrengths.guard_squad_command_squad_psykers = 75
@@ -2283,12 +2283,12 @@ GuardUnitStats =
 		potential =
 		{
 			{
-				name = "npc_titan_vulcan_mega_bolter_left_reaver",
+				name = "titan_mega_bolter_warlord_left",
 				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "npc_titan_inferno_cannon",
+				name = "npc_titan_megamelta_reaver",
 				effectiveness = GenerateUnitEffectiveness(9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -2299,6 +2299,11 @@ GuardUnitStats =
 			},
 			{
 				name = "npc_titan_plasma_blastgun",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_volcano_cannon_right",
 				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -2318,7 +2323,7 @@ GuardUnitStats =
 		potential =
 		{
 			{
-				name = "npc_titan_vulcan_mega_bolter_left_reaver",
+				name = "titan_mega_bolter_warlord_left",
 				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -2330,6 +2335,11 @@ GuardUnitStats =
 			{
 				name = "npc_titan_plasma_blastgun",
 				effectiveness = GenerateUnitEffectiveness(9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,9.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_quake_cannon_warlord_right",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{

@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'guardloader.ai'
 -- Edited by Arkhan	@ 23.10.2006
--- Edited by Thudmeizer @ 23.06.2016
+-- Edited by Thudmeizer @ 23.09.2016
 -- Renamed by Corsix    @ 13.02.2006
 -- Edited by Cylarne_04 2011
 
@@ -66,6 +66,7 @@ function guard_race:LoadRace( eDifficulty )
 	import( 'Races/guard_race/Tactics/VanquisherCommandTactic.ai' )
 	import( 'Races/guard_race/Tactics/ShadowswordTactic.ai' )
 	import( 'Races/guard_race/Tactics/StormlordTactic.ai' )
+	import( 'Races/guard_race/Tactics/FireswordTactic.ai' )
 	import( 'Races/guard_race/Tactics/TitanTactic.ai' )
 	import( 'Races/guard_race/Tactics/ReaverCaptainTactic.ai' )
 	import( 'Races/guard_race/Tactics/ImperatorTactic.ai' )
@@ -160,7 +161,7 @@ function guard_race:CreateTactic(oSquadAI)
 		return ChimeraTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_chimera_kronus") then
 		return ChimeraKronusTactic(oSquadAI)
-	elseif (sUnitName == "guard_squad_hellhound") then
+	elseif (sUnitName == "guard_squad_hellhound") or (sUnitName == "guard_squad_lemanruss_inferno") then
 		return HellhoundTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_marauder") then
 		return MarauderTactic(oSquadAI)
@@ -180,6 +181,8 @@ function guard_race:CreateTactic(oSquadAI)
 		return ShadowswordTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_stormlord") then
 		return StormlordTactic(oSquadAI)
+	elseif (sUnitName == "guard_squad_firesword") then
+		return FireswordTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_warhound_titan") or (sUnitName == "guard_squad_reaver_titan") or (sUnitName == "guard_squad_reaver_lucius_full_titan") or (sUnitName == "guard_squad_warlord_titan_aio") then
 		return TitanTactic(oSquadAI)
 	elseif (sUnitName == "guard_squad_reaver_titan_captain") then

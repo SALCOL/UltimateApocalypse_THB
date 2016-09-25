@@ -1,6 +1,6 @@
 ------------------------------
 -- File: 'tyranidunitstats.ai'
--- Created by Thudmeizer @ 26.04.2016
+-- Created by Thudmeizer @ 25.09.2016
 
 --XP3
 UnitStrengths.npc_squad_nuker_xp3 = 0
@@ -14,34 +14,36 @@ UnitStrengths.npc_squad_alphazombie_xp3 = 500
 UnitStrengths.npc_squad_civilian_group = 0
 UnitStrengths.npc_squad_superweapon_tyranids1 = 0
 
+-- Skirmish
 UnitStrengths.tyranids_squad_woth = 10
 UnitStrengths.tyranids_squad_ripperswarm = 10
-UnitStrengths.tyranids_squad_spore_cluster = 50
-UnitStrengths.tyranids_squad_spore_cluster_max = 60
-UnitStrengths.tyranids_squad_spore_cluster_spam = 10
-UnitStrengths.tyranids_squad_genestealer = 75
-UnitStrengths.tyranids_squad_spinegaunt = 50
-UnitStrengths.tyranids_squad_gaunt_won = 100
-UnitStrengths.tyranids_squad_termagant = 50
-UnitStrengths.tyranids_squad_hormagaunt = 50
 UnitStrengths.tyranids_squad_ripperswarm_global = 10
+UnitStrengths.tyranids_squad_spore_cluster = 50
+UnitStrengths.tyranids_squad_spore_cluster_spam = 50
+UnitStrengths.tyranids_squad_genestealer = 65
+UnitStrengths.tyranids_squad_spinegaunt = 60
+UnitStrengths.tyranids_squad_gaunt_won = 70
+UnitStrengths.tyranids_squad_termagant = 60
+UnitStrengths.tyranids_squad_hormagaunt = 60
 UnitStrengths.tyranids_squad_genestealer_max = 75
-UnitStrengths.tyranids_squad_spinegaunt_max = 50
-UnitStrengths.tyranids_squad_termagant_max = 50
-UnitStrengths.tyranids_squad_hormagaunt_max = 50
-UnitStrengths.tyranids_squad_gargoyle = 50
+UnitStrengths.tyranids_squad_spinegaunt_max = 70
+UnitStrengths.tyranids_squad_termagant_max = 70
+UnitStrengths.tyranids_squad_hormagaunt_max = 70
+UnitStrengths.tyranids_squad_spore_cluster_max = 60
+UnitStrengths.tyranids_squad_gargoyle = 75
 UnitStrengths.tyranids_squad_ravener = 110
 UnitStrengths.tyranids_squad_warrior = 130
 UnitStrengths.tyranids_squad_biovores = 240
 UnitStrengths.tyranids_squad_zoanthropes = 240
 UnitStrengths.tyranids_squad_broodlord = 240
 UnitStrengths.tyranids_squad_tyrant_guard = 260
-UnitStrengths.tyranids_squad_lictor = 75
+UnitStrengths.tyranids_squad_lictor = 95
 UnitStrengths.tyranids_squad_lictor_alpha = 270
 UnitStrengths.tyranids_squad_hive_tyrant = 300
 UnitStrengths.tyranids_squad_swarmlord = 700
 UnitStrengths.tyranids_squad_carnifex_skiller = 260
 UnitStrengths.tyranids_squad_carnifex_khazi = 260
+UnitStrengths.tyranids_squad_carnifex_tervigon = 260
 UnitStrengths.tyranids_squad_carnifex = 500
 UnitStrengths.tyranids_squad_carnifex_uber = 700
 UnitStrengths.tyranids_squad_trygon = 1000
@@ -619,6 +621,21 @@ TyranidUnitStats =
 			{
 				name = "tyranids_melee_tyrant_guard_crushclaw",
 				effectiveness = GenerateUnitEffectiveness(7,7,7,7,7.5,7,7.5,7.5,7,7,7,7.5,7,7,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Melee,
+			},
+		}
+	},
+	{
+		name = "Carnifex Tervigon",
+		sbp_name = "tyranids_squad_carnifex_tervigon",
+		ebp_name = "tyranids_carnifex_tervigon",
+		class = UnitStatsAI.UC_MonsterHigh,
+		rating = math.random(7.5*10,8.5*10)/10,
+		potential =
+		{
+			{
+				name = "tyranids_melee_uberfex",
+				effectiveness = GenerateUnitEffectiveness(math.random(7*10,8.5*10)/10,math.random(7*10,8.5*10)/10,math.random(7*10,8.5*10)/10,math.random(7*10,8.5*10)/10,math.random(7*10,8.5*10)/10,math.random(7*10,8.5*10)/10,math.random(7*10,8.5*10)/10,math.random(7*10,8.5*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
 		}

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'scarabbuildertactic.ai'
--- Edited by Thudmeizer @ 31.03.2016
+-- Edited by Thudmeizer @ 13.09.2016
 
 class 'ScarabBuilderTactic' (EngineerTactic)
 
@@ -21,6 +21,15 @@ function ScarabBuilderTactic:IsAffectedByMorale()
 	return false
 end
 
+-- Scarab builder is allowed to retreat even directly after a jump
+function ScarabBuilderTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
+end
+
 function ScarabBuilderTactic:Reinforce()
 	
 	-- Always try to reinforce
@@ -36,12 +45,15 @@ end
 
 function ScarabBuilderTactic:Update()
 
-	if (self:IsComplete()) then
+	if self:IsComplete() then
 		return
 	end
 
 	-- State machine
-	if (not EngineerTactic.Update(self)) then
+	if not EngineerTactic.Update( self ) then
 		return
 	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

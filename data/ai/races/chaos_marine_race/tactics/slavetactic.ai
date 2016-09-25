@@ -1,3 +1,7 @@
+----------------------------------------
+-- File: 'slavetactic.ai'
+-- Edited by Thudmeizer @ 13.09.2016
+
 class 'SlaveTactic' (EngineerTactic)
 
 Slave = {}
@@ -32,4 +36,19 @@ function SlaveTactic:DoAbilities()
 		self.squad_ai:DoSpecialAbility( Slave.forced_labour )
 		self.forced_labour = false
 	end
+end
+
+function SlaveTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+    
+	-- State machine
+	if not EngineerTactic.Update( self ) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

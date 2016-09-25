@@ -93,6 +93,8 @@ UnitStrengths.space_marine_squad_land_raider_ares = 600
 UnitStrengths.space_marine_squad_stormraven = 700
 UnitStrengths.space_marine_squad_warhound_titan = 1000
 UnitStrengths.space_marine_squad_reaver_titan = 1200
+UnitStrengths.space_marine_squad_warlord_titan = 1300
+UnitStrengths.space_marine_squad_imperator_titan = 1500
 
 LeaderStrengths.space_marine_squad_servitor_weapons = 75
 LeaderStrengths.space_marine_squad_tactical = 75
@@ -1715,7 +1717,7 @@ SpaceMarineUnitStats =
 		sbp_name = "space_marine_squad_warhound_titan",
 		ebp_name = "sm_warhound_titan",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 10,
+		rating = math.random(9.0*10,9.9*10)/10,
 		potential =
 		{
 			{
@@ -1761,11 +1763,11 @@ SpaceMarineUnitStats =
 		}
 	},
 	{
-		name = "Imperial Reaver Titan",
+		name = "Reaver Titan",
 		sbp_name = "space_marine_squad_reaver_titan",
 		ebp_name = "sm_reaver_titan",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 10,
+		rating = math.random(9.0*10,9.9*10)/10,
 		potential =
 		{
 			{
@@ -1791,6 +1793,96 @@ SpaceMarineUnitStats =
 			{
 				name = "npc_missile_launcher_reaver_left",
 				effectiveness = GenerateUnitEffectiveness(3.7,4.0,3.7,3.7,3.7,1.6,0.6,0.0,3.7,0.0,3.3,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Warlord Titan",
+		sbp_name = "space_marine_squad_warlord_titan",
+		ebp_name = "sm_warlord_titan",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(9.0*10,9.9*10)/10,
+		potential =
+		{
+			{
+				name = "titan_mega_bolter_warlord_right",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_quake_cannon_warlord_right",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_volcano_cannon_right",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_mega_bolter_warlord_left",
+				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_quake_cannon_warlord_left",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_volcano_cannon_left",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_megalaser_warlord",
+				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_plasma_blastgun_right",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "npc_missile_launcher_reaver",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_megalaser_warlord_left",
+				effectiveness = GenerateUnitEffectiveness(8.2,9.8,9.9,8.2,8.1,5.7,5.7,6.1,8.2,8.0,7.7,5.9,4.8,4.8,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_plasma_blastgun_left",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "npc_missile_launcher_reaver_left",
+				effectiveness = GenerateUnitEffectiveness(math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,math.random(9*10,10*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Imperator Titan",
+		sbp_name = "space_marine_squad_imperator_titan",
+		ebp_name = "sm_imperator_titan",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(9.0*10,9.9*10)/10,
+		potential =
+		{
+			{
+				name = "titan_imperator_volcano_cannon",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_imperator_megalaser",
+				effectiveness = GenerateUnitEffectiveness(9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,9.3,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}

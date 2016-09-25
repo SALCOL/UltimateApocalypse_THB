@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marinestrategyinfo.ai'
--- Edited by Thudmeizer  @ 04.09.2016
+-- Edited by Thudmeizer  @ 23.09.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -43,9 +43,8 @@ BuildBaseStrategyInfo =
 				{ 1, 250, 0, 0, 1,	"Building",	"space_marine_barracks" },
 				{ 1, 135, 0, 0, 3,	"Building",	"space_marine_generator" },
 				{ 1, 90, 0, 0, 60,	"TurretAddon",	"space_marine_list_post_addon_1" },
-				{ 1, 140, 50, 0, 2,	"Building",	"space_marine_turret_bolter" },
+				{ 1, 140, 50, 0, 1,	"Building",	"space_marine_turret_bolter" },
 				{ 1, 175, 50, 250, 1,	"Building",     "space_marine_armoury" },
-				{ 1, 140, 50, 0, 3,	"Building",	"space_marine_turret_bolter" },
 				{ 1, 90, 0, 250, 100,	"TurretAddon",	"space_marine_list_post_addon_1" },
 				{ 1, 135, 0, 0, 5,	"Building",	"space_marine_generator" },
 				{ 1, 400, 130, 950, 1,	"Addon",	"space_marine_hq_addon_1" },
@@ -57,9 +56,7 @@ BuildBaseStrategyInfo =
 				{ 2, 200, 125, 250, 1,	"Building",	"space_marine_vehicle_building" },
 				{ 2, 135, 0, 0, 6,	"Building",	"space_marine_generator" },
 				{ 2, 25, 90, 500, 35,	"TurretAddon",	"space_marine_turret_addon" },
-				{ 2, 140, 50, 0, 5,	"Building",	"space_marine_turret_bolter" },
 				{ 2, 240, 150, 500, 100,"TurretAddon",	"space_marine_list_post_addon_2" },
-				{ 2, 140, 50, 0, 4,	"Building",	"space_marine_turret_bolter" },
 				{ 2, 125, 50, 0, 1,	"Building",	"space_marine_ability_building" },
 				{ 2, 500, 500, 1500, 1,	"Addon",	"space_marine_hq_addon_2" },
 
@@ -71,7 +68,6 @@ BuildBaseStrategyInfo =
 				{ 3, 340, 60, 0, 1,	"Unit",		"space_marine_squad_vanguard_veteran" },
 				{ 3, 175, 100, 0, 1,	"Building",	"space_marine_orbital_relay" },
 				{ 3, 700, 150, 500, 2,	"Building",	"space_marine_hq" },
-				{ 3, 140, 50, 700, 6,	"Building",	"space_marine_turret_bolter" },
 				{ 3, 1000, 1000, 2000, 1,"Research",	"marine_heavy_armor_deployment" },
 
 				{ 4, 230, 410, 0, 1,	"Unit",		"space_marine_squad_predator" },
@@ -84,17 +80,17 @@ BuildBaseStrategyInfo =
 				{ 4, 400, 240, 750, 1,	"Building",	"space_marine_turret_missile_sp" },
 				{ 4, 25, 150, 800, 50,	"TurretAddon",	"space_marine_turret_addon_lascannon" },
 				{ 4, 400, 1750, 1000, 25,"TurretAddon",	"space_marine_beacon_addon" },
-				{ 4, 400, 240, 1500, 2,	 "Building",	"space_marine_turret_missile_sp" },
+				{ 4, 400, 240, 1500, 1,	 "Building",	"space_marine_turret_missile_sp" },
 				{ 4, 1500, 1500, 2500, 1,"Research",	"marines_research_bombardment" },
 				
 				{ 5, 520, 120, 0, 1,	"Unit",		"space_marine_squad_terminator_assault" },
-				{ 5, 400, 240, 0, 3,	"Building",	"space_marine_turret_missile_sp" },
+				{ 5, 400, 240, 0, 2,	"Building",	"space_marine_turret_missile_sp" },
 				{ 5, 890, 410, 0, 1,	"Building",	"space_marine_titan_facility" },
 				{ 5, 3000, 3000, 0, 1,	"Building",	"space_marine_hq_super" },
 				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
 				{ 5, 5100, 2400, 1000, 1,"Building",	"space_marine_armoury_emperor" },
 				{ 5, 2500, 0, 1500, 1,	"Building",	"space_marine_thermonuclear_generator" },
-				{ 5, 400, 240, 2000, 4,	"Building",	"space_marine_turret_missile_sp" },
+				{ 5, 400, 240, 2000, 3,	"Building",	"space_marine_turret_missile_sp" },
 				{ 5, 8000, 8000, 3000, 1,"Research",	"marine_apocalypse_research" },
 				
 				{ 6, 280, 80, 0, 1,	"Unit",		"space_marine_squad_librarian" },
@@ -147,6 +143,8 @@ BuildBaseStrategyInfo =
 				space_marine_squad_stormraven = 1,
 				space_marine_squad_warhound_titan = 1,
 				space_marine_squad_reaver_titan = 1,
+				space_marine_squad_warlord_titan = 1,
+				space_marine_squad_imperator_titan = 1,
 			}
 		}
 	},

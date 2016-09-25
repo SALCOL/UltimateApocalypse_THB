@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'eldarbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 23.06.2016
+-- Edited by Thudmeizer @ 24.09.2016
 -- Edited by Cylarne_04 2011
 
 class 'EldarBuildBaseStrategy' (BuildBaseStrategy)
@@ -12,11 +12,15 @@ function EldarBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	self:AddDetectorUnit("eldar_guardian_squad")
 	self:AddDetectorUnit("eldar_harlequin_squad")
 
-	CpuPrerequisites2.AddSpecialItem("eldar_support_platform_addon_probe", CpuPrerequisites.BT_AddOn)
-
 	-- Phases of attacks. If army is decreased substantially, or build only titans: modify.
 	self.m_iArmyBuild = math.random(0, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
 	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
+
+	-- Build first HQ at start pos
+	self.m_iNumHQAtStartPos = 1
+
+	-- dark40k - set items that need bypass for CpuPrerequisites
+	CpuPrerequisites2.AddSpecialItem("eldar_support_platform_addon_probe", CpuPrerequisites.BT_AddOn)
 end
 
 function EldarBuildBaseStrategy:ChooseBuildProgram()
@@ -198,7 +202,7 @@ function EldarBuildBaseStrategy:GetUnitStats(sSquadName)
 	elseif (sSquadName == "eldar_storm_guardian_squad") then
 		return 2, 0
 	elseif (sSquadName == "eldar_squad_rangers") then
-		return 2, 0
+		return 3, 0
 	elseif (sSquadName == "eldar_squad_corsairs") then
 		return 2, 0
 	elseif (sSquadName == "eldar_dire_avenger_squad") then
@@ -261,21 +265,6 @@ function EldarBuildBaseStrategy:BuildFlexible()
 	local iArmyStrength = cpu_manager:GetArmyStrength()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	
-	-- Determine my all time largest army. During major casualties, determine if I should create more squads or only focus on build orders and titans.
-	if (iArmyStrength > self.m_iArmyHighestStrength) then
-		self.m_iArmyHighestStrength = iArmyStrength
-	end
-	
-	if (self.m_iArmyBuild < 4) then
-		-- HUGE hit! I have a very large army, and then in battle I lost so many...
-		if (iArmyStrength <= self.m_iArmyHighestStrength - 300 and iArmyStrength <= 2300) then
-			self.m_iArmyBuild = self.m_iArmyBuild + 1
-			self.m_iArmyHighestStrength = 0
-		end
-	elseif (iArmyStrength > 2500) then
-		self.m_iArmyBuild = 0
-	end
 	
 	if (iArmyStrength >= 1000 or (iPower >= 800 and iRequisition >= 900)) then
 			
@@ -370,22 +359,7 @@ function EldarBuildBaseStrategy:BuildFlexible()
 				if (iVehicleSquads >= 2) then
 					self:DynamicResearch("eldar_research_nightwing_regen", 2, 125, 75, 0, 0, "eldar_squad_nightwing", 1)
 				end	
---[[				
-				-- Compute commander researches
-				if (iCommanderSquads >= 1) then
-					-- Compute wargear researches
-					self:DynamicResearch("eldar_wargear01", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("eldar_wargear02", 4, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("eldar_wargear03", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("eldar_wargear04", 4, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("eldar_wargear05", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("eldar_wargear06", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("eldar_wargear07", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("eldar_wargear08", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("eldar_wargear09", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("eldar_wargear10", 2, 0, 0, 0, 0, nil, 0)
-				end
-]]				
+				
 				-- Compute turret upgrades research
 				self:DynamicResearch("eldar_turret_upgrade1", 2, 150, 150, 0, 0, nil, 0)
 				self:DynamicResearch("eldar_turret_upgrade2", 3, 390, 390, 0, 0, nil, 0)
@@ -592,52 +566,83 @@ function EldarBuildBaseStrategy:BuildFlexible()
 	
 		-- Dynamic buildings
 		-- Item-Syntax: BuildingName, BuildingCount, MinTier, MinRequisition, MinPower, MinSquadCap, MinSupportCap
-		
 		self:DynamicBuild("eldar_hq", 2, 1, 700, 0, 0, 0)
 		self:DynamicBuild("eldar_warp_generator", 6 * self:GetBuildingCountByName("eldar_hq"), 3, 500, 0, 0, 0)
-		self:DynamicBuild("eldar_support_platform_scatterlaser", 9, 1, 90, 25, 0, 0)
-		
-		if ((iPower >= 1200 and iRequisition >= 1800) or self.m_iArmyBuild >= 3) then
-			
-			if (self.m_iArmyBuild >= 4) then
-				self:DynamicBuild("eldar_support_platform_uberturret_sp_dxp3", 10, 5, 2000, 600, 0, 0)
-				self:DynamicBuild("eldar_webway_gate", 15, 1, 1000, 0, 0, 0)
-			end
-			
-			if (iPower >= 4000 and iRequisition >= 7000) then
-				self:DynamicBuild("eldar_vaul_portal", 2, 6, 0, 0, 0, 0)
-			end
-			
-			self:DynamicBuild("eldar_hq", 2, 1, 560, 200, 0, 0)
-			self:DynamicBuild("eldar_webway_gate", 5, 1, 1300, 0, 0, 0)
-			
-			-- Tier 1
-			self:DynamicBuild("eldar_aspect_portal", 2, 2, 1000, 0, 0, 0)
-			self:DynamicBuild("eldar_support_portal", 2, 2, 500, 1000, 0, 0)
-			self:DynamicBuild("eldar_support_platform_cannon_sp", 5, 2, 1200, 1200, 0, 0)
-			self:DynamicBuild("eldar_support_platform_scatterlaser", 15, 2, 1600, 1600, 0, 0)
-			
-			-- Tier 2
-			self:DynamicBuild("eldar_webway_gate", 10, 3, 2000, 0, 0, 0)
-			self:DynamicBuild("eldar_hq", 3, 3, 1000, 500, 0, 0)
-			self:DynamicBuild("eldar_mine_field", 10, 3, 600, 300, 0, 0)
 
-			-- Tier 3
-			self:DynamicBuild("eldar_support_platform_uberturret_sp_dxp3", 12, 4, 3000, 3000, 0, 0)
-			
-			-- Tier 4
-			self:DynamicBuild("eldar_aspect_portal", 3, 5, 2500, 0, 0, 0)
-			self:DynamicBuild("eldar_support_portal", 3, 5, 2500, 3000, 0, 0)
-			self:DynamicBuild("eldar_webway_sail", 3, 5, 5000, 4500, 0, 0)
-			self:DynamicBuild("eldar_support_portal_super", 2, 5, 6000, 6000, 0, 0)
+		-- Dynamically regulate quantity of defensive buildings based on how many strats/crits/relics we have through the tiers so we avoid cluttering/bottlenecking on maps with limited points
+		if (self.tierLevel >= 2 and (iRequisition >= 1500 and iPower >= 1500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() < 4) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasRelic()) then
+				self:DynamicBuild("eldar_support_platform_scatterlaser", 2, 2, 200, 100, 0, 0)
+				--self:DynamicBuild("eldar_support_platform_cannon_sp", 2 * self:GetBuildingCountByName("eldar_hq"), 2, 300, 200, 0, 0)
+				self:DynamicBuild("eldar_support_platform_cannon_sp", 2, 2, 300, 200, 0, 0)
+				self:DynamicBuild("eldar_mine_field", 2, 2, 600, 300, 0, 0)
+				self:DynamicBuild("eldar_support_platform_scatterlaser", 4, 3, 200, 100, 0, 0)
+				self:DynamicBuild("eldar_support_platform_cannon_sp", 4, 3, 300, 200, 0, 0)
+				self:DynamicBuild("eldar_mine_field", 4, 3, 600, 300, 0, 0)
+   			end
+		else
+   			if (resource_manager:GetNumOwnedStrategicPoints() > 3) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasRelic()) then
+				self:DynamicBuild("eldar_support_platform_scatterlaser", 3, 2, 200, 100, 0, 0)
+				self:DynamicBuild("eldar_support_platform_cannon_sp", 3, 2, 300, 200, 0, 0)
+				self:DynamicBuild("eldar_mine_field", 3, 2, 600, 300, 0, 0)
+				self:DynamicBuild("eldar_support_platform_scatterlaser", 6, 3, 200, 100, 0, 0)
+				self:DynamicBuild("eldar_support_platform_cannon_sp", 6, 3, 300, 200, 0, 0)
+				self:DynamicBuild("eldar_mine_field", 6, 3, 600, 300, 0, 0)
+			end
 		end
 
-		-- Build extra buildings late game
-		self:DynamicBuild("eldar_webway_sail", 2, 5, 3500, 3500, 0, 0)
-		self:DynamicBuild("eldar_hq_super", 2, 5, 4000, 4000, 0, 0)
-		self:DynamicBuild("eldar_hq", 4, 6, 4500, 4500, 0, 0)
-		self:DynamicBuild("eldar_hq_super", 3, 6, 6000, 6000, 0, 0)
-		self:DynamicBuild("eldar_support_portal_super", 3, 6, 8000, 8000, 0, 0)
+		if (self.tierLevel >= 4 and (iRequisition >= 2500 and iPower >= 2500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() > 4) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasRelic()) then
+				self:DynamicBuild("eldar_support_platform_uberturret_sp_dxp3", 1, 4, 1000, 400, 0, 0)
+				self:DynamicBuild("eldar_support_platform_scatterlaser", 8, 4, 200, 100, 0, 0)
+				self:DynamicBuild("eldar_support_platform_cannon_sp", 8, 4, 300, 200, 0, 0)
+				self:DynamicBuild("eldar_mine_field", 8, 4, 600, 300, 0, 0)
+				self:DynamicBuild("eldar_support_platform_uberturret_sp_dxp3", 2, 5, 2000, 600, 0, 0)
+				self:DynamicBuild("eldar_support_platform_scatterlaser", 10, 5, 200, 100, 0, 0)
+				self:DynamicBuild("eldar_support_platform_cannon_sp", 10, 5, 300, 200, 0, 0)
+				self:DynamicBuild("eldar_mine_field", 10, 5, 600, 300, 0, 0)
+				self:DynamicBuild("eldar_support_platform_uberturret_sp_dxp3", 3, 5, 2500, 700, 0, 0)
+				self:DynamicBuild("eldar_support_platform_uberturret_sp_dxp3", 4, 6, 3000, 900, 0, 0)
+				self:DynamicBuild("eldar_support_platform_scatterlaser", 12, 6, 200, 100, 0, 0)
+				self:DynamicBuild("eldar_support_platform_cannon_sp", 12, 6, 300, 200, 0, 0)
+				self:DynamicBuild("eldar_mine_field", 12, 6, 600, 300, 0, 0)
+				self:DynamicBuild("eldar_support_platform_uberturret_sp_dxp3", 6, 6, 4000, 2000, 0, 0)
+			end
+		end
+
+		-- Build additional support buildings as tiers progress
+		if (self.tierLevel >= 2) then
+			if (iRequisition >= 2000 and iPower >= 2000) then
+				self:DynamicBuild("eldar_aspect_portal", 2, 2, 1000, 0, 0, 0)
+				self:DynamicBuild("eldar_support_portal", 2, 3, 500, 1000, 0, 0)
+				self:DynamicBuild("eldar_hq", 3, 3, 1000, 500, 0, 0)
+				self:DynamicBuild("eldar_hq", 4, 5, 2000, 1000, 0, 0)
+				self:DynamicBuild("eldar_hq_super", 2, 5, 4000, 4000, 0, 0)
+				self:DynamicBuild("eldar_support_portal_super", 2, 5, 5000, 5000, 0, 0)
+				self:DynamicBuild("eldar_webway_sail", 2, 5, 7000, 6000, 0, 0)
+			end
+		end
+
+		-- Build additional uber buildings in later tiers
+		if (self.tierLevel >= 6) then
+			if (iRequisition >= 3000 and iPower >= 3000) then
+				self:DynamicBuild("eldar_aspect_portal", 3, 6, 1000, 0, 0, 0)
+				self:DynamicBuild("eldar_support_portal", 3, 6, 500, 1000, 0, 0)
+				self:DynamicBuild("eldar_support_portal_super", 3, 6, 3000, 3500, 0, 0)
+				self:DynamicBuild("eldar_hq_super", 3, 6, 4000, 4000, 0, 0)
+				self:DynamicBuild("eldar_khaine_shrine", 2, 6, 5000, 4000, 0, 0)
+				self:DynamicBuild("eldar_laughing_god_shrine", 2, 6, 4000, 5000, 0, 0)
+				self:DynamicBuild("eldar_webway_sail", 3, 6, 8000, 7000, 0, 0)
+				self:DynamicBuild("eldar_vaul_portal", 2, 6, 9000, 8000, 0, 0)
+			end
+		end
+
+		-- Build additional Superweapons if we have excess resources
+		if (iRequisition >= 12000 and iPower >= 12000) then
+			self:DynamicBuild("eldar_hq_super", 4, 6, 7500, 7500, 0, 0)
+			self:DynamicBuild("eldar_hq_super", 5, 6, 10000, 10000, 0, 0)
+			self:DynamicBuild("eldar_hq_super", 6, 6, 12000, 12000, 0, 0)
+		end
 
 		-- Build the Cataclysm 
 		local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
@@ -653,38 +658,10 @@ function EldarBuildBaseStrategy:BuildFlexible()
 			if (self:TryBuild( tBuildType )) then
 				aitrace("BuildController: Dynamic build of "..tBuildType.name)
 			end
---[[
-		else
-			tBuildType.name = "npc_squad_superweapon1"
-			if (self:TryBuild( tBuildType )) then
-				aitrace("BuildController: Dynamic build of "..tBuildType.name)
-			end
-]]
 		end
 	end
 end
---[[
--- Cylarne_04: An option to make the AI build titans (preferred).
-function EldarBuildBaseStrategy:ModifySquadDemand(iUnitID)
 
-	 Check for squads who aren't titan or relic units and refrain from creating them if we are at a high tier.
-	if (iUnitID == (not cpu_manager.stats:GetSquadID("eldar_squad_titan_revenant")) and 
-		iUnitID == (not cpu_manager.stats:GetSquadID("eldar_squad_titan_phantom"))) then
-		
-		local iArmyStrength = cpu_manager:GetArmyStrength()
-		local iTierLevel = self:GetTierLevel()
-		
-		-- Check resources
-		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-		local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-		
-		if (self.m_iArmyBuild >= 4) then
-			return 0
-		end
-	end
-	return BuildBaseStrategy.ModifySquadDemand(self, iUnitID)
-end
-]]
 -- Arkhan 01.2006: Method to check if force tech should be computed
 function EldarBuildBaseStrategy:ForceTech()
 
@@ -693,7 +670,7 @@ function EldarBuildBaseStrategy:ForceTech()
 		return false
 	end
 	
-	-- Check ressources
+	-- Check resources
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 
@@ -730,21 +707,6 @@ function EldarBuildBaseStrategy:ForceTech()
 		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iRequisition < 1100 or iPower < 1100)) then
 			return true
 		end
---[[		
-	elseif (iTierLevel == 4) then	
-
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier4 and (iRequisition < 1600 or iPower < 1600)) then
-			return true
-		end
-
-	elseif (iTierLevel == 5) then	
-
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier5 and (iRequisition < 4100 or iPower < 4100)) then
-			return true
-		end
-]]
 	end
 	return false
 end
@@ -754,7 +716,23 @@ function EldarBuildBaseStrategy:GetPlacementType(iBuildingID)
 	
 	-- Check building
 	if (iBuildingID == cpu_manager.stats:GetBuildingID("eldar_hq")) then
-		return "Safeplace"
+        	local count = self:GetBuildingCountByName("eldar_hq", false)
+		local friend = cpu_manager:FindClosestFriendPlayer()
+		if friend == nil then
+			-- Lone Player
+                	if count == 0 and not cpu_manager:HQThreat() then
+                    		return "HQ"
+                	else
+                    		return "Safeplace"
+                	end
+        	else
+        		-- Has allies
+                	if count > 2 or cpu_manager:HQThreat() then
+ 				return "HQ"
+                	else
+				return "Safeplace"
+                	end
+		end
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("eldar_aspect_portal") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("eldar_webway_sail") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("eldar_vaul_portal") or
@@ -777,6 +755,39 @@ function EldarBuildBaseStrategy:GetPlacementType(iBuildingID)
 		return "BaseBack"
 	end
 	return "Basic"
+end
+
+function EldarBuildBaseStrategy:HQEmergency()
+
+	-- Check HQ count
+	local iHQCount = self:GetBuildingCountByName("eldar_hq")
+	if (iHQCount >= 2) then
+		return false
+	end
+
+	-- Build a second HQ if first one is severly damaged
+	local bHQDamaged = false
+	for oBuilding in military_manager:GetBases() do
+	
+		-- Check for valid building
+		if (oBuilding:IsValid() and not oBuilding:IsListeningPost() and oBuilding:GetBaseName() == "eldar_hq") then
+	  
+			-- Check health
+			if (oBuilding:GetHealthPercentage() < 0.6) then
+
+				-- Adjust current build program
+				for iLoop1 = 1, table.getn(self.info.BuildPrograms[self.m_iCurrentBuildProgram]) do
+				
+					-- Search HQ entry and set build count to two
+					if (self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][7] == "eldar_hq") then
+						self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][5] = 2
+						return true
+					end
+				end
+			end
+		end
+	end
+	return false
 end
 
 -- Arkhan 11.2006: Virtual method for checking out relic units

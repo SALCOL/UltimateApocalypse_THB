@@ -1,7 +1,7 @@
 ----------------------------------------
--- File: 'Attackbiketactic.ai'
+-- File: 'attackbiketactic.ai'
 -- Created by Cylarne
--- Edited by Thudmeizer		@ 26.06.2016
+-- Edited by Thudmeizer		@ 23.09.2016
 
 class 'AttackbikeTactic' (SpaceMarineVehicleTactic)
 
@@ -42,6 +42,10 @@ function AttackbikeTactic:InitAbilities()
 	if (Attackbike.smoke_id == nil) then
 		Attackbike.smoke_id = cpu_manager.stats:GetAbilityID( "marines_smoke_grenades" )
 	end
+
+	if (Attackbike.burnout_id == nil) then
+		Attackbike.burnout_id = cpu_manager.stats:GetAbilityID( "marines_burnout" )
+	end
 end
 
 function AttackbikeTactic:DoAbilities()
@@ -53,6 +57,9 @@ function AttackbikeTactic:DoAbilities()
         Ability.DoAbilityTarget( self.squad_ai, Attackbike.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
         Ability.DoAbilityTarget( self.squad_ai, Attackbike.melta_id, Ability.Filters.CloseVehicleEnemy, 1)
 	
+	-- Check if we can use burn out if enemy infantry are nearby
+	Ability.DoAbilityArea( self.squad_ai, Attackbike.burnout_id, Ability.Filters.CloseInfantryEnemy, 10, 4 )
+
 	-- Check if we can launch smoke
 	if (self.squad_ai:CanDoAbility(Attackbike.smoke_id)) then
 	

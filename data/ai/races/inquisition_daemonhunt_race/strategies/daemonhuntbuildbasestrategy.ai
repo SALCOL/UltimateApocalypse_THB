@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonhuntbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 02.07.2016
+-- Edited by Thudmeizer @ 24.09.2016
 
 class 'DaemonhuntBuildBaseStrategy' (BuildBaseStrategy)
 
@@ -16,6 +16,9 @@ function DaemonhuntBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	self.m_iArmyBuild = math.random(0, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
 	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
 	
+	-- Build first HQ at start pos
+	self.m_iNumHQAtStartPos = 1
+
 	-- Building Addons and Dedications to not bug out the AI and cause errors.
 	ded_maxcities = 0
 
@@ -30,8 +33,10 @@ function DaemonhuntBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	CpuPrerequisites2.AddSpecialItem("inquisition_dedication_tomes_addon", CpuPrerequisites.BT_AddOn)
 	CpuPrerequisites2.AddSpecialItem("inquisition_turret_addon_probe", CpuPrerequisites.BT_AddOn)
 
+	-- dark40k - set items that need bypass for CpuPrerequisites
 	CpuPrerequisites2.AddSpecialItem("inquisition_schematic_land_raider_special", CpuPrerequisites.BT_Research)
 
+	-- dark40k - set items that need bypass for CpuPrerequisites
 	CpuPrerequisites2.AddSpecialItem("inquisition_advanced_weapons", CpuPrerequisites.BT_Research)
 	CpuPrerequisites2.AddSpecialItem("inquisition_advanced_weapons_2", CpuPrerequisites.BT_Research)
 	CpuPrerequisites2.AddSpecialItem("inquisition_auto_repair_systems_research", CpuPrerequisites.BT_Research)
@@ -46,6 +51,7 @@ function DaemonhuntBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	CpuPrerequisites2.AddSpecialItem("inquisition_support_cap_2", CpuPrerequisites.BT_Research)
 	CpuPrerequisites2.AddSpecialItem("inquisition_targeters", CpuPrerequisites.BT_Research)
 
+	-- dark40k - set items that need bypass for CpuPrerequisites
 	CpuPrerequisites2.AddSpecialItem("inquisition_tome_aegis", CpuPrerequisites.BT_Research)
 	CpuPrerequisites2.AddSpecialItem("inquisition_tome_alacrity_1", CpuPrerequisites.BT_Research)
 	CpuPrerequisites2.AddSpecialItem("inquisition_tome_alacrity_2", CpuPrerequisites.BT_Research)
@@ -64,6 +70,7 @@ function DaemonhuntBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	CpuPrerequisites2.AddSpecialItem("inquisition_tome_psykers", CpuPrerequisites.BT_Research)
 	CpuPrerequisites2.AddSpecialItem("inquisition_tome_technician_overdrive", CpuPrerequisites.BT_Research)
 
+	-- dark40k - set items that need bypass for CpuPrerequisites
 	CpuPrerequisites2.AddSpecialItem("inquisition_squad_trade_requisition", CpuPrerequisites.BT_Squad)
 	CpuPrerequisites2.AddSpecialItem("inquisition_squad_trade_power", CpuPrerequisites.BT_Squad)
 	CpuPrerequisites2.AddSpecialItem("inquisition_squad_civilian", CpuPrerequisites.BT_Squad)
@@ -317,23 +324,6 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 	local iArmyStrength = cpu_manager:GetArmyStrength()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	
-	-- Determine my all time largest army. During major casualties, determine if I should create more squads or only focus on build orders and titans.
-	if (iArmyStrength > self.m_iArmyHighestStrength) then
-		self.m_iArmyHighestStrength = iArmyStrength
-	end
-	
-	if (self.m_iArmyBuild < 4) then
-		-- HUGE hit! I have a very large army, and then in battle I lost so many...
-		if (iArmyStrength <= self.m_iArmyHighestStrength - 300 and iArmyStrength <= 2300) then
-			self.m_iArmyBuild = self.m_iArmyBuild + 1
-			self.m_iArmyHighestStrength = 0
-		end
-	elseif (iArmyStrength > 2500) then
-		self.m_iArmyBuild = 0
-	end
-	
-	if (iArmyStrength >= 2000 or (iPower >= 1500 and iRequisition >= 1500)) then
 --[[
 			SCHEMATICS BY RANDOM!
 			- inquisition_schematic_astropath
@@ -359,7 +349,8 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 			- inquisition_schematic_valkyrie
 			- inquisition_schematic_vulture
 			- inquisition_schematic_whirlwind
-]]
+]]	
+	if (iArmyStrength >= 2000 or (iPower >= 1500 and iRequisition >= 1500)) then
 		self.m_iSchematicChoice = math.random(0, 1000)
 		
 		-- 1000 chance / 23 total = 43 approx. for even distribution.
@@ -623,63 +614,89 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 	
 		-- Dynamic buildings
 		-- Item-Syntax: BuildingName, BuildingCount, MinTier, MinRequisition, MinPower, MinSquadCap, MinSupportCap
-		
+		self:DynamicBuild("inquisition_tower_hq", 2, 2, 700, 150, 0, 0)
 		self:DynamicBuild("inquisition_warp_generator", 6 * self:GetBuildingCountByName("inquisition_tower_hq"), 3, 500, 0, 0, 0)
-		self:DynamicBuild("inquisition_grey_knights_teleporter", 2, 3, 800, 400, 0, 0)
-		self:DynamicBuild("inquisition_purification_decree", 15, 2, 800, 0, 0, 0)
-		
-		if ((iPower >= 1200 and iRequisition >= 1800) or self.m_iArmyBuild >= 3) then
-			
-			-- Tier 0
-			self:DynamicBuild("inquisition_tower_hq", 2, 1, 700, 150, 0, 0)
-			self:DynamicBuild("inquisition_turret_heavy_bolter", 6, 1, 500, 100, 0, 0)
-			self:DynamicBuild("inquisition_mines", 10, 1, 500, 250, 0, 0)
-			
-			-- Tier 1
-			self:DynamicBuild("inquisition_watch", 2, 2, 1000, 500, 0, 0)
-			self:DynamicBuild("inquisition_wall", 10, 2, 700, 0, 0, 0)
-			self:DynamicBuild("inquisition_tanktrap", 10, 2, 500, 0, 0, 0)
 
-			-- Tier 2
-			self:DynamicBuild("inquisition_tower_hq", 3, 3, 2000, 2000, 0, 0)
-			self:DynamicBuild("inquisition_grey_knights_teleporter", 2, 3, 1200, 600, 0, 0)
-			
-			-- Tier 3
-			self:DynamicBuild("inquisition_librarium", 2, 3, 400, 100, 0, 0)
-			self:DynamicBuild("inquisition_infantry_bunker", 2, 3, 1000, 0, 0, 0)
-			self:DynamicBuild("inquisition_turret_heavy_bolter", 15, 4, 1100, 800, 0, 0)
-			self:DynamicBuild("inquisition_tanktrap", 15, 4, 1000, 0, 0, 0)
-			self:DynamicBuild("inquisition_wall", 15, 4, 1250, 0, 0, 0)
-			self:DynamicBuild("inquisition_tower_hq", 3, 4, 1500, 500, 0, 0)
-			
-			-- Tier 4
-			self:DynamicBuild("inquisition_astra_telepathica", 2, 4, 1000, 500, 0, 0)
-			self:DynamicBuild("inquisition_infantry_bunker", 3, 4, 1500, 0, 0, 0)
-			self:DynamicBuild("inquisition_tower_mechanicum", 2, 5, 4000, 4000, 0, 0)
-		end
-
-		-- Build extra late game uber structures
-		self:DynamicBuild("inquisition_infantry_bunker", 4, 5, 2000, 0, 0, 0)
-		self:DynamicBuild("inquisition_grey_knights_teleporter", 3, 5, 2500, 800, 0, 0)
-		self:DynamicBuild("inquisition_watch", 3, 5, 3500, 900, 0, 0)
-		self:DynamicBuild("inquisition_astra_telepathica", 3, 5, 4000, 1000, 0, 0)
-		self:DynamicBuild("inquisition_tower_hq", 4, 5, 4500, 1000, 0, 0)
-		self:DynamicBuild("inquisition_nuclear_facility", 3, 5, 8000, 8000, 0, 0)
---[[		
-		-- Build Nemesis Dreadknight
-		local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-		
-		if (cpu_manager.cpu_player:IsResearchComplete("inquisition_schematic_dreadknight") and iRequisition >= 600 and iPower >= 1450) then
-		
-			local tBuildType = CpuBuildType()
-			tBuildType.btype = CpuPrerequisites.BT_Squad
-			tBuildType.name = "inquisition_squad_dreadknight_titan"
-			if (self:TryBuild( tBuildType )) then
-				aitrace("BuildController: Dynamic build of "..tBuildType.name)
+		-- Dynamically regulate quantity of defensive buildings based on how many strats/crits/relics we have through the tiers so we avoid cluttering/bottlenecking on maps with limited points
+		if (self.tierLevel >= 2 and (iRequisition >= 1500 and iPower >= 1500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() < 4) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasRelic()) then
+				self:DynamicBuild("inquisition_turret_heavy_bolter", 2, 2, 500, 100, 0, 0)
+				self:DynamicBuild("inquisition_purification_decree", 2, 2, 600, 0, 0, 0)
+				self:DynamicBuild("inquisition_mines", 2, 2, 500, 250, 0, 0)
+				self:DynamicBuild("inquisition_tanktrap", 2, 2, 500, 0, 0, 0)
+				self:DynamicBuild("inquisition_wall", 2, 3, 700, 0, 0, 0)
+				self:DynamicBuild("inquisition_turret_heavy_bolter", 4, 3, 500, 100, 0, 0)
+				self:DynamicBuild("inquisition_purification_decree", 4, 3, 600, 0, 0, 0)
+				self:DynamicBuild("inquisition_mines", 4, 3, 500, 250, 0, 0)
+				self:DynamicBuild("inquisition_tanktrap", 4, 3, 500, 0, 0, 0)
+				self:DynamicBuild("inquisition_wall", 4, 3, 900, 0, 0, 0)
+   			end
+		else
+   			if (resource_manager:GetNumOwnedStrategicPoints() > 3) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasRelic()) then
+				self:DynamicBuild("inquisition_turret_heavy_bolter", 3, 2, 500, 100, 0, 0)
+				self:DynamicBuild("inquisition_purification_decree", 3, 2, 600, 0, 0, 0)
+				self:DynamicBuild("inquisition_mines", 3, 2, 500, 250, 0, 0)
+				self:DynamicBuild("inquisition_tanktrap", 3, 2, 500, 0, 0, 0)
+				self:DynamicBuild("inquisition_wall", 3, 3, 700, 0, 0, 0)
+				self:DynamicBuild("inquisition_turret_heavy_bolter", 6, 3, 500, 100, 0, 0)
+				self:DynamicBuild("inquisition_purification_decree", 6, 3, 600, 0, 0, 0)
+				self:DynamicBuild("inquisition_mines", 6, 3, 500, 250, 0, 0)
+				self:DynamicBuild("inquisition_tanktrap", 6, 3, 500, 0, 0, 0)
+				self:DynamicBuild("inquisition_wall", 6, 3, 900, 0, 0, 0)
 			end
 		end
-]]	
+
+		if (self.tierLevel >= 4 and (iRequisition >= 2500 and iPower >= 2500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() > 4) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasRelic()) then
+				self:DynamicBuild("inquisition_turret_heavy_bolter", 8, 4, 500, 100, 0, 0)
+				self:DynamicBuild("inquisition_purification_decree", 8, 4, 600, 0, 0, 0)
+				self:DynamicBuild("inquisition_mines", 8, 4, 500, 250, 0, 0)
+				self:DynamicBuild("inquisition_tanktrap", 8, 4, 500, 0, 0, 0)
+				self:DynamicBuild("inquisition_wall", 8, 4, 700, 0, 0, 0)
+				self:DynamicBuild("inquisition_turret_heavy_bolter", 10, 5, 500, 100, 0, 0)
+				self:DynamicBuild("inquisition_purification_decree", 10, 5, 600, 0, 0, 0)
+				self:DynamicBuild("inquisition_mines", 10, 5, 500, 250, 0, 0)
+				self:DynamicBuild("inquisition_tanktrap", 10, 5, 500, 0, 0, 0)
+				self:DynamicBuild("inquisition_wall", 10, 5, 900, 0, 0, 0)
+				self:DynamicBuild("inquisition_turret_heavy_bolter", 12, 6, 500, 100, 0, 0)
+				self:DynamicBuild("inquisition_purification_decree", 12, 6, 600, 0, 0, 0)
+				self:DynamicBuild("inquisition_mines", 12, 6, 500, 250, 0, 0)
+				self:DynamicBuild("inquisition_tanktrap", 12, 6, 500, 0, 0, 0)
+				self:DynamicBuild("inquisition_wall", 12, 6, 900, 0, 0, 0)
+			end
+		end
+
+		-- Build additional support buildings as tiers progress
+		if (self.tierLevel >= 2) then
+			if (iRequisition >= 2000 and iPower >= 2000) then
+				self:DynamicBuild("inquisition_watch", 2, 2, 1000, 500, 0, 0)
+				self:DynamicBuild("inquisition_grey_knights_teleporter", 2, 3, 1200, 600, 0, 0)
+				self:DynamicBuild("inquisition_librarium", 2, 3, 1000, 1500, 0, 0)
+				self:DynamicBuild("inquisition_tower_hq", 3, 3, 1000, 500, 0, 0)
+				self:DynamicBuild("inquisition_tower_hq", 4, 5, 2000, 1000, 0, 0)
+				self:DynamicBuild("inquisition_astra_telepathica", 2, 5, 2000, 1500, 0, 0)
+				self:DynamicBuild("inquisition_tower_mechanicum", 2, 5, 3000, 3000, 0, 0)
+				self:DynamicBuild("inquisition_nuclear_facility", 2, 5, 4000, 4000, 0, 0)
+			end
+		end
+
+		-- Build additional uber buildings in later tiers
+		if (self.tierLevel >= 5) then
+			if (iRequisition >= 3000 and iPower >= 3000) then
+				self:DynamicBuild("inquisition_watch", 3, 5, 1000, 500, 0, 0)
+				self:DynamicBuild("inquisition_grey_knights_teleporter", 3, 5, 1200, 600, 0, 0)
+				self:DynamicBuild("inquisition_astra_telepathica", 3, 5, 3000, 3500, 0, 0)
+				self:DynamicBuild("inquisition_tower_mechanicum", 3, 5, 4000, 4000, 0, 0)
+				self:DynamicBuild("inquisition_nuclear_facility", 3, 5, 6000, 6000, 0, 0)
+			end
+		end
+
+		-- Build additional Superweapons if we have excess resources
+		if (iRequisition >= 15000 and iPower >= 15000) then
+			self:DynamicBuild("inquisition_nuclear_facility", 4, 5, 7500, 7500, 0, 0)
+			self:DynamicBuild("inquisition_nuclear_facility", 5, 5, 10000, 10000, 0, 0)
+			self:DynamicBuild("inquisition_nuclear_facility", 6, 5, 12000, 12000, 0, 0)
+		end
 	end
 	
 	-- Build workers for additional resources
@@ -771,7 +788,7 @@ function DaemonhuntBuildBaseStrategy:ForceTech()
 		return false
 	end
 	
-	-- Check ressources
+	-- Check resources
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 
@@ -780,7 +797,7 @@ function DaemonhuntBuildBaseStrategy:ForceTech()
 	if (iTierLevel == 1) then
 
 		-- Check resources
-		if (iRequisition > 600 and iPower > 300) then
+		if (iRequisition > 600 and iPower > 200) then
 			return false
 		end
 	
@@ -809,33 +826,16 @@ function DaemonhuntBuildBaseStrategy:ForceTech()
 		end
 		
 		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier2 and (iRequisition < 1100 or iPower < 1100)) then
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier2 and (iRequisition < 800 or iPower < 800)) then
 			return true
 		end
 		
 	elseif (iTierLevel == 3) then	
 
 		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iRequisition < 1400 or iPower < 800)) then
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iRequisition < 1450 or iPower < 800)) then
 			return true
 		end
---[[		
-		if (self:GetBuildingCountByName("inquisition_grey_knights_teleporter", false) >= 1) then
-			return false
-		end
-		
-	elseif (iTierLevel == 4) then	
-
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier4 and (iRequisition < 2500 or iPower < 1600)) then
-			return true
-		end
-		
-		-- Check for uber structure
-		if (self:GetBuildingCountByName("inquisition_shrine_to_the_emperor", false) >= 1) then
-			return true
-		end
-]]
 	end
 	return false
 end
@@ -844,8 +844,25 @@ end
 function DaemonhuntBuildBaseStrategy:GetPlacementType(iBuildingID)
 	
 	-- Check building
-	if (iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_tower_hq") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_civilian_bunker") or
+	if (iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_tower_hq")) then
+        	local count = self:GetBuildingCountByName("inquisition_tower_hq", false)
+		local friend = cpu_manager:FindClosestFriendPlayer()
+		if friend == nil then
+			-- Lone Player
+                	if count == 0 and not cpu_manager:HQThreat() then
+                    		return "HQ"
+                	else
+                    		return "Safeplace"
+                	end
+        	else
+        		-- Has allies
+                	if count > 2 or cpu_manager:HQThreat() then
+ 				return "HQ"
+                	else
+				return "Safeplace"
+                	end
+		end
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_civilian_bunker") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_civilian_bunker_ai")) then
 		return "Safeplace"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_infantry_bunker") or
@@ -862,13 +879,45 @@ function DaemonhuntBuildBaseStrategy:GetPlacementType(iBuildingID)
 		return "Mine"
 	elseif (cpu_manager:IsGenerator(iBuildingID) or
 		iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_nuclear_facility") or 
-		iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_strategic_point") or 
 		iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_shrine_to_the_emperor") or
 	        iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_librarium") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("inquisition_astra_telepathica")) then
 		return "BaseBack"
 	end
 	return "Basic"
+end
+
+function DaemonhuntBuildBaseStrategy:HQEmergency()
+
+	-- Check HQ count
+	local iHQCount = self:GetBuildingCountByName("inquisition_tower_hq")
+	if (iHQCount >= 2) then
+		return false
+	end
+
+	-- Build a second HQ if first one is severly damaged
+	local bHQDamaged = false
+	for oBuilding in military_manager:GetBases() do
+	
+		-- Check for valid building
+		if (oBuilding:IsValid() and not oBuilding:IsListeningPost() and oBuilding:GetBaseName() == "inquisition_tower_hq") then
+	  
+			-- Check health
+			if (oBuilding:GetHealthPercentage() < 0.6) then
+
+				-- Adjust current build program
+				for iLoop1 = 1, table.getn(self.info.BuildPrograms[self.m_iCurrentBuildProgram]) do
+				
+					-- Search HQ entry and set build count to two
+					if (self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][7] == "inquisition_tower_hq") then
+						self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][5] = 2
+						return true
+					end
+				end
+			end
+		end
+	end
+	return false
 end
 
 function DaemonhuntBuildBaseStrategy:ModifySquadDemand(iUnitID)

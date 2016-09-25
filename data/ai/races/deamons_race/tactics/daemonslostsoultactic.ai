@@ -2,7 +2,7 @@
 -- File: 'lostsoultactic.ai'
 -- Edited by fuggles 27.05.2013
 -- Edited by corncobman 12.06.2013
--- Edited by Thudmeizer	08.05.2016
+-- Edited by Thudmeizer	13.09.2016
 
 class 'DaemonsLostSoulTactic' (EngineerTactic)
 
@@ -51,11 +51,11 @@ function DaemonsLostSoulTactic:DoAbilities()
 end
 
 function DaemonsLostSoulTactic:Update()
---[[
+
 	if self:IsComplete() then
 		return
 	end
-]]
+
 	--state machine
 	if not EngineerTactic.Update( self ) then
 		return

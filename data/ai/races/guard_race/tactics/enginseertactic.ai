@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'enginseertactic.ai'
 -- Edited by Arkhan 	@ 10.01.2007
--- Edited by Thudmeizer	@ 29.02.2016
+-- Edited by Thudmeizer	@ 13.09.2016
 
 class 'EnginseerTactic' (EngineerTactic)
 
@@ -80,10 +80,21 @@ function EnginseerTactic:DoAbilities()
 		end
 	end
 end
---[[
+
 function EnginseerTactic:Update()
 
+	if self:IsComplete() then
+		return
+	end
+    
 	-- Update engineer tactic
-	EngineerTactic.Update(self)
+	--EngineerTactic.Update(self)
+
+	-- State machine
+	if not EngineerTactic.Update( self ) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end
-]]

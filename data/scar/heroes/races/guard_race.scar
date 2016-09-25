@@ -193,7 +193,6 @@ UnitTypes.guard_race =
 		Leaders =
 		{
 			"guard_infantry_ogryn_sergeant",
-			"guard_leaders_priest_command_squad",
 		},
 		Weapons =
 		{
@@ -201,7 +200,6 @@ UnitTypes.guard_race =
 			"guard_ripper_gun_melee_ogryn",
 			"guard_ripper_gun_ranged_ogryn_sergeant",
 			"guard_ripper_gun_melee_ogryn_sergeant",
-			"guard_chainsword_priest",
 		},
 	},
 	guard_squad_stormtrooper =
