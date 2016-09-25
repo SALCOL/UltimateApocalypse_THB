@@ -63,6 +63,6 @@ function LibrariumTactic:DoAbilities()
 	if GlobalLibrariumSwitch then
         	self:AutoBuildAddOn(0)
     	else
-	self:AutoBuildAddOn(1)
+		self:AutoBuildAddOn(1)
     	end
 end

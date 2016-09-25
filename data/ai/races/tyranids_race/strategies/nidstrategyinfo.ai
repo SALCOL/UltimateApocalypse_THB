@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'tyranidstrategyinfo.ai'
--- Edited by Thudmeizer  @ 20.06.2016
+-- Edited by Thudmeizer  @ 23.09.2016
 
 BuildBaseStrategyInfo = 
 {	
@@ -109,6 +109,7 @@ BuildBaseStrategyInfo =
 				tyranids_squad_carnifex = 2,
 				tyranids_squad_carnifex_khazi = 2,
 				tyranids_squad_carnifex_skiller = 2,
+				tyranids_squad_carnifex_tervigon = 2,
 				tyranids_squad_carnifex_uber = 2,
 				tyranids_squad_trygon = 1,
 				tyranids_squad_hierophant = 1,

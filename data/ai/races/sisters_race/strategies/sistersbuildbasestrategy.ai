@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 03.09.2016
+-- Edited by Thudmeizer @ 24.09.2016
 -- Edited by Cylarne_04 2011
 
 class 'SistersBuildBaseStrategy' (BuildBaseStrategy)
@@ -17,6 +17,10 @@ function SistersBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	self.m_iArmyBuild = math.random(0, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
 	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
 
+	-- Build first HQ at start pos
+	self.m_iNumHQAtStartPos = 1
+
+	-- dark40k - set items that need bypass for CpuPrerequisites
 	CpuPrerequisites2.AddSpecialItem("addon_sisters_wall_probe", CpuPrerequisites.BT_AddOn)
 	CpuPrerequisites2.AddSpecialItem("addon_sisters_turret_probe", CpuPrerequisites.BT_AddOn)
 end
@@ -256,21 +260,6 @@ function SistersBuildBaseStrategy:BuildFlexible()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	
-	-- Determine my all time largest army. During major casualties, determine if I should create more squads or only focus on build orders and titans.
-	if (iArmyStrength > self.m_iArmyHighestStrength) then
-		self.m_iArmyHighestStrength = iArmyStrength
-	end
-	
-	if (self.m_iArmyBuild < 4) then
-		-- HUGE hit! I have a very large army, and then in battle I lost so many...
-		if (iArmyStrength <= self.m_iArmyHighestStrength - 300 and iArmyStrength <= 2300) then
-			self.m_iArmyBuild = self.m_iArmyBuild + 1
-			self.m_iArmyHighestStrength = 0
-		end
-	elseif (iArmyStrength > 2500) then
-		self.m_iArmyBuild = 0
-	end
-	
 	-- Dynamic research item syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
 	local iCommanderSquads	= self:CountSquads("sisters_squad_canoness") + self:CountSquads("sisters_squad_confessor") + self:CountSquads("sisters_squad_nunciate_superior") + self:CountSquads("sisters_squad_almoness")  
 	local iInfantrySquads	= self:CountSquads("sisters_squad_battle_sister") + self:CountSquads("sisters_squad_seraphim") +
@@ -414,22 +403,6 @@ function SistersBuildBaseStrategy:BuildFlexible()
 			if (self:GetBuildingCountByName("sisters_hq") > 1) and (iRequisition >= 1000 and iPower >= 500) then
 				self:DynamicAddon("addon_sisters_hq_1", 100, 2, 400, 130, 0, 0, nil, nil, false)
 			end
---[[				
-				-- Compute commander researches
-				if (iCommanderSquads >= 1) then
-					-- Compute wargear researches
-					self:DynamicResearch("sisters_wargear01", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_wargear02", 4, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_wargear03", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_wargear04", 4, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_wargear05", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_wargear06", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_wargear07", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_wargear08", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_wargear09", 2, 0, 0, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_wargear10", 2, 0, 0, 0, 0, nil, 0)
-				end
-]]
 		end
 		
 		-- Compute tier 3 researches
@@ -532,59 +505,85 @@ function SistersBuildBaseStrategy:BuildFlexible()
 	
 		-- Dynamic buildings
 		-- Item-Syntax: BuildingName, BuildingCount, MinTier, MinRequisition, MinPower, MinSquadCap, MinSupportCap
-		
 		self:DynamicBuild("sisters_hq", 2, 2, 700, 150, 0, 0)
 		self:DynamicBuild("sisters_plasma_generator", 6 * self:GetBuildingCountByName("sisters_hq"), 3, 500, 0, 0, 0)
-		self:DynamicBuild("sisters_turret_flamer", 5, 1, 300, 200, 0, 0)
-		
-		if ((iPower >= 1200 and iRequisition >= 1800) or self.m_iArmyBuild >= 3) then
-			
-			self:DynamicBuild("sisters_turret_flamer", 10, 1, 500, 500, 0, 0)
-			
-			-- Tier 1
-			self:DynamicBuild("sisters_hq", 3, 2, 1500, 500, 0, 0)
-			self:DynamicBuild("sisters_infantry", 2, 2, 1500, 0, 0, 0)
-			self:DynamicBuild("sisters_vehicle_building", 2, 2, 500, 1000, 0, 0)
-			
-			-- Tier 2
-			self:DynamicBuild("sisters_wall", 5, 2, 500, 0, 0, 0)
-			self:DynamicBuild("sisters_tanktrap", 10, 2, 500, 0, 0, 0)
-			self:DynamicBuild("sisters_mines", 10, 2, 500, 0, 0, 0)
 
-			-- Tier 3
-			self:DynamicBuild("sisters_turret_flamer", 15, 3, 1000, 1500, 0, 0)
-			self:DynamicBuild("sisters_inquisitorial_building", 2, 3, 900, 0, 0, 0)
-			self:DynamicBuild("sisters_turret_heavy_flamer", 10, 4, 1000, 1000, 0, 0)
-			self:DynamicBuild("sisters_shrine", 2, 4, 3000, 2000, 0, 0)
-
-			-- Tier 4
-			self:DynamicBuild("sisters_wall", 10, 5, 1000, 0, 0, 0)
-			self:DynamicBuild("sisters_turret_heavy_flamer", 15, 5, 2000, 1500, 0, 0)
+		-- Dynamically regulate quantity of defensive buildings based on how many strats/crits/relics we have through the tiers so we avoid cluttering/bottlenecking on maps with limited points
+		if (self.tierLevel >= 2 and (iRequisition >= 1500 and iPower >= 1500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() < 4) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasRelic()) then
+				self:DynamicBuild("sisters_turret_flamer", 2, 2, 500, 500, 0, 0)
+				self:DynamicBuild("sisters_mines", 2, 2, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_tanktrap", 2, 2, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_wall", 2, 3, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_turret_flamer", 4, 3, 500, 500, 0, 0)
+				self:DynamicBuild("sisters_mines", 4, 3, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_tanktrap", 4, 3, 500, 0, 0, 0)
+   			end
+		else
+   			if (resource_manager:GetNumOwnedStrategicPoints() > 3) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasRelic()) then
+				self:DynamicBuild("sisters_turret_flamer", 3, 2, 500, 500, 0, 0)
+				self:DynamicBuild("sisters_mines", 3, 2, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_tanktrap", 3, 2, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_wall", 3, 3, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_turret_flamer", 6, 3, 500, 500, 0, 0)
+				self:DynamicBuild("sisters_mines", 6, 3, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_tanktrap", 6, 3, 500, 0, 0, 0)
+			end
 		end
 
-		-- Build additional uber buildings
-		self:DynamicBuild("sisters_hq", 4, 6, 2500, 2500, 0, 0)
-		self:DynamicBuild("sisters_capitol_building", 2, 6, 3000, 4000, 0, 0)
-		self:DynamicBuild("sisters_infantry", 3, 5, 3500, 0, 0, 0)
-		self:DynamicBuild("sisters_vehicle_building", 3, 5, 4500, 3000, 0, 0)
-		self:DynamicBuild("sisters_inquisitorial_building", 3, 5, 5000, 3000, 0, 0)
-		self:DynamicBuild("sisters_missile_silo", 2, 5, 6000, 6000, 0, 0)
-		self:DynamicBuild("sisters_missile_silo", 3, 6, 9000, 9000, 0, 0)
-		self:DynamicBuild("sisters_krak", 2, 6, 12000, 12000, 0, 0)
---[[		
-		-- Build nukes
-		local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-			
-		-- Build nuke
-		local tBuildType = CpuBuildType()
-		tBuildType.btype = CpuPrerequisites.BT_Squad
-		
-		tBuildType.name = "npc_squad_superweapon1"
-		if (self:TryBuild( tBuildType )) then
-			aitrace("BuildController: Dynamic build of "..tBuildType.name)
+		if (self.tierLevel >= 4 and (iRequisition >= 2500 and iPower >= 2500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() > 4) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasRelic()) then
+				self:DynamicBuild("sisters_turret_heavy_flamer", 2, 4, 500, 500, 0, 0)
+				self:DynamicBuild("sisters_turret_flamer", 8, 4, 500, 500, 0, 0)
+				self:DynamicBuild("sisters_mines", 8, 4, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_tanktrap", 8, 4, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_wall", 8, 4, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_turret_heavy_flamer", 4, 5, 700, 700, 0, 0)
+				self:DynamicBuild("sisters_turret_flamer", 10, 5, 500, 500, 0, 0)
+				self:DynamicBuild("sisters_mines", 10, 5, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_tanktrap", 10, 5, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_wall", 10, 5, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_turret_heavy_flamer", 6, 6, 900, 900, 0, 0)
+				self:DynamicBuild("sisters_turret_flamer", 12, 6, 500, 500, 0, 0)
+				self:DynamicBuild("sisters_mines", 12, 6, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_tanktrap", 12, 6, 500, 0, 0, 0)
+				self:DynamicBuild("sisters_wall", 12, 6, 500, 0, 0, 0)
+			end
 		end
-]]
+
+		-- Build additional support buildings as tiers progress
+		if (self.tierLevel >= 2) then
+			if (iRequisition >= 2000 and iPower >= 2000) then
+				self:DynamicBuild("sisters_infantry", 2, 2, 1500, 0, 0, 0)
+				self:DynamicBuild("sisters_vehicle_building", 2, 3, 500, 1000, 0, 0)
+				self:DynamicBuild("sisters_hq", 3, 3, 1500, 900, 0, 0)
+				self:DynamicBuild("sisters_hq", 4, 5, 2000, 1000, 0, 0)
+				self:DynamicBuild("sisters_inquisitorial_building", 2, 5, 900, 0, 0, 0)
+				self:DynamicBuild("sisters_shrine", 2, 5, 3000, 2000, 0, 0)
+				self:DynamicBuild("sisters_missile_silo", 2, 5, 4000, 3000, 0, 0)
+				self:DynamicBuild("sisters_capitol_building", 2, 6, 3000, 4000, 0, 0)
+			end
+		end
+
+		-- Build additional uber buildings in later tiers
+		if (self.tierLevel >= 6) then
+			if (iRequisition >= 3000 and iPower >= 3000) then
+				self:DynamicBuild("sisters_infantry", 3, 6, 1500, 0, 0, 0)
+				self:DynamicBuild("sisters_vehicle_building", 3, 6, 500, 1000, 0, 0)
+				self:DynamicBuild("sisters_inquisitorial_building", 3, 6, 900, 0, 0, 0)
+				self:DynamicBuild("sisters_shrine", 3, 6, 3000, 2000, 0, 0)
+				self:DynamicBuild("sisters_missile_silo", 3, 6, 4000, 5000, 0, 0)
+				self:DynamicBuild("sisters_capitol_building", 2, 6, 5000, 4000, 0, 0)
+				self:DynamicBuild("sisters_krak", 2, 6, 10000, 10000, 0, 0)
+			end
+		end
+
+		-- Build additional Superweapons if we have excess resources
+		if (iRequisition >= 12000 and iPower >= 12000) then
+			self:DynamicBuild("sisters_missile_silo", 4, 6, 12000, 12000, 0, 0)
+			self:DynamicBuild("sisters_missile_silo", 5, 6, 14000, 14000, 0, 0)
+			self:DynamicBuild("sisters_missile_silo", 6, 6, 16000, 16000, 0, 0)
+		end
 	end
 end
 
@@ -628,14 +627,6 @@ function SistersBuildBaseStrategy:ForceTech()
 		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iRequisition < 1100 or iPower < 1100)) then
 			return true
 		end
---[[		
-	elseif (iTierLevel == 4) then	
-
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier4 and (iRequisition < 1600 or iPower < 1600)) then
-			return true
-		end
-]]
 	end
 	return false
 end
@@ -644,8 +635,25 @@ end
 function SistersBuildBaseStrategy:GetPlacementType(iBuildingID)
 	
 	-- Check building
-	if (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_hq") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_krak")) then
+	if (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_hq")) then
+        	local count = self:GetBuildingCountByName("sisters_hq", false)
+		local friend = cpu_manager:FindClosestFriendPlayer()
+		if friend == nil then
+			-- Lone Player
+                	if count == 0 and not cpu_manager:HQThreat() then
+                    		return "HQ"
+                	else
+                    		return "Safeplace"
+                	end
+        	else
+        		-- Has allies
+                	if count > 2 or cpu_manager:HQThreat() then
+ 				return "HQ"
+                	else
+				return "Safeplace"
+                	end
+		end
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_krak")) then
 		return "Safeplace"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_infantry") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_vehicle_building") or
@@ -653,8 +661,6 @@ function SistersBuildBaseStrategy:GetPlacementType(iBuildingID)
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_inquisitorial_building") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_capitol_building")) then
 		return "Military"
-	--elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_wall")) then
-		--return "Front1"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_turret_flamer") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_turret_heavy_flamer") or 
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_wall")) then
@@ -670,6 +676,39 @@ function SistersBuildBaseStrategy:GetPlacementType(iBuildingID)
 		return "BaseBack"
 	end
 	return "Basic"
+end
+
+function SistersBuildBaseStrategy:HQEmergency()
+
+	-- Check HQ count
+	local iHQCount = self:GetBuildingCountByName("sisters_hq")
+	if (iHQCount >= 2) then
+		return false
+	end
+
+	-- Build a second HQ if first one is severly damaged
+	local bHQDamaged = false
+	for oBuilding in military_manager:GetBases() do
+	
+		-- Check for valid building
+		if (oBuilding:IsValid() and not oBuilding:IsListeningPost() and oBuilding:GetBaseName() == "sisters_hq") then
+	  
+			-- Check health
+			if (oBuilding:GetHealthPercentage() < 0.6) then
+
+				-- Adjust current build program
+				for iLoop1 = 1, table.getn(self.info.BuildPrograms[self.m_iCurrentBuildProgram]) do
+				
+					-- Search HQ entry and set build count to two
+					if (self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][7] == "sisters_hq") then
+						self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][5] = 2
+						return true
+					end
+				end
+			end
+		end
+	end
+	return false
 end
 
 -- Inherited method to modify squad demand
@@ -695,25 +734,6 @@ function SistersBuildBaseStrategy:ModifySquadDemand(iUnitID)
 			return 0
 		end	
 	end
---[[
-	 -- Check for squads who aren't titan or relic units and refrain from creating them if we are at a high tier.
-	if (iUnitID == (not cpu_manager.stats:GetSquadID("sisters_squad_living_saint")) and 
-		iUnitID == (not cpu_manager.stats:GetSquadID("sisters_squad_living_saint_blue")) and
-		iUnitID == (not cpu_manager.stats:GetSquadID("sisters_squad_living_saint_black")) and
-		iUnitID == (not cpu_manager.stats:GetSquadID("sisters_squad_arch_angel"))) then
-		
-		local iArmyStrength = cpu_manager:GetArmyStrength()
-		local iTierLevel = self:GetTierLevel()
-		
-		-- Check resources
-		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-		local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-		
-		if (self.m_iArmyBuild >= 10) then
-			return 0
-		end
-	end
-]]
 	return BuildBaseStrategy.ModifySquadDemand(self, iUnitID)
 end
 

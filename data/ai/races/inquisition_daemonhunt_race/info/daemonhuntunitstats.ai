@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'Daemonhuntunitstats.ai'
--- Edited by Thudmeizer @ 24.04.2016
+-- Edited by Thudmeizer @ 23.09.2016
 -- Edited by Lord_Cylarne @ 9/30/14
 
 --XP3
@@ -66,6 +66,7 @@ UnitStrengths.inquisition_squad_stormraven_fury = 750
 UnitStrengths.inquisition_squad_dreadknight_titan = 900
 UnitStrengths.inquisition_squad_warhound_titan = 1000
 UnitStrengths.inquisition_squad_warhound_vengence_titan = 1000
+UnitStrengths.inquisition_squad_imperator_titan = 1500
 
 LeaderStrengths.inquisition_squad_servitor_weapon = 75
 LeaderStrengths.inquisition_squad_bodyguard = 75
@@ -1443,6 +1444,26 @@ DaemonhuntUnitStats =
 			{
 				name = "inquisition_titan_plasma_blastgun_godly",
 				effectiveness = GenerateUnitEffectiveness(8.0,7.0,6.0,7.0,10.0,10.0,10.0,10.0,10.0,8.5,8.5,7.0,7.0,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+		}
+	},
+	{
+		name = "Inquisition Imperator Titan",
+		sbp_name = "inquisition_squad_imperator_titan",
+		ebp_name = "inquisition_imperator_titan",
+		class = UnitStatsAI.UC_VehicleHigh,
+		rating = math.random(8*10,9.5*10)/10,
+		potential =
+		{
+			{
+				name = "titan_imperator_volcano_cannon",
+				effectiveness = GenerateUnitEffectiveness(math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,math.random(8*10,9*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "titan_imperator_megalaser",
+				effectiveness = GenerateUnitEffectiveness(9.5,9.5,9.5,9.5,9.5,8.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,5.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 		}

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'buildertactic.ai'
--- Edited by Thudmeizer @ 18.03.2016
+-- Edited by Thudmeizer @ 13.09.2016
 
 class 'BuilderTactic' (EngineerTactic)
 
@@ -13,3 +13,17 @@ function BuilderTactic:IsAffectedByMorale()
 	return false
 end
 
+function BuilderTactic:Update()
+
+	if self:IsComplete() then
+		return
+	end
+    
+	-- State machine
+	if not EngineerTactic.Update( self ) then
+		return
+	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
+end

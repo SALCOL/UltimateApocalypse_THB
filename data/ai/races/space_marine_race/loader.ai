@@ -2,7 +2,7 @@
 -- File: 'smloader.ai'
 -- Edited by Arkhan	@ 23.10.2006
 -- Renamed by Corsix    @ 13.02.2006
--- Edited by Thudmeizer @ 20.06.2016
+-- Edited by Thudmeizer @ 23.09.2016
 -- Edited by Cylarne_04 2011
 
 class 'space_marine_race'
@@ -66,6 +66,7 @@ function space_marine_race:LoadRace( eDifficulty )
 	import( 'Races/space_marine_race/Tactics/LandRaiderTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/LandRaiderTerminusTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/TitanTactic.ai' )
+	import( 'Races/space_marine_race/Tactics/WarlordTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/MarinesHQTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/MarinesBuildingTactic.ai' )
 	import( 'Races/space_marine_race/Tactics/SuperStructureTactic.ai' )
@@ -181,6 +182,8 @@ function space_marine_race:CreateTactic(oSquadAI)
 		return LandRaiderTerminusTactic(oSquadAI)
 	elseif (sUnitName == "space_marine_squad_warhound_titan") or (sUnitName == "space_marine_squad_reaver_titan") then
 		return TitanTactic(oSquadAI)
+	elseif (sUnitName == "space_marine_squad_warlord_titan") or (sUnitName == "space_marine_squad_imperator_titan") then
+		return WarlordTactic(oSquadAI)
 	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
 	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return SpaceMarineVehicleTactic(oSquadAI)
@@ -244,7 +247,7 @@ function space_marine_race:GetInfo(sType)
 	elseif (sType == "InvisibleBuildings") then
 		return false
 	elseif (sType == "HarassingLeader") then
-		return "space_marine_squad_force_commander_killeus"
+		return "space_marine_squad_force_commander"
 	elseif (sType == "AutoConstructBuildings") then
 		return false
 	end

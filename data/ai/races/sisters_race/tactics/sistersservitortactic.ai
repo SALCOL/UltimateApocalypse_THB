@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersservitortactic.ai'
--- Created by Thudmeizer @ 10.04.2016
+-- Created by Thudmeizer @ 13.09.2016
 
 class 'SistersServitorTactic' (EngineerTactic)
 
@@ -51,12 +51,12 @@ end
 
 function SistersServitorTactic:Update()
 
-	if (self:IsComplete()) then
+	if self:IsComplete() then
 		return
 	end
     
 	-- State machine
-	if (not EngineerTactic.Update( self )) then
+	if not EngineerTactic.Update( self ) then
 		return
 	end
 

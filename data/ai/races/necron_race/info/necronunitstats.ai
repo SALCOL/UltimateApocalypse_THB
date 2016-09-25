@@ -1,6 +1,6 @@
 -----------------------------
 -- File: 'necronunitstats.ai'
--- Created by Thudmeizer @ 06.03.2016
+-- Created by Thudmeizer @ 12.09.2016
 -- Edited by Cylarne_04 2011
 
 --XP3
@@ -143,7 +143,7 @@ NecronUnitStats =
 		sbp_name = "necron_basic_warrior_squad",
 		ebp_name = "necron_basic_warrior",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 5,
+		rating = math.random(5.0*10,6.0*10)/10,
 		potential =
 		{
 			{
@@ -168,7 +168,7 @@ NecronUnitStats =
 		sbp_name = "necron_flayed_one_squad",
 		ebp_name = "necron_flayed_one",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 6,
+		rating = math.random(5.0*10,6.5*10)/10,
 		potential =
 		{
 			{
@@ -183,7 +183,7 @@ NecronUnitStats =
 		sbp_name = "necron_wraith_squad",
 		ebp_name = "necron_wraith",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 6,
+		rating = math.random(5.0*10,6.5*10)/10,
 		potential =
 		{
 			{

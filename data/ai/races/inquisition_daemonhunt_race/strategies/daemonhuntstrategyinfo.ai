@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonhuntstrategyinfo.ai'
--- Edited by Thudmeizer    @ 02.07.2016
+-- Edited by Thudmeizer    @ 23.09.2016
 
 BuildBaseStrategyInfo = 
 {
@@ -43,7 +43,6 @@ BuildBaseStrategyInfo =
 				{ 1, 90, 80, 300, 60,	"TurretAddon",	"inquisition_imperial_icon_addon_1" },
 				{ 1, 120, 30, 350, 1,	"Building",	"inquisition_turret_heavy_bolter" },
 				{ 1, 115, 0, 400, 4,	"Building",	"inquisition_warp_generator" },
-				{ 1, 120, 30, 500, 2,	"Building",	"inquisition_turret_heavy_bolter" },
 				{ 1, 90, 80, 700, 100,	"TurretAddon",	"inquisition_imperial_icon_addon_1" },
 				{ 1, 110, 0, 800, 1,	"Building",	"inquisition_purification_decree" },
 				{ 1, 135, 0, 900, 6,	"Building",	"inquisition_warp_generator" },
@@ -58,7 +57,6 @@ BuildBaseStrategyInfo =
 				{ 2, 400, 130, 600, 1,	"Building",	"inquisition_grey_knights_teleporter" },
 				{ 2, 15, 60, 650, 100,	"TurretAddon",	"inquisition_extremis_diabolus" },
 				{ 2, 190, 70, 1000, 1,	"Building",	"inquisition_astra_telepathica" },
-				{ 2, 250, 0, 700, 1,	"Building",	"inquisition_infantry_bunker" },
 				{ 2, 260, 160, 750, 50, "TurretAddon",	"inquisition_imperial_icon_addon_2" },
 				{ 2, 700, 700, 1000, 1,	"Addon",	"inquisition_tower_addon" },
 
@@ -67,6 +65,7 @@ BuildBaseStrategyInfo =
 				{ 3, 170, 140, 0, 1,	"Unit",		"inquisition_squad_razorback" },
 				{ 3, 245, 40, 0, 1,	"Unit",		"inquisition_squad_inquisitor_lord" },
 				{ 3, 320, 60, 0, 1,	"Unit",		"inquisition_squad_inquisitor_ordo_malleus" },
+				{ 3, 240, 0, 0, 1,	"Building",	"inquisition_infantry_bunker" },
 				{ 3, 30, 150, 0, 50,	"TurretAddon",	"inquisition_extremis_diabolus_2" },
 				{ 3, 25, 90, 0, 50,	"Addon",	"inquisition_mass_teleporter" },
 				{ 3, 400, 310, 800, 80,	"TurretAddon",	"inquisition_turret_improved_addon" },
@@ -134,6 +133,7 @@ BuildBaseStrategyInfo =
 				inquisition_squad_dreadknight_titan = 1,
 				inquisition_squad_warhound_titan = 1,
 				inquisition_squad_warhound_vengence_titan = 1,
+				inquisition_squad_imperator_titan = 1,
 			}
 		},
 	},

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'loader.ai'
--- Edited by Thudmeizer	@ 24.05.2016
+-- Edited by Thudmeizer	@ 23.09.2016
 
 class 'inquisition_daemonhunt_race'
 
@@ -57,6 +57,7 @@ function inquisition_daemonhunt_race:LoadRace( eDifficulty )
 	import( 'Races/inquisition_daemonhunt_race/Tactics/DHLandRaiderTactic.ai')
 	import( 'Races/inquisition_daemonhunt_race/Tactics/GKLandRaiderTactic.ai')
 	import( 'Races/inquisition_daemonhunt_race/Tactics/DHTitanTactic.ai' )
+	import( 'Races/inquisition_daemonhunt_race/Tactics/DHImperatorTactic.ai' )
 	import( 'Races/inquisition_daemonhunt_race/Tactics/AstraTelepathicaTactic.ai')
 	import( 'Races/inquisition_daemonhunt_race/Tactics/SuperStructureTactic.ai' )
 	import( 'Races/inquisition_daemonhunt_race/Tactics/GKTeleporterTactic.ai' )
@@ -155,6 +156,8 @@ function inquisition_daemonhunt_race:CreateTactic(oSquadAI)
 		return GKLandRaiderTactic(oSquadAI)
 	elseif (sUnitName == "inquisition_squad_warhound_titan") or (sUnitName == "inquisition_squad_warhound_vengence_titan") then
 		return DHTitanTactic(oSquadAI)
+	elseif (sUnitName == "inquisition_squad_imperator_titan") then
+		return DHImperatorTactic(oSquadAI)
 	elseif (oSquadAI:IsEngineer()) then
 		return nil
 	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or

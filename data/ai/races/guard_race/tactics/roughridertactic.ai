@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'roughridertactic.ai'
--- Edited by Thudmeizer	@ 29.02.2016
+-- Edited by Thudmeizer	@ 05.09.2016
 
 class 'RoughRiderTactic' (GuardInfantryTactic)
 
@@ -12,6 +12,8 @@ function RoughRiderTactic:__init( squad_ai ) super( squad_ai )
 	
 	-- Squad is able to occupy bunkers
 	self.m_bBunkerSquad = true
+
+	self.m_iTacticaID = cpu_manager.stats:GetBuildingID( "guard_tactica" )
 end
 
 function RoughRiderTactic:InitAbilities()
@@ -63,5 +65,22 @@ function RoughRiderTactic:DoAbilities()
 		if (self.squad_ai:CanDoAbility( RoughRider.run_id )) then
 			self.squad_ai:DoSpecialAbility( RoughRider.run_id )
 		end
+	end
+end
+
+function RoughRiderTactic:Reinforce()
+
+	-- Do not reinforce if morale is broken!
+	if (self.squad_ai:IsBroken()) then
+		return
+	end
+	
+	-- Always try to reinforce more than 12 squad members (they both get stuck or don't capture points properly) and if we have a Tactica Control, and is ready to spam attack  
+	if (not self.squad_ai:IsReinforcing() and cpu_manager.player_stats:GetNumBasesByBPID(self.m_iTacticaID, true) > 0 and self.squad_ai:GetNumTroopers() < 12) then
+		if (self.squad_ai:CanReinforce( false, 0 )) then
+			self.squad_ai:DoReinforce( false, 0 )
+		end
+	else 
+		return
 	end
 end

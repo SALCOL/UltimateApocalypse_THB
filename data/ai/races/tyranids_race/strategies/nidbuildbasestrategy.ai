@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'tyranidbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 20.06.2016
+-- Edited by Thudmeizer @ 24.09.2016
 
 class 'TyranidBuildBaseStrategy' (BuildBaseStrategy)
 
@@ -13,6 +13,9 @@ function TyranidBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	-- Phases of attacks. If army is decreased substantially, or build only titans: modify.
 	self.m_iArmyBuild = math.random(0, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
 	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
+
+	-- Build first HQ at start pos
+	self.m_iNumHQAtStartPos = 1
 end
 
 function TyranidBuildBaseStrategy:ChooseBuildProgram()
@@ -89,7 +92,6 @@ function TyranidBuildBaseStrategy:GetBuildingName( sType )
 	elseif (sType == "Mine") then
 		return "tyranids_mines"
 	end
-	
 	return nil
 end
 
@@ -222,30 +224,30 @@ function TyranidBuildBaseStrategy:UpdateTierLevel()
 		-- Check for valid building
 		if (oBase:IsValid() and not oBase:IsListeningPost()) then
 
-		-- Check for HQ addon 2
-		if (oBase:HasAddOn(iHQAddon2ID)) then
+			-- Check for HQ addon 2
+			if (oBase:HasAddOn(iHQAddon2ID)) then
 		
-			-- We still have the proper add-on
-			if (cpu_manager.cpu_player:IsResearchComplete("tyranids_apocalypse_research")) then
-				self.tierLevel = 6
-				return
-			elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_assimilation_research")) then
-				self.tierLevel = 5
-				return
-			elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_arrival3_research")) then
-				self.tierLevel = 4
-				return
-			else
-				self.tierLevel = 3
+				-- We still have the proper add-on
+				if (cpu_manager.cpu_player:IsResearchComplete("tyranids_apocalypse_research")) then
+					self.tierLevel = 6
+					return
+				elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_assimilation_research")) then
+					self.tierLevel = 5
+					return
+				elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_arrival3_research")) then
+					self.tierLevel = 4
+					return
+				else
+					self.tierLevel = 3
+					return
+				end
+		
+			-- Check for HQ addon 1
+			elseif (oBase:HasAddOn(iHQAddon1ID)) then
+				self.tierLevel = 2
 				return
 			end
-		
-		-- Check for HQ addon 1
-		elseif (oBase:HasAddOn(iHQAddon1ID)) then
-			self.tierLevel = 2
-			return
 		end
-	  end
 	end
 end
 
@@ -255,21 +257,6 @@ function TyranidBuildBaseStrategy:BuildFlexible()
 	local iArmyStrength = cpu_manager:GetArmyStrength()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	
-	-- Determine my all time largest army. During major casualties, determine if I should create more squads or only focus on build orders and titans.
-	if (iArmyStrength > self.m_iArmyHighestStrength) then
-		self.m_iArmyHighestStrength = iArmyStrength
-	end
-	
-	if (self.m_iArmyBuild < 4) then
-		-- HUGE hit! I have a very large army, and then in battle I lost so many...
-		if (iArmyStrength <= self.m_iArmyHighestStrength - 300 and iArmyStrength <= 2300) then
-			self.m_iArmyBuild = self.m_iArmyBuild + 1
-			self.m_iArmyHighestStrength = 0
-		end
-	elseif (iArmyStrength > 2500) then
-		self.m_iArmyBuild = 0
-	end
 	
 	if (iRequisition >= 1000 and iPower >= 500) then
 		
@@ -475,155 +462,82 @@ function TyranidBuildBaseStrategy:BuildFlexible()
 	
 		-- Dynamic buildings
 		-- Item-Syntax: BuildingName, BuildingCount, MinTier, MinRequisition, MinPower, MinSquadCap, MinSupportCap
-		
 		self:DynamicBuild("tyranids_hq", 2, 1, 1000, 0, 0, 0)
 		self:DynamicBuild("tyranids_digest_pool", 6 * self:GetBuildingCountByName("tyranids_hq"), 3, 500, 0, 0, 0)
-		self:DynamicBuild("tyranids_turret", 5, 1, 400, 0, 0, 0)
-		
-		if ((iPower >= 0 and iRequisition >= 2200) or self.m_iArmyBuild >= 3) then
-		
-			if (self.m_iArmyBuild >= 4) then
-				self:DynamicBuild("tyranids_turret", 10, 1, 120, 0, 0, 0)
-				self:DynamicBuild("tyranids_turret_bioacid", 10, 4, 600, 0, 0, 0)
-			end
-			
-			-- Tier 0
-			self:DynamicBuild("tyranids_gaunt_hive", 2, 2, 900, 0, 0, 0)
-			
-			-- Tier 1
-			self:DynamicBuild("tyranids_warrior_hive", 2, 2, 1000, 0, 0, 0)
-			self:DynamicBuild("tyranids_carnifex_hive", 2, 2, 1500, 0, 0, 0)
-			
-			-- Tier 2
-			self:DynamicBuild("tyranids_turret", 15, 3, 1600, 0, 0, 0)
-			self:DynamicBuild("tyranids_mines", 5, 3, 500, 0, 0, 0)
-			
-			-- Tier 3
-			self:DynamicBuild("tyranids_mines", 15, 4, 1500, 0, 0, 0)
-			self:DynamicBuild("tyranids_hq", 3, 4, 3500, 0, 0, 0)
-			self:DynamicBuild("tyranids_turret_bioacid", 15, 5, 2000, 0, 0, 0)
-			
-			-- Tier 4
-			self:DynamicBuild("tyranids_gaunt_hive", 3, 5, 700, 0, 0, 0)
-			self:DynamicBuild("tyranids_warrior_hive", 3, 5, 1000, 0, 0, 0)
-			self:DynamicBuild("tyranids_carnifex_hive", 3, 5, 2000, 0, 0, 0)
-			self:DynamicBuild("tyranids_relic_hive", 3, 5, 3000, 0, 0, 0)
-			self:DynamicBuild("tyranids_biotitan_hive", 2, 6, 4000, 0, 0, 0)
-			self:DynamicBuild("tyranids_hq", 4, 6, 6000, 1000, 0, 0)
-			self:DynamicBuild("tyranids_capillary_tower", 2, 5, 8000, 0, 0, 0)
-			self:DynamicBuild("tyranids_capillary_tower", 6, 6, 16000, 0, 0, 0)
-		end
---[[			
-		-- Build nukes
-		local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-		local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-			
-		-- Build nuke
-		local tBuildType = CpuBuildType()
-		tBuildType.btype = CpuPrerequisites.BT_Squad
-		
-		tBuildType.name = "npc_squad_superweapon1"
-		if (self:TryBuild( tBuildType )) then
-			aitrace("BuildController: Dynamic build of "..tBuildType.name)
-		end
-]]
-	end
-	
-	self:BuildFreeGaunts()
 
-	-- Check resources
-	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-	local iTierLevel = self:GetTierLevel()
-
-	if (iRequisition < 600 and iTierLevel < 3) or
-	   (iRequisition < 1000 and iTierLevel > 2) then
-
-		-- Check if a plan exists
-		local iBuildingID = cpu_manager.stats:GetBuildingID("tyranids_digest_pool")
-		if (self:PlanExists("Build Building Plan", iBuildingID)) then
-			return
-		end
-		
-		-- Check if any Hives are in production
-		for oBuildChannel in build_manager:GetBuildChannelAIs() do
-	
-			-- Check building ID
-			if (oBuildChannel:GetBlueprintID() == iBuildingID and not oBuildChannel:ConstructionDone()) then
-				return
+		-- Dynamically regulate quantity of defensive buildings based on how many strats/crits/relics we have through the tiers so we avoid cluttering/bottlenecking on maps with limited points
+		if (self.tierLevel >= 2 and (iRequisition >= 1500 and iPower >= 1500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() < 4) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasRelic()) then
+				self:DynamicBuild("tyranids_turret", 2, 2, 200, 0, 0, 0)
+				self:DynamicBuild("tyranids_mines", 2, 2, 300, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret", 4, 3, 200, 0, 0, 0)
+				self:DynamicBuild("tyranids_mines", 4, 3, 300, 0, 0, 0)
+   			end
+		else
+   			if (resource_manager:GetNumOwnedStrategicPoints() > 3) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasRelic()) then
+				self:DynamicBuild("tyranids_turret", 3, 2, 200, 0, 0, 0)
+				self:DynamicBuild("tyranids_mines", 3, 2, 300, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret", 6, 3, 200, 0, 0, 0)
+				self:DynamicBuild("tyranids_mines", 6, 3, 300, 0, 0, 0)
 			end
 		end
-		
-		-- Build a Pool
-		local tBuildType = CpuBuildType()
-		tBuildType.btype = CpuPrerequisites.BT_Building
-		tBuildType.name = "tyranids_digest_pool"
-		if (self:TryBuild( tBuildType )) then
-			aitrace("BuildController: Dynamic build of "..tBuildType.name)
-		end
-		return
-	end
-	
-	if (iRequisition < 2000 and iTierLevel > 3) then
 
-		-- Check if a plan exists
-		local iBuildingID = cpu_manager.stats:GetBuildingID("tyranids_capillary_vein")
-		if (self:PlanExists("Build Building Plan", iBuildingID)) then
-			return
-		end
-		
-		-- Check if any Hives are in production
-		for oBuildChannel in build_manager:GetBuildChannelAIs() do
-	
-			-- Check building ID
-			if (oBuildChannel:GetBlueprintID() == iBuildingID and not oBuildChannel:ConstructionDone()) then
-				return
+		if (self.tierLevel >= 4 and (iRequisition >= 2500 and iPower >= 2500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() > 4) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasRelic()) then
+				self:DynamicBuild("tyranids_turret_bioacid", 1, 4, 600, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret", 8, 4, 200, 0, 0, 0)
+				self:DynamicBuild("tyranids_mines", 8, 4, 300, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret_bioacid", 2, 4, 700, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret", 10, 5, 200, 0, 0, 0)
+				self:DynamicBuild("tyranids_mines", 10, 5, 300, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret_bioacid", 3, 5, 800, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret", 12, 6, 200, 0, 0, 0)
+				self:DynamicBuild("tyranids_mines", 12, 6, 300, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret_bioacid", 4, 6, 900, 0, 0, 0)
+				self:DynamicBuild("tyranids_turret_bioacid", 6, 6, 1500, 0, 0, 0)
 			end
 		end
-		
-		-- Build a Pool
-		local tBuildType = CpuBuildType()
-		tBuildType.btype = CpuPrerequisites.BT_Building
-		tBuildType.name = "tyranids_capillary_vein"
-		if (self:TryBuild( tBuildType )) then
-			aitrace("BuildController: Dynamic build of "..tBuildType.name)
+
+		-- Build additional support buildings as tiers progress
+		if (self.tierLevel >= 2) then
+			if (iRequisition >= 2000 and iPower >= 2000) then
+				self:DynamicBuild("tyranids_gaunt_hive", 2, 2, 900, 0, 0, 0)
+				self:DynamicBuild("tyranids_warrior_hive", 2, 2, 1000, 0, 0, 0)
+				self:DynamicBuild("tyranids_carnifex_hive", 2, 3, 1500, 0, 0, 0)
+				self:DynamicBuild("tyranids_hq", 3, 3, 1500, 0, 0, 0)
+				self:DynamicBuild("tyranids_capillary_vein", 1, 3, 300, 500, 0, 0)
+				self:DynamicBuild("tyranids_capillary_vein", 2, 3, 500, 700, 0, 0)
+				self:DynamicBuild("tyranids_capillary_vein", 3, 4, 700, 900, 0, 0)
+				self:DynamicBuild("tyranids_capillary_vein", 4, 4, 800, 1000, 0, 0)
+				self:DynamicBuild("tyranids_hq", 4, 5, 2000, 0, 0, 0)
+				self:DynamicBuild("tyranids_capillary_tower", 2, 5, 4000, 0, 0, 0)
+				self:DynamicBuild("tyranids_relic_hive", 2, 5, 3000, 0, 0, 0)
+				self:DynamicBuild("tyranids_biotitan_hive", 2, 5, 4000, 0, 0, 0)
+			end
 		end
-		return
-	end
-end
 
-function TyranidBuildBaseStrategy:BuildFreeGaunts()
+		-- Build additional uber buildings in later tiers
+		if (self.tierLevel >= 6) then
+			if (iRequisition >= 3000 and iPower >= 3000) then
+				self:DynamicBuild("tyranids_gaunt_hive", 3, 6, 900, 0, 0, 0)
+				self:DynamicBuild("tyranids_warrior_hive", 3, 6, 1000, 0, 0, 0)
+				self:DynamicBuild("tyranids_carnifex_hive", 3, 6, 1500, 0, 0, 0)
+				self:DynamicBuild("tyranids_relic_hive", 3, 6, 3000, 0, 0, 0)
+				self:DynamicBuild("tyranids_biotitan_hive", 3, 6, 4000, 0, 0, 0)
+				self:DynamicBuild("tyranids_capillary_vein", 5, 6, 300, 500, 0, 0)
+				self:DynamicBuild("tyranids_capillary_vein", 6, 6, 500, 700, 0, 0)
+				self:DynamicBuild("tyranids_capillary_vein", 7, 6, 700, 900, 0, 0)
+				self:DynamicBuild("tyranids_capillary_vein", 8, 6, 900, 1000, 0, 0)
+				self:DynamicBuild("tyranids_capillary_tower", 3, 6, 6000, 0, 0, 0)
+			end
+		end
 
-	-- Desired squads
-	local iDesiredSquads = 4
-
-	-- Check if we have two gaunt hives
-	if (self:GetBuildingCountByName("tyranids_gaunt_hive", true) < 2) then
-		iDesiredSquads = 2
-	end
-	
-	-- Check number of Spinegaunt squads
-	local iUnitID = cpu_manager.stats:GetSquadID("tyranids_squad_spinegaunt")
-	if (cpu_manager.player_stats:GetNumSquadsByBPID(iUnitID) >= iDesiredSquads) then
-		return
-	end
-	
-	-- Check if we have free squad cap
-	local iSquadCap = self:GetUnitStats("tyranids_squad_spinegaunt")
-	if (self:GetSquadCapLeft() < iSquadCap) then
-		return
-	end
-	
-	-- Check if a plan exists for a Spinegaunt squad
-	if (self:GetPlan("Build Unit Plan", iUnitID) ~= nil) then
-		return
-	end
-
-	-- Try to build free Spinegaunt squads
-	local tBuildType = CpuBuildType()
-	tBuildType.btype = CpuPrerequisites.BT_Squad
-	tBuildType.name = "tyranids_squad_spinegaunt"
-	if (self:TryBuild(tBuildType)) then
-		return
+		-- Build additional Superweapons if we have excess resources
+		if (iRequisition >= 14000) then
+			self:DynamicBuild("tyranids_capillary_tower", 4, 6, 14000, 0, 0, 0)
+			self:DynamicBuild("tyranids_capillary_tower", 5, 6, 16000, 0, 0, 0)
+			self:DynamicBuild("tyranids_capillary_tower", 6, 6, 20000, 0, 0, 0)
+		end
 	end
 end
 
@@ -635,7 +549,7 @@ function TyranidBuildBaseStrategy:ForceTech()
 		return false
 	end
 	
-	-- Check ressources
+	-- Check resources
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 
@@ -644,11 +558,11 @@ function TyranidBuildBaseStrategy:ForceTech()
 	if (iTierLevel == 1) then
 	
 		-- Check resources
-		if (iRequisition > 600) then
+		if (iRequisition > 600 and iPower > 200) then
 			return false
 		end
 	
-		-- Check for soul shrine
+		-- Check for warrior hive
 		if (self:GetBuildingCountByName("tyranids_warrior_hive", false) >= 1) then
 			return false
 		end
@@ -656,13 +570,13 @@ function TyranidBuildBaseStrategy:ForceTech()
 		
 	elseif (iTierLevel == 2) then
 
-		-- Check for support portal
+		-- Check for large hive
 		if (self:GetBuildingCountByName("tyranids_carnifex_hive", false) < 1) then
 			return true
 		end
 		
 		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier2 and (iRequisition < 800)) then
+		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier2 and (iRequisition < 700 or iPower < 500)) then
 			return true
 		end
 		
@@ -672,14 +586,6 @@ function TyranidBuildBaseStrategy:ForceTech()
 		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iRequisition < 1300 or iPower < 900)) then
 			return true
 		end
---[[		
-	elseif (iTierLevel == 4) then	
-
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier4 and (iRequisition < 1900 or iPower < 1300)) then
-			return true
-		end
-]]
 	end
 	return false
 end
@@ -689,16 +595,34 @@ function TyranidBuildBaseStrategy:GetPlacementType(iBuildingID)
 	
 	-- Check building
 	if (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_hq")) then
-        	return "Safeplace"
-	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_capillary_tower") or
+        	local count = self:GetBuildingCountByName("tyranids_hq", false)
+		local friend = cpu_manager:FindClosestFriendPlayer()
+		if friend == nil then
+			-- Lone Player
+                	if count == 0 and not cpu_manager:HQThreat() then
+                    		return "HQ"
+                	else
+                    		return "Safeplace"
+                	end
+        	else
+        		-- Has allies
+                	if count > 2 or cpu_manager:HQThreat() then
+ 				return "HQ"
+                	else
+				return "Safeplace"
+                	end
+		end
+	--elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_capillary_tower")) then
+		--return "Safeplace"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_gaunt_hive") or 
 		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_warrior_hive") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_carnifex_hive") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_biotitan_hive") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_relic_hive") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_digest_pool")) then
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_digest_pool") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_capillary_tower")) then
 		return "Military"
-	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_gaunt_hive") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_turret_bioacid") or
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_turret_bioacid") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_turret")) then
 		return "Front2"   
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_mines")) then
@@ -719,6 +643,39 @@ function TyranidBuildBaseStrategy:HasResourcesForBiggerGenerator(iRequisition, i
 		return false
 	end
 	return true
+end
+
+function TyranidBuildBaseStrategy:HQEmergency()
+
+	-- Check HQ count
+	local iHQCount = self:GetBuildingCountByName("tyranids_hq")
+	if (iHQCount >= 2) then
+		return false
+	end
+
+	-- Build a second HQ if first one is severly damaged
+	local bHQDamaged = false
+	for oBuilding in military_manager:GetBases() do
+	
+		-- Check for valid building
+		if (oBuilding:IsValid() and not oBuilding:IsListeningPost() and oBuilding:GetBaseName() == "tyranids_hq") then
+	  
+			-- Check health
+			if (oBuilding:GetHealthPercentage() < 0.6) then
+
+				-- Adjust current build program
+				for iLoop1 = 1, table.getn(self.info.BuildPrograms[self.m_iCurrentBuildProgram]) do
+				
+					-- Search HQ entry and set build count to two
+					if (self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][7] == "tyranids_hq") then
+						self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][5] = 2
+						return true
+					end
+				end
+			end
+		end
+	end
+	return false
 end
 
 -- Arkhan 11.2006: Virtual method for checking out relic units

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarstrategyinfo.ai'
--- Edited by Thudmeizer    @ 10.08.2016
+-- Edited by Thudmeizer    @ 24.09.2016
 
 BuildBaseStrategyInfo = 
 {
@@ -50,7 +50,6 @@ BuildBaseStrategyInfo =
 				{ 1, 120, 50, 0, 1,	"Building",	"dark_eldar_turret" },
 			        { 1, 0, 0, 0, 100,	"Addon",	"addon_dark_eldar_gruesome_display_building" },
 				{ 1, 150, 0, 0, 4,	"Building",	"dark_eldar_plasma_generator" },
-				{ 1, 120, 50, 0, 2,	"Building",	"dark_eldar_turret" },
 				{ 1, 400, 130, 950, 1,	"Addon",	"addon_dark_eldar_hq_1" },
 				
 				{ 2, 75, 125, 0, 1,	"Unit",		"dark_eldar_squad_haemonculus" },
@@ -59,13 +58,11 @@ BuildBaseStrategyInfo =
 				{ 2, 250, 75, 0, 1,	"Building",	"dark_eldar_skimmer_shop" },
 				{ 2, 150, 0, 0, 6,	"Building",	"dark_eldar_plasma_generator" },
 				{ 2, 150, 75, 0, 1,	"Building",	"dark_eldar_wych_cult_arena" },
-				{ 2, 120, 50, 0, 3,	"Building",	"dark_eldar_turret" },
-				{ 2, 25, 90, 0, 75,	"TurretAddon",	"addon_dark_eldar_turret" },
+				{ 2, 25, 90, 0, 50,	"TurretAddon",	"addon_dark_eldar_turret" },
 			        { 2, 0, 0, 500, 2,	"Building",	"dark_eldar_slave_caravel_ai" },
 				{ 2, 50, 25, 500, 75,	"TurretAddon",	"addon_dark_eldar_list_post_dark_lance" },
 				{ 2, 240, 160, 0, 50,	"TurretAddon",	"addon_dark_eldar_list_post_2" },
 				{ 2, 700, 150, 1000, 2,	"Building",	"dark_eldar_hq" },
-				{ 2, 120, 50, 0, 5,	"Building",	"dark_eldar_turret" },
 				{ 2, 500, 500, 1000, 1,	"Addon",	"addon_dark_eldar_hq_2" },
 				
 				{ 3, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },

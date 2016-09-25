@@ -1,0 +1,151 @@
+----------------------------------------
+-- File: 'warlordtactic.ai'
+-- Edited by Thudmeizer		@ 23.09.2016
+
+class 'WarlordTactic' (SpaceMarineVehicleTactic)
+
+Warlord = {}
+
+function WarlordTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Warlord Tactic")
+
+	-- Vehicle is a super heavy transport
+	self.m_iTransportVehicle = 1
+	self.m_iTransportSlots = 8
+
+	Warlord.detectDelay = -1
+end
+
+function WarlordTactic:InitAbilities()
+
+	--Init ability ID's
+	if (Warlord.valkstrike_id == nil) then
+		Warlord.valkstrike_id = cpu_manager.stats:GetAbilityID( "guard_valkyrie_strike_doctrine" )
+	end
+	if (Warlord.valkstrike2_id == nil) then
+		Warlord.valkstrike2_id = cpu_manager.stats:GetAbilityID( "guard_valkyrie_strike2" )
+	end
+	if (Warlord.vultstrike_id == nil) then
+		Warlord.vultstrike_id = cpu_manager.stats:GetAbilityID( "guard_vulture_strike_doctrine" )
+	end
+	if (Warlord.vultstrike2_id == nil) then
+		Warlord.vultstrike2_id = cpu_manager.stats:GetAbilityID( "guard_vulture_strike" )
+	end
+	if (Warlord.detection_id == nil) then
+		Warlord.detection_id = cpu_manager.stats:GetAbilityID( "guard_detection_field" )
+	end
+	if (Warlord.turret_id == nil) then
+		Warlord.turret_id = cpu_manager.stats:GetAbilityID( "titan_turret_mode" )	
+	end
+end
+
+function WarlordTactic:DoAbilities()
+
+	-- Try to activate detection field
+	if (self.squad_ai:CanDoAbility(Warlord.detection_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(Warlord.detection_id)
+		local oSquad = Ability.Filters.CloseInfiltratedEnemy(self.squad_ai:GetPosition(), iRange, 1)
+		
+		if (oSquad ~= nil) then
+			if(Warlord.detectDelay == -1) then
+				Warlord.detectDelay = math.max(0, 30)
+				Warlord.detectTime = g_iGMT + Warlord.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < Warlord.detectTime) then
+				return
+			end
+
+			-- Only try to detect if the infiltrated unit is attacking
+			if (oSquad:IsAttacking()) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.squad_ai:DoSpecialAbilityPos( Warlord.detection_id, pos )
+
+				Warlord.detectDelay = -1
+			end
+		else 
+			--if no infiltrated units within range, scan other enemies
+			local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 1)
+			if(Warlord.detectDelay == -1) then
+				Warlord.detectDelay = math.max(0, 30)
+				Warlord.detectTime = g_iGMT + Warlord.detectDelay
+			end	
+			
+			-- Don't detect for a random time between 0 and 30 seconds
+			if(g_iGMT < Warlord.detectTime) then
+				return
+			end
+
+			if (oSquad ~= nil) then
+				local pos = Vector3f( oSquad:GetPosition() )
+				pos.x = pos.x + math.random(-15,15)
+				pos.z = pos.z + math.random(-15,15)
+				
+				-- Do the ability on a general area and not on directly top of the unit
+				self.squad_ai:DoSpecialAbilityPos( Warlord.detection_id, pos )
+
+				Warlord.detectDelay = -1
+			end
+		end
+	end
+
+	-- Titan Stomp Mode - The vehicle will sacrifice combat accuracy in exchange for extra speed and the ability to knock down infantry wherever the vehicle goes.
+	-- Vehicle gains a 60% movement speed increase and will knock down infantry continuously on contact.
+	if (self.squad_ai:IsInCombat() and self.squad_ai:IsInStateMove()) then
+		if (self.squad_ai:CanDoAbility( Warlord.turret_id )) then
+			Ability.DoAbilityArea(self.squad_ai, Warlord.turret_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+			Ability.DoAbilityArea(self.squad_ai, Warlord.turret_id, Ability.Filters.CloseMonsterEnemy, 10, 4)
+		end
+	end
+
+	if (self.squad_ai:CanDoAbility(Warlord.valkstrike_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(Warlord.valkstrike_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 8)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.squad_ai:DoSpecialAbilitySquad(Warlord.valkstrike_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	if (self.squad_ai:CanDoAbility(Warlord.valkstrike2_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(Warlord.valkstrike2_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 12)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.squad_ai:DoSpecialAbilitySquad(Warlord.valkstrike2_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	if (self.squad_ai:CanDoAbility(Warlord.vultstrike_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(Warlord.vultstrike_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 8)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.squad_ai:DoSpecialAbilitySquad(Warlord.vultstrike_id, oSquad:GetSquad())
+			end
+		end
+	end
+
+	if (self.squad_ai:CanDoAbility(Warlord.vultstrike2_id)) then
+	
+		local iRange = self.squad_ai:GetAbilityRange(Warlord.vultstrike2_id)
+		local oSquad = Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), iRange, 12)
+		if (oSquad ~= nil) then		
+			if (oSquad:IsAttacking()) then
+				self.squad_ai:DoSpecialAbilitySquad(Warlord.vultstrike2_id, oSquad:GetSquad())
+			end
+		end
+	end
+end

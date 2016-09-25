@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'bonesingertactic.ai'
--- Edited by Thudmeizer		@ 23.04.2016
+-- Edited by Thudmeizer		@ 13.09.2016
 
 class 'BonesingerTactic' (EngineerTactic)
 
@@ -129,12 +129,15 @@ function BonesingerTactic:Update()
 
 	self:DoAbilities()
 
-	if (self:IsComplete()) then
+	if self:IsComplete() then
 		return
 	end
     
 	-- State machine
-	if (not EngineerTactic.Update( self )) then
+	if not EngineerTactic.Update( self ) then
 		return
 	end
+
+	-- Check if we are in serious trouble
+	self:EmergencyRetreat()
 end

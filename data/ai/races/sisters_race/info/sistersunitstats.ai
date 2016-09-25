@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersunitstats.ai'
--- Edited by Thudmeizer @ 23.08.2016
+-- Edited by Thudmeizer @ 15.09.2016
 -- Edited by Cylarne_04 2011
 
 -- XP3
@@ -217,7 +217,7 @@ SistersUnitStats =
 		potential =
 		{
 			{
-				name = "witch_hunters_archoflagellant_cutting_claws",
+				name = "sisters_archoflagellant_cutting_claws",
 				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
@@ -337,12 +337,12 @@ SistersUnitStats =
 		potential =
 		{
 			{
-				name = "witch_hunters_callidus_neural_shredder",
+				name = "sisters_callidus_neural_shredder",
 				effectiveness = GenerateUnitEffectiveness(math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,math.random(6*10,8*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "witch_hunters_callidus_ctanphase_sword",
+				name = "sisters_callidus_ctanphase_sword",
 				effectiveness = GenerateUnitEffectiveness(5.8,5.0,0.3,7.3,5.9,1.3,1.6,1.8,6.2,6.0,6.0,4.5,2.6,1.9,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},
@@ -567,12 +567,12 @@ SistersUnitStats =
 		potential =
 		{
 			{
-				name = "witch_hunters_incarcerator_warp_fire_up",
+				name = "sisters_incarcerator_warp_fire_up",
 				effectiveness = GenerateUnitEffectiveness(math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,math.random(4*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "witch_hunters_incarcerator_warp_fire_down",
+				name = "sisters_incarcerator_warp_fire_down",
 				effectiveness = GenerateUnitEffectiveness(3.2,3.2,3.2,3.2,7.2,8.2,8.2,8.2,3.2,7.2,3.2,8.0,8.2,8.2,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
@@ -732,12 +732,12 @@ SistersUnitStats =
 		potential =
 		{
 			{
-				name = "witch_hunters_throne_judgement_melta_gun",
+				name = "sisters_throne_judgement_melta_gun",
 				effectiveness = GenerateUnitEffectiveness(math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,math.random(5*10,7*10)/10,6.1,2.3,3.1,3.7,1.9,0.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{
-				name = "witch_hunters_throne_judgement_power_sword",
+				name = "sisters_throne_judgement_power_sword",
 				effectiveness = GenerateUnitEffectiveness(5.0,5.2,5.0,5.2,5.1,3.7,5.8,3.1,7.3,6.0,4.0,8.2,6.7,5.8,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Melee,
 			},

@@ -1,0 +1,33 @@
+----------------------------------------
+-- File: 'fireswordtactic.ai'
+-- Edited by Cylarne_04 2011
+-- Edited by Thudmeizer		@ 23.09.2016
+
+class 'FireswordTactic' (GuardVehicleTactic)
+
+Firesword = {}
+
+function FireswordTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Firesword Tactic")
+end
+
+function FireswordTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (Firesword.barrage_id == nil) then
+		Firesword.barrage_id = cpu_manager.stats:GetAbilityID( "guard_inferno_grenade_barrage" )
+	end
+end
+
+function FireswordTactic:DoAbilities()
+
+	-- Try to use Incendiary Bomb Launchers
+	Ability.DoAbilityPos(self.squad_ai, Firesword.barrage_id, Ability.Filters.CloseInfantryEnemy, 4)
+	Ability.DoAbilityPos(self.squad_ai, Firesword.barrage_id, Ability.Filters.CloseMonsterEnemy, 4)
+	Ability.DoAbilityPos(self.squad_ai, Firesword.barrage_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)
+
+	-- Call standard method
+	GuardVehicleTactic.DoAbilities(self)
+end
+

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'chaosunitstats.ai'
--- Edited by Thudmeizer @ 23.04.2016
+-- Edited by Thudmeizer @ 23.09.2016
 -- Edited by Arkhan     @ 31.10.2006
 -- Edited by Cylarne_04 2011
 
@@ -1466,6 +1466,11 @@ ChaosMarineUnitStats =
 			{
 				name = "npc_missile_launcher_reaver",
 				effectiveness = GenerateUnitEffectiveness(8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,0.0,0.0,0.0),
+				range = UnitStatsAI.RT_Ranged,
+			},
+			{
+				name = "npc_missile_launcher_reaver_apocalypse_chaos",
+				effectiveness = GenerateUnitEffectiveness(9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,8.0,8.0,8.0,0.0,0.0,0.0),
 				range = UnitStatsAI.RT_Ranged,
 			},
 			{

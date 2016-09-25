@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'chaosbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 03.09.2016
+-- Edited by Thudmeizer @ 24.09.2016
 -- Edited by Cylarne_04 2011
 
 class 'ChaosBuildBaseStrategy' (BuildBaseStrategy)
@@ -22,18 +22,24 @@ function ChaosBuildBaseStrategy:__init( baseinfo ) super( baseinfo )
 	self.m_iArmyBuild = math.random(4, 4) -- 4 phases total. If 4 armies was defeated, stop creating armies as it is pointless. Build titans and focus on build order strategy.
 	self.m_iArmyHighestStrength = 0 -- Maximum possible army strength I ever had.
 
+	-- Build first HQ at start pos
+	self.m_iNumHQAtStartPos = 1
+
 	-- dark40k - set items that need bypass for CpuPrerequisites
 	CpuPrerequisites2.AddSpecialItem("chaos_turret_addon_probe", CpuPrerequisites.BT_AddOn)
 
+	-- dark40k - set items that need bypass for CpuPrerequisites
 	CpuPrerequisites2.AddSpecialItem("chaos_wargear10", CpuPrerequisites.BT_Research)
 	CpuPrerequisites2.AddSpecialItem("chaos_wargear_upgrade_10_daemonic_ascension_research", CpuPrerequisites.BT_Research)
 
+	-- dark40k - set items that need bypass for CpuPrerequisites
 	CpuPrerequisites2.AddSpecialItem("chaos_squad_lord", CpuPrerequisites.BT_Squad)
 	CpuPrerequisites2.AddSpecialItem("chaos_squad_lord_terminator", CpuPrerequisites.BT_Squad)
 	CpuPrerequisites2.AddSpecialItem("chaos_squad_lord_advance_sp", CpuPrerequisites.BT_Squad)
 	CpuPrerequisites2.AddSpecialItem("chaos_squad_sorcerer_advance_sp", CpuPrerequisites.BT_Squad)
 	CpuPrerequisites2.AddSpecialItem("chaos_squad_daemon_prince_advance_sp", CpuPrerequisites.BT_Squad)
 
+	-- Choose early game harrassing commander based on branch chosen
 	if (BuildBaseStrategy.ChooseBuildProgram(self) == 1) then
        		g_iHarassingLeader = 1
    	elseif (BuildBaseStrategy.ChooseBuildProgram(self) == 2) then
@@ -75,67 +81,7 @@ function ChaosBuildBaseStrategy:ChooseBuildProgram()
 	local iBuildProgram1	-- Normal
 	return 1
 end
---[[
-function ChaosBuildBaseStrategy:ChooseBuildProgram()
 
-	-- Check build program count
-	if (table.getn(self.info.BuildPrograms) ~= 5) then
-		return BuildBaseStrategy.ChooseBuildProgram(self)
-	end
-
-	-- Get map size and closest enemy distance
-	local sMapSize, iClosestEnemyDistance = self:GetMapSize()
-		
-	-- Set probabilities of the strategies according to the map size
-	local iBuildProgram1	-- Undivided strategy
-	local iBuildProgram2	-- Khorne strategy
-	local iBuildProgram3	-- Nurgle strategy
-        local iBuildProgram4	-- Slaanesh strategy
-	local iBuildProgram5	-- Tzeentch strategy
-	if (sMapSize == "small" or iClosestEnemyDistance <= 70 or cpu_manager.iPlayerCount == 2) then
-	
-		iBuildProgram1 = 20
-		iBuildProgram2 = 20
-		iBuildProgram3 = 20
-		iBuildProgram4 = 20
-	        iBuildProgram5 = 20
-		
-	elseif (sMapSize == "large" and cpu_manager.iPlayerCount >= 6) then
-	
-		iBuildProgram1 = 20
-		iBuildProgram2 = 20
-		iBuildProgram3 = 20
-		iBuildProgram4 = 20
-	        iBuildProgram5 = 20
-	else
-		iBuildProgram1 = 20
-		iBuildProgram2 = 20
-		iBuildProgram3 = 20
-		iBuildProgram4 = 20
-	        iBuildProgram5 = 20
-	end
-
-	-- Now choose a program
-	iBuildProgram2 = iBuildProgram1 + iBuildProgram2
-	iBuildProgram3 = iBuildProgram2 + iBuildProgram3
-	iBuildProgram4 = iBuildProgram3 + iBuildProgram4
-        iBuildProgram5 = iBuildProgram4 + iBuildProgram5
-
-	local iRandom = math.random(1, 100)
-	if (iRandom <= iBuildProgram1) then
-		return 1
-	elseif (iRandom <= iBuildProgram2) then
-		return 2
-	elseif (iRandom <= iBuildProgram3) then
-		return 3
-	elseif (iRandom <= iBuildProgram4) then
-		return 4
-	elseif (iRandom <= iBuildProgram5) then
-		return 5
-	end
-	return 1
-end
-]]
 function ChaosBuildBaseStrategy:EvaluateSquadCap()
 	
 	-- Check squad cap
@@ -205,7 +151,6 @@ function ChaosBuildBaseStrategy:GetBuildingName( sType )
 	elseif (sType == "Mine") then
 		return "chaos_mine_field"
 	end
-	
 	return nil
 end
 
@@ -362,16 +307,6 @@ function ChaosBuildBaseStrategy:BuildFlexible()
 		self.m_iArmyHighestStrength = iArmyStrength
 	end
 	
-	if (self.m_iArmyBuild < 4) then
-		-- HUGE hit! I have a very large army, and then in battle I lost so many...
-		if (iArmyStrength <= self.m_iArmyHighestStrength - 300 and iArmyStrength <= 2300) then
-			self.m_iArmyBuild = self.m_iArmyBuild + 1
-			self.m_iArmyHighestStrength = 0
-		end
-	elseif (iArmyStrength > 2500) then
-		self.m_iArmyBuild = 0
-	end
-	
 	if (self.m_iMarksofChaosResearch == 1) then
 		
 		-- Mark of Khorne //Ability = Summon Chaos Shrine.	
@@ -490,21 +425,7 @@ function ChaosBuildBaseStrategy:BuildFlexible()
 					if (cpu_manager.cpu_player:IsResearchComplete( "chaos_mark_slaanesh_research" )) then
 						self:DynamicResearch("chaos_turret_upgrade3", 3, 110, 65, 0, 0, nil, 0)
 					end
---[[
-					--Compute commander researches
-					if (iCommanderSquads >= 1) then
-						-- Compute wargear researches
-						self:DynamicResearch("chaos_wargear01", 2, 0, 0, 0, 0, nil, 0)
-						self:DynamicResearch("chaos_wargear02", 4, 0, 0, 0, 0, nil, 0)
-						self:DynamicResearch("chaos_wargear03", 2, 0, 0, 0, 0, nil, 0)
-						self:DynamicResearch("chaos_wargear04", 4, 0, 0, 0, 0, nil, 0)
-						self:DynamicResearch("chaos_wargear05", 2, 0, 0, 0, 0, nil, 0)
-						self:DynamicResearch("chaos_wargear06", 2, 0, 0, 0, 0, nil, 0)
-						self:DynamicResearch("chaos_wargear07", 2, 0, 0, 0, 0, nil, 0)
-						self:DynamicResearch("chaos_wargear08", 2, 0, 0, 0, 0, nil, 0)
-						self:DynamicResearch("chaos_wargear09", 2, 0, 0, 0, 0, nil, 0)
-					end
-]]
+
 					-- Compute scout researches
 					self:DynamicResearch("chaos_infiltration_research", 2, 100, 75, 0, 0, "chaos_squad_cultist", 1)
 			
@@ -616,8 +537,6 @@ function ChaosBuildBaseStrategy:BuildFlexible()
 				if (self:CountSquads("chaos_squad_warhound_titan") >= 1) or (self:CountSquads("chaos_squad_reaver_titan") >= 1) or (self:CountSquads("chaos_squad_heldrake") >= 1) then
 					self:DynamicResearch("chaos_titan_armor_research", 5, 500, 500, 0, 0, nil, 0)
 				end
-
-
 		
 				-- Compute Apocalypse
 				self:DynamicResearch("chaos_apocalypse_research", 5, 2000, 2000, 0, 0, nil, 0)
@@ -638,50 +557,91 @@ function ChaosBuildBaseStrategy:BuildFlexible()
 	
 		-- Dynamic buildings
 		-- Item-Syntax: BuildingName, BuildingCount, MinTier, MinRequisition, MinPower, MinSquadCap, MinSupportCap
-		
 		self:DynamicBuild("chaos_hq", 2, 1, 700, 150, 0, 0)
-		
 		self:DynamicBuild("chaos_plasma_generator", 6 * self:GetBuildingCountByName("chaos_hq"), 3, 500, 0, 0, 0)
-		
-		self:DynamicBuild("chaos_turret_bolter", 6, 1, 350, 150, 0, 0)
-		
-		if ((iPower >= 1200 and iRequisition >= 1800) or self.m_iArmyBuild >= 3) then
-			
-			if (self.m_iArmyBuild >= 4) then
-				self:DynamicBuild("chaos_wall", 15, 3, 900, 0, 0, 0)
-				self:DynamicBuild("chaos_tanktrap", 5, 3, 500, 0, 0, 0)
-				self:DynamicBuild("chaos_mine_field", 10, 2, 300, 100, 0, 0)
-			end
 
-			-- Tier 1
-			self:DynamicBuild("chaos_temple", 2, 2, 1500, 0, 0, 0)
-			self:DynamicBuild("chaos_machine_pit", 2, 2, 600, 1000, 0, 0)
-			self:DynamicBuild("chaos_sacrificial_circle", 2, 2, 800, 1500, 0, 0)
-			
-			-- Tier 2
-			self:DynamicBuild("chaos_greater_sacrificial_circle", 2, 3, 1200, 1200, 0, 0)
-			self:DynamicBuild("chaos_turret_bolter", 10, 3, 500, 500, 0, 0)
-			self:DynamicBuild("chaos_hq", 3, 3, 1000, 500, 0, 0)
-			
-			-- Tier 3
-			if (cpu_manager.cpu_player:IsResearchComplete( "chaos_mark_slaanesh_research" )) then
-				self:DynamicBuild("chaos_turret_bolter", 30, 3, 200, 50, 0, 0)
-			else
-				self:DynamicBuild("chaos_shrine_khorne", 12, 4, 700, 350, 0, 0)
-				self:DynamicBuild("chaos_turret_bolter", 20, 1, 300, 100, 0, 0)
+		-- Dynamically regulate quantity of defensive buildings based on how many strats/crits/relics we have through the tiers so we avoid cluttering/bottlenecking on maps with limited points
+		if (self.tierLevel >= 2 and (iRequisition >= 1500 and iPower >= 1500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() < 4) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasRelic()) then
+				self:DynamicBuild("chaos_turret_bolter", 2, 2, 500, 500, 0, 0)
+				self:DynamicBuild("chaos_mine_field", 2, 2, 300, 100, 0, 0)
+				self:DynamicBuild("chaos_tanktrap", 2, 2, 500, 0, 0, 0)
+				self:DynamicBuild("chaos_wall", 2, 3, 900, 0, 0, 0)
+				self:DynamicBuild("chaos_turret_bolter", 4, 3, 500, 500, 0, 0)
+				self:DynamicBuild("chaos_mine_field", 4, 3, 300, 100, 0, 0)
+				self:DynamicBuild("chaos_tanktrap", 4, 3, 500, 0, 0, 0)
+   			end
+		else
+   			if (resource_manager:GetNumOwnedStrategicPoints() > 3) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 2 and self:HasRelic()) then
+				self:DynamicBuild("chaos_turret_bolter", 3, 2, 500, 500, 0, 0)
+				self:DynamicBuild("chaos_mine_field", 3, 2, 300, 100, 0, 0)
+				self:DynamicBuild("chaos_tanktrap", 3, 2, 500, 0, 0, 0)
+				self:DynamicBuild("chaos_wall", 3, 3, 900, 0, 0, 0)
+				self:DynamicBuild("chaos_turret_bolter", 6, 3, 500, 500, 0, 0)
+				self:DynamicBuild("chaos_mine_field", 6, 3, 300, 100, 0, 0)
+				self:DynamicBuild("chaos_tanktrap", 6, 3, 500, 0, 0, 0)
 			end
-			
-			-- Tier 4
-			self:DynamicBuild("chaos_temple", 3, 5, 2500, 0, 0, 0)
-			self:DynamicBuild("chaos_machine_pit", 3, 5, 2000, 1500, 0, 0)
-			self:DynamicBuild("chaos_sacrificial_circle", 3, 5, 2500, 2000, 0, 0)
-			self:DynamicBuild("chaos_warpforge", 2, 5, 2000, 3000, 0, 0)
-			self:DynamicBuild("chaos_greater_sacrificial_circle", 3, 5, 3000, 3000, 0, 0)
-			self:DynamicBuild("chaos_hq_super", 3, 5, 5000, 5000, 0, 0)
-			self:DynamicBuild("chaos_warpgate", 2, 5, 4000, 4000, 0, 0)
-			self:DynamicBuild("chaos_hq", 4, 6, 4500, 4500, 0, 0)
-			self:DynamicBuild("chaos_warpforge", 3, 6, 5000, 5000, 0, 0)
-			self:DynamicBuild("chaos_warpgate", 2, 6, 6000, 6000, 0, 0)
+		end
+
+		if (self.tierLevel >= 4 and (iRequisition >= 2500 and iPower >= 2500)) then
+    			if (resource_manager:GetNumOwnedStrategicPoints() > 4) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() > 3 and self:HasRelic()) then
+				self:DynamicBuild("chaos_turret_bolter", 8, 4, 500, 500, 0, 0)
+				self:DynamicBuild("chaos_mine_field", 8, 4, 300, 100, 0, 0)
+				self:DynamicBuild("chaos_tanktrap", 8, 4, 500, 0, 0, 0)
+				self:DynamicBuild("chaos_wall", 8, 4, 900, 0, 0, 0)
+				self:DynamicBuild("chaos_turret_bolter", 10, 5, 500, 500, 0, 0)
+				self:DynamicBuild("chaos_mine_field", 10, 5, 300, 100, 0, 0)
+				self:DynamicBuild("chaos_tanktrap", 10, 5, 500, 0, 0, 0)
+				self:DynamicBuild("chaos_wall", 10, 5, 1100, 0, 0, 0)
+				self:DynamicBuild("chaos_turret_bolter", 12, 6, 500, 500, 0, 0)
+				self:DynamicBuild("chaos_mine_field", 12, 6, 300, 100, 0, 0)
+				self:DynamicBuild("chaos_tanktrap", 12, 6, 500, 0, 0, 0)
+				self:DynamicBuild("chaos_wall", 12, 6, 1100, 0, 0, 0)
+			end
+		end
+
+		if not (cpu_manager.cpu_player:IsResearchComplete( "chaos_mark_slaanesh_research" )) then
+			self:DynamicBuild("chaos_shrine_khorne", 2, 4, 700, 350, 0, 0)
+			self:DynamicBuild("chaos_shrine_khorne", 4, 4, 800, 500, 0, 0)
+			self:DynamicBuild("chaos_shrine_khorne", 6, 5, 900, 700, 0, 0)
+			self:DynamicBuild("chaos_shrine_khorne", 8, 5, 1000, 800, 0, 0)
+			self:DynamicBuild("chaos_shrine_khorne", 10, 6, 1200, 900, 0, 0)
+			self:DynamicBuild("chaos_shrine_khorne", 12, 6, 1500, 1000, 0, 0)
+		end
+
+		-- Build additional support buildings as tiers progress
+		if (self.tierLevel >= 2) then
+			if (iRequisition >= 2000 and iPower >= 2000) then
+				self:DynamicBuild("chaos_temple", 2, 2, 1500, 0, 0, 0)
+				self:DynamicBuild("chaos_machine_pit", 2, 3, 600, 1000, 0, 0)
+				self:DynamicBuild("chaos_sacrificial_circle", 2, 4, 800, 1500, 0, 0)
+				self:DynamicBuild("chaos_greater_sacrificial_circle", 2, 4, 1200, 1200, 0, 0)
+				self:DynamicBuild("chaos_hq", 3, 3, 1000, 500, 0, 0)
+				self:DynamicBuild("chaos_hq", 4, 5, 2000, 1000, 0, 0)
+				self:DynamicBuild("chaos_warpforge", 2, 5, 2000, 3000, 0, 0)
+				self:DynamicBuild("chaos_hq_super", 2, 5, 3000, 3000, 0, 0)
+				self:DynamicBuild("chaos_warpgate", 2, 5, 4000, 4000, 0, 0)
+			end
+		end
+
+		-- Build additional uber buildings in later tiers
+		if (self.tierLevel >= 6) then
+			if (iRequisition >= 3000 and iPower >= 3000) then
+				self:DynamicBuild("chaos_temple", 3, 6, 1500, 0, 0, 0)
+				self:DynamicBuild("chaos_machine_pit", 3, 6, 600, 1000, 0, 0)
+				self:DynamicBuild("chaos_sacrificial_circle", 3, 6, 800, 1500, 0, 0)
+				self:DynamicBuild("chaos_greater_sacrificial_circle", 3, 6, 1200, 1200, 0, 0)
+				self:DynamicBuild("chaos_warpforge", 3, 6, 2000, 3000, 0, 0)
+				self:DynamicBuild("chaos_hq_super", 3, 6, 3000, 3000, 0, 0)
+				self:DynamicBuild("chaos_warpgate", 3, 6, 4000, 4000, 0, 0)
+			end
+		end
+
+		-- Build additional Superweapons if we have excess resources
+		if (iRequisition >= 8000 and iPower >= 8000) then
+			self:DynamicBuild("chaos_hq_super", 4, 6, 7500, 7500, 0, 0)
+			self:DynamicBuild("chaos_hq_super", 5, 6, 10000, 10000, 0, 0)
+			self:DynamicBuild("chaos_hq_super", 6, 6, 12000, 12000, 0, 0)
 		end
 	end
 end
@@ -694,7 +654,7 @@ function ChaosBuildBaseStrategy:ForceTech()
 		return false
 	end
 	
-	-- Check ressources
+	-- Check resources
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 
@@ -736,21 +696,6 @@ function ChaosBuildBaseStrategy:ForceTech()
 		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and (iRequisition < 1100 or iPower < 1100)) then
 			return true
 		end
---[[		
-	elseif (iTierLevel == 4) then	
-
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier4 and (iRequisition < 1600 or iPower < 1600)) then
-			return true
-		end
-
-	elseif (iTierLevel == 5) then	
-
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier5 and (iRequisition < 4100 or iPower < 4100)) then
-			return true
-		end
-]]
 	end
 	return false
 end
@@ -760,7 +705,23 @@ function ChaosBuildBaseStrategy:GetPlacementType(iBuildingID)
 	
 	-- Check building
 	if (iBuildingID == cpu_manager.stats:GetBuildingID("chaos_hq")) then
-		return "Safeplace"
+        	local count = self:GetBuildingCountByName("chaos_hq", false)
+		local friend = cpu_manager:FindClosestFriendPlayer()
+		if friend == nil then
+			-- Lone Player
+                	if count == 0 and not cpu_manager:HQThreat() then
+                    		return "HQ"
+                	else
+                    		return "Safeplace"
+                	end
+        	else
+        		-- Has allies
+                	if count > 2 or cpu_manager:HQThreat() then
+ 				return "HQ"
+                	else
+				return "Safeplace"
+                	end
+		end
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("chaos_temple") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("chaos_machine_pit") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("chaos_warpgate") or
@@ -783,20 +744,42 @@ function ChaosBuildBaseStrategy:GetPlacementType(iBuildingID)
 	return "Basic"
 end
 
+function ChaosBuildBaseStrategy:HQEmergency()
+
+	-- Check HQ count
+	local iHQCount = self:GetBuildingCountByName("chaos_hq")
+	if (iHQCount >= 2) then
+		return false
+	end
+
+	-- Build a second HQ if first one is severly damaged
+	local bHQDamaged = false
+	for oBuilding in military_manager:GetBases() do
+	
+		-- Check for valid building
+		if (oBuilding:IsValid() and not oBuilding:IsListeningPost() and oBuilding:GetBaseName() == "chaos_hq") then
+	  
+			-- Check health
+			if (oBuilding:GetHealthPercentage() < 0.6) then
+
+				-- Adjust current build program
+				for iLoop1 = 1, table.getn(self.info.BuildPrograms[self.m_iCurrentBuildProgram]) do
+				
+					-- Search HQ entry and set build count to two
+					if (self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][7] == "chaos_hq") then
+						self.info.BuildPrograms[self.m_iCurrentBuildProgram][iLoop1][5] = 2
+						return true
+					end
+				end
+			end
+		end
+	end
+	return false
+end
+
 -- Arkhan 03.2006: Inherited method to modify squad demand
 function ChaosBuildBaseStrategy:ModifySquadDemand(iUnitID)
---[[
-	-- Check resources
-	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
-	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 
-	-- Cylarne_04: An option to make the AI build titans (preferred).
-	-- Check for squads who aren't titan or relic units and refrain from creating them if we are at a high tier.
-	if ((g_iGMT < 60 and self.m_iArmyBuild >= 4) or
-		(self.m_iArmyBuild >= 4 and iPower < 3000 and iRequisition < 6000 )) then
-		return 0
-	end
-]]
 	-- No more icon bearers then squads 
 	if (iUnitID == cpu_manager.stats:GetSquadID("chaos_marine_icon_bearer_squad")) then
 		

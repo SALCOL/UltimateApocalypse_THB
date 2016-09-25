@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonsbiggeneratortactic.ai'
--- Edited by Thudmeizer @ 12.06.2016
+-- Edited by Thudmeizer @ 23.09.2016
 
 class 'DaemonsBigGeneratorTactic' (BaseTactic)
 
@@ -24,12 +24,14 @@ function DaemonsBigGeneratorTactic:InitAbilities()
 	if (DaemonsBigGenerator.inhibitor_id == nil) then
 		DaemonsBigGenerator.inhibitor_id = cpu_manager.stats:GetAbilityID( "all_apocalypse_inhibitor" )
 	end
+--[[
 	if (DaemonsBigGenerator.powerdump_id == nil) then
 		DaemonsBigGenerator.powerdump_id = cpu_manager.stats:GetAbilityID( "all_thermo_dump_power" )
 	end
 	if (DaemonsBigGenerator.reqdump_id == nil) then
 		DaemonsBigGenerator.reqdump_id = cpu_manager.stats:GetAbilityID( "all_thermo_dump_requisition" )
 	end
+]]
 end
 
 function DaemonsBigGeneratorTactic:DoAbilities()
@@ -42,7 +44,7 @@ function DaemonsBigGeneratorTactic:DoAbilities()
 			self.base_ai:DoSpecialAbility( DaemonsBigGenerator.inhibitor_id )
 		end
 	end
-
+--[[
 	-- Check resources needs every (at least) 6 secs, to avoid issues with multiple ability castings
 	if  g_iGMT > ResourcesGenTMR + 6 then
     		local iReq = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
@@ -72,7 +74,7 @@ function DaemonsBigGeneratorTactic:DoAbilities()
         		end
     		end
 	end
-
+]]
 	-- Base Repair!
 	if (self.base_ai:WasRecentlyHurt() and self.base_ai:GetHealthPercentage() < 0.6) then
 

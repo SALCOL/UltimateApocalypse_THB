@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'chaosattackbiketactic.ai'
 -- Created by Cylarne
--- Edited by Thudmeizer		@ 03.03.2016
+-- Edited by Thudmeizer		@ 23.09.2016
 
 class 'ChaosAttackbikeTactic' (ChaosMarineVehicleTactic)
 
@@ -38,6 +38,10 @@ function ChaosAttackbikeTactic:InitAbilities()
 	if (ChaosAttackbike.smoke_id == nil) then
 		ChaosAttackbike.smoke_id = cpu_manager.stats:GetAbilityID( "chaos_smoke_grenades" )
 	end
+
+	if (ChaosAttackbike.burnout_id == nil) then
+		ChaosAttackbike.burnout_id = cpu_manager.stats:GetAbilityID( "marines_burnout" )
+	end
 end
 
 function ChaosAttackbikeTactic:DoAbilities()
@@ -49,6 +53,9 @@ function ChaosAttackbikeTactic:DoAbilities()
         Ability.DoAbilityTarget( self.squad_ai, ChaosAttackbike.krak_id, Ability.Filters.CloseVehicleEnemy, 1)
         Ability.DoAbilityTarget( self.squad_ai, ChaosAttackbike.melta_id, Ability.Filters.CloseVehicleEnemy, 1)
 	
+	-- Check if we can use burn out if enemy infantry are nearby
+	Ability.DoAbilityArea( self.squad_ai, ChaosAttackbike.burnout_id, Ability.Filters.CloseInfantryEnemy, 10, 4 )
+
 	-- Check if we can launch smoke
 	if (self.squad_ai:CanDoAbility(ChaosAttackbike.smoke_id)) then
 	

@@ -1,0 +1,50 @@
+----------------------------------------
+-- File: 'carnifextervigontactic.ai'
+-- Edited by Thudmeizer		@ 23.09.2016
+
+class 'CarnifexTervigonTactic' (TyranidVehicleTactic)
+
+CarnifexTervigon = {}
+
+function CarnifexTervigonTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Carnifex Tervigon Tactic")
+end
+
+function CarnifexTervigonTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (CarnifexTervigon.abilityrecharge_id == nil) then
+		CarnifexTervigon.abilityrecharge_id = cpu_manager.stats:GetAbilityID( "all_transport_abilityrecharge" )
+	end
+	if (CarnifexTervigon.heal_id == nil) then
+		CarnifexTervigon.heal_id = cpu_manager.stats:GetAbilityID( "all_transport_heal" )
+	end
+	if (CarnifexTervigon.reinforce_id == nil) then
+		CarnifexTervigon.reinforce_id = cpu_manager.stats:GetAbilityID( "all_transport_reinforce" )
+	end
+end
+
+function CarnifexTervigonTactic:DoAbilities()
+	
+	-- Search a squad to heal
+	local iRange = self.squad_ai:GetAbilityRange(CarnifexTervigon.heal_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 150) then
+		self.squad_ai:DoSpecialAbility(CarnifexTervigon.heal_id)
+	end
+
+	-- Search a squad to recharge abilities
+	local iRange = self.squad_ai:GetAbilityRange(CarnifexTervigon.abilityrecharge_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) > 250) then
+		self.squad_ai:DoSpecialAbility(CarnifexTervigon.abilityrecharge_id)
+	end
+
+	-- Search a squad to help reinforce
+	local iRange = self.squad_ai:GetAbilityRange(CarnifexTervigon.reinforce_id)
+	local oUnit = Ability.Filters.CloseHurt(self.squad_ai:GetPosition(), iRange, 1)
+	if (oUnit ~= nil and oUnit:IsInCombat() and cpu_manager:GetUnitStrength(oUnit) < 150 and oUnit:GetNumTroopers() <= 2) then
+		self.squad_ai:DoSpecialAbilitySquad(CarnifexTervigon.reinforce_id, oUnit:GetSquad())
+	end
+end

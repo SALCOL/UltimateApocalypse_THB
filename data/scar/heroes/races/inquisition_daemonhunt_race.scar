@@ -433,7 +433,7 @@ UnitTypes.inquisition_daemonhunt_race =
 			"inquisition_multi_melta_crusader",
 		},
 	},
-	inquisition_squad_stormraven =
+	inquisition_squad_stormraven_fury =
 	{
 		Title = "Stormraven Fury",
 		Type = "CommandoForces",
@@ -474,6 +474,20 @@ UnitTypes.inquisition_daemonhunt_race =
 		{
 			"npc_titan_vulcan_mega_bolter_left",
 			"npc_titan_plasma_blastgun",
+		},
+	},
+	inquisition_squad_imperator_titan = 
+	{
+		Title = "Inquisition Imperator Titan",
+		Type = "CommandoForces",
+		UpgradeFunction = UpgradeWalker,
+		FXType = "Vehicle",
+		Unique = true,
+		HasWeapons = true,
+		Weapons =
+		{
+			"titan_imperator_volcano_cannon",
+			"titan_imperator_megalaser",
 		},
 	},
 }

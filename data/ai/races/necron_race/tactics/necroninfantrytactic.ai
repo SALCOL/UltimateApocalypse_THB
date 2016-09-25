@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'necroninfantrytactic.ai'
--- Created by Thudmeizer  @ 04.05.2016
+-- Created by Thudmeizer  @ 11.09.2016
 
 class 'NecronInfantryTactic' (InfantryTactic)
 
@@ -35,11 +35,13 @@ function NecronInfantryTactic:__init( squad_ai ) super( squad_ai )
 
 		-- Infantry is able to enter transports
 		self.m_iTransportable = 1	-- Ghost Ark
-
+--[[
+	-- Disabled as limited deepstriking/summoning range makes it impractical for the AI to use.
 	elseif (sSquadName == "necron_lord_death_squad") then
 
 		-- Commander is able to enter deepstrike building
 		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "necron_summoning_core_big" )
+]]
 	end
 end
 
