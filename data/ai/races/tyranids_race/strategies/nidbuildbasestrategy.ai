@@ -612,8 +612,6 @@ function TyranidBuildBaseStrategy:GetPlacementType(iBuildingID)
 				return "Safeplace"
                 	end
 		end
-	--elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_capillary_tower")) then
-		--return "Safeplace"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_gaunt_hive") or 
 		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_warrior_hive") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("tyranids_carnifex_hive") or
