@@ -170,7 +170,7 @@ function ApocalypseRules_SS_Check()
 				Entity_Destroy(eID)
 				
 			-- GRGE Restored Monolith
-			-- From Adeptus Mechanicus mod. This will spawn a Capitol Imperialis in place of a CI structure.
+			--[[ From Adeptus Mechanicus mod. This will spawn a Capitol Imperialis in place of a CI structure.
 			elseif (Entity_GetBlueprintName(ar_entityID) == "monolith" and Entity_ContainsAddOn(ar_entityID, "addon_necron_monolith_3")) then
 				
 				-- Local variables.
@@ -191,7 +191,7 @@ function ApocalypseRules_SS_Check()
 				nID = Entity_FromWorldID(eID.id+1)
 				Squad_Spawn(spawnSquad, Spawnpos)
 				Squad_SetHealth(spawnSquad, healthPercent)
-				Entity_Destroy(eID)
+				Entity_Destroy(eID)]]
 				
 			end
 		end
