@@ -51,7 +51,7 @@ BuildBaseStrategyInfo =
 				{ 2, 0, 250, 0, 1,	"Building",	"necron_greater_summoning_core" },
 				{ 2, 0, 400, 400, 2,	"Building",	"monolith" },
 				{ 2, 0, 250, 0, 75,	"TurretAddon",	"addon_necron_list_post_2" },
-				{ 2, 0, 750, 1000, 1,	"Addon",	"addon_necron_hq_2" },
+				{ 2, 0, 750, 900, 1,	"Addon",	"addon_necron_hq_2" },
 				{ 2, 0, 150, 0, 1,	"Building",	"necron_turret_missile_sp" },
 			        { 2, 0, 125, 0, 7,	"Building",	"necron_plasma_generator" },
 
@@ -60,7 +60,7 @@ BuildBaseStrategyInfo =
 				{ 3, 0, 125, 0, 10,	"Building",	"necron_plasma_generator" },
 			        { 3, 0, 250, 0, 100,	"TurretAddon",	"addon_necron_list_post_2" },
 				{ 3, 0, 800, 500, 3,	"Building",	"monolith" },
-				{ 3, 0, 150, 0, 2,	"Building",	"necron_turret_missile_sp" },
+				{ 3, 0, 150, 0, 1,	"Building",	"necron_turret_missile_sp" },
 				{ 3, 0, 1500, 1000, 1,	"Building",	"necron_summoning_core_big" },
 			        { 3, 0, 200, 0, 50,	"TurretAddon",	"addon_necron_wall" },
 

@@ -11,13 +11,13 @@ function GauntTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Gaunt Tactic")
 
-	self.m_iTacticaID = cpu_manager.stats:GetBuildingID( "tyranids_biomorph_hive" )
+	--self.m_iTacticaID = cpu_manager.stats:GetBuildingID( "tyranids_biomorph_hive" )
 end
-
+--[[
 function GauntTactic:AlwaysAttack()
 	return (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iTacticaID, true) > 0)
 end
-
+]]
 function GauntTactic:InitAbilities()
 
 	if (Gaunt.run_id == nil) then
@@ -52,7 +52,7 @@ function GauntTactic:Reinforce()
 		end
 	end
 end
-
+--[[
 function GauntTactic:Update()
 
     	-- State machine
@@ -63,3 +63,4 @@ function GauntTactic:Update()
 	-- Check if we are in serious trouble
 	self:EmergencyRetreat()
 end
+]]
