@@ -10,11 +10,11 @@ function GargoyleTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Gargoyle Tactic")
 end
-
+--[[
 function GargoyleTactic:AlwaysAttack()
 	return true
 end
-
+]]
 -- Gargoyles are allowed to retreat even directly after a jump
 function GargoyleTactic:SetTarget( target, variant_type )
 
