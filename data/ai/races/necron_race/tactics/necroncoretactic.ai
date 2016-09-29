@@ -2,7 +2,7 @@
 -- File: 'necroncoretactic.ai'
 -- Edited by Krronus @ 17.09.2010
 -- Edited by Cylarne @ 2014
--- Edited by Thudmeizer	@ 11.09.2016
+-- Edited by Thudmeizer	@ 28.09.2016
 
 class 'NecronCoreTactic' (BaseTactic)
 
@@ -38,71 +38,7 @@ function NecronCoreTactic:InitAbilities()
 end
 
 function NecronCoreTactic:DoAbilities()
---[[	
-	-- We want squads to be DSed immediately, but if a battle occurs, try to avoid it.
-	local oUnit = Ability.Filters.CloseHurt(self.base_ai:GetPosition(), 512, 1)
-	if (oUnit ~= nil and oUnit:IsInCombat()) then
-		self:HQDeepStrikeImmediately(oUnit:GetPosition())
-	else
-		self:HQDeepStrikeImmediately(self.base_ai:GetEntity():GetPosition())
-	end
 
-	-- Utilize the special deep striking method
-    	local build_channel = build_manager:GetBuildChannelFromID(self.base_ai:GetEntity():GetID())
-    	if build_channel ~= nil then
-        	if (build_channel:CanDeepStrike() and not build_channel:CanOnlyDeepStrikeToEntity() and cpu_manager:MilitaryDeepStrike(build_channel:GetBlueprintID())) then
-            		-- First, try to deepstrike defensively, to a close-by friendly HQ
-            		deepStrikingPosition = self:DoDefensiveHQDeepStriking()
-            		if deepStrikingPosition ~= nil then
-                		build_channel:DoDeepStrikeToPos(deepStrikingPosition)
-            		else
-           	 		-- Else, to deepstrike offensively, to a friendly SPs that is unthreatened and with a built LP.
-                		local deepStrikingPosition = self:DoOffensiveLPDeepStriking()
-                		if deepStrikingPosition ~= nil then
-                    			build_channel:DoDeepStrikeToPos(deepStrikingPosition)
-                	else
-                   			build_channel:DoDeepStrikeToPos(self.base_ai:GetPosition())
-                		end
-            		end
-		end
-	end
-
-	-- Utilize the special deep striking method
-    	local build_channel = build_manager:GetBuildChannelFromID(self.base_ai:GetEntity():GetID())
-    	if build_channel ~= nil then
-        	if (build_channel:CanDeepStrike() and not build_channel:CanOnlyDeepStrikeToEntity() and cpu_manager:MilitaryDeepStrike(build_channel:GetBlueprintID())) then
-            		-- First, try to deepstrike defensively, to a close-by friendly HQ
-                	deepStrikingPosition = self:DoDefensiveHQDeepStriking()
-                	if deepStrikingPosition ~= nil then
-                    		build_channel:DoDeepStrikeToPos(deepStrikingPosition)
-			else
-				-- Else, to deepstrike offensively, to a friendly SPs that is unthreatened and with a built LP.
-            			local deepStrikingPosition = self:DoOffensiveLPDeepStriking()
-            			if deepStrikingPosition ~= nil then
-                			build_channel:DoDeepStrikeToPos(deepStrikingPosition)
-				end
-            		end
-        	end
-	end
-
-	-- Utilize the special deep striking method
-    	local build_channel = build_manager:GetBuildChannelFromID(self.base_ai:GetEntity():GetID())
-    	if build_channel ~= nil then
-        	if (build_channel:CanDeepStrike() and not build_channel:CanOnlyDeepStrikeToEntity() and cpu_manager:MilitaryDeepStrike(build_channel:GetBlueprintID())) then
-            		-- First, try to deepstrike offensively, to a friendly SPs that is unthreatened and with a built LP.
-            		local deepStrikingPosition = self:DoOffensiveLPDeepStriking()
-            			if deepStrikingPosition ~= nil then
-                			build_channel:DoDeepStrikeToPos(deepStrikingPosition)
-            			else
-            			-- Else, try to deepstrike defensively, to a close-by friendly HQ
-                		deepStrikingPosition = self:DoDefensiveHQDeepStriking()
-                		if deepStrikingPosition ~= nil then
-                    			build_channel:DoDeepStrikeToPos(deepStrikingPosition)
-                		end
-            		end
-        	end
-	end
-]]
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	
 	-- Try for the Homeworld Portal
