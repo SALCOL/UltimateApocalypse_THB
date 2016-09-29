@@ -426,7 +426,7 @@ function NecronBuildBaseStrategy:BuildFlexible()
 	        self:DynamicBuild("necron_plasma_generator", 5 * self:GetBuildingCountByName("monolith"), 2, 0, 200, 0, 0)
 		self:DynamicBuild("necron_amplification_generator", 10 * self:GetBuildingCountByName("monolith"), 2, 0, 500, 0, 0)
 
-S		-- Dynamically regulate quantity of defensive buildings based on how many strats/crits/relics we have through the tiers so we avoid cluttering/bottlenecking on maps with limited points
+		-- Dynamically regulate quantity of defensive buildings based on how many strats/crits/relics we have through the tiers so we avoid cluttering/bottlenecking on maps with limited points
 		if (self.tierLevel >= 2 and (iPower >= 1500)) then
     			if (resource_manager:GetNumOwnedStrategicPoints() < 4) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasCriticalLocation()) or (resource_manager:GetNumOwnedStrategicPoints() < 3 and self:HasRelic()) then
 				self:DynamicBuild("necron_turret", 2, 2, 0, 200, 0, 0)
