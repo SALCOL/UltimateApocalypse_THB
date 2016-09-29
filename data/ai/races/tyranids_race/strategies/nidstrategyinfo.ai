@@ -173,6 +173,6 @@ AttackStrategyInfo =
 {
 	tyranids_race =
 	{
-		MinArmyStrength = 200,
+		MinArmyStrength = 300,
 	},
 }

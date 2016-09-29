@@ -157,7 +157,7 @@ function tyranids_race:GetInfo(sType)
 	elseif (sType == "SupportAllyFactor") then
 		return  7 / 4
 	elseif (sType == "AttackModifier") then
-		return 0
+		return 5
 	elseif (sType == "CriticalRangeIncreasePerTier") then
 		return 10
 	elseif (sType == "MinArmyStrengthPerTier") then

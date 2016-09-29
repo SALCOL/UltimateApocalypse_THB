@@ -199,7 +199,7 @@ function necron_race:GetInfo(sType)
 	elseif (sType == "SupportAllyFactor") then
 		return 8 / 4
 	elseif (sType == "AttackModifier") then
-		return -5
+		return 0
 	elseif (sType == "CriticalRangeIncreasePerTier") then
 		return 10
 	elseif (sType == "MinArmyStrengthPerTier") then
@@ -207,7 +207,7 @@ function necron_race:GetInfo(sType)
 	elseif (sType == "AttackRatio") then
 		return 4 / 5
 	elseif (sType == "RetreatRatio") then
-		return 1 / 2
+		return 3 / 5
 	elseif (sType == "InvisibleBuildings") then
 		return false
 	elseif (sType == "HarassingLeader") then
