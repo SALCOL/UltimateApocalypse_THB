@@ -163,7 +163,7 @@ function tyranids_race:GetInfo(sType)
 	elseif (sType == "MinArmyStrengthPerTier") then
 		return 750
 	elseif (sType == "AttackRatio") then
-		return 4 / 5
+		return 3 / 5
 	elseif (sType == "RetreatRatio") then
 		return 3 / 5
 	elseif (sType == "InvisibleBuildings") then

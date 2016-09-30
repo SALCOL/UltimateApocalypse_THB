@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'reavercaptaintactic.ai'
 -- Edited by Cylarne @ 2012
--- Edited by Thudmeizer		@ 01.07.2016
+-- Edited by Thudmeizer		@ 29.09.2016
 
 class 'ReaverCaptainTactic' (GuardVehicleTactic)
 
@@ -10,6 +10,10 @@ ReaverCaptain = {}
 function ReaverCaptainTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Reaver Captain Tactic")
+
+	-- Walker is a commander-only transport
+	self.m_iTransportVehicle = 3
+	self.m_iTransportSlots = 1
 end
 
 function ReaverCaptainTactic:AutoBuildAddOn( addonSlot )
