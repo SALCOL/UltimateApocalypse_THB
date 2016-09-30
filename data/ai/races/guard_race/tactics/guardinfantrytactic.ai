@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'guardinfantrytactic.ai'
 -- Created by Arkhan		@ 12.01.2006
--- Edited by Thudmeizer		@ 23.06.2016
+-- Edited by Thudmeizer		@ 29.09.2016
 
 class 'GuardInfantryTactic' (InfantryTactic)
 
@@ -34,8 +34,12 @@ function GuardInfantryTactic:__init( squad_ai ) super( squad_ai )
 
 	elseif (sSquadName == "guard_squad_command_squad") then
 
-		-- Infantry is able to enter transport vehicles
-		self.m_iTransportable = 1	-- Chimera variants // Valkyrie // Storm Lord // Captain Reaver
+		-- Commander is able to enter transport vehicles based on tier level
+		if (cpu_manager:GetTierLevel() < 5) then 
+			self.m_iTransportable = 1	-- Chimera variants // Valkyrie // Storm Lord
+		elseif (cpu_manager:GetTierLevel() > 4) then 
+			self.m_iTransportable = 3	-- Captain Reaver Titan (to allow it to upgrade)
+		end
 
 	elseif (sSquadName == "guard_squad_banner_bearer" or
 		sSquadName == "guard_squad_field_medic" or
