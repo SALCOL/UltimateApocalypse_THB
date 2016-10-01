@@ -248,7 +248,7 @@ function Rule_WarpGate_Titan()
 				elseif (Player_GetRaceName(player) == "inquisition_daemonhunt_race") then
 					Util_CreateSquadsAtMarker(player, "sg_titan", "inquisition_squad_imperator_titan", "titan_marker", 1)
 					
-				elseif (Player_GetRaceName(player) == "daemons_race") then
+				elseif (Player_GetRaceName(player) == "deamons_race") then
 					Util_CreateSquadsAtMarker(player, "sg_titan", "daemon_squad_greater_brass_scorpion", "titan_marker", 3)
 					
 				elseif (Player_GetRaceName(player) == "tyranids_race") then

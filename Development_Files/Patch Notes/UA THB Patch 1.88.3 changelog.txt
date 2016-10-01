@@ -1,0 +1,153 @@
+Hint: 
+* = Fixes.
+- = Ideas not taken to effect yet.
+!* = Applied ingame, but as rough drafts (non final product)
+> = Noted for next version.
+>> = Noted, but not for another two versions or more.
+
+------------------------
+
+PLANS FOR FUTURE VERSIONS:
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+------------------------
+Global: 
+------------------------
+* Costs of all turrets and build times are different and slightly nerfed.
+* AI is now fully updated to version 1.88.
+* Walls are now 50 requisition more expensive.
+* Plasma Generators now boost the production rates of connected structures from 10% to 20%. Extra LP garrisson decreased from 10% to 5%.
+* Plasma Generator connection bonus radius increased from 8m to 12m.
+* Super Generators now boost the production rates of connected structures from 30% to 50%.
+* Super Generator connection bonus radius increased from 16m to 25m.
+
+AI Changes ------------------------
+
+------------------------
+Chaos Marines: 
+------------------------
+
+* "More Gargant Armor research" ucs was changed to "Chaos Dreadnought Infiltration" from the Machine Pit was fixed.
+* "" ucs was changed to "Squad Size Research II".
+* "Even More Gargant Armor" ucs was changed to "Titan Armor Research".
+* Chaos Dreadnought is now successfully infiltrated after the research.
+* "Begin Unleashing Warp Storms Add-On" was renamed to "The Great Ruinous Castle". Ucs was fixed.
+
+AI Changes-------------
+
+------------------------
+Chaos Daemons:
+------------------------
+
+
+AI Changes-------------
+
+------------------------
+Dark Eldar: 
+------------------------ 
+
+
+
+AI Changes-------------
+
+------------------------
+Eldar: 
+------------------------
+
+
+AI Changes-------------
+
+------------------------
+Imperial Guard: 
+------------------------
+
+
+AI Changes-------------
+
+------------------------
+Inquisition:
+------------------------
+
+* Shrine To The Emperor research costs decreased by 50% (excluding Exterminatus).
+* Bunkers now cost 100 power.
+
+AI Changes-------------
+
+
+------------------------
+Necrons: 
+------------------------
+* Sentry Pylon armor changed from Living Metal to Armored Structure.
+
+AI Changes-------------
+
+------------------------
+Orks: 
+------------------------
+* Flash Gitz damage decreased by 10%. Damage versus structures decreased by 50%.
+* Orks bonuses while in massively large groups requires more Waaaagh (population) now.
+* Even Bigga and Meanest Generator size decreased by 25%.
+* Nukklear Bomma bombs cost decreased from 3000/3000 to 2500/2500. Range increased by 20m.
+
+AI Changes-------------
+
+------------------------
+Sisters of Battle:
+------------------------
+
+* Bunkers now cost 100 power.
+
+
+AI Changes-------------
+
+
+------------------------
+Space Marines: 
+------------------------
+* New Chapter Research (WIP): Blood Angels
+* New Chapter Research (WIP): Dark Angels
+* New Chapter Research (WIP): Space Wolves
+* New Chapter Research (WIP): Salamanders
+* New Chapter Research (WIP): Imperial Fists
+* Emperor's Finest: Space Marines, Omnissiah, and Machine Spirit research costs decreased by 50%.
+* "Deathwatch Special Grenades" were renamed to "Legionaire Grenades".
+* Legionaire infiltration research ucs was fixed.
+* Legionaire squad cap decreased from 4 to 3.
+AI Changes-------------
+
+------------------------
+Tau: 
+------------------------
+* XV81, XV8, and XV89 Crisis Suit squad damage outputs increased by 20%.
+* Skyray Missile Gunship damage output increased by 5%.
+* Shield Generators cost 100 more power.
+* Ark Defense Turret cost increased by 2%.
+
+AI Changes-------------
+
+------------------------
+Tyranids: 
+------------------------
+* Tervigon model was switched over to the Uberfex model as there were permission violations with another author. 
+* Tervigon model and textures were removed from the mod.
+* Lag is so far fixed, no issues through our latest test runs so... fixed?
+AI Changes-------------
+
+--------------------------------------------------------|
+Tech Trees (Visual Images Separate from mod): | 
+--------------------------------------------------------|
+> Inquisition Daemonhunters tech tree was updated for 1.88.
+> Chaos Daemons tech tree was updated for 1.88.
+> Chaos Space Marines tech tree was updated for 1.88.
+
+
+
+--------------------------------------------------------|
+SCAR (Winconditions): | 
+--------------------------------------------------------|
+* Fixed UA 8p map issues.

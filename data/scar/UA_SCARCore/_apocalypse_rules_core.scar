@@ -23,6 +23,10 @@ function ApocalypseRules_Main()
 	-- Ai wargear stuff.
 	ar_wargear_cancel = false; -- Wargear base restriction.
 	Rule_AddIntervalEx(ApocalypseRules_Levelup_GrantToAI, 240, 8) -- Every 2 minutes, ai commanders level up + 1.
+	
+	-- Pinpoint the super structure and count.
+	EGroup_CreateIfNotFound("ar_eg_superstructure")
+	ar_eg_superstructure_count = 0;
 
 	-- Disabled due to the fact this is no longer needed. Sadly.
 	-- Endgamers stuff.
@@ -55,7 +59,7 @@ end
 function ApocalypseRules_SuperweaponWarning(ar_playerindex)
 
 	-- Called by the ApocalypseRules_CheckSS(), this function is called infinitely as well, as long as a winwarning exists for the SS.
-	--[[ApocalypseRules_WarnSS("ar_eg_superstructure_"..j) -- Do SS Warn function.]]
+	--[[ApocalypseRules_WarnSS("ar_eg_superstructure") -- Do SS Warn function.]]
 	
 	if (Prod_IsProducing("ar_eg_superstructure_"..ar_playerindex, ar_productiontable, false)) then
 		if (WinWarning_Exists("ui_ar_nuke_percentage"..ar_playerindex) == false) then
@@ -86,6 +90,9 @@ function ApocalypseRules_SS_Check()
 	-- But in order to check, we have got to add in at least an EGroup for this to work.
 	-- And after that EGroup has been added, apply the SS qualities.
 	
+	-- Pinpoint the super structure.
+	EGroup_CreateIfNotFound("ar_eg_superstructure")
+	
 	local count = World_GetPlayerCount();
 	for j = 0, count-1 do
 		local Player = World_GetPlayerAt(j);
@@ -100,49 +107,44 @@ function ApocalypseRules_SS_Check()
 		
 		ApocalypseRules_AddBuildings = function( ar_entity_pos, itemindex, ar_entityID )
 			-- Every single super structure blueprint or Add-on goes here...
-			if (EGroup_Exists("ar_eg_superstructure_"..j) == false) then
-				if (Entity_GetBlueprintName(ar_entityID) == "chaos_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "dark_eldar_hq_sp_dxp3" and Entity_GetBuildingProgress(ar_entityID) >= 0.5 or
-					Entity_GetBlueprintName(ar_entityID) == "eldar_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "eldar_vaul_portal" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "guard_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "guard_basilisk_magnus" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "monolith_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "sisters_shrine_to_the_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "sisters_missile_silo" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "sisters_krak" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "space_marine_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "space_marine_armoury_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "tau_arka_ion_cannon" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "daemon_doom_pit" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "inquisition_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "inquisition_shrine_to_the_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "tyranids_capillary_tower" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-					Entity_GetBlueprintName(ar_entityID) == "ork_boomy_platform" and Entity_GetBuildingProgress(ar_entityID) == 1.0) and Entity_ContainsAddOn(ar_entityID, "ork_boomy_platform_kaboom_addon") then
+			if ((Entity_GetBlueprintName(ar_entityID) == "chaos_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "dark_eldar_hq_sp_dxp3" and Entity_GetBuildingProgress(ar_entityID) >= 0.5 or
+				Entity_GetBlueprintName(ar_entityID) == "eldar_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "eldar_vaul_portal" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "guard_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "guard_basilisk_magnus" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "monolith_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "sisters_shrine_to_the_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "sisters_missile_silo" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "sisters_krak" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "space_marine_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "space_marine_armoury_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "tau_arka_ion_cannon" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "daemon_doom_pit" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "inquisition_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "inquisition_shrine_to_the_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "tyranids_capillary_tower" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+				Entity_GetBlueprintName(ar_entityID) == "ork_boomy_platform" and Entity_GetBuildingProgress(ar_entityID) == 1.0) and Entity_ContainsAddOn(ar_entityID, "ork_boomy_platform_kaboom_addon")) then
+				
+				--WinWarning_Add("ui_ar_nuke_percentage"..j, World_GetPlayerAt(j), "", "", "")
+				EGroup_Add("ar_eg_superstructure", ar_entityID)
+				
+				if (EGroup_Exists("ar_eg_superstructure") and EGroup_Count("ar_eg_superstructure") > ar_eg_superstructure_count) then
 					
 					-- Give the warning.
 					local warning = ("WARNING! Super Structure or critical threat spotted!")
 					EventCue_DoEvent("warning", "general_ping", warning, warning)
 					
-					-- Pinpoint the super structure.
-					EGroup_CreateIfNotFound("ar_eg_superstructure_"..j)
-					--WinWarning_Add("ui_ar_nuke_percentage"..j, World_GetPlayerAt(j), "", "", "")
-					EGroup_Add("ar_eg_superstructure_"..j, ar_entityID)
-					Ping_Position(EGroup_GetPosition("ar_eg_superstructure_"..j), false, "attack")
-					ApocalypseRules_RevealSS("ar_eg_superstructure_"..j)
+					Ping_Position(EGroup_GetPosition("ar_eg_superstructure"), false, "attack")
+					ApocalypseRules_RevealSS("ar_eg_superstructure")
 					--Sound_PlayStinger("warning_ua")
+					
+				-- Is the created super structure destroyed? Yes.
+				elseif (EGroup_Exists("ar_eg_superstructure") and EGroup_Count("ar_eg_superstructure") < ar_eg_superstructure_count) then
+					
+					-- Delete the no longer needed EGroup SS and remove all effects taken by the SS.
+					ApocalypseRules_RemoveSS(j)
 				end
-				
-			-- Is the created super structure destroyed? Yes.
-			elseif (EGroup_Exists("ar_eg_superstructure_"..j) and EGroup_Count("ar_eg_superstructure_"..j) == 0) then
-				
-				-- Delete the no longer needed EGroup SS and remove all effects taken by the SS.
-				ApocalypseRules_RemoveSS(j)
-				
-			-- Is the created super structure destroyed? No.
-			elseif (EGroup_Exists("ar_eg_superstructure_"..j) and EGroup_Count("ar_eg_superstructure_"..j) > 0) then
-				
-				--ApocalypseRules_SuperweaponWarning(j)
 			end
 			
 			-- Capitol Imperialis
@@ -212,6 +214,8 @@ function ApocalypseRules_RevealSS(ar_superstructure_intel)
 		FOW_TagEGroup(Player, ar_superstructure_intel)
 		
 	end
+	
+	ar_eg_superstructure_count = ar_eg_superstructure_count + 1
 
 end
 
@@ -219,7 +223,8 @@ function ApocalypseRules_RemoveSS(ar_superstructure_intel)
 
 	-- A Super structure has been destroyed, remove all references and variables for it so a second built SS can do the same stuff.
 	
-	EGroup_Destroy("ar_eg_superstructure_"..ar_superstructure_intel)
+	--EGroup_Destroy("ar_eg_superstructure_"..ar_superstructure_intel)
+	ar_eg_superstructure_count = ar_eg_superstructure_count - 1
 	if (EGroup_Exists("ar_apocalypsedummy"..ar_superstructure_intel)) then
 		EGroup_Destroy("ar_apocalypsedummy"..ar_superstructure_intel)
 	end
