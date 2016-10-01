@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'chaosbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 24.09.2016
+-- Edited by Thudmeizer @ 29.09.2016
 -- Edited by Cylarne_04 2011
 
 class 'ChaosBuildBaseStrategy' (BuildBaseStrategy)
@@ -535,7 +535,7 @@ function ChaosBuildBaseStrategy:BuildFlexible()
 
 				-- Compute Misc Titan researches
 				if (self:CountSquads("chaos_squad_warhound_titan") >= 1) or (self:CountSquads("chaos_squad_reaver_titan") >= 1) or (self:CountSquads("chaos_squad_heldrake") >= 1) then
-					self:DynamicResearch("chaos_titan_armor_research", 5, 500, 500, 0, 0, nil, 0)
+					self:DynamicResearch("chaos_titan_armor_research", 5, 600, 600, 0, 0, nil, 0)
 				end
 		
 				-- Compute Apocalypse

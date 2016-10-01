@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marinestrategyinfo.ai'
--- Edited by Thudmeizer  @ 23.09.2016
+-- Edited by Thudmeizer  @ 29.09.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -43,7 +43,7 @@ BuildBaseStrategyInfo =
 				{ 1, 250, 0, 0, 1,	"Building",	"space_marine_barracks" },
 				{ 1, 135, 0, 0, 3,	"Building",	"space_marine_generator" },
 				{ 1, 90, 0, 0, 60,	"TurretAddon",	"space_marine_list_post_addon_1" },
-				{ 1, 140, 50, 0, 1,	"Building",	"space_marine_turret_bolter" },
+				{ 1, 75, 110, 0, 1,	"Building",	"space_marine_turret_bolter" },
 				{ 1, 175, 50, 250, 1,	"Building",     "space_marine_armoury" },
 				{ 1, 90, 0, 250, 100,	"TurretAddon",	"space_marine_list_post_addon_1" },
 				{ 1, 135, 0, 0, 5,	"Building",	"space_marine_generator" },

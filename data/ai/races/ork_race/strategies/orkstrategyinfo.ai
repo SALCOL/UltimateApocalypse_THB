@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'orkstrategyinfo.ai'
--- Edited by Thudmeizer  @ 23.09.2016
+-- Edited by Thudmeizer  @ 29.09.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -55,7 +55,7 @@ BuildBaseStrategyInfo =
 				{ 2, 300, 100, 0, 1,	"Unit",		"ork_squad_wierdboy" },
 				{ 2, 235, 135, 200, 1,	"Building",	"ork_mek_shop" },
 				{ 2, 50, 0, 300, 4,	"Building",	"ork_waagh_banner" },
-				{ 2, 150, 55, 600, 1,	"Building",	"ork_waagh_banner_turret_sp" },
+				{ 2, 80, 120, 600, 1,	"Building",	"ork_waagh_banner_turret_sp" },
 				{ 2, 25, 100, 700, 50,	"TurretAddon",	"ork_turret_addon" },
 				{ 2, 900, 300, 750, 2,  "Building",	"ork_hq" },
 				{ 2, 450, 240, 800, 1,	"Building",	"ork_boomy_platform" },
@@ -69,7 +69,7 @@ BuildBaseStrategyInfo =
 				{ 3, 700, 210, 0, 1,	"Unit",		"ork_squad_warboss" },
 				{ 3, 300, 300, 300, 25,	"TurretAddon",	"ork_boomy_platform_addon" },
 				{ 3, 35, 5, 400, 100,	"TurretAddon",	"ork_wall_gunzaddon" },
-				{ 3, 150, 55, 500, 2,	"Building",	"ork_waagh_banner_turret_sp" },
+				{ 3, 80, 120, 500, 2,	"Building",	"ork_waagh_banner_turret_sp" },
 				{ 3, 100, 0, 700, 50,	"TurretAddon",	"ork_waagh_banner_population_addon" },
 				{ 3, 1000, 400, 1000, 1,"Building",	"ork_waagh_banner_missile_sp" },
 				{ 3, 1150, 450, 1000, 3,"Building",	"ork_hq" },
@@ -79,7 +79,7 @@ BuildBaseStrategyInfo =
 				
 				{ 4, 50, 0, 200, 12,	"Building",	"ork_waagh_banner" },
 				{ 4, 300, 300, 500, 75,	"TurretAddon",	"ork_boomy_platform_addon" },
-				{ 4, 150, 55, 750, 3,	"Building",	"ork_waagh_banner_turret_sp" },
+				{ 4, 80, 120, 750, 3,	"Building",	"ork_waagh_banner_turret_sp" },
 				{ 4, 25, 100, 1000, 100,"TurretAddon",	"ork_turret_addon" },
 				{ 4, 1000, 400, 2500, 2,"Building",	"ork_waagh_banner_missile_sp" },
 				

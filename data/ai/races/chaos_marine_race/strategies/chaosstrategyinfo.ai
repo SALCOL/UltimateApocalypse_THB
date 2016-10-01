@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'chaosstrategyinfo.ai'
--- Edited by Thudmeizer @ 23.09.2015
+-- Edited by Thudmeizer @ 29.09.2015
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -45,7 +45,7 @@ BuildBaseStrategyInfo =
 				{ 1, 135, 0, 0, 3,	"Building",	"chaos_plasma_generator" },
 				{ 1, 90, 80, 0, 60,	"TurretAddon",	"chaos_list_post_addon_1" },
 				{ 1, 175, 50, 750, 1,	"Building",	"chaos_armoury" },
-				{ 1, 140, 50, 0, 1,	"Building",	"chaos_turret_bolter" },
+				{ 1, 75, 110, 0, 1,	"Building",	"chaos_turret_bolter" },
 				{ 1, 150, 0, 0, 1,	"Research", 	"chaos_squad_cap_research" },
 				{ 1, 90, 80, 250, 100,	"TurretAddon",	"chaos_list_post_addon_1" },
 				{ 1, 135, 0, 0, 5,	"Building",	"chaos_plasma_generator" },
