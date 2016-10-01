@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'guardstrategyinfo.ai'
--- Edited by Thudmeizer  @ 23.06.2016
+-- Edited by Thudmeizer  @ 29.06.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -44,7 +44,7 @@ BuildBaseStrategyInfo =
 				{ 1, 135, 0, 0, 3,	"Building",	"guard_plasma_generator" },
 				{ 1, 90, 80, 0, 50,	"TurretAddon",	"addon_guard_list_post_1" },
 				{ 1, 175, 50, 500, 1,	"Building",	"guard_tactica" },
-				{ 1, 130, 60, 500, 1,	"Building",	"guard_turret_heavy_bolter" },
+				{ 1, 90, 125, 500, 1,	"Building",	"guard_turret_heavy_bolter" },
 				{ 1, 135, 0, 600, 5,	"Building",	"guard_plasma_generator" },
 				{ 1, 90, 80, 800, 100,	"TurretAddon",	"addon_guard_list_post_1" },
 				{ 1, 400, 130, 900, 1,  "Addon",	"addon_guard_hq_1" },

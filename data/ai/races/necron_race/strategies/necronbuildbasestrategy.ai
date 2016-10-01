@@ -185,24 +185,22 @@ function NecronBuildBaseStrategy:UpdateTierLevel()
 
 		-- Check for valid building
 		if (oBase:IsValid() and not oBase:IsListeningPost()) then
+			-- We still have the proper researches, buildings, or addons
+			if cpu_manager.cpu_player:IsResearchComplete("necron_apocalypse_research") then
+				self.tierLevel = 6
+				return
+			elseif (self:GetBuildingCountByName("necron_energy_core") > 0) then
+				self.tierLevel = 5
+				return
+			elseif (self:GetBuildingCountByName("necron_summoning_core_big") > 0) then
+				self.tierLevel = 4
+				return
+
 			-- Check for HQ addon 2
-			if (oBase:HasAddOn(iHQAddon2ID)) then
-				
-				-- We still have the proper add-on
-				if cpu_manager.cpu_player:IsResearchComplete("necron_apocalypse_research") then
-					self.tierLevel = 6
-					return
-				elseif (self:GetBuildingCountByName("necron_energy_core") > 0) then
-					self.tierLevel = 5
-					return
-				elseif (self:GetBuildingCountByName("necron_summoning_core_big") > 0) then
-					self.tierLevel = 4
-					return
-				else
-					self.tierLevel = 3
-					return
-				end
-				
+			elseif (oBase:HasAddOn(iHQAddon2ID)) then
+				self.tierLevel = 3
+				return
+			
 			-- Check for HQ addon 1 
 			elseif (oBase:HasAddOn(iHQAddon1ID)) then
 				self.tierLevel = 2

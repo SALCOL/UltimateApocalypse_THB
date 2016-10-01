@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'eldarstrategyinfo.ai'
--- Edited by Thudmeizer  @ 22.09.2016
+-- Edited by Thudmeizer  @ 29.09.2016
 -- Edited by Cylarne_04  @	 2011
 
 BuildBaseStrategyInfo = 
@@ -46,7 +46,7 @@ BuildBaseStrategyInfo =
 				{ 1, 100, 0, 0, 1,	"Building",	"eldar_webway_gate" },
 				{ 1, 150, 0, 0, 3,	"Building",	"eldar_warp_generator" },
 				{ 1, 90, 80, 0, 100,	"TurretAddon",	"eldar_list_post_addon_1" },
-			        { 1, 90, 30, 0, 1,	"Building",	"eldar_support_platform_scatterlaser" },
+			        { 1, 70, 100, 0, 1,	"Building",	"eldar_support_platform_scatterlaser" },
 				{ 1, 150, 0, 700, 4,	"Building",	"eldar_warp_generator" },
 				{ 1, 160, 80, 750, 1,	"Building",	"eldar_support_platform_cannon_sp" },
 				{ 1, 150, 0, 800, 5,	"Building",	"eldar_warp_generator" },
