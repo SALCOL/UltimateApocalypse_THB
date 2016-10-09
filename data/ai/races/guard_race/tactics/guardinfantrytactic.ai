@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'guardinfantrytactic.ai'
 -- Created by Arkhan		@ 12.01.2006
--- Edited by Thudmeizer		@ 29.09.2016
+-- Edited by Thudmeizer		@ 03.10.2016
 
 class 'GuardInfantryTactic' (InfantryTactic)
 
@@ -55,9 +55,16 @@ function GuardInfantryTactic:__init( squad_ai ) super( squad_ai )
 	elseif (sSquadName == "guard_squad_officer_squad" or
 		sSquadName == "guard_squad_officer_support_squad") then
 
-		-- Officers are able to enter transport vehicles
-		self.m_iTransportable = 2	-- Vanquisher Command Tank
-		self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "guard_comms_array" )
+		-- Commander is able to enter transport vehicles based on tier level
+		if (cpu_manager:GetTierLevel() < 5) then 
+
+			-- Officers are able to enter transport vehicles
+			self.m_iTransportable = 2	-- Vanquisher Command Tank
+			self.m_iDeepStrikeBlueprintID = cpu_manager.stats:GetBuildingID( "guard_comms_array" )
+
+		elseif (cpu_manager:GetTierLevel() > 4) then 
+			self.m_iTransportable = 3	-- Captain Reaver Titan (to allow it to upgrade)
+		end
 	end
 end
 

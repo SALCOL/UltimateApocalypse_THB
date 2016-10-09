@@ -91,7 +91,7 @@ BuildBaseStrategyInfo =
 				{ 5, 5100, 2400, 1000, 1,"Building",	"space_marine_armoury_emperor" },
 				{ 5, 2500, 0, 1500, 1,	"Building",	"space_marine_thermonuclear_generator" },
 				{ 5, 400, 240, 2000, 3,	"Building",	"space_marine_turret_missile_sp" },
-				{ 5, 8000, 8000, 3000, 1,"Research",	"marine_apocalypse_research" },
+			        { 5, 8000, 8000, 3000, 1,"Research",	"marine_apocalypse_research" },
 				
 				{ 6, 280, 80, 0, 1,	"Unit",		"space_marine_squad_librarian" },
 				{ 6, 400, 110, 0, 1,	"Unit",		"space_marine_squad_chaplain_advance_sp" },

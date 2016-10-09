@@ -84,7 +84,7 @@ BuildBaseStrategyInfo =
 				{ 5, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },
 				{ 5, 550, 260, 0, 1,	"Building",	"dark_eldar_corruptedgate" },
 				{ 5, 5500, 5500, 0, 1,	"Building",	"dark_eldar_hq_sp_dxp3" },
-				{ 5, 3000, 3000, 2500, 1,"Research",	"dark_eldar_apocalypse_research" },
+			        { 5, 3000, 3000, 2500, 1,"Research",	"dark_eldar_apocalypse_research" },
 
 				{ 6, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },
 				{ 6, 240, 40, 0, 1,	"Unit",		"dark_eldar_squad_archon" },

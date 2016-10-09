@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'taubuildbasestrategy.ai'
--- Edited by Thudmeizer @ 24.09.2016
+-- Edited by Thudmeizer @ 02.10.2016
 -- Edited by Cylarne_04 2011
 
 class 'TauBuildBaseStrategy' (BuildBaseStrategy)
@@ -199,7 +199,7 @@ function TauBuildBaseStrategy:UpdateTierLevel()
 	-- Reset tier level
 	self.tierLevel = 1
 	
-	-- Check researches
+	-- Check if we have the proper research or building
 	if (cpu_manager.cpu_player:IsResearchComplete("tau_apocalypse_research")) then
 		self.tierLevel = 6
 		return
@@ -397,7 +397,9 @@ function TauBuildBaseStrategy:BuildFlexible()
 			end
 
 			-- Compute Tier V
-			self:DynamicResearch("tau_apocalypse_research", 5, 3000, 5000, 0, 0, nil, 0)
+			if self:HasCriticalLocation() then
+				self:DynamicResearch("tau_apocalypse_research", 5, 3000, 5000, 0, 0, nil, 0)
+			end
 		end
 
 		-- Compute tier 6 researches
