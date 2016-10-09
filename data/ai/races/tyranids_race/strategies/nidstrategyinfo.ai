@@ -71,7 +71,7 @@ BuildBaseStrategyInfo =
 				{ 5, 750, 250, 550, 50,	"TurretAddon",	"tyranids_titanchamber_addon_2" },
 				{ 5, 3000, 0, 1000, 1,	"Building",	"tyranids_capillary_tower" },
 				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
-				{ 5, 8000, 4000, 1500, 1,"Research", 	"tyranids_apocalypse_research" },
+			        { 5, 8000, 4000, 1500, 1,"Research", 	"tyranids_apocalypse_research" },
 
 				{ 6, 180, 0, 0, 1,	"Unit",		"tyranids_squad_lictor_alpha" },
 				{ 6, 440, 0, 0, 1,	"Unit",		"tyranids_squad_hive_tyrant" },

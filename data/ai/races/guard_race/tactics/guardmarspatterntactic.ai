@@ -2,7 +2,7 @@
 -- File: 'guardmarspatterntactic.ai'
 -- Edited by Krronus		@ 24.10.2006
 -- Edited by Cylarne_04 2011
--- Edited by Thudmeizer		@ 08.04.2016
+-- Edited by Thudmeizer		@ 02.10.2016
 
 class 'GuardMarsPatternTactic' (BaseTactic)
 
@@ -14,6 +14,13 @@ function GuardMarsPatternTactic:__init( base_ai ) super( base_ai )
 	
 	-- Building is a bunker
 	self:AddToBunkerList()
+
+	-- Building can deepstrike troops
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function GuardMarsPatternTactic:CanDeepStrikeTroops()
+	return true
 end
 
 function GuardMarsPatternTactic:InitAbilities()
@@ -33,8 +40,4 @@ function GuardMarsPatternTactic:DoAbilities()
 			self.base_ai:DoSpecialAbility( GuardMarsPattern.repair_id )
 		end
 	end
-end
-
-function GuardMarsPatternTactic:CanDeepStrikeTroops()
-	return true
 end

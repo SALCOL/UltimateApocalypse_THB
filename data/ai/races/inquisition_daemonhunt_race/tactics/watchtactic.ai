@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'watchtactic.ai'
 -- Edited by Cylarne
--- Edited by Thudmeizer	@ 17.04.2016
+-- Edited by Thudmeizer	@ 02.10.2016
 
 class 'WatchTactic' (BaseTactic)
 
@@ -10,6 +10,13 @@ Watch = {}
 function WatchTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Watch Tactic")
+
+	-- Building can deepstrike troops
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function WatchTactic:CanDeepStrikeTroops()
+	return true
 end
 
 function WatchTactic:InitAbilities()
@@ -29,8 +36,4 @@ function WatchTactic:DoAbilities()
 			self.base_ai:DoSpecialAbility( Watch.repair_id )
 		end
 	end
-end
-
-function WatchTactic:CanDeepStrikeTroops()
-	return true
 end

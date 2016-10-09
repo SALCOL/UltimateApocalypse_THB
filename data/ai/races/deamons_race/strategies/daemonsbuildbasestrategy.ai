@@ -580,8 +580,10 @@ T5	daemons_research_gift25	 (Minions Only)	        Tzeentch's Precision ability 
 			end
 
 			-- Compute HQ Tier5 Addons for future HQs
-			if (self:GetBuildingCountByName("daemon_hq") > 2) and (iRequisition >= 6500 and iPower >= 6500) then
-				self:DynamicAddon("addon_daemons_hq_5", 100, 5, 6000, 6000, 0, 0, nil, nil, false)
+			if self:HasCriticalLocation() then
+				if (self:GetBuildingCountByName("daemon_hq") > 2) and (iRequisition >= 6500 and iPower >= 6500) then
+					self:DynamicAddon("addon_daemons_hq_5", 100, 5, 6000, 6000, 0, 0, nil, nil, false)
+				end
 			end
 		end
 

@@ -99,7 +99,7 @@ BuildBaseStrategyInfo =
 				{ 5, 500, 250, 0, 1,	"Building",	"eldar_webway_sail" },
 				{ 5, 100, 280, 500, 50,	"TurretAddon",	"eldar_support_platform_addon_uber" },
 				{ 5, 2000, 2000, 2500, 1,"Building",	"eldar_hq_super" },
-				{ 5, 4000, 4000, 3000, 1,"Research",	"eldar_apocalypse_research" },
+			        { 5, 4000, 4000, 3000, 1,"Research",	"eldar_apocalypse_research" },
 
 				{ 6, 280, 50, 0, 1,	"Unit",		"eldar_squad_autarch" },
 			        { 6, 300, 60, 0, 1,	"Unit",		"eldar_squad_farseer" },

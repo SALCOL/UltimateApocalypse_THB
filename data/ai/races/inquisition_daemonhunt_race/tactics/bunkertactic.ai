@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'bunkertactic.ai'
 -- Edited by Cylarne
--- Edited by Thudmeizer	@ 02.07.2016
+-- Edited by Thudmeizer	@ 02.10.2016
 
 class 'BunkerTactic' (BaseTactic)
 
@@ -15,8 +15,20 @@ function BunkerTactic:__init( base_ai ) super( base_ai )
 	self:AddToBunkerList()
 
 	Bunker.detectDelay = -1
-end
 
+	if (cpu_manager:GetTierLevel() > 2) then
+		-- Building can deepstrike troops
+		self.m_bCanDeepStrikeTroops = true
+	end
+end
+--[[
+function BunkerTactic:CanDeepStrikeTroops()
+
+	if (cpu_manager:GetTierLevel() > 2) then
+		return true
+	end
+end
+]]
 function BunkerTactic:AutoBuildTurretAddOn( addonSlot, iID )
 	local buildChannelLP = build_manager:GetBuildChannelFromID(iID)
 	if (buildChannelLP ~= nil) then
@@ -107,11 +119,3 @@ function BunkerTactic:DoAbilities()
 		end
 	end
 end
---[[
-function BunkerTactic:CanDeepStrikeTroops()
-
-	if (cpu_manager:GetTierLevel() > 2) then
-		return true
-	end
-end
-]]

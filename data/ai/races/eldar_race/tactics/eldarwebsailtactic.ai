@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'eldarwebsailtactic.ai'
 -- Edited by Cylarne		@ 03/02/2011
--- Edited by Thudmeizer		@ 09.04/2016
+-- Edited by Thudmeizer		@ 02.10.2016
 
 class 'EldarWebSailTactic' (BaseTactic)
 
@@ -11,7 +11,11 @@ function EldarWebSailTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Eldar WebSail Tactic")
 end
-
+--[[
+function EldarWebSailTactic:CanDeepStrikeTroops()
+	return true
+end
+]]
 function EldarWebSailTactic:InitAbilities()
 
 	-- Init ability ID's
@@ -30,8 +34,3 @@ function EldarWebSailTactic:DoAbilities()
 		end
 	end
 end
---[[
-function EldarWebSailTactic:CanDeepStrikeTroops()
-	return true
-end
-]]

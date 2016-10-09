@@ -74,7 +74,7 @@ BuildBaseStrategyInfo =
 				{ 5, 3000, 3000, 0, 1,	"Building",	"tau_arka_ion_cannon" },
 				{ 5, 160, 800, 0, 50,	"Addon",	"addon_tau_shield" },
 				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
-				{ 5, 3000, 5000, 2500, 1,"Research",	"tau_apocalypse_research" },
+			        { 5, 3000, 5000, 2500, 1,"Research",	"tau_apocalypse_research" },
 
 				{ 6, 220, 50, 0, 1,	"Unit",		"tau_commander_squad" },
 				{ 6, 200, 100, 0, 1,	"Unit",		"tau_ethereal_squad" },

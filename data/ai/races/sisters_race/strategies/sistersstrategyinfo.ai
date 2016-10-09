@@ -80,7 +80,7 @@ BuildBaseStrategyInfo =
 				{ 5, 100, 100, 0, 1,	"Building",	"sisters_shrine_to_the_emperor" },
 				{ 5, 2000, 2000, 0, 1,	"Building",	"sisters_missile_silo" },
 				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
-				{ 5, 3000, 3000, 2500, 1,"Research",	"sisters_apocalypse_research" },
+			        { 5, 3000, 3000, 2500, 1,"Research",	"sisters_apocalypse_research" },
 				
 				{ 6, 200, 60, 0, 1,	"Unit",		"sisters_squad_confessor" },
 				{ 6, 250, 0, 0, 1,	"Unit",		"sisters_inquisitor_squad" },

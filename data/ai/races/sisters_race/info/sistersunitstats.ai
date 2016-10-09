@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersunitstats.ai'
--- Edited by Thudmeizer @ 15.09.2016
+-- Edited by Thudmeizer @ 08.10.2016
 -- Edited by Cylarne_04 2011
 
 -- XP3
@@ -228,7 +228,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_celestian",
 		ebp_name = "sisters_celestian",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 7,
+		rating = math.random(6*10,7*10)/10,
 		potential =
 		{
 			{
@@ -258,7 +258,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_retributor",
 		ebp_name = "sisters_retributor",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 7,
+		rating = math.random(6*10,7*10)/10,
 		potential =
 		{
 			{
@@ -289,11 +289,11 @@ SistersUnitStats =
 		}
 	},
 	{
-		name = "Sisters Redemptionist",
+		name = "Redemptionist",
 		sbp_name = "sisters_squad_redemptionist",
 		ebp_name = "sisters_redemptionist",
 		class = UnitStatsAI.UC_HeavyInfantryMed,
-		rating = 7,
+		rating = math.random(6*10,7*10)/10,
 		potential =
 		{
 			{
@@ -318,7 +318,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_assassin",
 		ebp_name = "sisters_assassin",
 		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 8,
+		rating = math.random(7.0*10,8.5*10)/10,
 		potential =
 		{
 			{
@@ -333,7 +333,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_callidus_assassin",
 		ebp_name = "sisters_callidus_assassin",
 		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 8,
+		rating = math.random(7.0*10,8.5*10)/10,
 		potential =
 		{
 			{
@@ -353,7 +353,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_repentia",
 		ebp_name = "sisters_repentia",
 		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 8,
+		rating = math.random(7.0*10,8.5*10)/10,
 		potential =
 		{
 			{
@@ -368,7 +368,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_legatine_superior",
 		ebp_name = "sisters_legatine_superior",
 		class = UnitStatsAI.UC_HeavyInfantryHigh,
-		rating = 8,
+		rating = math.random(7.0*10,8.5*10)/10,
 		potential =
 		{
 			{
@@ -383,7 +383,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_almoness",
 		ebp_name = "sisters_almoness",
 		class = UnitStatsAI.UC_Commander,
-		rating = 8,
+		rating = math.random(7.0*10,8.5*10)/10,
 		potential =
 		{
 			{

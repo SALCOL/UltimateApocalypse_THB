@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'marineshqtactic.ai'
 -- Edited by Krronus @ 05.23.2010
--- Edited by Thudmeizer @ 02.02.2016
+-- Edited by Thudmeizer @ 02.10.2016
 
 class 'MarinesHQTactic' (BaseTactic)
 
@@ -10,6 +10,13 @@ MarinesHQ = {}
 function MarinesHQTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Marines HQ Tactic")
+
+	-- Building can deepstrike troops
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function MarinesHQTactic:CanDeepStrikeTroops()
+	return true
 end
 
 function MarinesHQTactic:InitAbilities()
@@ -31,6 +38,3 @@ function MarinesHQTactic:DoAbilities()
 	end
 end
 
-function MarinesHQTactic:CanDeepStrikeTroops()
-	return true
-end
