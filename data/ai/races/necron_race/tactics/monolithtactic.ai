@@ -2,7 +2,7 @@
 -- File: 'monolithtactic.ai'
 -- Edited by Arkhan		@ 15.01.2007
 -- Edited by Cylarne_04 2011
--- Edited by Thudmeizer		@ 02.10.2016
+-- Edited by Thudmeizer		@ 09.04.2016
 
 class 'MonolithTactic' (BaseTactic)
 
@@ -11,18 +11,6 @@ Monolith = {}
 function MonolithTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Monolith Tactic")
-
-	if (cpu_manager:GetTierLevel() >= 2) then
-		-- Building can deepstrike troops
-		self.m_bCanDeepStrikeTroops = true
-	end
-end
-
-function MonolithTactic:CanDeepStrikeTroops()
-
-	if (cpu_manager:GetTierLevel() >= 2) then
-		return true
-	end
 end
 
 function MonolithTactic:InitAbilities()
@@ -41,5 +29,12 @@ function MonolithTactic:DoAbilities()
 		if (self.base_ai:CanDoAbility( Monolith.repair_id )) then
 			self.base_ai:DoSpecialAbility( Monolith.repair_id )
 		end
+	end
+end
+
+function MonolithTactic:CanDeepStrikeTroops()
+
+	if (cpu_manager:GetTierLevel() >= 2) then
+		return true
 	end
 end

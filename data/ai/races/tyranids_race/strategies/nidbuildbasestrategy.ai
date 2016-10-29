@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'tyranidbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 02.10.2016
+-- Edited by Thudmeizer @ 24.09.2016
 
 class 'TyranidBuildBaseStrategy' (BuildBaseStrategy)
 
@@ -224,22 +224,24 @@ function TyranidBuildBaseStrategy:UpdateTierLevel()
 		-- Check for valid building
 		if (oBase:IsValid() and not oBase:IsListeningPost()) then
 
-			-- We still have the proper research or add-on
-			if (cpu_manager.cpu_player:IsResearchComplete("tyranids_apocalypse_research")) then
-				self.tierLevel = 6
-				return
-			elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_assimilation_research")) then
-				self.tierLevel = 5
-				return
-			elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_arrival3_research")) then
-				self.tierLevel = 4
-				return
-
 			-- Check for HQ addon 2
-			elseif (oBase:HasAddOn(iHQAddon2ID)) then
-				self.tierLevel = 3
-				return
-	
+			if (oBase:HasAddOn(iHQAddon2ID)) then
+		
+				-- We still have the proper add-on
+				if (cpu_manager.cpu_player:IsResearchComplete("tyranids_apocalypse_research")) then
+					self.tierLevel = 6
+					return
+				elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_assimilation_research")) then
+					self.tierLevel = 5
+					return
+				elseif (cpu_manager.cpu_player:IsResearchComplete("tyranids_arrival3_research")) then
+					self.tierLevel = 4
+					return
+				else
+					self.tierLevel = 3
+					return
+				end
+		
 			-- Check for HQ addon 1
 			elseif (oBase:HasAddOn(iHQAddon1ID)) then
 				self.tierLevel = 2
@@ -433,10 +435,7 @@ function TyranidBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("tyranids_relic_research_2", 5, 0, 3000, 0, 0, nil, 0)
 
 			-- Compute Apocalypse Research
-			if self:HasCriticalLocation() then
-				print("Critical Location taken for player "..tostring(cpu_manager.player_id).."")
-				self:DynamicResearch("tyranids_apocalypse_research", 5, 8000, 4000, 0, 0, nil, 0)
-			end
+			self:DynamicResearch("tyranids_apocalypse_research", 5, 8000, 4000, 0, 0, nil, 0)
  		end
 
 		-- Compute tier 6 researches

@@ -31,10 +31,10 @@ function Armycap_3_InitRule()
 		-- Get player ID
 		local ePlayerID = World_GetPlayerAt(iLoop1)
 		
-		if (Player_GetRaceName(ePlayerID) == "ork_race") then
+		--[[if (Player_GetRaceName(ePlayerID) == "ork_race") then
 			local oModPopulationCap	= Modifier_Create(MAT_Player, "population_cap_player_modifier", MUT_Multiplication, false, g_fArmyCapModifier3*2, "")
 			Modifier_ApplyToPlayer( oModPopulationCap, ePlayerID)
-		end
+		end]]
 		
 		-- Apply army cap modifiers
 		pcall(Modifier_ApplyToPlayer, oModMaxSquadCap, ePlayerID)

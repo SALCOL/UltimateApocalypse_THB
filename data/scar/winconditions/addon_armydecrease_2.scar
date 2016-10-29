@@ -9,7 +9,7 @@ import("ScarUtil.scar");
 import("WXPGroups.scar");
 
 -- Settings
-g_fArmyCapModifierd2 = 0.1
+g_fArmyCapModifierd2 = 0.3
 
 
 -- Init the cap modifier code

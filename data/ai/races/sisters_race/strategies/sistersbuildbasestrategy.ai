@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 02.10.2016
+-- Edited by Thudmeizer @ 24.09.2016
 -- Edited by Cylarne_04 2011
 
 class 'SistersBuildBaseStrategy' (BuildBaseStrategy)
@@ -230,7 +230,7 @@ function SistersBuildBaseStrategy:UpdateTierLevel()
 		-- Check for valid building
 		if (oBase:IsValid() and not oBase:IsListeningPost()) then
 
-			-- Check if we have the proper research or building or addon
+			-- Check tier 5 
 			if cpu_manager.cpu_player:IsResearchComplete("sisters_apocalypse_research") then
 				self.tierLevel = 6
 				return
@@ -488,9 +488,7 @@ function SistersBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("sisters_relic_research_2", 5, 2000, 2000, 0, 0, nil, 0)
 
 			-- Compute Apocalypse
-			if self:HasCriticalLocation() then
-				self:DynamicResearch("sisters_apocalypse_research", 5, 3000, 3000, 0, 0, nil, 0)
-			end
+			self:DynamicResearch("sisters_apocalypse_research", 5, 3000, 3000, 0, 0, nil, 0)
 		end
 		
 		-- Compute tier 6 researches

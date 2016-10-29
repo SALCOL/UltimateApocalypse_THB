@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'eldaraspecttactic.ai'
 -- Edited by Cylarne		@ 03/02/2011
--- Edited by Thudmeizer		@ 02.10.2016
+-- Edited by Thudmeizer		@ 09.04.2016
 
 class 'EldarAspectTactic' (BaseTactic)
 
@@ -10,13 +10,6 @@ EldarAspect = {}
 function EldarAspectTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Eldar Aspect Tactic")
-
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
-end
-
-function EldarAspectTactic:CanDeepStrikeTroops()
-	return true
 end
 
 function EldarAspectTactic:InitAbilities()
@@ -36,4 +29,8 @@ function EldarAspectTactic:DoAbilities()
 			self.base_ai:DoSpecialAbility( EldarAspect.repair_id )
 		end
 	end
+end
+
+function EldarAspectTactic:CanDeepStrikeTroops()
+	return true
 end

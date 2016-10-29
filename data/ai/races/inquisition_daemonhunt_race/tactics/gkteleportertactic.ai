@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'gkteleportertactic.ai'
--- Edited by Thudmeizer		@ 02.10.2016
+-- Edited by Thudmeizer		@ 17.04.2016
 
 class 'GKTeleporterTactic' (BaseTactic)
 
@@ -9,13 +9,6 @@ GKTeleporter = {}
 function GKTeleporterTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("GK Teleporter Tactic")
-
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
-end
-
-function GKTeleporterTactic:CanDeepStrikeTroops()
-	return true
 end
 
 function GKTeleporterTactic:InitAbilities()
@@ -35,4 +28,8 @@ function GKTeleporterTactic:DoAbilities()
 			self.base_ai:DoSpecialAbility( GKTeleporter.repair_id )
 		end
 	end
+end
+
+function GKTeleporterTactic:CanDeepStrikeTroops()
+	return true
 end

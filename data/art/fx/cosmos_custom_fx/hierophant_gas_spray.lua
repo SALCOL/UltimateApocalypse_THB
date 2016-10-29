@@ -82,13 +82,13 @@ fxtypes =
 				{
 					name = "Emitter_Duration",
 					type = "VARTYPE_FLOAT",
-					value = 2,
+					value = 5,
 				},
 				property_01 =  
 				{
 					name = "Emitter_Loop",
 					type = "VARTYPE_BOOL",
-					value = 1,
+					value = 0,
 				},
 				property_02 =  
 				{
@@ -112,7 +112,7 @@ fxtypes =
 				{
 					name = "Emitter_InheritVelocity",
 					type = "VARTYPE_FLOAT",
-					value = 0,
+					value = 1,
 				},
 				property_06 =  
 				{
@@ -246,13 +246,13 @@ fxtypes =
 				{
 					name = "Particle_Dynamics",
 					type = "VARTYPE_INT",
-					value = 0,
+					value = 1,
 				},
 				property_18 =  
 				{
 					name = "Particle_Gravity",
 					type = "VARTYPE_FLOAT",
-					value = 1,
+					value = 0.01000,
 				},
 				property_19 =  
 				{
@@ -261,9 +261,9 @@ fxtypes =
 					value =  
 					{
 						0,
-						9.81000,
+						2,
 						1,
-						9.81000,
+						2,
 					},
 				},
 				property_20 =  
@@ -318,17 +318,17 @@ fxtypes =
 					value =  
 					{
 						0,
-						0.46667,
+						1.40000,
 						0.08125,
-						0.53333,
+						1.46666,
 						0.20000,
-						0.86667,
+						1.80000,
 						0.42500,
-						1.93333,
-						0.73375,
-						4,
+						2.86666,
+						0.73000,
+						4.46667,
 						1,
-						6.73333,
+						7.86667,
 					},
 				},
 				property_01 =  
@@ -485,7 +485,7 @@ fxtypes =
 				{
 					name = "Duration",
 					type = "VARTYPE_FLOAT",
-					value = 7,
+					value = 10,
 				},
 				property_13 =  
 				{
@@ -557,13 +557,13 @@ fxtypes =
 				{
 					name = "SortOrder",
 					type = "VARTYPE_INT",
-					value = 1,
+					value = 0,
 				},
 				property_25 =  
 				{
 					name = "DepthOffset",
 					type = "VARTYPE_FLOAT",
-					value = 0,
+					value = 1,
 				},
 				property_26 =  
 				{
