@@ -107,7 +107,7 @@ function ApocalypseRules_SS_Check()
 		
 		ApocalypseRules_AddBuildings = function( ar_entity_pos, itemindex, ar_entityID )
 			-- Every single super structure blueprint or Add-on goes here...
-			if ((Entity_GetBlueprintName(ar_entityID) == "chaos_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
+			if (Entity_GetBlueprintName(ar_entityID) == "chaos_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 				Entity_GetBlueprintName(ar_entityID) == "dark_eldar_hq_sp_dxp3" and Entity_GetBuildingProgress(ar_entityID) >= 0.5 or
 				Entity_GetBlueprintName(ar_entityID) == "eldar_hq_super" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 				Entity_GetBlueprintName(ar_entityID) == "eldar_vaul_portal" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
@@ -124,7 +124,7 @@ function ApocalypseRules_SS_Check()
 				Entity_GetBlueprintName(ar_entityID) == "inquisition_nuclear_facility" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 				Entity_GetBlueprintName(ar_entityID) == "inquisition_shrine_to_the_emperor" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
 				Entity_GetBlueprintName(ar_entityID) == "tyranids_capillary_tower" and Entity_GetBuildingProgress(ar_entityID) == 1.0 or
-				Entity_GetBlueprintName(ar_entityID) == "ork_boomy_platform" and Entity_GetBuildingProgress(ar_entityID) == 1.0) and Entity_ContainsAddOn(ar_entityID, "ork_boomy_platform_kaboom_addon")) then
+				Entity_GetBlueprintName(ar_entityID) == "ork_boomy_platform" and Entity_GetBuildingProgress(ar_entityID) == 1.0 and Entity_ContainsAddOn(ar_entityID, "ork_boomy_platform_kaboom_addon")) then
 				
 				--WinWarning_Add("ui_ar_nuke_percentage"..j, World_GetPlayerAt(j), "", "", "")
 				EGroup_Add("ar_eg_superstructure", ar_entityID)

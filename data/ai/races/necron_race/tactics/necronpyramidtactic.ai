@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'necronpyramidtactic.ai'
 -- Edited by Cylarne @	2012
--- Edited by Thudmeizer @ 02.10.2016
+-- Edited by Thudmeizer @ 04.05.2016
 
 class 'NecronPyramidTactic' (BaseTactic)
 
@@ -10,13 +10,6 @@ NecronPyramid = {}
 function NecronPyramidTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Necron Pyramid Tactic")
-
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
-end
-
-function NecronPyramidTactic:CanDeepStrikeTroops()
-	return true
 end
 
 function NecronPyramidTactic:AutoBuildTurretAddOn( addonSlot, iID )
@@ -96,3 +89,6 @@ function NecronPyramidTactic:DoAbilities()
 	end
 end
 
+function NecronPyramidTactic:CanDeepStrikeTroops()
+	return true
+end

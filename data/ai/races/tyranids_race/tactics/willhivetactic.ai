@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'willhivetactic.ai'
--- Edited by Thudmeizer @ 02.10.2016
+-- Edited by Thudmeizer @ 25.04.2016
 
 class 'WillHiveTactic' (EngineerTactic)
 
@@ -11,10 +11,6 @@ function WillHiveTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Will Hive Tactic")
 
 	WillHive.detectDelay = -1
-end
-
-function WillHiveTactic:CanDeepStrikeTroops()
-	return true
 end
 
 function WillHiveTactic:CanRepair()
@@ -147,4 +143,8 @@ function WillHiveTactic:DoAbilities()
 			end
 		end
 	end
+end
+
+function WillHiveTactic:CanDeepStrikeTroops()
+	return true
 end
