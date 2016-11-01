@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'marinebarrackstactic.ai'
 -- Edited by Arkhan		@ 15.01.2007
--- Edited by Thudmeizer		@ 05.09.2016
+-- Edited by Thudmeizer		@ 02.10.2016
 
 class 'MarineBarracksTactic' (BaseTactic)
 
@@ -12,6 +12,10 @@ function MarineBarracksTactic:__init( base_ai ) super( base_ai )
 	self:SetName("Marine Barracks Tactic")
 
 	self.m_iArmouryID = cpu_manager.stats:GetBuildingID( "space_marine_armoury" )
+end
+
+function MarineBarracksTactic:CanDeepStrikeTroops()
+	return (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iArmouryID, true) > 0)
 end
 
 function MarineBarracksTactic:AutoBuildResearch( researchSlot )
@@ -26,10 +30,6 @@ function MarineBarracksTactic:AutoBuildResearch( researchSlot )
 		end
 	end
 	return
-end
-
-function MarineBarracksTactic:CanDeepStrikeTroops()
-	return (cpu_manager.player_stats:GetNumBasesByBPID(self.m_iArmouryID, true) > 0)
 end
 
 function MarineBarracksTactic:InitAbilities()
@@ -54,12 +54,18 @@ end
 function MarineBarracksTactic:Upgrade()
 
 	if not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_bloodravens_research")) or
-		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_lotd_research")) or
-		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_ultramarines_research")) then
+		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_ultramarines_research")) or
+		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_imperial_fists_research")) or
+		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_spacewolves_research")) or
+		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_salamanders_research")) or
+		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_blood_angels_research")) or
+		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_dark_angels_research")) or
+		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_black_templars_research")) or
+		not (cpu_manager.cpu_player:IsResearchComplete("marine_chapter_lotd_research")) then
 
    		if (cpu_manager:GetTierLevel() >= 3) then 
-			local random_branch_researches = math.random( 0,2 )	-- Randomize these researches
-			self:AutoBuildResearch(random_branch_researches) -- Now choose only one research
+			local random_branch_researches = math.random( 0,8 )	-- Randomize these researches
+			self:AutoBuildResearch(random_branch_researches) 	-- Now choose only one research
 		end
 	end
 end

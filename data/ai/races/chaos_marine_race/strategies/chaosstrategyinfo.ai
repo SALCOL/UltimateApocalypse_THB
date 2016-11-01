@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'chaosstrategyinfo.ai'
--- Edited by Thudmeizer @ 23.09.2015
+-- Edited by Thudmeizer @ 03.10.2015
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -38,15 +38,14 @@ BuildBaseStrategyInfo =
 				{ 1, 80, 0, 0, 1,	"Unit",		"chaos_squad_cultist" }, -- Force a capturing squad
 				{ 1, 360, 70, 0, 1,	"Unit",		"chaos_squad_lord" },
 				{ 1, 170, 30, 0, 1,	"Unit",		"chaos_marine_bike_squad" },
-			        { 1, 220, 0, 0, 1,	"Unit",		"chaos_marine_squad" },
+			        { 1, 220, 0, 0, 2,	"Unit",		"chaos_marine_squad" },
 			        { 1, 240, 0, 0, 1,	"Unit",		"chaos_squad_raptor" },
 				{ 1, 450, 0, 0, 1,	"Building",	"chaos_hq" },
 				{ 1, 250, 0, 0, 1,	"Building",	"chaos_temple" },
 				{ 1, 135, 0, 0, 3,	"Building",	"chaos_plasma_generator" },
 				{ 1, 90, 80, 0, 60,	"TurretAddon",	"chaos_list_post_addon_1" },
-				{ 1, 175, 50, 750, 1,	"Building",	"chaos_armoury" },
-				{ 1, 140, 50, 0, 1,	"Building",	"chaos_turret_bolter" },
-				{ 1, 150, 0, 0, 1,	"Research", 	"chaos_squad_cap_research" },
+				{ 1, 75, 110, 0, 1,	"Building",	"chaos_turret_bolter" },
+				{ 1, 175, 50, 250, 1,	"Building",	"chaos_armoury" },
 				{ 1, 90, 80, 250, 100,	"TurretAddon",	"chaos_list_post_addon_1" },
 				{ 1, 135, 0, 0, 5,	"Building",	"chaos_plasma_generator" },
 				{ 1, 400, 130, 950, 1,	"Addon",	"chaos_hq_addon_1" },
@@ -54,18 +53,18 @@ BuildBaseStrategyInfo =
 				{ 2, 280, 40, 0, 1,	"Unit",		"chaos_havoc_marine_squad" },
 				{ 2, 180, 290, 0, 1,	"Unit",		"chaos_squad_dreadnought" },
 				{ 2, 195, 315, 0, 1,	"Unit",		"chaos_squad_vindicator" },
-				{ 2, 240, 150, 0, 30,	"TurretAddon",	"chaos_list_post_addon_2" },
-				{ 2, 200, 125, 0, 1,	"Building",	"chaos_machine_pit" },
+				{ 2, 200, 125, 250, 1,	"Building",	"chaos_machine_pit" },
 				{ 2, 135, 0, 0, 6,	"Building",	"chaos_plasma_generator" },
-				{ 2, 25, 90, 250, 40,	"TurretAddon",	"chaos_turret_addon" },
-				{ 2, 150, 50, 250, 1,	"Building",	"chaos_sacrificial_circle" },
+				{ 2, 25, 90, 500, 40,	"TurretAddon",	"chaos_turret_addon" },
+				{ 2, 240, 150, 500, 75,	"TurretAddon",	"chaos_list_post_addon_2" },
+				{ 2, 150, 50, 0, 1,	"Building",	"chaos_sacrificial_circle" },
 				{ 2, 500, 500, 1500, 1,	"Addon",	"chaos_hq_addon_2" },
 
 				{ 3, 230, 390, 0, 1,	"Unit",		"chaos_squad_predator" },
 				{ 3, 495, 90, 0, 1,	"Unit",		"chaos_squad_possessed_marine" },
 				{ 3, 300, 100, 0, 1,	"Building",	"chaos_greater_sacrificial_circle" },
-				{ 3, 240, 150, 500, 100,"TurretAddon",	"chaos_list_post_addon_2" },
-				{ 3, 700, 150, 1500, 2,	"Building",	"chaos_hq" },
+				{ 3, 240, 150, 400, 100,"TurretAddon",	"chaos_list_post_addon_2" },
+				{ 3, 700, 150, 500, 2,	"Building",	"chaos_hq" },
 				{ 3, 1000, 1000, 2000, 1,"Research",	"chaos_projectiles" },
 
 				{ 4, 280, 500, 0, 1,	"Unit",		"chaos_squad_defiler" },
@@ -77,9 +76,9 @@ BuildBaseStrategyInfo =
 				{ 5, 800, 240, 0, 1,	"Unit",		"chaos_squad_mutilator" },
 				{ 5, 800, 240, 0, 1,	"Unit",		"chaos_squad_obliterator" },
 				{ 5, 620, 380, 0, 1,	"Building",	"chaos_warpgate" },
-				{ 5, 2000, 2000, 1500, 1,"Building",	"chaos_hq_super" },
+				{ 5, 2000, 2000, 0, 1,  "Building",	"chaos_hq_super" },
 				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
-				{ 5, 4000, 4000, 3000, 1,"Research",	"chaos_apocalypse_research" },
+		  	        { 5, 4000, 4000, 3000, 1,"Research",	"chaos_apocalypse_research" },
 
 				{ 6, 200, 75, 0, 1,	"Unit",		"chaos_squad_sorcerer" },
 				{ 6, 1220, 500, 0, 1,	"Unit",		"chaos_squad_lord_terminator" },

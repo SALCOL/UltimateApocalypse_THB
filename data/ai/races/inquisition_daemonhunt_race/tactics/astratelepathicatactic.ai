@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'astratelepathicatactic.ai'
--- Edited by Thudmeizer		@ 07.06.2016
+-- Edited by Thudmeizer		@ 02.10.2016
 -- Edited by Cylarne
 
 class 'AstraTelepathicaTactic' (BaseTactic)
@@ -10,6 +10,10 @@ AstraTelepathica = {}
 function AstraTelepathicaTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Astra Telepathica Tactic")
+end
+
+function AstraTelepathicaTactic:CanDeepStrikeTroops()
+	return true
 end
 
 function AstraTelepathicaTactic:InitAbilities()
@@ -93,8 +97,4 @@ function AstraTelepathicaTactic:DoAbilities()
 			self.base_ai:DoSpecialAbility( AstraTelepathica.repair_id )
 		end
 	end
-end
-
-function AstraTelepathicaTactic:CanDeepStrikeTroops()
-	return true
 end

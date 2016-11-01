@@ -1,0 +1,58 @@
+----------------------------------------
+-- File: 'darkeldaragonydeployedtactic.ai'
+-- Edited by Thudmeizer @ 31.10.2016
+
+class 'DarkEldarAgonyDeployedTactic' (DarkEldarVehicleTactic)
+
+DarkEldarAgonyDeployed = {}
+
+function DarkEldarAgonyDeployedTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Dark Eldar Agony Deployed Tactic")
+end
+
+function DarkEldarAgonyDeployedTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarAgonyDeployed.crucible_id == nil) then
+		DarkEldarAgonyDeployed.crucible_id = cpu_manager.stats:GetAbilityID( "dark_eldar_crucible_agony_titan" )	
+	end
+end
+
+function DarkEldarAgonyDeployedTactic:DoAbilities()
+
+	-- Try to enter Siege Mode
+	self:DoSiegeAbility()
+
+	-- We are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		--Ability.DoAbilityTarget(self.squad_ai, DarkEldarAgonyDeployed.crucible_id, Ability.Filters.CloseSquadEnemy, 4)
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarAgonyDeployed.crucible_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+	else
+		--Ability.DoAbilityTarget(self.squad_ai, DarkEldarAgonyDeployed.crucible_id, Ability.Filters.CloseSquadEnemy, 8)
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarAgonyDeployed.crucible_id, Ability.Filters.CloseSquadEnemy, 10, 8)
+	end
+end
+
+function DarkEldarAgonyDeployedTactic:DoSiegeAbility()
+
+	-- Siege Mode: Disables movement of the unit in exchange for a special sentry option 
+	-- Reverts back to Walking Mode when required
+    	if self.squad_ai:CanPossess() then
+		if Ability.Filters.CloseEnemy(self.squad_ai:GetPosition(), 60, 1) == nil or (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.5) then
+            		self.squad_ai:DoPossess()
+		end
+	end
+end
+
+function DarkEldarAgonyDeployedTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	-- State machine
+	if (not VehicleTactic.Update( self )) then
+		return
+	end
+end

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'guardbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 24.09.2016
+-- Edited by Thudmeizer @ 30.10.2016
 -- Edited by Cylarne_04 2011
 
 class 'GuardBuildBaseStrategy' (BuildBaseStrategy)
@@ -239,9 +239,7 @@ end
 -- Arkhan 11.2005: Returns the squad cap and support cap of the given squad
 function GuardBuildBaseStrategy:GetUnitStats(sSquadName)
 
-if (sSquadName == "guard_squad_guardsmen_conscript") then
-		return 2, 0
-	elseif (sSquadName == "guard_squad_guardsmen") then
+	if (sSquadName == "guard_squad_guardsmen") then
 		return 2, 0
 	elseif (sSquadName == "guard_squad_guardsmen_rider") then
 		return 2, 0
@@ -329,27 +327,26 @@ function GuardBuildBaseStrategy:UpdateTierLevel()
 		-- Check for valid building
 		if (oBase:IsValid() and not oBase:IsListeningPost()) then
 	
-		  	-- Check for HQ addon 2
-			if (oBase:HasAddOn(iHQAddon2ID)) then
-			
-				-- We still have the proper add-on
-				if cpu_manager.cpu_player:IsResearchComplete("guard_apocalypse_research") then
-					self.tierLevel = 6
-					return
-				elseif (cpu_manager.cpu_player:IsResearchComplete("guard_research_strafing_run")) then
-					self.tierLevel = 5
-					return
-				elseif (cpu_manager.cpu_player:IsResearchComplete("guard_full_scale_war")) then
-					self.tierLevel = 4
-					return
-				else
-					self.tierLevel = 3
-					return
-				end
-			
+		  	-- We still have the proper researches or addons
+			if cpu_manager.cpu_player:IsResearchComplete("guard_apocalypse_research") then
+				self.tierLevel = 6
+				return
+			elseif (cpu_manager.cpu_player:IsResearchComplete("guard_research_strafing_run")) then
+				self.tierLevel = 5
+				return
+			elseif (cpu_manager.cpu_player:IsResearchComplete("guard_full_scale_war")) then
+				self.tierLevel = 4
+				return
+
+			-- Check for HQ addon 2 
+			elseif (oBase:HasAddOn(iHQAddon2ID)) then
+				self.tierLevel = 3
+				return
+		
 			-- Check for HQ addon 1 
 			elseif (oBase:HasAddOn(iHQAddon1ID)) then
-				self.tierLevel = 3
+				self.tierLevel = 2
+				return
 			end
 		end
 	end
@@ -573,6 +570,9 @@ function GuardBuildBaseStrategy:BuildFlexible()
 				self:DynamicResearch("guard_research_command_squad_size", 4, 230, 120, 0, 0, "guard_squad_command_squad", 1)
 			end
 
+			-- Compute turret upgrade research
+			self:DynamicResearch("guard_turret_upgrade3", 4, 700, 700, 0, 0, nil, 0)
+
 			-- Compute Mechanized Depot Addons
 			if (self:GetBuildingCountByName("guard_mechanized") > 0 and iRequisition >= 500) then
 				self:DynamicAddon("addon_guard_laser_destroyer_depot", 100, 4, 50, 0, 0, 0, nil, nil, false)
@@ -610,7 +610,9 @@ function GuardBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("guard_research_tankarmor_2", 5, 300, 175, 0, 0, nil, 0)
 			
 			-- Compute Apocalypse
-			self:DynamicResearch("guard_apocalypse_research", 5, 2000, 2000, 0, 0, nil, 0)
+			if self:HasCriticalLocation() then
+				self:DynamicResearch("guard_apocalypse_research", 5, 2000, 2000, 0, 0, nil, 0)
+			end
 		end
 
 		-- Compute tier 6 researches
@@ -619,6 +621,37 @@ function GuardBuildBaseStrategy:BuildFlexible()
 			-- Compute resource researches
 			self:DynamicResearch("guard_upgrade_power_5", 6, 800, 100, 0, 0, nil, 0)
 			self:DynamicResearch("guard_upgrade_requisition_5", 6, 300, 1100, 0, 0, nil, 0)
+		end
+	end
+
+	-- Build various Commander units to allow it a chance to garrison inside the Captain's Reaver Titan so it can upgrade
+	if (self:CountSquads("guard_squad_reaver_titan_captain") >= 1) then
+		if (self:CountSquads("guard_squad_command_squad") < 1) then
+
+			local tBuildType = CpuBuildType()
+			tBuildType.btype = CpuPrerequisites.BT_Squad
+			tBuildType.name = "guard_squad_command_squad"
+			if (self:TryBuild( tBuildType )) then
+				aitrace("BuildController: Dynamic build of "..tBuildType.name)	
+			end
+
+		elseif (self:CountSquads("guard_squad_officer_squad") < 1) then
+
+			local tBuildType = CpuBuildType()
+			tBuildType.btype = CpuPrerequisites.BT_Squad
+			tBuildType.name = "guard_squad_officer_squad"
+			if (self:TryBuild( tBuildType )) then
+				aitrace("BuildController: Dynamic build of "..tBuildType.name)	
+			end
+
+		elseif (self:CountSquads("guard_squad_officer_support_squad") < 1) then
+
+			local tBuildType = CpuBuildType()
+			tBuildType.btype = CpuPrerequisites.BT_Squad
+			tBuildType.name = "guard_squad_officer_support_squad"
+			if (self:TryBuild( tBuildType )) then
+				aitrace("BuildController: Dynamic build of "..tBuildType.name)	
+			end
 		end
 	end
 	

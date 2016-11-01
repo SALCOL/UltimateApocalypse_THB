@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'siegemonolithtactic.ai'
--- Edited by Thudmeizer	@ 02.07.2016
+-- Edited by Thudmeizer	@ 08.10.2016
 
 class 'SiegeMonolithTactic' (NecronVehicleTactic)
 
@@ -11,6 +11,9 @@ function SiegeMonolithTactic:__init( squad_ai ) super( squad_ai )
 	self:SetName("Siege Monolith Tactic")
 
 	self.timedDirectSpawnAbility = Timer( SiegeMonolithTactic.DoDirectSpawnAbility, self, 5 )
+
+	self.previousPosition = self.squad_ai:GetPosition()
+	self.checkTime = g_iGMT
 end
 
 -- Siege Monolith is allowed to retreat even directly after a jump
@@ -50,6 +53,9 @@ function SiegeMonolithTactic:DoAbilities()
 			end
 		end
 	end
+
+	-- Jump/Teleport squads' unstuck code call. Checks every 12 secs for stuck squads, and force them to jump nearby.
+	self:SolveStuckCase()
 
 	-- Call standard method
 	NecronVehicleTactic.DoAbilities(self)
@@ -141,6 +147,48 @@ function SiegeMonolithTactic:JumpAttackRanged()
 		end
 	end
 	return false
+end
+
+function SiegeMonolithTactic:SolveStuckCase()
+
+	if g_iGMT > self.checkTime + 18 and g_iGMT > self.last_jump + 60 then
+        self.checkTime = g_iGMT
+        	if self:IsSquadStuck() then
+            		self:ForceSquadJumpNear(self.squad_ai:GetPosition())
+        	end
+	end
+end
+
+function SiegeMonolithTactic:IsSquadStuck()
+
+	local iPosition = self.squad_ai:GetPosition()
+	local iDistance = distance_sqr(iPosition, self.previousPosition)
+    	self.previousPosition = iPosition
+    	if iDistance > 25 or self.squad_ai:IsInCombat() or self.squad_ai:IsCapturing() then
+        	return false
+    	end
+    	return true
+end
+
+function SiegeMonolithTactic:ForceSquadJumpNear(pos)
+
+	-- Try to jump somewhere near, perform 16 checks for a viable position
+    	for iLoop1 = 1, 16 do
+        	-- Create a jump position
+		local vJumpPosition = pos
+        	local vDir = cpu_manager:GetDirectionToEnemy(pos)
+        	vJumpPosition.x = vJumpPosition.x + vDir.x * math.random(-20, 50)
+        	vJumpPosition.z = vJumpPosition.z + vDir.z * math.random(-20, 50)
+        	-- Check if target position is in range and if unit is able to jump to target position
+        	local iDistance = distance_sqr(vJumpPosition, pos)
+        	if iDistance < sqr(self.squad_ai:GetJumpDistance()) and self.squad_ai:CanJumpToPosition(vJumpPosition) then                
+            		-- Jump to position
+            		self.squad_ai:DoJump(vJumpPosition)
+            		self.last_jump = g_iGMT
+            		self.m_iLastGatherMove = self.last_jump - 10
+            		return
+		end
+	end
 end
 
 function SiegeMonolithTactic:Update()
