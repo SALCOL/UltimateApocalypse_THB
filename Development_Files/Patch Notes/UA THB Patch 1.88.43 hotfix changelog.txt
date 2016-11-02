@@ -1,0 +1,6 @@
+* Eldar Phoenix is no longer invulnerable.
+* Dark Eldar Void Dragon Phoenix is no longer invulnerable.
+* Dark Eldar Void Raven and variant is no longer invulnerable.
+* Eldar Vampire Raider is no longer invulnerable.
+* Dark Eldar Agony Titan is no longer invulnerable when deployed.
+* Tyranid projectiles no longer spew pink boxes.
