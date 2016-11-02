@@ -1,0 +1,170 @@
+Hint: 
+* = Fixes.
+- = Ideas not taken to effect yet.
+!* = Applied ingame, but as rough drafts (non final product)
+> = Noted for next version.
+>> = Noted, but not for another two versions or more.
+
+------------------------
+
+PLANS FOR FUTURE VERSIONS:
+
+None. This is the final version of UA created by Lord Cylarne due to financial issues. Read more if interested on our MOD DB forums within the news section of October 2016.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+------------------------
+Global: 
+------------------------
+* Tank Traps defense aura modifiers decreased.
+* All titanic aircraft no longer contains shields, only walker titans.
+* Donator names of the developer Lord Cylarne are placed within random units of any faction within the description of a unit; also 
+with a story within each. Find them and see their stories! Stories will be made up about something else if a donator gave no feedback about what they want added.
+Donate to Lord Cylarne if you wish to have your name in the mod and tell a story about yourself or whatever you want! https://www.patreon.com/user/posts?u=907153
+
+
+AI Changes ------------------------
+
+------------------------
+Chaos Marines: 
+------------------------
+* Cultists Prayer to the Dark Gods modifiers increased by 100%.
+* Icon Bearer aura buff modifiers (depended on the mark chosen) increased by 50%. 
+* Icon Bearers of Slaanesh now actually apply a speed buff to squads.
+
+
+AI Changes-------------
+
+------------------------
+Chaos Daemons:
+------------------------
+* Pink Horror Tzeentch Bolt upgrade costs 30 more requisition.
+* Lord of Change sight radius increased and can now detect infiltrators.
+
+AI Changes-------------
+
+------------------------
+Dark Eldar: 
+------------------------ 
+* Reaper Shard cost increased by 150%. Damage against infantry decreased by 30%.
+* Trueborn Warrior Greater Dark Lance cost increased. Damage decreased by 30%.
+* Instigator Titan jump cooldown increased.
+* Shield Generators ranged protection decreased.
+
+
+AI Changes-------------
+
+------------------------
+Eldar: 
+------------------------
+* Prism Shard damage against infantry decreased by 60%.
+
+
+AI Changes-------------
+
+------------------------
+Imperial Guard: 
+------------------------
+* New Research: Fortress Defenses
+* Infantry Doctrine now applies more health, morale and damage to most infantry units, like an upgrade research. Description updated.
+* Armor Doctrine now applies more health and damage to all Imperial Tanks. Like an armor bonus research. Description updated.
+* Imperial Conscripts limit is now 3. Conscripts now cost no squad cap and are produced faster at HQs.
+* Rough Riders damage output increased by 30%. Movement speed increased by 2 meters.
+* Guardsmen squad loadout glitch is now fixed.
+* Shadowsword Titanicus damage increased by 30%.
+* Poison knives no longer infinitely stack on damage.
+* Standard Bearer morale bonus modifiers increased by 100%.
+* Psyker minor hero unit damage output increased by 75%.
+
+AI Changes-------------
+
+------------------------
+Inquisition:
+------------------------
+* Warhound Purifier Titan damage versus titans, heavily armored vehicles/structures, and aircraft significantly decreased.
+* Warhound Purifier Titan maximum damage decreased from 290 x 4 to 270 x 4 per second.
+* Omnissiah Turrets effectiveness against structures decreased. Reload times increased by 2 seconds.
+* Urban Territory resource rates decreased by 25%.
+* Urban Territories no longer provide immediate requisition income bonuses.
+* Grey Knight Incinerator and Psycannon damage outputs decreased by 20%.
+* Blades and Armor research modifiers on all Grey Knights decreased.
+
+AI Changes-------------
+
+
+------------------------
+Necrons: 
+------------------------
+
+AI Changes-------------
+
+------------------------
+Orks: 
+------------------------
+* Klan Zagdakka ability recharge rate decreased from 50% bonus to 25% bonus.
+* Meanest And Biggest Generator now states once again that it has a radiation leak in its ucs.
+* Meanest And Biggest Generator cost decreased from 4500 to 3500.
+* Ork population bug was fixed when selecting Army Cap +10 and greater.
+* Inspiring Choice population cost increased by 300%.
+* Stormboyz can now garrisson in transports.
+* Flash Gitz and Nob squads transport loadout decreased by 1.
+* Lootas and Armored Nobz now cost 4 population from 5.
+* Orks cost to reinforce increased along with producing them from Da Boyz Hut.
+* Squiggoth cost increased and requires 5 more population.
+* Gargant, Kustum Stompa, and Dakka Stompa population costs increased by 20.
+AI Changes-------------
+
+------------------------
+Sisters of Battle:
+------------------------
+* Arch Angel now costs 2000 faith/relic to purchase.
+* Losing HQs no longer affect the faith maximum income.
+* Commander Choice: Faith addon now increases the faith income a lot more so it is a little more useful.
+
+
+AI Changes-------------
+
+
+------------------------
+Space Marines: 
+------------------------
+
+* Standard Bearer morale bonus modifiers increased by 100%.
+
+AI Changes-------------
+
+------------------------
+Tau: 
+------------------------
+* Mako Titan weapon range increased by 25 meters. Including abilities.
+* Mako Titan rocket weaponry now fires 2x faster.
+* Shield Generators ranged protection decreased.
+
+
+AI Changes-------------
+
+------------------------
+Tyranids: 
+------------------------
+* New Unit Update: Hierophant.
+* Zoanthrope invulnerability bug is officially fixed now.
+* Zoanthrope damage and health multiplied by two and always knocks back.
+AI Changes-------------
+
+--------------------------------------------------------|
+Tech Trees (Visual Images Separate from mod): | 
+--------------------------------------------------------|
+
+
+
+--------------------------------------------------------|
+SCAR (Winconditions): | 
+--------------------------------------------------------|
+
+* Super structures are now successfully revealed on the map.
+* Army Cap / 3 wincondition was fixed and now divides army cap by 3 instead of 10.
+* Orks population now completely works when selecting army cap + winconditions.
