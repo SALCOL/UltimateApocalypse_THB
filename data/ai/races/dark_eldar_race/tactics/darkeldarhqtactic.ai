@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarhqtactic.ai'
--- Edited by Thudmeizer		@ 02.10.2016
+-- Edited by Thudmeizer		@ 08.04.2016
 
 class 'DarkEldarHQTactic' (BaseTactic)
 
@@ -9,13 +9,6 @@ DarkEldarHQ = {}
 function DarkEldarHQTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Dark Eldar HQ Tactic")
-
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
-end
-
-function DarkEldarHQTactic:CanDeepStrikeTroops()
-	return true
 end
 
 function DarkEldarHQTactic:InitAbilities()
@@ -200,3 +193,6 @@ function DarkEldarHQTactic:DoAbilities()
 	end
 end
 
+function DarkEldarHQTactic:CanDeepStrikeTroops()
+	return true
+end

@@ -2,7 +2,7 @@
 -- File: 'necroncoretactic.ai'
 -- Edited by Krronus @ 17.09.2010
 -- Edited by Cylarne @ 2014
--- Edited by Thudmeizer	@ 02.10.2016
+-- Edited by Thudmeizer	@ 28.09.2016
 
 class 'NecronCoreTactic' (BaseTactic)
 
@@ -25,11 +25,7 @@ function NecronCoreTactic:__init( base_ai ) super( base_ai )
 		end
 	end
 end
---[[
-function NecronCoreTactic:CanDeepStrikeTroops()
-	return true
-end
-]]
+
 function NecronCoreTactic:InitAbilities()
 
 	-- Init ability ID's
@@ -170,3 +166,8 @@ function NecronCoreTactic:DoDefensiveHQDeepStriking()
     	end
 	return nil
 end
+--[[
+function NecronCoreTactic:CanDeepStrikeTroops()
+	return true
+end
+]]

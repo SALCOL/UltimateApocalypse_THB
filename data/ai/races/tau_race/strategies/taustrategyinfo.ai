@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'taustrategyinfo.ai'
--- Edited by Thudmeizer    @ 29.09.2016
+-- Edited by Thudmeizer    @ 23.09.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -44,7 +44,7 @@ BuildBaseStrategyInfo =
 				{ 1, 90, 80, 500, 75,	"TurretAddon",	"addon_tau_list_post_1" },
 				{ 1, 135, 0, 0, 1,	"Building",	"tau_kroot_nest" },
 				{ 1, 150, 0, 0, 3,	"Building",	"tau_plasma_generator" },
-				{ 1, 90, 125, 0, 1,	"Building",	"tau_turret" },
+				{ 1, 155, 50, 0, 1,	"Building",	"tau_turret" },
 				{ 1, 150, 0, 0, 4,	"Building",	"tau_plasma_generator" },
 				{ 1, 90, 80, 700, 100,	"TurretAddon",	"addon_tau_list_post_1" },
 				{ 1, 400, 130, 950, 1,	"Building",	"tau_research_building" },
@@ -54,19 +54,19 @@ BuildBaseStrategyInfo =
 				{ 2, 200, 125, 0, 1,	"Building",	"tau_vehicle_building" },
 				{ 2, 35, 125, 0, 50,	"TurretAddon",	"addon_tau_turret" },
 				{ 2, 150, 0, 0, 6,	"Building",	"tau_plasma_generator" },
-				{ 2, 510, 350, 400, 1,	"Building",	"tau_turret_sp" },
+				{ 2, 490, 350, 400, 1,	"Building",	"tau_turret_sp" },
 				{ 2, 240, 160, 500, 25,	"TurretAddon",	"addon_tau_list_post_2" },
 
 			        { 3, 170, 170, 0, 1,	"Building",	"tau_guidance_beacon" },
 				{ 3, 240, 160, 400, 50, "TurretAddon",	"addon_tau_list_post_2" },
-				{ 3, 90, 500, 500, 1,	"Building",	"tau_shield_generator" },
-				{ 3, 510, 350, 600, 2,	"Building",	"tau_turret_sp" },
+				{ 3, 90, 400, 500, 1,	"Building",	"tau_shield_generator" },
+				{ 3, 490, 350, 600, 2,	"Building",	"tau_turret_sp" },
 				{ 3, 700, 150, 1000, 2,	"Building",	"tau_hq" },
 				{ 3, 2000, 3000, 1500, 1,"Building",	"tau_shrine_of_purpose" },
 
 				{ 4, 205, 380, 0, 1,	"Unit",		"tau_hammerhead_gunship_squad" },
 				{ 4, 240, 160, 0, 100,	"TurretAddon",	"addon_tau_list_post_2" },
-				{ 4, 510, 350, 0, 3,	"Building",	"tau_turret_sp" },
+				{ 4, 490, 350, 0, 3,	"Building",	"tau_turret_sp" },
 				{ 4, 35, 125, 0, 90,	"TurretAddon",	"addon_tau_turret" },
 				{ 4, 1200, 1800, 2000, 1,"Research",	"tau_path_to_destruction_research" },
 				
@@ -74,7 +74,7 @@ BuildBaseStrategyInfo =
 				{ 5, 3000, 3000, 0, 1,	"Building",	"tau_arka_ion_cannon" },
 				{ 5, 160, 800, 0, 50,	"Addon",	"addon_tau_shield" },
 				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
-			        { 5, 3000, 5000, 2500, 1,"Research",	"tau_apocalypse_research" },
+				{ 5, 3000, 5000, 2500, 1,"Research",	"tau_apocalypse_research" },
 
 				{ 6, 220, 50, 0, 1,	"Unit",		"tau_commander_squad" },
 				{ 6, 200, 100, 0, 1,	"Unit",		"tau_ethereal_squad" },

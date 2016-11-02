@@ -185,23 +185,24 @@ function NecronBuildBaseStrategy:UpdateTierLevel()
 
 		-- Check for valid building
 		if (oBase:IsValid() and not oBase:IsListeningPost()) then
-
-			-- We still have the proper researches, buildings, or addons
-			if cpu_manager.cpu_player:IsResearchComplete("necron_apocalypse_research") then
-				self.tierLevel = 6
-				return
-			elseif (self:GetBuildingCountByName("necron_energy_core") > 0) then
-				self.tierLevel = 5
-				return
-			elseif (self:GetBuildingCountByName("necron_summoning_core_big") > 0) then
-				self.tierLevel = 4
-				return
-
 			-- Check for HQ addon 2
-			elseif (oBase:HasAddOn(iHQAddon2ID)) then
-				self.tierLevel = 3
-				return
-			
+			if (oBase:HasAddOn(iHQAddon2ID)) then
+				
+				-- We still have the proper add-on
+				if cpu_manager.cpu_player:IsResearchComplete("necron_apocalypse_research") then
+					self.tierLevel = 6
+					return
+				elseif (self:GetBuildingCountByName("necron_energy_core") > 0) then
+					self.tierLevel = 5
+					return
+				elseif (self:GetBuildingCountByName("necron_summoning_core_big") > 0) then
+					self.tierLevel = 4
+					return
+				else
+					self.tierLevel = 3
+					return
+				end
+				
 			-- Check for HQ addon 1 
 			elseif (oBase:HasAddOn(iHQAddon1ID)) then
 				self.tierLevel = 2
@@ -393,9 +394,7 @@ function NecronBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("necron_solar_power_research", 5, 0, 1500, 0, 0, nil, 0)
 			
 			-- Compute Apocalypse
-			if self:HasCriticalLocation() then
-				self:DynamicResearch("necron_apocalypse_research", 5, 0, 6000, 0, 0, nil, 0)
-			end
+			self:DynamicResearch("necron_apocalypse_research", 5, 0, 6000, 0, 0, nil, 0)
 		end
 
 		-- Compute tier 6 researches
@@ -472,7 +471,6 @@ function NecronBuildBaseStrategy:BuildFlexible()
 				self:DynamicBuild("monolith", 3, 3, 0, 1000, 0, 0)
 				self:DynamicBuild("monolith", 4, 5, 0, 2000, 0, 0)
 				self:DynamicBuild("monolith_super", 2, 5, 0, 4000, 0, 0)
-				self:DynamicBuild("monolith_super", 3, 5, 0, 8000, 0, 0)
 				self:DynamicBuild("necron_summoning_core_big", 2, 5, 0, 5000, 0, 0)
 			end
 		end
@@ -480,6 +478,7 @@ function NecronBuildBaseStrategy:BuildFlexible()
 		-- Build additional uber buildings in later tiers
 		if (self.tierLevel >= 6) then
 			if (iPower >= 3000) then
+				self:DynamicBuild("monolith_super", 3, 6, 0, 6000, 0, 0)
 				self:DynamicBuild("necron_summoning_core_big", 3, 6, 0, 8000, 0, 0)
 			end
 		end

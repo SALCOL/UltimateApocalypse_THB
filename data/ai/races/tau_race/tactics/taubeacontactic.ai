@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'taubeacontactic.ai'
 -- Edited by Krronus	8.26.2006
--- Edited by Thudmeizer	@ 02.10.2016
+-- Edited by Thudmeizer	@ 08.04.2016
 
 class 'TauBeaconTactic' (BaseTactic)
 
@@ -12,13 +12,6 @@ function TauBeaconTactic:__init( base_ai ) super( base_ai )
 	self:SetName("Tau Beacon Tactic")
 
 	TauBeacon.detectDelay = -1
-
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
-end
-
-function TauBeaconTactic:CanDeepStrikeTroops()
-	return true
 end
 
 function TauBeaconTactic:InitAbilities()
@@ -98,3 +91,6 @@ function TauBeaconTactic:DoAbilities()
 	end
 end
 
+function TauBeaconTactic:CanDeepStrikeTroops()
+	return true
+end

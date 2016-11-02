@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'orkbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 30.10.2016
+-- Edited by Thudmeizer @ 24.09.2016
 -- Edited by Cylarne_04 2011
 
 class 'OrkBuildBaseStrategy' (BuildBaseStrategy)
@@ -195,25 +195,25 @@ function OrkBuildBaseStrategy:UpdateTierLevel()
 		-- Check for valid building
 		if (oBase:IsValid() and not oBase:IsListeningPost()) then
 
-			-- Check next tiers by population and proper addon
-			if (build_manager:GetSquadCapCurrentMax() > 300) then
-				self.tierLevel = 6
-				return
-			elseif (build_manager:GetSquadCapCurrentMax() > 175) then
-				self.tierLevel = 5
-				return
-			elseif (build_manager:GetSquadCapCurrentMax() > 120) then
-				self.tierLevel = 4
-				return
-			elseif (build_manager:GetSquadCapCurrentMax() > 90) then
-				self.tierLevel = 3
-				return
 			-- Check for HQ addon
-			elseif (oBase:HasAddOn(iHQAddonID)) then
+			if (oBase:HasAddOn(iHQAddonID)) then
 				self.tierLevel = 2
-				return
 			end
 		end
+	end
+
+	-- Check next tiers by population
+	if (build_manager:GetSquadCapCurrentMax() > 90) then
+		self.tierLevel = 3
+	end
+	if (build_manager:GetSquadCapCurrentMax() > 120) then
+		self.tierLevel = 4
+	end
+	if (build_manager:GetSquadCapCurrentMax() > 175) then
+		self.tierLevel = 5
+	end
+	if (build_manager:GetSquadCapCurrentMax() > 300) then
+		self.tierLevel = 6
 	end
 end
 
@@ -268,9 +268,7 @@ function OrkBuildBaseStrategy:BuildFlexible()
 		self:DynamicResearch("ork_research_tech_squiggoth", 4, 0, 300, 0, 0, nil, 0)
 		self:DynamicResearch("ork_research_tech_battlefortress", 4, 0, 400, 0, 0, nil, 0)
 		self:DynamicResearch("ork_research_tech_gargant", 5, 0, 1000, 0, 0, nil, 0)
-		if self:HasCriticalLocation() then
-			self:DynamicResearch("ork_research_tech_great_gargant", 5, 0, 2000, 0, 0, nil, 0)
-		end
+		self:DynamicResearch("ork_research_tech_great_gargant", 5, 0, 2000, 0, 0, nil, 0)
 	end
 	
 	if (iArmyStrength >= 2000 or (iPower >= 800 and iRequisition >= 900)) then
@@ -422,11 +420,7 @@ function OrkBuildBaseStrategy:BuildFlexible()
 		if (self.tierLevel >= 5) then
 			
 			-- Compute resource research
-			if self:HasCriticalLocation() then
-				self:DynamicResearch("ork_power_research_5", 5, 800, 100, 0, 0, nil, 0)
-			end
-
-			-- Compute resource research
+			self:DynamicResearch("ork_power_research_5", 5, 800, 100, 0, 0, nil, 0)
 			self:DynamicResearch("ork_requisition_research_5", 5, 900, 3000, 0, 0, nil, 0)
 
 			-- Compute Ork Titan researches
@@ -444,9 +438,7 @@ function OrkBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("ork_waagh_research", 5, 1000, 1000, 0, 0, nil, 0)
 
 			-- Compute resource research
-			if self:HasCriticalLocation() then
-				self:DynamicResearch("ork_requisition_research_6", 5, 3600, 20000, 0, 0, nil, 0)
-			end
+			self:DynamicResearch("ork_requisition_research_6", 5, 3600, 20000, 0, 0, nil, 0)
 		end
 	end
 
@@ -539,7 +531,7 @@ function OrkBuildBaseStrategy:BuildFlexible()
 		-- Build an extra big powa plant if we need dat POWA!
 		local iPowRate = resource_manager:GetResourceRate( ResourceAmount.RT_Power )
 		if (iPowRate <= 1300) then
-			self:DynamicBuild("ork_even_bigger_generator", 2, 6, 7000, 0, 0, 0)
+			self:DynamicBuild("ork_even_bigger_generator", 2, 6, 6000, 5000, 0, 0)
 		end
 
 		-- Build additional Superweapons if we have excess resources

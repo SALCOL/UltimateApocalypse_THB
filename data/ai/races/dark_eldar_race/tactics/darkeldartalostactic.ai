@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldartalostactic.ai'
--- Edited by Thudmeizer @ 31.10.2016
+-- Edited by Thudmeizer @ 06.04.2016
 
 class 'DarkEldarTalosTactic' (DarkEldarVehicleTactic)
 
@@ -9,18 +9,6 @@ DarkEldarTalos = {}
 function DarkEldarTalosTactic:__init( squad_ai ) super( squad_ai )
 	
 	self:SetName("Dark Eldar Talos Tactic")
-
-	self.previousPosition = self.squad_ai:GetPosition()
-	self.checkTime = g_iGMT
-end
-
--- Talos is allowed to retreat even directly after a jump
-function DarkEldarTalosTactic:SetTarget( target, variant_type )
-
-	self.variant_type = variant_type
-	self.target = Vector3f(target)
-	self.m_iMoveDelay = 0
-	self.last_jump = 0
 end
 
 function DarkEldarTalosTactic:InitAbilities()
@@ -51,64 +39,4 @@ function DarkEldarTalosTactic:DoAbilities()
 			self.squad_ai:DoCannibalize();
 		end
 	end
-
-	-- Jump/Teleport squads' unstuck code call. Checks every 12 secs for stuck squads, and force them to jump nearby.
-	self:SolveStuckCase()
-end
-
-function DarkEldarTalosTactic:SolveStuckCase()
-
-	if g_iGMT > self.checkTime + 18 and g_iGMT > self.last_jump + 60 then
-        self.checkTime = g_iGMT
-        	if self:IsSquadStuck() then
-            		self:ForceSquadJumpNear(self.squad_ai:GetPosition())
-        	end
-	end
-end
-
-function DarkEldarTalosTactic:IsSquadStuck()
-
-	local iPosition = self.squad_ai:GetPosition()
-	local iDistance = distance_sqr(iPosition, self.previousPosition)
-    	self.previousPosition = iPosition
-    	if iDistance > 25 or self.squad_ai:IsInCombat() or self.squad_ai:IsCapturing() then
-        	return false
-    	end
-    	return true
-end
-
-function DarkEldarTalosTactic:ForceSquadJumpNear(pos)
-
-	-- Try to jump somewhere near, perform 16 checks for a viable position
-    	for iLoop1 = 1, 16 do
-        	-- Create a jump position
-		local vJumpPosition = pos
-        	local vDir = cpu_manager:GetDirectionToEnemy(pos)
-        	vJumpPosition.x = vJumpPosition.x + vDir.x * math.random(-20, 50)
-        	vJumpPosition.z = vJumpPosition.z + vDir.z * math.random(-20, 50)
-        	-- Check if target position is in range and if unit is able to jump to target position
-        	local iDistance = distance_sqr(vJumpPosition, pos)
-        	if iDistance < sqr(self.squad_ai:GetJumpDistance()) and self.squad_ai:CanJumpToPosition(vJumpPosition) then                
-            		-- Jump to position
-            		self.squad_ai:DoJump(vJumpPosition)
-            		self.last_jump = g_iGMT
-            		self.m_iLastGatherMove = self.last_jump - 10
-            		return
-		end
-	end
-end
-
-function DarkEldarTalosTactic:Update()
-
-	if (self:IsComplete()) then
-		return
-	end
-	
-	-- State machine
-	if (not VehicleTactic.Update(self)) then
-		return
-	end
-
-	-- Check if we are in serious trouble
-	self:EmergencyRetreat()
 end

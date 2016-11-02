@@ -2,7 +2,7 @@
 -- File: 'darkeldarcitadeltactic.ai'
 -- Edited by Krronus @ 9/24/10
 -- Edited by Cylarne_04 2012
--- Edited by Thudmeizer	@ 02.10.2016
+-- Edited by Thudmeizer	@ 08.04.2016
 
 class 'DarkEldarCitadelTactic' (BaseTactic)
 
@@ -11,13 +11,6 @@ DarkEldarCitadel = {}
 function DarkEldarCitadelTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Dark Eldar Citadel Tactic")
-
-	-- Building can deepstrike troops
-	self.m_bCanDeepStrikeTroops = true
-end
-
-function DarkEldarCitadelTactic:CanDeepStrikeTroops()
-	return true
 end
 
 function DarkEldarCitadelTactic:InitAbilities()
@@ -171,4 +164,8 @@ function DarkEldarCitadelTactic:DoAbilities()
 		end
 	end
 ]]
+end
+
+function DarkEldarCitadelTactic:CanDeepStrikeTroops()
+	return true
 end
