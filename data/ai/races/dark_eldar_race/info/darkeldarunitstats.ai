@@ -1,6 +1,10 @@
 ----------------------------------------
 -- File: 'darkeldarunitstats.ai'
+<<<<<<< HEAD
 -- Edited by Thudmeizer @ 30.10.2016
+=======
+-- Edited by Thudmeizer @ 07.11.2016
+>>>>>>> refs/remotes/origin/master
 -- Edited by Cylarne_04 2011
 
 --XP3
@@ -1100,7 +1104,7 @@ DarkEldarUnitStats =
 	{
 		name = "Agony Titan",
 		sbp_name = "dark_eldar_squad_agony_titan",
-		ebp_name = "dark_eldar_agony_titan",
+		ebp_name = "dark_eldar_titan_agony",
 		class = UnitStatsAI.UC_VehicleHigh,
 		rating = math.random(8.5*10,9.5*10)/10,
 		potential =
@@ -1130,7 +1134,7 @@ DarkEldarUnitStats =
 	{
 		name = "Agony Titan Deployed",
 		sbp_name = "dark_eldar_squad_agony_titan_deployed",
-		ebp_name = "dark_eldar_agony_titan",
+		ebp_name = "dark_eldar_titan_agony_deployed",
 		class = UnitStatsAI.UC_VehicleHigh,
 		rating = math.random(8.5*10,9.5*10)/10,
 		potential =
