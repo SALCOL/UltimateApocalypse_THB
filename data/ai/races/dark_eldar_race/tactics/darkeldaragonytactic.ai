@@ -1,0 +1,75 @@
+----------------------------------------
+-- File: 'darkeldaragonytactic.ai'
+-- Edited by Thudmeizer @ 03.11.2016
+
+class 'DarkEldarAgonyTactic' (DarkEldarVehicleTactic)
+
+DarkEldarAgony = {}
+
+function DarkEldarAgonyTactic:__init( squad_ai ) super( squad_ai )
+
+	self:SetName("Dark Eldar Agony Tactic")
+
+	self.isWalking = self.squad_ai:GetSquadName() == "dark_eldar_squad_agony_titan"
+end
+
+function DarkEldarAgonyTactic:AlwaysAttack()
+	return true
+end
+
+function DarkEldarAgonyTactic:InitAbilities()
+
+	-- Init ability ID's
+	if (DarkEldarAgony.crucible_id == nil) then
+		DarkEldarAgony.crucible_id = cpu_manager.stats:GetAbilityID( "dark_eldar_crucible_agony_titan" )	
+	end
+end
+
+function DarkEldarAgonyTactic:DoAbilities()
+
+	-- Try to use Siege Mode
+	self:DoSiegeAbility()
+
+	-- We are dying, lower requisites for attacks
+	if (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.4) then
+		--Ability.DoAbilityTarget(self.squad_ai, DarkEldarAgony.crucible_id, Ability.Filters.CloseSquadEnemy, 4)
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarAgony.crucible_id, Ability.Filters.CloseSquadEnemy, 10, 4)
+	else
+		--Ability.DoAbilityTarget(self.squad_ai, DarkEldarAgony.crucible_id, Ability.Filters.CloseSquadEnemy, 8)
+		Ability.DoAbilityArea(self.squad_ai, DarkEldarAgony.crucible_id, Ability.Filters.CloseSquadEnemy, 10, 8)
+	end
+end
+
+function DarkEldarAgonyTactic:DoSiegeAbility()
+
+	-- Siege Mode: Disables movement of the unit in exchange for a special sentry option 
+	-- Initiate stationary-artillery ability on condition in presence of big enemies or nearby buildings
+    	if self.squad_ai:CanPossess() then
+        	local oPos = self.squad_ai:GetPosition()
+        	local oUnit = Ability.Filters.CloseVehicleHighEnemy(oPos, 120, 1)
+        	local oBuild = Ability.EntityFilters.CloseBaseEntityEnemy(oPos, 120, 2)
+        	if self.isWalking then
+            		-- Enables Siege Mode
+			if not self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() > 0.5 and (oUnit ~= nil or oBuild ~= nil) then
+                		self.squad_ai:DoPossess()
+            		end
+        	else
+            		-- Reverts back to Walking Mode
+           	 	if (oUnit == nil and oBuild == nil) or not self.squad_ai:IsAttacking() or (self.squad_ai:WasRecentlyHurt() and self.squad_ai:GetHealthPercentage() < 0.6) then
+                		self.squad_ai:DoPossess()
+            		end
+        	end
+	end
+end
+
+function DarkEldarAgonyTactic:Update()
+
+	if (self:IsComplete()) then
+		return
+	end
+
+	-- State machine
+	if (not VehicleTactic.Update( self )) then
+		return
+	end
+end
