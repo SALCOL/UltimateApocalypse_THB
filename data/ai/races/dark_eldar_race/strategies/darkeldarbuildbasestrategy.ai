@@ -446,7 +446,9 @@ function DarkEldarBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("dark_eldar_upgrade_requisition_4", 5, 150, 550, 0, 0, nil, 0)
 			
 			-- Compute Apocalypse
-			self:DynamicResearch("dark_eldar_apocalypse_research", 5, 3000, 3000, 0, 0, nil, 0)	-- Soul Cost: 3000
+			if self:HasCriticalLocation() then
+				self:DynamicResearch("dark_eldar_apocalypse_research", 5, 3000, 3000, 0, 0, nil, 0)	-- Soul Cost: 3000
+			end
 		end
 	
 		-- Compute tier 6 researches

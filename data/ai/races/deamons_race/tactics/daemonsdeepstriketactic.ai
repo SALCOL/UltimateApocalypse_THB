@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonsdeepstriketactic.ai'
--- Edited by Thudmeizer	@ 09.05.2016
+-- Edited by Thudmeizer	@ 02.10.2016
 
 class 'DaemonsDeepstrikeTactic' (BaseTactic)
 
@@ -9,6 +9,13 @@ DaemonsDeepstrike = {}
 function DaemonsDeepstrikeTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Daemons Deepstrike Tactic")
+end
+
+function DaemonsDeepstrikeTactic:CanDeepStrikeTroops()
+
+	if (cpu_manager:GetTierLevel() > 2) then
+		return true
+	end
 end
 
 function DaemonsDeepstrikeTactic:InitAbilities()
@@ -27,12 +34,5 @@ function DaemonsDeepstrikeTactic:DoAbilities()
 		if (self.base_ai:CanDoAbility( DaemonsDeepstrike.repair_id )) then
 			self.base_ai:DoSpecialAbility( DaemonsDeepstrike.repair_id )
 		end
-	end
-end
-
-function DaemonsDeepstrikeTactic:CanDeepStrikeTroops()
-
-	if (cpu_manager:GetTierLevel() > 2) then
-		return true
 	end
 end

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarstrategyinfo.ai'
--- Edited by Thudmeizer    @ 24.09.2016
+-- Edited by Thudmeizer    @ 29.09.2016
 
 BuildBaseStrategyInfo = 
 {
@@ -47,7 +47,7 @@ BuildBaseStrategyInfo =
 				{ 1, 0, 0, 0, 50,	"Addon",	"addon_dark_eldar_gruesome_display" },
 				{ 1, 175, 50, 0, 1,	"Building",	"dark_eldar_haemonculus_laboratory" },
 				{ 1, 100, 0, 0, 1,	"Building",	"dark_eldar_portal" },
-				{ 1, 120, 50, 0, 1,	"Building",	"dark_eldar_turret" },
+				{ 1, 75, 110, 0, 1,	"Building",	"dark_eldar_turret" },
 			        { 1, 0, 0, 0, 100,	"Addon",	"addon_dark_eldar_gruesome_display_building" },
 				{ 1, 150, 0, 0, 4,	"Building",	"dark_eldar_plasma_generator" },
 				{ 1, 400, 130, 950, 1,	"Addon",	"addon_dark_eldar_hq_1" },
@@ -84,7 +84,7 @@ BuildBaseStrategyInfo =
 				{ 5, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },
 				{ 5, 550, 260, 0, 1,	"Building",	"dark_eldar_corruptedgate" },
 				{ 5, 5500, 5500, 0, 1,	"Building",	"dark_eldar_hq_sp_dxp3" },
-				{ 5, 3000, 3000, 2500, 1,"Research",	"dark_eldar_apocalypse_research" },
+			        { 5, 3000, 3000, 2500, 1,"Research",	"dark_eldar_apocalypse_research" },
 
 				{ 6, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },
 				{ 6, 240, 40, 0, 1,	"Unit",		"dark_eldar_squad_archon" },

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'eldarbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 24.09.2016
+-- Edited by Thudmeizer @ 02.10.2016
 -- Edited by Cylarne_04 2011
 
 class 'EldarBuildBaseStrategy' (BuildBaseStrategy)
@@ -180,17 +180,22 @@ function EldarBuildBaseStrategy:UpdateTierLevel()
 	-- Reset tier level
 	self.tierLevel = 1
 	
-	-- Check researches
+	-- Check if we have the proper researches or buildings
 	if cpu_manager.cpu_player:IsResearchComplete("eldar_apocalypse_research") then
 		self.tierLevel = 6
+		return
 	elseif cpu_manager.cpu_player:IsResearchComplete("eldar_farseer_ability_research_3") then
 		self.tierLevel = 5
+		return
 	elseif cpu_manager.cpu_player:IsResearchComplete("eldar_annihilate_the_enemy") then
 		self.tierLevel = 4
+		return
 	elseif cpu_manager.cpu_player:IsResearchComplete("eldar_tier2_research") then
 		self.tierLevel = 3
+		return
 	elseif self:GetBuildingCountByName("eldar_soul_shrine") > 0 then
 		self.tierLevel = 2
+		return
 	end
 end
 
@@ -538,7 +543,9 @@ function EldarBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("eldar_relic_research_2", 5, 2000, 2000, 0, 0, nil, 0)
 
 			-- Compute Apocalypse
-			self:DynamicResearch("eldar_apocalypse_research", 5, 4000, 4000, 0, 0, nil, 0)
+			if self:HasCriticalLocation() then
+				self:DynamicResearch("eldar_apocalypse_research", 5, 4000, 4000, 0, 0, nil, 0)
+			end
 		end
 
 		-- Compute tier 6 researches

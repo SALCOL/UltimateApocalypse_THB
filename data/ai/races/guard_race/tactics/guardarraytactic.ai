@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'guardarraytactic.ai'
--- Edited by Thudmeizer		@ 08.04.2016
+-- Edited by Thudmeizer		@ 02.10.2016
 
 class 'GuardArrayTactic' (BaseTactic)
 
@@ -12,6 +12,13 @@ function GuardArrayTactic:__init( base_ai ) super( base_ai )
 	
 	-- Building is a bunker
 	self:AddToBunkerList()
+
+	-- Building can deepstrike troops
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function GuardArrayTactic:CanDeepStrikeTroops()
+	return true
 end
 
 function GuardArrayTactic:InitAbilities()
@@ -87,8 +94,4 @@ function GuardArrayTactic:DoAbilities()
 			self.base_ai:DoSpecialAbility( GuardArray.repair_id )
 		end
 	end
-end
-
-function GuardArrayTactic:CanDeepStrikeTroops()
-	return true
 end

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersstrategyinfo.ai'
--- Edited by Thudmeizer    @ 22.09.2016
+-- Edited by Thudmeizer    @ 29.09.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -44,7 +44,7 @@ BuildBaseStrategyInfo =
 				{ 1, 100, 100, 0, 20,	"TurretAddon",	"addon_sisters_holy_icon" },
 				{ 1, 90, 80, 0, 50,	"TurretAddon",	"addon_sisters_list_post_1" },
 				{ 1, 135, 0, 0, 3,	"Building",	"sisters_plasma_generator" },
-				{ 1, 120, 45, 0, 1,	"Building",	"sisters_turret_flamer" },
+				{ 1, 65, 100, 0, 1,	"Building",	"sisters_turret_flamer" },
 				{ 1, 175, 50, 500, 1,	"Building",	"sisters_sanctuary" },
 				{ 1, 90, 80, 700, 100,	"TurretAddon",	"addon_sisters_list_post_1" },
 				{ 1, 135, 0, 0, 5,	"Building",	"sisters_plasma_generator" },
@@ -80,7 +80,7 @@ BuildBaseStrategyInfo =
 				{ 5, 100, 100, 0, 1,	"Building",	"sisters_shrine_to_the_emperor" },
 				{ 5, 2000, 2000, 0, 1,	"Building",	"sisters_missile_silo" },
 				{ 5, 0, 0, 0, 100,	"Addon",	"addon_superweapon" },
-				{ 5, 3000, 3000, 2500, 1,"Research",	"sisters_apocalypse_research" },
+			        { 5, 3000, 3000, 2500, 1,"Research",	"sisters_apocalypse_research" },
 				
 				{ 6, 200, 60, 0, 1,	"Unit",		"sisters_squad_confessor" },
 				{ 6, 250, 0, 0, 1,	"Unit",		"sisters_inquisitor_squad" },

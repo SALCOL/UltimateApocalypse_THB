@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sisterslisteningposttactic.ai'
--- Edited by Thudmeizer	@ 10.04.2016
+-- Edited by Thudmeizer	@ 02.10.2016
 
 class 'SistersListeningPostTactic' (BaseTactic)
 
@@ -9,6 +9,13 @@ SistersListeningPost = {}
 function SistersListeningPostTactic:__init( base_ai ) super( base_ai )
 
 	self:SetName("Sisters Listening Post Tactic")
+
+	-- Building can deepstrike troops
+	self.m_bCanDeepStrikeTroops = true
+end
+
+function SistersListeningPostTactic:CanDeepStrikeTroops()
+	return true
 end
 
 function SistersListeningPostTactic:InitAbilities()
@@ -28,8 +35,4 @@ function SistersListeningPostTactic:DoAbilities()
 			self.base_ai:DoSpecialAbility( SistersListeningPost.repair_id )
 		end
 	end
-end
-
-function SistersListeningPostTactic:CanDeepStrikeTroops()
-	return true
 end
