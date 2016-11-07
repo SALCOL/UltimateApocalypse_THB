@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 24.09.2016
+-- Edited by Thudmeizer @ 20.10.2016
 -- Edited by Cylarne_04 2011
 
 class 'SistersBuildBaseStrategy' (BuildBaseStrategy)
@@ -230,7 +230,7 @@ function SistersBuildBaseStrategy:UpdateTierLevel()
 		-- Check for valid building
 		if (oBase:IsValid() and not oBase:IsListeningPost()) then
 
-			-- Check tier 5 
+			-- Check if we have the proper research or building or addon
 			if cpu_manager.cpu_player:IsResearchComplete("sisters_apocalypse_research") then
 				self.tierLevel = 6
 				return
@@ -488,7 +488,9 @@ function SistersBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("sisters_relic_research_2", 5, 2000, 2000, 0, 0, nil, 0)
 
 			-- Compute Apocalypse
-			self:DynamicResearch("sisters_apocalypse_research", 5, 3000, 3000, 0, 0, nil, 0)
+			if self:HasCriticalLocation() then
+				self:DynamicResearch("sisters_apocalypse_research", 5, 3000, 3000, 0, 0, nil, 0)
+			end
 		end
 		
 		-- Compute tier 6 researches
@@ -658,9 +660,10 @@ function SistersBuildBaseStrategy:GetPlacementType(iBuildingID)
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_infantry") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_vehicle_building") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_shrine") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_inquisitorial_building") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_capitol_building")) then
+		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_inquisitorial_building")) then
 		return "Military"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_capitol_building")) then
+		return "Front1"
 	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("sisters_turret_flamer") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_turret_heavy_flamer") or 
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_wall")) then

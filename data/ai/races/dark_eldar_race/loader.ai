@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'loader.ai'
--- Edited by Thudmeizer	@ 21.04.2016
+-- Edited by Thudmeizer	@ 31.10.2016
 
 class 'dark_eldar_race'
 
@@ -47,6 +47,7 @@ function dark_eldar_race:LoadRace( eDifficulty )
 	import( 'Races/dark_eldar_race/Tactics/DarkEldarVoidRavenTactic.ai' )
 	import( 'Races/dark_eldar_race/Tactics/DarkEldarTormentorTactic.ai' )
 	import( 'Races/dark_eldar_race/Tactics/DarkEldarInstigatorTactic.ai' )
+	import( 'Races/dark_eldar_race/Tactics/DarkEldarAgonyTactic.ai' )
 	import( 'Races/dark_eldar_race/Tactics/DarkEldarDaisOfDestructionTactic.ai' )
         import( 'Races/dark_eldar_race/Tactics/DarkEldarHQTactic.ai' )
 	import( 'Races/dark_eldar_race/Tactics/DarkEldarCitadelTactic.ai' )
@@ -127,6 +128,8 @@ function dark_eldar_race:CreateTactic(oSquadAI)
 		return DarkEldarTormentorTactic(oSquadAI)
 	elseif (sUnitName == "dark_eldar_squad_instigator") then
 		return DarkEldarInstigatorTactic(oSquadAI)
+	elseif (sUnitName == "dark_eldar_squad_agony_titan") or (sUnitName == "dark_eldar_squad_agony_titan_deployed") then
+		return DarkEldarAgonyTactic(oSquadAI)
 	elseif (eClass == UnitStatsAI.UC_VehicleLow or eClass == UnitStatsAI.UC_VehicleMed or eClass == UnitStatsAI.UC_VehicleHigh) or
 	       (eClass == UnitStatsAI.UC_AirLow or eClass == UnitStatsAI.UC_AirMed or eClass == UnitStatsAI.UC_AirHigh) then
 		return DarkEldarVehicleTactic(oSquadAI)

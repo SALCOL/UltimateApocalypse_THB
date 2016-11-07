@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'loader.ai'
--- Edited by Thudmeizer		@ 04.05.2016
+-- Edited by Thudmeizer		@ 08.10.2016
 -- Edited by Arkhan		@ 23.10.2006
 -- Edited by Cylarne_04 2011
 
@@ -47,6 +47,7 @@ function necron_race:LoadRace( eDifficulty )
 	import( 'Races/necron_race/Tactics/TombStalkerTactic.ai' )
 	import( 'Races/necron_race/Tactics/PylonTactic.ai' )
 	import( 'Races/necron_race/Tactics/GhostArkTactic.ai' )
+	import( 'Races/necron_race/Tactics/AnnihilationBargeTactic.ai' )
 	import( 'Races/necron_race/Tactics/SiegeMonolithTactic.ai' )
 	import( 'Races/necron_race/Tactics/AirMonolithTactic.ai' )
 	import( 'Races/necron_race/Tactics/DoomsdayMonolithTactic.ai' )
@@ -131,6 +132,8 @@ function necron_race:CreateTactic(oSquadAI)
 		return TombStalkerTactic(oSquadAI)
 	elseif (sUnitName == "necron_pylon_squad") or (sUnitName == "necron_pylon_sentry_squad") then   
 		return PylonTactic(oSquadAI)
+	elseif (sUnitName == "necron_annihilation_barge_squad") or (sUnitName == "necron_obelisk_squad") or (sUnitName == "necron_night_scythe_squad") then 
+		return AnnihilationBargeTactic(oSquadAI)
 	elseif (sUnitName == "necron_siege_monolith_squad") then
 		return SiegeMonolithTactic(oSquadAI)
 	elseif (sUnitName == "necron_siege_monolith_air_squad") then

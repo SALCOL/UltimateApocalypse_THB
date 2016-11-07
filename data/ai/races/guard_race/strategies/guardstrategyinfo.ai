@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'guardstrategyinfo.ai'
--- Edited by Thudmeizer  @ 23.06.2016
+-- Edited by Thudmeizer  @ 30.10.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -44,10 +44,10 @@ BuildBaseStrategyInfo =
 				{ 1, 135, 0, 0, 3,	"Building",	"guard_plasma_generator" },
 				{ 1, 90, 80, 0, 50,	"TurretAddon",	"addon_guard_list_post_1" },
 				{ 1, 175, 50, 500, 1,	"Building",	"guard_tactica" },
-				{ 1, 130, 60, 500, 1,	"Building",	"guard_turret_heavy_bolter" },
-				{ 1, 135, 0, 600, 5,	"Building",	"guard_plasma_generator" },
-				{ 1, 90, 80, 800, 100,	"TurretAddon",	"addon_guard_list_post_1" },
+				{ 1, 90, 125, 0, 1,	"Building",	"guard_turret_heavy_bolter" },
+				{ 1, 90, 80, 0, 100,	"TurretAddon",	"addon_guard_list_post_1" },
 				{ 1, 400, 130, 900, 1,  "Addon",	"addon_guard_hq_1" },
+				{ 1, 135, 0, 0, 5,	"Building",	"guard_plasma_generator" },
 
 				{ 2, 100, 180, 0, 1,	"Unit",		"guard_squad_sentinel" },
 				{ 2, 110, 110, 0, 1,	"Unit",		"guard_squad_chimera" },
@@ -58,9 +58,9 @@ BuildBaseStrategyInfo =
 			        { 2, 50, 0, 0, 10,	"Addon",	"addon_guard_ministorum_temple" },
 			        { 2, 50, 0, 0, 10,	"Addon",	"addon_guard_telepathica_temple" },
 			        { 2, 50, 0, 600, 65,	"TurretAddon",	"addon_guard_turret" },
-				{ 2, 135, 0, 700, 6,	"Building",	"guard_plasma_generator" },
-				{ 2, 240, 160, 900, 100,"TurretAddon",	"addon_guard_list_post_2" },
+				{ 2, 135, 0, 0, 6,	"Building",	"guard_plasma_generator" },
 				{ 2, 500, 500, 1000, 1,	"Addon",	"addon_guard_hq_2" },
+				{ 2, 240, 160, 0, 100,  "TurretAddon",	"addon_guard_list_post_2" },
 
 				{ 3, 200, 50, 0, 1,	"Unit",		"guard_squad_guardsmen_specialweapons" },
 				{ 3, 190, 350, 0, 1,	"Unit",		"guard_squad_lemanruss" },
@@ -102,11 +102,11 @@ BuildBaseStrategyInfo =
 				{ 5, 40, 10, 0, 50,	"TurretAddon",	"addon_guard_turret_wall" },
 				{ 5, 3500, 0, 0, 1,	"Building",	"guard_thermonuclear_generator" },
 				{ 5, 360, 220, 0, 4,	"Building",	"guard_turret_missile_launcher_sp" },
-				{ 5, 4000, 4000, 2500, 1,"Research",	"guard_apocalypse_research" },
+			        { 5, 4000, 4000, 2500, 1,"Research",	"guard_apocalypse_research" },
 				
+				{ 6, 240, 50, 0, 1,	"Unit",		"guard_squad_command_squad" },
 				{ 6, 130, 40, 0, 1,	"Unit",		"guard_squad_officer_squad" },
 				{ 6, 130, 40, 0, 1,	"Unit",		"guard_squad_officer_support_squad" },
-				{ 6, 240, 50, 0, 1,	"Unit",		"guard_squad_command_squad" },
 				{ 6, 1500, 1500, 1000, 100,"Addon",	"addon_guard_thermonuclear_generator" },
 			        { 6, 13500, 13500, 2000, 1,"Building",	"guard_basilisk_magnus" },
 				{ 6, 6000, 6000, 3000, 2,  "Building",	"guard_nuclear_facility" }
@@ -187,12 +187,13 @@ BuildOrderStrategyInfo =
 		Basic =
 		{
 			{ "flag_capture" }, { "flag_capture" },
-			{ "flag_capture" }, 
+			{ "flag_capture" }, { "flag_capture" },
 			{ "squad", "guard_squad_enginseer" },
 			{ "squad", "guard_squad_guardsmen_conscript" },
 			{ "squad", "guard_squad_guardsmen_conscript" },
 			{ "squad", "guard_squad_enginseer" },
 			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_guardsmen_rider" },
 			{ "post_builder" }, 
 			{ "building", "guard_infantry", true },
 			{ "building", "guard_plasma_generator", true }
@@ -201,12 +202,13 @@ BuildOrderStrategyInfo =
 		QuickStart =
 		{
 			{ "flag_capture" }, { "flag_capture" },
-			{ "flag_capture" }, 
+			{ "flag_capture" }, { "flag_capture" },
 			{ "squad", "guard_squad_enginseer" },
 			{ "squad", "guard_squad_guardsmen_conscript" },
 			{ "squad", "guard_squad_enginseer" },
 			{ "squad", "guard_squad_guardsmen_conscript" },
 			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_guardsmen_rider" },
 			{ "post_builder" }, { "post_builder" },
 			{ "building", "guard_infantry", true },
 			{ "building", "guard_plasma_generator" }
@@ -215,11 +217,12 @@ BuildOrderStrategyInfo =
 		LargeMap =
 		{
 			{ "flag_capture" }, { "flag_capture" },
-			{ "flag_capture" }, 
+			{ "flag_capture" }, { "flag_capture" },
 			{ "squad", "guard_squad_guardsmen_conscript" },
 			{ "squad", "guard_squad_enginseer" },
 			{ "squad", "guard_squad_guardsmen_conscript" },
 			{ "squad", "guard_squad_guardsmen_conscript" },
+			{ "squad", "guard_squad_guardsmen_rider" },
 			{ "squad", "guard_squad_enginseer" },
 			{ "post_builder" }, { "post_builder" },
 			{ "building", "guard_infantry", true },
