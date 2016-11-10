@@ -1,42 +1,42 @@
 ----------------------------------------
--- File: 'annihilationbargetactic.ai'
--- Edited by Thudmeizer @ 08.10.2016
+-- File: 'darkeldarheavyskimmertactic.ai'
+-- Edited by Thudmeizer @ 08.11.2016
 
-class 'AnnihilationBargeTactic' (NecronVehicleTactic)
+class 'DarkEldarHeavySkimmerTactic' (DarkEldarVehicleTactic)
 
-AnnihilationBarge = {}
+DarkEldarHeavySkimmer = {}
 
-function AnnihilationBargeTactic:__init( squad_ai ) super( squad_ai )
-
-	self:SetName("Annihilation Barge Tactic")
+function DarkEldarHeavySkimmerTactic:__init( squad_ai ) super( squad_ai )
 	
+	self:SetName("Dark Eldar Heavy Skimmer Tactic")
+
 	self.previousPosition = self.squad_ai:GetPosition()
 	self.checkTime = g_iGMT
 end
 
-function AnnihilationBargeTactic:InitAbilities()
-	
-	-- Init ability ID's
-	if (AnnihilationBarge.truegauss_id == nil) then
-		AnnihilationBarge.truegauss_id = cpu_manager.stats:GetAbilityID( "necron_truegauss" )
-	end
+-- Heavy Skimmer is allowed to retreat even directly after a jump
+function DarkEldarHeavySkimmerTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
 end
 
-function AnnihilationBargeTactic:DoAbilities()
+function DarkEldarHeavySkimmerTactic:InitAbilities()
 
-	-- Gauss Weapon Overcharge: the squad will receive a boost in maximum damage, but a critical reduction in movement speed for a duration.
-	if (self.squad_ai:IsInCombat() and self.squad_ai:GetHealthPercentage() > 0.5) then
-		Ability.DoAbilityArea( self.squad_ai, AnnihilationBarge.truegauss_id, Ability.Filters.CloseEnemy, 20, 5 )
-	end
+end
+
+function DarkEldarHeavySkimmerTactic:DoAbilities()
 
 	-- Jump/Teleport squads' unstuck code call. Checks every 12 secs for stuck squads, and force them to jump nearby.
 	self:SolveStuckCase()
 
 	-- Call standard method
-	NecronVehicleTactic.DoAbilities(self)
+	DarkEldarVehicleTactic.DoAbilities(self)
 end
 
-function AnnihilationBargeTactic:SolveStuckCase()
+function DarkEldarHeavySkimmerTactic:SolveStuckCase()
 
 	if g_iGMT > self.checkTime + 18 and g_iGMT > self.last_jump + 60 then
         self.checkTime = g_iGMT
@@ -46,7 +46,7 @@ function AnnihilationBargeTactic:SolveStuckCase()
 	end
 end
 
-function AnnihilationBargeTactic:IsSquadStuck()
+function DarkEldarHeavySkimmerTactic:IsSquadStuck()
 
 	local iPosition = self.squad_ai:GetPosition()
 	local iDistance = distance_sqr(iPosition, self.previousPosition)
@@ -57,7 +57,7 @@ function AnnihilationBargeTactic:IsSquadStuck()
     	return true
 end
 
-function AnnihilationBargeTactic:ForceSquadJumpNear(pos)
+function DarkEldarHeavySkimmerTactic:ForceSquadJumpNear(pos)
 
 	-- Try to jump somewhere near, perform 16 checks for a viable position
     	for iLoop1 = 1, 16 do
