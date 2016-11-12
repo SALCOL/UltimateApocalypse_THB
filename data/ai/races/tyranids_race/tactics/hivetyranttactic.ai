@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'hivetyranttactic.ai'
--- Edited by Thudmeizer @ 20.06.2014
+-- Edited by Thudmeizer @ 11.11.2014
 
 class 'HiveTyrantTactic' (TyranidInfantryTactic)
 
@@ -9,6 +9,10 @@ HiveTyrant = {}
 function HiveTyrantTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Hive Tyrant Tactic")
+
+	-- Set Stuck Unit Positions
+	self.initialPosition = self.squad_ai:GetPosition()
+	self.isStuck = false
 end
 
 function HiveTyrantTactic:AutoBuildAddOn( addonSlot )
@@ -126,6 +130,12 @@ function HiveTyrantTactic:DoAbilities()
 			self.squad_ai:DoSpecialAbility( HiveTyrant.run_id )
 		end
 	end
+
+	-- Jump squads' unstuck code call.
+	-- Checks jump-able stuck squads, and force them to jump nearby
+   	if self.squad_ai:CanJump() then
+        	self:SolveStuckCase()
+	end
 end
 
 function HiveTyrantTactic:Upgrade()
@@ -184,6 +194,44 @@ function HiveTyrantTactic:Upgrade()
 
 	local class_type = cpu_manager:GetFirstEnemyPlayer():GetMajorityClassType()
 	self.squad_ai:DoBestUpgrade( class_type )
+end
+
+-- Unstuck Code
+function HiveTyrantTactic:SolveStuckCase()
+
+	local iPosition = self.squad_ai:GetPosition()
+    	if iPosition.x ~= self.initialPosition.x or iPosition.z ~= self.initialPosition.z then
+        	self.isStuck = false
+    	elseif (self.squad_ai:IsInStateMove() or self.squad_ai:IsInStateAttackMove()) and not self.squad_ai:IsInCombat()
+    		and iPosition.x == self.initialPosition.x and iPosition.z == self.initialPosition.z then
+        	self.isStuck = true
+    	end
+    	if self.isStuck then
+        	self:ForceSquadJumpNear(iPosition)
+	end
+    	self.initialPosition = self.squad_ai:GetPosition()
+end
+
+function HiveTyrantTactic:ForceSquadJumpNear(pos)
+
+	-- Try to jump somewhere near, perform 16 checks for a viable position
+    	local jumpDisSqr = sqr(self.squad_ai:GetJumpDistance())
+    	for iLoop1 = 1, 16 do
+        	-- Create a jump position
+        	local vJumpPosition = pos
+        	local vDir = cpu_manager:GetDirectionToEnemy(pos)
+        	vJumpPosition.x = vJumpPosition.x + vDir.x * math.random(-20, 50)
+        	vJumpPosition.z = vJumpPosition.z + vDir.z * math.random(-20, 50)
+        	-- Check if target position is in range and if unit is able to jump to target position
+        	local iDistance = distance_sqr(vJumpPosition, pos)
+        	if iDistance < jumpDisSqr and self.squad_ai:CanJumpToPosition(vJumpPosition) then
+            		-- Jump to position
+            		self.squad_ai:DoJump(vJumpPosition)
+            		self.last_jump = g_iGMT
+            		self.m_iLastGatherMove = self.last_jump - 10
+            		return
+		end
+	end
 end
 
 function HiveTyrantTactic:Update()

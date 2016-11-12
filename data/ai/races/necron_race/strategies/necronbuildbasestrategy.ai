@@ -533,89 +533,6 @@ function NecronBuildBaseStrategy:BuildFlexible()
 	end
 end
 
--- Gambit 08.2016: Modified for races that do NOT have small Gens, but DO have Big Gens
-function NecronBuildBaseStrategy:DoBuildGenerators()
-
-	aitrace("BuildController: Check generators...")
-
-	-- Check power
-    	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-    	if iPower < 200 and self.info.req_reserve <= 0 then
-        	return
-   	 end    
-
-    	-- Build if we are below min power per tier or if we have Requisition excess
-   	 if ((self.tierLevel == 1 and iPower > 100 and self.info.req_reserve > 0) or
-        	(self.tierLevel == 1 and iPower > 400 and self.info.req_reserve <= 0) or
-        	(self.tierLevel == 2 and iPower > 600) or
-        	(self.tierLevel >= 3 and iPower > 1600)) then -- and iRequisition < 3000 then
-        	return
-    	end
-
-    	-- Check build plans for Big Generators
-    	local iBiggerGeneratorID = cpu_manager.stats:GetBuildingID(self:GetBuildingName("BiggerGenerator"))
-    	if self:PlanExists("Build Building Plan", iBiggerGeneratorID) then
-       		return
-   	end
-
-    	-- Try to build a bigger generator
-    	aitrace("BuildController: Trying to build bigger generator")
-
-    	-- Update where the free slag heaps are
-    	resource_manager:UpdateFreeSlagHeaps(iBiggerGeneratorID)
-    
-    	-- Look for the closest generator
-    	local base_pos = cpu_manager.start_pos
-    	local slag_table = {}
-    
-	for slag_heap in resource_manager:GetSlagHeaps() do
-        	local slag_pos = slag_heap:GetPosition()                    
-        	if not cpu_manager.terrain_analyzer:HasThreat( slag_pos, 35 ) then
-            		-- Find available engineer
-            		local functor = function( squad_ai )
-                	local squad_pos = squad_ai:GetPosition()
-                	return (squad_ai:IsEngineer() and squad_ai:CanBuild(iBiggerGeneratorID) == SquadAI.CANBUILD_Ok and
-                        not cpu_manager:HasThreatOnPath( squad_pos, slag_pos, 40 ))
-            	end
-            		local engineer = cpu_manager:GetClosestUnlockedSquad( slag_pos, 500, functor )
-            		if engineer ~= nil then
-                		aitrace("BuildController: Build bigger generator pathing check...")
-                		local dist = cpu_manager:GetShortestPathingDistance( base_pos, slag_pos, true )
-                		local max_dist = 90 + self.tierLevel * 60
-                		--only close slag heaps at low tier levels
-                		if dist > 0 and dist <= max_dist then
-                    			local can_build = engineer:CanBuildAt(iBiggerGeneratorID, slag_pos )
-                    			table.insert( slag_table, {slag_pos, engineer, dist, can_build} )
-                		end
-            		end
-        	end
-	end
-
-	local num_items = table.getn ( slag_table )
-
-    	-- Multiple entries, we have to sort by distance
-    	if num_items > 1 then
-        	sortfunc = function( item1, item2 )                    
-            	return item1[3] < item2[3]
-        end
-        	table.sort( slag_table, sortfunc )
-	end
-
-	-- If we do have an available free Slag, proceed
-    	if num_items > 0 then    
-		if slag_table[1][4] then
-            		-- Add the plan to build, can_build is true
-            		aitrace("BuildManager: Dynamic build of bigger generator at "..tostring(slag_table[1][1].x)..", "..tostring(slag_table[1][1].z))
-            		self:AddPlan( BuildBuildingPlan(iBiggerGeneratorID, slag_table[1][1]) )
-		else
-            		-- Send engineer to slag position
-            		if not cpu_manager:JumpBuilder( slag_table[1][2], slag_table[1][1] ) then
-                		cpu_manager:DoMove( slag_table[1][2], slag_table[1][1], false, "Go to bigger generator")
-            		end
-        	end
-	end
-end
-
 -- Arkhan 01.2006: Method to check if force tech should be computed
 function NecronBuildBaseStrategy:ForceTech()
 
@@ -705,16 +622,102 @@ function NecronBuildBaseStrategy:GetPlacementType(iBuildingID)
 	return "Basic"
 end
 
--- Arkhan 11.2006: Always reinforce
-function NecronBuildBaseStrategy:CheckReinforce()
-	return true
+-- Gambit 08.2016: Modified for races that do NOT have small Gens, but DO have Big Gens
+function NecronBuildBaseStrategy:DoBuildGenerators()
+
+	aitrace("BuildController: Check generators...")
+--[[
+	-- Check power
+    	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+    	if iPower < 200 and self.info.req_reserve <= 0 then
+        	return
+   	 end    
+
+    	-- Build if we are below min power per tier or if we have Requisition excess
+   	 if ((self.tierLevel == 1 and iPower > 100 and self.info.req_reserve > 0) or
+        	(self.tierLevel == 1 and iPower > 400 and self.info.req_reserve <= 0) or
+        	(self.tierLevel == 2 and iPower > 600) or
+        	(self.tierLevel >= 3 and iPower > 1600)) then
+        	return
+    	end
+
+    	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+    	if iPower <= 400 then
+		return
+	end    
+]]
+    	-- Check build plans for Big Generators
+    	local iBiggerGeneratorID = cpu_manager.stats:GetBuildingID(self:GetBuildingName("BiggerGenerator"))
+    	if self:PlanExists("Build Building Plan", iBiggerGeneratorID) then
+       		return
+   	end
+
+    	-- Try to build a bigger generator
+    	aitrace("BuildController: Trying to build bigger generator")
+
+    	-- Update where the free slag heaps are
+    	resource_manager:UpdateFreeSlagHeaps(iBiggerGeneratorID)
+    
+    	-- Look for the closest generator
+    	local base_pos = cpu_manager.start_pos
+    	local slag_table = {}
+    
+	for slag_heap in resource_manager:GetSlagHeaps() do
+        	local slag_pos = slag_heap:GetPosition()                    
+        	if not cpu_manager.terrain_analyzer:HasThreat( slag_pos, 35 ) then
+            		-- Find available engineer
+            		local functor = function( squad_ai )
+                	local squad_pos = squad_ai:GetPosition()
+                	return (squad_ai:IsEngineer() and squad_ai:CanBuild(iBiggerGeneratorID) == SquadAI.CANBUILD_Ok and
+                        not cpu_manager:HasThreatOnPath( squad_pos, slag_pos, 40 ))
+            	end
+            		local engineer = cpu_manager:GetClosestUnlockedSquad( slag_pos, 500, functor )
+            		if engineer ~= nil then
+                		aitrace("BuildController: Build bigger generator pathing check...")
+                		local dist = cpu_manager:GetShortestPathingDistance( base_pos, slag_pos, true )
+                		local max_dist = 90 + self.tierLevel * 60
+                		--only close slag heaps at low tier levels
+                		if dist > 0 and dist <= max_dist then
+                    			local can_build = engineer:CanBuildAt(iBiggerGeneratorID, slag_pos )
+                    			table.insert( slag_table, {slag_pos, engineer, dist, can_build} )
+                		end
+            		end
+        	end
+	end
+
+	local num_items = table.getn ( slag_table )
+
+    	-- Multiple entries, we have to sort by distance
+    	if num_items > 1 then
+        	sortfunc = function( item1, item2 )                    
+            	return item1[3] < item2[3]
+        end
+        	table.sort( slag_table, sortfunc )
+	end
+
+	-- If we do have an available free Slag, proceed
+    	if num_items > 0 then    
+		if slag_table[1][4] then
+            		-- Add the plan to build, can_build is true
+            		aitrace("BuildManager: Dynamic build of bigger generator at "..tostring(slag_table[1][1].x)..", "..tostring(slag_table[1][1].z))
+            		self:AddPlan( BuildBuildingPlan(iBiggerGeneratorID, slag_table[1][1]) )
+		else
+            		-- Send engineer to slag position
+            		if not cpu_manager:JumpBuilder( slag_table[1][2], slag_table[1][1] ) then
+                		cpu_manager:DoMove( slag_table[1][2], slag_table[1][1], false, "Go to bigger generator")
+            		end
+        	end
+	end
 end
 
 -- Arkhan 11.2006: Check if we have enough resources for a bigger generator
 function NecronBuildBaseStrategy:HasResourcesForBiggerGenerator(iRequisition, iPower)
 
+	-- Check resources
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
 	-- Check power
-	if (iPower < 400) then --or iRequisition < 100) then
+	if iPower <= 400 then
 		return false
 	end
 	return true
@@ -724,8 +727,8 @@ end
 function NecronBuildBaseStrategy:HasResourceOverflow()
 
 	-- Don't reinforce if we've lots of power, rare requisition, and few vehicles
-	local iPower	= resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power ) / self.m_iTechBreak
-	local iTier		= self:GetTierLevel()
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power ) / self.m_iTechBreak
+	local iTier = self:GetTierLevel()
 	if ((iTier == 1 and iPower > 600) or (iTier > 1 and iPower > 2000)) then
 		return true
 	end
@@ -763,6 +766,11 @@ function NecronBuildBaseStrategy:HQEmergency()
 		end
 	end
 	return false
+end
+
+-- Arkhan 11.2006: Always reinforce
+function NecronBuildBaseStrategy:CheckReinforce()
+	return true
 end
 
 -- Arkhan 11.2006: Virtual method for checking out relic units

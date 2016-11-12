@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'eldarvehicletactic.ai'
 -- Created by Arkhan		@ 31.01.2006
--- Edited by Thudmeizer         @ 20.06.2016
+-- Edited by Thudmeizer         @ 11.11.2016
 -- Edited by Cylarne		@ 3/21/11
 
 class 'EldarVehicleTactic' (VehicleTactic)
@@ -32,6 +32,10 @@ function EldarVehicleTactic:__init( squad_ai ) super( squad_ai )
 		-- Squads are both transportable and can deepstrike
 		self.m_iTransportable = 1 or 2 -- Wave Serpent or Falcon // Storm Serpent
 	end
+
+	-- Set Stuck Unit Positions
+	self.initialPosition = self.squad_ai:GetPosition()
+	self.isStuck = false
 
 	-- Set FoF range
 	self.m_iFoFRange = 40
@@ -85,8 +89,52 @@ function EldarVehicleTactic:DoAbilities()
 		end
 	end
 
+	-- Jump squads' unstuck code call.
+	-- Checks jump-able stuck squads, and force them to jump nearby
+   	if self.squad_ai:CanJump() then
+        	self:SolveStuckCase()
+	end
+
 	-- Check if I should enable/disable fleet of foot
 	self:DoAbilityVehicleFoF()
+end
+
+-- Unstuck Code
+function EldarVehicleTactic:SolveStuckCase()
+
+	local iPosition = self.squad_ai:GetPosition()
+    	if iPosition.x ~= self.initialPosition.x or iPosition.z ~= self.initialPosition.z then
+        	self.isStuck = false
+    	elseif (self.squad_ai:IsInStateMove() or self.squad_ai:IsInStateAttackMove()) and not self.squad_ai:IsInCombat()
+    		and iPosition.x == self.initialPosition.x and iPosition.z == self.initialPosition.z then
+        	self.isStuck = true
+    	end
+    	if self.isStuck then
+        	self:ForceSquadJumpNear(iPosition)
+	end
+    	self.initialPosition = self.squad_ai:GetPosition()
+end
+
+function EldarVehicleTactic:ForceSquadJumpNear(pos)
+
+	-- Try to jump somewhere near, perform 16 checks for a viable position
+    	local jumpDisSqr = sqr(self.squad_ai:GetJumpDistance())
+    	for iLoop1 = 1, 16 do
+        	-- Create a jump position
+        	local vJumpPosition = pos
+        	local vDir = cpu_manager:GetDirectionToEnemy(pos)
+        	vJumpPosition.x = vJumpPosition.x + vDir.x * math.random(-20, 50)
+        	vJumpPosition.z = vJumpPosition.z + vDir.z * math.random(-20, 50)
+        	-- Check if target position is in range and if unit is able to jump to target position
+        	local iDistance = distance_sqr(vJumpPosition, pos)
+        	if iDistance < jumpDisSqr and self.squad_ai:CanJumpToPosition(vJumpPosition) then
+            		-- Jump to position
+            		self.squad_ai:DoJump(vJumpPosition)
+            		self.last_jump = g_iGMT
+            		self.m_iLastGatherMove = self.last_jump - 10
+            		return
+		end
+	end
 end
 
 function EldarVehicleTactic:ToggleFoF( squad_ai, state )

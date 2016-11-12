@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarravagertactic.ai'
--- Edited by Thudmeizer @ 25.08.2016
+-- Edited by Thudmeizer @ 11.11.2016
 
 class 'DarkEldarRavagerTactic' (DarkEldarVehicleTactic)
 
@@ -9,6 +9,15 @@ DarkEldarRavager = {}
 function DarkEldarRavagerTactic:__init( squad_ai ) super( squad_ai )
 	
 	self:SetName("Dark Eldar Ravager Tactic")
+end
+
+-- Ravager is allowed to retreat even directly after a jump
+function DarkEldarRavagerTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
 end
 
 function DarkEldarRavagerTactic:InitAbilities()
@@ -30,3 +39,4 @@ function DarkEldarRavagerTactic:DoAbilities()
 	-- Call standard method
 	DarkEldarVehicleTactic.DoAbilities(self)
 end
+

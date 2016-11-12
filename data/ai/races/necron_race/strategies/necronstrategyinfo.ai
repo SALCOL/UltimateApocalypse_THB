@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'necronstrategyinfo.ai'
--- Edited by Thudmeizer   @ 22.09.2016
+-- Edited by Thudmeizer   @ 11.11.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -79,6 +79,10 @@ BuildBaseStrategyInfo =
 				{ 5, 0, 150, 0, 4,	"Building",	"necron_turret_missile_sp" },
 			        { 5, 0, 6000, 1500, 1,	"Research",	"necron_apocalypse_research" },
 
+				{ 6, 0, 150, 0, 1,	"Unit",		"necron_overseer_squad" },
+				{ 6, 0, 200, 0, 1,	"Unit",		"necron_lord_squad" },
+				{ 6, 0, 300, 0, 1,	"Unit",		"necron_lord_death_squad" },
+				{ 6, 0, 400, 0, 1,	"Unit",		"necron_lord_destroyer_squad" },
 				{ 6, 0, 8000, 3000, 3,	"Building",	"monolith_super" }
 			},
 		},
