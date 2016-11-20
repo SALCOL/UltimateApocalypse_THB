@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersstrategyinfo.ai'
--- Edited by Thudmeizer    @ 29.09.2016
+-- Edited by Thudmeizer    @ 19.11.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -45,7 +45,7 @@ BuildBaseStrategyInfo =
 				{ 1, 90, 80, 0, 50,	"TurretAddon",	"addon_sisters_list_post_1" },
 				{ 1, 135, 0, 0, 3,	"Building",	"sisters_plasma_generator" },
 				{ 1, 65, 100, 0, 1,	"Building",	"sisters_turret_flamer" },
-				{ 1, 175, 50, 500, 1,	"Building",	"sisters_sanctuary" },
+				{ 1, 175, 50, 500, 1,	"Building",	"sisters_sanctuary_ai" },
 				{ 1, 90, 80, 700, 100,	"TurretAddon",	"addon_sisters_list_post_1" },
 				{ 1, 135, 0, 0, 5,	"Building",	"sisters_plasma_generator" },
 				{ 1, 400, 130, 950, 1,	"Addon",	"addon_sisters_hq_1" },
@@ -156,6 +156,7 @@ BuildOrderStrategyInfo =
 			{ "squad", "sisters_squad_servitor" },
 			{ "squad", "sisters_squad_missionary" },
 			{ "post_builder" }, 
+			{ "building", "sisters_infantry", true },
 			{ "building", "sisters_infantry", true },
 			{ "building", "sisters_plasma_generator" }
 		},

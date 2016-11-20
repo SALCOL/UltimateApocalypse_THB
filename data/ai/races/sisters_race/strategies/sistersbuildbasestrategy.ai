@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 20.10.2016
+-- Edited by Thudmeizer @ 19.11.2016
 -- Edited by Cylarne_04 2011
 
 class 'SistersBuildBaseStrategy' (BuildBaseStrategy)
@@ -319,14 +319,14 @@ function SistersBuildBaseStrategy:BuildFlexible()
 		-- Compute tier 1 researches
 		if (self.tierLevel >= 1) then
 		
-			-- Compute commander researches
-			if (iCommanderSquads >= 1) then
+			-- Compute infantry or commander researches
+			if (iInfantrySquads >= 3) or (iCommanderSquads >= 1) then
 				self:DynamicResearch("sisters_leader_range_upgrade", 1, 50, 20, 0, 0, nil, 0)
 			end
 		
 			-- Compute infantry researches
 			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("sisters_phosphor_grenades_research", 1, 50, 75, 0, 0, "sisters_squad_battle_sister", 1)
+				self:DynamicResearch("sisters_phosphor_grenades_research", 1, 50, 75, 0, 0, nil, 0)
 			end
 		
 			-- Compute secondary researches
@@ -335,15 +335,14 @@ function SistersBuildBaseStrategy:BuildFlexible()
 				-- Compute infantry researches
 				if (iInfantrySquads >= 3) then
 					self:DynamicResearch("sisters_blessed_ammunition", 1, 100, 75, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_blessed_ammunition_2", 3, 125, 100, 0, 0, nil, 0)
 				end
 			end
 				
 			-- Compute bonus researches
 			if (iArmyStrength >= 1250) then
 
-				-- Compute commander researches
-				if (iCommanderSquads >= 1) then
+				-- Compute infantry and commander researches
+				if (iInfantrySquads >= 3) or (iCommanderSquads >= 1) then
 					self:DynamicResearch("sisters_leader_melee_upgrade_1", 1, 50, 20, 0, 0, nil, 0)
 				end
 				
@@ -361,17 +360,17 @@ function SistersBuildBaseStrategy:BuildFlexible()
 
 			-- Compute infantry researches
 			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("sisters_health_research", 2, 100, 50, 0, 0, nil, 0)
-				self:DynamicResearch("sisters_krak_grenades_research", 2, 75, 75, 0, 0, nil, 0)
 				self:DynamicResearch("sisters_smoke_grenade_research", 2, 50, 50, 0, 0, nil, 0)
 				self:DynamicResearch("sisters_flashbang_grenade_research", 2, 50, 50, 0, 0, nil, 0)
+				self:DynamicResearch("sisters_krak_grenades_research", 2, 75, 75, 0, 0, nil, 0)
+				self:DynamicResearch("sisters_health_research", 2, 100, 50, 0, 0, nil, 0)
 			end
 		
 			-- Compute secondary researches
 			if (iArmyStrength >= 1250) then
 		
 				-- Compute commander researches
-				if (iCommanderSquads >= 1) then
+				if (iInfantrySquads >= 3) or (iCommanderSquads >= 1) then
 					self:DynamicResearch("sisters_leader_melee_upgrade_2", 2, 50, 20, 0, 0, nil, 0)
 				end
 
@@ -381,18 +380,20 @@ function SistersBuildBaseStrategy:BuildFlexible()
 					self:DynamicResearch("sisters_blessed_bionics", 2, 100, 50, 0, 0, nil, 0)
 				end
 			end
-			
+
+			-- Computer Sentinel researches	
+			if (self:CountSquads("sisters_squad_sentinel") >= 1) then
+				self:DynamicResearch("sisters_research_sentinel_scanners", 2, 35, 10, 0, 0, nil, 0)
+			end
+
 			-- Compute bonus researches
 			if (iArmyStrength >= 1750) then
 			
 				-- Compute infantry researches
 				if (iInfantrySquads >= 3) then
-					self:DynamicResearch("sisters_max_weapons_research", 2, 75, 75, 0, 0, "sisters_squad_battle_sister", 1)
+					self:DynamicResearch("sisters_max_weapons_research", 2, 75, 75, 0, 0, nil, 0)
 					self:DynamicResearch("sisters_blessed_bionics_2", 2, 100, 50, 0, 0, nil, 0)
 				end
-
-				-- Computer Sentinel researches
-				self:DynamicResearch("sisters_research_sentinel_scanners", 2, 35, 10, 0, 0, "sisters_squad_sentinel", 1)
 
 				-- Compute turret and listening post upgrade researches
 				self:DynamicResearch("sisters_turret_upgrade1", 2, 180, 180, 0, 0, nil, 0)
@@ -431,7 +432,8 @@ function SistersBuildBaseStrategy:BuildFlexible()
 				-- Compute infantry researches
 				if (iInfantrySquads >= 3) then
 					self:DynamicResearch("sisters_health_research_2", 3, 100, 50, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_ranged_damage_research", 3, 150, 50, 0, 0, "sisters_squad_battle_sister", 1)
+					self:DynamicResearch("sisters_blessed_ammunition_2", 3, 125, 100, 0, 0, nil, 0)
+					self:DynamicResearch("sisters_ranged_damage_research", 3, 150, 50, 0, 0, nil, 0)
 				end
 			end
 
@@ -440,15 +442,9 @@ function SistersBuildBaseStrategy:BuildFlexible()
 				self:DynamicAddon("addon_sisters_turret_probe", 5, 3, 10, 85, 0, 0, nil, nil, false)
 			end
 			
-			-- Compute bonus researches
-			if (iArmyStrength >= 2250) then
-				
-				-- Compute infantry researches
-				if (iInfantrySquads >= 3) then
-					self:DynamicResearch("sisters_zealot_charge", 3, 75, 50, 0, 0, "sisters_squad_repentia", 1)
-					self:DynamicResearch("sisters_faithful_morale_2", 3, 150, 75, 0, 0, nil, 0)
-					self:DynamicResearch("sisters_ranged_damage_research_2", 3, 150, 50, 0, 0, "sisters_squad_battle_sister", 1)
-				end
+			-- Compute repentia researches
+			if (self:CountSquads("sisters_squad_repentia") >= 1 ) then
+				self:DynamicResearch("sisters_zealot_charge", 3, 75, 50, 0, 0, nil, 0)
 			end
 
 			-- Computer HQ Tier3 Addons for future HQs
@@ -463,6 +459,16 @@ function SistersBuildBaseStrategy:BuildFlexible()
 			-- Compute resource researches
 			self:DynamicResearch("sisters_upgrade_power_3", 4, 500, 60, 0, 0, nil, 0)
 			self:DynamicResearch("sisters_upgrade_requisition_3", 4, 125, 450, 0, 0, nil, 0)
+
+			-- Compute bonus researches
+			if (iArmyStrength >= 2250) then
+
+				-- Compute infantry researches
+				if (iInfantrySquads >= 3) then
+					self:DynamicResearch("sisters_faithful_morale_2", 4, 150, 75, 0, 0, nil, 0)
+					self:DynamicResearch("sisters_ranged_damage_research_2", 4, 150, 50, 0, 0, nil, 0)
+				end
+			end
 
 			-- Compute turret upgrades research
 			self:DynamicResearch("sisters_turret_upgrade_range", 4, 600, 235, 0, 0, nil, 0)
@@ -673,6 +679,7 @@ function SistersBuildBaseStrategy:GetPlacementType(iBuildingID)
 		return "Mine"
 	elseif (cpu_manager:IsGenerator(iBuildingID) or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_sanctuary") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_sanctuary_ai") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_holy_reliquary") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_shrine_to_the_emperor") or
 		iBuildingID == cpu_manager.stats:GetBuildingID("sisters_missile_silo")) then

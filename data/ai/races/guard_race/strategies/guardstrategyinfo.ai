@@ -211,6 +211,7 @@ BuildOrderStrategyInfo =
 			{ "squad", "guard_squad_guardsmen_rider" },
 			{ "post_builder" }, { "post_builder" },
 			{ "building", "guard_infantry", true },
+			{ "building", "guard_infantry", true },
 			{ "building", "guard_plasma_generator" }
 		},
 		

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarhqtactic.ai'
--- Edited by Thudmeizer		@ 02.10.2016
+-- Edited by Thudmeizer		@ 19.11.2016
 
 class 'DarkEldarHQTactic' (BaseTactic)
 
@@ -90,12 +90,13 @@ function DarkEldarHQTactic:DoAbilities()
 			self.base_ai:DoSpecialAbilitySquad(DarkEldarHQ.corrosive_id, oSquad:GetSquad())
 		end
 	end
-
+-- Disabled as DE AI now gets sufficient Soul bonuses via tweak!
+--[[
 	-- Don't use major soul-expensive HQ abilities as we need souls to get to Tier6!
    	if (cpu_manager:GetTierLevel() < 6) then
 		return
 	end
-
+]]
 	-- Piercing Vision: Temporarily increases the sight and keen sight radiuses of all HQs that is meant for spying on nearbye enemy bases and detecting enemy threats or infiltrators. (Soul Cost: 200)
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )

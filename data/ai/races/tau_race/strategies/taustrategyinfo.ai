@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'taustrategyinfo.ai'
--- Edited by Thudmeizer    @ 29.09.2016
+-- Edited by Thudmeizer    @ 14.11.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -163,6 +163,7 @@ BuildOrderStrategyInfo =
 			{ "squad", "tau_stealth_team_squad" },
 			{ "squad", "tau_builder_squad" },
 			{ "post_builder" }, { "post_builder" },
+			{ "building", "tau_barracks", true },
 			{ "building", "tau_barracks", true },
 			{ "building", "tau_plasma_generator", true }
 		},

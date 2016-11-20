@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'necronstrategyinfo.ai'
--- Edited by Thudmeizer   @ 11.11.2016
+-- Edited by Thudmeizer   @ 17.11.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -47,7 +47,7 @@ BuildBaseStrategyInfo =
 				{ 1, 0, 400, 950, 1,	"Addon", 	"addon_necron_hq_1" },
 				{ 1, 0, 125, 0, 5,	"Building",	"necron_plasma_generator" },
 
-				{ 2, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
+			        { 2, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
 				{ 2, 0, 250, 0, 75,	"TurretAddon",	"addon_necron_list_post_2" },
 				{ 2, 0, 150, 0, 1,	"Building",	"necron_turret_missile_sp" },
 			        { 2, 0, 125, 0, 6,	"Building",	"necron_plasma_generator" },
@@ -55,16 +55,16 @@ BuildBaseStrategyInfo =
 				{ 2, 0, 400, 800, 2,	"Building",	"monolith" },
 				{ 2, 0, 750, 900, 1,	"Addon",	"addon_necron_hq_2" },
 
-				{ 3, 0, 0, 0, 5,	"Unit",		"necron_builder_scarab_squad" },
+			        { 3, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
 				{ 3, 0, 65, 0, 50,	"TurretAddon",	"addon_necron_turret" },
 				{ 3, 0, 125, 0, 10,	"Building",	"necron_plasma_generator" },
 			        { 3, 0, 250, 0, 100,	"TurretAddon",	"addon_necron_list_post_2" },
 				{ 3, 0, 800, 500, 3,	"Building",	"monolith" },
-				{ 3, 0, 150, 0, 1,	"Building",	"necron_turret_missile_sp" },
 				{ 3, 0, 1500, 1000, 1,	"Building",	"necron_summoning_core_big" },
+				{ 3, 0, 150, 0, 1,	"Building",	"necron_turret_missile_sp" },
 			        { 3, 0, 200, 0, 50,	"TurretAddon",	"addon_necron_wall" },
 
-				{ 4, 0, 0, 0, 6,	"Unit",		"necron_builder_scarab_squad" },
+			        { 4, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
 				{ 4, 0, 280, 500, 1,	"Building",	"necron_forbidden_archive" },
 				{ 4, 0, 400, 0, 1,	"Building",	"necron_turret_battery" },
 				{ 4, 0, 125, 0, 15,	"Building",	"necron_plasma_generator" },
@@ -72,7 +72,7 @@ BuildBaseStrategyInfo =
 				{ 4, 0, 2000, 1250, 1,	"Building",	"necron_energy_core" },
 				{ 4, 0, 65, 0, 100,	"TurretAddon",	"addon_necron_turret" },
 				
-				{ 5, 0, 0, 0, 7,	"Unit",		"necron_builder_scarab_squad" },
+			        { 5, 0, 0, 0, 4,	"Unit",		"necron_builder_scarab_squad" },
 				{ 5, 0, 3500, 0, 1,	"Building",	"necron_heavy_thermoplasma_generator" },
 				{ 5, 0, 4000, 500, 1,	"Building",	"monolith_super" },
 			        { 5, 0, 200, 0, 100,	"TurretAddon",	"addon_necron_wall" },
@@ -149,25 +149,13 @@ BuildOrderStrategyInfo =
 			{ "squad", "necron_builder_scarab_squad" },
 			{ "squad", "necron_builder_scarab_squad" },
 			{ "squad", "necron_builder_scarab_squad" },
-			{ "squad", "necron_builder_scarab_squad" },
-			{ "squad", "necron_builder_scarab_squad" },
 			{ "flag_capture" }, { "post_builder" },
 			{ "building", "necron_summoning_core", true },
-			{ "building", "necron_turret", true },
-			{ "building", "monolith", true },
-			{ "building", "necron_turret", true },
-			{ "building", "necron_turret", true },
 			{ "building", "monolith", true },
 			{ "building", "necron_amplification_generator", true },
 			{ "building", "necron_amplification_generator", true },
 			{ "building", "necron_amplification_generator", true },
-			{ "building", "necron_amplification_generator", true },
-			{ "building", "necron_amplification_generator", true },
-			{ "building", "necron_turret", true },
-			{ "building", "necron_amplification_generator", true },
-			{ "building", "necron_amplification_generator", true },
-			{ "building", "necron_amplification_generator", true },
-			{ "building", "necron_turret", true }
+			{ "building", "necron_amplification_generator", true }
 		},
 		 
 		LargeMap =

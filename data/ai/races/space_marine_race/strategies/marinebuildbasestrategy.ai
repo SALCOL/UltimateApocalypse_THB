@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marinebuildbasestrategy.ai'
--- Edited by Thudmeizer @ 02.10.2016
+-- Edited by Thudmeizer @ 16.11.2016
 -- Edited by Cylarne_04 2011
 
 class 'MarineBuildBaseStrategy' (BuildBaseStrategy)
@@ -318,24 +318,25 @@ function MarineBuildBaseStrategy:BuildFlexible()
 	if (iArmyStrength >= 1000 or (iPower >= 800 and iRequisition >= 900)) then
 		
 		-- Dynamic research item syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
-		local iLibrarianSquads	= self:CountSquads("space_marine_squad_librarian")
+		local iLibrarianSquads	= self:CountSquads("space_marine_squad_librarian") + self:CountSquads("space_marine_squad_chaplain")
 		local iCommanderSquads	= self:CountSquads("space_marine_squad_force_commander_killeus") + self:CountSquads("space_marine_squad_chaplain") + iLibrarianSquads
-		local iInfantrySquads	= self:CountSquads("space_marine_squad_scout") + self:CountSquads("space_marine_squad_tactical") + self:CountSquads("space_marine_squad_assault")
+		local iHeavyInfantrySquads	= self:CountSquads("space_marine_squad_sternguard_veteran") + self:CountSquads("space_marine_squad_vanguard_veteran") + self:CountSquads("space_marine_squad_terminator") + self:CountSquads("space_marine_squad_terminator_assault") + self:CountSquads("space_marine_squad_honor_guard_gladiator")
+		local iInfantrySquads	= self:CountSquads("space_marine_squad_scout") + self:CountSquads("space_marine_squad_tactical_bike") + self:CountSquads("space_marine_squad_tactical") + self:CountSquads("space_marine_squad_assault") + self:CountSquads("space_marine_squad_devastator") 
 		
 		-- Compute tier 1 researches
 		if (self.tierLevel >= 1) then
 
 			-- Compute infantry researches
-			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("marine_frag_grenade_research", 1, 25, 75, 0, 0, "space_marine_squad_tactical", 2)
-				self:DynamicResearch("marine_inferno_grenades_research", 1, 50, 75, 0, 0, "space_marine_squad_tactical", 2)
+			if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
+				self:DynamicResearch("marine_frag_grenade_research", 1, 25, 75, 0, 0, nil, 0)
+				self:DynamicResearch("marine_inferno_grenades_research", 1, 50, 75, 0, 0, nil, 0)
 			end
 			
 			-- Compute secondary researches
 			if (iArmyStrength >= 750) then
 
 				-- Compute infantry researches
-				if (iInfantrySquads >= 3) then
+				if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
 					self:DynamicResearch("marine_health_upgrade_research", 1, 100, 50, 0, 0, nil, 0)
 					self:DynamicResearch("marine_accuracy_upgrade_research", 1, 50, 30, 0, 0, nil, 0)
 					self:DynamicResearch("marine_armor_upgrade_research", 1, 100, 50, 0, 0, nil, 0)
@@ -346,19 +347,25 @@ function MarineBuildBaseStrategy:BuildFlexible()
 			if (iArmyStrength >= 1250) then
 			
 				-- Compute infantry researches
-				if (iInfantrySquads >= 3) then
+				if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
 					self:DynamicResearch("marine_sergeant_melee_upgrade_1", 1, 50, 20, 0, 0, nil, 0)
-					self:DynamicResearch("marine_sniper_rifle", 1, 150, 100, 0, 0, "space_marine_squad_scout", 1)
 				end
-				
+
+				-- Compute scout researches
+				if (self:CountSquads("space_marine_squad_scout") >= 2) then
+					self:DynamicResearch("marine_sniper_rifle", 1, 150, 100, 0, 0, nil, 0)
+				end
+
 				-- Compute skull probe researches
-				self:DynamicResearch("marine_skull_probe_infiltrate_research", 1, 50, 25, 0, 0, "space_marine_squad_skull_probe", 1)
+				if (self:CountSquads("space_marine_squad_skull_probe") >= 1) then
+					self:DynamicResearch("marine_skull_probe_infiltrate_research", 1, 50, 25, 0, 0, nil, 0)
+				end
 			end
 
-				-- Compute HQ Tier2 Addons for future HQs
-				if (self:GetBuildingCountByName("space_marine_hq") > 1) then
-					self:DynamicAddon("space_marine_hq_addon_1", 100, 1, 400, 130, 0, 0, nil, nil, false)
-				end
+			-- Compute HQ Tier2 Addons for future HQs
+			if (self:GetBuildingCountByName("space_marine_hq") > 1) then
+				self:DynamicAddon("space_marine_hq_addon_1", 100, 1, 400, 130, 0, 0, nil, nil, false)
+			end
 		end
 		
 		-- Compute tier 2 researches
@@ -369,29 +376,33 @@ function MarineBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("marine_requisition_research_1", 2, 75, 250, 0, 0, nil, 0)
 
 			-- Compute infantry researches
-			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("marine_health_upgrade_research_2", 2, 100, 50, 0, 0, nil, 0)
+			if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
 				self:DynamicResearch("marine_sergeant_ranged_upgrade_1", 2, 50, 20, 0, 0, nil, 0)
-				self:DynamicResearch("marine_armor_upgrade_research_2", 2, 150, 100, 0, 0, nil, 0)
 				self:DynamicResearch("marine_bolter_upgrade_research", 2, 80, 35, 0, 0, nil, 0)
+				self:DynamicResearch("marine_health_upgrade_research_2", 2, 100, 50, 0, 0, nil, 0)
+				self:DynamicResearch("marine_armor_upgrade_research_2", 2, 150, 100, 0, 0, nil, 0)
+
 			end
 			
 			-- Compute commander researches
 			if (iLibrarianSquads >= 1) then
-				self:DynamicResearch("marine_force_commander_ability_research_1", 2, 80, 35, 0, 0, "space_marine_squad_force_commander_killeus", 1)
 				self:DynamicResearch("marine_jumppack_research", 2, 90, 40, 0, 0, nil, 0)
-				--self:DynamicResearch("marine_commander_health_research_1_advance_sp", 2, 100, 25, 0, 0, nil, 0)
 			end
-			
+
+			-- Compute commander researches
+			if (iCommanderSquads >= 1) then
+				self:DynamicResearch("marine_force_commander_ability_research_1", 2, 80, 35, 0, 0, nil, 0)
+			end
+
 			-- Compute secondary researches
 			if (iArmyStrength >= 1250) then
 			
 				-- Compute infantry researches
-				if (iInfantrySquads >= 3) then
-					self:DynamicResearch("marine_accuracy_upgrade_research_2", 2, 100, 50, 0, 0, nil, 0)
-					self:DynamicResearch("marine_krak_grenades_research", 2, 75, 75, 0, 0, nil, 0)
+				if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
 					self:DynamicResearch("marine_smoke_grenade_research", 2, 50, 50, 0, 0, nil, 0)
 					self:DynamicResearch("marine_flashbang_grenade_research", 2, 50, 50, 0, 0, nil, 0)
+					self:DynamicResearch("marine_krak_grenades_research", 2, 75, 75, 0, 0, nil, 0)
+					self:DynamicResearch("marine_accuracy_upgrade_research_2", 2, 100, 50, 0, 0, nil, 0)
 					self:DynamicResearch("marine_bolter_upgrade_research_2", 2, 115, 60, 0, 0, nil, 0)
 				end
 			end
@@ -405,12 +416,16 @@ function MarineBuildBaseStrategy:BuildFlexible()
 			if (iArmyStrength >= 1750) then
 						
 				-- Compute infantry researches
-				if (iInfantrySquads >= 3) then
-					self:DynamicResearch("marine_max_weapons_research", 2, 75, 75, 0, 0, "space_marine_squad_tactical", 1)
+				if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
 					self:DynamicResearch("marine_sergeant_melee_upgrade_2", 2, 50, 20, 0, 0, nil, 0)
-					self:DynamicResearch("marine_scout_infiltrate_research", 2, 100, 50, 0, 0, "space_marine_squad_scout", 1)
+					self:DynamicResearch("marine_max_weapons_research", 2, 75, 75, 0, 0, nil, 0)
 				end
 			
+				-- Compute scout researches
+				if (self:CountSquads("space_marine_squad_scout") >= 2) then
+					self:DynamicResearch("marine_scout_infiltrate_research", 2, 100, 50, 0, 0, nil, 0)
+				end
+
 				-- Compute turret upgrades research
 				self:DynamicResearch("marine_turret_upgrade1", 2, 180, 180, 0, 0, nil, 0)
 				self:DynamicResearch("marine_turret_upgrade2", 3, 390, 390, 0, 0, nil, 0)
@@ -434,19 +449,21 @@ function MarineBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("marine_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
 
 			-- Compute bonus infantry researches
-			self:DynamicResearch("marine_melta_bomb_research", 3, 100, 100, 0, 0, nil, 0)
+			if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
+				self:DynamicResearch("marine_melta_bomb_research", 3, 100, 100, 0, 0, nil, 0)
+			end
 
 			-- Compute secondary researches
 			if (iArmyStrength >= 1750) then
 
 				-- Compute infantry researches
-				if (iInfantrySquads >= 3) then
+				if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
 					self:DynamicResearch("marine_max_weapons_research_2", 3, 150, 150, 0, 0, nil, 0)
 				end
 
 				-- Compute commander researches
 				if (iCommanderSquads >= 1) then
-					self:DynamicResearch("marine_force_commander_research_2", 3, 100, 50, 0, 0, "space_marine_squad_force_commander_killeus", 1)
+					self:DynamicResearch("marine_force_commander_research_2", 3, 100, 50, 0, 0, nil, 0)
 				end
 			end
 
@@ -458,11 +475,13 @@ function MarineBuildBaseStrategy:BuildFlexible()
 				self:DynamicAddon("space_marine_turret_addon_probe", 5, 3, 10, 85, 0, 0, nil, nil, false)
 			end
 			
+			-- Compute terminator researches
+			if (self:CountSquads("space_marine_squad_terminator") >= 1) or (self:CountSquads("space_marine_squad_terminator_assault") >= 1) then
+				self:DynamicResearch("marine_personalteleporter_research", 3, 75, 125, 0, 0, nil, 0)
+			end
+
 			-- Compute bonus researches
 			if (iArmyStrength >= 2250) then
-
-				-- Compute terminator researches
-				self:DynamicResearch("marine_personalteleporter_research", 3, 75, 125, 0, 0, nil, 0)
 
 				-- Compute Wall Research
 				self:DynamicResearch("all_walls_research", 3, 280, 280, 0, 0, nil, 0)
@@ -480,7 +499,7 @@ function MarineBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("marine_requisition_research_3", 4, 125, 450, 0, 0, nil, 0)
 
 			-- Compute infantry researches
-			if (iInfantrySquads >= 3) then
+			if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
 				self:DynamicResearch("marine_max_weapons_research_3", 4, 200, 200, 0, 0, nil, 0)
 				self:DynamicResearch("marine_squad_size_increase_research", 4, 300, 300, 0, 0, nil, 0)
 			end
@@ -491,13 +510,17 @@ function MarineBuildBaseStrategy:BuildFlexible()
 			end
 
 			-- Compute Terminator Weaponry
-			self:DynamicResearch("marine_advanced_weaponry_research", 4, 400, 225, 0, 0, nil, 0)
-			
+			if (self:CountSquads("space_marine_squad_terminator") >= 1) or (self:CountSquads("space_marine_squad_terminator_assault") >= 1) then
+				self:DynamicResearch("marine_advanced_weaponry_research", 4, 400, 225, 0, 0, nil, 0)
+			end
+
 			-- Compute final infantry researches
-			self:DynamicResearch("marine_health_upgrade_research_3", 4, 150, 100, 0, 0, nil, 0)
-			self:DynamicResearch("marine_armor_upgrade_research_3", 4, 180, 120, 0, 0, nil, 0)
-			self:DynamicResearch("marine_accuracy_upgrade_research_3", 4, 150, 100, 0, 0, nil, 0)
-			
+			if (iInfantrySquads >= 3) or (iHeavyInfantrySquads >= 2) then
+				self:DynamicResearch("marine_health_upgrade_research_3", 4, 150, 100, 0, 0, nil, 0)
+				self:DynamicResearch("marine_accuracy_upgrade_research_3", 4, 150, 100, 0, 0, nil, 0)
+				self:DynamicResearch("marine_armor_upgrade_research_3", 4, 180, 120, 0, 0, nil, 0)
+			end
+
 			-- Compute Relic researches
 			self:DynamicResearch("marine_relic_research_1", 4, 1000, 1000, 0, 0, nil, 0)
 

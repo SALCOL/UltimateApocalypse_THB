@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersunitstats.ai'
--- Edited by Thudmeizer @ 08.10.2016
+-- Edited by Thudmeizer @ 13.11.2016
 -- Edited by Cylarne_04 2011
 
 -- XP3
@@ -508,7 +508,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_rhino",
 		ebp_name = "sisters_rhino",
 		class = UnitStatsAI.UC_VehicleLow,
-		rating = 6,
+		rating = math.random(5.0*10,6.0*10)/10,
 		potential =
 		{
 			{
@@ -523,7 +523,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_sentinel",
 		ebp_name = "sisters_sentinel",
 		class = UnitStatsAI.UC_VehicleLow,
-		rating = 6,
+		rating = math.random(6.0*10,7.0*10)/10,
 		potential =
 		{
 			{
@@ -543,7 +543,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_immolator_tank",
 		ebp_name = "sisters_immolator_tank",
 		class = UnitStatsAI.UC_VehicleMed,
-		rating = 6,
+		rating = math.random(6.0*10,7.0*10)/10,
 		potential =
 		{
 			{
@@ -563,7 +563,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_incarcerator_tank",
 		ebp_name = "sisters_incarcerator_tank",
 		class = UnitStatsAI.UC_VehicleMed,
-		rating = 6,
+		rating = math.random(6.0*10,7.0*10)/10,
 		potential =
 		{
 			{
@@ -583,7 +583,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_lightning",
 		ebp_name = "sisters_lightning",
 		class = UnitStatsAI.UC_AirMed,
-		rating = 6,
+		rating = math.random(6.0*10,7.0*10)/10,
 		potential =
 		{
 			{
@@ -608,7 +608,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_exorcist_tank",
 		ebp_name = "sisters_exorcist_tank",
 		class = UnitStatsAI.UC_VehicleMed,
-		rating = 7,
+		rating = math.random(7.0*10,8.0*10)/10,
 		potential =
 		{
 			{
@@ -648,7 +648,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_penitent_engine",
 		ebp_name = "sisters_penitent_engine",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 8,
+		rating = math.random(7.0*10,8.0*10)/10,
 		potential =
 		{
 			{
@@ -678,7 +678,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_exorcist_mk",
 		ebp_name = "sisters_exorcist_mk",
 		class = UnitStatsAI.UC_VehicleMed,
-		rating = 8,
+		rating = math.random(7.0*10,8.0*10)/10,
 		potential =
 		{
 			{
@@ -693,7 +693,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_lightning_strike",
 		ebp_name = "sisters_lightning_strike",
 		class = UnitStatsAI.UC_AirMed,
-		rating = 8,
+		rating = math.random(7.0*10,8.0*10)/10,
 		potential =
 		{
 			{
@@ -708,7 +708,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_capitol_imperialis",
 		ebp_name = "sisters_capitol_imperialis",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 8,
+		rating = math.random(7.5*10,8.5*10)/10,
 		potential =
 		{
 			{
@@ -728,7 +728,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_throne",
 		ebp_name = "sisters_throne",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = 8,
+		rating = math.random(7.5*10,8.5*10)/10,
 		potential =
 		{
 			{
@@ -748,7 +748,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_saint_celestine",
 		ebp_name = "sisters_saint_celestine",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = math.random(7*10,9.5*10)/10,
+		rating = math.random(8.0*10,9.5*10)/10,
 		potential =
 		{
 			{
@@ -763,7 +763,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_living_saint",
 		ebp_name = "sisters_living_saint",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = math.random(7*10,9.5*10)/10,
+		rating = math.random(8.0*10,9.5*10)/10,
 		potential =
 		{
 			{
@@ -778,7 +778,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_living_saint_black",
 		ebp_name = "sisters_living_saint_black",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = math.random(7*10,9.5*10)/10,
+		rating = math.random(8.0*10,9.5*10)/10,
 		potential =
 		{
 			{
@@ -793,7 +793,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_living_saint_blue",
 		ebp_name = "sisters_living_saint_blue",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = math.random(7*10,9.5*10)/10,
+		rating = math.random(8.0*10,9.5*10)/10,
 		potential =
 		{
 			{
@@ -808,7 +808,7 @@ SistersUnitStats =
 		sbp_name = "sisters_squad_arch_angel",
 		ebp_name = "sisters_arch_angel",
 		class = UnitStatsAI.UC_MonsterHigh,
-		rating = math.random(8*10,9.5*10)/10,
+		rating = math.random(8.0*10,9.5*10)/10,
 		potential =
 		{
 			{

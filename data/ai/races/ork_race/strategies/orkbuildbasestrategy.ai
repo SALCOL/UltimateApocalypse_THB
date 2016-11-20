@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'orkbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 30.10.2016
+-- Edited by Thudmeizer @ 16.11.2016
 -- Edited by Cylarne_04 2011
 
 class 'OrkBuildBaseStrategy' (BuildBaseStrategy)
@@ -268,25 +268,25 @@ function OrkBuildBaseStrategy:BuildFlexible()
 		self:DynamicResearch("ork_research_tech_squiggoth", 4, 0, 300, 0, 0, nil, 0)
 		self:DynamicResearch("ork_research_tech_battlefortress", 4, 0, 400, 0, 0, nil, 0)
 		self:DynamicResearch("ork_research_tech_gargant", 5, 0, 1000, 0, 0, nil, 0)
-		if self:HasCriticalLocation() then
-			self:DynamicResearch("ork_research_tech_great_gargant", 5, 0, 2000, 0, 0, nil, 0)
-		end
+		self:DynamicResearch("ork_research_tech_great_gargant", 5, 0, 2000, 0, 0, nil, 0)
 	end
 	
 	if (iArmyStrength >= 2000 or (iPower >= 800 and iRequisition >= 900)) then
 		
 		-- Dynamic research item syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
 		local iCommanderSquads = self:CountSquads("ork_squad_mek_boy") + self:CountSquads("ork_squad_warboss")
-		local iInfantrySquads = self:CountSquads("ork_squad_slugga") + self:CountSquads("ork_squad_shoota_boy") + self:CountSquads("ork_squad_stormboy") +
-								self:CountSquads("ork_squad_nob") + self:CountSquads("ork_flash_gitz_squad") + self:CountSquads("ork_squad_tankbusta")
+		local iInfantrySquads = self:CountSquads("ork_squad_slugga") + self:CountSquads("ork_squad_shoota_boy") + self:CountSquads("ork_squad_stormboy") + self:CountSquads("ork_squad_kommandoz") + self:CountSquads("ork_squad_tankbusta") +
+								self:CountSquads("ork_flash_gitz_squad") + self:CountSquads("ork_squad_nob")
 		local iUberSquads = self:CountSquads("ork_squad_kustim_stompa") + self:CountSquads("ork_squad_squiggoth_gargantaun") + self:CountSquads("ork_squad_ork_gargant") + self:CountSquads("ork_squad_great_gargant") 
 
 		-- Compute tier 1 researches
 		if (self.tierLevel >= 1) then
 
 			-- Compute builder research
-			self:DynamicResearch("ork_research_grot_infiltrate", 1, 50, 25, 0, 0, "ork_squad_grot", 1)
-			
+			if (self:CountSquads("ork_squad_grot") >= 1) then
+				self:DynamicResearch("ork_research_grot_infiltrate", 1, 50, 25, 0, 0, nil, 0)
+			end
+
 			-- Compute secondary researches
 			if (iArmyStrength >= 750) then
 
@@ -294,16 +294,21 @@ function OrkBuildBaseStrategy:BuildFlexible()
 				if (iInfantrySquads >= 3) then
 					self:DynamicResearch("ork_research_tougherorks", 1, 20, 5, 0, 0, nil, 0)
 					self:DynamicResearch("ork_research_eavy_armor_boyz", 1, 50, 15, 0, 0, nil, 0)
-					self:DynamicResearch("ork_research_burna", 1, 50, 10, 0, 0, "ork_squad_slugga", 1)
+					self:DynamicResearch("ork_research_burna", 1, 50, 10, 0, 0, nil, 0)
 				end
 			end
 			
+			-- Compute stormboyz research
+			if (self:CountSquads("ork_squad_stormboy") >= 1) then
+				self:DynamicResearch("ork_research_speed_boost_stormboyz", 1, 55, 35, 0, 0, nil, 0)
+			end
+
 			-- Compute bonus researches
 			if (iArmyStrength >= 1250) then
+
 				-- Compute infantry research
 				if (iInfantrySquads >= 3) then
 					self:DynamicResearch("ork_research_stikk_bombs", 1, 25, 75, 0, 0, nil, 0)
-					self:DynamicResearch("ork_research_speed_boost_stormboyz", 1, 55, 35, 0, 0, "ork_squad_stormboy", 1)
 				end
 			end
 		end
@@ -320,12 +325,17 @@ function OrkBuildBaseStrategy:BuildFlexible()
 			
 			-- Compute infantry research
 			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("ork_research_tankbustabombs", 2, 75, 75, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_moredakka", 2, 40, 15, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_tankbustabombs", 2, 75, 75, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_bigshoota", 2, 80, 15, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_rokkit_launcha", 2, 90, 35, 0, 0, nil, 0)
-				self:DynamicResearch("ork_research_bigshoota", 2, 80, 15, 0, 0, "ork_squad_shoota_boy", 1)
 			end	
-			
+			--[[
+			-- Compute tank busta research
+			if (self:CountSquads("ork_squad_tankbusta") >= 1) then
+				self:DynamicResearch("ork_research_tank_busta_infiltrate", 2, 150, 100, 0, 0, nil, 0)
+			end
+			]]
 			-- Compute secondary researches
 			if (iArmyStrength >= 1250) then
 			
@@ -337,7 +347,6 @@ function OrkBuildBaseStrategy:BuildFlexible()
 				-- Compute infantry research
 				if (iInfantrySquads >= 3) then
 					self:DynamicResearch("ork_research_morechoppy", 2, 60, 20, 0, 0, nil, 0)
-					--self:DynamicResearch("ork_research_tank_busta_infiltrate", 2, 150, 100, 0, 0, "ork_squad_tankbusta", 1)
 				end
 			end
 			
@@ -345,12 +354,12 @@ function OrkBuildBaseStrategy:BuildFlexible()
 			if (iArmyStrength >= 1750) then
 			
 				-- Compute vehicle researches
-				if (self:CountSquads("ork_squad_trukk") + self:CountSquads("ork_squad_wartrak") > 1) then
+				if (self:CountSquads("ork_squad_trukk") >= 1) or (self:CountSquads("ork_squad_wartrak") >= 1) then
 					self:DynamicResearch("ork_research_speed_boost", 2, 50, 50, 0, 0, nil, 0) 
 				end
 
 				-- Compute Kill Kan researches
-				if (self:CountSquads("ork_squad_killa_kan") > 0) then
+				if (self:CountSquads("ork_squad_killa_kan") >= 1) then
 					self:DynamicResearch("ork_research_killa_kan_reinforce", 2, 100, 75, 0, 0, nil, 0) 
 				end
 				
@@ -371,10 +380,10 @@ function OrkBuildBaseStrategy:BuildFlexible()
 			-- Compute infantry research
 			if (iInfantrySquads >= 3) then
 				self:DynamicResearch("ork_research_tougherorks_2", 3, 30, 10, 0, 0, nil, 0)
-				self:DynamicResearch("ork_research_eavy_armor_boyz_2", 3, 80, 20, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_evenmoredakka", 3, 60, 30, 0, 0, nil, 0)
-				self:DynamicResearch("ork_research_rokkit_launcha_2", 3, 115, 45, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_eavy_armor_boyz_2", 3, 80, 20, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_bigshoota_2", 3, 100, 30, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_rokkit_launcha_2", 3, 115, 45, 0, 0, nil, 0)
 			end
 			
 			-- Compute Even More Armor research
@@ -390,9 +399,9 @@ function OrkBuildBaseStrategy:BuildFlexible()
 
 				-- Compute infantry research
 				if (iInfantrySquads >= 3) then
+					self:DynamicResearch("ork_research_burna_2", 3, 60, 30, 0, 0, nil, 0)
 					self:DynamicResearch("ork_research_evenmorechoppy", 3, 100, 40, 0, 0, nil, 0)
 					self:DynamicResearch("ork_research_boomy_stikk_bombs", 3, 150, 80, 0, 0, nil, 0)
-					self:DynamicResearch("ork_research_burna_2", 3, 60, 30, 0, 0, "ork_squad_slugga", 1)
 				end
 			end
 
@@ -432,10 +441,10 @@ function OrkBuildBaseStrategy:BuildFlexible()
 			-- Compute Ork Titan researches
 			if (iUberSquads >= 1) then
 				self:DynamicResearch("ork_research_titan_armor", 5, 300, 300, 0, 0, nil, 0)
-				self:DynamicResearch("ork_research_titan_armor_2", 5, 600, 600, 0, 0, nil, 0)
-				self:DynamicResearch("ork_research_titan_armor_3", 5, 900, 900, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_titan_dakka", 5, 300, 300, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_titan_armor_2", 5, 600, 600, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_titan_dakka_2", 5, 600, 600, 0, 0, nil, 0)
+				self:DynamicResearch("ork_research_titan_armor_3", 5, 900, 900, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_titan_dakka_3", 5, 900, 900, 0, 0, nil, 0)
 				self:DynamicResearch("ork_research_titan_cost", 5, 1300, 1300, 0, 0, nil, 0)
 			end

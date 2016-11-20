@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'taubuildbasestrategy.ai'
--- Edited by Thudmeizer @ 02.10.2016
+-- Edited by Thudmeizer @ 16.11.2016
 -- Edited by Cylarne_04 2011
 
 class 'TauBuildBaseStrategy' (BuildBaseStrategy)
@@ -243,7 +243,7 @@ function TauBuildBaseStrategy:BuildFlexible()
 	if (iArmyStrength >= 1000 or (iPower >= 800 and iRequisition >= 900)) then
 			
 		-- Dynamic research item syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
-		local iScoutSquads = self:CountSquads("tau_stealth_team_squad")
+		local iScoutSquads = self:CountSquads("tau_stealth_team_squad") + self:CountSquads("tau_stealth_team_xv25_squad")
 		local iInfantrySquads = self:CountSquads("tau_fire_warrior_squad") + iScoutSquads
 		local iKrootSquads = self:CountSquads("tau_kroot_carnivore_squad") + self:CountSquads("tau_kroot_hound_squad") + self:CountSquads("tau_krootox_squad") + self:CountSquads("tau_greater_knarloc_squad")
 		local iTitanSquads = self:CountSquads("tau_manta_squad") + self:CountSquads("tau_xv202_mako_titan_squad") + self:CountSquads("tau_xv101_riptide_suit_squad") + self:CountSquads("tau_xv107_rvarna_suit_squad")
@@ -251,14 +251,16 @@ function TauBuildBaseStrategy:BuildFlexible()
 		-- Compute tier 1 researches
 		if (self.tierLevel >= 1) then
 
-			-- Compute basic research (Affects commander, vespids, stealth suits)
-			self:DynamicResearch("tau_anti_grav_research", 1, 50, 25, 0, 0, "tau_commander_squad", 1)
-			
+			-- Compute stealth suit research 
+			if (iScoutSquads >= 2) then
+				self:DynamicResearch("tau_anti_grav_research", 1, 50, 25, 0, 0, nil, 0)
+			end
+
 			-- Compute bonus researches
 			if (iArmyStrength >= 1250) then
 			
-				self:DynamicResearch("tau_photon_grenade_research", 1, 25, 75, 0, 0, nil, 0)
 				self:DynamicResearch("tau_snare_trap_research", 1, 25, 25, 0, 0, nil, 0)
+				self:DynamicResearch("tau_photon_grenade_research", 1, 25, 75, 0, 0, nil, 0)
 				
 				-- Compute scout researches
 				if (iScoutSquads >= 2) then
@@ -276,8 +278,8 @@ function TauBuildBaseStrategy:BuildFlexible()
 
 			-- Compute infantry research
 			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("tau_max_weapons_research", 2, 75, 75, 0, 0, nil, 0)
 				self:DynamicResearch("tau_improved_power_source_research", 2, 50, 100, 0, 0, nil, 0)
+				self:DynamicResearch("tau_max_weapons_research", 2, 75, 75, 0, 0, nil, 0)
 				self:DynamicResearch("tau_emp_grenade_research", 2, 75, 75, 0, 0, nil, 0)
 			end
 			
@@ -288,21 +290,17 @@ function TauBuildBaseStrategy:BuildFlexible()
 
 			-- Compute vehicle researches
 			self:DynamicResearch("tau_missile_barrage_research", 2, 100, 100, 0, 0, nil, 0)
-			self:DynamicResearch("tau_vehicle_health_research", 2, 160, 50, 0, 0, nil, 0)
 			self:DynamicResearch("tau_vehicle_shields_research", 2, 125, 75, 0, 0, nil, 0)
+			self:DynamicResearch("tau_vehicle_health_research", 2, 160, 50, 0, 0, nil, 0)
 			
 			-- Compute secondary researches
 			if (iArmyStrength >= 1250) then
 			
-				-- Compute scout researches
-				if (iScoutSquads >= 2) then
-					self:DynamicResearch("tau_target_lock", 2, 75, 50, 0, 0, nil, 0)
-				end
+				-- Compute Marker researches
+				self:DynamicResearch("tau_target_lock", 2, 75, 50, 0, 0, nil, 0)
 
 				-- Compute turret upgrades research
 				self:DynamicResearch("tau_turret_upgrade1", 2, 180, 180, 0, 0, nil, 0)
-				self:DynamicResearch("tau_turret_upgrade2", 3, 390, 390, 0, 0, nil, 0)
-				self:DynamicResearch("tau_listening_post_upgrade", 3, 600, 240, 0, 0, nil, 0)
 			end
 		end
 		
@@ -317,6 +315,12 @@ function TauBuildBaseStrategy:BuildFlexible()
 			if (iInfantrySquads >= 3) then
 				self:DynamicResearch("tau_improved_metallurgy", 3, 150, 150, 0, 0, nil, 0)
 			end
+
+			-- Compute turret upgrades research
+			self:DynamicResearch("tau_turret_upgrade2", 3, 390, 390, 0, 0, nil, 0)
+
+			-- Compute listening post upgrade research
+			self:DynamicResearch("tau_listening_post_upgrade", 3, 600, 240, 0, 0, nil, 0)
 
 			-- Computer Probe Addon for emplacements if enemy has infiltrators
 			if (cpu_manager:EnemyHasUnitInfiltrators() or cpu_manager:EnemyHasBaseInfiltrators()) then

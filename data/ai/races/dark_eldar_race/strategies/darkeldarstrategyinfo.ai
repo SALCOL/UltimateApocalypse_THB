@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarstrategyinfo.ai'
--- Edited by Thudmeizer    @ 29.09.2016
+-- Edited by Thudmeizer    @ 14.11.2016
 
 BuildBaseStrategyInfo = 
 {
@@ -89,8 +89,8 @@ BuildBaseStrategyInfo =
 				{ 6, 75, 0, 0, 8,	"Unit",		"dark_eldar_squad_slave" },
 				{ 6, 240, 40, 0, 1,	"Unit",		"dark_eldar_squad_archon" },
 				{ 6, 75, 125, 0, 1,	"Unit",		"dark_eldar_squad_haemonculus" },
-				{ 6, 8000, 8000, 3000, 2,"Building",	"dark_eldar_hq_sp_dxp3" },
-				{ 6, 10000, 10000, 4000, 3,"Building",	"dark_eldar_hq_sp_dxp3" }
+				{ 6, 10000, 10000, 3000, 2,"Building",	"dark_eldar_hq_sp_dxp3" },
+				{ 6, 15000, 15000, 4000, 3,"Building",	"dark_eldar_hq_sp_dxp3" }
 			},
 		},
 		SquadLimits = 
@@ -150,39 +150,17 @@ BuildOrderStrategyInfo =
 		QuickStart =
 		{
 			{ "flag_capture" }, { "flag_capture" }, 
-			{ "squad", "dark_eldar_squad_slave" },
+			{ "flag_capture" },
+			{ "squad", "dark_eldar_squad_mandrake" },
 			{ "squad", "dark_eldar_squad_slave" },
 			{ "squad", "dark_eldar_squad_mandrake" },
 			{ "squad", "dark_eldar_squad_mandrake" },
-			{ "squad", "dark_eldar_squad_archon" },
-			{ "squad", "dark_eldar_squad_warrior" },
-			{ "squad", "dark_eldar_squad_warrior" },
-			{ "squad", "dark_eldar_squad_warrior" },
-			{ "squad", "dark_eldar_squad_warrior" },
-			{ "squad", "dark_eldar_squad_hellion" },
-			{ "squad", "dark_eldar_squad_hellion" },
+			{ "squad", "dark_eldar_squad_mandrake" },
+			{ "squad", "dark_eldar_squad_mandrake" },
 			{ "post_builder" }, { "post_builder" },
 			{ "building", "dark_eldar_hall_of_blood", true },
-			{ "building", "dark_eldar_portal", true },
 			{ "building", "dark_eldar_hall_of_blood", true },
-			{ "building", "dark_eldar_slave_caravel", true },
-			{ "building", "dark_eldar_hall_of_blood", true },
-			{ "building", "dark_eldar_slave_caravel", true },
-			{ "building", "dark_eldar_hall_of_blood", true },
-			{ "building", "dark_eldar_hall_of_blood", true },
-			{ "building", "dark_eldar_haemonculus_laboratory", true },
-			{ "building", "dark_eldar_slave_caravel", true },
-			{ "building", "dark_eldar_hq", true },
-			{ "building", "dark_eldar_hq", true },
-			{ "building", "dark_eldar_turret", true },
-			{ "building", "dark_eldar_portal", true },
-			{ "building", "dark_eldar_turret", true },
-			{ "building", "dark_eldar_turret", true },
-			{ "building", "dark_eldar_turret", true },
 			{ "building", "dark_eldar_plasma_generator", true },
-			{ "building", "dark_eldar_plasma_generator", true },
-			{ "building", "dark_eldar_skimmer_shop", true },
-			{ "building", "dark_eldar_skimmer_shop", true },
 			{ "building", "dark_eldar_plasma_generator" }
 		},
 		

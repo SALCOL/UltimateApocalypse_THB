@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'guardunitstats.ai'
--- Edited by Thudmeizer @ 15.09.2016
+-- Edited by Thudmeizer @ 13.11.2016
 -- Edited by Arkhan	@ 24.10.2006
 -- Edited by Cylarne_04 2011
 
@@ -2469,7 +2469,7 @@ GuardUnitStats =
 		sbp_name = "guard_squad_imperator_titan",
 		ebp_name = "guard_titan_imperator",
 		class = UnitStatsAI.UC_VehicleHigh,
-		rating = math.random(8.5*10,9.5*10)/10,
+		rating = math.random(9*10,9.9*10)/10,
 		potential =
 		{
 			{

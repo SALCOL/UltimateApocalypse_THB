@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'marinestrategyinfo.ai'
--- Edited by Thudmeizer  @ 29.09.2016
+-- Edited by Thudmeizer  @ 14.11.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -176,14 +176,14 @@ BuildOrderStrategyInfo =
 			{ "flag_capture" },
 			{ "squad", "space_marine_squad_servitor" },
 			{ "squad", "space_marine_squad_scout" },
-			{ "squad", "space_marine_squad_scout" },
-			{ "squad", "space_marine_squad_scout" },
-			{ "squad", "space_marine_squad_scout" },
 			{ "squad", "space_marine_squad_servitor" },
+			{ "squad", "space_marine_squad_scout" },
+			{ "squad", "space_marine_squad_scout" },
+			{ "squad", "space_marine_squad_scout" },
 			{ "post_builder" }, { "post_builder" },
 			{ "building", "space_marine_barracks", true },
+			{ "building", "space_marine_barracks", true },
 			{ "building", "space_marine_generator" }
-
 		},
 		 
 		LargeMap =

@@ -2,7 +2,7 @@
 -- File: 'darkeldarcitadeltactic.ai'
 -- Edited by Krronus @ 9/24/10
 -- Edited by Cylarne_04 2012
--- Edited by Thudmeizer	@ 02.10.2016
+-- Edited by Thudmeizer	@ 19.11.2016
 
 class 'DarkEldarCitadelTactic' (BaseTactic)
 
@@ -56,11 +56,13 @@ end
 
 function DarkEldarCitadelTactic:DoAbilities()
 
+-- Disabled as DE AI now gets sufficient Soul bonuses via tweak!
+--[[
 	-- Don't use major soul-expensive Citadel abilities as we need souls to get to Tier6!
    	if (cpu_manager:GetTierLevel() < 6) then
 		return
 	end
-
+]]
 	-- The All Seeing Eye: A global ranged and power ability used by the Kabal Citadel (Requires Soul Cage). Reveals everything on the map for a duration. (Soul Cost: 400)
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )

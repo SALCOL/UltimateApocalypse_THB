@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'tyranidbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 02.10.2016
+-- Edited by Thudmeizer @ 17.11.2016
 
 class 'TyranidBuildBaseStrategy' (BuildBaseStrategy)
 
@@ -274,18 +274,18 @@ function TyranidBuildBaseStrategy:BuildFlexible()
 		if (self.tierLevel >= 1) then
 
 			-- Compute Gaunt Researches
-			if (num_gaunt_squads > 2) then
+			if (num_gaunt_squads >= 3) then
 				self:DynamicResearch("tyranids_gaunt_upgrade_research_1", 1, 0, 100, 0, 0, nil, 0)
 			end
 
 			-- Compute Genestealer Researches
-			if (num_genestealer_squads > 1) then
+			if (num_genestealer_squads >= 2) then
 				self:DynamicResearch("tyranids_genestealer_senses_research", 1, 0, 30, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_genestealer_upgrade_research_1", 1, 0, 100, 0, 0, nil, 0)
 			end
 
 			-- Compute Lictor Researches
-			if (num_lictor_squads > 1) then
+			if (num_lictor_squads >= 2) then
 				self:DynamicResearch("tyranids_lictor_upgrade_research_1", 1, 0, 75, 0, 0, nil, 0)
 			end
 		end
@@ -297,39 +297,43 @@ function TyranidBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("tyranids_power_research", 2, 200, 20, 0, 0, nil, 0)
 			self:DynamicResearch("tyranids_requisition_research_1", 2, 75, 250, 0, 0, nil, 0)
 
-			-- Compute Gaunt Researches
-			if (num_gaunt_squads > 2) then
-				self:DynamicResearch("tyranids_gaunt_upgrade_research_2", 2, 0, 120, 0, 0, nil, 0)
-				self:DynamicResearch("tyranids_gaunt_devourer_research", 2, 0, 100, 0, 0, nil, 0)
+			-- Compute Hormagaunt Researches
+			if (self:CountSquads("tyranids_squad_hormagaunt") >= 2) then
 				self:DynamicResearch("tyranids_hormagaunt_adrenal_glands_research", 2, 0, 60, 0, 0, nil, 0)
+			end
+
+			-- Compute Gaunt Researches
+			if (num_gaunt_squads >= 3) then
+				self:DynamicResearch("tyranids_gaunt_devourer_research", 2, 0, 100, 0, 0, nil, 0)
+				self:DynamicResearch("tyranids_gaunt_upgrade_research_2", 2, 0, 120, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_gaunt_upgrade_research_3", 2, 0, 140, 0, 0, nil, 0)
 			end
 
 			-- Compute Ripper Researches
-			if (num_ripper_squads > 0) then
+			if (num_ripper_squads >= 1) then
 				self:DynamicResearch("tyranids_ripper_leaping_research", 2, 0, 50, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_ripper_toxin_sacs_research", 2, 0, 35, 0, 0, nil, 0)
 			end
 
 			-- Compute Genestealer Researches
-			if (num_genestealer_squads > 1) then
+			if (num_genestealer_squads >= 2) then
 				self:DynamicResearch("tyranids_genestealer_upgrade_research_2", 2, 0, 120, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_genestealer_implant_research", 2, 0, 170, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_genestealer_tendrils_research", 2, 0, 80, 0, 0, nil, 0)
 			end
 
 			-- Compute Lictor Researches
-			if (num_lictor_squads > 1) then
+			if (num_lictor_squads >= 2) then
 				self:DynamicResearch("tyranids_lictor_upgrade_research_2", 2, 0, 95, 0, 0, nil, 0)
 			end
 
 			-- Compute Warrior Researches
-			if (num_warrior_squads > 0) then
+			if (num_warrior_squads >= 1) then
 				self:DynamicResearch("tyranids_warrior_weapons_research", 2, 0, 75, 0, 0, nil, 0)
 			end
 
 			-- Compute Carnifex Researches
-			if (num_carnifex_squads > 1) then
+			if (num_carnifex_squads >= 2) then
 				self:DynamicResearch("tyranids_carnifex_ext_carapace_research", 2, 0, 200, 0, 0, nil, 0)
 			end
 
@@ -346,30 +350,30 @@ function TyranidBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("tyranids_power_research_2", 3, 350, 40, 0, 0, nil, 0)
 			self:DynamicResearch("tyranids_requisition_research_2", 3, 100, 350, 0, 0, nil, 0)
 
-			-- Compute Gaunt Researches
-			if (num_gaunt_squads > 2) then
+			-- Compute Building Researches
+			if (num_gaunt_squads >= 3) or (num_genestealer_squads >= 2) or (num_warrior_squads >= 2) then
 				self:DynamicResearch("tyranids_building_miasmax2_research", 3, 0, 250, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_building_synapse_aurax2_research", 3, 0, 250, 0, 0, nil, 0)
 			end
 
 			-- Compute Genestealer Researches
-			if (num_genestealer_squads > 1) then
+			if (num_genestealer_squads >= 2) then
 				self:DynamicResearch("tyranids_genestealer_upgrade_research_3", 3, 0, 140, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_genestealer_scyth_research", 3, 0, 190, 0, 0, nil, 0)
 			end
 
 			-- Compute Lictor Researches
-			if (num_lictor_squads > 1) then
+			if (num_lictor_squads >= 2) then
 				self:DynamicResearch("tyranids_lictor_upgrade_research_3", 3, 0, 115, 0, 0, nil, 0)
 			end
 
 			-- Compute Warrior Researches
-			if (num_warrior_squads > 0) then
+			if (num_warrior_squads >= 1) then
 				self:DynamicResearch("tyranids_warrior_leaping_research", 3, 0, 100, 0, 0, nil, 0)
 			end
 
 			-- Compute Carnifex Researches
-			if (num_carnifex_squads > 1) then
+			if (num_carnifex_squads >= 2) then
 				self:DynamicResearch("tyranids_carnifex_toxic_miasma_research", 3, 0, 80, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_carnifex_implant_research", 3, 0, 125, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_carnifex_regeneration_research", 3, 0, 170, 0, 0, nil, 0)
@@ -392,17 +396,17 @@ function TyranidBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("tyranids_requisition_research_3", 4, 125, 450, 0, 0, nil, 0)
 
 			-- Compute Broodlord Researches
-			if (num_broodlord_squads > 0) then
+			if (num_broodlord_squads >= 1) then
 				self:DynamicResearch("tyranids_genestealer_bl_infiltration_research", 4, 0, 300, 0, 0, nil, 0)
 			end
 
 			-- Compute Warrior Researches
-			if (num_warrior_squads > 0) then
+			if (num_warrior_squads >= 1) then
 				self:DynamicResearch("tyranids_warrior_adrenal_glands_research", 4, 0, 300, 0, 0, nil, 0)
 			end
 
 			-- Compute Carnifex Researches
-			if (num_carnifex_squads > 1) then
+			if (num_carnifex_squads >= 2) then
 				self:DynamicResearch("tyranids_carnifex_thorned_carapace_research", 4, 0, 300, 0, 0, nil, 0)
 			end
 
@@ -420,9 +424,13 @@ function TyranidBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("tyranids_power_research_4", 5, 650, 80, 0, 0, nil, 0)
 			self:DynamicResearch("tyranids_requisition_research_4", 5, 150, 550, 0, 0, nil, 0)
 
+			-- Compute Trygon Researches
+			if (self:CountSquads("tyranids_squad_trygon") >= 1) then
+				self:DynamicResearch("tyranids_titan_bioplasma_research", 5, 0, 200, 0, 0, nil, 0)
+			end
+
 			-- Compute Titan Researches
-			if (num_titans > 0) then
-				self:DynamicResearch("tyranids_titan_bioplasma_research", 5, 0, 200, 0, 0, "tyranids_squad_trygon", 1)
+			if (num_titans >= 1) then
 				self:DynamicResearch("tyranids_titan_regen_research", 5, 0, 350, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_titan_melee_research", 5, 0, 350, 0, 0, nil, 0)
 				self:DynamicResearch("tyranids_titan_armor_research", 5, 0, 450, 0, 0, nil, 0)

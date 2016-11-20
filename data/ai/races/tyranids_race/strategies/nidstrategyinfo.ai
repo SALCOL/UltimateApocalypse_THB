@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'tyranidstrategyinfo.ai'
--- Edited by Thudmeizer  @ 23.09.2016
+-- Edited by Thudmeizer  @ 14.11.2016
 
 BuildBaseStrategyInfo = 
 {	
@@ -149,7 +149,8 @@ BuildOrderStrategyInfo =
 			{ "squad", "tyranids_squad_genestealer" },
 			{ "post_builder" },
 			{ "building", "tyranids_gaunt_hive", true },
-			{ "building", "tyranids_gaunt_hive" }
+			{ "building", "tyranids_gaunt_hive", true },
+			{ "building", "tyranids_digest_pool" }
 		},
 		 
 		LargeMap =
@@ -162,9 +163,9 @@ BuildOrderStrategyInfo =
 			{ "squad", "tyranids_squad_ripperswarm" },
 			{ "squad", "tyranids_squad_genestealer" },
 			{ "squad", "tyranids_squad_genestealer" },
+			{ "post_builder" },
 			{ "building", "tyranids_gaunt_hive", true },
-			{ "building", "tyranids_digest_pool" },
-			{ "post_builder" }
+			{ "building", "tyranids_digest_pool" }
 		}
 	},
 }

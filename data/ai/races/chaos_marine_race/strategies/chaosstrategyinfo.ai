@@ -163,6 +163,7 @@ BuildOrderStrategyInfo =
 			{ "squad", "chaos_squad_cultist" },
 			{ "post_builder" }, 
 			{ "building", "chaos_temple", true },
+			{ "building", "chaos_temple", true },
 			{ "building", "chaos_plasma_generator" }
 		},
 		
