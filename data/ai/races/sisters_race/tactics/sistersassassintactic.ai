@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sistersassassintactic.ai'
--- Edited by Thudmeizer @ 12.04.2016
+-- Edited by Thudmeizer @ 21.11.2016
 
 class 'SistersAssassinTactic' (SistersInfantryTactic)
 
@@ -31,11 +31,11 @@ end
 function SistersAssassinTactic:JumpAttack()
 	Tactic.JumpAttack(self)
 end
-
+--[[
 function SistersAssassinTactic:CanJumpAttached()
 	return true
 end
-
+]]
 function SistersAssassinTactic:InitAbilities()
 
 	-- Init ability ID's
@@ -105,7 +105,7 @@ function SistersAssassinTactic:Update()
 	if (not InfantryTactic.Update( self )) then
 		return
 	end
-		
+--[[		
 	-- Attach to melee in tier3+
 	if (cpu_manager:GetTierLevel() > 2) then
 		
@@ -117,7 +117,7 @@ function SistersAssassinTactic:Update()
 	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
 		self:TryAttachSquadMelee()
 	end
-
+]]
 	-- Check if we are in serious trouble
 	self:EmergencyRetreat()
 end

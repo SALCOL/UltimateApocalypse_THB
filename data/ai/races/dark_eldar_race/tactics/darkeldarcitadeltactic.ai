@@ -2,7 +2,7 @@
 -- File: 'darkeldarcitadeltactic.ai'
 -- Edited by Krronus @ 9/24/10
 -- Edited by Cylarne_04 2012
--- Edited by Thudmeizer	@ 19.11.2016
+-- Edited by Thudmeizer	@ 20.11.2016
 
 class 'DarkEldarCitadelTactic' (BaseTactic)
 
@@ -67,7 +67,7 @@ function DarkEldarCitadelTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local eyeChance = math.random (1,100)
-	if (eyeChance < 10) and (iRequisition > 10000 and iPower > 10000) then
+	if (eyeChance < 10) then -- and (iRequisition > 10000 and iPower > 10000) then
 		Ability.DoAbilityArea(self.base_ai, DarkEldarCitadel.eye_id, Ability.Filters.CloseInfiltratedEnemy, 80, 2)
 		Ability.DoAbilityArea(self.base_ai, DarkEldarCitadel.eye_id, Ability.Filters.CloseEnemy, 80, 15)
 	end
@@ -77,7 +77,7 @@ function DarkEldarCitadelTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local agonyChance = math.random (1,100)
-	if (agonyChance < 15) and (iRequisition > 10000 and iPower > 10000) then
+	if (agonyChance < 15) then -- and (iRequisition > 10000 and iPower > 10000) then
 		if (self.base_ai:CanDoAbility(DarkEldarCitadel.agony_id)) then
 	
 			-- Only activate if enemy unit is attacking
@@ -94,7 +94,7 @@ function DarkEldarCitadelTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local stormChance = math.random (1,100)
-	if (stormChance < 20) and (iRequisition > 15000 and iPower > 15000) then
+	if (stormChance < 20) then -- and (iRequisition > 15000 and iPower > 15000) then
 
 		if (self.base_ai:CanDoAbility(DarkEldarCitadel.storm_id)) then
 	
@@ -112,7 +112,7 @@ function DarkEldarCitadelTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local invulnerabilityChance = math.random (1,100)
-	if (invulnerabilityChance < 10) and (iRequisition > 25000 and iPower > 25000) then
+	if (invulnerabilityChance < 10) then -- and (iRequisition > 25000 and iPower > 25000) then
 
 		if (self.base_ai:CanDoAbility(DarkEldarCitadel.invulnerability_id) and self.base_ai:IsInCombat() and self.base_ai:GetHealthPercentage() < 0.8) then
 			self.base_ai:DoSpecialAbility(DarkEldarCitadel.invulnerability_id)
@@ -123,7 +123,7 @@ function DarkEldarCitadelTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local bombardChance = math.random (1,100)
-	if (bombardChance < 10) and (iRequisition > 30000 and iPower > 30000) then
+	if (bombardChance < 10) then -- and (iRequisition > 30000 and iPower > 30000) then
 
 		if (self.base_ai:CanDoAbility(DarkEldarCitadel.bombard_id)) then
 			Ability.DoAbilityPos(self.base_ai, DarkEldarCitadel.bombard_id, Ability.EntityFilters.CloseBaseEntityEnemy, 3)

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarhqtactic.ai'
--- Edited by Thudmeizer		@ 19.11.2016
+-- Edited by Thudmeizer		@ 20.11.2016
 
 class 'DarkEldarHQTactic' (BaseTactic)
 
@@ -68,7 +68,7 @@ function DarkEldarHQTactic:DoAbilities()
 	-- Rend Soul: ability against enemy commanders (disables enemy abilities and causes damage - Soul cost: 80)
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	if (self.base_ai:CanDoAbility(DarkEldarHQ.rendsoul_id) and (iRequisition > 2500 and iPower > 2500)) then
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.rendsoul_id)) then -- and (iRequisition > 2500 and iPower > 2500)) then
 	
 		-- Only activate if enemy unit is attacking
 		local iRange = self.base_ai:GetAbilityRange(DarkEldarHQ.rendsoul_id)
@@ -81,7 +81,7 @@ function DarkEldarHQTactic:DoAbilities()
 	-- Corrosive Cloud: ability against the enemy (eats enemy armour - Soul cost: 80)
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-	if (self.base_ai:CanDoAbility(DarkEldarHQ.corrosive_id) and (iRequisition > 2500 and iPower > 2500)) then
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.corrosive_id)) then --and (iRequisition > 2500 and iPower > 2500)) then
 	
 		-- Only activate if enemy unit is attacking
 		local iRange = self.base_ai:GetAbilityRange(DarkEldarHQ.corrosive_id)
@@ -101,7 +101,7 @@ function DarkEldarHQTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local visionChance = math.random (1,100)
-	if (visionChance < 20) and (iRequisition > 4000 and iPower > 4000) then
+	if (visionChance < 20) then --and (iRequisition > 4000 and iPower > 4000) then
 		Ability.DoAbilityArea(self.base_ai, DarkEldarHQ.vision_id, Ability.Filters.CloseInfiltratedEnemy, 60, 1)
 	end
 
@@ -109,7 +109,7 @@ function DarkEldarHQTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local rageChance = math.random (1,100)
-	if (rageChance < 5) and (iRequisition > 6000 and iPower > 6000) then
+	if (rageChance < 5) then --and (iRequisition > 6000 and iPower > 6000) then
 		if (self.base_ai:CanDoAbility(DarkEldarHQ.rage_id)) then
 			local range = self.base_ai:GetAbilityRange( DarkEldarHQ.rage_id )	
 			local squad_filter = function( squad_ai )		
@@ -126,7 +126,7 @@ function DarkEldarHQTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local screamChance = math.random (1,100)
-	if (screamChance < 15) and (iRequisition > 4500 and iPower > 4500) then
+	if (screamChance < 15) then --and (iRequisition > 4500 and iPower > 4500) then
 		if (self.base_ai:CanDoAbility(DarkEldarHQ.scream_id)) then
 			Ability.DoAbilityArea( self.base_ai, DarkEldarHQ.scream_id, Ability.Filters.CloseInfantryEnemy, 70, 6)
 		end
@@ -136,7 +136,7 @@ function DarkEldarHQTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local soulstormChance = math.random (1,100)
-	if (self.base_ai:CanDoAbility(DarkEldarHQ.soulstorm_id) and (iRequisition > 8000 and iPower > 8000)) then
+	if (self.base_ai:CanDoAbility(DarkEldarHQ.soulstorm_id)) then --and (iRequisition > 8000 and iPower > 8000)) then
 		if ( (cpu_manager.terrain_analyzer:HasThreat( self.base_ai:GetPosition(), 30 ) and soulstormChance > 25)
 		or (cpu_manager.terrain_analyzer:HasThreat( self.base_ai:GetPosition(), 50 ) and soulstormChance > 50) ) then
 			
@@ -154,7 +154,7 @@ function DarkEldarHQTactic:DoAbilities()
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local frenzyChance = math.random (1,100)
 	if (frenzyChance < 10) then
-		if (self.base_ai:CanDoAbility(DarkEldarHQ.frenzy_id) and (iRequisition > 5000 and iPower > 5000)) then
+		if (self.base_ai:CanDoAbility(DarkEldarHQ.frenzy_id)) then -- and (iRequisition > 5000 and iPower > 5000)) then
 			self.base_ai:DoSpecialAbility(DarkEldarHQ.frenzy_id)
 		end
 	end
@@ -164,7 +164,7 @@ function DarkEldarHQTactic:DoAbilities()
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local speedChance = math.random (1,100)
 	if (speedChance < 15) then
-		if (self.base_ai:CanDoAbility(DarkEldarHQ.speed_id) and (iRequisition > 5500 and iPower > 5500)) then
+		if (self.base_ai:CanDoAbility(DarkEldarHQ.speed_id)) then --and (iRequisition > 5500 and iPower > 5500)) then
 			self.base_ai:DoSpecialAbility(DarkEldarHQ.speed_id)
 		end
 	end
@@ -174,7 +174,7 @@ function DarkEldarHQTactic:DoAbilities()
 	local iRequisition = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Requisition )
 	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
 	local beamChance = math.random (1,100)
-	if (beamChance < 5) and (iRequisition > 9000 and iPower > 9000) then
+	if (beamChance < 5) then --and (iRequisition > 9000 and iPower > 9000) then
 
 		if (self.base_ai:CanDoAbility(DarkEldarHQ.beam_id)) then
 	
