@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'necronbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 16.11.2016
+-- Edited by Thudmeizer @ 22.11.2016
 -- Edited by Arkhan     @ 05.11.2006
 -- Edited by Cylarne_04 2011
 
@@ -562,28 +562,23 @@ function NecronBuildBaseStrategy:ForceTech()
 	if (iTierLevel == 1) then
 	
 		-- Check resources
-		if (iPower > 500) then
+		if (iPower >= 500) then
 			return false
 		end
 		return not self.m_bHQAddon1
 	
 	elseif (iTierLevel == 2) then
 
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and iPower < 800) then
-			return true
-		end
-
 		-- Check resources
-		if (iPower > 800) then
+		if (iPower >= 800) then
 			return false
 		end
 		return not self.m_bHQAddon2
 		
 	elseif (iTierLevel == 3) then	
 
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and iPower < 900) then
+		-- Check for large summoning core
+		if (self:GetBuildingCountByName("necron_summoning_core_big", false) < 1) and iPower <= 1500 then
 			return true
 		end
 	end
@@ -637,9 +632,9 @@ end
 
 -- Gambit 08.2016: Modified for races that do NOT have small Gens, but DO have Big Gens
 function NecronBuildBaseStrategy:DoBuildGenerators()
-
-	aitrace("BuildController: Check generators...")
 --[[
+	aitrace("BuildController: Check generators...")
+
 	-- Check power
     	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
     	if iPower < 200 and self.info.req_reserve <= 0 then

@@ -687,7 +687,6 @@ function ChaosBuildBaseStrategy:ForceTech()
 				return true
 			end
 		else
-
 			-- Check for machine pit
 			if (self:GetBuildingCountByName("chaos_machine_pit", false) < 1) then
 				return true
