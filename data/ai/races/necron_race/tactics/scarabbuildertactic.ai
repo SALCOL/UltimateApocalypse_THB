@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'scarabbuildertactic.ai'
--- Edited by Thudmeizer @ 08.10.2016
+-- Edited by Thudmeizer @ 25.11.2016
 
 class 'ScarabBuilderTactic' (EngineerTactic)
 
@@ -99,7 +99,7 @@ function ScarabBuilderTactic:ForceSquadJumpNear(pos)
 		end
 	end
 end
-
+--[[
 function ScarabBuilderTactic:Update()
 
 	if self:IsComplete() then
@@ -114,3 +114,4 @@ function ScarabBuilderTactic:Update()
 	-- Check if we are in serious trouble
 	self:EmergencyRetreat()
 end
+]]
