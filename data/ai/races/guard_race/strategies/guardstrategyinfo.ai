@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'guardstrategyinfo.ai'
--- Edited by Thudmeizer  @ 30.10.2016
+-- Edited by Thudmeizer  @ 29.11.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -117,7 +117,7 @@ BuildBaseStrategyInfo =
 		{
 			standard = 
 			{
-				guard_squad_guardsmen_conscript = 2,
+				guard_squad_guardsmen_conscript = 5,
 				guard_squad_guardsmen = 3,
 				guard_squad_guardsmen_rider = 2,
 				guard_squad_guardsmen_specialweapons = 3,
