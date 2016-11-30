@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'necronstrategyinfo.ai'
--- Edited by Thudmeizer   @ 22.11.2016
+-- Edited by Thudmeizer   @ 29.11.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -43,6 +43,8 @@ BuildBaseStrategyInfo =
 				{ 1, 0, 60, 200, 100,   "TurretAddon",  "addon_necron_list_post_1" },
 				{ 1, 0, 125, 0, 3,	"Building",	"necron_plasma_generator" },
 				{ 1, 0, 100, 0, 1,	"Building",	"necron_turret" },
+				{ 1, 0, 125, 700, 4,	"Building",	"necron_plasma_generator" },
+				{ 1, 0, 100, 800, 3,	"Building",	"necron_turret" },
 				{ 1, 0, 400, 950, 1,	"Addon", 	"addon_necron_hq_1" },
 				{ 1, 0, 125, 0, 5,	"Building",	"necron_plasma_generator" },
 
@@ -140,6 +142,7 @@ BuildOrderStrategyInfo =
 			{ "building", "necron_amplification_generator", true },
 		        { "building", "necron_amplification_generator", true },
 		        { "building", "necron_amplification_generator", true },
+		        { "building", "necron_amplification_generator", true },
 		        { "building", "necron_amplification_generator", true }
 		},
 		 
@@ -157,6 +160,7 @@ BuildOrderStrategyInfo =
 			{ "building", "necron_amplification_generator", true },
 			{ "building", "necron_amplification_generator", true },
 			{ "building", "necron_amplification_generator", true },
+		        { "building", "necron_amplification_generator", true },
 			{ "building", "necron_amplification_generator", true }
 		},
 		 
@@ -173,6 +177,7 @@ BuildOrderStrategyInfo =
 			{ "building", "necron_amplification_generator", true },
 			{ "building", "necron_amplification_generator", true },
 			{ "building", "necron_amplification_generator", true },
+		        { "building", "necron_amplification_generator", true },
 			{ "building", "necron_amplification_generator", true }
 		}
 	},
