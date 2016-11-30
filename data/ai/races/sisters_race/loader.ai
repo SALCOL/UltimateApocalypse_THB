@@ -161,6 +161,7 @@ function sisters_race:CreateBaseTactic(oBuilding)
 	-- Check if their is a special tactic for the building available
 	if (sBuildingName == "sisters_infantry") or 
 		(sBuildingName == "sisters_sanctuary") or
+		(sBuildingName == "sisters_sanctuary_ai") or
 		(sBuildingName == "sisters_vehicle_building") or 
 		(sBuildingName == "sisters_inquisitorial_building") or
 		(sBuildingName == "sisters_holy_reliquary") then

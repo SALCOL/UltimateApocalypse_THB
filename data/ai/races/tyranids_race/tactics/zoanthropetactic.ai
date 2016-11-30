@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'zoanthropetactic.ai'
 -- Created by Cylarne @ 2015
--- Edited by Thudmeizer	@ 25.04.2016
+-- Edited by Thudmeizer	@ 23.11.2016
 
 class 'ZoanthropeTactic' (TyranidInfantryTactic)
 
@@ -65,7 +65,7 @@ function ZoanthropeTactic:Update()
 			return
 		end
 	end
-	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
+	if self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) then
 		self:TryAttachSquadMelee()
 	end
 end

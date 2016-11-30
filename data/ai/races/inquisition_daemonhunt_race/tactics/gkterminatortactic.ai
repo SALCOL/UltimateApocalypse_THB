@@ -115,7 +115,6 @@ function GKTerminatorTactic:DoAbilities()
 	DaemonhuntInfantryTactic.DoAbilities(self)
 end
 
-
 function GKTerminatorTactic:Update()
 
 	if (self:IsComplete()) then

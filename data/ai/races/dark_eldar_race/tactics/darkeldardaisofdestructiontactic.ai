@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldardaisofdestructiontactic.ai'
--- Edited by Thudmeizer @ 05.04.2016
+-- Edited by Thudmeizer @ 11.11.2016
 
 class 'DarkEldarDaisOfDestructionTactic' (DarkEldarVehicleTactic)
 
@@ -9,6 +9,15 @@ DarkEldarDaisOfDestruction = {}
 function DarkEldarDaisOfDestructionTactic:__init( squad_ai ) super( squad_ai )
 	
 	self:SetName("Dark Eldar Dais of Destruction Tactic")
+end
+
+-- Dias is allowed to retreat even directly after a jump
+function DarkEldarDaisOfDestructionTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
 end
 
 function DarkEldarDaisOfDestructionTactic:InitAbilities()

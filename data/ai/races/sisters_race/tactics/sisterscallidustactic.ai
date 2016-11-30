@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'sisterscallidustactic.ai'
--- Edited by Thudmeizer @ 15.09.2016
+-- Edited by Thudmeizer @ 21.11.2016
 
 class 'SistersCallidusTactic' (SistersInfantryTactic)
 
@@ -31,11 +31,11 @@ end
 function SistersCallidusTactic:JumpAttack()
 	Tactic.JumpAttack(self)
 end
-
+--[[
 function SistersCallidusTactic:CanJumpAttached()
 	return true
 end
-
+]]
 function SistersCallidusTactic:InitAbilities()
 
 	if (SistersCallidus.polymorphine_id == nil) then
@@ -79,7 +79,7 @@ function SistersCallidusTactic:Update()
 	if (not InfantryTactic.Update(self)) then
 		return
 	end
-	
+--[[	
 	-- Attach to melee in tier3+
 	if (cpu_manager:GetTierLevel() > 2) then
 	
@@ -91,7 +91,7 @@ function SistersCallidusTactic:Update()
 	if (self:TryAttachSquad(false, true, 50, 100, self.m_fCommanderAttachHealth) == nil) then
 		self:TryAttachSquadMelee()
 	end
-
+]]
 	-- Check if we are in serious trouble
 	self:EmergencyRetreat()
 end

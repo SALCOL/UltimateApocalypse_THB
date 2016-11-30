@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarvehicletactic.ai'
--- Edited by Thudmeizer         @ 20.06.2016
+-- Edited by Thudmeizer         @ 11.11.2016
 
 class 'DarkEldarVehicleTactic' (VehicleTactic)
 
@@ -23,8 +23,12 @@ function DarkEldarVehicleTactic:__init( squad_ai ) super( squad_ai )
 		end
 	end
 
+	-- Set Stuck Unit Positions
+	self.initialPosition = self.squad_ai:GetPosition()
+	self.isStuck = false
+
 	-- Set FoF range
-	self.m_iFoFRange = 35
+	--self.m_iFoFRange = 35
 end
 
 -- Check if the vehicle should dance away in melee
@@ -63,6 +67,12 @@ function DarkEldarVehicleTactic:DoAbilities()
 		end
 	end
 
+	-- Jump squads' unstuck code call.
+	-- Checks jump-able stuck squads, and force them to jump nearby
+   	if self.squad_ai:CanJump() then
+        	self:SolveStuckCase()
+	end
+
 	-- I might have these attached
 	if (self.squad_ai:IsAttached()) then
 
@@ -74,6 +84,44 @@ function DarkEldarVehicleTactic:DoAbilities()
 
 	-- Check if I should enable/disable fire on foot
 	--self:DoAbilityFoF()
+end
+
+-- Unstuck Code
+function DarkEldarVehicleTactic:SolveStuckCase()
+
+	local iPosition = self.squad_ai:GetPosition()
+    	if iPosition.x ~= self.initialPosition.x or iPosition.z ~= self.initialPosition.z then
+        	self.isStuck = false
+    	elseif (self.squad_ai:IsInStateMove() or self.squad_ai:IsInStateAttackMove()) and not self.squad_ai:IsInCombat()
+    		and iPosition.x == self.initialPosition.x and iPosition.z == self.initialPosition.z then
+        	self.isStuck = true
+    	end
+    	if self.isStuck then
+        	self:ForceSquadJumpNear(iPosition)
+	end
+    	self.initialPosition = self.squad_ai:GetPosition()
+end
+
+function DarkEldarVehicleTactic:ForceSquadJumpNear(pos)
+
+	-- Try to jump somewhere near, perform 16 checks for a viable position
+    	local jumpDisSqr = sqr(self.squad_ai:GetJumpDistance())
+    	for iLoop1 = 1, 16 do
+        	-- Create a jump position
+        	local vJumpPosition = pos
+        	local vDir = cpu_manager:GetDirectionToEnemy(pos)
+        	vJumpPosition.x = vJumpPosition.x + vDir.x * math.random(-20, 50)
+        	vJumpPosition.z = vJumpPosition.z + vDir.z * math.random(-20, 50)
+        	-- Check if target position is in range and if unit is able to jump to target position
+        	local iDistance = distance_sqr(vJumpPosition, pos)
+        	if iDistance < jumpDisSqr and self.squad_ai:CanJumpToPosition(vJumpPosition) then
+            		-- Jump to position
+            		self.squad_ai:DoJump(vJumpPosition)
+            		self.last_jump = g_iGMT
+            		self.m_iLastGatherMove = self.last_jump - 10
+            		return
+		end
+	end
 end
 
 function DarkEldarVehicleTactic:ToggleFoF( squad_ai, state )

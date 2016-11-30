@@ -52,3 +52,7 @@ Temporary Items
 *.wav
 *.log
 *.mp3
+*.bak
+*.rar
+*.zip
+*.7z

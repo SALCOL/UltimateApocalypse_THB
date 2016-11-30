@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'eldarstrategyinfo.ai'
--- Edited by Thudmeizer  @ 29.09.2016
+-- Edited by Thudmeizer  @ 14.11.2016
 -- Edited by Cylarne_04  @	 2011
 
 BuildBaseStrategyInfo = 
@@ -185,8 +185,11 @@ BuildOrderStrategyInfo =
 			{ "squad", "eldar_squad_bonesinger" },
 			{ "squad", "eldar_guardian_squad" },
 			{ "squad", "eldar_guardian_squad" },
+			{ "squad", "eldar_storm_guardian_squad" },
 			{ "squad", "eldar_squad_bonesinger" },
+			{ "squad", "eldar_storm_guardian_squad" },
 			{ "post_builder" }, 
+			{ "building", "eldar_aspect_portal", true },
 			{ "building", "eldar_aspect_portal", true },
 			{ "building", "eldar_warp_generator", true },
 			{ "building", "eldar_webway_gate", true }

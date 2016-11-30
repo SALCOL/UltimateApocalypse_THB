@@ -51,6 +51,9 @@ function DarkEldarIncubusTactic:DoAbilities()
 
 	-- Check if I should enable/disable foot on fire
 	self:DoAbilityFoF()
+
+	-- Call basic DoAbilities methods
+	DarkEldarInfantryTactic.DoAbilities(self)
 end
 
 function DarkEldarIncubusTactic:Reinforce()

@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'orkstrategyinfo.ai'
--- Edited by Thudmeizer  @ 30.10.2016
+-- Edited by Thudmeizer  @ 14.11.2016
 -- Edited by Cylarne_04 2011
 
 BuildBaseStrategyInfo = 
@@ -163,29 +163,17 @@ BuildOrderStrategyInfo =
 		 
 		QuickStart = 
 		{
-			{ "flag_capture" }, { "flag_capture" },
-			{ "flag_capture" },
-			{ "squad", "ork_squad_grot_gang" },
-			{ "squad", "ork_squad_grot" },
-			{ "squad", "ork_squad_grot" },
+			{ "flag_capture" }, { "post_builder" },
+			{ "flag_capture" }, 
 			{ "squad", "ork_squad_grot" },
 			{ "squad", "ork_squad_grot_gang" },
-			{ "squad", "ork_squad_slugga" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "squad", "ork_squad_grot_gang" },
 			{ "squad", "ork_squad_grot" },
-			{ "squad", "ork_squad_grot" },
-			{ "squad", "ork_squad_mek_boy" },
-			{ "squad", "ork_squad_stormboy" },
-			{ "squad", "ork_squad_shoota_boy" },
-			{ "squad", "ork_squad_stormboy" },
-			{ "squad", "ork_squad_stormboy" },
-			{ "squad", "ork_squad_grot" },
-			{ "post_builder" }, { "post_builder" },
+			{ "squad", "ork_squad_grot_gang" },
+			{ "post_builder" },
 			{ "building", "ork_boy_hut", true },
-			{ "building", "ork_waagh_banner", true },
 			{ "building", "ork_boy_hut", true },
-			{ "building", "ork_waagh_banner", true },
-			{ "building", "ork_waagh_banner", true },
-			{ "building", "ork_waagh_banner", true },
 			{ "building", "ork_generator", true },
 			{ "building", "ork_waagh_banner" }
 		},

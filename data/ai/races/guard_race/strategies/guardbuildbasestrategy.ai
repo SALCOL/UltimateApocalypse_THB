@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'guardbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 30.10.2016
+-- Edited by Thudmeizer @ 16.11.2016
 -- Edited by Cylarne_04 2011
 
 class 'GuardBuildBaseStrategy' (BuildBaseStrategy)
@@ -380,7 +380,7 @@ function GuardBuildBaseStrategy:BuildFlexible()
 	if (iArmyStrength >= 1600 or (iPower >= 800 and iRequisition >= 900)) then
 
 		-- Dynamic research item syntax: ResearchName, MinTier, RequisitionCost, PowerCost, MinSquadCap, MinSupportCap, SquadName, SquadMinCount
-		local iBasicInfantrySquads = self:CountSquads("guard_squad_guardsmen") + self:CountSquads("guard_squad_guardsmen_conscript") + self:CountSquads("guard_squad_guardsmen_specialweapons")
+		local iBasicInfantrySquads = self:CountSquads("guard_squad_guardsmen_conscript") + self:CountSquads("guard_squad_guardsmen_rider") + self:CountSquads("guard_squad_guardsmen") + self:CountSquads("guard_squad_guardsmen_specialweapons")
 		
 		-- Compute tier 1 researches
 		if (self.tierLevel >= 1) then
@@ -394,8 +394,8 @@ function GuardBuildBaseStrategy:BuildFlexible()
 				-- Compute basic infantry researches
 				if (iBasicInfantrySquads >= 3) then
 					self:DynamicResearch("guard_frag_grenade_research", 1, 25, 75, 0, 0, nil, 0)
-					self:DynamicResearch("guard_upgrade_guardsmen_health", 1, 100, 50, 0, 0, nil, 0)	-- Battle armor
 					self:DynamicResearch("guard_guardsman_morale", 1, 75, 15, 0, 0, nil, 0)			-- Death before dishonor
+					self:DynamicResearch("guard_upgrade_guardsmen_health", 1, 100, 50, 0, 0, nil, 0)	-- Battle armor
 				end
 			end
 
@@ -427,8 +427,8 @@ function GuardBuildBaseStrategy:BuildFlexible()
 
 			-- Compute basic infantry researches
 			if (iBasicInfantrySquads >= 3) then
-				self:DynamicResearch("guard_max_weapons_research", 2, 75, 75, 0, 0, nil, 0)
 				self:DynamicResearch("guard_guardsman_morale_2", 2, 75, 15, 0, 0, nil, 0)
+				self:DynamicResearch("guard_max_weapons_research", 2, 75, 75, 0, 0, nil, 0)
 				self:DynamicResearch("guard_upgrade_guardsmen_health_2", 2, 150, 100, 0, 0, nil, 0)	-- Battle armor
 			end
 
@@ -436,22 +436,26 @@ function GuardBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("guard_krak_grenades_research", 2, 75, 75, 0, 0, nil, 0)
 			
 			-- Compute Hellhound researches
-			self:DynamicResearch("guard_research_let_it_burn", 2, 75, 25, 0, 0, "guard_squad_hellhound", 1)
-			
+			if (self:CountSquads("guard_squad_hellhound") >= 1 ) then
+				self:DynamicResearch("guard_research_let_it_burn", 2, 75, 25, 0, 0, nil, 0)
+			end
+
 			-- Compute Sentinel researches
-			self:DynamicResearch("guard_research_sentinel_armor", 2, 110, 60, 0, 0, "guard_squad_sentinel", 1)
-			self:DynamicResearch("guard_research_sentinel_scanners", 2, 35, 10, 0, 0, "guard_squad_sentinel", 1)
-			
+			if (self:CountSquads("guard_squad_sentinel") >= 1 ) then
+				self:DynamicResearch("guard_research_sentinel_scanners", 2, 35, 10, 0, 0, nil, 0)
+				self:DynamicResearch("guard_research_sentinel_armor", 2, 110, 60, 0, 0, nil, 0)
+			end
+
 			-- Compute secondary researches
 			if (iArmyStrength >= 1250) then
 			
 				-- Compute basic infantry researches
 				if (iBasicInfantrySquads >= 3) then
 					self:DynamicResearch("guard_flashbang_grenade_research", 2, 50, 50, 0, 0, nil, 0)
+					self:DynamicResearch("guard_smoke_grenade_research", 2, 50, 50, 0, 0, nil, 0)
+					self:DynamicResearch("guard_upgrade_sniper_rifle", 2, 75, 35, 0, 0, nil, 0)
 					self:DynamicResearch("guard_upgrade_guardsmen_range", 2, 100, 25, 0, 0, nil, 0)	-- Satellite Targeting
 					self:DynamicResearch("guard_upgrade_weapon_specialization", 2, 150, 100, 0, 0, nil, 0)
-					self:DynamicResearch("guard_upgrade_sniper_rifle", 2, 75, 35, 0, 0, nil, 0)
-					self:DynamicResearch("guard_smoke_grenade_research", 2, 50, 50, 0, 0, nil, 0)
 				end	
 
 				-- Compute smoke launchers research
@@ -510,8 +514,8 @@ function GuardBuildBaseStrategy:BuildFlexible()
 				-- Compute kasrkin researches
 				if (self:CountSquads("guard_squad_kasrkin") >= 1) then
 					self:DynamicResearch("guard_research_kasrkin_armor", 3, 100, 50, 0, 0, nil, 0)
-					self:DynamicResearch("guard_research_kasrkin_armor_2", 3, 150, 100, 0, 0, nil, 0)
 					self:DynamicResearch("guard_research_kasrkin_speed", 3, 100, 50, 0, 0, nil, 0)
+					self:DynamicResearch("guard_research_kasrkin_armor_2", 3, 150, 100, 0, 0, nil, 0)
 				end
 			end
 
@@ -524,17 +528,28 @@ function GuardBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("guard_turret_upgrade2", 3, 480, 480, 0, 0, nil, 0)
 			self:DynamicResearch("guard_listening_post_upgrade", 3, 600, 240, 0, 0, nil, 0)
 
+			-- Compute assassin researches
+			if (self:CountSquads("guard_squad_assassin") >= 1) then
+				self:DynamicResearch("guard_research_assassin_infiltrate", 3, 150, 100, 0, 0, nil, 0)
+			end
+
+			-- Compute the Power Fists research
+			if (self:CountSquads("guard_squad_commissar_cadet") >= 1) then
+				self:DynamicResearch("guard_upgrade_power_fists", 3, 100, 50, 0, 0, nil, 0)
+			end
+
+			-- Compute Ogryn researches
+			if (self:CountSquads("guard_squad_ogryns") >= 1) then
+				self:DynamicResearch("guard_upgrade_ogryn_melee", 3, 100, 75, 0, 0, nil, 0)
+			end
+
+			-- Compute conscript recruitment researches
+			if (self:CountSquads("guard_squad_guardsmen_conscript") >= 1) then
+				self:DynamicResearch("guard_upgrade_recruitment", 3, 200, 0, 0, 0, nil, 0)
+			end
+
 			-- Compute bonus researches
 			if (iArmyStrength >= 2250) then
-			
-				-- Compute commander researches
-				self:DynamicResearch("guard_research_assassin_infiltrate", 3, 150, 100, 0, 0, "guard_squad_assassin", 1)
-				
-				-- Compute the Power Fists research
-				self:DynamicResearch("guard_upgrade_power_fists", 3, 100, 50, 0, 0, "guard_squad_commissar_cadet", 1)
-				
-				-- Compute Ogryn researches
-				self:DynamicResearch("guard_upgrade_ogryn_melee", 3, 100, 75, 0, 0, "guard_squad_ogryns", 1)
 
 				-- Compute Wall Research
 				self:DynamicResearch("all_walls_research", 3, 280, 280, 0, 0, nil, 0)
@@ -556,18 +571,17 @@ function GuardBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("guard_upgrade_power_3", 4, 500, 60, 0, 0, nil, 0)
 			self:DynamicResearch("guard_upgrade_requisition_3", 4, 125, 450, 0, 0, nil, 0)
 
+			-- Compute command squad researches
+			if (self:CountSquads("guard_squad_command_squad") >= 1) then
+				self:DynamicResearch("guard_research_command_squad_size", 4, 230, 120, 0, 0, nil, 0)
+			end
+
 			-- Compute bonus researches
 			if (iArmyStrength >= 2250) then
 			
-				-- Compute infantry researches
-				self:DynamicResearch("guard_upgrade_recruitment", 4, 200, 0, 0, 0, "guard_squad_guardsmen_conscript", 1)
-				
 				-- Compute Tank research
 				self:DynamicResearch("guard_research_tankarmor", 4, 250, 150, 0, 0, nil, 0)
 				self:DynamicResearch("guard_research_convoy_armor", 4, 200, 200, 0, 0, nil, 0)
-			
-				-- Compute command squad researches
-				self:DynamicResearch("guard_research_command_squad_size", 4, 230, 120, 0, 0, "guard_squad_command_squad", 1)
 			end
 
 			-- Compute turret upgrade research

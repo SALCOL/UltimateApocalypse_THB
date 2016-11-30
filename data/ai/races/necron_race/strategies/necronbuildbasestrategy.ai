@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'necronbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 26.09.2016
+-- Edited by Thudmeizer @ 22.11.2016
 -- Edited by Arkhan     @ 05.11.2006
 -- Edited by Cylarne_04 2011
 
@@ -230,16 +230,17 @@ function NecronBuildBaseStrategy:BuildFlexible()
 		-- Compute tier 1 researches
 		if (self.tierLevel >= 1) then
 		
-			self:DynamicResearch("necron_gauss_weaponry_research", 1, 0, 180, 0, 0, nil, 0)
-			self:DynamicResearch("necron_scarab_research", 1, 0, 85, 0, 0, nil, 0)
-			
+			-- Compute scarab researches
+			if (self:CountSquads("necron_scarab_squad") >= 1) then
+				self:DynamicResearch("necron_scarab_research", 1, 0, 85, 0, 0, nil, 0)
+			end
+
 			-- Compute infantry researches
 			if (iInfantrySquads >= 1) then
 				self:DynamicResearch("necron_warrior_boost", 1, 0, 100, 0, 0, "necron_basic_warrior_squad", 1)
 				self:DynamicResearch("necron_flayed_one_boost", 1, 0, 125, 0, 0, "necron_flayed_one_squad", 1)
+				self:DynamicResearch("necron_reassemble_research", 1, 0, 125, 0, 0, nil, 0)	
 			end
-			
-			self:DynamicResearch("necron_reassemble_research", 1, 0, 125, 0, 0, nil, 0)	
 		end
 
 		-- Compute tier 2 researches
@@ -250,11 +251,11 @@ function NecronBuildBaseStrategy:BuildFlexible()
 
 			-- Compute infantry researches
 			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("necron_warrior_boost_2", 2, 0, 150, 0, 0, "necron_basic_warrior_squad", 1)
-				self:DynamicResearch("necron_speed_research_1", 2, 0, 170, 0, 0, nil, 0)
 				self:DynamicResearch("necron_wraith_boost", 2, 0, 75, 0, 0, "necron_wraith_squad", 1)
-				self:DynamicResearch("necron_flayed_one_boost_2", 2, 0, 150, 0, 0, "necron_flayed_one_squad", 1)
 				self:DynamicResearch("necron_immortal_boost", 2, 0, 100, 0, 0, "necron_immortal_squad", 1)
+				self:DynamicResearch("necron_warrior_boost_2", 2, 0, 150, 0, 0, "necron_basic_warrior_squad", 1)
+				self:DynamicResearch("necron_flayed_one_boost_2", 2, 0, 150, 0, 0, "necron_flayed_one_squad", 1)
+				self:DynamicResearch("necron_speed_research_1", 2, 0, 170, 0, 0, nil, 0)
 			end
 			
 			-- Compute secondary researches
@@ -263,6 +264,8 @@ function NecronBuildBaseStrategy:BuildFlexible()
 				-- Compute Unlife Research
 				self:DynamicResearch("necron_unlife_research", 2, 0, 100, 0, 0, nil, 0)
 
+				-- Compute Gauss Research
+				self:DynamicResearch("necron_gauss_weaponry_research", 2, 0, 180, 0, 0, nil, 0)
 			end
 			
 			-- Compute vehicle upgrades research
@@ -270,10 +273,6 @@ function NecronBuildBaseStrategy:BuildFlexible()
 			
 			-- Compute turret upgrades research
 			self:DynamicResearch("necron_turret_upgrade1", 2, 0, 200, 0, 0, nil, 0)
-			self:DynamicResearch("necron_listening_post_research", 3, 0, 160, 0, 0, nil, 0)
-			self:DynamicResearch("necron_turret_upgrade2", 3, 0, 480, 0, 0, nil, 0)
-			self:DynamicResearch("necron_turret_upgrade3", 4, 0, 600, 0, 0, nil, 0)
-			self:DynamicResearch("necron_listening_post_upgrade", 3, 0, 600, 0, 0, nil, 0)
 	
 			-- Compute HQ Tier2 Addons for future HQs
 			if (self:GetBuildingCountByName("monolith") > 1 and (iPower >= 2000)) then
@@ -289,19 +288,26 @@ function NecronBuildBaseStrategy:BuildFlexible()
 			
 			-- Compute infantry researches
 			if (iInfantrySquads >= 3) then
-				self:DynamicResearch("necron_speed_research_2", 3, 0, 290, 0, 0, nil, 0)
 				self:DynamicResearch("necron_wraith_boost_2", 3, 0, 100, 0, 0, "necron_wraith_squad", 2)
-				self:DynamicResearch("necron_flayed_one_boost_3", 3, 0, 250, 0, 0, "necron_flayed_one_squad", 2)
 				self:DynamicResearch("necron_immortal_boost_2", 3, 0, 150, 0, 0, "necron_immortal_squad", 2)
 				self:DynamicResearch("necron_pariah_boost", 3, 0, 150, 0, 0, "necron_pariah_squad", 1)
 				self:DynamicResearch("necron_deathmark_boost", 3, 0, 150, 0, 0, "necron_deathmark_squad", 1)
+				self:DynamicResearch("necron_flayed_one_boost_3", 3, 0, 250, 0, 0, "necron_flayed_one_squad", 2)
+				self:DynamicResearch("necron_speed_research_2", 3, 0, 290, 0, 0, nil, 0)
 			end
-			
+
+			-- Compute listening post upgrade research
+			self:DynamicResearch("necron_listening_post_research", 3, 0, 160, 0, 0, nil, 0)
+
+			-- Compute turret upgrades research
+			self:DynamicResearch("necron_turret_upgrade2", 3, 0, 480, 0, 0, nil, 0)
+
 			-- Compute researches
-			if (iArmyStrength >= 2000) then			
+			if (iArmyStrength >= 2000) then	
+		
 				-- Vehicle research
-				self:DynamicResearch("necron_vehicle_armor_research", 3, 0, 200, 0, 0, nil, 0)
 				self:DynamicResearch("necron_heavy_destroyer_boost", 3, 0, 150, 0, 0, "necron_heavy_destroyer_squad", 1)
+				self:DynamicResearch("necron_vehicle_armor_research", 3, 0, 200, 0, 0, nil, 0)
 				self:DynamicResearch("necron_destroyer_boost_2", 3, 0, 200, 0, 0, "necron_destroyer_squad", 1)
 			end
 
@@ -324,6 +330,12 @@ function NecronBuildBaseStrategy:BuildFlexible()
 				self:DynamicResearch("necron_destroyer_boost_3", 4, 0, 300, 0, 0, "necron_destroyer_squad", 1)	
 			end
 			
+			-- Compute listening post upgrade research
+			self:DynamicResearch("necron_listening_post_upgrade", 4, 0, 600, 0, 0, nil, 0)
+
+			-- Compute turret upgrades research
+			self:DynamicResearch("necron_turret_upgrade3", 4, 0, 600, 0, 0, nil, 0)
+
 			-- Compute Unlife Research
 			self:DynamicResearch("necron_unlife_research_2", 4, 0, 300, 0, 0, nil, 0)
 			
@@ -344,10 +356,10 @@ function NecronBuildBaseStrategy:BuildFlexible()
 			if (iArmyStrength >= 2500) then	
 
 				-- Infantry research
-				self:DynamicResearch("necron_warrior_boost_3", 4, 0, 250, 0, 0, "necron_basic_warrior_squad", 2)
-				self:DynamicResearch("necron_immortal_boost_3", 4, 0, 400, 0, 0, "necron_immortal_squad", 2)
 				self:DynamicResearch("necron_pariah_boost_2", 4, 0, 200, 0, 0, "necron_pariah_squad", 1)
 				self:DynamicResearch("necron_deathmark_boost_2", 4, 0, 200, 0, 0, "necron_deathmark_squad", 1)
+				self:DynamicResearch("necron_warrior_boost_3", 4, 0, 250, 0, 0, "necron_basic_warrior_squad", 2)
+				self:DynamicResearch("necron_immortal_boost_3", 4, 0, 400, 0, 0, "necron_immortal_squad", 2)
 
 				-- Vehicle research
 				self:DynamicResearch("necron_heavy_destroyer_boost_2", 4, 0, 250, 0, 0, "necron_heavy_destroyer_squad", 1)
@@ -356,12 +368,13 @@ function NecronBuildBaseStrategy:BuildFlexible()
 			
 			-- Compute commander researches
 			if (iCommanderSquads >= 1) then
+
 				-- Compute Ctan Research
 				self:DynamicResearch("necron_ctan_research", 4, 0, 850, 0, 0, nil, 0)
-				self:DynamicResearch("necron_ctan_nightbringer_health_research", 4, 0, 750, 0, 0, nil, 0)
-				self:DynamicResearch("necron_ctan_deceiver_health_research", 4, 0, 250, 0, 0, nil, 0)
-				self:DynamicResearch("necron_ctan_nightbringer_ability_research", 4, 0, 750, 0, 0, nil, 0)
 				self:DynamicResearch("necron_ctan_deceiver_ability_research", 4, 0, 150, 0, 0, nil, 0)
+				self:DynamicResearch("necron_ctan_deceiver_health_research", 4, 0, 250, 0, 0, nil, 0)
+				self:DynamicResearch("necron_ctan_nightbringer_health_research", 4, 0, 750, 0, 0, nil, 0)
+				self:DynamicResearch("necron_ctan_nightbringer_ability_research", 4, 0, 750, 0, 0, nil, 0)
 			end
 		end
 
@@ -372,12 +385,12 @@ function NecronBuildBaseStrategy:BuildFlexible()
 			self:DynamicResearch("necron_power_research_4", 5, 0, 800, 0, 0, nil, 0)
 
 			-- Relic unit research
-			self:DynamicResearch("necron_mass_production_research", 5, 0, 400, 0, 0, nil, 0)
 			self:DynamicResearch("necron_monolith_boost", 5, 0, 250, 0, 0, "necron_restored_monolith_squad", 1)
+			self:DynamicResearch("necron_mass_production_research", 5, 0, 400, 0, 0, nil, 0)
 
 			-- Infantry Researches
-			self:DynamicResearch("necron_pariah_boost_3", 5, 0, 500, 0, 0, "necron_pariah_squad", 2)
 			self:DynamicResearch("necron_deathmark_boost_3", 5, 0, 400, 0, 0, "necron_deathmark_squad", 2)
+			self:DynamicResearch("necron_pariah_boost_3", 5, 0, 500, 0, 0, "necron_pariah_squad", 2)
 
 			-- Vehicle research
 			self:DynamicResearch("necron_heavy_destroyer_boost_3", 5, 0, 350, 0, 0, "necron_heavy_destroyer_squad", 1)
@@ -533,9 +546,93 @@ function NecronBuildBaseStrategy:BuildFlexible()
 	end
 end
 
+-- Arkhan 01.2006: Method to check if force tech should be computed
+function NecronBuildBaseStrategy:ForceTech()
+
+	-- Check time
+	if (g_iGMT < 60 * CpuManager.ForceTech.StartTier1) then
+		return false
+	end
+	
+	-- Check resources
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
+	-- Check tier
+	local iTierLevel = self:GetTierLevel()
+	if (iTierLevel == 1) then
+	
+		-- Check resources
+		if (iPower >= 500) then
+			return false
+		end
+		return not self.m_bHQAddon1
+	
+	elseif (iTierLevel == 2) then
+
+		-- Check resources
+		if (iPower >= 800) then
+			return false
+		end
+		return not self.m_bHQAddon2
+		
+	elseif (iTierLevel == 3) then	
+
+		-- Check for large summoning core
+		if (self:GetBuildingCountByName("necron_summoning_core_big", false) < 1) and iPower <= 1500 then
+			return true
+		end
+	end
+	return false
+end
+
+-- Return placement type for buildings
+function NecronBuildBaseStrategy:GetPlacementType(iBuildingID)
+	
+	-- Check building
+	if (iBuildingID == cpu_manager.stats:GetBuildingID("monolith")) then
+        	local count = self:GetBuildingCountByName("monolith", false)
+		local friend = cpu_manager:FindClosestFriendPlayer()
+		if friend == nil then
+			-- Lone Player
+                	if count == 0 and not cpu_manager:HQThreat() then
+                    		return "HQ"
+                	else
+                    		return "Safeplace"
+                	end
+        	else
+        		-- Has allies
+                	if count > 2 or cpu_manager:HQThreat() then
+ 				return "HQ"
+                	else
+				return "Safeplace"
+                	end
+		end
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("necron_heavy_thermoplasma_generator") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_sterilization_obelisk")) then
+		return "Safeplace"
+	elseif (cpu_manager:IsGenerator(iBuildingID) or
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_summoning_core_big") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("monolith_super")) then
+		return "Military"		
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("necron_turret_missile_sp") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_turret") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_wall") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_turret_battery") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_resurrection_beacon")) then
+		return "Front2"
+	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("necron_plasma_generator") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_greater_summoning_core") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_forbidden_archive") or 
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_summoning_core") or
+		iBuildingID == cpu_manager.stats:GetBuildingID("necron_energy_core")) then
+		return "BaseBack"
+	end
+	return "Basic"
+end
+
 -- Gambit 08.2016: Modified for races that do NOT have small Gens, but DO have Big Gens
 function NecronBuildBaseStrategy:DoBuildGenerators()
-
+--[[
 	aitrace("BuildController: Check generators...")
 
 	-- Check power
@@ -548,10 +645,15 @@ function NecronBuildBaseStrategy:DoBuildGenerators()
    	 if ((self.tierLevel == 1 and iPower > 100 and self.info.req_reserve > 0) or
         	(self.tierLevel == 1 and iPower > 400 and self.info.req_reserve <= 0) or
         	(self.tierLevel == 2 and iPower > 600) or
-        	(self.tierLevel >= 3 and iPower > 1600)) then -- and iRequisition < 3000 then
+        	(self.tierLevel >= 3 and iPower > 1600)) then
         	return
     	end
 
+    	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+    	if iPower <= 400 then
+		return
+	end    
+]]
     	-- Check build plans for Big Generators
     	local iBiggerGeneratorID = cpu_manager.stats:GetBuildingID(self:GetBuildingName("BiggerGenerator"))
     	if self:PlanExists("Build Building Plan", iBiggerGeneratorID) then
@@ -616,105 +718,14 @@ function NecronBuildBaseStrategy:DoBuildGenerators()
 	end
 end
 
--- Arkhan 01.2006: Method to check if force tech should be computed
-function NecronBuildBaseStrategy:ForceTech()
-
-	-- Check time
-	if (g_iGMT < 60 * CpuManager.ForceTech.StartTier1) then
-		return false
-	end
-	
-	-- Check resources
-	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
-
-	-- Check tier
-	local iTierLevel = self:GetTierLevel()
-	if (iTierLevel == 1) then
-	
-		-- Check resources
-		if (iPower > 500) then
-			return false
-		end
-		return not self.m_bHQAddon1
-	
-	elseif (iTierLevel == 2) then
-
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and iPower < 800) then
-			return true
-		end
-
-		-- Check resources
-		if (iPower > 800) then
-			return false
-		end
-		return not self.m_bHQAddon2
-		
-	elseif (iTierLevel == 3) then	
-
-		-- Check time
-		if (g_iGMT > 60 * CpuManager.ForceTech.StartTier3 and iPower < 900) then
-			return true
-		end
-	end
-	return false
-end
-
--- Return placement type for buildings
-function NecronBuildBaseStrategy:GetPlacementType(iBuildingID)
-	
-	-- Check building
-	if (iBuildingID == cpu_manager.stats:GetBuildingID("monolith")) then
-        	local count = self:GetBuildingCountByName("monolith", false)
-		local friend = cpu_manager:FindClosestFriendPlayer()
-		if friend == nil then
-			-- Lone Player
-                	if count == 0 and not cpu_manager:HQThreat() then
-                    		return "HQ"
-                	else
-                    		return "Safeplace"
-                	end
-        	else
-        		-- Has allies
-                	if count > 2 or cpu_manager:HQThreat() then
- 				return "HQ"
-                	else
-				return "Safeplace"
-                	end
-		end
-	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("necron_heavy_thermoplasma_generator") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_sterilization_obelisk")) then
-		return "Safeplace"
-	elseif (cpu_manager:IsGenerator(iBuildingID) or
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_greater_summoning_core") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_summoning_core_big") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("monolith_super")) then
-		return "Military"		
-	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("necron_turret_missile_sp") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_turret") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_wall") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_turret_battery") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_resurrection_beacon")) then
-		return "Front2"
-	elseif (iBuildingID == cpu_manager.stats:GetBuildingID("necron_plasma_generator") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_forbidden_archive") or 
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_summoning_core") or
-		iBuildingID == cpu_manager.stats:GetBuildingID("necron_energy_core")) then
-		return "BaseBack"
-	end
-	return "Basic"
-end
-
--- Arkhan 11.2006: Always reinforce
-function NecronBuildBaseStrategy:CheckReinforce()
-	return true
-end
-
 -- Arkhan 11.2006: Check if we have enough resources for a bigger generator
 function NecronBuildBaseStrategy:HasResourcesForBiggerGenerator(iRequisition, iPower)
 
+	-- Check resources
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power )
+
 	-- Check power
-	if (iPower < 400) then --or iRequisition < 100) then
+	if iPower <= 400 then
 		return false
 	end
 	return true
@@ -724,8 +735,8 @@ end
 function NecronBuildBaseStrategy:HasResourceOverflow()
 
 	-- Don't reinforce if we've lots of power, rare requisition, and few vehicles
-	local iPower	= resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power ) / self.m_iTechBreak
-	local iTier		= self:GetTierLevel()
+	local iPower = resource_manager:GetResourceAmount():Get( ResourceAmount.RT_Power ) / self.m_iTechBreak
+	local iTier = self:GetTierLevel()
 	if ((iTier == 1 and iPower > 600) or (iTier > 1 and iPower > 2000)) then
 		return true
 	end
@@ -763,6 +774,11 @@ function NecronBuildBaseStrategy:HQEmergency()
 		end
 	end
 	return false
+end
+
+-- Arkhan 11.2006: Always reinforce
+function NecronBuildBaseStrategy:CheckReinforce()
+	return true
 end
 
 -- Arkhan 11.2006: Virtual method for checking out relic units

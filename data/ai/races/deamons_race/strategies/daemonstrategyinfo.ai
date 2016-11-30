@@ -4,7 +4,7 @@
 -- Edited by fuggles 10/06/2013
 -- Edited by Gambit 26/07/2013
 -- Edited by Cylarne 6/16/2014
--- Edited by Thudmeizer	@ 23.09.2016
+-- Edited by Thudmeizer	@ 14.11.2016
 
 BuildBaseStrategyInfo = 
 {
@@ -156,12 +156,12 @@ BuildOrderStrategyInfo =
 			{ "squad", "daemon_squad_fury" },
 			{ "squad", "daemon_squad_fury" },
 			{ "squad", "daemon_squad_lost_soul" },
+			{ "squad", "daemon_squad_fury" },
 			{ "post_builder" }, { "post_builder" },
 			{ "building", "daemon_sacrificial_circle", true },
 			{ "building", "daemon_sacrificial_circle", true },
 			{ "building", "daemon_gift_circle", true },
-			{ "building", "daemon_turret" },
-			{ "building", "daemon_hq", true },
+			{ "building", "daemon_turret" }
 		},
 		 
 		LargeMap =

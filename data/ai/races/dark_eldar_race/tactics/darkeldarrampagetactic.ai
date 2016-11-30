@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'darkeldarrampagetactic.ai'
--- Edited by Thudmeizer @ 25.08.2016
+-- Edited by Thudmeizer @ 11.11.2016
 
 class 'DarkEldarRampageTactic' (DarkEldarVehicleTactic)
 
@@ -13,6 +13,15 @@ function DarkEldarRampageTactic:__init( squad_ai ) super( squad_ai )
 	-- Vehicle is a light transport
 	--self.m_iTransportVehicle = 1
 	--self.m_iTransportSlots = 2
+end
+
+-- Rampage is allowed to retreat even directly after a jump
+function DarkEldarRampageTactic:SetTarget( target, variant_type )
+
+	self.variant_type = variant_type
+	self.target = Vector3f(target)
+	self.m_iMoveDelay = 0
+	self.last_jump = 0
 end
 
 function DarkEldarRampageTactic:InitAbilities()

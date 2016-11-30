@@ -1,7 +1,7 @@
 ----------------------------------------
 -- File: 'aeonicorbtactic.ai'
 -- Edited by Cylarne @ 12-31-2010
--- Edited by Thudmeizer	@ 08.10.2016
+-- Edited by Thudmeizer	@ 11.11.2016
 
 class 'AeonicOrbTactic' (NecronVehicleTactic)
 
@@ -10,9 +10,6 @@ AeonicOrb = {}
 function AeonicOrbTactic:__init( squad_ai ) super( squad_ai )
 
 	self:SetName("Aeonic Orb Tactic")
-
-	self.previousPosition = self.squad_ai:GetPosition()
-	self.checkTime = g_iGMT
 end
 
 function AeonicOrbTactic:AlwaysAttack()
@@ -88,53 +85,8 @@ function AeonicOrbTactic:DoAbilities()
 		end
 	end
 
-	-- Jump/Teleport squads' unstuck code call. Checks every 12 secs for stuck squads, and force them to jump nearby.
-	self:SolveStuckCase()
-
 	-- Call standard method
 	NecronVehicleTactic.DoAbilities(self)
-end
-
-function AeonicOrbTactic:SolveStuckCase()
-
-	if g_iGMT > self.checkTime + 18 and g_iGMT > self.last_jump + 60 then
-        self.checkTime = g_iGMT
-        	if self:IsSquadStuck() then
-            		self:ForceSquadJumpNear(self.squad_ai:GetPosition())
-        	end
-	end
-end
-
-function AeonicOrbTactic:IsSquadStuck()
-
-	local iPosition = self.squad_ai:GetPosition()
-	local iDistance = distance_sqr(iPosition, self.previousPosition)
-    	self.previousPosition = iPosition
-    	if iDistance > 25 or self.squad_ai:IsInCombat() or self.squad_ai:IsCapturing() then
-        	return false
-    	end
-    	return true
-end
-
-function AeonicOrbTactic:ForceSquadJumpNear(pos)
-
-	-- Try to jump somewhere near, perform 16 checks for a viable position
-    	for iLoop1 = 1, 16 do
-        	-- Create a jump position
-		local vJumpPosition = pos
-        	local vDir = cpu_manager:GetDirectionToEnemy(pos)
-        	vJumpPosition.x = vJumpPosition.x + vDir.x * math.random(-20, 50)
-        	vJumpPosition.z = vJumpPosition.z + vDir.z * math.random(-20, 50)
-        	-- Check if target position is in range and if unit is able to jump to target position
-        	local iDistance = distance_sqr(vJumpPosition, pos)
-        	if iDistance < sqr(self.squad_ai:GetJumpDistance()) and self.squad_ai:CanJumpToPosition(vJumpPosition) then                
-            		-- Jump to position
-            		self.squad_ai:DoJump(vJumpPosition)
-            		self.last_jump = g_iGMT
-            		self.m_iLastGatherMove = self.last_jump - 10
-            		return
-		end
-	end
 end
 
 function AeonicOrbTactic:Update()

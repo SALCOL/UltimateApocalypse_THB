@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonhuntbuildbasestrategy.ai'
--- Edited by Thudmeizer @ 02.10.2016
+-- Edited by Thudmeizer @ 17.11.2016
 
 class 'DaemonhuntBuildBaseStrategy' (BuildBaseStrategy)
 
@@ -417,19 +417,18 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 		if (self.tierLevel >= 1) then
 
 			-- Compute Bodyguards researches
-			self:DynamicResearch("inquisition_bodyguard_upgrade_1", 1, 110, 50, 0, 0, "inquisition_squad_bodyguard", 1)
+			if (self:CountSquads("inquisition_squad_bodyguard") >= 1) then
+				self:DynamicResearch("inquisition_bodyguard_upgrade_1", 1, 110, 50, 0, 0, nil, 0)
+			end
+
+			if (self:CountSquads("inquisition_squad_scholars") >= 1) or (num_primarycommander_squads >= 1) then
+				self:DynamicResearch("inquisition_tome_invigorate_soul", 1, 150, 50, 0, 0, nil, 0)
+			end
 
 			-- Compute infantry researches
 			if (num_infantry_squads >= 3) then
-				self:DynamicResearch("inquisition_frag_grenade_research", 1, 25, 75, 0, 0, nil, 0)
-				self:DynamicResearch("inquisition_tome_invigorate_soul", 1, 150, 50, 0, 0, "inquisition_squad_scholars", 1)
-				self:DynamicResearch("inquisition_squad_cap", 1, 125, 75, 0, 0, nil, 0)
 				self:DynamicResearch("inquisition_advanced_weapons", 1, 100, 50, 0, 0, nil, 0)
-			end
-
-			-- Compute infantry/Grey Knight researches
-			if (num_infantry_squads + num_greyknights_squads >= 4) then
-				self:DynamicResearch("inquisition_medikits", 1, 75, 25, 0, 0, nil, 0)
+				self:DynamicResearch("inquisition_squad_cap", 1, 125, 75, 0, 0, nil, 0)
 			end
 
 			-- Compute builder researches
@@ -446,18 +445,25 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 		-- Compute tier 2 researches
 		if (self.tierLevel >= 2) then
 
-			-- Compute Bodyguards researches
-			self:DynamicResearch("inquisition_bodyguard_upgrade_2", 2, 130, 70, 0, 0, "inquisition_squad_bodyguard", 2)
-
 			-- Computer Maintenance Servitors (as we need repairers quickly as vehicles arrive damaged)
 			self:DynamicResearch("inquisition_schematic_servitors_maintenance", 2, 20, 20, 0, 0, nil, 0)
 
+			-- Compute Bodyguards researches
+			if (self:CountSquads("inquisition_squad_bodyguard") >= 2) then
+				self:DynamicResearch("inquisition_bodyguard_upgrade_2", 2, 130, 70, 0, 0, nil, 0)
+			end
+
+			-- Compute infantry/Grey Knight researches
+			if (num_infantry_squads + num_greyknights_squads >= 4) then
+				self:DynamicResearch("inquisition_medikits", 2, 75, 25, 0, 0, nil, 0)
+			end
+
 			-- Compute infantry researches
 			if (num_infantry_squads >= 3) then
+				self:DynamicResearch("inquisition_frag_grenade_research", 2, 25, 75, 0, 0, nil, 0)
 				self:DynamicResearch("inquisition_krak_grenades_research", 2, 75, 75, 0, 0, nil, 0)
-				self:DynamicResearch("inquisition_special_squads", 2, 150, 100, 0, 0, nil, 0)
-				self:DynamicResearch("inquisition_advanced_weapons_2", 2, 150, 100, 0, 0, nil, 0) 
 				self:DynamicResearch("inquisition_targeters", 2, 120, 60, 0, 0, nil, 0)
+				self:DynamicResearch("inquisition_advanced_weapons_2", 2, 150, 100, 0, 0, nil, 0) 
 			end
 
 			-- Compute builder researches
@@ -508,10 +514,15 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 
 			-- Compute Grey Knight researches
 			if (num_greyknights_squads >= 2) then
-				self:DynamicResearch("inquisition_tome_aegis", 3, 240, 120, 0, 0, nil, 0)
-				self:DynamicResearch("inquisition_tome_blades", 3, 240, 120, 0, 0, nil, 0)
 				self:DynamicResearch("inquisition_tome_daemonica_1", 3, 160, 90, 0, 0, nil, 0)
 				self:DynamicResearch("inquisition_tome_psykers", 3, 190, 100, 0, 0, nil, 0)
+				self:DynamicResearch("inquisition_tome_aegis", 3, 240, 120, 0, 0, nil, 0)
+				self:DynamicResearch("inquisition_tome_blades", 3, 240, 120, 0, 0, nil, 0)
+			end
+
+			-- Compute infantry researches
+			if (num_infantry_squads >= 3) then
+				self:DynamicResearch("inquisition_special_squads", 3, 150, 100, 0, 0, nil, 0)
 			end
 
 			-- Compute Vehicle researches
@@ -581,6 +592,11 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 			-- Compute relic researches
 			self:DynamicResearch("inquisition_increase_relic_2", 4, 2000, 2000, 0, 0, nil, 0)
 
+			-- Compute additional researches
+			self:DynamicResearch("inquisition_terra_army_research", 4, 800, 800, 0, 0, nil, 0)
+			self:DynamicResearch("inquisition_emperors_grey_knights_research", 4, 1200, 1200, 0, 0, nil, 0)
+			self:DynamicResearch("inquisition_essence_machine_spirit_research", 4, 1000, 2000, 0, 0, nil, 0)
+
 			-- Compute Apocalypse
 			if self:HasCriticalLocation() then
 				self:DynamicResearch("inquisition_absolute_purification", 4, 4000, 4000, 0, 0, nil, 0)
@@ -591,10 +607,7 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 		if (self.tierLevel >= 5) then
 
 			-- Compute Misc late game researches
-			self:DynamicResearch("inquisition_terra_army_research", 5, 800, 800, 0, 0, nil, 0)
-			self:DynamicResearch("inquisition_emperors_grey_knights_research", 5, 1200, 1200, 0, 0, nil, 0)
 			self:DynamicResearch("inquisition_iron_curtain_research", 5, 3500, 3500, 0, 0, nil, 0)
-			self:DynamicResearch("inquisition_essence_machine_spirit_research", 5, 1000, 2000, 0, 0, nil, 0)
 
 			-- Compute Misc Titan researches
 			if (self:CountSquads("inquisition_squad_warhound_titan") >= 1) or (self:CountSquads("inquisition_squad_warhound_vengence_titan") >= 1) then
@@ -602,7 +615,7 @@ function DaemonhuntBuildBaseStrategy:BuildFlexible()
 			end
 
 			-- Compute all Exterminatus researches
-			if (num_primarycommander_squads >= 2 and self:HasCriticalLocation()) then
+			if (num_primarycommander_squads >= 2) then
 				self:DynamicResearch("inquisition_tome_exterminatus_1", 5, 1500, 1500, 0, 0, nil, 0)
 				self:DynamicResearch("inquisition_tome_exterminatus_2", 5, 3000, 3000, 0, 0, nil, 0)
 				self:DynamicResearch("inquisition_tome_exterminatus_3", 5, 6000, 6000, 0, 0, nil, 0)

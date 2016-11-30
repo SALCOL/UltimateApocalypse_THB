@@ -1,6 +1,6 @@
 ----------------------------------------
 -- File: 'daemonhuntstrategyinfo.ai'
--- Edited by Thudmeizer    @ 23.09.2016
+-- Edited by Thudmeizer    @ 14.11.2016
 
 BuildBaseStrategyInfo = 
 {
@@ -163,13 +163,14 @@ BuildOrderStrategyInfo =
 			{ "flag_capture" }, { "flag_capture" },
 			{ "squad", "inquisition_squad_bodyguard" },
 			{ "squad", "inquisition_squad_bodyguard" },
+			{ "squad", "inquisition_squad_archivist" },
 			{ "squad", "inquisition_squad_bodyguard" },
 			{ "squad", "inquisition_squad_archivist" },
-			{ "squad", "inquisition_squad_archivist" },
+			{ "squad", "inquisition_squad_bodyguard" },
 			{ "post_builder" },
 			{ "building", "inquisition_watch", true },
+			{ "building", "inquisition_watch", true },
 			{ "building", "inquisition_warp_generator" }
-
 		},
 		
 		LargeMap =
