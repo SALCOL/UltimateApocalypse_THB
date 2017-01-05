@@ -563,7 +563,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "ENVIRONMENT/TEXTURES/FIRE_PUFF5.DDS",
+					value = "ENVIRONMENT/TEXTURES/FIRE_PUFF5.TGA",
 				},
 				property_21 =  
 				{
@@ -848,7 +848,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "ENV_BUILDING_FIRE_GLOW.DDS",
+					value = "ENV_BUILDING_FIRE_GLOW.TGA",
 				},
 				property_21 =  
 				{

@@ -556,7 +556,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "WITCH_HUNTER_FX/ABILITIES_FX/SPARK_FLASH_GLOW_INQU_GOLD.TGA",
+					value = "WITCH_HUNTER_FX/ABILITIES_FX/SPARK_FLASH_GLOW_01_GOLD.DDS",
 				},
 				property_21 =  
 				{

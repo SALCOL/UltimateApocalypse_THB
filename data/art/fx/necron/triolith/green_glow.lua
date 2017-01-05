@@ -260,7 +260,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "NECRON_MONOLITH_OUTER_GLOW_03.TGA",
+					value = "necron/triolith/no.TGA",
 				},
 				property_21 =  
 				{
@@ -570,7 +570,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "BIG_MEK_MEGA_MUZZLE_GLOW2.TGA",
+					value = "necron/triolith/no.TGA",
 				},
 				property_21 =  
 				{

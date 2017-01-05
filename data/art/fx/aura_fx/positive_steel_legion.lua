@@ -11,6 +11,77 @@ fxtypes =
 				{
 					name = "Fx1",
 					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_01 =  
+				{
+					name = "Fx2",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_02 =  
+				{
+					name = "FX3",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_03 =  
+				{
+					name = "FX4",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_04 =  
+				{
+					name = "FX5",
+					type = "VARTYPE_STRING",
+					value = "positive_marine",
+				},
+				property_05 =  
+				{
+					name = "FX6",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_06 =  
+				{
+					name = "FX7",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_07 =  
+				{
+					name = "FX8",
+					type = "VARTYPE_STRING",
+					value = "",
+				},
+				property_08 =  
+				{
+					name = "Detail_From",
+					type = "VARTYPE_FLOAT",
+					value = 0,
+				},
+				property_09 =  
+				{
+					name = "Detail_To",
+					type = "VARTYPE_FLOAT",
+					value = 1,
+				},
+			},
+			style = "STYLE_COMBO",
+		},
+	},
+	 
+	{
+		effect = "root>positive_marine",
+		fx =  
+		{
+			properties =  
+			{
+				property_00 =  
+				{
+					name = "Fx1",
+					type = "VARTYPE_STRING",
 					value = "positive_marine",
 				},
 				property_01 =  
@@ -73,7 +144,7 @@ fxtypes =
 	},
 	 
 	{
-		effect = "root>positive_marine",
+		effect = "root>positive_marine>positive_marine",
 		fx =  
 		{
 			properties =  
@@ -144,7 +215,7 @@ fxtypes =
 	},
 	 
 	{
-		effect = "root>positive_marine>movedest",
+		effect = "root>positive_marine>positive_marine>movedest",
 		fx =  
 		{
 			properties =  
@@ -156,9 +227,9 @@ fxtypes =
 					value =  
 					{
 						0,
-						1.33333,
+						5,
 						1,
-						1.33333,
+						5,
 					},
 				},
 				property_01 =  
@@ -202,9 +273,9 @@ fxtypes =
 					value =  
 					{
 						0,
-						0.60000,
+						0,
 						1,
-						0.60000,
+						0,
 					},
 				},
 				property_04 =  
@@ -228,17 +299,17 @@ fxtypes =
 						entry_00 =  
 						{
 							0,
-							30,
-							89,
-							19,
+							33,
+							60,
+							93,
 							255,
 						},
 						entry_01 =  
 						{
 							1,
-							29,
-							89,
-							19,
+							33,
+							60,
+							93,
 							255,
 						},
 					},
@@ -331,7 +402,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "AURA_FX/TEXTURES/POS_STEEL_LEGION.TGA",
+					value = "AURA_FX/TEXTURES/POSITIVE_STEEL_LEGION.TGA",
 				},
 				property_21 =  
 				{

@@ -742,7 +742,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "ENV_DEBRIS_DUST_CLOUD.DDS",
+					value = "ENV_DEBRIS_DUST_CLOUD.TGA",
 				},
 				property_21 =  
 				{
@@ -819,7 +819,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "ENV_DEBRIS_BLAST_1.DDS",
+					value = "ENV_DEBRIS_BLAST_1.TGA",
 				},
 				property_04 =  
 				{

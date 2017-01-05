@@ -272,7 +272,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "TEXTURES/SPARK3aa_HIRES.TGA",
+					value = "TEXTURES/SPARK3_HIRES.TGA",
 				},
 				property_21 =  
 				{
@@ -802,7 +802,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "TEXTURES/ILE_SPRITES/SPARK03aa.TGA",
+					value = "TEXTURES/ILE_SPRITES/SPARK03.TGA",
 				},
 				property_21 =  
 				{
@@ -1336,7 +1336,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "TEXTURES/ILE_SPRITES/SPARK03aa.TGA",
+					value = "TEXTURES/ILE_SPRITES/SPARK03.TGA",
 				},
 				property_21 =  
 				{
@@ -1866,7 +1866,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "TEXTURES/ILE_SPRITES/SPARK03aa.TGA",
+					value = "TEXTURES/ILE_SPRITES/SPARK03.TGA",
 				},
 				property_21 =  
 				{
@@ -3277,7 +3277,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "TEXTURES/ILE_SPRITES/DOTaa.TGA",
+					value = "TEXTURES/ILE_SPRITES/DOT.TGA",
 				},
 				property_21 =  
 				{
@@ -3807,7 +3807,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "TEXTURES/ILE_SPRITES/SPARK03aa.TGA",
+					value = "TEXTURES/ILE_SPRITES/SPARK03.TGA",
 				},
 				property_21 =  
 				{

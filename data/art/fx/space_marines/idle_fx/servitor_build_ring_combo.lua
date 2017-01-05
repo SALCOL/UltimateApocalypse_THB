@@ -131,9 +131,9 @@ fxtypes =
 					value =  
 					{
 						0,
-						0,
+						25,
 						1,
-						0,
+						25,
 					},
 				},
 				property_04 =  
@@ -143,11 +143,9 @@ fxtypes =
 					value =  
 					{
 						0,
-						25,
-						0.98000,
-						25,
+						0,
 						1,
-						25,
+						0,
 					},
 				},
 				property_05 =  
@@ -284,23 +282,29 @@ fxtypes =
 				},
 				property_24 =  
 				{
+					name = "RandomBitmap",
+					type = "VARTYPE_BOOL",
+					value = 0,
+				},
+				property_25 =  
+				{
 					name = "SortOrder",
 					type = "VARTYPE_INT",
 					value = 1,
 				},
-				property_25 =  
+				property_26 =  
 				{
 					name = "DepthOffset",
 					type = "VARTYPE_FLOAT",
 					value = 0,
 				},
-				property_26 =  
+				property_27 =  
 				{
 					name = "Detail_From",
 					type = "VARTYPE_FLOAT",
 					value = 0,
 				},
-				property_27 =  
+				property_28 =  
 				{
 					name = "Detail_To",
 					type = "VARTYPE_FLOAT",

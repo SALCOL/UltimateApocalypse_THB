@@ -197,7 +197,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "NECRON/ANNIHILATION_BARGE/BARGE_LIGHT.TGA",
+					value = "BARGE_LIGHT.TGA",
 				},
 				property_21 =  
 				{

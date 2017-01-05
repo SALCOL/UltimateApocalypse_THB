@@ -459,7 +459,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "TEXTURES_NEW/GLOW_RINGS/CHAOS_TRACER_IMP.DDS",
+					value = "CHAOS/TEXTURES/chaos_tracer_inferno.dds",
 				},
 				property_04 =  
 				{

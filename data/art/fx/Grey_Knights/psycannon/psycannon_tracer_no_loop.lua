@@ -343,7 +343,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "TEXTURES/SPARK_02.TGA",
+					value = "PSYCANNON_TRACER.DDS",
 				},
 				property_04 =  
 				{

@@ -549,7 +549,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "FIRE_PUFF2.DDS",
+					value = "FIRE_PUFF2.TGA",
 				},
 				property_21 =  
 				{
@@ -830,7 +830,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "VEH_SMOKE.DDS",
+					value = "VEH_SMOKE.TGA",
 				},
 				property_21 =  
 				{
@@ -1338,7 +1338,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "FIRE_PUFF3.DDS",
+					value = "FIRE_PUFF3.TGA",
 				},
 				property_21 =  
 				{
@@ -1635,7 +1635,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "ENV_BUILDING_FIRE_GLOW.DDS",
+					value = "ENV_BUILDING_FIRE_GLOW.TGA",
 				},
 				property_21 =  
 				{
@@ -2192,7 +2192,7 @@ fxtypes =
 				{
 					name = "Texture",
 					type = "VARTYPE_STRING",
-					value = "SPARK.DDS",
+					value = "SPARK.TGA",
 				},
 				property_21 =  
 				{
