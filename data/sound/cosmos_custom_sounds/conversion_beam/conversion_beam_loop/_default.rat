@@ -2,9 +2,8 @@
 
 version = 9
 
-volume = 0.400000
-pitchRand = 0.020000
-maxPolyphony = 5
+volume = 0.600000
+maxPolyphony = 6
 type3D = 1
 envelope = {
   {
@@ -91,4 +90,9 @@ envelope = {
 cardiodScale = 0.000000
 cardiodLowFreq = 0
 cardiodHighFreq = 0
+containerType = 3
+loopingContainer = 0
+loadAllContainer = 0
+silenceBreak = 0.000000
+silenceRandom = 0.000000
 weight = 1
