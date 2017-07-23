@@ -27,7 +27,7 @@ function SetPlayerTitansInfinite()
 		if not (Player_GetRaceName(player) == "ork_race") then
 			local oModPopulationCap	= Modifier_Create(MAT_Player, "population_cap_player_modifier", MUT_Multiplication, false, 999, "")
 			Modifier_ApplyToPlayer( oModPopulationCap, player)
-			local oModPopulationRate	= Modifier_Create(MAT_Player, "population_growth_rate_player_modifier", MUT_Multiplication, false, 2, "")
+			local oModPopulationRate	= Modifier_Create(MAT_Player, "population_growth_rate_player_modifier", MUT_Multiplication, false, 1.5, "")
 			Modifier_ApplyToPlayer( oModPopulationRate, player)
 			--local oModFaithCap	= Modifier_Create(MAT_Player, "faith_max_modifier", MUT_Addition, false, 200, "")
 			--Modifier_ApplyToPlayer( oModFaithCap, player)

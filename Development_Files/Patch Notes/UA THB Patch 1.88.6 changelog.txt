@@ -1,0 +1,330 @@
+Hint: 
+* = Fixes.
+- = Ideas not taken to effect yet.
+!* = Applied ingame, but as rough drafts (non final product)
+> = Noted for next version.
+>> = Noted, but not for another two versions or more.
+
+------------------------
+
+PLANS FOR FUTURE VERSIONS:
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+- Imperial Guard revamp with tech trees finally completed.
+- The addition of Chaos Daemon and Inquisition tech trees will also be established at last!
+- Cosmocrat's work.
+- Eranthis Aconite's work.
+- Salcol's work.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+------------------------
+Global: 
+------------------------
+
+* White background was fixed.
+* All Hero researches increases the health of all heroes at maximum by 150% from 100%.
+* All turrets cost more and are rarely to be seen in earlier tiers.
+* All generator chain reaction damage to structures decreased by 50%.
+* All generator chain reaction radius decreased from 15m to 8m.
+* All generator production rates adjacent to structures doubled!
+* All Banner Bearers provide more morale and morale regeneration. Range increased.
+* All Warhound and Reaver Titan default weapon damages increased by 100% as they were too weak in DPS.
+* Transport rule: Ability Support ability no longer increases the range of abilities. Instead, provides more morale and ability regen increase.
+------------------------
+Chaos Space Marines: 
+------------------------
+* All champions of Chaos (Mark specific chaos lords) are now affected by Chaos Lord wargear and can purchase them.
+* Plasma Pistol research no longer upgrades the champions of Chaos with Plasma Pistols.
+* The Great Unclean One has massively changed in how it functions.
+	* Great Unclean One health increased from 15500 to 25000, health regeneration is set to 2.
+	* Great Unclean One melee damage increased by 125%. This also affects the Great Unclean One's special attacks.
+	* Great Unclean One movement speed decreased by 50%.
+	* Great Unclean One visual size increased by 25%.
+* Attack Bike knockback resistance increased so it can use the "swirl" ability (forgot name) without being knocked back.
+* Vehicle injections passive ability was removed from all vehicles as this made all Chaos Space Marine vehicles overpowered.
+* Terminator Reaper Canon range, reload time, and accuracy increased.
+* Chaos Terminator melee damage increased by 50%.
+* Chaos Terminator Storm Bolter increased by 20%.
+* Plaguebearer damage versus structures increased.
+* Standard Bearer of Slaanesh now actually affects your own troops instead of the enemy, increasing enemy movement speed by 20%, not no more!!
+* Standard Bearer of Slaanesh now provides squad morale bonuses.
+* Nurgle and Khorne Standard Bearer modifiers decreased as it was way too big of a bonus.
+* Cultist Worship modifiers no longer stacks.
+* Dreadnought Left and right arm damage was fixed.
+* Slaanesh Worship morale bonus increased by 100%. Speed bonus increased by 50%.
+* Noise Marines morale damage further increased by 10%. Heavy Weapon damage against structures increased by 50%.
+* Noise Marine inspiring champion Dirge Caster effect radius increased by 100%. Making this unit a very effective morale demoralizer. 
+* Rubric Marine health decreased by 100hp. Weapon upgrade costs 50% more but upgrades faster.
+* Rubric Marine weapon damage decreased by 10%. Upgraded weapon damage increased by 10%.
+* Lord of Change Greater Bolts of Tzeentch damage increased by 100%. Damage against infantry (except elite infantry) decreased by 75%.
+* Lord of Change invulnerability is now a timed support ability which affects everything within his radius. 
+* Brass Scorpion morale damage increased from 124 to 450. Effectiveness against titans remains effective.
+* Brass Scorpion movement speed increased by 50%. Turning speed increased by 100%.
+* Defiler movement speed increased by 50%. Turning speed increased by 100%.
+
+------------------------
+Chaos Daemons:
+------------------------
+* The Great Unclean One has massively changed in how it functions.
+	* Great Unclean One health increased from 7750 to 25000, health regeneration is set to 2.
+	* Great Unclean One melee damage increased by 125%. This also affects the Great Unclean One's special attacks.
+	* Great Unclean One cost increased.
+	* Great Unclean One movement speed decreased by 50%.
+	* Great Unclean One visual size increased by 25%.
+* Lord of Change Greater Bolts of Tzeentch damage increased by 100%. Damage against infantry (except elite infantry) decreased by 75%.
+* Lord of Change invulnerability is now a timed support ability which affects everything within his radius. 
+* The Daemon Lord no longer "takes damage like a champ." Daemon Lord random invulnerability was fixed as well as his 60% ranged damage reduction.
+* Keeper of Secrets health decreased by 50%, but... has passive abilities much like the Chaos Space Marine Keeper of Secrets but stronger. All enemy infantry will turn on each other by a chance, otherwise stunned. 
+* Infantry units caught in the gaze of the Keeper of Secrets cannot move, use abilities, or use ranged attacks and can only attack if in melee with the Keeper of Secrets.
+* Keeper of Secrets cannot affect vehicles or greater daemons. But the Greater Allure can. 
+* Keeper of Secrets movement speed increased by 25%.
+* Greater Brass Scorpion overall armor decreased by 8 as it was too durable and can kill Great Gargants on its own.
+* Greater Brass Scorpion charge range increased by 40 meters and if it comes close to an enemy, movement speed is then tripled.
+* Greater Brass Scorpion cost increased from 1900/2850/1000 to 2000/3250/500.
+* Greater Brass Scorpion morale damage when doing special attacks doubled!
+* Primarch Angron now costs 30,000 relic; 32,000 (if Khorne); 25,000 (if Slaanesh).
+* Primarch Angron of Khorne maximum health increased from 5,000 to 10,000. Movement speed increased by 25%.
+* Primarch Angron wargear costs decreased by 50%.
+* Plague Drone health decreased from 2700 to 1600.
+* Juggernaut melee damage increased to match the damage of normal melee/siege vehicles.
+* All lesser Daemon health increased by 50%. However, their health will increase less in later tiers.
+* All lesser Daemon morale increased by 100% as it was way too low.
+* Plague Bearer and Nurgling morale increased by 150%.
+* Plague Bearer health regeneration increased by 8. Health decreased by 100hp.
+* Nurglings health regeneration increased by 6. Health decreased by 15hp.
+* Daemonclaw Obelisk main weapon damage increased by 125%. Morale damage increased by 50%.
+* Daemonclaw Obelisks cost increased from 190 to 320 requisition.
+* Sacrificial Circle squad hold limit increased from 2 to 4.
+* Bloodthirster charge range increased by 5.
+* Bloodthirster regeneration rate increased by 10.
+* Bloodthirster movement speed increased by 3.
+* Bloodletters come in larger squad members and reinforce faster.
+* Warp Spawn no only costs requisition. 
+* Warp Spawn support cap decreased by 1.
+------------------------
+Dark Eldar: 
+------------------------ 
+* Instigator Titan teleportation recharge required time increased by 150%.
+* Instigator Titan shields decreased by 1000.
+* Archon Soul cost increased from 175 to 325.
+* Haemonculus Soul cost increased from 100 to 200.
+* Incubus squad weapon damage decreased by 30%.
+* Mandrakes default speed increased by 20%.
+* Trueborn Warrior Greater Dark damage decreased by 15%.
+* Dais of Destruction Dark Lance Sweep now costs 200 power to fire.
+* Dais of Destruction secondary Dark Lance Sweep recharge time increased by 200%, global recharge. Tooltip updated.
+* Clawed Fiends health decreased by 1500hp.
+* Archon and Haemonculus can now be upgraded with Relic resource inspirational addons.
+* Agony Titan weapon damage decreased by 40%.
+* Agony Titan no longer fires a mini ball that comes from its legs in deployment mode. Reload time doubled.
+* Mandrake Blade poison damage decreased by 40%.
+* Warrior knife weapon damage increased by 50%.
+* Scourge Dark Lance reload time increased from 1.5 to 2.
+* Structure Fear aura morale damage decreased by 1.
+* Foot On Fire Speed Increase modifiers decreased by 50%.
+
+------------------------
+Eldar: 
+------------------------
+* Websails and Webway Gates cloak vehicles and titans 50% of the time. If more are stacked, then the cloaking power increases the cloaking chance significantly.
+* Eldritch Spire Infinity Stone: Shroud cost increased from 6000/35000 to 25000/45000. 
+* Eldritch Spire Infinity Stone: Resource cost increased from 12000/6000 to 15000/8000.
+* All Brightlances now requires tier 2.
+* Wave Serpent cost increased from 125/125 req/power to 150/175 req/power
+* Wave Serpent starcannon reload time increased from 0.1 to 0.3.
+* Falcon Grav Tank starcannon reload time decreased from 0.4 to 0.3.
+* Harlequin squad morale increased from 400 to 1000.
+* Falcon grav tank, Wave Serpent, Nightspinner, Nightwing, Vyper, Fire Prism, and Hornet shields were removed.
+* Holofield research now increases the health regeneration of all vehicles.
+* Falcon grav tank damage decreased to 180-250 from 289-352.
+* Wave serpent Brightlance damage decreased from 545-368 to 320-220.
+* Shadowseer's Mercy ability hp buff decreased from 10x multiplier to 2.5x multiplier.
+* Revenant Titan's Pulsar damage decreased from 560-680 to 330-410. AP was slightly reworked.
+* Fleet of Foot modifiers decreased.
+* Seer Council Spear weapon upgrade damage decreased by 35%.
+* Shining Spear infiltration research cost in power increased by 100.
+* Shining Spear infiltration research required time increased by 30 seconds.
+* Shining Spear squad leader cost and recruit required time increased.
+* Dark Reaper, Striking Scorpion, and Swooping Hawks squad cap increased by 1.
+* Webway Gate health decreased by 50%.
+* Striking Scorpion chainsword weapon damage decreased by 10%.
+* Striking Scorpion health decreased by 55 hp.
+* Striking Scorpion Mandiblaster damage decreased by 20%.
+* Swooping Hawk damage increased by 3%.
+* Fire Dragon damage increased by 5%.
+* Dark Reaper Reapercanon damage decreased by 5%.
+
+------------------------
+Imperial Guard: 
+------------------------
+*** Originally, this faction was supposed to be revamped this patch. But due to time limit and the required AI code that needs to be done, the IG revamp will be available next patch instead.
+* All Super Heavies now spawn immediately inside the Mars Pattern Command. Deep strike away boyyyyyys.
+* Mars Pattern Command rally point was removed.
+* The Vox Caster in a command squad no longer infiltrates.
+* Fortress Defenses research no longer increases the range of turret weapons.
+* Turrets in general can be upgraded with a Missile Launcher addon to Plasma Canons.
+* After turrets final research, turrets are then upgraded with Punisher Canons to Vanquisher Canons to Plasma Canons. Vanquisher Canons do 20% more damage and the range of them increased by 15 meters.
+* Fortress Wall default weapons are now a lot more powerful and are turned into long range Punisher Canons. This makes Fortress walls the ultimate turret defense weapon.
+* Fortress Wall lascanon upgrade can now fire very quickly at a very long range. This makes Fortress walls the ultimate turret defense weapon.
+* Infantry can now garrisson into walls and tunnel around the map up to 3 slots.
+* Techpriest Enginseers can now attach to squads. Cost increased from 75 requisition to 90.
+* Techpriest Enginseer Upgrade is now available at the HQ at the cost of 150/90 req/power. Requires Tactica Control.
+* Techpriest Enginseer Upgrade health and damage modifiers decreased from 300% to 250%.
+* Shadowsword Titanicus can now fire at maximum range when attack moving, while its range increased from 90m to 120m.
+* Damage increased from 6539-9811 to 10100-16480. 
+* Weapon Setup time and reload time increased to compensate balance.
+* Ability Overdrive range increased and can be fired more often, doing double damage. Costs over 2000 power to activate.
+* Morale damage increased from 2900 to 10000, taking out most titan shielding in one shot compared to Gauss Pylons.
+* Marauder Bomber bombing run range decreased.
+* Marauder Bomber bombing weapons were changed up. Incendiary is now effective against structures and infantry/morale while the krak bombs do significant damage to vehicles. Somewhat structures.
+
+------------------------
+Inquisition:
+------------------------
+*** There will be some major changes done to the Grey Knight Brotherhood Champion next patch, including new wargear options.
+* Tribunal Tower addon required build time and cost decreased.
+* Grey Knight Terminator Paladin and Grey Knight Interceptor Daemon Hammers damage increased by 100% (Interceptor, 20% Paladin).
+* Grey Knight Interceptor Daemon Hammer now requires the Tribunal addon.
+* Inquisitor Lord and Ordo Malleus Supreme Lord Daemon Hammer damage increased by 40%.
+* Urban Territory workers are cheaper and are produced faster.
+* Urban Territory limit increased to 5 per HQ.
+* Nemesis Dreadknight melee damage increased by 20%. Overall damage against structures increased by an extra 20%.
+* Grey Knight melee damage versus vehicles and structures for Terminators, Interceptors, and Strike Teams increased by 25%.
+* Grey Knight Paladin squad cap increased by 1.
+* Grey Knight Paladin required build time increased by 50%. Please build normal terminators or Grey Knights to produce armies faster and greater in size.
+* Ranged Servitor Melta gun damage upgrades increased by 50%. Cost to upgrade increased by 100%.
+* Assault Servitor health increased by 190.
+* Assault Servitor Power Pincer weapon damage upgrade increased by 50%. Cost to upgrade increased by 50%.
+* Scholar squad loadout size decreased by 2.
+* Grey Knight armor research modifier decreased by 20%.
+* Storm Trooper melee damage increased from 19-23 to 22-27.
+* Scholar las pistol damage increased by 10%.
+* All Grey Knight morale increased by 40%.
+* Targeters research modifiers increases damage dealt for Bodyguards by 10% from 50%.
+* Special Squads hp bonus for Bodyguards decreased by 100.
+* Bodyguard upgrade research modifiers decreased by 60%.
+
+
+------------------------
+Necrons: 
+------------------------
+**** Most changes will not be valid until the race import from GRGE (Grand Release Gold Edition). This is the final patch for Necrons.
+* Wraith cost, required build time, and damage decreased. Stats were imported from GRGE.
+* Builder Scarabs, Necron Warriors, and Flayed Ones are now produced 25% faster.
+* Obelisks are now built 50% faster.
+* Aeonic Orb ability damage decreased by 25%.
+* Aeonic Orb ability costs increased by 1000 power each.
+* Aeonic Orbs are now more durable, armor rating increased.
+* Doomsday Monolith morale damage increased. Damage increased by 10%.
+* Gauss Pylon overall damage decreased by 10%.
+* In order to have global range fully operational particle accelerators, you will need to build multiple Heavy Thermo Generators. Stats were imported from GRGE.
+* Each Heavy Thermo Generator constructed increases maximum range for Particle Accelerators by 100 meters instead of instant global range. Tooltip updated.
+* Nightbringer Invulnerability recharge time increased from 45 to 90 required seconds.
+
+	
+
+
+------------------------
+Orks: 
+------------------------
+
+* Great Gargant model polies decreased and will crash the game less. Hopefully.
+* Orks of Armageddon "Klan" has a very funky funktion. There is now a 10% chance to apply a cost or health bonus to each Ork vehicle and randomly per vehicle. Tooltip updated and keep an eye out for what vehicle received the bonuses ingame. 
+* Grot Cannon damage decreased by 23%.
+* Grot Canon morale damage decreased by 50%.
+* Kommandoz health decreased by 10%.
+* Waaagh Banner addons take 15 seconds longer to produce.
+* Mad Dok limit decreased by 1. Klan Nuddyfist bonuses doubled!
+* Nobz effectiveness against commanders increased.
+
+------------------------
+Sisters of Battle:
+------------------------
+* Missionary Bolt Pistol damage increased by 20%.
+* Exorcist HK Missile ability will now display an aesthetic missile coming down to hit a target.
+* Seraphim melee damage decreased by 35%. Seraphim squads are no longer over cost effective.
+* Seraphim Angelic Visage ability cost increased from 40 faith to 140 faith as it can be used over and over again.
+* Seraphim Angelic Visage weapon damage modifiers decreased from 50% increase to 25%.
+* Arch Angel health bonus modifiers decreased by 50%. Arch Angels now function as a normal healthed hard hitting titan like unit.
+* Sisters winbutton now destroys all buildings including HQs.
+* Legatine Superior and Redemptionist morale increased by 100%.
+* Legatine Superior cost to reinforce increased from 110/0 to 180/50 req/power.
+* Legatine Superior health, minimum armor, and health regeneration increased.
+* Capitol Imperialis range decreased from 90 meters to 60 meters. Reload time increased from 0.8 to 1.2 firing rate.
+* Arco Flagellants health increased by 140hp. Speed increased by 4m/s
+* Assassin health decreased by 150hp.
+* Confessor health increased by 200hp.
+* Throne of Judgement damage increased by 115%.
+* Throne of Judgement cost increased from 190/300 to 700/400 req/power.
+* Canoness Power Sword reload time decreased from 1.5 to 1.
+* Canoness Power Sword damage decreased by 12%.
+* Inquisitor out of combat regeneration decreased from 31 to 10.
+* Sisters Blessed Bionics upgrade 2 & health research 2 modifiers decreased by 10%.
+
+------------------------
+Space Marines: 
+------------------------
+* Chapter Tactics researches are entirely scraped and I apologize. Reason being: Too much work needs to be done to them and there is just not enough time to implement what I wanted.
+* Blood Ravens Chapter Tactic name was changed to "Play As Normal Space Marines". This will unlock both Force Commanders to be used ingame.
+* Legion of The Damned is now available immediately and was renamed to "Play As Legion of The Damned Armies". This will replace all Space Marine squads with Legionaires and allow the Legionaire Commander. 
+* Legionaires now cost resources to recruit.
+* Nuclear Missile Weapon Center model was reverted from a huge spaceport like structure to the normal Nuclear Weapon Center from IG and Sisters.
+* Attack Bike knockback resistance increased so it can use the "swirl" ability (forgot name) without being knocked back.
+* Vehicle injections passive ability was removed from all vehicles as this made all Space Marine vehicles overpowered.
+* Emperor's Armory Blessings of the Machine Spirit research now increases health of all vehicles from 10 to 50%.
+* Land Raider Terminus Ultra firepower is now immense and can fire all weapons it has 4x faster. Is now considered to be the best tier 4 relic unit in the game which are effective against titans.
+* Land Raider Terminus Ultra health increased by 6000hp.
+* Land Raider Terminus Ultra cost increased from 680/1600/500 req/power/relic to 1990/3020/850.
+* Terminator Cyclone Missile Launcher and Storm Bolter damage decreased by 20%.
+* Terminator Thunder Hammer damage increased by 50% (minimum) 91% (maximum). Cost increased by 100%.
+* Scout Marine hp increased by 55hp.
+* Tactical Marine melee damage increased by 10%.
+* Dreadnought Left and right arm damage was fixed.
+* Ironclad Dreadnought Left and right arm damage was fixed.
+* Venerable Dreadnought melee damage and accuracy increased by 20%. Reload time decreased by 25%.
+------------------------
+Tau: 
+------------------------
+
+* Shield Generators are now much more expensive and no longer stacks. But the ranged damage protection increased.
+* Ark Defense Turret anti grav field against vehicles debuff duration decreased from 15 seconds to 3 seconds.
+* Ark Defense Turret anti grav field minimum throw strength decreased so infantry won't go flying all the time.
+* Ark Defense Turret anti grav field morale damage against vehicles and infantry increased.
+* XV101 and XV104 Riptide relic cost decreased from 600 to 500.
+* Kroot Shapers health decreased by 200hp.
+* The Ethereal now spawns Shasui Bodyguards 50% slower. Squad loadout decreased by 1.
+* Pathfinder Pulse Carbine range increased by 10 meters.
+* Pathfinder Ranged damage decreased by 60%. Morale damage increased by 150%, and movement speed suppression fire increased from -8% suppression to -30% suppression.
+* Please don't use Pathfinders as your primary assault unit. Use them with Fire Warriors.
+* Kroot Knarloc Alpha Rider health and health regeneration increased by 20%. But the armor decreased.
+* Kroot Hounds now attack 30% faster.
+
+------------------------
+Tyranids: 
+------------------------
+*** There will be major changes to the Tyranids imported over from GRGE. This faction's entire tech tree will be revamped similar to Necrons and will receive no changes until the Tyranids revamp import.
+
+--------------------------------------------------------|
+Tech Trees (Visual Images Separate from mod): | 
+--------------------------------------------------------|
+
+--------------------------------------------------------|
+SCAR (Winconditions): | 
+--------------------------------------------------------|
+- New wincondition: Restriction: Titanic Aircraft
+* Titan Wars like winconditions increases the rate in which daemons collect relic resources now.
+* Restriction: Game Enders no longer restricts Great Gargants. Please turn on restriction: Titans to disable them.
+* Webway Gates and Dark Eldar Portals no longer counts in Extermination mode.
+* All minefields and Tank Traps no longer counts in Annihilation mode.
+* Legio Titanicus addon no longer increases the relic income and maximum income in general. To do this, select Titan Wars or Titan Wars Extreme. This is in preperation for GRGE stuff.
+* AI Hero wargear is now researched in time much slower. Length increased from 4 minutes per hero upgrade to 6 minutes per hero upgrade.
+	* Totals: 4x8 = 36 minutes full wargear increased to 6x8 = 48 minutes full wargear.
+
+--------------------------------------------------------|
+SCENARIOS: | 
+--------------------------------------------------------|
+* Ultimate Apocalypse 8 player map fatal scar error was fixed.

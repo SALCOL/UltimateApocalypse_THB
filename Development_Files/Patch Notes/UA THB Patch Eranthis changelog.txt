@@ -1,0 +1,168 @@
+=====================================
+	AUDIO
+=====================================
+
+SPEECH VOLUME HAS BEEN CHANGED TO:
+-[CHAOS MARINE]		Chaos Attack Bike
+-[CHAOS MARINE]		Noise Marines
+-[CHAOS MARINE]		Plague Marines
+-[CHAOS MARINE]		Sorcerer Lord
+-[DARK ELDAR]		Tormentor Titan
+-[NECRON]		Death Lord
+-[NECRON]		Doomsday Monolith
+-[NECRON]		Energy Beacon
+-[SISTERS]		Arch Angel
+
+SPEECH HAS BEEN UPDATED TO:
+-[CHAOS MARINE]		Tank Trap
+-[CHAOS MARINE]		Wall
+-[IMPERAIL GUARD]	Tank Trap
+-[IMPERAIL GUARD]	Wall
+-[INQUISITION]		Shrine to the Emperor
+-[INQUISITION]		Tank Trap
+-[INQUISITION]		Titan Tower
+-[INQUISITION]		Wall
+-[ORKS]			Tank Trap
+-[ORKS]			Weirdboy
+-[SISTERS]		Tank Trap
+-[SISTERS]		Witch Hunter units
+-[SPACE MARINE]		Tank Trap
+-[SPACE MARINE]		Tech Marine
+-[TYRANIDS]		Biovores
+-[TYRANIDS]		Broodlords (selection, move and attack)
+-[TYRANIDS]		Carnifex
+-[TYRANIDS]		Gargoyles
+-[TYRANIDS]		Hierophant Titan
+-[TYRANIDS]		Hive Tyrant
+-[TYRANIDS]		Hormagaunt
+-[TYRANIDS]		Ravener (unit_complete and attack)
+-[TYRANIDS]		Reclamation Pool
+-[TYRANIDS]		Ripper Swarm
+-[TYRANIDS]		Spinegaunt
+-[TYRANIDS]		Termagaunt
+-[TYRANIDS]		Trygon
+
+SPEECH HAS BEEN ADDED TO:
+-[CHAOS MARINE]		Heretic (run)
+-[INQUISITION]		Bunker
+-[SISTERS]		Battle Sisters (morale_restored)
+-[SISTERS]		Bunker
+-[SISTERS]		Repentias (morale_restored)
+-[TAU]			Spotting
+-[TAU]			Under Fire
+-[TYRANIDS]		Bio Node Turret
+-[TYRANIDS]		Bio Node Advanced Turret
+-[TYRANIDS]		Gestation Pod
+-[TYRANIDS]		Spore Mine
+-[TYRANIDS]		Uberfex
+
+VOLUME DISTANCE HAS BEEN APPLIED TO:
+-[IMPERAIL GUARD]	Plasma Cannon
+-[INQUISITION]		Ordo Malleius Inquisitor (ability)
+-[INQUISITION]		Structure Descent
+-[SPACE MARINE]		Attack Bike Burnout ability
+-[TYRANIDS]		Structure Descent
+
+SOUNDS ADDED/UPDATED TO:
+-[SPACE MARINE]		Attack Bike Burnout ability
+-[ORKS]			Weirdboy
+-[TYRANIDS]		Biovores
+-[TYRANIDS]		Bio Node Turret
+-[TYRANIDS]		Gaunt Hive
+-[TYRANIDS]		Hierophant Titan
+-[TYRANIDS]		Hive Spire
+-[TYRANIDS]		Manipulator Hive
+-[TYRANIDS]		Ravener
+-[TYRANIDS]		Reclamation Pool
+-[TYRANIDS]		Spore Mines
+-[TYRANIDS]		Tunnel Warrens
+
+=====================================
+	USER INTERFACE
+=====================================
+
+ICONS ADDED:
+-[ELDAR]		Brightlance Grav Platform (squad)
+-[ELDAR]		Farseer Farsight research
+-[ELDAR]		Farseer Guide research
+-[ELDAR]		Farseer Invisibility research
+-[ELDAR]		Farseer Mind War research
+-[ELDAR]		Farseer Psychic Storm research
+-[ELDAR]		Shuriken Cannon Grav Platform (squad)
+-[ELDAR]		Warlock
+-[ORKS]			Weirdboy entrench and detrench ability
+-[SISTERS]		Cherubim (squad)
+-[SISTERS]		Exorcist Incendiary Missile Barrage ability
+-[SISTERS]		Flashbang Grenade ability
+-[SISTERS]		Flashbang Grenade research
+-[SISTERS]		Lightning Missile Barrage ability
+-[SISTERS]		Long Range Scanner (bunker)
+-[SISTERS]		Long Range Scanner (capitol imperialis)
+-[SISTERS]		Preceptor Ardent Blade wargear
+-[SISTERS]		Preceptor Cloak wargear
+-[SISTERS]		Preceptor Emperor's Blessing wargear
+-[SISTERS]		Preceptor Helm wargear
+-[SISTERS]		Retributor (emperor's touch)
+-[SISTERS]		Rightous Fervor ability (deathcult assassin)
+-[SISTERS]		Rightous Fervor ability (disabled)
+-[SISTERS]		Smoke Grenade ability
+-[SISTERS]		Smoke Grenade research
+-[SISTERS]		Turret Probe addon
+-[SPACE MARINE]		Thunderfire Cannon (squad)
+
+ICONS UPDATED:
+-[ELDAR]		Brightlance Grav Platform
+-[ELDAR]		Shadoweaver Grav Platform
+-[ELDAR]		Shuriken Cannon Grav Platform
+-[ELDAR]		Vibrocannon Grav Platform
+-[SISTERS]		Battle Sisters
+-[SISTERS]		Battle Sister Veteran
+-[SISTERS]		Canoness
+-[SISTERS]		Celestian
+-[SISTERS]		Celestian Veteran
+-[SISTERS]		Cherub
+-[SISTERS]		Confessor
+-[SISTERS]		Ecclesiarchal Servitor
+-[SISTERS]		Exorcist
+-[SISTERS]		Imagifier
+-[SISTERS]		Immolator
+-[SISTERS]		Inquisitor
+-[SISTERS]		Living Saint Health research
+-[SISTERS]		Living Saint Tribunal research
+-[SISTERS]		Missionary
+-[SISTERS]		Missionary (squad)
+-[SISTERS]		Mistress
+-[SISTERS]		Repentias
+-[SISTERS]		Retributors
+-[SISTERS]		Rhino
+-[SISTERS]		Saint Anais
+-[SISTERS]		Seraphim
+-[SISTERS]		Seraphim Veteran
+-[SPACE MARINE]		Apothecary (squad)
+-[SPACE MARINE]		Banner Bearer (squad)
+-[SPACE MARINE]		Terminator Apothecary (squad)
+-[SPACE MARINE]		Terminator Banner Bearer (squad)
+-[SPACE MARINE]		Terminator Sergeant (squad)
+-[SPACE MARINE]		Skullprobe (squad)
+
+=====================================
+	MISC CHANGES
+=====================================
+
+NAME CHANGES APPLIED TO:
+-[SISTERS]		Cherub (from Cherubim)
+-[SISTERS]		Crusader (from Looted Rhino Tank)
+-[SISTERS]		Ecclesiarchal Chapel (removed "This Faction Is Not Finished")
+-[SISTERS]		Emperor's Wrath research (from Witch Hammer)
+-[SISTERS]		Incarcerator (from Immolator)
+
+DESCRIPTIONS UPDATED TO:
+-[SISTERS]		Ecclesiarchal Chapel
+-[SISTERS]		Manufactorum
+-[SISTERS]		Shrine to the Living Saint
+
+COMMANDER ADDONS ADDED TO:
+-[SISTERS]		Throne of Judgement
+
+LOADABILITY APPLIED TO:
+-[ORKS]			Weirdboy

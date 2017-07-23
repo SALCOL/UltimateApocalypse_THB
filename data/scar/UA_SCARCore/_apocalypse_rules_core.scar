@@ -22,7 +22,7 @@ function ApocalypseRules_Main()
 	
 	-- Ai wargear stuff.
 	ar_wargear_cancel = false; -- Wargear base restriction.
-	Rule_AddIntervalEx(ApocalypseRules_Levelup_GrantToAI, 240, 8) -- Every 2 minutes, ai commanders level up + 1.
+	Rule_AddIntervalEx(ApocalypseRules_Levelup_GrantToAI, 360, 8) -- Every 6 minutes, ai commanders level up + 1.
 	
 	-- Pinpoint the super structure and count.
 	EGroup_CreateIfNotFound("ar_eg_superstructure")
@@ -31,6 +31,9 @@ function ApocalypseRules_Main()
 	-- Disabled due to the fact this is no longer needed. Sadly.
 	-- Endgamers stuff.
 	Rule_AddInterval(ApocalypseRules_SS_Check, 1) -- Initiate main rule every .4 seconds.
+	
+	-- Display welcome message.
+	Rule_AddOneShot(ApocalypseRules_Message, 5.0)
 	
 	--[[ Make a list of produceable superweapon research, then add to the list the following:
 	Prod_AddSquadToList("npc_squad_superweapon1", ar_productiontable)
@@ -55,6 +58,11 @@ end
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+function ApocalypseRules_Message()
+
+	Util_MissionTitle("Ultimate Apocalypse Mod - Created By: Lord_Cylarne")
+	
+end
 
 function ApocalypseRules_SuperweaponWarning(ar_playerindex)
 
