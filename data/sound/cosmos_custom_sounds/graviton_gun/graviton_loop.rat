@@ -23,7 +23,23 @@ envelope = {
     }
   },
   {
-    distance = 68.000000,
+    distance = 11.500000,
+    volume = 1.000000,
+    reverb = 0.000000,
+    duration = 0,
+    equalizer = {
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+              1.000000,
+    }
+  },
+  {
+    distance = 28.000000,
     volume = 0.920000,
     reverb = 0.000000,
     duration = 0,
@@ -39,8 +55,8 @@ envelope = {
     }
   },
   {
-    distance = 107.000000,
-    volume = 0.800000,
+    distance = 49.500000,
+    volume = 0.300000,
     reverb = 0.000000,
     duration = 0,
     equalizer = {
@@ -55,23 +71,7 @@ envelope = {
     }
   },
   {
-    distance = 156.500000,
-    volume = 0.533333,
-    reverb = 0.000000,
-    duration = 0,
-    equalizer = {
-              1.000000,
-              1.000000,
-              1.000000,
-              1.000000,
-              1.000000,
-              1.000000,
-              1.000000,
-              1.000000,
-    }
-  },
-  {
-    distance = 231.000000,
+    distance = 102.500000,
     volume = 0.000000,
     reverb = 0.000000,
     duration = 0,

@@ -2,7 +2,7 @@
 
 version = 9
 
-volume = 0.200000
+volume = 0.150000
 pitchRand = 0.100000
 maxPolyphony = 6
 type3D = 1
@@ -24,8 +24,8 @@ envelope = {
     }
   },
   {
-    distance = 50.000000,
-    volume = 0.900000,
+    distance = 23.500000,
+    volume = 0.853333,
     reverb = 0.000000,
     duration = 0,
     equalizer = {
@@ -40,8 +40,8 @@ envelope = {
     }
   },
   {
-    distance = 100.000000,
-    volume = 0.600000,
+    distance = 37.000000,
+    volume = 0.620000,
     reverb = 0.000000,
     duration = 0,
     equalizer = {
@@ -56,8 +56,8 @@ envelope = {
     }
   },
   {
-    distance = 150.000000,
-    volume = 0.250000,
+    distance = 52.500000,
+    volume = 0.280000,
     reverb = 0.000000,
     duration = 0,
     equalizer = {
@@ -72,7 +72,7 @@ envelope = {
     }
   },
   {
-    distance = 200.000000,
+    distance = 108.000000,
     volume = 0.000000,
     reverb = 0.000000,
     duration = 0,
