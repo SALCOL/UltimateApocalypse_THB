@@ -2,8 +2,6 @@
 
 version = 9
 
-volume = 1.0
-
 containerType = 3
 loopingContainer = 0
 loadAllContainer = 0

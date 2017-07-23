@@ -22,8 +22,6 @@ function Rule_RestrictSupers()
 		Player_RestrictSquad(player, "tau_drone_satellite_squad");
 		Player_RestrictSquad(player, "ork_squad_nukklear_bomba");
 		Player_RestrictResearch(player, "ork_research_tech_nukklear_bomma");
-		Player_RestrictSquad(player, "ork_squad_great_gargant");
-		Player_RestrictResearch(player, "ork_research_tech_great_gargant");
 		
 		for i=1,table.getn( _Actual.superstructure_list ) do
 			local restrict = _Actual.superstructure_list[i];

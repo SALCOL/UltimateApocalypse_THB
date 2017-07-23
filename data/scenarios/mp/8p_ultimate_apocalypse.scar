@@ -227,7 +227,7 @@ function Rule_WarpGate_Titan()
 					Util_CreateSquadsAtMarker(player, "sg_titan", "eldar_squad_titan_phantom", "titan_marker", 2)
 					
 				elseif (Player_GetRaceName(player) == "guard_race") then
-					Util_CreateSquadsAtMarker(player, "sg_titan", "guard_squad_warlord_titan", "titan_marker", 1)
+					Util_CreateSquadsAtMarker(player, "sg_titan", "guard_squad_warlord_titan_aio", "titan_marker", 1)
 					
 				elseif (Player_GetRaceName(player) == "necron_race") then
 					Util_CreateSquadsAtMarker(player, "sg_titan", "necron_doomsday_monolith_squad", "titan_marker", 2)

@@ -3,7 +3,7 @@
 version = 9
 
 priority = 20
-volume = 0.250000
+volume = 0.500000
 source = 0
 maxPolyphony = 1
 type3D = 1

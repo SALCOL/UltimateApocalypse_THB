@@ -4,6 +4,5 @@ version = 9
 
 containerType = 3
 loopingContainer = 0
-loadAllContainer = 1
 silenceBreak = 0.000000
 silenceRandom = 0.000000
