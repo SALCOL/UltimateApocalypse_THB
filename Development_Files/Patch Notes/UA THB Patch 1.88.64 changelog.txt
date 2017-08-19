@@ -1,0 +1,829 @@
+Hint: 
+* = Fixes.
+- = Ideas not taken to effect yet.
+!* = Applied ingame, but as rough drafts (non final product)
+> = Noted for next version.
+>> = Noted, but not for another two versions or more.
+
+
+------------------------
+Global: 
+------------------------
+
+------------------------
+Changes made by Cosmocrat:
+------------------------
+
+-Added Volkite Culverin to CSM
+-Added Taurox support vehicle for Imperial Guard
+-Added Hotshot Laser Guns to Kasrkin Airborne variant
+-Modified model of the old industrial command with a new airpad.
+
+------------------------
+Changes made by Eranthis:
+------------------------
+
+-Utilizes the Sisters.ucs to replace and update all unit and building descriptions.
+-Added requirements for the Penitent Engine and Incarcerator. 
+-Removed stray, unused files.
+-Added sounds to capitol imperialis and crusader. 
+-Abilities removed for certain units. 
+-Throne addons available.
+
+------------------------
+Changes made by Salcol:
+------------------------
+
+- Eldritch Spires no longer stop working after relocation
+- Gladiator's initial stance is no longer fixed on yellow
+- Removed or reworked many of my old files which should not have been here (all UP UPV UPW stuff, LP addon 5 and strategic hold researches)
+- some modifier lists are a bit more polished (without ingame changes)
+- chaos_selfdestruct ability causes more health degeneration 30 -> 50 to cause the death of the Wheel
+- All 5 abilities of inspiring banners have been altered as they stacked way too many times. They are now RESTRICTED TO THE SQUAD of the banner bearer but their effects are amplified:
+	chaos_inspiring_aura_bearer: max morale 100 -> 250, morale regen 2 -> 5
+	chaos_inspiring_aura_bearer_tzeentch: nothing
+	chaos_inspiring_aura_bearer_khorne: max damage 15% -> 20%, min damage 15% -> 25%
+	chaos_inspiring_aura_bearer_nurgle: hp regen 2 -> 6
+	chaos_inspiring_aura_bearer_slaanesh: speed 20% -> 25%, max morale 100 -> 200, morale regen 2 -> 4
+- tau_commander_missile_barrage can no longer be used by the AI when requirements are not met
+- Added back my stuff for SOB
+- Clawed Fiend heals less per hit (25% -> 15%), is overall slower 45 -> 40 and cannot use Feet On Fire anymore
+- Nerfed cultist worships. Worships no longer affect structures, vehicles, titans and the caster squad. Their cooldowns are now global as well, so only one can be used at a time in normal circumstances.
+	worship_worship (applied by default to the caster squad): Caster squad becomes unable to reinforce or upgrade weapons and is revealed for the whole durations
+	Tzeentch: MODIFIERS UNCHANGED
+	Khorne: Stacks with other bonuses.
+	Nurgle: Stacks with other bonuses. Health regen reduced 40 -> 25
+	Slaanesh: Stacks with other bonuses. Max morale +200% -> +40%. Speed +200% -> +40%
+- Techpriest research was really moved into the HQ like the other changelog stated and it now gives 250% melee damage as well instead of 300%. It's position is also changed to H 18 (on the right of Vindicare Assassins)
+- Fixed UI name and description of the Tyranids Digest Pool
+- Removed the RUN! ability from all 7 Eldar Grav Platforms
+- Eldar Holofield research now has a proper UI description
+Lemanruss Tanks can now upgrade lateral weapons with flamer melta and plasma in this sequence. Also, the heavy stubber is now a weapon upgrade, so it's not enabled by default anymore (these changes should be done to all Lemanruss Tanks according to lore. Mydowua and I agree that this is not a bad thing and could prove useful to free one vehicle slot where the Murderer currently is)
+
+Chaos armour and health researches now affect Icon Bearers built within squads as well
+
+Chaos furious charge research now increases the speed of Possessed Marines as well
+
+Dark Eldar feet on fire researches now affect Trueborn Warriors, Wracks and both leaders
+
+Dark Eldar upgrade_commander_health researches (sight of infantry) no longer affects Warp Beasts since the research mentions HELMETS (UI description properly updated)
+
+Dark Eldar upgrade_infantryhealth researches (health of infantry) no longer affects Warp Beasts since the research mentions ARMOURS
+
+Following Lemanruss Tanks now have Heavy Bolter and then Lascannon as weapon upgrade on the hull (hardpoint 2) {Vanquisher HAD bolter/flamer/lascannon} {Punisher HAD bolter/flamer} {Exterminator HAD bolter/flamer} {Executioner had lascannon} {Demolisher had flamer} {Annihilator HAD lascannon} {}
+
+Because of the previous change the Annihilator can no longer equip lateral lascannons, which seemed to be not lore wise, but now has a heavy stubber on hardpoint 3 (please someone fix it's model attacks for stubber, lateral weapons and bolter hull default weapon)
+
+lemanruss_vanquisher_command now has different weaponry. Lateral cannons Heavy Bolter -> Plasma Cannon
+
+Fixed the missing names of the following Lemanruss Tanks (I used text fields, not UCS): Punisher, Vanquisher, Conqueror, Eradicator, Exterminator
+
+Land Raider Terminus can no longer transport troops (lore clearly states that there is no room because it's full of power banks for its weapons)
+
+IDH Tempest no longer have 2m of keen sight (now set to 0m)
+
+SM Landspeeder Tempest are now affected by the Sensor research for Landspeeders
+
+Added 2 new researches in the Haemonculus Laboratory to upgrade Warp Beasts [dark_eldar_warp_beast_master_artefacts and dark_eldar_warp_beast_master_excruciating_training] (1. They are too weak 2. Normal researches do not affect them anymore)
+
+so the haemonculus laboratory has 2 researches + warp beast tamers have 2 new abilities + 2 new abilities were created + warp beasts without tamer can teleport after research + warp beast tamer modifier_apply_ext disables squad flight + warp beasts have melee ext + warp beast modifier apply ext disables hardpoint 5 (weapon unlocked by having both warp beast master and artefacts research) + warp beast weapon moved from hardpoint 2 to 4 + one new weapon in hardpoint 5
+
+Greater Knarlocks and Clawed Fiends no longer have squad_reinforce_ext and their loadout is now limited to 1 (1. They could destroy any other relic unit and they cost less if reinforced. 2. Their relic cost could be glitched and you could gain 150 additional relic if the first trooper died)
+
+Removed eldar radars + support platforms don't have the radar addon anymore (eldar_support_platform_addon_probe) + Dcannon addon no longer is incompatible with radar
+
+Make titanportal sight bonus not a multiplicative value and update description
+
+eldar ground titans movement reworked. acceleration 0 -> 0.25, rotation speed 10000 -> 300 Phantom and 10000 -> 600 Revenant, speed of the revenant reduced 60 -> 45, turning_behaviour_template walker -> squiggoth
+
+Ground titans main weapons now affect allies as well (eldar_pulsar_phantom_titan_left, eldar_pulsar_phantom_titan_right, eldar_pulsar_revenant_titan_left, eldar_pulsar_revenant_titan_right, eldar_sonic_laser_revenant_titan_left, eldar_sonic_laser_revenant_titan_right)
+
+Completely reworked AP and damages of ground titan weapons (Scaled AP to make the biggest 100 and multiplied damage for that factor. Eldar titans dealt almost triple damages compared to other titans. Therefore damage was drastically reduced as well by /2 up to /3): eldar_pulsar_phantom_titan_left, eldar_pulsar_phantom_titan_right, eldar_sonic_laser_revenant_titan_left, eldar_sonic_laser_revenant_titan_right. (Eldar sonic lasers vulnerability debuff has been completely removed like on all brightlances)
+
+Increased min range of the following ground titans main weapons: Revenant(default) to 10m, Revenant(upgraded) to 20m, Phantom(default) weapons to 15m
+
+Reduced the speed bonus of FeetonFire from +300% -> +50%
+
+Reduced the bonus of Fleet on Foor from +200% -> +35%
+
+Revenant titan can no longer use Gravitic Booster nor jump anymore
+
+Wraithbone of Khaine now increases the vulnerability of the user
+
+Fixed a bug which made one of my wargears increase all unit's stats way too much because it was applied per Warp Signature and LPs instead of LPs only
+
+CD buildings no longer have daemon_structure_fire_fx1, daemon_structure_fire_fx2, daemon_structure_fire_fx3 since they are useless. These 3 files should be removed
+
+Monolith no longer has two useless abilities necron_production_modifier and necron_production_modifier_anti. necron_production_modifier_anti has also been removed (the other causes a crash but I couldn't track down the cause)
+
+Space Marines Essence Of The Machine Spirit no longer affects EVERYTHING with +50% health and +50% Max damage. It's effects are now limited to all vehicle types and aircrafts as it should be
+
+Necron Mass Resurrection Overseer (passive) no longer resurrects nearby fallen corpses but increases resurrection chance by 10% and increases health regeneration by 10. Wargear's description is properly updated
+
+Necron Mass Resurrection Monolith cooldown increased 120 -> 180 and power cost increased 0 -> 600. Cooldown is shared with other Monolith Resurrection as well
+
+Necron Mass Resurrection Lychguard cooldown increased 60 -> 180 and power cost increased 0 -> 300. Cooldown is shared with other Lychguard Resurrection as well
+
+Necron Mass Resurrection Destroyer cooldown increased 180 -> 200 and power cost increased 0 -> 400. Cooldown is shared with Mass Resurrection as well
+
+Necron Mass Resurrection cooldown increased 180 -> 200 and power cost increased 0 -> 400. Cooldown is shared with Mass Resurrection Destroyer as well
+
+All necron corpses aside from Tomb Spyders and Tomb Stalkers cannot be revived after 120 seconds from their death and consequently disappear (necron_basic_warrior_body, necron_deathmark_body, necron_flayed_one_body, necron_immortal_body, necron_lychguard_body, necron_wraith_body)
+
+Necron squads can no longer be recalled to structures (necron_basic_warrior_squad, necron_builder_scarab_squad, necron_deathmark_squad, necron_flayed_one_squad, necron_immortal_squad, necron_lord_death_squad necron_overseer_squad, necron_pariah_deathstrike_squad, necron_pariah_squad)
+
+Addon Necron List Post 1 time cost increased by 15 seconds 35 -> 50 but power cost reduced by 30 60 -> 30
+
+Increased the movement speed of most Necron infantry units: Basic Warrior 7 -> 8, Flayed Ones 5.8 -> 6.5, Immortal 7 -> 8.25
+
+Marines Burnout ability (CSM and SM Bikes) has completely different armour penetrations, damages and morale damages (overall drastically lowered)
+
+Space Marines Tactical Bike and Chaos Marine Bike armour type changed from vehicle to elite heavy infantry (it must be infantry since they are MEN on BIKES and not the opposite). Minimum Armour and Armour values are both increased by 3
+
+Disambiguated the weapon of the Damocles else it is improved the the infantry injection and infantry researches as well. A _damocles version has been created. Damocles file consequently updated
+
+Changed the default weapon of Predator Executioners into space_marine_inferno_cannon_predator which seems more suitable than guard_inferno_cannon_leman_russ
+
+Emperor's Armoury is now limited to 1 (prevents buffs from stacking)
+
+Hellsmith can no longer use the Forced Labor ability
+
+Deleted 1 wrong Hammerhand from the Inquisition Grey Knight Strike Team
+
+Techpriests are no longer able to throw grenades
+
+Reduced the effects of the Tau Hunt ability used by Kroots (tau_devour): Speed +50% -> +30%, Sight +100% -> +75%, Keen sight +100% -> +75%
+
+CSM buildings: - +3 armour and +15 minimum armour
+
+Chaos Warpgate
+Chaos Warp Forge
+Chaos Wall
+Chaos Turret Bolter
+Chaos Temple
+Chaos Shrine Khorne
+Chaos Sacrificial Circle
+Chaos Machine Pit
+Chaos Listening Post
+Chaos HQ Super
+Chaos HQ
+Chaos Greater Sacrificial Circle
+Chaos Armoury
+CSM building weapons: - +20% damage
+
+chaos_storm_bolter_turret_listeningpost
+chaos_heavy_bolter_turret_listeningpost
+chaos_heavy_bolter_turret_improved_listeningpost
+chaos_shrine_turret
+chaos_heavy_bolter_turret
+chaos_missile_turret
+chaos_missile_improved_turret
+SM buildings: - +3 armour and +15 minimum armour
+
+Space Marine Ability Building
+Space Marine Armoury
+Space Marine Armoury Emperor
+Space Marine Barracks
+Space Marine HQ
+Space Marine HQ Super
+Space Marine Interface Relay
+Space Marine Landraider Building
+Space Marine Listening Post
+Space Marine Orbital Relay
+Space Marine Titan Facility
+Space Marine Turret Bolter
+Space Marine Turret Missile SP
+Space Marine Vehicle Building
+Space Marine Wall
+CSM building weapons: - +20% damage
+
+space_marine_storm_bolter_turret_listeningpost
+space_marine_heavy_bolter_listening_post
+space_marine_heavy_bolter_listening_post_improved
+space_marine_heavy_bolter_turret
+space_marine_missile_turret
+space_marine_assault_cannon_listening_post
+space_marine_lascannon_twin_turret
+CSM infantry: - +100% health, +14 minimum armour, +5 armour, +50% weigth, +2 health regeneration
+
+Chaos Aspiring Champion
+Chaos Aspiring Champion Cultist
+Chaos Aspiring Sorcerer
+Chaos Cultist Aspiring Champion2
+Chaos Khorne Berserker
+Chaos Khorne Berserker Champion
+Chaos Khorne Berserker Champion2
+Chaos Marine Bolter
+Chaos Marine Havoc
+Chaos Marine Icon Bearer
+Chaos Marine Icon Bearer Leader
+Chaos Marine Noise
+Chaos Marine Noise Champion
+Chaos Marine Noise Champion2
+Chaos Marine Plague
+Chaos Marine Plague Champion
+Chaos Marine Plague Champion2
+Chaos Marine Rubric
+Chaos Mutilator
+Chaos Obliterator
+Chaos Possessed Marine
+Chaos Raptor
+Chaos Raptor Aspiring Champion
+Chaos Renegade Champion
+Chaos Terminator
+Chaos Terminator Khorne
+Chaos Terminator Sergeant
+CSM infantry weapons: - +40% damage
+
+chaos_aspiring_sorceror_force_weapon
+chaos_autocannon_havoc
+chaos_bolt_pistol_champion
+chaos_bolt_pistol_sorceror
+chaos_bolt_pistol_khorne_berserker
+chaos_bolt_pistol_skull_champion
+chaos_bolt_pistol_raptorchampion
+chaos_bolt_pistol_raptor
+chaos_bolter_plague
+chaos_bolter_rubric
+chaos_bolter_rubric_inferno
+chaos_bolter_tactical
+chaos_blast_master_heavy
+chaos_blast_master_heavy_champion_freq_high
+chaos_blast_master_heavy_champion_freq_low
+chaos_chainsword_champion
+chaos_chainsword_raptorchampion
+chaos_chainsword_raptor
+chaos_chain_fist deals
+chaos_flamer_tactical
+chaos_flamer_plague
+chaos_flamer_possessed
+chaos_flamer_raptor
+chaos_heavy_flamer_obliterator
+chaos_heavy_flamer_terminator
+chaos_heavy_flamer_terminator_chosen
+chaos_heavy_bolter_havoc
+chaos_heavy_bolter_tactical
+chaos_khornate_chainaxe
+chaos_khornate_chainaxe_champion
+chaos_khornate_chainaxe_terminator
+chaos_knife_tactical
+chaos_knife_noise
+chaos_knife_plague
+chaos_lascannon_havoc
+chaos_meltagun_plague
+chaos_meltagun_tactical
+chaos_melta_combo_terminator
+chaos_missile_launcher_tactical
+chaos_missile_launcher_havoc
+chaos_obliterator_ranged_group
+chaos_plasma_combo_terminator
+chaos_plasma_gun_tactical
+chaos_plasma_gun_plague
+chaos_plasma_pistol_champion
+chaos_plasma_pistol_sorceror
+chaos_plasma_pistol_skull_champion
+chaos_plasma_pistol_champion_cultist
+chaos_plasma_pistol_raptorchampion
+chaos_power_axe_skull_champion
+chaos_power_claw_terminator
+chaos_power_fist_champion
+chaos_power_fist_terminator
+chaos_power_fist_obliterator
+chaos_power_fist_mutilator
+chaos_power_fist_raptorchampion
+chaos_power_sword_champion
+chaos_power_sword_raptorchampion
+chaos_possessed_melee
+chaos_rad_launcher_plague_marine
+chaos_reaper_terminator
+chaos_storm_bolter_terminator
+chaos_sonic_blaster
+chaos_volkite_caliver
+chaos_volkite_culverin
+chaos_volkite_charger
+CSM vehicles: - +50% health, +2 armour, +5 minimum armour
+
+Chaos Assaultpod
+Chaos Baneblade
+Chaos Brass Scorpion
+Chaos Deathweel
+Chaos Defiler
+Chaos Dreadnought
+Chaos Hell Talon
+Chaos Landraider
+Chaos Marine Bike
+Chaos Predator
+Chaos Rhino
+Chaos Thunderhawk
+Chaos Vindicator
+CSM vehicles weapons: - +25% max damage
+
+chaos_demolisher_cannon_baneblade
+
+chaos_heavy_bolter_predator
+
+chaos_heavy_bolter_predator_l
+
+chaos_heavy_bolter_predator_r
+
+chaos_heavy_bolter_dreadnought
+
+chaos_heavy_flamer_defiler
+
+chaos_heavy_flamer_brass_scorpion
+
+chaos_autocannon_hell_talon
+
+chaos_autocannon_twin_dreadnought
+
+chaos_autocannon_twin_defiler
+
+chaos_autocannon_predator
+
+chaos_landraider_twin_heavybolters_improved
+
+chaos_landraider_twin_lascannon_right
+
+chaos_landraider_twin_lascannon_left
+
+chaos_missile_launcher_predator
+
+chaos_missile_launcher_defiler
+
+chaos_multi_melta_dreadnought
+
+chaos_lascannon_hell_talon
+
+chaos_lascannon_hell_talon_2
+
+chaos_lascannon_twin_dreadnought
+
+chaos_lascannon_twin_defiler
+
+chaos_lascannon_predator_l
+
+chaos_lascannon_predator_r
+
+chaos_lascannon_twin_predator
+
+chaos_incendiary_bomb
+
+chaos_dreadnought_fist_twin
+
+chaos_dreadnought_fist
+
+chaos_defiler_melee
+
+chaos_battlecannon
+
+chaos_battlecannon_desecration
+
+chaos_battlecannon_brass_scorpion
+
+chaos_brass_scorpion_melee
+
+chaos_bolter_bike
+
+chaos_flamer_bike
+
+chaos_plasma_gun_bike
+
+Chaos DS Turret has +3 armour and +15 minimum armour (damage was already increased for the static turret)
+
+CSM commanders: - +50% health, +4 armour, +14 minimum armour, +50% weigth, +2 health regeneration
+
+Chaos Lord
+Chaos Lord Khorne
+Chaos Lord Nurgle
+Chaos Lord Slaanesh
+Chaos Lord Terminator
+Chaos Lord Undivided
+Chaos Sorcerer
+Chaos Sorcerer Advance SP
+CSM commanders weapons - +20% damage
+
+chaos_plasma_pistol_sorceror
+
+chaos_plasma_pistol_commander
+
+chaos_bedlam_staff deals
+
+chaos_bedlam_staff_stronghold_sp
+
+chaos_bolter_combo
+
+chaos_melta_combo
+
+chaos_power_fist_lord
+
+chaos_chain_fist_lord
+
+chaos_power_claw_lord
+
+chaos_storm_bolter_lord
+
+chaos_flamer_combo_lord
+
+chaos_plasma_combo_lord
+
+chaos_melta_combo_lord
+
+chaos_reaper_lord
+
+chaos_manreaper
+
+chaos_bolt_pistol_lord
+
+chaos_flamer_commander
+
+chaos_meltagun_commander
+
+chaos_plasma_pistol_lord
+
+chaos_melta_gun_lord
+
+chaos_power_sword_lord
+
+Chaos Chainaxe Hellsmith did NOT RECEIVE the 20% damage buff as it currently is too strong.
+
+All of my new weapon wargears did NOT RECEIVE the 20% damage buff as they currently are too strong.
+
+chaos_khornate_chainaxe_lord deals did NOT RECEIVE the 20% damage buff as it currently is too strong.
+
+SM infantry: - +100% health, +14 minimum armour, +5 armour, +50% weigth, +2 health regeneration
+
+Apothecary
+Apothecary Leader
+Assault Marine
+Banner Bearer
+Banner Bearer Leader
+Honor Guard Gladiator
+Sergeant
+Sergeant Assault Marine
+Space Marine Deathwatch
+Space Marine Devastator
+Space Marine Tactical Bolter
+Sternguard Veteran
+Terminator
+Terminator Apothecary
+Terminator Assault
+Terminator Banner Bearer
+Terminator Sergeant
+Vanguard Veteran
+SM infantry weapons: - +40% DPS
+
+space_marine_assault_cannon_terminator
+space_marine_bolt_pistol_apothecary
+space_marine_bolt_pistol_assault
+space_marine_bolt_pistol_sergeant
+space_marine_bolt_pistol_assaultsergeant
+space_marine_bolt_pistol_assault_veteran
+space_marine_bolter_veteran
+space_marine_bolter_kraken_veteran
+space_marine_bolter_dragonfire_veteran
+space_marine_bolter_hellfire_veteran
+space_marine_bolter_vengeance_veteran
+space_marine_bolter_tactical
+space_marine_bolter_variants
+space_marine_chainsword_apothecary
+space_marine_chainsword_assault
+space_marine_chainsword_sergeant
+space_marine_chainsword_assaultsergeant
+space_marine_chain_fist_terminator
+space_marine_flamer_assault
+space_marine_flamer_tactical
+space_marine_halberd_grey_knight
+space_marine_heavy_bolter_tactical
+space_marine_heavy_bolter_devastator
+space_marine_heavy_bolter_veteran
+space_marine_heavy_flamer
+space_marine_graviton_gun
+space_marine_graviton_cannon
+space_marine_knife_tactical
+space_marine_lascannon_devastator
+space_marine_lascannon_veteran
+space_marine_lightning_claw_terminator
+space_marine_lightning_claw_veteran
+space_marine_meltagun_veteran
+space_marine_meltagun_tactical
+space_marine_multi_melta_devastator
+space_marine_multi_melta_veteran
+space_marine_missile_launcher_tactical
+space_marine_missile_launcher_cyclone_terminator
+space_marine_plasma_cannon_veteran
+space_marine_plasma_cannon_devastator
+space_marine_plasma_gun
+space_marine_plasma_gun_veteran
+space_marine_plasma_gun_assault
+space_marine_plasma_pistol_sergeant
+space_marine_plasma_pistol_assaultsergeant
+space_marine_power_fist_veteran
+space_marine_power_fist_terminator
+space_marine_power_fist_assaultsergeant
+space_marine_power_fist_sergeant
+space_marine_power_sword_veteran
+space_marine_power_sword_veteran_improved
+space_marine_power_sword_sergeant
+space_marine_power_sword_assaultsergeant
+space_marine_storm_shield
+space_marine_storm_bolter
+space_marine_thunder_hammer
+SM vehicles: - +50% health, +2 armour, +5 minimum armour
+
+Damocles
+
+Dreadnought
+
+Dreadnought Hellfire Variant
+
+Dreadnought Ironclad
+
+Dreadnought Venerable
+
+Land Raider
+
+Land Raider Ares
+
+Land Raider Crusader
+
+Land Raider Helios
+
+Land Raider Prometheus
+
+Land Raider Redeemer
+
+Land Raider Terminus
+
+Land Speeder
+
+Predator
+
+Predator Advance SP
+
+Predator Murderer
+
+Razorback
+
+Rhino
+
+Rhino Stalker
+
+Space Marine Tactical Bike
+
+Stormraven
+
+Tempest
+
+Thunderhawk UAmod
+
+Vindicator
+
+Whirlwind
+
+DS Turret has +3 armour and +15 minimum armour (damage was already increased for the static turret)
+
+SM vehicle weapons - Max damage +25% for all following weapons
+
+space_marine_autocannon
+space_marine_assault_cannon_dreadnought
+space_marine_assault_cannon_hellfire
+space_marine_assault_cannon_crusader
+space_marine_assault_cannon_redeemer
+space_marine_assault_cannon_landspeeder
+space_marine_assault_cannon_tempest
+space_marine_assault_cannon_stormraven
+space_marine_conversion_beam_predator
+space_marine_demolisher_cannon_ares
+space_marine_dreadnought_fist
+space_marine_dreadnought_fist_twin
+space_marine_dreadnought_fist_improved
+space_marine_flamer_dreadnought
+space_marine_flamestorm_cannon_right
+space_marine_flamestorm_cannon_left
+space_marine_heavy_bolter_twin_stormraven
+space_marine_heavy_bolter_stalker_right
+space_marine_heavy_bolter_stalker_left
+space_marine_heavy_flamer_razorback
+space_marine_heavy_bolter_razorback
+space_marine_heavy_bolter_tank_left
+space_marine_heavy_bolter_tank_right
+space_marine_heavy_bolter_land_raider
+space_marine_heavy_bolter_twin
+space_marine_hurricane_bolter_ironclad
+space_marine_hurricane_bolter_right
+space_marine_hurricane_bolter_left
+space_marine_hurricane_bolter_stormraven_left
+space_marine_hurricane_bolter_stormraven_right
+space_marine_inferno_cannon_dreadnought
+space_marine_inferno_cannon_predator
+space_marine_lascannon_twin_razorback
+space_marine_lascannon_twin_dreadnought
+space_marine_lascannon_twin_hellfire
+space_marine_lascannon_twin_tank_right
+space_marine_lascannon_twin_tank_left
+space_marine_lascannon_twin_terminus_coaxial
+space_marine_lascannon_twin_terminus_right
+space_marine_lascannon_twin_terminus_left
+space_marine_lascannon_twin_terminus
+space_marine_lascannon_twin_predator
+space_marine_lascannon_tank_right
+space_marine_lascannon_tank_left
+space_marine_lascannon_twin_stormraven
+space_marine_multi_melta_dreadnought
+space_marine_multi_melta_crusader
+space_marine_multi_melta_land_speeder
+space_marine_multi_melta_stormraven
+space_marine_missile_krak_tempest
+space_marine_missile_frag_tempest
+space_marine_missile_battery_helios
+space_marine_missile_launcher_hellfire
+space_marine_missile_launcher_typhoon
+space_marine_missile_battery_hyperios
+space_marine_missile_battery_inferno_hyperios
+space_marine_missile_battery
+space_marine_plasma_cannon_dreadnought
+space_marine_plasma_cannon_stormraven
+space_marine_plasma_cannon_executioner
+space_marine_quad_bolter_right
+space_marine_quad_bolter_left
+space_marine_vindicator_gun
+space_marine_storm_bolter_land_speeder
+space_marine_storm_bolter_rhino
+SM commanders: +50% health, +4 armour, +14 minimum armour, +50% weigth, +2 health regeneration
+
+Chaplain
+Chaplain Advance SP
+Force Commander
+Force Commander Killeus
+Force Commander Lotd
+Force Commander Terminator
+Honor Guard Chapter Master
+Librarian
+Techmarine
+SM commander weapons: - +20% DPS
+
+space_marine_assault_cannon_commander
+space_marine_bolt_pistol_librarian
+space_marine_bolt_pistol_forcecommander
+space_marine_bolt_pistol_combi_chaingun_forcecommander
+space_marine_bolter_commander
+space_marine_chain_fist_commander
+space_marine_chainsword_force_commander
+space_marine_crozius_arcanum
+space_marine_crozius_arcanum_improved
+space_marine_daemon_hammer_advance_sp
+space_marine_flamer_combo
+space_marine_force_weapon
+space_marine_heavy_flamer_commander
+space_marine_lightning_claw_commander
+space_marine_missile_launcher_cyclone_commander
+space_marine_melta_combo
+space_marine_power_sword_librarian
+space_marine_power_sword_force_commander
+space_marine_power_fist_commander
+space_marine_power_axe_techmarine
+space_marine_plasma_combi_bolter
+space_marine_plasma_pistol_librarian
+space_marine_plasma_pistol_chaplain
+space_marine_plasma_pistol_commander
+space_marine_relic_blade
+space_marine_thunder_hammer_techmarine
+space_marine_storm_bolter_commander
+space_marine_storm_bolter_grey_knight
+space_marine_storm_shield
+space_marine_storm_shield_commander_terminator
+space_marine_thunder_hammer_commander
+space_marine_thunder_hammer_commander_terminator
+IDH infantry: - +100% health, +14 minimum armour, +5 armour, +50% weigth, +2 health regeneration
+
+Inquisition Grey Knights
+Inquisition Grey Knights Apothecary
+Inquisition Grey Knights Apothecary Terminator
+Inquisition Grey Knights Interceptor
+Inquisition Grey Knights Justicar
+Inquisition Grey Knights Purgator
+Inquisition Grey Knights Purifier
+Inquisition Grey Knights Terminator
+Inquisition Grey Knights Terminator Justicar
+Inquisition Grey Knights Terminator Paladin
+IDH infantry weapons: - +40% DPS
+
+inquisition_daemon_hammer_grey_knight
+inquisition_daemon_hammer_grey_knight_terminator
+inquisition_halberd_interceptor
+inquisition_incinerator_gk_terminator
+inquisition_incinerator_purgator
+inquisition_incinerator_grey_knight
+inquisition_incinerator_paladin
+inquisition_knife_grey_knight
+inquisition_nemesis_weapon_paladin
+inquisition_nemesis_weapon_grey_knight
+inquisition_nemesis_weapon_falchions
+inquisition_nemesis_weapon_justicar
+inquisition_nemesis_weapon_gk_terminator
+inquisition_nemesis_weapon_gk_justicar
+inquisition_psycannon_gk_terminator
+inquisition_psycannon_grey_knight
+inquisition_psycannon_purgator
+inquisition_psycannon_paladin
+inquisition_staff_psyker
+inquisition_storm_bolter_grey_knight
+inquisition_storm_bolter_interceptor
+inquisition_storm_bolter_gk_justicar
+inquisition_storm_bolter_purifier
+inquisition_storm_bolter_paladin
+inquisition_storm_bolter_terminator_justicar
+inquisition_storm_bolter_gk_terminator
+IDH vehicles: - +50% health, +2 armour, +5 minimum armour
+
+Inquisition Damocles
+Inquisition Dreadknight Titan
+Inquisition Dreadnought
+Inquisition Dreadnought Assault
+Inquisition Dreadnought Support
+Inquisition Dreadnought Venerable
+Inquisition Land Raider
+Inquisition Land Raider Crusader
+Inquisition Land Raider Daemonhunter
+Inquisition Land Raider Redeemer
+Inquisition Predator
+Inquisition Razorback
+Inquisition Rhino
+Inquisition Stormraven Fury
+Inquisition Tempest
+Inquisition Whirlwind
+IDH vehicles weapons: - +25% max damage
+
+inquisition_assault_cannon_dreadnought
+inquisition_assault_cannon_dreadnought_assault
+inquisition_assault_cannon_dreadnought_hellfire
+inquisition_assault_cannon_twin_crusader
+inquisition_autocannon_twin_dreadknight
+inquisition_autocannon_twin_dreadnought
+inquisition_autocannon_twin_dreadnought_hellfire
+inquisition_autocannon_twin_dreadnought_venerable
+inquisition_daemon_hammer_dreadknight
+inquisition_flamestorm_cannon_left
+inquisition_flamestorm_cannon_right
+inquisition_heavy_bolter_dreadnought
+inquisition_heavy_bolter_twin_landraider
+inquisition_hurricane_bolter_crusader_right
+inquisition_hurricane_bolter_crusader_left
+inquisition_incinerator_dreadnought_hellfire
+inquisition_incinerator_dreadknight
+inquisition_incinerator_dreadnought
+inquisition_incinerator_dreadnought_assault
+inquisition_incinerator_melee
+inquisition_incinerator_razorback
+inquisition_incendiary_missile
+inquisition_lascannon_twin_dreadnought_venerable
+inquisition_lascannon_twin_dreadnought_hellfire
+inquisition_lascannon_twin_dreadnought
+inquisition_lascannon_twin_landraider_left
+inquisition_lascannon_twin_landraider_right
+inquisition_lascannon_twin_predator
+inquisition_missile_battery_inferno
+inquisition_missile_launcher_rhino
+inquisition_missile_launcher_dreadnought
+inquisition_multi_melta_gun_dreadnought
+inquisition_multi_melta_crusader
+inquisition_nemesis_weapon_dreadknight
+inquisition_heavy_plasma_gun_dreadnought
+inquisition_power_sword_dreadnought
+inquisition_psycannon_dreadnought
+inquisition_psycannon_dreadknight
+inquisition_storm_bolter_rhino
+IDH commanders: - +50% health, +4 armour, +14 minimum armour, +50% weigth, +2 health regeneration
+
+Inquisition Chaplain
+Inquisition Grey Knight Champion
+Inquisition Grey Knight Champion Improved
+Inquisition Grey Knight Hero
+IDH commanders weapons: - +20% DPS
+
+inquisition_bolt_pistol_inquisitor_lord
+
+inquisition_daemon_hammer_champion
+
+inquisition_nemesis_weapon_gk_hero
+
+inquisition_storm_bolter_gk_hero
+
+All of my new weapons wargears did not receive this 20% DPS buff because they are already strong enough
+
+CD commanders: - +50% health, +4 armour, +14 minimum armour, +50% weigth, +2 health regeneration
+
+Daemon Lord Prince
+Daemon Lord
+Daemon Lord Stature
+CD commanders weapons: - +20% DPS
+
+daemons_daemon_prince_sword_undivided
+
+daemons_hellsword
+
+daemons_hellsword_improved
+
+daemons_hellsword_greater
+
+All of my new weapons wargears did not receive this 20% DPS buff because they are already strong enough
