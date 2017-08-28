@@ -1,0 +1,75 @@
+------------------------
+Global: 
+------------------------
+
+------------------------
+Changes made by Salcol:
+------------------------
+
+- Performance optimization for CSM
+- Slight performance optimization for Necron abilities
+
+Tyranids revamp:
+	Lictors became the cap squad, instead of Genestealers, which replaced Broodlords
+	Broodlords are no longer a squad and became the tier0 commander, replacing the Hive Tyrant, which has been moved to tier2
+	Brood Hive is now unlocked at tier 1 and is the requirement for tier 2
+	Carnifex Chamber is now unlocked at tier 2 and is the requirement for tier 3
+	Tunnel Warrens are now required to unlock tier 4
+	Manipulator Hive is now buildable at tier 5
+- Loadouts of Hive Mind squads are now adapted to that of normal squads
+- Acclimatization researches no longer increase max squad loadouts
+- Added way more researches tiers for Carnifexes so their strength is much improved (carapace now increases armor as well as the description says and has a third research. Implant now affects melee weapon upgrades as well and there is a second research. Regeneration has a second research)
+- warriors loadout 4-8 -> 3-5
+
+Fixes:
+- Reworked some SOB wargears
+- HFHS now blocks attack for as long as it is enabled (prevents overseer from running without control)
+- SOB LP stuff now has better requirements
+- Fixed everything related to the Entropy Staff
+- Chaos Rift now allows terminators to enter
+- Adjusted or fixed the UI description of most CSM and SM transports (Land Raiders and Rhino)
+- Fixed "sinper" in the Deathmarks UI
+
+Stats:
+- Land Raider Ares and Terminus no longer have transport abilities, since they are not transports
+
+- Scaled the available spots in CSM/SM garrisons (squad_hold_ext) according to lore:
+CSM: landraider 3 -> 2. rhino 2 -> 1.
+SM: land_raider 3 -> 2. land_raider_helios 3 -> 1. land_raider_ares 3 -> 0. land_raider_crusader 3 -> 2. land_raider_prometheus 3 -> 2.land_raider_redeemer 3 -> 2. land_raider_terminus 5 -> 0. rhino 2 -> 1
+CSM Thunderhaws can also produce Havoc Marines and bikes. SM' Thunderhawk can also produce Devastator Marines
+- Scaled the required garrison spots for most CSM and SM units:
+CSM: Keeper of Secrets 1 -> 2. Mutilators 1 -> 2. Obliterators 1 -> 2. Terminators 1 -> 2. Khorne Terminators 1 -> 2. (Greater Sacrificial Circle now has 10 slots since the spots usage of related squads is doubled)
+SM: land_raider 5 -> 4. land_raider_helios 5 -> 4. land_raider_ares 5 -> 4. land_raider_crusader 5 -> 4. land_raider_prometheus 5 -> 4.land_raider_redeemer 5 -> 4. land_raider_terminus 5 -> 4. Terminators 1 -> 2 (Chapel Barrack now has 6 slots since the spots usage of related squads is doubled)
+- Following CSM and SM units can now be transported (spots required)
+CSM: land_raider(4). rhino(2)
+SM: razorback(2). rhino(2)
+- Following CSM units can no longer enter vehicles/structures
+CSM: chaos_squad_bloodletters, chaos_squad_daemonettes, chaos_squad_horror, chaos_squad_screamers
+
+* Commit try n.2
+
+Optimized some DE shields
+Fixed a wrong armor type for a Tau Battlesuit
+
+* Fixes + further optimization
+
+- The XV89 shields are no longer toggled but passive instead (like all other shields)
+- Now the Tau Shield Generator addon really eliminates the melee damage debuff
+- Fixed Seraphim's damage output
+- Optimized performances of all shields (This should also prevent those "shield actived" tau voices even from the other factions)
+- DE titans no longer require the Mandrake Infiltration research to become invisible
+- DE titans can no longer use Foot On Fire
+- Updated some inaccurate UI descriptions
+
+* Fix
+
+I deleted one file I houldn't have
+
+* More fixes and optimization
+
+- Optimized IDH and necrons
+- Removed the two leaders from Warrior squads as (1.they seem out of place, 2.They are not upgraded by researches, 3.They are weaker than normal Warriors)
+- Removed Spinegaunts Without Number
+- Removed transport abilities from Uberfex
+- Revamped all Tyranids researches
+- Fixed IG Airborne Veterans animation
