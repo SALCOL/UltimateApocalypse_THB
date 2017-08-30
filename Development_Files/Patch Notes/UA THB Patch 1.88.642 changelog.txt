@@ -1,0 +1,65 @@
+------------------------
+Global: 
+------------------------
+
+------------------------
+Changes made by Eranthis:
+------------------------
+
+- Updated building names and descriptions to use Sisters locale file. 
+- Textures updated. 
+- Hospitaller saw sound and retexture added in. 
+- Improved and reorganized Salcol icon files. 
+- Moved around research and addons (still needs improving). 
+- Removed more file bulk.
+- Added the Ordo Hereticus icon back in.
+
+------------------------
+Changes made by Salcol:
+------------------------
+New: [need icons]
+- Added 2 new researches after Convoy Upgrade (one of which makes Convoys transform into another Convoy type which allows 1 Techpriest garrison)
+- Added 10 wargears to the Dais of Destruction
+- The Taurox can now be created from the Mechanized Command (I had to move most vehicles and their unlocking addon)
+
+Stat changes:
+- Tweaked all transport types so that Mars Pattern Convoys can only contain Enginseers (No ingame differences)
+- Mars Pattern Convoys can no longer transport neither infantry nor commanders
+- Reduced the range of my 2 Target Acquired upgrades by 20m (60 -> 40)
+- Cherubim Infiltration no longer stealths the rest of the squad
+- Reduced speed bonus to the Confessor from the Fervor Wargear (passive ability)
+- One of the Haemonculus and CSM wargears provided a morale regeneration buff to nearby enemies
+- Dramatically weakened all CSM new wargears
+
+Fixes:
+- Re-implemented some stuff that was lost (Stormtrooper Volley gun/Necron Lord Weapon/Overseer Model)
+- CD Fury portrait no longer becomes pink
+- IDH Shock Troops no longer have have a pink portrait if they equip Missile Launchers
+
+Bugs:
+- IDH Shock Troops still lose their model if they equip Missile Launchers
+
+Wargears:
+- Chapter Master and Force Commander in Terminator Armour can no longer buy wargears which do not affect themselves
+- Chaos Lord in Terminator Armour can no longer buy wargears which do not affect himself
+- Adapted DPS of most commander's weapon upgrades. AP is scaled on a certain factor while DPS is divided for the same value. DPS is not affected but is displayed correctly even on the wargear which allows their use.
+- The Autarch's Executioner no longer applies debuffs when attacking (60% disable abilities & 60% disable movement)
+- guard_wargear14 now has a name (Heroic Senior Officer Promotion)
+- Removed one nasty wargear from the Chaos Lord (Terminator Armour as well)
+
+Fixes:
+- General's Reaver Titan now costs 950 relic
+- tyranids_carnifex_implent_research now affects both min and max damage instead of only one (DPS unchanged)
+- Ethereal Great Illusion range is now global (seeing the range was horrible)
+- Added the colored version of the icons I used
+- Fixed/adjusted some stuff with my additional LP addons (price, requirements, animation, name)
+- LoC Chains of Torment no longer affect the caster as well
+- LoC Hellfire requires the LoC to stay still
+
+Stat changes:
+- Furies default weapon stun effects have been lowered (they shouldn't be there in the first place)
+- Slightly increased the stun effects and damages of the Fury stun melee attacks
+- Furies now unlock in hardpoint2 the fire breath mentioned in the [gift4] research
+- Nerfed CD LP auras
+
+
