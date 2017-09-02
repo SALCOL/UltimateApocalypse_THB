@@ -1,0 +1,2311 @@
+------------
+--- TODO ---
+------------
+
+I have not fixed yet: (this changes list was taken from discord quite some time ago and entries I fulfilled are not shown here on top)
+1) GK Purgators DPS is too high even against armored targets (Because I didn't test the new one yet)
+2) DS turrets can still attack ground with global range
+3) Aircrafts are defined as "broken"
+4) Titans are too cost effective
+5) Reinforce transport ability MUST NOT be used on orks
+6) IG General is not available if the General Reaver Titan has been deployed
+
+Leader fixes to avoid redundancy in files and researches
+- Cultist and Renegades squads now have chaos_aspiring_champion as leader
+- General has the same commissar as Cadets
+- Colonel has the same Sergeant as Kasrkins
+
+- Incarcerator ability description and name are missing
+- Incarcerator HP regen description would currently be a lie
+- The righteous ability of the assassin UI description should be updated (it currently is aboout repentia sisters)
+- Fix taurox UI/abilities
+- Fix eldar's invisibility (gates)
+- merge spinegaunt and termagant
+- change SM lascannons
+- rework terminator assault cannons
+- warriors should have scything claws/devourers. Devourer replaceable with:
+	rending claws, good AP infantry but not against vehicles.
+	ranged venomcannons attack animation attack projectile more lik
+	deathspitters radiate an aura that increases the ranged dmg of nearby allied nids by 5% per deathspitter in the squad. not stacking
+	take away their bioplasma,
+	Barbed strangler AOE pseudogrenadelauncher that slows down and disables jumps. animation would be that of the current deathspitter
+	Venom cannon heavy anti vehicle weapon that can not be fired on the move. projectile would be the one of the heavy necron destroyer. theyre supposed to fire a hail of green crystals,
+	!!!!! a warriors squad can only get either ONE venom cannon or ONE barbed strangler
+	other weapon upgrade can be scrapped
+- warriors would be a fairly durable but expensive unit overall as in, less armor than marines but significantly more health
+- Prevent shifted units from being attacked (maybe add minimum health when you cannot help it): doomsday_monolith - necron_lord!! - necon_pylon - necron_overseer - tomb_stalker wraith
+- Prevent angels from being attacked
+- Fix 8p Ultimate apocalypse map when spawning titan (maybe tau)
+
+--------------------
+--- Changes list ---
+--------------------
+
+---------------------------------
+--- Applied changes since Git ---
+---------------------------------
+
+----------------
+--- Merge 12 ---
+----------------
+
+- Lowered tier requirement for IDH LP Pentagrams
+- Nerfed durability provided by the new tau wargears
+
+-----------------
+--- Commit 12 ---
+-----------------
+
+- Further nerfed CSM new wargears (especially Nurgle)
+- Removed the shield drone from XV89 Bodyguards
+- Re-enabled the secondary Wailing Doom from Necron's LPs
+- Great Ethereal's 4 global auras have been nerfed and their descriptions updated
+- Fixed any mistake I could have made about shields
+- Shield refresh rate and duration are now set to 1 second
+- Polished some shields modifiers
+- Generic shields 30_33 no longer stack for each squad member (now caster only)
+- Shadowseer's shield now protects against abilities as well
+- Merged Wierdboy's shield with another one
+- Preceptor's shield can now be enabled (it had wrong requirements)
+- Fixed some stuff in both Taurox auras
+
+-----------------
+--- Commit 11 ---
+-----------------
+
+- The second Tau Shield research now affects relic units only (UI updated)
+- Tigershark can no longer be garrisoned inside of the Manta
+- The XV22 Shield Generator is required for the XV89 shield to be unlocked?! Not anymore, it is now passively actived from lvl5 on
+- Now the CSM Slaanesh Champion has the shield like other commanders
+- Reworked all Shields to provide damage reduction as long as the user fulfills an health requirement (therefore morale is removed for Void Shields) {notation is <racename>_shield_<protection>_<health>. In case of shared shields like titans <racename> is replaced by 'all'}
+- Polished a lot of modifiers (especially Tau and Eldar)
+
+-----------------
+--- Commit 10 ---
+-----------------
+
+- Cherubims no longer require the Holy Icon to be built
+- Necron's LP Strategic Hold research requires the Wailing Terror research as well
+- All LP's contents positions have been changed
+- CD's third LP addon can now be built on tier 2 instead of 3
+- Reaver Jetbikes can now throw Gravitic Grenades like Eldar Jetbikes
+- DE Terrorfex Grenade now be thrown by squad leaders only
+- Fixed UI position of all researches into the Skimmer Shop
+- Adjusted grenade researches positions/hotkeys for all races (when they didn't match)
+- Optimized some more stuff
+- Nerfed the damage and attack speed of the new Warp Spider leader ranged weapon
+- Assigned some icons to the Dais of Destruction wargears (probably needs new icons)
+- The DE Trophy Rack wargear (07) now properly increases the damages dealt by the archon
+- DE portals healing and protection no longer affect allies
+- Removed useless modifiers in some researches
+
+----------------
+--- Commit 9 ---
+----------------
+
+- Adapted requisition produced by LPs for all races (8-16-24-32-40-48) because some races had higher productions
+- The requisition cost of Digest Pools no longer decreases by 10 for each Spore Cimney
+- Small UI fixes to some Tyranids researches
+- Removed morale from Zoanthropes as their shield became a passive damage reduction
+
+----------------
+--- Commit 8 ---
+----------------
+
+- Optimized IDH and necrons
+- Removed the two leaders from Warrior squads as (1.they seem out of place, 2.They are not upgraded by researches, 3.They are weaker than normal Warriors)
+- Removed Spinegaunts Without Number
+- Removed transport abilities from Uberfex
+- Revamped all Tyranids researches
+- Fixed IG Airborne Veterans animation
+
+----------------
+--- Commit 7 ---
+----------------
+
+- The XV89 shields are no longer toggled but passive instead (like all other shields)
+- Now the Tau Shield Generator addon really eliminates the melee damage debuff
+- Fixed Seraphim's damage output
+- Optimized performances of all shields (This should also prevent those "shield actived" tau voices even from the other factions)
+- DE titans no longer require the Mandrake Infiltration research to become invisible
+- DE titans can no longer use Foot On Fire
+- Updated some inaccurate UI descriptions
+
+------------------
+--- Commit 6.2 ---
+------------------
+
+- Land Raider Terminus can no longer transport troops (lore clearly states that there is no room because it's full of power banks for its weapons)
+- IDH Tempest no longer have 2m of keen sight (now set to 0m)
+- SM Landspeeder Tempest are now affected by the Sensor research for Landspeeders
+- Added 2 new researches in the Haemonculus Laboratory to upgrade Warp Beasts [dark_eldar_warp_beast_master_artefacts and dark_eldar_warp_beast_master_excruciating_training] (1. They are too weak 2. Normal researches do not affect them anymore)
+- so the haemonculus laboratory has 2 researches + warp beast tamers have 2 new abilities + 2 new abilities were created + warp beasts without tamer can teleport after research + warp beast tamer modifier_apply_ext disables squad flight + warp beasts have melee ext + warp beast modifier apply ext disables hardpoint 5 (weapon unlocked by having both warp beast master and artefacts research) + warp beast weapon moved from hardpoint 2 to 4 + one new weapon in hardpoint 5
+- Greater Knarlocks and Clawed Fiends no longer have squad_reinforce_ext and their loadout is now limited to 1 (1. They could destroy any other relic unit and they cost less if reinforced. 2. Their relic cost could be glitched and you could gain 150 additional relic if the first trooper died)
+- Removed eldar radars + support platforms don't have the radar addon anymore (eldar_support_platform_addon_probe) + Dcannon addon no longer is incompatible with radar
+- Make titanportal sight bonus not a multiplicative value and update description
+- eldar ground titans movement reworked. acceleration 0 -> 0.25, rotation speed 10000 -> 300 Phantom and 10000 -> 600 Revenant, speed of the revenant reduced 60 -> 45, turning_behaviour_template walker -> squiggoth
+- Ground titans main weapons now affect allies as well (eldar_pulsar_phantom_titan_left, eldar_pulsar_phantom_titan_right, eldar_pulsar_revenant_titan_left, eldar_pulsar_revenant_titan_right, eldar_sonic_laser_revenant_titan_left, eldar_sonic_laser_revenant_titan_right)
+- Completely reworked AP and damages of ground titan weapons (Scaled AP to make the biggest 100 and multiplied damage for that factor. Eldar titans dealt almost triple damages compared to other titans. Therefore damage was drastically reduced as well by /2 up to /3): eldar_pulsar_phantom_titan_left, eldar_pulsar_phantom_titan_right, eldar_sonic_laser_revenant_titan_left, eldar_sonic_laser_revenant_titan_right. (Eldar sonic lasers vulnerability debuff has been completely removed like on all brightlances)
+- Increased min range of the following ground titans main weapons: Revenant(default) to 10m, Revenant(upgraded) to 20m, Phantom(default) weapons to 15m
+- Reduced the speed bonus of FeetonFire from +300% -> +50%
+- Reduced the bonus of Fleet on Foor from +200% -> +35%
+- Revenant titan can no longer use Gravitic Booster nor jump anymore
+- Wraithbone of Khaine now increases the vulnerability of the user
+- Fixed a bug which made one of my wargears increase all unit's stats way too much because it was applied per Warp Signature and LPs instead of LPs only
+- CD buildings no longer have daemon_structure_fire_fx1, daemon_structure_fire_fx2, daemon_structure_fire_fx3 since they are useless. These 3 files should be removed
+- Monolith no longer has two useless abilities necron_production_modifier and necron_production_modifier_anti. necron_production_modifier_anti has also been removed (the other causes a crash but I couldn't track down the cause)
+- Space Marines Essence Of The Machine Spirit no longer affects EVERYTHING with +50% health and +50% Max damage. It's effects are now limited to all vehicle types and aircrafts as it should be
+- Necron Mass Resurrection Overseer (passive) no longer resurrects nearby fallen corpses but increases resurrection chance by 10% and increases health regeneration by 10. Wargear's description is properly updated
+- Necron Mass Resurrection Monolith cooldown increased 120 -> 180 and power cost increased 0 -> 600. Cooldown is shared with other Monolith Resurrection as well
+- Necron Mass Resurrection Lychguard cooldown increased 60 -> 180 and power cost increased 0 -> 300. Cooldown is shared with other Lychguard Resurrection as well
+- Necron Mass Resurrection Destroyer cooldown increased 180 -> 200 and power cost increased 0 -> 400. Cooldown is shared with Mass Resurrection as well
+- Necron Mass Resurrection cooldown increased 180 -> 200 and power cost increased 0 -> 400. Cooldown is shared with Mass Resurrection Destroyer as well
+- All necron corpses aside from Tomb Spyders and Tomb Stalkers cannot be revived after 120 seconds from their death and consequently disappear (necron_basic_warrior_body, necron_deathmark_body, necron_flayed_one_body, necron_immortal_body, necron_lychguard_body, necron_wraith_body)
+- Necron squads can no longer be recalled to structures (necron_basic_warrior_squad, necron_builder_scarab_squad, necron_deathmark_squad, necron_flayed_one_squad, necron_immortal_squad, necron_lord_death_squad necron_overseer_squad, necron_pariah_deathstrike_squad, necron_pariah_squad)
+- Addon Necron List Post 1 time cost increased by 15 seconds 35 -> 50 but power cost reduced by 30 60 -> 30
+- Increased the movement speed of most Necron infantry units: Basic Warrior 7 -> 8, Flayed Ones 5.8 -> 6.5, Immortal 7 -> 8.25
+- Marines Burnout ability (CSM and SM Bikes) has completely different armour penetrations, damages and morale damages (overall drastically lowered)
+- Space Marines Tactical Bike and Chaos Marine Bike armour type changed from vehicle to elite heavy infantry (it must be infantry since they are MEN on BIKES and not the opposite). Minimum Armour and Armour values are both increased by 3
+- Disambiguated the weapon of the Damocles else it is improved the the infantry injection and infantry researches as well. A _damocles version has been created. Damocles file consequently updated
+- Changed the default weapon of Predator Executioners into space_marine_inferno_cannon_predator which seems more suitable than guard_inferno_cannon_leman_russ
+- Emperor's Armoury is now limited to 1 (prevents buffs from stacking)
+- Hellsmith can no longer use the Forced Labor ability
+- Deleted 1 wrong Hammerhand from the Inquisition Grey Knight Strike Team
+- Techpriests are no longer able to throw grenades
+- Reduced the effects of the Tau Hunt ability used by Kroots (tau_devour): Speed +50% -> +30%, Sight +100% -> +75%, Keen sight +100% -> +75%
+
+------------------
+--- Commit 6.1 ---
+------------------
+
+- Performance optimization for CSM
+- Slight performance optimization for Necron abilities
+
+Tyranids revamp:
+	Lictors became the cap squad, instead of Genestealers, which replaced Broodlords
+	Broodlords are no longer a squad and became the tier0 commander, replacing the Hive Tyrant, which has been moved to tier2
+	Brood Hive is now unlocked at tier 1 and is the requirement for tier 2
+	Carnifex Chamber is now unlocked at tier 2 and is the requirement for tier 3
+	Tunnel Warrens are now required to unlock tier 4
+	Manipulator Hive is now buildable at tier 5
+- Loadouts of Hive Mind squads are now adapted to that of normal squads
+- Acclimatization researches no longer increase max squad loadouts
+- Added way more researches tiers for Carnifexes so their strength is much improved (carapace now increases armor as well as the description says and has a third research. Implant now affects melee weapon upgrades as well and there is a second research. Regeneration has a second research)
+- warriors loadout 4-8 -> 3-5
+
+Fixes:
+- Reworked some SOB wargears
+- HFHS now blocks attack for as long as it is enabled (prevents overseer from running without control)
+- SOB LP stuff now has better requirements
+- Fixed everything related to the Entropy Staff
+- Chaos Rift now allows terminators to enter
+- Adjusted or fixed the UI description of most CSM and SM transports (Land Raiders and Rhino)
+- Fixed "sinper" in the Deathmarks UI
+
+Stats:
+- Land Raider Ares and Terminus no longer have transport abilities, since they are not transports
+
+- Scaled the available spots in CSM/SM garrisons (squad_hold_ext) according to lore:
+CSM: landraider 3 -> 2. rhino 2 -> 1.
+SM: land_raider 3 -> 2. land_raider_helios 3 -> 1. land_raider_ares 3 -> 0. land_raider_crusader 3 -> 2. land_raider_prometheus 3 -> 2.land_raider_redeemer 3 -> 2. land_raider_terminus 5 -> 0. rhino 2 -> 1
+CSM Thunderhaws can also produce Havoc Marines and bikes. SM' Thunderhawk can also produce Devastator Marines
+- Scaled the required garrison spots for most CSM and SM units:
+CSM: Keeper of Secrets 1 -> 2. Mutilators 1 -> 2. Obliterators 1 -> 2. Terminators 1 -> 2. Khorne Terminators 1 -> 2. (Greater Sacrificial Circle now has 10 slots since the spots usage of related squads is doubled)
+SM: land_raider 5 -> 4. land_raider_helios 5 -> 4. land_raider_ares 5 -> 4. land_raider_crusader 5 -> 4. land_raider_prometheus 5 -> 4.land_raider_redeemer 5 -> 4. land_raider_terminus 5 -> 4. Terminators 1 -> 2 (Chapel Barrack now has 6 slots since the spots usage of related squads is doubled)
+- Following CSM and SM units can now be transported (spots required)
+CSM: land_raider(4). rhino(2)
+SM: razorback(2). rhino(2)
+- Following CSM units can no longer enter vehicles/structures
+CSM: chaos_squad_bloodletters, chaos_squad_daemonettes, chaos_squad_horror, chaos_squad_screamers
+
+
+----------------
+--- Commit 5 ---
+----------------
+
+New: [need icons]
+- Added 2 new researches after Convoy Upgrade (one of which makes Convoys transform into another Convoy type which allows 1 Techpriest garrison)
+- Added 10 wargears to the Dais of Destruction
+- The Taurox can now be created from the Mechanized Command (I had to move most vehicles and their unlocking addon)
+
+Stat changes:
+- Tweaked all transport types so that Mars Pattern Convoys can only contain Enginseers (No ingame differences)
+- Mars Pattern Convoys can no longer transport neither infantry nor commanders
+- Reduced the range of my 2 Target Acquired upgrades by 20m (60 -> 40)
+- Cherubim Infiltration no longer stealths the rest of the squad
+- Reduced speed bonus to the Confessor from the Fervor Wargear (passive ability)
+- One of the Haemonculus and CSM wargears provided a morale regeneration buff to nearby enemies
+- Dramatically weakened all CSM new wargears
+
+Fixes:
+- Re-implemented some stuff that was lost (Stormtrooper Volley gun/Necron Lord Weapon/Overseer Model)
+- CD Fury portrait no longer becomes pink
+- IDH Shock Troops no longer have have a pink portrait if they equip Missile Launchers
+
+Bugs:
+- IDH Shock Troops still lose their model if they equip Missile Launchers
+
+------------------
+--- Commit 3&4 ---
+------------------
+
+Wargears:
+- Chapter Master and Force Commander in Terminator Armour can no longer buy wargears which do not affect themselves
+- Chaos Lord in Terminator Armour can no longer buy wargears which do not affect himself
+- Adapted DPS of most commander's weapon upgrades. AP is scaled on a certain factor while DPS is divided for the same value. DPS is not affected but is displayed correctly even on the wargear which allows their use.
+- The Autarch's Executioner no longer applies debuffs when attacking (60% disable abilities & 60% disable movement)
+- guard_wargear14 now has a name (Heroic Senior Officer Promotion)
+- Removed one nasty wargear from the Chaos Lord (Terminator Armour as well)
+
+Fixes:
+- General's Reaver Titan now costs 950 relic
+- tyranids_carnifex_implent_research now affects both min and max damage instead of only one (DPS unchanged)
+- Ethereal Great Illusion range is now global (seeing the range was horrible)
+- Added the colored version of the icons I used
+- Fixed/adjusted some stuff with my additional LP addons (price, requirements, animation, name)
+- LoC Chains of Torment no longer affect the caster as well
+- LoC Hellfire requires the LoC to stay still
+
+Stat changes:
+- Furies default weapon stun effects have been lowered (they shouldn't be there in the first place)
+- Slightly increased the stun effects and damages of the Fury stun melee attacks
+- Furies now unlock in hardpoint2 the fire breath mentioned in the [gift4] research
+- Nerfed CD LP auras
+
+----------------
+--- Commit 2 ---
+----------------
+
+- Chaos armour and health researches now affect Icon Bearers built within squads as well
+- Chaos furious charge research now increases the speed of Possessed Marines as well
+- Dark Eldar feet on fire researches now affect Trueborn Warriors, Wracks and both leaders 
+- Dark Eldar upgrade_commander_health researches (sight of infantry) no longer affects Warp Beasts since the research mentions HELMETS (UI description properly updated)
+- Dark Eldar upgrade_infantryhealth researches (health of infantry) no longer affects Warp Beasts since the research mentions ARMOURS
+- Following Lemanruss Tanks now have Heavy Bolter and then Lascannon as weapon upgrade on the hull (hardpoint 2) {Vanquisher HAD bolter/flamer/lascannon} {Punisher HAD bolter/flamer} {Exterminator HAD bolter/flamer} {Executioner had lascannon} {Demolisher had flamer} {Annihilator HAD lascannon} {}
+- Because of the previous change the Annihilator can no longer equip lateral lascannons, which seemed to be not lore wise, but now has a heavy stubber on hardpoint 3 (please someone fix it's model attacks for stubber, lateral weapons and bolter hull default weapon)
+- lemanruss_vanquisher_command now has different weaponry. Lateral cannons Heavy Bolter -> Plasma Cannon 
+- Fixed the missing names of the following Lemanruss Tanks (I used text fields, not UCS): Punisher, Vanquisher, Conqueror, Eradicator, Exterminator
+
+----------------
+--- Commit 1 ---
+----------------
+
+- Eldritch Spires no longer stop working after relocation
+- Gladiator's initial stance is no longer fixed on yellow
+- Removed or reworked many of my old files which should not have been here (all UP UPV UPW stuff, LP addon 5 and strategic hold researches)
+- some modifier lists are a bit more polished (without ingame changes)
+- chaos_selfdestruct ability causes more health degeneration 30 -> 50 to cause the death of the Wheel (still, you can escape it with rampage)
+- All 5 abilities of inspiring banners have been altered as they stacked way too many times. They are now RESTRICTED TO THE SQUAD of the banner bearer but their effects are amplified:
+	chaos_inspiring_aura_bearer: max morale 100 -> 250, morale regen 2 -> 5
+	chaos_inspiring_aura_bearer_tzeentch: nothing
+	chaos_inspiring_aura_bearer_khorne: max damage 15% -> 20%, min damage 15% -> 25%
+	chaos_inspiring_aura_bearer_nurgle: hp regen 2 -> 6
+	chaos_inspiring_aura_bearer_slaanesh: speed 20% -> 25%, max morale 100 -> 200, morale regen 2 -> 4
+- tau_commander_missile_barrage can no longer be used by the AI when requirements are not met
+- Added back my stuff for SOB
+- Clawed Fiend heals less per hit (25% -> 15%), is overall slower 45 -> 40 and cannot use Feet On Fire anymore
+- Nerfed cultist worships. Worships no longer affect structures, vehicles, titans and the caster squad. Their cooldowns are now global as well, so only one can be used at a time in normal circumstances.
+	worship_worship (applied by default to the caster squad): Caster squad becomes unable to reinforce or upgrade weapons and is revealed for the whole durations
+	Tzeentch: MODIFIERS UNCHANGED
+	Khorne: Stacks with other bonuses.
+	Nurgle: Stacks with other bonuses. Health regen reduced 40 -> 25
+	Slaanesh: Stacks with other bonuses. Max morale +200% -> +40%. Speed +200% -> +40%
+- Techpriest research was really moved into the HQ like the other changelog stated and it now gives 250% melee damage as well instead of 300%. It's position is also changed to H 18 (on the right of Vindicare Assassins)
+- Fixed UI name and description of the Tyranids Digest Pool
+- Removed the RUN! ability from all 7 Eldar Grav Platforms
+- Eldar Holofield research now has a proper UI description
+- All Leman Russ Tanks can now upgrade lateral weapons with flamer melta and plasma in this sequence (annihilator no longer has Lascannons). Also, the heavy stubber is now a weapon upgrade on the Battletank, so it's not enabled by default anymore (Murderer can be removed)
+
+------------------------------------
+--- Removed & applied Injections ---
+------------------------------------
+
+CSM buildings: - +3 armour and +15 minimum armour
+- Chaos Warpgate
+- Chaos Warp Forge
+- Chaos Wall
+- Chaos Turret Bolter
+- Chaos Temple
+- Chaos Shrine Khorne
+- Chaos Sacrificial Circle
+- Chaos Machine Pit
+- Chaos Listening Post
+- Chaos HQ Super
+- Chaos HQ
+- Chaos Greater Sacrificial Circle
+- Chaos Armoury
+
+CSM building weapons: - +20% damage
+- chaos_storm_bolter_turret_listeningpost
+- chaos_heavy_bolter_turret_listeningpost
+- chaos_heavy_bolter_turret_improved_listeningpost
+- chaos_shrine_turret
+- chaos_heavy_bolter_turret
+- chaos_missile_turret
+- chaos_missile_improved_turret
+
+SM buildings: - +3 armour and +15 minimum armour
+- Space Marine Ability Building
+- Space Marine Armoury
+- Space Marine Armoury Emperor
+- Space Marine Barracks
+- Space Marine HQ
+- Space Marine HQ Super
+- Space Marine Interface Relay
+- Space Marine Landraider Building
+- Space Marine Listening Post
+- Space Marine Orbital Relay
+- Space Marine Titan Facility
+- Space Marine Turret Bolter
+- Space Marine Turret Missile SP
+- Space Marine Vehicle Building
+- Space Marine Wall
+
+CSM building weapons: - +20% damage
+- space_marine_storm_bolter_turret_listeningpost
+- space_marine_heavy_bolter_listening_post
+- space_marine_heavy_bolter_listening_post_improved
+- space_marine_heavy_bolter_turret
+- space_marine_missile_turret
+- space_marine_assault_cannon_listening_post
+- space_marine_lascannon_twin_turret
+
+CSM infantry: - +100% health, +14 minimum armour, +5 armour, +50% weigth, +2 health regeneration
+- Chaos Aspiring Champion
+- Chaos Aspiring Champion Cultist
+- Chaos Aspiring Sorcerer
+- Chaos Cultist Aspiring Champion2
+- Chaos Khorne Berserker
+- Chaos Khorne Berserker Champion
+- Chaos Khorne Berserker Champion2
+- Chaos Marine Bolter
+- Chaos Marine Havoc
+- Chaos Marine Icon Bearer
+- Chaos Marine Icon Bearer Leader
+- Chaos Marine Noise
+- Chaos Marine Noise Champion
+- Chaos Marine Noise Champion2
+- Chaos Marine Plague
+- Chaos Marine Plague Champion
+- Chaos Marine Plague Champion2
+- Chaos Marine Rubric
+- Chaos Mutilator
+- Chaos Obliterator
+- Chaos Possessed Marine
+- Chaos Raptor
+- Chaos Raptor Aspiring Champion
+- Chaos Renegade Champion
+- Chaos Terminator
+- Chaos Terminator Khorne
+- Chaos Terminator Sergeant
+
+CSM infantry weapons: - +40% damage
+- chaos_aspiring_sorceror_force_weapon
+- chaos_autocannon_havoc
+- chaos_bolt_pistol_champion
+- chaos_bolt_pistol_sorceror
+- chaos_bolt_pistol_khorne_berserker
+- chaos_bolt_pistol_skull_champion
+- chaos_bolt_pistol_raptorchampion
+- chaos_bolt_pistol_raptor
+- chaos_bolter_plague
+- chaos_bolter_rubric
+- chaos_bolter_rubric_inferno
+- chaos_bolter_tactical
+- chaos_blast_master_heavy
+- chaos_blast_master_heavy_champion_freq_high
+- chaos_blast_master_heavy_champion_freq_low
+- chaos_chainsword_champion
+- chaos_chainsword_raptorchampion
+- chaos_chainsword_raptor
+- chaos_chain_fist deals
+- chaos_flamer_tactical
+- chaos_flamer_plague
+- chaos_flamer_possessed
+- chaos_flamer_raptor
+- chaos_heavy_flamer_obliterator
+- chaos_heavy_flamer_terminator
+- chaos_heavy_flamer_terminator_chosen
+- chaos_heavy_bolter_havoc
+- chaos_heavy_bolter_tactical
+- chaos_khornate_chainaxe
+- chaos_khornate_chainaxe_champion
+- chaos_khornate_chainaxe_terminator
+- chaos_knife_tactical
+- chaos_knife_noise
+- chaos_knife_plague
+- chaos_lascannon_havoc
+- chaos_meltagun_plague
+- chaos_meltagun_tactical
+- chaos_melta_combo_terminator
+- chaos_missile_launcher_tactical
+- chaos_missile_launcher_havoc
+- chaos_obliterator_ranged_group
+- chaos_plasma_combo_terminator
+- chaos_plasma_gun_tactical
+- chaos_plasma_gun_plague
+- chaos_plasma_pistol_champion
+- chaos_plasma_pistol_sorceror
+- chaos_plasma_pistol_skull_champion
+- chaos_plasma_pistol_champion_cultist
+- chaos_plasma_pistol_raptorchampion
+- chaos_power_axe_skull_champion
+- chaos_power_claw_terminator
+- chaos_power_fist_champion
+- chaos_power_fist_terminator
+- chaos_power_fist_obliterator
+- chaos_power_fist_mutilator
+- chaos_power_fist_raptorchampion
+- chaos_power_sword_champion
+- chaos_power_sword_raptorchampion
+- chaos_possessed_melee
+- chaos_rad_launcher_plague_marine
+- chaos_reaper_terminator
+- chaos_storm_bolter_terminator
+- chaos_sonic_blaster
+- chaos_volkite_caliver
+- chaos_volkite_culverin
+- chaos_volkite_charger
+
+CSM vehicles: - +50% health, +2 armour, +5 minimum armour
+- Chaos Assaultpod
+- Chaos Baneblade
+- Chaos Brass Scorpion
+- Chaos Deathweel
+- Chaos Defiler
+- Chaos Dreadnought
+- Chaos Hell Talon
+- Chaos Landraider
+- Chaos Marine Bike
+- Chaos Predator
+- Chaos Rhino
+- Chaos Thunderhawk
+- Chaos Vindicator
+
+CSM vehicles weapons: - +25% max damage
+- chaos_demolisher_cannon_baneblade
+- chaos_heavy_bolter_predator
+- chaos_heavy_bolter_predator_l
+- chaos_heavy_bolter_predator_r
+- chaos_heavy_bolter_dreadnought
+- chaos_heavy_flamer_defiler
+- chaos_heavy_flamer_brass_scorpion
+- chaos_autocannon_hell_talon
+- chaos_autocannon_twin_dreadnought
+- chaos_autocannon_twin_defiler
+- chaos_autocannon_predator
+- chaos_landraider_twin_heavybolters_improved
+- chaos_landraider_twin_lascannon_right
+- chaos_landraider_twin_lascannon_left
+- chaos_missile_launcher_predator
+- chaos_missile_launcher_defiler
+- chaos_multi_melta_dreadnought
+- chaos_lascannon_hell_talon
+- chaos_lascannon_hell_talon_2
+- chaos_lascannon_twin_dreadnought
+- chaos_lascannon_twin_defiler
+- chaos_lascannon_predator_l
+- chaos_lascannon_predator_r
+- chaos_lascannon_twin_predator
+- chaos_incendiary_bomb
+- chaos_dreadnought_fist_twin
+- chaos_dreadnought_fist
+- chaos_defiler_melee
+- chaos_battlecannon
+- chaos_battlecannon_desecration
+- chaos_battlecannon_brass_scorpion
+- chaos_brass_scorpion_melee
+- chaos_bolter_bike
+- chaos_flamer_bike
+- chaos_plasma_gun_bike
+
+- Chaos DS Turret has +3 armour and +15 minimum armour (damage was already increased for the static turret)
+
+CSM commanders: - +50% health, +4 armour, +14 minimum armour, +50% weigth, +2 health regeneration
+- Chaos Lord
+- Chaos Lord Khorne
+- Chaos Lord Nurgle
+- Chaos Lord Slaanesh
+- Chaos Lord Terminator
+- Chaos Lord Undivided
+- Chaos Sorcerer
+- Chaos Sorcerer Advance SP
+
+CSM commanders weapons - +20% damage
+- chaos_plasma_pistol_sorceror
+- chaos_plasma_pistol_commander
+- chaos_bedlam_staff deals
+- chaos_bedlam_staff_stronghold_sp
+- chaos_bolter_combo
+- chaos_melta_combo
+- chaos_power_fist_lord
+- chaos_chain_fist_lord
+- chaos_power_claw_lord
+- chaos_storm_bolter_lord
+- chaos_flamer_combo_lord
+- chaos_plasma_combo_lord
+- chaos_melta_combo_lord
+- chaos_reaper_lord
+- chaos_manreaper
+- chaos_bolt_pistol_lord
+- chaos_flamer_commander
+- chaos_meltagun_commander
+- chaos_plasma_pistol_lord
+- chaos_melta_gun_lord
+- chaos_power_sword_lord
+
+- Chaos Chainaxe Hellsmith did NOT RECEIVE the 20% damage buff as it currently is too strong.
+- All of my new weapon wargears did NOT RECEIVE the 20% damage buff as they currently are too strong.
+- chaos_khornate_chainaxe_lord deals did NOT RECEIVE the 20% damage buff as it currently is too strong.
+
+SM infantry: - +100% health, +14 minimum armour, +5 armour, +50% weigth, +2 health regeneration
+- Apothecary
+- Apothecary Leader
+- Assault Marine
+- Banner Bearer
+- Banner Bearer Leader
+- Honor Guard Gladiator
+- Sergeant
+- Sergeant Assault Marine
+- Space Marine Deathwatch
+- Space Marine Devastator
+- Space Marine Tactical Bolter
+- Sternguard Veteran
+- Terminator
+- Terminator Apothecary
+- Terminator Assault
+- Terminator Banner Bearer
+- Terminator Sergeant
+- Vanguard Veteran
+
+SM infantry weapons: - +40% DPS
+- space_marine_assault_cannon_terminator
+- space_marine_bolt_pistol_apothecary
+- space_marine_bolt_pistol_assault
+- space_marine_bolt_pistol_sergeant
+- space_marine_bolt_pistol_assaultsergeant
+- space_marine_bolt_pistol_assault_veteran
+- space_marine_bolter_veteran
+- space_marine_bolter_kraken_veteran
+- space_marine_bolter_dragonfire_veteran
+- space_marine_bolter_hellfire_veteran
+- space_marine_bolter_vengeance_veteran
+- space_marine_bolter_tactical
+- space_marine_bolter_variants
+- space_marine_chainsword_apothecary
+- space_marine_chainsword_assault
+- space_marine_chainsword_sergeant
+- space_marine_chainsword_assaultsergeant
+- space_marine_chain_fist_terminator
+- space_marine_flamer_assault
+- space_marine_flamer_tactical
+- space_marine_halberd_grey_knight
+- space_marine_heavy_bolter_tactical
+- space_marine_heavy_bolter_devastator
+- space_marine_heavy_bolter_veteran
+- space_marine_heavy_flamer
+- space_marine_graviton_gun
+- space_marine_graviton_cannon
+- space_marine_knife_tactical
+- space_marine_lascannon_devastator
+- space_marine_lascannon_veteran
+- space_marine_lightning_claw_terminator
+- space_marine_lightning_claw_veteran
+- space_marine_meltagun_veteran
+- space_marine_meltagun_tactical
+- space_marine_multi_melta_devastator
+- space_marine_multi_melta_veteran
+- space_marine_missile_launcher_tactical
+- space_marine_missile_launcher_cyclone_terminator
+- space_marine_plasma_cannon_veteran
+- space_marine_plasma_cannon_devastator
+- space_marine_plasma_gun
+- space_marine_plasma_gun_veteran
+- space_marine_plasma_gun_assault
+- space_marine_plasma_pistol_sergeant
+- space_marine_plasma_pistol_assaultsergeant
+- space_marine_power_fist_veteran
+- space_marine_power_fist_terminator
+- space_marine_power_fist_assaultsergeant
+- space_marine_power_fist_sergeant
+- space_marine_power_sword_veteran
+- space_marine_power_sword_veteran_improved
+- space_marine_power_sword_sergeant
+- space_marine_power_sword_assaultsergeant
+- space_marine_storm_shield
+- space_marine_storm_bolter
+- space_marine_thunder_hammer
+
+SM vehicles: - +50% health, +2 armour, +5 minimum armour
+- Damocles
+- Dreadnought
+- Dreadnought Hellfire Variant
+- Dreadnought Ironclad
+- Dreadnought Venerable
+- Land Raider
+- Land Raider Ares
+- Land Raider Crusader
+- Land Raider Helios
+- Land Raider Prometheus
+- Land Raider Redeemer
+- Land Raider Terminus
+- Land Speeder
+- Predator
+- Predator Advance SP
+- Predator Murderer
+- Razorback
+- Rhino
+- Rhino Stalker
+- Space Marine Tactical Bike
+- Stormraven
+- Tempest
+- Thunderhawk UAmod
+- Vindicator
+- Whirlwind
+
+- DS Turret has +3 armour and +15 minimum armour (damage was already increased for the static turret)
+
+SM vehicle weapons - Max damage +25% for all following weapons
+- space_marine_autocannon
+- space_marine_assault_cannon_dreadnought
+- space_marine_assault_cannon_hellfire
+- space_marine_assault_cannon_crusader
+- space_marine_assault_cannon_redeemer
+- space_marine_assault_cannon_landspeeder
+- space_marine_assault_cannon_tempest
+- space_marine_assault_cannon_stormraven
+- space_marine_conversion_beam_predator
+- space_marine_demolisher_cannon_ares
+- space_marine_dreadnought_fist
+- space_marine_dreadnought_fist_twin
+- space_marine_dreadnought_fist_improved
+- space_marine_flamer_dreadnought
+- space_marine_flamestorm_cannon_right
+- space_marine_flamestorm_cannon_left
+- space_marine_heavy_bolter_twin_stormraven
+- space_marine_heavy_bolter_stalker_right
+- space_marine_heavy_bolter_stalker_left
+- space_marine_heavy_flamer_razorback
+- space_marine_heavy_bolter_razorback
+- space_marine_heavy_bolter_tank_left
+- space_marine_heavy_bolter_tank_right
+- space_marine_heavy_bolter_land_raider
+- space_marine_heavy_bolter_twin
+- space_marine_hurricane_bolter_ironclad
+- space_marine_hurricane_bolter_right
+- space_marine_hurricane_bolter_left
+- space_marine_hurricane_bolter_stormraven_left
+- space_marine_hurricane_bolter_stormraven_right
+- space_marine_inferno_cannon_dreadnought
+- space_marine_inferno_cannon_predator
+- space_marine_lascannon_twin_razorback
+- space_marine_lascannon_twin_dreadnought
+- space_marine_lascannon_twin_hellfire
+- space_marine_lascannon_twin_tank_right
+- space_marine_lascannon_twin_tank_left
+- space_marine_lascannon_twin_terminus_coaxial
+- space_marine_lascannon_twin_terminus_right
+- space_marine_lascannon_twin_terminus_left
+- space_marine_lascannon_twin_terminus
+- space_marine_lascannon_twin_predator
+- space_marine_lascannon_tank_right
+- space_marine_lascannon_tank_left
+- space_marine_lascannon_twin_stormraven
+- space_marine_multi_melta_dreadnought
+- space_marine_multi_melta_crusader
+- space_marine_multi_melta_land_speeder
+- space_marine_multi_melta_stormraven
+- space_marine_missile_krak_tempest
+- space_marine_missile_frag_tempest
+- space_marine_missile_battery_helios
+- space_marine_missile_launcher_hellfire
+- space_marine_missile_launcher_typhoon
+- space_marine_missile_battery_hyperios
+- space_marine_missile_battery_inferno_hyperios
+- space_marine_missile_battery
+- space_marine_plasma_cannon_dreadnought
+- space_marine_plasma_cannon_stormraven
+- space_marine_plasma_cannon_executioner
+- space_marine_quad_bolter_right
+- space_marine_quad_bolter_left
+- space_marine_vindicator_gun
+- space_marine_storm_bolter_land_speeder
+- space_marine_storm_bolter_rhino
+
+SM commanders: +50% health, +4 armour, +14 minimum armour, +50% weigth, +2 health regeneration
+- Chaplain
+- Chaplain Advance SP
+- Force Commander
+- Force Commander Killeus
+- Force Commander Lotd
+- Force Commander Terminator
+- Honor Guard Chapter Master
+- Librarian
+- Techmarine
+
+SM commander weapons: - +20% DPS
+- space_marine_assault_cannon_commander
+- space_marine_bolt_pistol_librarian
+- space_marine_bolt_pistol_forcecommander
+- space_marine_bolt_pistol_combi_chaingun_forcecommander
+- space_marine_bolter_commander
+- space_marine_chain_fist_commander
+- space_marine_chainsword_force_commander
+- space_marine_crozius_arcanum
+- space_marine_crozius_arcanum_improved
+- space_marine_daemon_hammer_advance_sp
+- space_marine_flamer_combo
+- space_marine_force_weapon
+- space_marine_heavy_flamer_commander
+- space_marine_lightning_claw_commander
+- space_marine_missile_launcher_cyclone_commander
+- space_marine_melta_combo
+- space_marine_power_sword_librarian
+- space_marine_power_sword_force_commander
+- space_marine_power_fist_commander
+- space_marine_power_axe_techmarine
+- space_marine_plasma_combi_bolter
+- space_marine_plasma_pistol_librarian
+- space_marine_plasma_pistol_chaplain
+- space_marine_plasma_pistol_commander
+- space_marine_relic_blade
+- space_marine_thunder_hammer_techmarine
+- space_marine_storm_bolter_commander
+- space_marine_storm_bolter_grey_knight
+- space_marine_storm_shield
+- space_marine_storm_shield_commander_terminator
+- space_marine_thunder_hammer_commander
+- space_marine_thunder_hammer_commander_terminator
+
+IDH infantry: - +100% health, +14 minimum armour, +5 armour, +50% weigth, +2 health regeneration
+- Inquisition Grey Knights
+- Inquisition Grey Knights Apothecary
+- Inquisition Grey Knights Apothecary Terminator
+- Inquisition Grey Knights Interceptor
+- Inquisition Grey Knights Justicar
+- Inquisition Grey Knights Purgator
+- Inquisition Grey Knights Purifier
+- Inquisition Grey Knights Terminator
+- Inquisition Grey Knights Terminator Justicar
+- Inquisition Grey Knights Terminator Paladin
+
+IDH infantry weapons: - +40% DPS
+- inquisition_daemon_hammer_grey_knight
+- inquisition_daemon_hammer_grey_knight_terminator
+- inquisition_halberd_interceptor
+- inquisition_incinerator_gk_terminator
+- inquisition_incinerator_purgator
+- inquisition_incinerator_grey_knight
+- inquisition_incinerator_paladin
+- inquisition_knife_grey_knight
+- inquisition_nemesis_weapon_paladin
+- inquisition_nemesis_weapon_grey_knight
+- inquisition_nemesis_weapon_falchions
+- inquisition_nemesis_weapon_justicar
+- inquisition_nemesis_weapon_gk_terminator
+- inquisition_nemesis_weapon_gk_justicar
+- inquisition_psycannon_gk_terminator
+- inquisition_psycannon_grey_knight
+- inquisition_psycannon_purgator
+- inquisition_psycannon_paladin
+- inquisition_staff_psyker
+- inquisition_storm_bolter_grey_knight
+- inquisition_storm_bolter_interceptor
+- inquisition_storm_bolter_gk_justicar
+- inquisition_storm_bolter_purifier
+- inquisition_storm_bolter_paladin
+- inquisition_storm_bolter_terminator_justicar
+- inquisition_storm_bolter_gk_terminator
+
+IDH vehicles: - +50% health, +2 armour, +5 minimum armour
+- Inquisition Damocles
+- Inquisition Dreadknight Titan
+- Inquisition Dreadnought
+- Inquisition Dreadnought Assault
+- Inquisition Dreadnought Support
+- Inquisition Dreadnought Venerable
+- Inquisition Land Raider
+- Inquisition Land Raider Crusader
+- Inquisition Land Raider Daemonhunter
+- Inquisition Land Raider Redeemer
+- Inquisition Predator
+- Inquisition Razorback
+- Inquisition Rhino
+- Inquisition Stormraven Fury
+- Inquisition Tempest
+- Inquisition Whirlwind
+
+IDH vehicles weapons: - +25% max damage
+- inquisition_assault_cannon_dreadnought
+- inquisition_assault_cannon_dreadnought_assault
+- inquisition_assault_cannon_dreadnought_hellfire
+- inquisition_assault_cannon_twin_crusader
+- inquisition_autocannon_twin_dreadknight
+- inquisition_autocannon_twin_dreadnought
+- inquisition_autocannon_twin_dreadnought_hellfire
+- inquisition_autocannon_twin_dreadnought_venerable
+- inquisition_daemon_hammer_dreadknight
+- inquisition_flamestorm_cannon_left
+- inquisition_flamestorm_cannon_right
+- inquisition_heavy_bolter_dreadnought
+- inquisition_heavy_bolter_twin_landraider
+- inquisition_hurricane_bolter_crusader_right
+- inquisition_hurricane_bolter_crusader_left
+- inquisition_incinerator_dreadnought_hellfire
+- inquisition_incinerator_dreadknight
+- inquisition_incinerator_dreadnought
+- inquisition_incinerator_dreadnought_assault
+- inquisition_incinerator_melee
+- inquisition_incinerator_razorback
+- inquisition_incendiary_missile
+- inquisition_lascannon_twin_dreadnought_venerable
+- inquisition_lascannon_twin_dreadnought_hellfire
+- inquisition_lascannon_twin_dreadnought
+- inquisition_lascannon_twin_landraider_left
+- inquisition_lascannon_twin_landraider_right
+- inquisition_lascannon_twin_predator
+- inquisition_missile_battery_inferno
+- inquisition_missile_launcher_rhino
+- inquisition_missile_launcher_dreadnought
+- inquisition_multi_melta_gun_dreadnought
+- inquisition_multi_melta_crusader
+- inquisition_nemesis_weapon_dreadknight
+- inquisition_heavy_plasma_gun_dreadnought
+- inquisition_power_sword_dreadnought
+- inquisition_psycannon_dreadnought
+- inquisition_psycannon_dreadknight
+- inquisition_storm_bolter_rhino
+
+IDH commanders: - +50% health, +4 armour, +14 minimum armour, +50% weigth, +2 health regeneration
+- Inquisition Chaplain
+- Inquisition Grey Knight Champion
+- Inquisition Grey Knight Champion Improved
+- Inquisition Grey Knight Hero
+
+IDH commanders weapons: - +20% DPS
+- inquisition_bolt_pistol_inquisitor_lord
+- inquisition_daemon_hammer_champion
+- inquisition_nemesis_weapon_gk_hero
+- inquisition_storm_bolter_gk_hero
+
+- All of my new weapons wargears did not receive this 20% DPS buff because they are already strong enough
+
+CD commanders: - +50% health, +4 armour, +14 minimum armour, +50% weigth, +2 health regeneration
+- Daemon Lord Prince
+- Daemon Lord
+- Daemon Lord Stature
+
+CD commanders weapons: - +20% DPS
+- daemons_daemon_prince_sword_undivided
+- daemons_hellsword
+- daemons_hellsword_improved
+- daemons_hellsword_greater
+
+- All of my new weapons wargears did not receive this 20% DPS buff because they are already strong enough
+
+
+
+----------------------------------
+--- Applied changes before Git ---
+----------------------------------
+
+
+
+	Abilities: The first line will ONLY contain abilities unlocked by the relative wargear (NEW) (research with same name, see effects ingame or into the research description. Extension _2 _3 and so on after the _n.wargear meant that it is a child called by the previous ability)
+
+all_run! in now incompatible with Fleet on Foot and Feet on Fire
+all_autorepair now causes a fixed income debuff instead of a percentage (Req/Pow) -10%/-10% -> -10/-5
+all_bumpertank_child now has 2 different entries set to true {target_ground and target_self}. This should prevent shield damages for the user
+
+Following superweapons (not winbuttons) have the local addon_superweapon requirement to allow the Tau Arka cannon to use "Ceasefire" without requiring such addon: chaos_nuke + chaos_warp_storm_super_world_end , daemons_warp_storm + daemons_warp_storm_super_world_end + daemons_planetary_extermination, marines_nuke + marines_nuke2 + marines_nuke3 + marines_nuke4, inquisition_nuke2, inquisition_exterminatus, sisters_nuke + sisters_nuke2 + sisters_nuke3 + sisters_nuke4, tyranids_planetary_bombardment + tyranids_summon_hivefleet + tyranids_summon_vein, tau_nuke + tau_arka_ion_cannon
+Following Superweapon buildings now have different modifier_apply_ext (not disabling abilities [previous sentence makes abilities require the addon]): chaos_hq_super + daemon_doom_pit + guard_nuclear_facility + inquisition_nuclear_facility + sisters_missile_silo + space_marine_hq_super + tau_arka_ion_cannon + tyranids_capillary_tower
+
+all_generator_bonus (productivity/requisition) now has smaller radius 12->8
+all_transport_abilityrecharge no longer increases ability range, ability recharge rate buff now is exclusive, the target_filter now contains only infantry units as targets instead of everyone (titans as well). The skill no longer affects the caster.
+all_transport_heal no longer applies +30% health regen. Constant health regen buff increased 15 -> 20 and now is exclusive. it STILL affects the caster.
+
+LP: Each race has it's own. Passive Healing / morale aura at LP addon III, Passive repairing aura (building + resource drain) at LP addon IV
+	Daemons have 4 exclusive AOE of "Chains of Torment" and contain the manifestation of an Undivided Prince's wargear.
+	Tyranids don't have weapons but passive skills (AOE of damages and debuffs centered on the LP), one per addon.
+
+SHARED:
+	(CSM, SM, IG) shared_dozer_blade_upgrade_ability
+
+CSM: Chaos lord = 6. Champion of Khorne. Nurgle and Slaanesh = 2. Champion of Tzeentch = 4 (not shared). Lord of Change = 10. Bloodthirster = 8. Great Unclean One = 4. Keeper of Secrets = 4. Daemon Prince = 4. Sorcerer = 2 (if chosen mark is Khorne, unlocked by levels 6-7). Sorcerer Lord = 1 (unlocked by the Oracular Dais [new content]). Invulnerability, Bolt of Change and Chains of Torment spells are now incompatible with a new wargear of the LoC (n.8). Tainted Auspex and Daemon Strength are incompatible with two Chaos Lord new wargears. 
+	+1 Champion of Nurgle (passive from the very beginning. 20m radius +6 health regen, pretty simple indeed)
+	+1 Disambiguation ability: Doom Siren for Noise Marines (needed for compatibility with a disabled part of my addon)
+	Meteors spell no longer shares the cooldown between casters
+	Skill cooldowns amplified (base value, buffs aside) [there are too many casters. skill spamming must be avoided at all costs. Using all commanders skills even once per fight would certainly bring it to premature end]:
+		Meteors: 180 -> 320
+		Corruption: 120 -> 160
+		Chains of Torment: 80 -> 90
+[sorcerer]	Bolts of Change: 60 -> 40 [lvl. 3-4]
+[Sorcerer]	Bolts of Change Improved: 120 -> 100 [lvl. 5-6]
+[Sorcerer]	Bolts of Change Greater: 120 -> 170 [lvl. 7-8]
+[Sorcerer Lord]	Bolts of Change Greater Lord: 120 -> 170
+		Storm of Change: 290 -> 600
+		Rift: 30 -> 50
+		Winds of Change: 120 -> 300
+[Lord of Change]Bolts of Change: 16 -> 160
+		Warp Storm Mini: 200 -> 240
+
+	Storm of change no longer has the eldrich storm as child and damage is increased accordingly to compensate (its way weaker. Now it is very similar to the eldritch storm)
+
+	Buff of Nurgle (passive of almost all entities that only requires to have chosen the mark) now is a bit stronger because it was really no match to other buffs (I still doubt it does but it should still be better for vehicles in later game). HP regen +2 -> +4
+
+	+2 Aspiring sorcerer (chaos_shield_aspiring_sorcerer and chaos_shield_regenerate_aspiring_sorcerer)
+	Following bolts of change can now target a non enemy unit to cast, not sparing allies with the first bolt: chaos_bolt_of_change, chaos_bolt_of_change_aspiringsorcerer, chaos_bolt_of_change_greater, chaos_bolt_of_change_greater_lord, chaos_bolt_of_change_improved, chaos_bolt_of_change_psyker
+	Sorcerers BoC (Bolts of Change Improved,Bolts of Change Greater) now point to different childs, producing respectively 2 and 3 BoC projectiles
+	Sorcerer Lord (Bolts of Change Greater Lord) now points to a different child, producing only 4 projectiles
+
+	Eye of the Warp (HQ ability now has global cooldown)
+
+	+7 new abilities used by new leaders chaos_: - cultist_leader_aura + cultist_leader_ceremonial_knives + plague_leader_aura + noise_leader_aura + berserker_leader_aura + chaos_new_noise_champion2_freq_low + chaos_new_noise_champion2_freq_high
+	chaos_selfdestruct ability causes more health degeneration 30 -> 50 to cause the death of the Wheel
+	All 5 abilities of inspiring banners have been altered as they stacked way too many times. They are now RESTRICTED TO THE SQUAD of the banner bearer but their effects are amplified:
+		chaos_inspiring_aura_bearer: max morale 100 -> 250, morale regen 2 -> 5
+		chaos_inspiring_aura_bearer_tzeentch: nothing
+		chaos_inspiring_aura_bearer_khorne: max damage 15% -> 20%, min damage 15% -> 25%
+		chaos_inspiring_aura_bearer_nurgle: hp regen 2 -> 6
+		chaos_inspiring_aura_bearer_slaanesh: speed 20% -> 25%, max morale 100 -> 200, morale regen 2 -> 4
+	Nerfed cultist worships. Worships no longer affect structures, vehicles, titans and the caster squad. Their cooldowns are now global as well, so only one can be used at a time in normal circumstances.
+		worship_worship (applied by default to the caster squad): Caster squad becomes unable to reinforce or upgrade weapons and is revealed for the whole durations
+		Tzeentch: MODIFIERS UNCHANGED
+		Khorne: Stacks with other bonuses.
+		Nurgle: Stacks with other bonuses. Health regen reduced 40 -> 25
+		Slaanesh: Stacks with other bonuses. Max morale +200% -> +40%. Speed +200% -> +40%
+
+CD: Hellspawn = 4. Khorne Herald = 1. Nurgle Herald = 2. Slaanesh Herald = 3. Tzeentch Herald = 3. Daemon Lord/Stature = 1. Daemon Prince of Undivided = 4 (+2 additional shared ones). Murder gaze is incompatible with an upgraded version of itself.
+	Updated the requirements of Murder Gaze
+	Angron has a global aura (level8) which greatly increases damages/productivity/health of the Daemons' army [since he can buy levels but did not get any benefit from them]				|
+	+1 to Flesh Hounds (toggle between anti infantry and anty vehicle weapon. Stronger when selecting Khorne Mark)												|
+	+1 Bloodletters (bloodbath, damage enemy infantry around [weak blood pulse])																|
+	+3 Nurgling (like Plague Marines fumigating smoke/death feedback I II)																	|
+	+4 Plague Bearers (stronger fumigating smoke that partially affects allies too [daemonic larvae] / long term targeted health degeneration + share sight [daemonic parasite]/death feedback I II)	| Long story short, skills for everybody
+	+2 Fiend of Slaanesh (attack speed at the cost of hp regen / stasis like [Swiftness of Pleasure / Unbearable pain])											|	
+	+2 Daemonette (mark squad / unpredicted stab)																				|
+	+2 Favoured Daemonette (cloack of darkness/unforseen evocation)																		|
+	+4 Flamer of Tzeentch (fireball/death feedback I II/Inferno flame)																			|
+	+3 Pink Horror (Curse of the machine spirit [highly corrosive bolt]/doombolt/armour piercing blast)													|
+	+2 Screamer (Scream [knockback] / anti armour scream [resonant])																	|
+	Death feedback {nurglings,plague bearers,flamers of tzeentch} is shared, the same identical ability (but has different consequences due to the death blossom). Each skill only has greater chance of activating
+	Increased the damage done by the Nurgle Prince/Herald by 50% (rot [greater] [active skills]) 15-20 -> 22-30 and 20-25 -> 30-38
+	Great Unclean One has the skill "Greater Rot", the same one as the Nurgle Prince [skill not new]
+	Flame Tongue has +25% damages (Lord/Prince): 200-350 -> 250-440 and 300-550 -> 375-700
+	Herald of Tzeentch no longer has the passive ability "disable_flight"
+	Warp Portal ability requires Portal gift [9] instead of HQ for display
+	+1 [daemons_wargear_herald_of_slaanesh_2_warped_plant_aura] used by the new entity
+
+	+1 to a new entity generated by Warp Signatures after death under certain conditions
+
+	Daemons_listening_post_protection1, Daemons_listening_post_protection2, Daemons_listening_post_protection3 now have different modifier values: health regen {+5%,+5%,+5%,+3} -> {+1,+1.5,+2.5}, maximum health {+4%,+4%,+4%,+6%} -> {+3%,+4%,+5%,+6%}
+
+	Doom Blast (Hellspawn) now costs 650 less power to cast 1000 -> 350
+
+	Daemons_listening_post_protection3 [passive that requires addon II] radius increased by 5 (25 -> 30) so that it matches all other increments (else it would be the same as the previous ability, which does not make sense)
+	Daemons_listening_post_protection3_child1 radius increased by 10 (50 -> 60) so that it matches all other increments (else it would be the same as the previous ability, which does not make sense)
+
+	daemons_nurgle_herald_aura (passively casted by the Nurgle Herald) now has +2m radius 18 -> 20. Hit events contain "narthicium" (FX like a white ring used by many healing skills like this one). Now it increases health regen by +4 and x1.5 instead of simply x2 and it affects entities instead of squads
+
+
+	daemons_bolt_of_change_loc can now target a non enemy unit to cast, not sparing allies with the first bolt
+	daemons_gift_of_tzeentch can now hurt allies and has a different projectile
+
+	Doom (divine_obliteration) now deals much more damage 820-1080 -> 1220-1680. Morale damage doubled, 100 -> 200
+	Greater Flame Tongue (warpfire_prince) now deals much more damage 375-700 -> 550-1350. Morale damage increased, 70(or 80 I don't remember) -> 180
+	Hellmouth (warpfire_roar and all its child abilities) now deals much more damage 475-680 -> 540-890. Morale damage doubled, 10 -> 90
+
+	Added many chained meteors with some different stats: chaos_meteors_chain_child, chaos_meteors_chain_child01 ... chaos_meteors_chain_child09. {note, the name chaos_ is due to the fact that I had different plans for this ability}
+	Changed the Summon Mini Warp Storm (level8) [daemons_warp_storm_mini_lord] as it's not even close to the tactical explosive but has more range: Fire Cost (power) 0 -> 600. Recharge Time 200 -> 500. Range 90 -> 60. Refresh Time 4 -> 5. Duration 18 -> 5. Child ability now is chaos_meteors_chain_child [previous entry] (more meteors would fall but since duration/refresh are lowered, less meteors will actually fall). Target all -> enemy. Radius 18 -> 40. Areasweep circle[2] -> none[0]. Damage 121-213 -> 230-512. Morale damages 31 -> 330. Armour penetration lowered: { Basic infantry 10 -> 25. Infantry 150 -> 25. Elite Infantry 150 -> 25. Heavy Infantry 150 -> 35. Elite Heavy Infantry 150 -> 35. Monsters 150 -> 75. Daemons 150 -> 100. Commanders 150 -> 50. Vehicle 150 -> 50. Armoured Vehicle 150 -> 75. Heavily Armoured Vehicle 150 -> 100. Structure 30 -> 75. Fortified Structure 30 -> 75. Heavily Fortified Structure 20 -> 75. Super Structure 10 -> 50. Aircraft 150 -> 175. Living Metal 3.75 -> 40. Titan 125 -> 60.}
+	Disambiguated the Summon Mini Warp storm so that the Prince and the Lord have 2 different skills (changes cost, recharge time and range) [Prince's ability is the new one]
+
+	+9 abilities unlocked by the new daemons_greater_gift_ researches. (Bloodthirster = 1 + 10 child, LoC = 2 + 8 child, GUO = 1, KoS = 2, All = (shared) 1)
+
+DE: Haemonculus = 6. Haemonculi Ancient = 6 active + 1 passive (shield).
+	Wildfire and its child abilities have tweaked requirements (no apparent change but it's better the way it is now)
+	New skill: forced labor (basic buildings) greatly increase building speed for a short time at the cost of some souls.
+	New ability: Portal Healing II, which can be researched in portals and allows buildings and vehicles to be repaired as well.
+	Portal healing becomes incompatible with Portal healing II.
+	1 Passive ability implemented for the Soulstorm spawned by the Haemonculi Ancient
+	2 Passive abilities implemented for the Torture Amps spawned by the Haemonculi Ancient
+	3 Passive auras implemented for the walls (after add-ons)
+	Rekindle Rage (file is called corrosive_cloud if you, like me, are not used to how DE names match) healing time reduced 5 -> 0.5 seconds, meaning it only heals 500 per affected unit
+	haywire_bombs damage and armour penetration drastically lowered to match other races' Krak Grenades
+	haywire_bombs_sp (only used by the Archon) has slightly different UI description to state that it's a more powerful Haywire Grenade
+	Feet on fire (dark_eldar_footonfire) now applies a great accuracy debuff for the whole duration (-60% melee/ranged) and the speed bonus is reduced x4(not stack) -> +50%(can stack)
+
+ELDAR: Autarch = 1 (Unlocked by level, not wargear). Farseer = 5 (Psychic Bolt have a total of 13 child abilities). Shadowseer = 2. Avatar = 8. Laughing God = 10.
+	Shining Spears Exarch acquires a single melee blow at level 5.
+	Scatter Beam skill (fireprism) now works, let me know your impressions because I didn't have a clear idea on how you wanted it to be.
+	Entanglement and Mind War (Farseer) are now incompatible with a new wargear (Farseer)
+	wraithtomb_of_khaine (300 health regen of the Revenant Titan) now prevents the user from moving
+	Gracious Mercy (Shadowseer) now gives x10 -> x1.5 Health and Morale (Skill UI is updated but I didn't use UCS)
+
+	haywire_bombs and haywire_bombs_2 (used by Warp Spiders only) have dramatically lowered damages and armour penetration so that they match other races' Krak Grenades
+	Wailing Doom now deals much more damages 560-890 -> 680-1000. Morale damage doubled 75 -> 150
+	Wrath of Khaine now deals much more damages 380-460 -> 420-680. Morale damage doubled 150 -> 300
+
+	Removed morale buff given to vehicles by Autarch and Avatar. eldar_inspiring_autarch (10 morale regen) no longer affects any kind of vehicle. eldar_inspiring (Avatar) (morale immunity = invulnerability for shielded units) no longer affect any kind of vehicle
+	Disambiguated the whole Nightwing Airstrike ability (created the _shining_spear_exarch), which has armour penetration and damage -10% rounded for excess (I cannot explain it, 0.3 -> 1) and costs REQ/POW 80/100
+
+	eldar_resource_allocation_ally (doubles REQ income from a not armoured building) has recharge_timer_id set to 0, meaning that the cooldown is shared by all portals and actually has a global cooldown (so it no longer stacks)
+
+	Soulstone nerfed like lore meant it to be, an emergency defense attack. Now it costs (REQ/POW) 1000/1000 (can be nothing compared to what the opponent could have spent for that unit, especially considered it is AOE). Moreover, now its cooldown is shared by all HQs. Against necrons creating more HQs and pressing on with them and uber turret perfectly works because of the Soulstone bombardment that takes place each time a threat is in sight.
+
+	Plasma Grenades (AND plasma_grenades_2 [used at least by Warp Spiders]) are dramatically nerfed as they are superior to any other grenade. Radius 5 -> 7. Damage 300-400 -> 180-240. Damage and armour penetration still are far higher but I will not nerf it too much because I want to hear the player's opinion before. Plasma actually is stronger than frags, but for balancement purposes it cannot insta-kill basic units and force enemy commanders to flee in order to survive.
+
+	+1 new abilities for the new Warp Spider Exarch (_2) [eldar_warp_spider_exarch_2_passive]
+
+	+1 New ability - eldar_shuriken_barrage used by some vehicles
+	Fleet on Foot (eldar_fleetoffoot) now applies a great accuracy debuff for the whole duration (-60% melee/ranged) and the speed bonus is reduced x3(not stack) -> +35%(can stack)
+
+	Added a new ability infinity_resources (requires the addon) for the Eldritch Spire so that its effects do not disappear after relocation
+	eldar_nuke and eldar_nuke2 now require the addon eldar_spire_stone_destruction. This way the Eldritch Spire can still cast even after relocation
+
+IDH: Inquisitor Lord = 3. Ordo Malleus = 3 (One is unlocked by level, not wargear!). Brotherhood Champion = 6. Landraider Inquisition = 2 (activated by inquisition_wargear_inquisitor_lord_5).
+	New ability: Bolster Defenses II
+	Disambiguated the two abilities used by Bolster Defenses (so +2 added)
+	Following Inquisitor Lord spells have updated requirements: Banish, Destinative Portal, Fireball, Great Power, Lightning Balls, Psychic Recovery
+	scholar_exorcist_inspiration [exorcist healing aura] no longer has 15m radius. It now affects the whole attached squad only.
+	Bolster Defenses resistence buff (called "cover") no longer stacks (because it was OP, three concentrated Bolster defenses and ranged immortality could almost be reached) and area of effect is reduced from 10 meters to 8, cost is reduced to 40 (sandbags now only last 40 seconds)
+	inquisition_frag_grenades_bodyguards (default grenades) now affect allies as well and affect all armour ratings (target_filter). It becomes incompatible with the standard Frag Grenades Research
+	+80 new abilities (child included for the 2 new engame xanthite units [inquisition_xanthite_inquisitor_] [inquisition_xanthite_cultist_])
+
+IG: Fire Support Lieutenant = 2. Field Command Lieutenant = 4.
+	New ability: Bolster Defenses II
+	Old Bolster Defenses becomes incompatible with the new one after research
+	Bolster Defenses resistence buff (called "cover") no longer stacks (because it was OP, three concentrated Bolster defenses and ranged immortality could almost be reached) and area of effect is reduced from 10 meters to 8, cost is reduced to 40 (sandbags now only last 40 seconds)
+	Melta Bombs and Frag Grenades of the Fire Support Lieutenant become incompatible after wargear
+	Krak Bombing Run (Marauder Bomber) has effects more suitable for Krak Grenades rather than Inferno Grenades: (modifier) No longer applies fire effect nor health degeneration. (armour_damage) Damages now match Krak Grenades 1000-1380 -> 800-900, min damage 5 -> 0.3, morale damage 10 -> 0 (maybe in the future I'll add morale damages to Krak Grenades and Melta Bombs so that they damage shields. However NOT NOW). Armour penetration matches as well for: Vehicle 60 -> 100, Heavily Armoured Vehicle 40 -> 20, Structure 65 -> 50, Fortified Structure 40->25, Heavily Fortified Structure 25->10, Super Structure 0 -> 5, Living Metal 0 -> 10, Titan 0 -> 10. The file looks ravaged but it perfectly works
+	new active targeted skill guard_emp_earthshaker (+many child abilities. Its effects replace those of the former weapon but will aim at the correct targets, which affected ALL armour types).
+
+	+3 abilities (+ total 10 child abilities +3 aerial versions) guard_marauder_bombing_krak, guard_marauder_bombing_inferno, guard_marauder_bombing_smoke (replace Marauder Bomber former bombing runs) [are upgraded by Aerial Doctrine {UI updated accordingly}]
+
+NECRONS: Overseer = 5. Death Lord = 3.
+	Gauss Lightning Arc and Lightning Storm become incompatible after wargear
+	Annihilator nuke (not amplification) cost doubled 1000 -> 2000
+
+SM:
+	LOTD Grenade (Inferno Grenade Deathwatch) damage changed 280-420 -> 200-350. Armour penetration reduced: Monster 125 -> 15, Daemons 75 -> 10, Commander 50 -> 15, Fortified Structure 100 -> 90, Heavily Fortified Structure 100 -> 70, Super Structure 100 -> 40
+	+2 new skills used by 2 new scout leaders (marines_scout_leader_sniper_cripple + marines_scout_leader_shotgun_suppression_fire)
+
+SOB: Ordo Hereticus = 3. Confessor = 6.
+	3 Laud Hailers suffered very minor dynamics changes
+	3 New Laud Hailers (total) for entities that didn't have them before
+	2 New Laud Hailers (LH, passive, in all SOB buildings and Rhino) that implement the effects of the second Laud Hailers research (new)
+	6 New Supreme Hailers (passive, Shrine to the Emperor) after addon (new)
+	Divine Retribution and Emperor's touch are disambiguated (to only make them passive and not all missionaries') and have _confessor after their name
+	Witch Hammer, Divine Pronouncement and the two disambiguated Divine Retribution and Emperor's Touch become incompatible after wargear
+	Some of the commanders unlock a Melta Bomb at level 5 {Almoness,Canoness,Ordo Hereticus,Nunciate Superior}
+
+	sisters_exorcist_missile_ability_damage {  ,_1,_2,_3,_4,_5}. Theese 6 are the impact_ability called by the exorcist missiles.
+
+	+1 new ability for Rhino Transport - upgrade_flag
+	+1 new ability - infiltration_cherubim (unlocked by the new research cherubim_infiltration)
+	+1 new toggle ability - sisters_callidus_perceptions (unlocked by the new research assassin_weapons)
+
+	sisters_shrine_to_the_emperor_inspire no longer affects buildings of any kind (target_filter)
+
+ORKS: Bad Dok = 1. Big Mek = 2. Warboss = 2 (+2 non wargear related: warboss_brute_force, warboss_vehement_roar). Wierdboy = 4.
+	(Wierdboy) Frazzle and the two Zzzapp skills become incompatible after wargear
+	(Warboss)  Power of the Waaagh becomes incompatible after wargear
+	+1 new ability used by most buildings (ammo_runt_ability)
+	ork_waagh!!! now is incompatible with a new wargear (Warboss)
+
+	ork_klan_nuddyfist has a new child and its target_filter now excludes all buildings and vahicles (not to cause them healing 15 in a 35m radius). Moreover, modifiers for maximum health and morale have been removed (moved to the child, where the effect was amplified 25 -> 40% but limited to the attached squad ONLY)
+	+1 new ability ork_klan_nuddyfist_squad (child of ork_klan_nuddyfist)
+
+TAU: Alpha Knarloc = 2. Great Ethereal = 5. Commander XV22 = 1. Commander XV89 = 2.
+	1 disambiguation ability for the commander XV89 (target acquired). It has identical values but different requirements (replaced by a different wargear)
+	Changed the requirements of target_acquired (used by the commander XV22, not XV89 anymore) so that it is replaced by the new target acquired wargear
+	New ability: Improved Scanner (Guidance Beacon) after add-on. This ability is also incompatible with a new add-on.
+	Renamed ability file from guard_detection_field_sp to tau_scanner (guard detection field sp is now deprecated, you can try deleting it but there should be a copy within DXP3. Too sad it had a misleading name...)
+	2 New orbital strikes (Guidance Beacon) after add-on
+	3 New nukes (Coalition Center) after one research each (researches are new [Diplomacy])
+	3 New passive AOE passively casted by the Coalition Centers after each Diplomacy (new) research
+	All Photon Grenades (tau_photon_grenade, tau_photon_grenade_commander, tau_photon_grenade_shasui) now damage allies as well, why should they be the exception?
+	New ability tau_generator_danger_hp_regen prevents health degeneration as long as it is over 50% health and chosen addon is "danger"
+	tau_commander_missile_barrage can no longer be used by the AI when requirements are not met (before it was casted ever since lvl0 and given its range it was a real pain)
+TYRANIDS: Hive Tyrant = 1. Lictor Alpha = 1.
+	Turrets have +3 (resource drain)
+	Bioacid hive nodes have +3 (resource drain)
+	Hierophant titan has a new ability [spores rain (stronger than Hive Tyrant's)]
+
+	Removed graphical effects of building_miasma and building_miasmax2
+
+
+
+
+
+
+	Addons: The first line will ONLY cover LP stuff in addition to the LP entry
+
+Commanders:
+	All layer 1 inspiring choices that can be purchased by tyranids (meaning no Productivity II because it is not layer 1, not Soul Harvesting because it cannot be acquired, faith and so on) are incompatible with a new inspiring choice for tyranids (other races remain unaffected)
+
+LP: All races now have all 4 LP addons. (if not written otherwise, these applies to all races). This will state only NEW things.
+	I:   Unchanged
+	II:  Unchanged
+	III: Income + Resistence (hp armour or something like that) + Passive aura of health/morale regeneration to all nearby infantry
+	IV:  Income + Resistence (hp armour or something like that) + Passive aura of health regeneration to all adjacent buildings (constant resource drain applied).
+
+CSM: Nothing
+	3 general purpose selectable weapons for commanders (plasma pistol, meltagun, flamer)
+	5 weapons for the Khorne   Champion (Axe of Khorne, Berzerker Glaive, Bloodfeeder, Deathdealer, Skullreaver) {M,M,M,M,M}
+	5 weapons for the Nurgle   Champion (Plaguebringer, Corruption, Epidemia, Doomsday Bell, Death's Head of Duke Olaks) {M,M,M,R,R}
+	7 weapons for the Slaanesh Champion (Blissgiver, Lash of Torment, Soulstealer, Silvershard, Slothful Claw, Forbidden Gem, Whips of Agony) {M,M,M,M,M,R,M}
+	2 weapons for the chaos Sorcerer    (Deathscreamer, Everstave) {R,R}
+	3 weapons for the Sorcerer lord     (Oracular Dais, Endless Grimoire, Soul Bane) {R,R,M}
+	1 staff   for the chaos sorcerer    (Paradox) {Increases casting capabilities}
+	Castle of Desecration addon I cost reduced by 2000/2000 (8000/8000 -> 6000/6000)
+	Castle of Desecration addon I cost reduced by 4000/4000 (15000/15000 -> 11000/11000)
+CD: Addon I has a fixed modifier (no actual change, it's just cleaner), II and III had a disparity of 5% produced requisition (now the LP doesn't produce +1 or -1 compared to other races), IV also unlocks an aura of "Chains of Torment". III costs less 770 -> 580
+	HQ addon II has updated requirements because Greater Gift Circle can either be done instead of having to build the Doom Pit
+	4 New addons: army of ... (Sacrificial Circle) which allows to research the relative god's new researches [Sacrificial Circle]
+	2 New addons: Contracts policy: Speed/efficiency [Warp Signatures, exclusive between each other, limit 8 each]
+	
+DE: Addon II correctly increases hardpoint1 and hardpoint2 (maybe there was a mistake, I don't quite remember)
+	New Addon: Forced Labor. Allows basic buildings to briefly increase productivity by spending souls
+	New addon: Wall add-on I II III, which makes the wall more resistant (health, health regen, armour) and unlock a passive aura each with larger radius and with more terrifying debuff effects and continuous damages. (Must cost a lot per wall)
+
+
+ELDAR: Nothing
+	eldar_spire_stone_destruction no longer enables abilities
+	eldar_spire_stone_infinity_resource no longer applies any modifier (a new ability now does it)
+
+IDH: Nothing
+	The Tower Addon (HQ's one, is though to become tier III, so it requires the Astra Telepathica tier II and has updated UI name with (tier III) attached
+	+10 exclusive wargears for the Land Raider Daemon Hunter (requires garrisoned Inquisitor Lord + Level8 + another research (after psychic aid))
+	landraider_daemonsmite no longer requires level8 (since the Land Raider already requires many other things before it can purchase research/addon: Inquisitor Lord, Psychic Aid, another research and so on) and has different UI position/hotkey
+	landraider_addon (which changes weapons) now requires a research (Inquisitor Lord wargear for aesthetic purposes), has different UI position/hotkey and cost
+	landraider_armour has different UI position/hotkey
+
+	+8 addons (divided in 2 researches and 3 upgrades each) that completely replace tome_aegis and tome_blades. The name does not change
+	Tome Sanctified Blades has been nerfed from +30% melee damage boost to +10%. More weapons are covered by this research (Disambiguation ones are already fine). All further upgrades follow the same pattern, +10% each
+	Tome Aegis has been greatly nerfed. Iterated four times, however, it's far more effective than the former single research. They also include gk_apothecary and gk_apothecary_terminator
+	All 8 UI description and name are updated
+	Aegis  Cost changed (Req/Pow/Time) 240/120/10 -> {100/60/8 | 160/100/16 | 230/160/24 | 400/300/32}
+	Blades Cost changed (Req/Pow/Time) 240/120/10 -> {110/70/8 | 180/120/16 | 260/190/24 | 450/350/32}
+
+	+2 addons for the Librarium in order to increase its durability (inquisition_addon_librarium_durability_)
+	+1 endgame addon for the Librarium (tome_xanthites)
+
+	dedication_tomes and dedication_research now are incompatible with a new addon 
+
+IG: Nothing
+	EMP addon for the Earthshaker Platforms is also exclusive with the new Nervegas Shell. Also UI description is updated
+	addon_platform_volcano (Earthshaker) is also exclusive with the new Nervegas Shell. Also UI description is updated
+	New addon for Earthshakers, the Nervegas Shell.
+
+NECRONS: Nothing
+
+SM: Nothing
+
+SOB: Nothing
+	New addon: Supreme Hailers (Shrine to the Emperor) -> global passive aura of morale/morale regen to allies and morale debuff/morale degeneration to enemies. Requires the structure's health fraction over a given value to work (damages to Hailers).
+	2 New addons for Bunkers (sisters_bunker_cannon_left + sisters_bunker_cannon_right)
+	addon_sisters_wall_probe + addon_sisters_wall_flamers are now incompatible with the new Bunkers addons (sisters_bunker_cannon_left) and require Fortified Bunker Armor (addon_sisters_wall_bolters)
+	Changed Hotkey/Position of Bunkers addons: sisters_addon_wall_flamers E/3 -> Q/1, sisters_addon_wall_probe W/2 -> E/3
+	addon_sisters_hq_1 now enables the secondary armor of Missionaries (and Missionary squad leaders [_leader]), setting it to Elite Heavy Infantry
+ORKS: Nothing
+	+1 new addon available for most buildings (ammo_runt_addon)
+
+TAU: Nothing
+	New addon: Orbital Scanner (Guidance Beacon) -> gives very high sight and keen sight
+	New addon: Orbital Strike  (Guidance Beacon) -> enables the use of 2 orbital strikes
+	Turrets addon (missiles) costs -20 power 125 -> 105
+	2 New addons within generators (and Thermoplasma) (generator_addon_save + generator_addon_danger)
+
+
+TYRANIDS: Each addon unlocks a cumulative passive aura of debuff and damage for nearby enemies. Range grows with each upgrade. Standing near to the spore chimney makes the enemy suffer debuffs from all auras.
+	1 new weapon for the Hive Tyrant called Crushing Claws
+	Hive tyrant's weapons have been put in order (UI fixes for) => Devourer, Lash Whips and Bonesword, Barbed Strangler, Devour (lower), Scything Talons, Venom Cannon
+	New inspiring choice: Health regeneration -> +10% health regen replacing the morale one which didn't affect any tyranids unit
+	Spore Mine Production (turret addon) power cost lowered 200 -> 80
+
+
+
+
+
+
+
+	Structures:
+ALL:
+	ALL turrets are now limited by the amount of HQ. UI description is properly updated. They no longer provide control_structure_radius (structure_ext).
+	ALL walls no longer provide control_structure_radius (structure_ext).
+
+	Most limits are based on the tier of the turret.
+	T0 = 6: chaos_turret_bolter	daemon_turret + daemon_turret_ai	dark_eldar_turret	eldar_support_platform_scatterlaser	guard_turret_heavy_bolter	inquisition_turret_heavy_bolter	necron_turret	ork_waagh_banner_turret_sp	sisters_turret_flamer	space_marine_turret_bolter	tau_turret	tyranids_turret
+	T1 = 4: necron_turret_missile_sp
+	T2 = 3: tau_turret_sp
+	T3 = 2: chaos_shrine_khorne	eldar_support_platform_uberturret_sp_dxp3	guard_turret_missile_launcher_sp	necron_turret_battery	space_marine_turret_missile_sp	tyranids_turret_bioacid
+	T4 = /
+	T5 = /
+
+
+LP:
+	CD + 4 ability and +1 weapon (HP 2,3,4,5) and updated UI description (regarding the chain aoe)
+	Tyranids +4 abilities
+	New research Improved Strategic Hold for the races that didn't have it (CD, IDH, Tyranids)
+
+CSM:
+	HQ can spawn the three god embodiements (squad table)
+	Plasma Generator deals less damages upon explosion 1000-2500 -> 800-1750. Armour penetration is increased for infantry and vehicle types (especially). (applied to almost all races but I want to note all entities)
+	Gate of the Dark Mechanicum has +3000 health 7000 -> 10000
+
+
+CD:
+	HQ contains the NEW mark, Undivided
+	Warp signatures also contain the power V research and deal less damages upon explosion 1000-2500 -> 800-1750. Armour penetration is increased for infantry and vehicle types (especially). (applied to almost all races but I want to note all entities)
+	Sacrificial Circle construction time reduced from 57 -> 40 (exactly like dark eldar)
+	Gift Circle contains 3 new researches: Death Feedback I II III, which enable Nurglings, Plague Bearers and Flamers of Tzeeentch to explode upon death with different chance after each research
+	New Gift Circle (greater) to split researches between lesser and greater daemons. From a dev point of view it increases the research slots by +31 (now 62). From the player's point of view, once they are used to new hotkeys, it'll be much cleaner. Researches will not have to jump from one place to the other in the menu anymore.
+	Gift Circle has a new name.
+	UI position/hotkey are updated: Doom Gateway -> Y/6, Doom Pit -> U/7, 
+
+	Sacrificial Circle contains +20 new researches and +4 new addons
+	Warp Signatures contain +2 locally exclusive addons
+	Warp Signatures have different death blossom
+
+	Greater Gift Circle contains additional 22 NEW researches for all greater daemons only
+
+	HQ no longer has research limit (incompatible with researches moved here) and modifier_apply_ext prevents the new Greater Gift Circle from dying overtime
+DE:
+	Plasma Generator deals less damages upon explosion 1000-2500 -> 800-1750. Armour penetration is increased for infantry and vehicle types (especially). (applied to almost all races but I want to note all entities)
+	The following buildings will have access to a new active ability (forced labor) (therefore to a new addon as well, to unlock it): Haemonculus Laboratory, Hall of Blood, Skimmer Shop, Wych Cult Arena
+	Haemonculus Laboratory is allowed to spawn the Haemonculus Ancient
+	HQ casts around itself the Portal's Healing II ability, repairing nearby entities (after Portal's research). Also, it has a new research (Feet on Fire II, which passively affects speed)
+	Portals have a new ability (Portal Healing II, which affects nearby buildings/vehicles as well) (after new research). (Obviously they have access to the research as well)
+	Walls have 3 new auras that damage nearby enemies (after add-ons) and 3 new addons (which enable the auras)
+
+ELDAR:
+	Warp Generator deals less damages upon explosion 1000-2500 -> 800-1750. Armour penetration is increased for infantry and vehicle types (especially). (applied to almost all races but I want to note all entities)
+	HQ contains the new research Fleet On Foot III and the three new Exarch Councils
+	Khaine Shrine contains the 2 new additional researches Hearth Of Khaine II and III
+	Vaul Portal no longer increases relic cap/income (modifier_apply_ext)
+
+	eldar_hq_super (Eldritch Spire) now has a new ability infinite_resources so that the infinity resources addon persists even after relocation. modifier_apply_ext no longer disables abilities from this entity
+IDH:
+	Warp Generator deals less damages upon explosion 1000-2500 -> 800-1750. Armour penetration is increased for infantry and vehicle types (especially). (applied to almost all races but I want to note all entities)
+	Warp Reactor can now use the "Dump Requisition" and "Dump Power" like all other 'Slag' Generators
+	Librarium can no longer research "inquisition_smoke_launcher_research.lua" because that research does not exist. In its place is the new research Bolster Defenses II. Tomes _blades and _aegis can no longer be researched. 8 New addons 4 tome_aegis + 4 tome_blades are available. +2 Addons to increase durability (inquisition_addon_librarium_durability_)
+	Librarium spawner_ext now contains two new endgame squads (xanthite inquisitor/cultist). On the other hand, squad_hold_ext is added, allowing Archivists only to enter (UI updated to both). combat_ext HP 1,2 contain a weapon each. +1 endagame addon (xanthite tome)
+
+	Grey Knights Teleporter can now spawn the Brotherhood Champion _Improved
+	Astra Telepathica has the tag "Tier II" as part of its name
+	Grey Knights Teleporter has the tag "Tier I" attached to its name
+	Titanic Mechanicum Tower has the tag "Tier IV" attached to its name
+
+IG:
+	Plasma Generator deals less damages upon explosion 1000-2500 -> 800-1750. Armour penetration is increased for infantry and vehicle types (especially). (applied to almost all races but I want to note all entities)
+	Tactica Control contains the Bolster Defenses II research. In addition to that, 2 more ogryn_melee_ researches are available
+	Earthshaker Platforms have different [combat_ext] Added Nervegas Shell, [addons_ext] a new addon is available (Nervegas Shell)
+
+NECRONS:
+	Resurrection Beacon contains a passive global range ability that strengthens all necrons (activated by Death Lord's wargear)
+	Reduced control radius of turrets by 4: Gauss 15 -> 11, Heavy Gauss 18 -> 14, Sentry Pylon 20 -> 16
+	Heavy Gauss Turret cost +75. 150 -> 225
+	Removed the all_autorepair ability from the following buildings: monolith, monolith_super, necron_amplification_generator, necron_energy_core, necron_forbidden_archive, necron_greater_summoning_core, necron_heavy_thermoplasma_generator, necron_listening_post, necron_plasma_generator, necron_resurrection_beacon, necron_sterilization_obelisk, necron_summoning_core, necron_summoning_core_big, necron_thermoplasma_generator, necron_turret, necron_turret_missile_sp, necron_wall
+
+ORKS:
+	Meaniest Tellyporta (titan building) has +2000 health 6000 -> 8000
+	Following buildings have a new ability (ammo_runt_ability) and a new addon (ammo_runt_addon): ork_boy_hut , ork_hq, ork_mek_shop, ork_pile_o_guns, ork_waagh_banner, ork_wall
+
+SM: Nothing
+
+SOB:
+	Plasma Generator deals less damages upon explosion 1000-2500 -> 800-1750. Armour penetration is increased for infantry and vehicle types (especially). (applied to almost all races but I want to note all entities)
+	Changed the menu position of the following buildings: Capitol Building (Hotkey/Position) G/12 -> H/14, Inquisitorial Building W/2 -> Y/6, Shrine Y/6 -> U/7, Shrine to the Emperor U/7 -> J/15, Turret Heavy Flamer D/12 -> F/12, Wall F/11 -> G/13
+	Passive Laud Hailers (skill unlocked after new research Laud Hailers II) are enabled on all following buildings: Holy Reliquary, HQ, Infantry (Convent), Inquisitorial Building, Listening Post, Sanctuary, Sanctuary AI, Shrine to the Emperor, Vehicle Building
+	Shrine to the Emperor has three Supreme Laud Hailers abilities (unlocked after new add-on) and of course it can build three new addons (Supreme Laud Hailers)
+	Sanctuary and Sanctuary_AI no longer have the addon_ext (useless) and have access to two two researches (Laud Hailers II + Movement Speed Research)
+	Ordo Hereticus Chamber has access to a new research (Crusader Seals)
+
+	Bunkers can now build 2 more addons - cannon_bunker_left + cannon_bunker_right
+	Bunkers suffered hardpoint modifies (1,2,3,4). A new weapon has been appended in each of them (autocannon_bunker_)
+	sisters_wall (Bunkers) now have spawner_ext to disable the rally point
+
+	Angels researches have been moved from the Holy Reliquary to the Shrine of the Living Saint (saint_health_research_1, saint_health_research_2, saint_retinue_research_1, saint_retinue_research_2, arch_angel_research_1, arch_angel_research_2)
+	
+	Following buildings contain new researches (9):
+	- sanctuary			seraphim_speed
+	- sanctuary_ai			seraphim_speed
+	- vehicle_building		armorium1 , armorium2
+	- inquisitorial_building	assassin_weapons , officio_assassinorum
+	- shrine_to_the_emperor		fortress_of_faith
+	- shrine			living_saint_army
+	- holy_reliquary		faithful_repentia
+	- listening_post		cherubim_infiltration
+
+TAU:
+	Plasma Generator costs -15 requisition (150 -> 135) and deals less damages upon explosion 1000-2500 -> 800-1750. Armour penetration is increased for infantry and vehicle types (especially). (applied to almost all races but I want to note all entities)
+	Guidance Beacon has 3 new skills (Improved scanner, Orital Strike Small and Orbital Strike Big). The Guard Detection Field SP ability is replaced (in name and effects) by the tau_scanner ability. Also there are 2 new addons (1: Unlock both orbital strikes. 2: Greatly increase sight and keen sight and unlock the improved scanners)
+	Shrine of Purpose contains 6 new abilities (3 Passive self centered enemy damage and 3 active global nukes [I think they are a bit OP, at least they should share a cooldown. Maybe the cooldown should depend on the amount of Coalition Centers too])
+	Titan Building has +3000 health 8000 -> 11000 (Like SM but it doesn't matter)
+	HQ can spawn a new squad (Repair Drones)
+	Generators (and Thermoplasma) now contain 2 new addons. Also, health_ext is updated (death_blossom). type_armour_2 is updated. Also a new ability is added (tau_generator_danger_hp_regen).
+
+TYRANIDS:
+	Spore Mine (Minefield) has increased armour piercing against infantry: Infantry 25 -> 60, Elite Infantry 25 -> 50, Heavy Infantry 25 -> 40, Elite Heavy Infantry 25 -> 35. Explosion radius/trigger +1 (6->7 / 5->6)
+	Turret Bioacid  -| Contain 3 new researches (Turret upgrades I II III) that unlock some new weapons (same weapon upgraded each time)
+	Turret		-| Also have 3 passive abilities that drain power overtime (require Turret Upgrade Research)
+	Removed Ripper Swarm researches and synapse/miasma from the Magma Vent (covering resource dumps as well). It's better to leave those stuff within the digest pool only.
+	Fixed UI name and description of the Tyranids Digest Pool
+
+
+
+
+
+
+
+
+
+	Units: The line "Compatibility matters" means = not obtainable but implemented for later use. [Already implemented but not included because it's not done for all races and it would require too much time and testing]
+
+Commanders: The fastest way to check wargears is opening Corsix and going into arrib->research->factionname_wargear_unitname (the same applies to abilities). There are only few exceptions such as Eldar, which currently have the extension _spell instead of _wargear or IDH, which has a _skill for the Ordo Malleus.
+	Relative to a commander I'll write as little as possible. In most cases I'll only note the EXTs that were changed
+	Researches += New Wargears
+	Abilities  += Matching New Wargears (same name)
+	Weapons    += New Relative Wargears (very often same name, EG exceptions are CSM because they have ranged weapons in common)
+
+CSM:
+	Chaos Lord:			Abilities, Researches, Weapons (HP 3,4)
+	Chaos Lord Terminator Armor:	Abilities, Researches, Weapons (HP 3,4)
+	Champion of Khorne:		Abilities, Researches, Weapons (HP 1,2), Addon, moving_ext (speed -10% 22->20)
+	Champion of Nurgle:		Abilities + 1 non wargear, Researches, Weapons (HP 1,2), Addon
+	Champion of Slaanesh:		Abilities, Researches, Weapons (HP 1,2), Addon
+	Sorceror Lord:			Abilities, Researches, Weapons (HP 1,2), Addon
+	Chaos Sorcerer:			Abilities, Researches, Weapons (HP 1,3,4), Addon
+	Daemon Prince:			Abilities, Buff from level 7,8,8_aura, Researches, Weapons (HP 2)
+	Bloodthirster:			Abilities, Buff from level 7,8,8_aura, Researches, Weapons (HP 1,2)
+	Lord of Change:			Abilities, Buff from level 7,8,8_aura, Researches, Weapons (HP 1), Addon, Can buy levels
+	Great Unclean One:		Abilities, Buff from level 7,8,8_aura, Researches, Weapons (HP 1,2)
+	Keeper of Secrets: 		Abilities, Buff from level 7,8,8_aura, Researches, Weapons (HP 2,3,4,5)
+
+	3 New units: Embodiement of {Khorne/Nurgle/Slaanesh}
+	Noise Marine Champion has a disambiguated Doom Siren
+
+	Aspiring Sorecerer has 2 new skills (passive shield and active shield [not their actual names search for it inside of the ebps because I don't know how to call it and I'll forget about this entry])
+	Aspiring Sorcerer and Rubric Marines have tau_ability_even inside of event_manager_ext [positions 24 and 30]
+
+	+4 new leaders: marine_noise_champion2, cultist_aspiring_champion2, khorne_berserker_champion2, marine_plague_champion2
+	Cultists now have a new melee weapon within hardpoint 1 - knife_cultist_cerimonial (while Ceremonial Knives is active [new skill within the new Cultist Leader])
+
+	Vindicator now have a new ability (dozer_blade_upgrade_ability)	
+	Inverted contents of hardpoint 1 and hardpoint 2 {ranged/melee} -> {melee/ranged}
+
+	Changed the armor rating of chaos_marine_icon_bearer [attachable] (also prevents transport ability glitch) Heavy Infantry -> Elite Heavy Infantry
+	Changed the armor rating of chaos_psyker [attachable] (also prevents transport ability glitch) Elite Infantry -> Elite Heavy Infantry
+
+	Changed hotkeys of following squad leaders to prevent most common shortcut conflicts chaos_: aspiring_champion Q -> E, marine_noise_champion Q -> E, marine_plague_champion Q -> E, aspiring_sorcerer Q -> W, aspiring_champion_cultist Q -> E, khorne_berserker_champion Q -> W, raptor_aspiring_champion Q -> W, renegade_champion Q -> W
+
+	Compatibility matters:
+		Rubric Marines have two new weapons
+		Mutilators have a red shield around them
+		Predators   -| New weapons and modifier_apply_ext
+		Vindicators -|
+
+CD:
+	Great Unclean One or Daemon Prince now share the same ability (Rot, greater). Actually, I don't remember which one gained the ability.
+	Angron has updated description (UI) and a new ability. Global health/damage/productivity at level 8
+	Flesh Hounds have a new skill (stronger you choose khorne mark), weapons are updated (+2 HP 2)					|
+	Bloodletters can cast a new skill (bloodbath [small blood pulse])								|
+	Nurgling cast 3 new skills (like fumigating smoke/death feedback I II)								|
+	Plague Bearers cast 4 new skill (fumigating smoke that also affects allies/debuffing tracking device/death feedback I II)	|
+	Fiend of Slaanesh have 2 new skills (self buff/enemy stasis)									| Long story short, skills for everyone
+	Daemonette have two new skills (mark / piercing hit)										|
+	Favoured Daemonette have two new skills (temp. infiltration / knockback aoe)							|
+	Flamer of Tzeentch can now cast fireballs and death feedback I II and better LIB [inferno flame]				|
+	Pink Horror can cast bolts to temporary disable vehicles movement or attacks [random], doombolts and focused anti-armour blasts	|
+	Screamer can Scream to inflict knockback or reduce armour									|
+
+	Flesh Hounds's modifier_apply_ext disables HP 2 (activated by the skills instead of HP 1)
+	Increased all of the daemon heralds Health by 1500
+	Plague Bearers, Nurglings, Flamers of Tzeentch have different health_ext, they now have different death blossom spawned entity
+
+	Herald of Tzeentch no longer has the ability disable_flight
+	Herald of Slaanesh has a melee_ext and modifier_apply_ext disables the leap
+
+	Flesh Hounds have +150 health each: 176 -> 326
+	Juggernauts [jugg] have +250 health: 3250 -> 3500
+	GUO has increased HP regen: 2 -> 20
+
+	4 new addons (Sacrificial Circle) [exclusive, require not to have chosen the opposite god] that unlocks all researches of the relative god (of the 20 new researches into the Sacrificial Circle). Moreover, they reduce the time cost of the relative god's lesser daemons by 10%. Limited to 4.
+
+	Blight Drones armour rating changed from aircraft to monster and UI description is updated
+
+	All four Defilers and Greater Warp Spawn no longer increase the requisition and power cost for building other Defilers and Greater Warp Spawns by 10% anymore. (modifier_apply_ext -> modifiers_immediate)
+
+	Populated harpoints of the following squads with new weapons:
+		+4 Bloodletters [HP 1]
+		+8 Flesh Hounds [HP 3 + dummy]
+		+3 Plague Bearers [HP 1]
+		+4 Daemonettes [HP 1]
+		+4 Favoured Daemonettes [HP 2]
+		+3 Fiends of Slaanesh [HP 3]
+		+3 Screamers [HP 1 = 2] [HP 2 = 1 + dummy]
+		+3 Flamers of Tzeentch [HP 1]
+		+3 Pink Horrors [HP 1]
+
+	Flesh Hounds and Bloodletters improved weapons (from Khorne mark) are removed (the research now enhances damages [I needed to operate with harpoints later])
+
+	Following units have new skills unlocked by the new daemons_greater_gift_ researches: Bloodthirster = 2, LoC = 3, GUO = 2, KoS = 3
+	Following units now have a spawn_death_blossom: Bloodthirster, GUO, LoC, KoS, Warp Spawn, bloodthirster_angron (the Bloodthirster squad's member)
+
+	LoC has different modifier_apply_ext so that it doesn't take morale damages until shield is actived. event_manager_ext contains tau_shield_event.
+
+	Prince Undivided:		Abilities (+RUN!), Researches, level8_aura, ability warp_storm_lord replaced by warp_storm_prince
+	Prince Khorne:			Abilities (+RUN!), Researches, level8_aura
+	Prince Nurgle:			Abilities (+RUN!), Researches, level8_aura
+	Prince Slaanesh:		Abilities (+RUN!), Researches, level8_aura
+	Prince Tzeentch:		Abilities (+RUN!), Researches, level8_aura
+	Daemon Lord:			Abilities, Researches, Weapons (HP 2,5), cost_ext (req 300 -> 0/relic 100 -> 420)
+	Daemon Lord Stature:		Abilities, Researches, Weapons (HP 2,5), cost_ext (req 560 -> 0/relic 200 -> 560)
+	Hellspawn:			Abilities, Researches, Weapons (HP 1,4)
+	Horblu Stature:			Changed weapon (HP1) daemons_daemon_fire_improved -> daemons_daemon_fire_improved_tzeentch
+
+DE:
+	Added the Haemonculi Ancient (powerful caster commander like the Shadowseer. Conjures global skills consuming souls)
+	Mandrakes now cost +5 requisition 35 -> 40 (squad costs 120)
+
+	Haemonculus: 			Abilities, Researches, modifier_apply_ext (disable production), spawner_ext (enable construction of incubus coven and builders)
+
+	Agony Titan building time raised 300 -> 340
+
+	Clawed Fiend heals less per hit (25% -> 15%), is overall slower 45 -> 40 and cannot use Feet On Fire anymore
+
+	Compatibility matters:
+		Ravens have two weapons that replace the splinter cannon (thought to be temporary)
+ELDAR:
+	Fire Prism has smaller and more efficient weapon tables (combat_ext). No actual difference for the player (I am not sure but maybe the way it was back then would not work with the Scatterbeam ability, keeping it as it is now is safe)
+	Warlocks (pseudoleaders, built within the squad, have different UI position/hotkey (I think?))
+	Dire Avangers have +10 health and now they match DE Warriors in almost all aspects 340 -> 350
+
+	Autarch:			Abilities
+	Avatar:				Abilities, Researches, Buff from level 7,8,8_aura
+	Laughing God:			Abilities, Researches, Buff from level 7,8,8_aura
+	Farseer:			Abilities, Researches, health_ext (+300 health: 700 -> 1000)
+	Shadowseer:			Abilities, Researches
+	Shining Spears:			Buff from level 1,2,4,5 (abilities_ext), Weapons (HP 5), cost_ext (req/pow 150/70 -> 175/125. Now the squad costs 350/250)
+	Shining Spears Exarch:		Abilities (one of which the Nightwing Airstrike), Buff from level 6, Weapons (HP 5), cost_ext (req/pow) 70/150 -> 150/175
+
+	Corsairs cost doubled (Req/Pow) 5/40 -> 10/80 to compensate halved loadout (price looks the same ingame when trying to produce the squad)
+	Ranger sight drastically lowered (finally creating a weak point, like Fire Warriors) 40 -> 25
+	+1 new unit (warp_spider_exarch_2) available within Warp Spider squads
+	+1 new unit (Pathfinder) available within Ranger squads
+
+	Revenant Titan cost now matches the Warhound Titan (req/pow/pop): 1290/3540/600 -> 1320/3720/700
+	Following vehicles have access to a new ability (Shuriken Barrage): Cobra, Fire Prism, Nightwing, Scorpion, Storm Serpent, Vypers
+
+	eldar_warlock armor rating increased for the following units (also prevents transport ability glitch): Infantry -> Commander
+
+	Shining Spears and Shining Spears Exarch armour rating changed Vehicle -> Commander. Max armour value reduced 100 -> 90 (Shining Spears) / 102 -> 92 (Shining Spears Exarch)
+	eldar_warlock_wraithguard armor rating changed (also prevents transport ability glitch) Elite Infantry -> Elite Heavy Infantry
+	eldar_warlock_attachable armour rating changed (also prevents transport ability glitch) Elite Infantry -> Elite Heavy Infantry
+
+	Changed Hotkey of following squad leaders to avoid conflicts with common shortcuts (some are caused because I added some leaders [marked with *]) *eldar_: *warp_spider_exarch R -> L*, *fire_dragon_exarch ? -> F*, *swooping_hawk_exarch S -> H*, warlock G -> L, grav_platform_shadow_weaver L -> W (*because of conflict with warlock*), *banshee_exarch W -> B (looks better)*, *harlequin_hg_dxp3 / -> H*, *striking_scorpion_exarch Q -> K*, dire_avenger_exarch P -> D (looks better)
+	Removed the RUN! ability from all 7 Eldar Grav Platforms
+
+	Compatibility matters:
+		Fire Dragons have a new weapon (Dragonbreath Flamer)
+		Shuriken and Brightlance Grav Platforms have a shield event
+IDH:
+	Both Bolster Defenses can be used by Bodyguards
+	The following units can now use Bolster Defenses II: Grenaiders, Stormtroopers
+	Chimera transport no longer has an active lasgun (hardpoint 2) without garrisoned squad. (you can check at squad_hold_ext -> modifiers_no_squads)
+	GK Champion has the _possess ext
+	NEW GK Champion _Improved (stronger brotherhood champion after wargear (like SM terminator armour))
+	The following units have a different armour type screen name id (from "heavy infantry" to "elite heavy infantry") -> GK Terminator, GK Terminator Justicar, GK Paladin
+	Acolytes, Sergeants, Exorcists (squad pseudoleader) only require both Librarium and Inquisition Watch instead of Bunker/Inquisition Watch (a weird one, not the HQ?. By the way, now it works better)
+	New copy of the Exorcist _subleader and Astropath _subleader that are built within the squad. Using the same entity caused problem when trying to build him while another was attached. (long story short, thanks to this unit reinforcing works fine)
+	Death Cult Assassin now has lower max health 1000 -> 880
+	Deepstike Turrets now cost exactly like ground turrets (req/pow) 120/60 -> 75/110
+
+	Stormtroopers can now equip rocket launchers
+
+	Most IDH weapons have been disambiguated: HP means Hardpoint (by the way, values ramain the same but at least it is possible to upgrade weapons of specific units)
+		Dreadnought Assoult: HP1 - inquisition_assault_cannon_dreadnought -> inquisition_assault_cannon_dreadnought_assault. HP3 - inquisition_incinerator_dreadnought -> inquisition_incinerator_dreadnought_assault
+		Dreadnought Support: HP1 - inquisition_assault_cannon_dreadnought -> inquisition_assault_cannon_dreadnought_hellfire. inquisition_autocannon_twin_dreadnought -> inquisition_autocannon_twin_dreadnought_hellfire. inquisition_lascannon_twin_dreadnought -> inquisition_lascannon_twin_dreadnought_hellfire. HP3 - inquisition_incinerator_dreadnought -> inquisition_incinerator_dreadnought_hellfire
+		Dreadnought Venerable: HP1 - inquisition_autocannon_twin_dreadnought -> inquisition_autocannon_twin_dreadnought_venerable. inquisition_lascannon_twin_dreadnought -> inquisition_lascannon_twin_dreadnought_venerable
+		GK Interceptor: HP1 - inquisition_storm_bolter_grey_knight -> inquisition_storm_bolter_interceptor. HP2 - space_marine_halberd_grey_knight -> inquisition_halberd_interceptor
+		GK Justicar: HP2 - inquisition_nemesis_weapon_captain -> inquisition_nemesis_weapon_justicar
+		GK Purgator: HP1 - inquisition_psycannon_grey_knight -> inquisition_psycannon_purgator. inquisition_incinerator_grey_knight -> inquisition_incinerator_purgator
+		GK Purifier: HP1 - inquisition_storm_bolter_grey_knight -> inquisition_storm_bolter_purifier
+		GK Terminator Justicar: HP1 - inquisition_storm_bolter_gk_terminator -> inquisition_storm_bolter_terminator_justicar. HP2 - inquisition_nemesis_weapon_captain -> inquisition_nemesis_weapon_gk_justicar
+		GK Paladin: HP1 - inquisition_storm_bolter_gk_terminator -> inquisition_storm_bolter_paladin. inquisition_incinerator_gk_terminator -> inquisition_incinerator_paladin. inquisition_psycannon_gk_terminator -> inquisition_psycannon_paladin. HP2 - inquisition_nemesis_weapon_gk_terminator -> inquisition_nemesis_weapon_paladin
+		Servitor Melee: HP2 - inquisition_power_pincers_servitor -> inquisition_power_pincers_servitor_melee
+
+	Inquisitor Lord:		Abilities, Researches, Weapons (HP 1,2), added death_explosion_death (damage morale of allies, like all other commanders), removed spawner_ext (nothing can be spawned from him, it's useless?)
+	Ordo Malleus:			Abilities, Researches, Weapons (HP 1), added death_explosion_death (damage morale of allies, like all other commanders), removed spawner_ext (nothing can be spawned from him, it's useless?), modifier_apply_ext disables leap (don't know why I did this...)
+	Land Raider Daemonhunter:	Abilities (inquisition_wargear_inquisitor_lord_5 + inquisition_landraider_shield), HP (hardpoints) so that it can replicate SM land raiders (Inquisitor Lord wargear 6) {HP 1,2,4,6}. This uses SM weapons, not disambiguations, modifier_apply_ext (maybe disable HP + disable abilities + disable morale damage), event_manager (ability_tau_shield_event)
+
+	GK_justicar had a misplaced hardpoint (9 that is now moved to 7). This meant that this Hammerhand was always active
+
+	+2 new endgame units: xanthite_inquisitor and xanthite_cultist
+
+	Changed the armor rating of Servo Skulls (also prevents transport ability glitch) Infantry -> Vehicle Low
+	Changed the armor rating of Calculus Logi [attachable] (also prevents transport ability glitch) Heavy Infantry -> Commander
+	Changed the armor rating of Astropath [attachable] (also prevents transport ability glitch) Elite Infantry -> Elite Heavy Infantry
+	Changed the armor rating of Exorcist [attachable] (also prevents transport ability glitch) Elite Infantry -> Elite Heavy Infantry
+
+	Changed Hotkey of following squad leaders to avoid conflicts with common shortcuts (some are caused because I added some leaders [marked with *]) inquisition_: *grey_knights_justicar Q -> L*, *shock_troops_sergeant / -> L
+
+	Compatibility matters:
+		Chimera Transport has a stronger version of each lasgun in every related hardpoint
+
+IG:
+	The following units can now use the Bolster Defenses II ability: Guardsmen, Special Weapons Team, 
+	The following units can no longer use the Bolster Defenses I ability (consequently, not the second one as well): Conscripts, Enginseer
+	Kasrkin (and Kasrkin Airborne) can now use both Bolster Defenses abilities
+	Riders squad cost increased by 25: 150 -> 175. Reinforce cost remains unaffected (25)
+
+	guard_leaders_vox_caster no longer has all_infiltration (stealths whole squad. Airborne Kasrkin already had it so their VOX should still be infiltrated)
+
+	Lieutenant Field:		Abilities (+Bolster Defenses I and II), Researches, Weapon (HP 1 guard_plasma_pistol_captain -> guard_plasma_pistol_field_lieutenant ) [This disambiguation prevents the General's Targeting Optics Research from further upgrading the Lieutenant's attack range and damages])
+	Lieutenant Fire:		Abilities (+Bolster Defenses I and II), Researches, Weapons (HP 1,2,3,4,5)
+
+	All Lemanruss have +10% health: Battletank 5000->5500, Battletank_advance_sp 6000->6600, Annihilator 6000->6600, Conqueror 6200->6820, Demolisher 5700->6270, Eradicator 6200->6820, Executioner 6200->6820, Exterminator 6200->6820, Inferno 6000->6600, Murderer 7000->7700, Punisher 5600->6160, Vanquisher 6200->6820, Vanquisher_Command 3000->3300
+
+	Hotkey of Banner Bearer (spawned within a squad, guard_leaders_banner_bearer_leader) hotkey_a -> K. Field Medic (guard_leaders_field_medic_leader) hotkey_r -> L. Sergeant (guard_infantry_guardsmen_sergeant) hotkey_l -> I, Kasrkin Sergeant (guard_infantry_kasrkin_sergeant) hotkey_s -> I, leaders_psyker_command_squad (used in the command squad) S -> P. Now hotkeys are a square and no longer interfere with Reinforce and Attack Move and Stop instructions, which was a real pain in the neck.
+
+	Marauder Bomber Bombing Runs replaced by ones of my own (guard_marauder_bombing_krak, guard_marauder_bombing_inferno, guard_marauder_bombing_smoke) and the Aerial version of each one
+
+	Following vehicles (with dozer blade) now have a new ability (dozer_blade_upgrade_ability): chimera_kronus, laser_destroyer, lemanruss_demolisher, lemanruss_eradicator
+
+	All HQ produced leaders armour rating increased to commander (like Commissar. Also prevents transport ability glitch): guard_leaders_field_medic was Infantry, guard_leaders_field_medic_command_squad (Banner Bearer) was Heavy Infantry, guard_leaders_master_vox was Elite Heavy Infantry, guard_leaders_priest was Elite Infantry, guard_leaders_psyker was Elite Infantry
+	Following squad leaders now have commander armour type (also prevents transport ability glitch): guard_leaders_banner_bearer_leader was Heavy Infantry, guard_infantry_guardsmen_sergeant_sp_dxp3_prisoner was Heavy Infantry, guard_leaders_field_medic_leader was Infantry, guard_infantry_guardsmen_sergeant was Heavy Infantry, guard_leaders_vox_caster was Elite Infantry
+	guard_heavy_weapons_team_support armor rating increased (also prevents transport ability glitch) Infantry -> Heavy Elite Infantry
+	guard_infantry_stormtrooper armor rating increased Heavy Infantry -> Elite Heavy Infantry (also prevents transport ability glitch)
+
+	All Lemanruss Tanks (not lemanruss_vanquisher_command) can now upgrade lateral weapons with flamer melta and plasma in this sequence. Also, the Lemanruss Battletank heavy stubber is now a weapon upgrade, so it's not enabled by default anymore		
+	Following Lemanruss Tanks now have Heavy Bolter and then Lascannon as weapon upgrade on the hull (hardpoint 2) {Vanquisher HAD bolter/flamer/lascannon} {Punisher HAD bolter/flamer} {Exterminator HAD bolter/flamer} {Executioner had lascannon} {Demolisher had flamer} {Annihilator HAD lascannon} {}
+	Because of the previous change the Annihilator can no longer equip lateral lascannons, which seemed to be not lore wise, but now has a heavy stubber on hardpoint 3 (please someone fix it's model attacks for stubber, lateral weapons and bolter hull default weapon)
+	lemanruss_vanquisher_command now has different weaponry. Lateral cannons Heavy Bolter -> Plasma Cannon 
+	Fixed the missing names of the following Lemanruss Tanks (I used text fields, not UCS): Punisher, Vanquisher, Conqueror, Eradicator, Exterminator
+
+	Compatibility matter:
+		Chimera Kronus Pattern now has the modifier_apply_ext
+		Marauder has a new weapon and the modifier_apply_ext
+
+NECRONS:
+	
+	Annihilation Barge has a disambiguation weapon (not the Tesla Carabine, it is the Gauss Flayer that was in common with Destroyers)
+
+	Lord Death:			Abilities, Researches, health_ext (max HP +100. 1750 -> 1850)
+	Overseer:			Abilities, Researches, cost_ext (+50 power. 150 -> 200)
+
+	Wraith health lowered 800 -> 500
+	Tomb Spyder health incresed by 250. 3000 -> 3250
+	Flayed Ones move a little faster 5.5 -> 6.5
+	Reduced armour of Gauss Pylons 104 -> 102 (MAX armour)
+
+	Compatibility matter:
+		Both Scarabs and Builder Scarabs have a shield event
+
+SM:
+	Honor Guard Gladiator:		Removed Buff from level 7 (this would have been the only "honor squad" other than Kroot Shapers that is buffed by level 7, I'd rather use a wargear or something like that to make them stronger)
+
+	Chaplain_advance_sp (terminator armour) has revamped combat_ext [uses the same weapons as the Force Commander in Terminator Armour]: HP 1 contains Heavy Flamer and Assault Cannon too, HP 2 contains Storm Shield, HP 3 contents are moved to HP 4, HP 3 contains space_marine_missile_launcher_cyclone_commander.
+	Chaplain in Terminator Armour now has now +10 addons and +4 abilities
+	+2 new units (scout_marine_leader_sniper + scout_marine_leader_shotgun) selectable from each Scout squad as leaders
+	
+	Following vehicles (with dozer blade) now have a new ability (dozer_blade_upgrade_ability): vindicator, land_raider_ares
+	Techmarine no longer has the squad_leader_ext
+	Following units have changed armor ratings (also prevents transport ability glitch): apothecary Heavy Infantry -> Elite Heavy Infantry, apothecary_leader Heavy Infantry -> Elite Heavy Infantry, banner_bearer Heavy Infantry -> Elite Heavy Infantry, banner_bearer_leader Heavy Infantry -> Elite Heavy Infantry, skull_probe Basic Infantry -> Vehicle Low, skull_probe_leader Basic Infantry -> Vehicle Low
+
+	Changed Hotkey of following squad leaders to avoid conflicts with common shortcuts: sergeant Q -> L, terminator_sergeant S -> L, apothecary_leader Q -> K, terminator_apothecary A -> K
+
+	Gladiators no longer ignore building stance (squad_combat_stance_ext), therefore they not use the yellow stance even if the barracks are set on the blue one
+SOB:
+	Battle Sister have different weapon order so that "Act of Faith Emperor's Touch" no longer changes their weapon into the Storm Bolter
+
+	Rhino has the two passive abilities provided by the passive laud hailers (Laud Hailers Research II)
+	Rhino also has a new active skill (sisters_upgrade_flag)
+
+	Penitent Engines have different type_armour_2 (type_ext) [Unlocked by the new research Armorium2]
+	saint_cherub + saint_cherub_leader now have a new ability - infiltration_cherubim (unlocked by the new research cherubim_infiltration)
+	callidus_assassin have a new toggle ability (perceptions_callidus) unlocked by a new research (assassin_weapons)
+
+	Death Cult Assassins have 1 more weapon within hardpoint 2 (unlocked by the new research assassin_weapons)
+	Callidus Assassins have 1 more weapon within hardpoint 1 (unlocked by the new research assassin_weapons)
+
+	Ordo Hereticus:			Researches, Abilities
+	Confessor:			Researches, Abilities (also has 2 disambiguated abilities Emperors Touch and Divine Retribution)
+
+	sisters_saint_cherub UI hotkey/position changed Z/9 -> R/4 (like all other units spawned by Listening Posts)
+	repentia and repentia_mistress now have death_resource faith = (5 Repentia + 10 Mistress) (unlocked by the new research sisters_faithful_repentia)
+	Changed the amount of faith produced by the following units upon death sisters_: arch_angel 20 -> 200, canoness 5 -> 40, celestian 0 -> 4, veteran_superior_celestian 3 -> 8, celestian_imagifer 2 -> 10, living_saint 8 -> 60, living_saint_black 8 -> 60, living_saint_blue 8 -> 60, nunciate_superior 5 -> 80, saint_celestine 8 -> 60, (saint_cherub 8 -> 0 was non even included by martyrs_gift), (saint_cherub_leader 8 -> 0 was not even included by martyrs_gift), seraphim 5 -> 3, veteran_superior_seraphim 3 -> 8, veteran_superior 3 -> 8, confessor 0 -> 40, legatine_superior 100 -> 40, redemptionist 125 -> 40, crusader 3 -> 6
+
+	Increased armor rating of following units (also prevents transport ability glitch): sisters_missionary_hg_dxp3 Infantry -> Elite Heavy Infantry, sisters_crusader Heavy Infantry -> Commander, sisters_missionary (Secondary armour set to Elite Heavy Infantry <- unlocked by tier 1 addon), sisters_missionary_leader (Secondary armour set to Elite Heavy Infantry <- unlocked by tier 1 addon)
+
+	Hospitallers (sisters_curia) can no longer use any grenade (they had all 4. It looked horrible with the Ordo Hereticus)
+
+	Changed Hotkey of following squad leaders to avoid conflicts with common shortcuts sisters_: celestian_imagifer (all Imagifers) L -> I, veteran_superior_celestian E -> L, repentia_mistress Q -> M (Missionaries are Y so it does not generate a conflict, I checked beforehand)
+
+ORKS:
+	Stormboy has a fixed Hotkey (matching UI position) W -> E
+	Gargant takes longer to build 168 -> 175
+	Great gargant takes longer to build 300 -> 315
+
+	+1 new leader unit for Ard Boyz (ard_boyz_nob_2)
+	+1 new leader unit for Lootas (lootas_leader)
+	+1 new leader unit for Nobz (nobz_leader)
+
+	Bad Dok:			Abilities, Researches
+	Big Mek:			Abilities, Researches, Weapons (HP 1), cost_ext (req +35 190->225), health_ext (+250 max health 1350->1600)
+	Warboss:			Abilities (+2 non wargear related), Researches, cost_ext (-200 req cost 700->500)
+	Wierdboy:			Abilities, Researches, entrench_ext (different entrench/uproot icons)
+
+	ork_kommando_nob armour rating increased Heavy Infantry -> Commander (also prevents transport ability glitch)
+
+	Changed Hotkey of following squad leaders to avoid conflicts with common shortcuts (some are caused because I added some leaders [marked with *]) *ork_: ard_boy_nob Q -> L* , grot_gun_cart_kannon L -> K
+
+	Compatibility matter:
+		Commandoz Nob has a shield event
+TAU:	
+	XV89 Bodyguard:			Abilities, Researches, Weapons (HP 2 tau_flamer_bodyguard -> tau_flamer_crisis_suit [Disambiguation])
+	XV89 Commander:			Abilities, Researches
+	Ethereal:			Abilities, Researches, health_ext has different death_blossom
+	Kroot Knarloc Rider:		Abilities, Researches, Weapons (HP 1)
+	Commander (XV22):		Abilities, Researches
+
+	kroot_shaper_advance_sp (actually the real Kroot Shapers, I checked the SBPS) no longer receive buffs from hero levels 7 and 8 but, more importantly, they do not apply the 100m aura anymore (1. it didn't make any sense - 2. EACH one of them casted it, fire warriors went over 4000 morale, battlesuits are unaffected because they are vehicles)
+
+	Armour types have been changed for the following battlesuits from elite heavy infantry to: Broadside -> Vehicle. Broadside Shasvre -> Armored Vehicle. Crisis -> Armored Vehicle. Sunfire -> Armored Vehicle. Hazard -> Heavily Armored Vehicle
+	Greater Knarloc has updated UI description, no longer stating that it reduces enemy armour and causes bleeding
+
+	Drone Harbinger direct_spawn_ext has different UI messages (tool_tip)
+	Drone Harbinger can now entrench and has a cap of 2
+	New unit (drone_harbinger_entrenched)
+	New unit (drone_harbinger_entrenched_spawned_drone)
+	tau_harbinger_drones now match Gun Drones in some fields: health increased 250 -> 700, type_surface heavy_metal_armour -> stone, sight decreased 35 -> 15, acceleration_time 0.4 -> 0.2, corner_anticipation_time 0.6 -> 0.3, deceleration time 0.6 -> 0.3, copied death_explosion_ext
+
+	Mako Titan (illusion) has far less sight and durability
+
+	New unit - tau_repair_drone
+	All following vehicles now have squad_hold_ext that accepts transport_type_celestine (used by new Repair Drones). Applied modifiers are +2 health regen per garrisoned unit. Max amount of garrisoned units ranges from 2-5 (based on vehicle size, more or less). UI description is updated: Devilfish, Drone Harbinger, Eel Battletank, Hammerhead Gunship, Malo (Stingray), Skyray, Swordfish, Tigershark
+	tau_shield_drone armour rating increased Heavy Infantry -> Vehicle (also prevents transport ability glitch)
+
+	Changed hotkeys of tau_shield_drone Q -> E to prevent most common shortcut conflicts (only Fire Warriors were affected)
+
+	Compatibility matter:
+		Drone Squad has a shield event
+
+TYRANIDS:
+	Gargoyle Personal devourer is set as default weapon instead of a duplicated weapon
+	Disambiguated melee weapons of Zoanthropes, Spinegaunt, Biovores
+	Hierophant and its _max version have a new ability [spores rain (stronger than Hive Tyrant's)]
+	Raveners have +100% health: 420 -> 840
+	Warriors have +250  health: 915 -> 1165
+	Warrior Leader (M) has +340  health: 1220 -> 1560
+	Warrior Leader (R) has +120  health: 1220 -> 1340
+	Tyrant Guard	have +500 health: 2000  -> 2500
+	Screamer Killer have +500 health: 4000  -> 4500
+	Hellfex		have +500 health: 3200  -> 3700
+	Carnifex	have +500 health: 10000 -> 10500
+	
+	Raveners can now charge (melee_ext filled) and modifier_apply_ext enables charge for them (please test ingame, I don't get along with charge stuff)
+
+	Swarmlord:			Researches, Weapons (HP 5,6), Addons, cost_ext (-200 relic 1200 -> 1000)
+	Lictor Alpha:			Abilities, Researches, Weapons (HP 1), Addons, health_ext (+450 health: 750 -> 1200), cost_ext (req cost +95: 180 -> 275), moving_ext (speed_max 36 -> 30)
+	Hive Tyrant:			Abilities, Researches, Weapons (HP 1), Addons, health_ext (+100 health: 1900 -> 2000), Filled melee_ext, modifier_apply_ext (disable leap)
+
+	Increased the cost of all following units (Req/Pow/Time) tyranids_: spinegaunt (not Hive Mind one) 0/0/4 -> 5/0/4
+	Tyrant Guard armour level drastically (Max/Min) 110/22 -> 106/18
+	gaunt_won cost (Req) increased 0 -> 1 (squad now costs 25 Req)
+
+	Gameplay (separated folder)
+guard sandbags only last 40 seconds instead of 119
+
+
+
+
+
+
+
+	Other new entities:
+chaos Auspex of Discord, it works like a Tainted Auspex (in fact it's an upgrade [wargear]), but it blows up too
+dark Eldar Torture Amp Entity_2, casted by the Haemonculi Ancient
+dark Eldar Soulstorm_2, casted by the Haemonculi Ancient
+guard Sandbags_2, used by the bolster defenses ability
+tau Scanner Improved, created by the second scanner (Guidance Beacon) after add-on [new]
+tau Wargear Great Ethereal 5, spawned by the Greath Ethereal upon death if the research tau_wargear_greath_ethereal_5 has been done. It buffs all allies in a 60m radius
+tyranids Tunnel Lictor, spawned by the Lictor Alpha after wargear, it can spawn both lictors and the Lictor Alpha
+necron wall2, a wall that already equips the weapon, it is spawned by the Overseer with the use of the wargear_8 (errect wall). It is automatically destroied after 30 secs.
+daemons death plague bearer		|
+daemons death nurgling			|
+daemons death flamer of tzeentch	|
+daemons death bloodthirster		| Spawn an explosion that damages enemies upon death (unlocked by an ability/research [both])
+daemons death guo			|
+daemons death kos			|
+daemons death loc			|
+daemons death warp spawn		|
+daemon warped plant (like tainted auspex but a little cuter, maybe)
+daemons Signature distorsion (after destruction under certain conditions)
+inquisition_xanthite_purgation_decree (unlocked by a wargear and placed by a skill [Xanthite Inquisitor])
+tau_generator_danger_explosion (unlocked by a new addon within the generator and spawned as death blossom)
+tau_generator_danger_explosion_thermoplasma (unlocked by a new addon within the generator and spawned as death blossom)
+
+
+
+	Researches: The first line (adjacent to the race name) contains NEW wargears ONLY
+
+CSM: Khorne, Nurgle and Slaanesh Champions = 7. Chaos Sorcerer = 13. Chaos Sorcerer Lord = 8. Chaos Lord = 8. Daemon Prince = 5. Lord of Change = 6. Great Unclean One = 6. Keeper of Secrets = 6. Bloodthirster = 6 + choose between three paths that lead to two additional (not shared) wargears that make the Bloodthirster an end-game unit.
+	Terminator armour wargear no longer changes position when other wargears are researched
+	Plasma Pistols research no longer affects god's champions (because they have a selectable weapon as addon)
+	Mark of Tzeentch recharge rate buff nerfed from -40% -> -20%
+	Max Special Weapons research gives less special weapons to Rubric Marines 5 -> 2 (loadout reduced to 4 and they already have 2 weapons [given their speed nobody would use the transport ability on them so I don't need to give them that many weapons])
+	chaos_projectiles (tier III reseach) now has a different icon (new)
+	The following researches now affect new leaders (Cultist, Plague, Noise, Berserker) chaos_: champion_melee_research_1, champion_melee_research_2, furious_charge, chaos_health_research, chaos_health_research_2, plasma_pistol_research, purge_the_weak, armor_upgrade_research, armor_upgrade_research_2
+	ranged_skill_research and ranged_skill_research_2 modifiers have been completely reworked, UI description is accordingly updated (This research now affects ALL weapons that do not require a setup time, except for possessed_marine/obliterator/leader/commander weapons).
+	ranged_accuracy_upgrade_research and ranged_accuracy_upgrade_research_2 now increase min_damage of heavy_bolter_tactical and missile_launcher_tactical as well. Furthermore, this research affects more weapons: chaos_missile_launcher_renegade, chaos_flamer_raptor, chaos_bolt_pistol_raptor, chaos_bolter_rubric_inferno, chaos_bolter_rubric, chaos_meltagun_plague, chaos_plasma_gun_plague, chaos_flamer_plague, chaos_bolter_plague, chaos_lascannon_havoc, chaos_autocannon_havoc, chaos_blast_master_heavy, chaos_sonic_blaster, chaos_plasma_gun_cultist, chaos_grenade_launcher, chaos_laspistol, chaos_flamer_tactical, chaos_bolt_pistol_khorne_berserker, chaos_plasma_gun_bike, chaos_flamer_bike, chaos_bolter_bike. UI description is also updated
+
+	chaos_vehicle_armor_research no longer affects Vindicators two times (modifiers are just a little more polished)
+	chaos_squad_size_increase_research and chaos_squad_size_increase_research_2 no longer affect Noise Marines two times (modifiers are just a little more polished)
+CD: Hellspawn = 16. All Heralds = 3. Daemon Prince of Undivided = 6, all others = 3 (2 are shared). Daemon Lord/Stature = 3 (shared).
+	New Listening post research
+	New mark: Undivided. (Other four have updated requirements) disables choice between lesser and greater daemons
+	Updated requirements for the following gifts: 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,19,20,23,24,25, favored1, favored2
+	New Power research V
+	Khorne Mark no longer increases default hardpoint, it only augments dps for default weapons of Khorne lesser daemons (made it impossible to choose weapons. This is balanced by better unlocked weapons)
+	Possessed Mutation [daemons_wargear08] boosts the new melee weapon too
+	3 new researches: Death Feedback I II III, which enable Nurglings, Plague Bearers and Flamers of Tzeeentch to explode upon death with different chance after each research
+	Gifts are splitted between the two Dark Circles [1 is new] and HQ
+	The following researches have differrent UI position/hotkey: Rapid Mutation I II [4,18] -> S/6, Portals [9] -> V/12, Warp Flames [1] -> C/11, Daemonic Hull [12] -> C/11, Daemonic Soul [3] -> Q/1, Steel Hearted [19] -> E/3, Strange Voice [24] -> J/19, Protective Runes [20] -> V/12, Daemonic Infestation [17] -> Z/9, Faster Summoning [5] -> R/4, Daemonic Will/Resilience [11] -> D/7, Fear [8] -> Q/1
+	New research: Greater Life Granting (health regen of everyone. Major for GD and minor for LD)
+	Steel Hearted [19] has different UI
+	Favoured Army researches are moved to the HQ with different position/hotkey too
+	The following researches affect the Greater Gift Circle too: Warp Flames [1], Daemonic Hull [12]
+
+	Transform research (allows possession into greater daemon prince) now requires to have chosen undivided [lore/description friendly] {in future updates I'll add tons of different vehicles to make the mark choice even more important. Currently, Undivided can look stronger than the others, but I'm not so sure}
+
+	20 New researches (Sacrificial Circle) that upgrade one unit at a time, covering all lesser daemons. They must be done in order, increasing total required power/time to compensate for such an increase in strength
+	6 new researches to improve trading in Warp Signatures (exclusive by couples, so there are three choices). Upgraded aspect is either speed or efficience (reducing cost)
+	22 New researches for Greater Daemons (Greater Gift Circle) [daemons_greater_gift_]
+
+DE: Haemonculus = 5. Haemonculus Ancient = 8.
+	New research: Fleet on foot II to further passively increase speed
+	New research: Healing Portal II, which affects buildings and vehicles as well
+	Portal's Shroud research now costs like Eldars' 200/200 -> 100/100
+
+ELDAR: Laughing God = 10. Avatar = 8. Shining Spears = 4. Farseer = 5. Shadowseer = 2.
+	New research: Fleet on Foot III to further passively increase speed
+	New research: Heart of Khaine II and III, to globally increase morale
+	Shining spears have different modifier_apply_ext, so that their secondary shuriken weapons are disabled (wargear)
+	Vehicle Shield has doubled cost 150/125 -> 300/250 and is moved to tier II
+	infantryaccuracy_1 and infantryaccuracy_2 now increse Dark Reaper damages by 20% instead of 25% (both min and max damage). Furthermore, Dark Reaper range is not incresed at all. This research also reduces setup time of Pathfinders' weapons (new leader - long_rifle_pathfinder).
+	infantryhealth_1 and infantryhealth_2 now affect new leaders as well (pathfinder + warp_spider_exarch_2)
+	exarch_ability_1 (Death Omen [for Dark Reapers]) now increases attack range by 5 -> 10
+	exarch_ability (Call of War [for Howling Banshees]) now costs (Req/Pow) 100/100 -> 115/135. Provided max/min damages lowered 33% -> 30%. Morale damages buff reduced x2 -> x1.75. Speed +33% -> +30%
+	Shining Spears and their exarch no longer have the ability eldar_graviticbooster, which made them way too fast
+
+	wargear_16 (Banshee Mask) Provided sight reduced 20 -> 15
+	wargear_17 (Mindblasters) Provided sight reduced 20 -> 15. Required level increased 3 -> 5
+
+	eldar_squad_grav_platform + eldar_squad_grav_platform_brightlance can no longer be attached to squads (caused issues when choosing squad leaders, while not providing particular benefits)
+	Eldar Holofield research now has a proper UI description
+
+IDH: Inquisitor Lord = 6, which are unclocked 2 at a time by each path (not exclusive). Ordo Malleus = 8. Brotherhood Champion = 11.
+	New Listening post research
+	Bolster defenses II, which upgrades the relative skill
+	All librarium researches have better requirements order (order in which Corsix displays them, does not affect players)
+	Temporal Power wargear no longer affects morale, another wargear does it now.
+	Daemonhammer no longer increases health and health regeneration, other wargears do.
+
+	The following schematics have fixed requirements (require Astra Telepathica (which represents tier2)): Calculus Logi
+	The following schematics have fixed requirements (requires GK Teleporter (tier1) and Librarium, eg vehicles at tier0 are ridiculous, especially since they have upgrades too and that aoe insta-repair skill): Chimera, Rhino, Grenaiders, Servitors, Maintenance Servitors, Thunderfire Cannons, Damocles, Razorback
+	Polished requirements (requiring only the highest tier instead of all previous too) for the following schematics (tiers are GK Teleporter = 1, Astra Telepathica = 2, Tribunal of the Inquisition = 3, Titanic Mechanicum Tower = 4): Dreadknight, dreadnoughts (strictly the PLURAL schematic since there is the singular too), GK Paladin, Land Raider Special, Land Raiders, Predator, Whirlwind
+
+	inquisition_support_cap_1 and inquisition_support_cap_2 (Improved Vehicle Armour) now have updated requirements and UI description (required tier 0 -> 1 / 3 -> 2 since the health increment is pretty much meaningless [damage output makes up for it with some weapons though])
+	inquisition_special_squads (Reinforcements II) required tier 3 -> 1
+	inquisition_targeters (+50% ranged damages to all non GK) have cleaned requirements (no ingame changes)
+	inquisition_advanced_weapons_2 has cleaned requirements (no ingame changes) and affects exorcist/astropath/sergeant/acolyte new subleaders
+	inquisition_auto_repair_systems_research has different tier requirement 0 -> 2 (else provided health regen would have had to be dramatically reduced)
+
+	inquisition_tome_alacrity_2 tier requirement increased 0 -> 1
+	inquisition_tome_alacrity_3 tier requirement decreased 3 -> 2
+	inquisition_tome_technician_overdrive now really increases Maintenence Servitor repair speed instead of halving it (modifier 0.5 -> 1.5). Required tier is also reduced 3 -> 2
+	inquisition_tome_liber_daemonica_2 required tier lowered 3 -> 2
+	inquisition_tome_liber_daemonica_3 required tier lowered 4 -> 3
+	All Liber Daemonica researches now require the relative Aegis and Blades add-on and affect GK_apothecary and GK_apothecary_terminator as well.
+
+!!!	inquisition_tome_aegis and inquisition_tome_blades have been removed. A total of 8 addons with the same names and the _2 _3 _4 
+
+	Following GK Schematics now require Aegis and Blades (Squad/Research Level): terminator/1 , paladin/4
+
+
+	All schematics cost 30% less power (more or less): Astropath 30->20, Calculus Logi 140->100, Chimera 120->80, Damocles 150->100, Assassin 100->70, Dreadknight 1000->700, Dreadnought 150->100, Dreadnoughts 350->240, Exorcist 20->15, Grenaiders 40->30, GK Interceptor 90->60, GK Purgator 90->60, GK Purifier 90->60, GK Terminator 300->200, GK Paladin 600->400, Land Raider Daemonhunter 600->400, Land Raiders 750->500, Land Speeder Tempest 150->100, Predator 300->200, Razorback 130->90, Rhino 120->80, Servitors 80->60, Maintenance Servitor 40->30, Stormraven Fury 750->500, Thunderfire Cannon 80->60, Titan Purifier 800->550, Titan Vengenance 800->550, Turret 30->20, Valkyrie 200->140, Vulture 300->200, Whirlwind 350->230
+
+	Fixed required tier of Turret Upgrade Researches I/II: tier 1/3 -> 1/2 (polished research I as well)
+
+	+12 wargears for a new endgame commander (inquisition_wargear_xanthite_inquisitor_)
+
+	inquisition_squad_thunderfire_cannon can no longer be attached to squads (could cause issues when choosing squad leaders while not providing actual benefits)
+
+IG: Field Command Lieutenant = 5. Fire Support Lieutenant = 7 (2 are disambiguations: pauldrons and heroic senior officer).
+	Bolster defenses II, which upgrades the relative skill
+	Following wargears have fixed ui position to match new entries => Melta Bombs, Frag Grenades, Melta Gun, Plasma Gun, Heroic Senior Officer
+	Shared wargears (Heroic Senior Officer, Carapace Pauldrons) now have to be purchased separately on the two lieutenants (not shared anymore)
+	Targeting Optics Wargear => ranged max damage +25% -> +20%, ranged min damage +50% -> +30%, attack range +50% -> +20%, bonus accuracy +0% -> +100%.
+	Aerial Doctrine has updated UI description (upgrades bombing runs)
+	Armour Doctrine increases health of Lemanruss Punisher 800 -> 1000, so that it matches all other tanks
+	+2 New researches ogryn_melee_.
+	ogryn_melee (the first) only affects Conscripts, Guardsmen and Kasrkins and is moved to tier 0. UI is also modified
+	Techpriest research was really moved into the HQ like the other changelog stated and it now gives 250% melee damage as well instead of 300%. It's position is also changed to H 18 (on the right of Vindicare Assassins)
+
+NECRONS: Overseer = 8. Death Lord = 5.
+	Wrath of the C'Tan Strength (Wargear18) has a minor grammatical correction in the description
+	Improved strategic hold moved to position 10 with shortcut X
+	Increased cost of hero levels matching requisition cost for other races (necron_lord_boost_ 2,3,4,5,6,7,8) 2. 150->200, 3. 200->300, 4. 250->400 , 5. 300->500 , 6. 500->750 , 7. 700->1000 , 8. 1000->2000
+
+SM: Nothing
+	marine_wargear22 (Devoted Crozius Arcanum) now upgrades hardpoint4 instead of hardpoint3 (I wanted hardpoints to match for efficiency matters)
+	marine_wargear23 (Iron Halo) no longer increases any hardpoint (why should have it granted the Improved Croxius Arcanum when there was another wargear [22] which was made especially for that?)
+	Following researches now affect 2 new units (scout leaders) too. marine_: health_upgrade_research, health_upgrade_research_2, health_upgrade_research_3, armor_upgrade_research, armor_upgrade_research_2, armor_upgrade_research_3
+
+	Thunderfire Cannons can no longer be attached to squads (prevents glitch with squads that can build it as leader. It does not even provide any benefit [as it happened with Lictors])
+SOB: Ordo Hereticus = 3. Confessor = 11.
+	
+	Laud hailers has fixed ui (position/hotkey mismatch)
+	New research: Laud hailers II, which passively enables another set of hailers on all buildings and rhinos. This will not replace the skill and will increase morale/morale regen while damaging the enemies' ones
+	Master-crafted weapons no longer has position/hotkey mismatch
+	New research: Faithful Furor, which increases the speed of most infantry squads
+	Following researches now affect Arco Flagellants as well sisters_: health_research, health_research_2, faithful_morale, faithful_morale_2, blessed_bionics, blessed_bionics_2
+	New research within Ordo Hereticus Chamber (Crusader Seals), which increases melee damages of "inquisitorial units"
+	sisters_holy_incarnation_research UI Hotkey/Position changed X/10 -> C/11
+	sisters_relic_research_1 + sisters_relic_research_2 UI Hotkey/Position changed C/11 -> X/10 (now it matches all other races' relic researches)
+	
+	+9 new researches: seraphim_speed (sanctuary + sanctuary_ai), officio_assassinorum (inquisitorial_building), living_saint_army (shrine), fortress_of_faith (shrine_to_the_emperor), faithful_repentia (Holy Reliquary), cherubim_infiltration (listening_post), assassin_weapons (inquisitorial_building), armorium1 (vehicle_building), armorium2 (vehicle_building)
+	Martyrs gift now enables faith from the following units sisters_: veteran_superior_celestian, celestian_imagifer, crusader, living_saint_black, living_saint_blue, saint_celestine, veteran_superior_seraphim, confessor, redemptionist
+
+ORKS: Big Mek = 3 if chosen clan is Armageddon. Warboss = 1 (+3 if chosen clan is Gorgutz). Bad Dok = 1 (+1 if chosen clan is Nuddyfist). Wierdboy = 2 (+3 if chosen clan is Zagdakka).
+	4 Klan researches have updated UI description (mentioning how it affects wargears). Nuddyfist UI descriptions includes also updated effects
+	Following researches now affect new commanders (ard_boy_nob_2, nobz_leader, lootas_leader): {eavy_armor_boyz, eavy_armor_boyz_2, tougher_bosses, tougher_bosses_2}
+
+
+TAU: Commander XV22 = 2. Commander XV89 = 4. Great Ethereal = 9 (additional +4 invisible ones, the _2). Alpha Knarloc = 3.
+	New research: Diplomacy I II and III, which allow coalition centers to passively damage all enemies in a certain radius and to call deadly worldwide nukes
+	Following HQ researches have been moved: Apocalypse(tier V) -> Z/9, Path of Destruction (tier IV) -> Z/9, Teachings of Kauyon (tier III) -> C/11, Teachings of Montka (tier III) -> V/12, Relic research I II moved to X/10
+	Vehicle Shields I research has doubled cost 125/75 -> 250/150 and moved to tier II of Montka
+	Vehicle Shields II research has doubled cost 150/100 -> 300/200
+
+TYRANIDS: Hive Tyrant = 5. Lictor Alpha = 4. Swarmlord = 3.
+	New Listening post research
+	Turret researches I II and III. Grant huge bonuses at the cost of passive power drain depending on the number of turrets. Hive Nodes consume like 3 small turrets.
+	
+	carnifex_regeneration_research grants less health regen to Tyrant Guards 12 -> 6
+
+
+
+
+	SBPS:
+
+CSM: Added 3 embodiements of the chaos gods which directly spawn the relative divinity after some time
+	Updated the requirements to build the god's champion (because of embodiements)
+	Sorcerer has access to a spell which makes the enemy flee (fear_ext) and a sacrifice that requires blood to be gathered beforehand (lightning_field_ext)
+	Rubric Marines loadout reduced (min/max) 4/9 -> 2/4. Cap usage is also reduced 5 -> 3. Max weapon upgrades lowered 4 -> 2. Please someone update UI loadout using UCS (that weapon upgrades "a lot" no longer states the truth). Also added the squad_morale_ext to add a shield while the Aspiring Sorcerer is alive
+	Following squads can now select a new leader: noise_marine, plague_marine, khorne_berserker, cultist
+
+CD:
+	Herald of Tzeentch's can now teleport (quite small range) (in order to apply effects upon landing, the squad_modifier_apply_ext is created to enable screaming jets and disable jump at the beginning.
+	Bloodletters can now teleport (very small range)	(in order to apply effects upon landing, the squad_modifier_apply_ext is created to enable screaming jets)
+	Plague Bearers can now equip 4 more special weapons, making it 1 per squad member
+	Nurglings cost -7 requisition when reinforcing: 15 -> 8
+	Pink Horrors can now teleport (quite small range)	(in order to apply effects upon landing, the squad_modifier_apply_ext is created to enable screaming jets)
+	Pink Horrors minions can now teleport (quite small range)	(in order to apply effects upon landing, the squad_modifier_apply_ext is created to enable screaming jets)
+	Flamers of Tzeentch have -3 max loadout: 9 -> 6
+
+	Blight Drone cap usage is changed from 0/1 to 2/0 and has different description
+	Warp spawns cap usage is changed from 0/4 to 3/2
+	Greater Brass Scorpion and Hell Drake vehicle cap usage raised from 6 -> 10
+
+	LoC has morale_ext
+
+	Following squads have enabled special weapons and different amount of upgrades: Flesh Hounds = 6, Bloodletters = 4, Daemonettes = 6, Favoured Daemonettes = 4, Fiends of Slaanesh = 2, Screamers = 6, Flamers of Tzeentch = 4, Pink Horrors = 4, Pink Horrors Minions = 4, Nurglings = unchanged, Plague Bearers = unchanged
+	3 Shadow Fiends leaders (not yellow) now have different Hotkey daemon_horblu_: green Y -> G, purple Y -> P, red Y -> R
+
+DE: Added the powerful Haemonculi Ancient
+	Mandrakes cost +5 to reinforce 35 -> 40
+
+ELDAR: +3 exclusive exarch squads (ranged/melee/builder)
+	Seer Council loadout reduced by 2, 10 -> 8
+	Shining Spears have increased reinforce cost (req/pow) 100/45 -> 125/70 and Shining Spears Exarch (leader_1) cost increased 70/150 -> 150/175
+	corsairs can now build 3 leaders (same type is accepted as well). However loadout is reduced 4-8 -> 2-4. Squad cap usage 2/0 -> 3/1. Prices of available platforms are changed (Req/Pow/Time): Dcannon 135/75/32 -> 145/85/36, Shadow Weaver 135/75/32 -> 140/80/34
+	Following squad cap usages have been changed: Dark Reapers 2/0 -> 3/0, Striking Scorpions 2/0 -> 3/0, Swooping Hawks 2/0 -> 3/0, Warp Spiders 4/0 -> 3/0
+	Warp Spiders can now have 2 leaders. Furthermore, a new leader type is available for them
+	Rangers can now have 1 new leader (Pathfinder)
+	eldar_warlock_attachable_squad now requires tier I (Soul Shrine)
+
+IDH: Added the upgraded version of the Brotherhood champion (_improved ext)
+	Inquisitor Lord transport type changed to lieutenant so he can be the only one to garrison into the Land Raider Daemon Hunter
+	Land Raider Daemon Hunter can now transport only one unit of type lieutenant and modifiers for no garrison and garrison 1 are different
+
+	+2 Special weapons to each stormtrooper squad.
+	Updated requirements of the Brotherhood Champion (not improved)
+	Following IG squads will have access to 1 Exorcist_subleader   as a leader {stormtroopers,grenaiders}
+	Following IG squads will have access to 1 Astropath_subleader  as a leader {bodyguards,scholars}
+	Following GK squads will have access to 1 Apothecary as a leader {Strike Team,Interceptors,Purgatus,Purifier}
+	Following GK squads will have access to 1 Apothecary in terminator armour as a leader {Terminators,Paladin}
+
+	Following GK squads receive additional morale: Strike Team +200 (1000->1200). Interceptors +400 (1000->1400). Purgator +300 (1000->1300). Purifier +300 (1000->1300). Terminator +400 (1200->1600). Paladin +500 (1500->2000)
+
+	Archivist UI description updated and transport type changed to transport_celestine. transport_ability is also enabled, counting them in for the squad_hold_ext
+
+	+2 endgame squads: xanthite_inquisitor and xanthite_cultist
+
+IG: Nothing
+	Marauder Bomber all 3 squad_bombing_run_ext removed
+	guard_squad_reaver_titan_captain no longer has squad_transportable_ext (it could enter within Stormlord Baneblades. It should not be transported in any case)
+	Following squads' async_ability (squad_loadout_ext) is now set to false (Run! and other skills now longer stack/allow multiple use): guard_squad_command_squad (General), guard_squad_command_squad_colonel, guard_squad_command_squad_psykers (Primaris Psiker)
+	guard_squad_stormtrooper has lower loadout (Min/Max) 4/8 -> 3/6
+
+NECRONS:Nothing
+
+SM: Nothing
+	Legionaries have different squad_transportable_ext as they now count as inquisition_infantry (I just needed one so that they would not be deepstriked ever again. Streams of DS tanky and harmful units are a pain)
+	Scout squads can now select 2 new leaders too (leader_sniper + leader_shotgun)
+	space_marine_squad_honor_guard_gladiator have different leaders {1,2,3}, using now the _leader version (avoid issues when choosing leaders while one of the same type is attached)
+
+SOB: Nothing
+	sisters_inquisitor_squad squad_leader_ext has multi_with_upgrades set to false, improving how leaders are selected ingame (becomes like eldar Gravity Platforms instead of SM squads [More of the same type can be queued up to leader limit instead of limit-1 where limit>1])
+	sisters_inquisitor_squad async_ability (squad_loadout_ext) is now set to false (Run! and other skills now longer stack/allow multiple use)
+	Almoness/Artisian can no longer be attached to squads
+	sisters_squad_saint_cherub now require the Holy Icon AddOn to be made
+ORKS: -5 reinforce requisition for slugga boys
+	Mega Armored Nobz can now teleport. they have the squad_modifier_apply_ext to inflict damages upon landing.
+	Big Mek can now "cannibalize" (loot) to gain health
+	Ard Boyz can now create two leaders (1 of which is new)
+	Lootas can now create a new leader
+	Nobz can now create two leaders (1 of which is new)
+
+TAU: Added the morale stat to DS drone squads (for shields with UP researches). Without shields, broken morale does not debuff the squad in any way. (Does not affect stats in any way, this was for compatibility with some old stuff I did)
+	Added morale to the following squads: Broadside Battlesuits + 100: 600 -> 700. Crisis Suit +400: 600 -> 1000. Sunfire Battlesuit +1000: 600 -> 1600. Hazard Suit +1100: 900 -> 2000.
+	Stingray, Tigershark, Eel Battletank are now transportable_ext = tank so they can be contained inside of the manta (8 spots)
+	XV101 Riptide, XV202 Mako, XV104 Riptide, Rvarna are now transportable_ext = tank so they can be contained inside of the manta (15 spots - 19 rvarna)
+
+	New squad - tau_repair_drone_squad
+	Drone Harbinger can now entrench
+	2 new squad drone_harbinger_entrenched_squad (required in order to entrench, it wouldn't work otherwise) and harbinger_drone_entrenched_squad
+	Changed requirements of tau_harbringer_drones_squad (standard drone spawned by the Drone Harbinger) so that it is cumulative with the new one.
+	Following squads have updated UI description: Devilfish, Drone Harbinger, Eel Battletank, Hammerhead Gunship, Malo (Stingray), Skyray, Swordfish, Tigershark
+
+TYRANIDS: Removed the attach command to Lictor, Lictor Alpha, Hive Tyrant, Zoanthrope, Swarmlord. Doing so only resulted in reducing squad effectiveness while not granting any benefit or not making sense (swarmlord + spinegaunt? lictor alpha + something slower?).
+	Added "cannibalize" to all squads except for titans, relic units, builders, spores. Speed is yet to be tweaked and the animation is required in some cases (Hive tyrant)
+	Added squad_jump_ext to the Lictor Alpha (after wargear [new])
+	Genestealers and genestealers_max reinforce cost lowered 40 -> 30
+	Ravener loadout reduced (Min/Max) 4/9 -> 4/8
+
+	Increased reinforce time of all following squads (Seconds) tyranids_squad_:		spinegaunt 0.8 -> 1		- /				- /				- /				- gaunt_won 0.8 -> 0.5
+	Increased reinforce time combat multiplier of all following squads tyranids_squad_:	spinegaunt 2 -> 2.5		- spinegaunt_max 2 -> 2.5	- /				- /				- gaunt_won 2 -> 4
+	Increased reinforce cost of all following squads (Req/Pow) tyranids_squad_:		spinegaunt 2/0/0 -> 3/0/0	- spinegaunt_max 2/0 -> 3/1	- termagant_max 15/0 -> 20/2	- hormagaunt_max 15/0 -> 20/2	- gount_won 3/0 -> 4/1
+
+
+
+
+
+
+
+
+
+
+
+	Weapons: Amount-NAME-(ranged/melee) This counts players' available weapons. For example if an addon unlocks 2 different weapons with the same appearance and similar stats I will only count one and mark it with a * per hidden weapon (the file has the _2 , _3 extension and so on). D means disambiguation. Also I will not note UP weapons as they are not used (but required because of compatibility with my addon)
+
+CSM: +1LoC(R) +2Bloodthirster(R) +3Blootthirster(M) +1GUO(M) + 2SorcererL(R) + 1SorcererL(M) +2Sorecerer(R)** +1DaemonPrince(M) +1CLord(R)* +6SlaaneshC(M) +1SlaaneshC(R) +3NurgleC(M) +2NurgleC(R) +5KhorneC(M)		+1 to 3 All commanders(R: plasma pistol, meltagun, flamer)+3D for primary ones
+	Turret bolter and missiles no longer have movement accuracy reduction, which was permanently applied ([-50% => 15%] hit chance reduction) if the player ordered the turret to move, even if the cursor didn't show anything. (only affects deepstrike turrets)
+	Chaos Lord Meltagun requires terrain line of sight and damage is reduced by 20 (200-220 -> 180-200)
+	Reduced armour penetration of desecrator battlecannon (defiler) against all building types
+
+	chaos_sonic_blaster's (default weapon of Noise Marines) area of effect angles changed {-9,9} -> {-10,10} at least like basic flamers. knockback increased 0-12 -> 10-25, angle changed 5-30 -> 10-25.
+	chaos_blast_master_heavy's area of effect angles changed {-5,5} -> {-15,15} more than basic Sonic Blasters (default weapon of Noise Marines). Areasweep time reduced 4 -> 0.5 (speed of sound indeed...) knockback increased 0-35 -> 35-50, angle changed 7.5-30 -> 10-30, impact_point_z 1 -> 0 this way, enemies are no longer pulled instead of pushed back. Copied from blaster and amplified modifiers caused by this weapon.
+
+	+1 new weapon - knife_cultist_ceremonial, used during a skill within the new cultist leader
+	+2 new weapons - chaos_blast_master_heavy_champion_freq_low + chaos_blast_master_heavy_champion_freq_high used during a skill within the new marine_noise_champion2
+
+CD: +2HellS(R) [ +1DaemonL(R) +1DaemonL(M) +1DaemonLStature(R) +1DaemonLStature(M) shared ]
+	+1 Flesh Hounds [HP 2]
+
+	Removed daemons_bloodletter_hellblade_improved and daemons_unarmed_flesh_hound_improved because default HP mustn't be increased
+
+	Default Flesh Hound weapon (not Khorne): +armour penetration against buildings and daemons, inverted and raised penetration against heavy and heavier vehicles. -| Same values so far	|
+	Second  Flesh Hound weapon (Khorne):     +armour penetration against buildings and daemons, inverted and raised penetration against heavy and heavier vehicles. -|			| But This weapon does not have double reload time anymore, otherwise it would be weaker!! they now have the same, making the Khorne weapon A LITTLE stronger than the non Khorne (since the values difference is close to irrelevant)
+	Plague Bearers weapons (default and special [touch]) have +100% damage and +100% debuff effects: 35-45 -> 70-90 HP degeneration 2 -> 3 for 7 -> 8 seconds and 76-84 -> 140-180 HP degeneration 4 -> 8 for 7 -> 8 seconds but reload time 1 -> 1.6 seconds
+	Bloodletters weapons (normal and the other unlocked by Khorne Mark) +65 DMG: 58-85 -> 123-150 and 72-105 -> 137-170
+	Juggernaut damages +35 [jugg_melee]: 105-150 -> 140-185
+
+	+4 weapons for Bloodletters (hellblade greater/superior + Khorne versions)
+	+8 weapons for Flesh Hounds (Tail/Spikes/hell-claws/bite + Khorne versions)
+	+3 weapons for Plague Bearers (Blight touch/Courrosive touch/Flesh eater touch)
+	+4 weapons for Daemonettes (Pincer/Sword/Spear/Mace)
+	+4 weapons for Favoured Daemonettes (Pincer/Sword/Spear/Mace)
+	+3 weapons for Fiends of Slaanesh (Claws/Tail/bite)
+	+3 weapons for Screamers (Scream/Bite/impact)
+	+3 weapons for Flamers of Tzeentch (Flesh Eating Fire/Armour Liquefying Flames/Corrosive Warped Firetongue)
+	+3 weapons for Pink Horrors (Corrosive Bolt[2]/Armour Penetrating Blast[2]/Doombolt)
+
+	Bloodletter_hellblade_improved does not show in reinforce menu anymore (needs to be so because I have enabled that menu now from the SBPS)
+DE: Nothing
+	Following weapon now affect allies as well dark_eldar_: reaper_cannon (default artillery weapon) + reaper_shard (upgraded artillery weapon)
+	reaper_shard fires a different projectile (_reaper) that does NOT provide sight
+
+ELDAR: +1ShiningS(R) +1ShiningSE(R)
+	All brightlances no longer apply debuffs (suffered ranged damages): {corsair,grav_platform,grav_tank,grav_tank_twin,hornet,jetbike,jetbike_exarch,listenpost,listenpost_improved,nightwing,nightwing_2,nightwing_elite,nightwing_elite_2,phantom_titan,phoenix,scorpion,vyper,war_walker_left,war_walker_right,wraithguard,wraithking,wraithlord,wraithwalker}
+	All following Brightlances have adjusted cost so that it matches (more or less) the DE Dark Lances (REQ/POW 40/80). eldar_brightlance: _corsair 50/25 -> 40/80, _vyper (used by Falcon Gravity Tank and others too like Super Heavies. Since stats are almost the same as the Flacon Gravity [only targeting and rotation stuff vary] I will leave as it is) 25/35 -> 35/70. _war_walker_left + _war_walker_right 30/70 -> 50/90, _scorpion 30/70 -> 40/80, _wraithwalker 50/200 -> 65/200, _wraithlord 35/75 -> 45/85, _wraithking 30/75 -> 50/100, _grav_tank_twin 25/35 -> 45/85 (one of the strongest Brigthlances (like x2 damages), only used by Wave Serpents)
+	eldar_dcannon (used by Gravity Platforms) has slightly lower armour penetration against vehicles 65 -> 60 / armoured vehicles 48 -> 45
+	eldar_dcannon_support_platform_uber (used by Uber Turrets) has lower armour penetration against vehicles 65 -> 55 / armoured vehicles 55 -> 45 / heavily armoured vehicles 35 -> 30 / structures 48 -> 35
+
+	Witchblade_farseer_advance_sp AP increased by 11: 4 -> 15
+	Singing_spear_farseer increased AP by 16: 4 -> 20
+
+	Eldar have been deemed OP because of their endless AOE attacks. Since I will not reduce AOE effects because of FX work, I will make those weapons affect allies as well. From now on, Eldar must pay some more attention. The following weapons now affect allies as well: eldar_prism_cannon (disrupting mode of the Fire Prism), eldar_prism_shard + eldar_prism_shard_left (Nightspinner upgraded artillery weapons), eldar_night_spinner + eldar_night_spinner_left (Nightspinner default artillery weapons), eldar_wraithcannon (Wraithguard limited weapon), eldar_wraithcannon_ancient (Ancient Wraithguard default weapon), eldar_void_spinner_left (high fire rate) + eldar_void_spinner (big area of effect), eldar_dcannon_support_platform_uber, eldar_dcannon (leader platform), eldar_pulsar_twin_scorpion (main weapon), eldar_dcannon_scorpion (like uber turret), eldar_dcannon_wraithguard, eldar_dcannon_support_platform (turret),
+		+ eldar_pulsar_phantom_titan_left, eldar_pulsar_phantom_titan_right, eldar_pulsar_revenant_titan_left, eldar_pulsar_revenant_titan_right, eldar_sonic_laser_revenant_titan_left, eldar_sonic_laser_revenant_titan_right
+	Completely reworked AP and damages of ground titan weapons (Scaled AP to make the biggest 100 and multiplied damage for that factor. Eldar titans dealt almost triple damages compared to other titans. Therefore damage was drastically reduced as well by /2 up to /3): eldar_pulsar_phantom_titan_left, eldar_pulsar_phantom_titan_right, eldar_sonic_laser_revenant_titan_left, eldar_sonic_laser_revenant_titan_right. (Eldar sonic lasers vulnerability debuff has been completely removed like on all brightlances)
+	Increased min range of the following ground titans main weapons: Revenant(default) to 10m, Revenant(upgraded) to 20m, Phantom(default) weapons to 15m
+
+	eldar_starlance (Shining Spears) no longer is an AOE weapon (it's a ray after all, a deadly ray)
+	eldar_reaper_launcher base range reduced 45 -> 40, like most T1 ranged infantry (eg Havoc Marines)
+	Nerfed all eldar_long_rifle (ranged weapon of Rangers):
+		1 Must obey entity_line_of_sight too. No longer area of effect. Knockback force reduced 26-40 -> 22/36. Setup time 0 -> 2.5
+		2 Must obey entity_line_of_sight too. No longer area of effect. Morale damage reduced 100 -> 85. Damage ruduced 189-243 -> 140-200. Applied modifier (speed reduction) is exclusive. range reduced 60 -> 55. Setup time 0 -> 2.5
+		3 Must obey terrain_line_of_sight too. No longer area of effect. Morale damage reduced 120 -> 100. Damage ruduced 220-352 -> 170-250. Applied modifier (speed reduction) is exclusive. Setup time 0 -> 2.5
+		4 Must obey terrain_line_of_sight too. No longer area of effect. Morale damage reduced 160 -> 120. Damage ruduced 310-420 -> 220-290. Applied modifier (speed reduction) is exclusive. range reduced 75 -> 65. Setup time 0 -> 2.5
+
+	+1 weapon used by the new Warp Spider Exarch (_2) - eldar_spinneret_rifle_warp_spider_exarch2
+	+1 weapon used by the new Pathfinder - long_rifle_pathfinder
+
+IDH: +1InquisitionLord(M) +1InquisitionLord(R) +1BrotherhoodC(M) +1BrotherhoodC(R) +1OrdoM(R)D
+	+1MaintenanceS(M)D +1AssaultS(M)D +1TerminatorJusticar(R)D +1GKPaladin(M)D +3GKPaladin(R)D +1GKInterceptor(M)D +1GKInterceptor(R)D +1GKPurifier(R)D +2GKPurgator(R)D +8AllDreadnoughts(R)D
+	Turret bolter and missiles no longer have movement accuracy reduction, which was permanently applied ([-50% => 15%] hit chance reduction) if the player ordered the turret to move, even if the cursor didn't show anything. (only affects deepstrike turrets) [modified weapons were of IG because 1) IDH doesn't have their own files for that 2) The used weapons were exactly the IG bolter_turret and missile_turret] {makes no difference to IG turrets however because they cannot "move" or try to "chase" enemies because they are buildings at all effects}
+	Death cultist melee damage reduced from 710-1200 to 675-1050
+	Purgator damage reduced: Incinerator 42-58 -> 38-52, Psycannon 45-58 -> 38-48 (morale damage reduced 17 -> 9)
+	Reduced armour penetration of Purgator against infantry/elite-infantry/heavy-infantry/elite-heavy-infantry/monster/daemon/commander: Incinerator I 89->60 / EI 60->50 / HI 50->40 / EHI 75->35 / M 90->65 / D 70->35 / C 26->16, Psycannon I 40=40 / EI 44->35 / HI 30->32 / EHI 30->28 / M 75-65 / D 45->35 / C 16->11 / air_med 0 -> 25 / living_metal 16 -> 6 / building_low 35 -> 16/ building_med 15 -> 8 / building_high 5 -> 4 / monster_high 35 -> 10 / monster_med 65 -> 40 / vehicle_low 45 -> 28 / vehicle_med 45 -> 18 / vehicle_high -> 16 -> 8 / generic armour penetration 10 -> 0
+	+1 weapon for Stormtroopers (Missile Launcher)
+
+	following weapons now affect allies as well inquisition_: missile_batter + missile_battery_inferno (both are Whirlwind artillery weapons)
+	guard_missile_launcher_improved (turret's best missiles) now affect allies as well
+
+	+2 weapons for the Librarium for when Archivists are garrisoned. (inquisition_librarium_weapon_)
+
+	Changed requirements of three weapons that required "Tome: Sanctified Blades" (Name/Level) inquisition_daemon_hammer_grey_knight_terminator/4 (Paladin), inquisition_daemon_hammer_grey_knight/2 (Interceptor), inquisition_nemesis_weapon_falchions/2 (Interceptor)
+
+	+8 new weapons for xanthite units: fireball_xanthite_cultist , lightning_ball_xanthite_cultist , bolt_xanthite_cultist , spell_long_xanthite_inquisitor , spell_medium_xanthite_inquisitor , spell_short_xanthite_inquisitor , melee_xanthite_cultist , melee_xanthite_inquisitor
+
+IG: +1 Field Lieutenant(R)D
+	Basilisk Magnus base weapon [Earthshaker Rounds] now affects everyone, not enemies alone
+	lascannon_heavy_weapons_team has higher reload time: 0.5 -> 0.7
+	The following weapons have different setup time 3->5: lascannon_heavy_weapons_team,autocannon_heavy_weapons_team,missile_launcher_heavy_weapons_team,mortar,heavy_bolter_heavy_weapons_team
+	Lemanruss Demolisher no longer cripples the target's movement speed with its main cannon and its attack range is almost halved 100->60
+	Medusa has lower fire rate 3->4 with both artillery weapons
+	Medusa Inferno Mortar has lower armour penetration against super structures 25->18
+	Base Baneblade main cannon damage +20%: 420-610 -> 500-760
+	Chimera and Sentinel heavy flamer damage greatly incresed (guard_heavy_flamer_chimera + guard_heavy_flamer_sentinel) 5-32 -> 18-45
+
+	Following weapons affect allies as well guard_: battle_cannon_stormhammer + battle_cannon_storm_hammer2, inferno_cannon_hellhound, chemical_cannon_hellhound, battle_cannon_baneblade
+
+	guard_emp_shot_turret (Earthshaker Platforms') now has an impact ability and no longer applies modifiers (I kept only ig curse of the machine spirit event) [Please test this since I didn't]
+
+NECRONS: +1AnnihilationB(R)D
+	Wraith attack deals -10% damages 33-35 -> 30-32
+	Following weapons now affect allies as well necron_: bolt_pyramid (secondary), particle_whip_pyramid (main), particle_whip_turret (both pylons), particle_accelerator_turret (both pylons), particle_accelerator (Gauss Pylon), particle_acceleration_ark (Doomsday Ark), solar_burst + solar_burst_left (Aeonic Orb weapons), particle_whip (Siege Monolith), particle_whip_monolith (Restored Monolith), particle_whip_doomsday, particle_whip_obelisk (Mobile Obelisk upgraded weapon), gauss_cannon_obelisk (default Mobile Obelisk weapon).
+
+SM: Turret bolter and missiles no longer have movement accuracy reduction, which was permanently applied ([-65% => 20%] hit chance reduction) if the player ordered the turret to move, even if the cursor didn't show anything. (only affects deepstrike turrets)
+	Force Commander (and LODT commander) Meltagun damage lowered from 220-240 to 170-240 (being melta and bolt combi as I see from the name it doesn't have to deal as little wide ranged damages)
+	New weapon space_marine_storm_shield_commander_terminator used by chaplain in terminator armour
+	following weapons AOE damage now affects allies as well space_marine_: missile_frag_tempest + missile_krak_tempest (Land Speeder Tempest), missile_battery (Whirlwind), missile_launcher_cyclone_terminator + missile_launcher_cyclone_commander (Terminator armours shoulder weapon), missile_battery_helios, missile_battery_hyperios + missile_battery_inferno_hyperios (Whirlwind MK II) 
+
+
+SOB: Nothing
+	Following weapons affect allies as well sisters_: inferno_cannon_turret, throne_judgement_melta_gun, missile_battery (Exorcist Sanctorum Inferno Missiles), battlecannon_capitol_imperialis
+	battlecannon_capitol_imperialis reload_time 0.8 -> 1.5 (damage output quite nerfed), range 90 -> 82
+	+4 new weapons used by Bunkers after 1-2 new addons (cannon_bunker_) are selected: sisters_autocannon_bunker_south +sisters_autocannon_bunker_north + sisters_autocannon_bunker_west + sisters_autocannon_bunker_east
+	+1 new weapon used by Death Cult Assassins - sisters_whip_scythe_death_cult_assassin
+	+1 new weapon used by Callidus Assassins - sisters_needler_callidus_assassin
+
+ORKS: +1BigMek(R)
+	+1 new weapon used by a new leader - deff_gun_lootas_leader
+
+TAU: +1AKnarlocR(R) +1GEthereal(M) +1XV89Bodyguards(R)D
+	Increased damages of XV104 Riptide weapons: Melee 210-420 -> 300-560, Fusion Blaster 451-711 -> 490-780, Burst Cannon 202-225 -> 218-242, Ion Cannon 785-1158 -> 800-1300
+	Pathfinder's Rail Rifle costs 20 less power (70 -> 50)
+	greater_knarloc_claw's damages reduced 600-800 -> 450-700. Morale damage increased 15 -> 40 (it's a huge Greater Knarloc devouring someone after all)
+	Very slightly lowered the melee damage of Kroot Shapers (tau_kroot_shaper_rifle_melee) 51-70 -> 48-68
+	+1 new weapon (tau_twin_linked_pulse_carbine_repair_drone) used by new Repair Drones
+
+TYRANIDS: +1Zoanthrope(M)D +1Biovore(M)D +1Spinegaunt(M)D +3SmallTurrets(R) +3BigTurrets(R) +1LictorA(R) +2Swarmlord(R) +1HiveT(M)
+	HiveT's "lash whips and bone sword" is way too weak for a level6 hero - attack speed 1 => 1.5 - Single target => AOE cone 45 degrees radius 8 - no knockback => heavy knockback - damages 200-300 => 300-400 - armour piercing 6 => 10 - morale damage 60 => 90
+	Following weapons now affect allies as well tyranids_: turret_mine_launcher (default turret weapon), turret_mine_launcher_bioacid (improved turret weapon), turret_mine_launcher_bioacid_improved (Hive Node default weapon), zoanthropes_blast, bioplasma_warrior (separated hardpoint, I don't know why why), bioplasma_ravener, deathspitter_warrior, deathspitter_ravener, deathspitter, deathspitter_khazi_carnifex, bioplasma_hierophant, bioplasma_uberfex, bioplasma_carnifex, biovores_spores, biovores_spores_bioacid, biovores_spores_frag, biovores_spores_toxin
+
+
+IDH Bunker's flamer does not damage enemies anymore? health, morale, debuffs... Nothing. (didn't know where to write this)
+
+
+
+
+List of new icons used to prevent pink portraits:
+CSM:
+	chaos_lord_of_change__chaos_wargear_god_tzeentch_6
+	Kos_icon__chaos_wargear_god_slaanesh_6
+	bloodthirster_icon__chaos_wargear_god_khorne_7
+	bloodthirster_icon__chaos_wargear_god_khorne_8
+	bloodthirster_icon__chaos_wargear_god_khorne_10
+	bloodthirster_icon__chaos_wargear_god_khorne_11
+	bloodthirster_icon__chaos_wargear_god_khorne_12
+	bloodthirster_icon__multi
+
+CD:	(the whole folder is new stuff, here is only the list of files contained within)
+	daemons_bloodletter_elites_icon__daemons_hellblade_greater_bloodletter
+	daemons_bloodletter_elites_icon__daemons_hellblade_greater_bloodletter_khorne
+	daemons_bloodletter_elites_icon__daemons_hellblade_superior_bloodletter
+	daemons_bloodletter_elites_icon__daemons_hellblade_superior_bloodletter_khorne
+	daemons_daemonette_greater_icon__daemons_mace_favoured_daemonette
+	daemons_daemonette_greater_icon__daemons_pincers_favoured_daemonette
+	daemons_daemonette_greater_icon__daemons_spear_favoured_daemonette
+	daemons_daemonette_greater_icon__daemons_sword_favoured_daemonette
+	daemons_daemonette_greater_icon__multi
+	daemons_daemonette_icon__daemons_mace_daemonette
+	daemons_daemonette_icon__daemons_pincers_daemonette
+	daemons_daemonette_icon__daemons_spear_daemonette
+	daemons_daemonette_icon__daemons_sword_daemonette
+	daemons_daemonette_icon__multi
+	daemons_fiend__daemons_bite_fiend_of_slaanesh
+	daemons_fiend__daemons_claws_fiend_of_slaanesh
+	daemons_fiend__daemons_tail_fiend_of_slaanesh
+	daemons_flesh_hound_icon__daemons_bite_flesh_hound
+	daemons_flesh_hound_icon__daemons_bite_flesh_hound_khorne
+	daemons_flesh_hound_icon__daemons_claws_flesh_hound
+	daemons_flesh_hound_icon__daemons_claws_flesh_hound_khorne
+	daemons_flesh_hound_icon__daemons_spikes_flesh_hound
+	daemons_flesh_hound_icon__daemons_spikes_flesh_hound_khorne
+	daemons_flesh_hound_icon__daemons_tail_flesh_hound
+	daemons_flesh_hound_icon__daemons_tail_flesh_hound_khorne
+	daemons_pinkhorror_icon__daemons_armour_piercing_blast_pink_horror
+	daemons_pinkhorror_icon__daemons_corrosive_bolt_pink_horror
+	daemons_pinkhorror_icon__daemons_doombolt_pink_horror
+	daemons_pinkhorror_icon__multi
+	daemons_plaguebearer_icon__daemons_blight_touch_plague_bearer
+	daemons_plaguebearer_icon__daemons_corrosive_touch_plague_bearer
+	daemons_plaguebearer_icon__daemons_flesh_eater_touch_plague_bearer
+	daemons_screamer_icon__daemons_bite_screamer
+	daemons_screamer_icon__daemons_impact_screamer
+	daemons_screamer_icon__daemons_scream_screamer
+	daemons_screamer_icon__multi
+	flamer_icon__daemons_armour_liquefying_flames_flamer_of_tzeentch
+	flamer_icon__daemons_corrosive_warped_flametongue_flamer_of_tzeentch
+	flamer_icon__daemons_flesh_eating_fire_flamer_of_tzeentch
+	flamer_icon__multi
+
+IDH:
+	servitor_weapon_icon__inquisition_power_pincers_servitor
+	servitor_melee_icon__inquisition_power_pincers_servitor_melee
+	grey_knight_terminator_paladin_icon__inquisition_psycannon_paladin
+	grey_knight_terminator_paladin_icon__inquisition_incinerator_paladin
+	grey_knight_purgator_icon__inquisition_incinerator_purgator
+	gK_champion_icon__inquisition_wargear_brotherhood_champion_2
+	gK_champion_icon__inquisition_wargear_brotherhood_champion_1
+	gK_champion_icon__multi
+	dreadnought_venerable_icon__inquisition_lascannon_twin_dreadnought_venerable
+	dreadnought_support_icon__inquisition_lascannon_twin_dreadnought_hellfire
+	dreadnought_support_icon__inquisition_autocannon_twin_dreadnought_hellfire
+	dreadnought_icon__inquisition_assault_cannon_dreadnought_assault
+?	shock_troops_icon__inquisition_missile_launcher_shock_troops
+TAU:
+	tau_ethereal_icon__tau_wargear_great_ethereal_8
+	tau_knarloc_rider_icon__tau_wargear_alpha_knarloc_1
+TYRANIDS:
+	i_lictor_alpha__tyranids_wargear_lictor_alpha_3
+
+
+Replaced images: servitor_weapon_icon__inquisition_power_pincers_servitor
+
+These images can be deleted: daemons_bloodletter_elites_icon__daemons_bloodletter_hellblade_improved, daemons_flesh_hound_icon__daemons_unarmed_flesh_hound_improved, grey_knight_purgator_icon__inquisition_incinerator_grey_knight, servitor_melee_icon__inquisition_power_pincers_servitor, dreadnought_venerable_icon__inquisition_lascannon_twin_dreadnought, dreadnought_support_icon__inquisition_autocannon_twin_dreadnought, dreadnought_support_icon__inquisition_lascannon_twin_dreadnought, dreadnought_icon__inquisition_assault_cannon_dreadnought, grey_knight_terminator_paladin_icon__inquisition_incinerator_gk_terminator, grey_knight_terminator_paladin_icon__inquisition_psycannon_gk_terminator
+
+Added some new icons into ingame_disabled to preven pink icons when requirements are not fulfilled (Eldar [eldar_wargear06][eldar_wargear10], IG [tanktrap2], Necrons [necron_shield_off], Tau [shield_dome_icon][shield_dome_research]) I may have forgotten some. When you move files you can easily check which images are on one side but not on the other.
+
+
+
+New icons (imported from other mods and stuff) + Black and white version when requirements are not fulfilled
+
+SHARED:
+	(CSM, SM, IG) dozer_blade
+
+CSM:
+	tier3_darkest_energies
+	plague_marine_champion2
+	noise_marine_champion2
+	khorne_berserker_champion2
+	cultist_aspiring_champion2
+	knife_ceremony
+	god_initialization
+	rune_of_warding
+	daemonic_laught
+	freq_high
+	freq_low
+CD:
+	greater_gift_resistence_1 + greater_gift_resistence_2
+	greater_gift_guo_1 + greater_gift_guo_2 + greater_gift_guo_3
+	greater_gift_armour_1 + greater_gift_armour_2
+	greater_gift_cost_1 + greater_gift_cost_2
+	greater_gift_damage_1 + greater_gift_damage_2
+	greater_gift_bloodthirster_1 + greater_gift_bloodthirster_2 + greater_gift_bloodthirster_3
+	greater_gift_death_feedback_1 + greater_gift_death_feedback_2
+	greater_gift_kos_1 + greater_gift_kos_2 + greater_gift_kos_3
+	greater_gift_loc_1 + greater_gift_loc_2 + greater_gift_loc_3
+ELDAR:
+	warp_spider_exarch
+	dodge
+	timeless_aging
+	upgrade_deathspinner
+	pathfinder
+	builder_council
+	melee_council
+	shuriken_barrage
+NECRON:
+	warscythe
+ORKS:
+	waaagh_of_charge
+SM:
+	scout_leader_shotgun
+	scout_leader_sniper
+SOB:
+	crusader_seal
+	flag
+	faithful_repentia
+	cherubim_infiltration
+	living_saint_army
+	seraphim_speed
+	fortress_of_faith
+	armorium1
+	armorium2
+	bunker_cannon_left
+	bunker_cannon_right
+	officio_assassinorum
+	assassin_weapons
+
+	perceptions_callidus		(not imported)
+	perceptions_callidus_on		(not imported)
+	perceptions_callidus_off	(not imported)
+ORKS:
+	brute_force
+	ammo_runt
+	ammo_runt_ability
+	cyborg_body
+	ard_boyz_nob_2
+	lootas_leader
+	nobz_leader
+
+TAU:
+	vehicle_upgrade_disruption
+	generator_addon_danger
+	generator_addon_safe
+
+
+Scar
+Aircraft.scar has a different style and no longer restricts Attack Scarabs, while it now includes all three new races.
+addon_startingarmy_elites no longer spawns "tau_vespid_auxillary_squad" for Tau. It is replaced by "tau_vespid_auxiliary_squad", which doesn't cause a scar error. DE 1 Warp Beast replaced by 1 Wrack. Eldar 1 Fire Dragon + 1 Warp Spider are replaced by 1 Harlequin. 1 Deathstrike Pariah replaced by 1 Deathmark. Orks 2 Nobz and 1 Flash Gitz replaced by 1 Lootas and 1 Nobz. SOB 1 Redemptionist + 1 Legatine Superior are replaced by 1 Redemptionist and 1 Repentia Squad. SM 1 Assault Terminator is replaced by 1 Vanguard Veteran. Tau 1 Crisis Suit + 2 Vespid are replaced by 1 Sunfire Battlesuit + 1 Vespid. Tyranids 2 Broodlords replaced by 1 Broodlord and 1 Biorvore. CD now have 1 random Defiler and a Greater Warp Spawn instead of 3 Greater Warp Spawns. IDH 2 GK Terminators are replaced by 1 GK Terminator, 1 Calculus Logi, 2 Assault Servitor, 2 Weapon Servitor
+addon_startingarmy_transport no longer spawn 2 bikes for CSM. 2 Bodyguards for IDH are now replaced by real transpots: 1 Rhino, 1 Razorback and 1 Chimera. Tyranids 2 Zoanthropes are replaced by 2 Tyrant Guards. CD have 2 random defilers
+addon_startingarmy_small now spawn 1 Guardian and 1 Storm guardian instead of 2 Guardians for Eldar. Necrons have 3 attack scarabs instead of 2 Builder Scarabs. Orks have 2 Grot Gangs instead of 2 Slugga Boyz. Tyranids have 2 Genestealers instead of 2 Spinegaunts
+addon_startingarmy_large CSM has 2 Chaos Space Marines instead of 2 Renegades. Eldar's 2 Guardians are replaced by 2 Dire Avengers. IG now has 2 Conscripts and 2 Guardsmen INSTEAD OF 3 Conscripts and 1 Guardsmen. Necrons 3 Builder Scarabs are replaced by 2 Warriors. Ork 4 Slugga Boyz are replaced by 2 Grot Gangs and 2 Shoota Boyz. SM 4 Scouts are replaced by 2 Scouts and 2 Tactical Marines. Tyranids 2 Spinegaunt + 1 Hormagaunt + 1 Termagant are replaced by 2 Genestealers and 2 Termagants. IDH, in addition to 2 Bodyguards, have 1 Scholar and 1 Stormtrooper. CD 2 Furies are replaced by 1 Flesh Hound + 1 Nurgling + 1 Daemonette + 1 Screamer
+restrict_tierv (restrict game enders [titans/superweapons etc]) now prevents Eldar Shadowseer to purchase the nuke ability
+
+KNOWN BUGS
+IDH shock_troops (Stormtroopers) become almost completely invisible when the Missile Launcher weapon is purchased (model actually disappears, only a little piece remains). I don't know how to deal with this.
