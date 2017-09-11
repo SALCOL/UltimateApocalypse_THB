@@ -66,7 +66,6 @@ function ChaosMarineInfantryTactic:AddTargetAbilities()
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_bolt_of_change_psyker", Ability.Filters.CloseSquadEnemy, 4, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_doombolt_psyker", Ability.Filters.CloseSquadEnemy, 4, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_inferno_grenades", Ability.Filters.CloseSquadEnemy, 4, 0 })
-	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_melta_bombs", Ability.Filters.CloseVehicleEnemy, 1, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_melta_bombs_havoc", Ability.Filters.CloseVehicleEnemy, 1, 0 })
 	table.insert(InfantryTactic.TargetAbilities, { nil, "chaos_krak_grenades", Ability.Filters.CloseVehicleEnemy, 1, 0 })
 end
